@@ -121,9 +121,9 @@ public class SVGPlusConverter {
 	 * @throws Exception
 	 */
 	private void readSemanticDocumentSetValuesAndRun() throws Exception {
-		LOG.debug("sem doc variables "+semanticDocumentAction.getVariableMap().size());
+		LOG.trace("sem doc variables "+semanticDocumentAction.getVariableMap().size());
 		for (String var : semanticDocumentAction.getVariableMap().keySet()) {
-			LOG.debug("key: "+var);
+			LOG.trace("key: "+var);
 		}
 		if (semanticDocumentAction != null) {
 			semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);

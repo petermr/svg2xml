@@ -146,6 +146,7 @@ public class SemanticDocumentAction extends DocumentAction {
 	}
 	
 	public Map<String, String> getVariableMap() {
+		ensureVariableMap();
 		return variableMap;
 	}
 	
