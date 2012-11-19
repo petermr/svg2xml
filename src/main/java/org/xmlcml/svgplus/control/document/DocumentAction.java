@@ -24,6 +24,10 @@ public abstract class DocumentAction extends AbstractAction {
 		this.documentActionElement = documentActionElement;
 	}
 
+	protected DocumentAction() {
+		super();
+	}
+
 	/** execute the command
 	 * 
 	 */

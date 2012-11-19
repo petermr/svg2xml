@@ -32,6 +32,13 @@ public abstract class AbstractAction {
 		this.setActionCommandElement(actionCommand);
 	}
 
+	/** only used for constructing objects programmatically
+	 * 
+	 */
+	protected AbstractAction() {
+		// TODO Auto-generated constructor stub
+	}
+
 	/** execute the command
 	 * 
 	 */
@@ -239,19 +246,22 @@ public abstract class AbstractAction {
 	
 	protected Object getValue(String name) {
 		AbstractAnalyzer analyzer = getAnalyzer();
-		LOG.trace("analyzer: "+analyzer);
-		Object value = analyzer.getValue(name);
-		if (value == null) {
-			LOG.debug("Cannot lookup value for: "+name);
-			
+		Object value = null;
+		if (analyzer != null) {
+			LOG.trace("analyzer: "+analyzer);
+			value = analyzer.getValue(name);
+			if (value == null) {
+				LOG.debug("Cannot lookup value for: "+name);
+			}
 		}
 		return value;
 	}
 
 	protected List<String> getVariableNames() {
-		AbstractAnalyzer analyzer = getAnalyzer();
-		LOG.trace("analyzer: "+analyzer);
-		return analyzer.getNames();
+//		AbstractAnalyzer analyzer = getAnalyzer();
+//		LOG.trace("analyzer: "+analyzer);
+//		return analyzer.getNames();
+		throw new RuntimeException("Do not use");
 	}
 
 	public AbstractActionElement getActionCommandElement() {

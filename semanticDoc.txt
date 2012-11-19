@@ -7,10 +7,14 @@ Most attributes are specific to given element. Some (e.g. debug) are global
 "may" are lower priority ideas
 
 <semanticDocument>    
-        Holds global vars in name-value store. 
+        Holds global vars in name-value store.
         Uses s.*, d.*, p.* for vars with total, doc, and page scope
         Vars can be injected by commandline, explicit on elements, or computed
         Accessible to all elements
+        the run() command pokes in the values:
+            s.inputfile
+            s.outputfile
+            
     <documentIterator>
         determines policy of which documents to process. 
         $d.indir (input directory, may have recursive descent)

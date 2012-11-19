@@ -32,6 +32,9 @@ import org.xmlcml.svgplus.util.PConstants;
 public class SVGPlusConverter {
 
 
+	public static final String S_INPUTFILE = "s.inputfile";
+	public static final String S_OUTPUTFILE = "s.outputfile";
+	public static final String S_SEMDOC = "s.semdoc";
 	private static final String MISSING_COMMAND_FILE = "Must always give command file";
 	private static final String COMMAND_FILE = "-c";
 	private static final String DOCUMENT_PREFIX = "-d.";
@@ -59,7 +62,7 @@ public class SVGPlusConverter {
 	private String endPage;
 	private Integer startPageNumber;
 	private Integer endPageNumber;
-	private Map<String, String> variableMap;
+//	private Map<String, String> variableMap;
     
 	private SemanticDocumentElement semanticDocumentElement;
 	private SemanticDocumentAction semanticDocumentAction;
@@ -118,7 +121,10 @@ public class SVGPlusConverter {
 	 * @throws Exception
 	 */
 	private void readSemanticDocumentSetValuesAndRun() throws Exception {
-		readSemanticDocumentFile();
+		LOG.debug("sem doc variables "+semanticDocumentAction.getVariableMap().size());
+		for (String var : semanticDocumentAction.getVariableMap().keySet()) {
+			LOG.debug("key: "+var);
+		}
 		if (semanticDocumentAction != null) {
 			semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);
 			getInputFileOrDirectory();
@@ -127,9 +133,6 @@ public class SVGPlusConverter {
 			semanticDocumentAction.setOutfile(outfile);
 			findPageNumbers();
 			semanticDocumentAction.setPages(startPageNumber, endPageNumber);
-			if (variableMap != null) {
-				semanticDocumentAction.copy(variableMap);
-			}
 			semanticDocumentAction.run();
 		}
 	}
@@ -141,6 +144,7 @@ public class SVGPlusConverter {
 				throw new RuntimeException("input file does not exist: "+inputFilename);
 			}
 			LOG.debug("reading from: "+infile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
+			semanticDocumentAction.setVariable(S_INPUTFILE, inputFilename);
 		}
 	}
 
@@ -150,6 +154,7 @@ public class SVGPlusConverter {
 			if (outfile.isDirectory()) {
 				LOG.debug("writing to: "+outfile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
 			}
+			semanticDocumentAction.setVariable(S_OUTPUTFILE, outputFilename);
 		}
 	}
 
@@ -219,6 +224,7 @@ public class SVGPlusConverter {
 			while (i < args.length) {
 				if (COMMAND_FILE.equals(args[i])) {
 					semanticDocumentFilename = args[++i]; i++;
+					readSemanticDocumentFile();
 				} else if (INPUT_FILE.equals(args[i])) {
 					inputFilename = args[++i]; i++;
 				} else if (INPUT_FORMAT.equals(args[i])) {
@@ -231,9 +237,13 @@ public class SVGPlusConverter {
 						endPage = args[i]; i++;
 					}
 				} else if (args[i].startsWith(PAGE_PREFIX) || args[i].startsWith(DOCUMENT_PREFIX)) {
-					ensureVariableMap();
+					if (semanticDocumentAction == null) {
+						throw new RuntimeException("commandfile must preceed variable setting in arguments");
+					}
 					// chop off minus
-					variableMap.put(args[i].substring(1), args[++i]); i++;
+					String name = args[i].substring(1);
+					String value = args[++i]; i++;
+					semanticDocumentAction.setVariable(name, value);
 				} else {
 					System.err.println("unknown arg: "+args[i++]);
 				}
@@ -249,12 +259,6 @@ public class SVGPlusConverter {
 		}
 	}
 	
-	private void ensureVariableMap() {
-		if (variableMap == null) {
-			variableMap = new HashMap<String, String>();
-		}
-	}
-
 	public static void main(String[] args) {
 		SVGPlusConverter converter = new SVGPlusConverter();
 		converter.run(args);

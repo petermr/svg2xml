@@ -2,15 +2,19 @@ package org.xmlcml.svgplus.control;
 
 
 import java.io.File;
-
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.control.document.DocumentAction;
 import org.xmlcml.svgplus.control.document.DocumentActionListElement;
 import org.xmlcml.svgplus.control.document.DocumentIteratorAction;
 import org.xmlcml.svgplus.control.document.DocumentIteratorElement;
+import org.xmlcml.svgplus.core.SVGPlusConverter;
 
 public class SemanticDocumentAction extends DocumentAction {
 
@@ -33,10 +37,16 @@ public class SemanticDocumentAction extends DocumentAction {
 		this.semanticDocumentElement = (SemanticDocumentElement) documentActionCommand;
 	}
 	
+	public SemanticDocumentAction() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void run() {
 		if (getDebug() != null && getDebug()) {
 			debugSemanticDocument();
+			
 		}
 		DocumentIteratorElement documentIteratorElement = semanticDocumentElement.getDocumentIteratorElement();
 		if (documentIteratorElement != null) {
@@ -132,6 +142,7 @@ public class SemanticDocumentAction extends DocumentAction {
 
 	public void setDocumentFilename(String semanticDocumentFilename) {
 		this.semanticDocumentFilename = semanticDocumentFilename;
+		this.setVariable(SVGPlusConverter.S_SEMDOC, this.semanticDocumentFilename);
 	}
 	
 	public Map<String, String> getVariableMap() {
@@ -142,4 +153,25 @@ public class SemanticDocumentAction extends DocumentAction {
 		return variableMap == null ? null : variableMap.get(name);
 	}
 
+	public void setVariable(String name, String value) {
+		ensureVariableMap();
+		variableMap.put(name, value);
+	}
+
+	/** returns keys in sorted order
+	 * 
+	 */
+	public List<String> getVariableNames() {
+		ensureVariableMap();
+		List<String> keyList = new ArrayList<String>();
+		Set<String> keySet = variableMap.keySet();
+		if (keySet != null && keySet.size() > 0) {
+			if (!keyList.addAll(keySet)) {
+				throw new RuntimeException("Cannot add keys");
+			}
+			Collections.sort(keyList);
+		}
+		return keyList;
+	}
 }
+
