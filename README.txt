@@ -29,8 +29,13 @@ To build:
 This should create classes and a standalone jar
 
 ==Running==
-Current usage is:
-java svgplus [commandfile]
+Current usage is still being developed: It is likely to be
+java svgplus -i inputfile.pdf and or
+java svgplus -c commandfile.xml
+or some combination
+
+use
+java svgplus for usage()
 
 almost all control is delegated to the commandfile
 

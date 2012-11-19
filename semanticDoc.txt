@@ -1,0 +1,67 @@
+AMI2-AVGPlus Semantic document
+==============================
+
+rough nesting is shown. Order determines order of operations. simplistic checking of children.
+Most attributes are specific to given element. Some (e.g. debug) are global
+
+"may" are lower priority ideas
+
+<semanticDocument>    
+        Holds global vars in name-value store. 
+        Uses s.*, d.*, p.* for vars with total, doc, and page scope
+        Vars can be injected by commandline, explicit on elements, or computed
+        Accessible to all elements
+    <documentIterator>
+        determines policy of which documents to process. 
+        $d.indir (input directory, may have recursive descent)
+        $d.outdir (output dir, may be computed or default. Always one directory per PDF)
+        $d.docpattern (Pattern of documents to filter, default *//*.pdf)
+        $d.maxdocs. 
+        Always holds SVG in memory. May write intermediate if directed
+        May create overall fontList from all documents (and can write it)
+        <docAnalyzer>
+            holds per-document info; starts with List<SVG>
+            may guess publisher/source
+            <pageIterator>
+                Iterates over pages in current document;
+                regex or other selector
+                <normalizeCharacters>
+                    check and transform unusual or ugly characters (e.g. ligatures)
+                    reduce to ASCII where reasonable
+                <normaliseRotatedText>
+                <normalizeGraphicsPrimitives>
+                    create rect, circle, line, polyline, symbols where possible
+                <whitespaceChunker>
+                    currently 3 passes (horiz, vert, horiz).
+                    Uses default gap settings (e.g. 10 pixels). 
+                    May be refined by multipass extraction of gaps
+                <suscriptProcessor>
+                    works within a chunk
+                    results in escaped &lt;sub&gt;I am a subscript&lt;/sub&gt; for possible text searching
+                <createLines>
+                    processes characters on geometric basis into words and lines
+                    may need to create experimental per-character widths
+                <chunkSemantics>
+                    annotates chunks as text, headings, pageDecor, maths, chemistry (maybe), Figures, Captions, Tables
+                <mergeText>
+                    merges the text chunks in the page
+                    must be contiguous and common fontsize.
+                    may create paragraphs
+            </pageIterator>
+            <mergePages>
+                merge running text from contigous pages
+                create list of figures, tables (check numbering)
+                creates XTHML, Figures, Tables with links
+            <stmChunker>
+                breaks running text into logical chunks (Biblio, abstract, body (? subdivide), references)
+            <documentWriter>
+                XHTML, Menu (for per-page display) Fig/Table list, maybe PDF
+        </documentAnalyzer>
+        <domainPlugin>
+            discipline-specific plugins for specific chunks
+            figure -> CML chemistry
+            equations -> MathML
+            figure -> NEXML (phylo-tree)
+            figure -> XYPlot
+    <documentIterator>
+</semanticDocument>

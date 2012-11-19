@@ -83,7 +83,7 @@ public class DocumentIteratorAction extends DocumentAction {
 			infile = (filename == null) ? null : new File(filename);
 		}
 		if (infile == null) {
-			throw new RuntimeException("Must give filename/directory (a) by -i on command line or (b) filename attribute on DocumentIterator");
+			throw new RuntimeException("Must give input filename/directory (a) by -i on command line or (b) filename attribute on DocumentIterator");
 		}
 		return infile;
 	}

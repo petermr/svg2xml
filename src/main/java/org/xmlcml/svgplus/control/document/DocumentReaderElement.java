@@ -18,10 +18,8 @@ public class DocumentReaderElement extends AbstractActionElement {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 
 	static {
-//		ATTNAMES.add(PageActionElement.ACTION);
 		ATTNAMES.add(PageActionElement.FILENAME);
 		ATTNAMES.add(PageActionElement.FORMAT);
-//		ATTNAMES.add(PageActionElement.SKIP);
 	}
 
 	/** constructor
@@ -58,7 +56,7 @@ public class DocumentReaderElement extends AbstractActionElement {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.FILENAME,
+//				AbstractActionElement.FILENAME,
 		});
 	}
 

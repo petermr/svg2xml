@@ -29,28 +29,32 @@ import org.xmlcml.svgplus.util.PConstants;
  * @author pm286
  *
  */
-public class PDF2XMLConverter {
+public class SVGPlusConverter {
 
 
+	private static final String MISSING_COMMAND_FILE = "Must always give command file";
 	private static final String COMMAND_FILE = "-c";
 	private static final String DOCUMENT_PREFIX = "-d.";
 	private static final String INPUT_FILE = "-i";
+	private static final String INPUT_FORMAT = "-informat";
 	private static final String OUTPUT_FILE = "-o";
 	private static final String PAGES = "-p";
 	private static final String PAGE_PREFIX = "-p.";
+	private static final String PDF = "pdf";
 
-	private final static Logger LOG = Logger.getLogger(PDF2XMLConverter.class);
+	private final static Logger LOG = Logger.getLogger(SVGPlusConverter.class);
+//	private static final File DEFAULT_OUTPUT = new File("target/");
 
 	private List<SVGSVG> svgPageList;
 	private Integer firstPageNumber;
 	private Integer lastPageNumber;
 	private String inputFilename;
 	private String outputFilename;
-	private Boolean removeImageData = true;
-	private File rawSvgDir;
     private String semanticDocumentFilename;
 	private File infile;
-	private File outfile;
+//	private File outfile = DEFAULT_OUTPUT;
+	private File outfile = null;
+	private String inputFormat = PDF;
 	private String startPage;
 	private String endPage;
 	private Integer startPageNumber;
@@ -71,14 +75,14 @@ public class PDF2XMLConverter {
 		return svgPageList;
 	}
 
-	public PDF2XMLConverter() {
+	public SVGPlusConverter() {
 	}
 
 	/** runs converter with args from commandline
 	 * 
 	 * @param args
 	 */
-	public PDF2XMLConverter(String[] args) {
+	public SVGPlusConverter(String[] args) {
 		
 	}
 
@@ -168,7 +172,7 @@ public class PDF2XMLConverter {
 
 	private void readSemanticDocumentFile() {
 		if (semanticDocumentFilename == null) {
-			semanticDocumentFilename = SemanticDocumentElement.getDefaultCommandFilename();
+			throw new RuntimeException(MISSING_COMMAND_FILE);
 		}
 		File semanticDocumentFile = new File(semanticDocumentFilename);
 		if (!semanticDocumentFile.exists()) {
@@ -180,25 +184,22 @@ public class PDF2XMLConverter {
 
 	private void usage() {
 		System.out.println("usage: org.xmlcml.svgplus.PDF2XMLConverter [args]");
-		System.out.println("      -a                             // analyze SVG (e.g. create figures)");
-		System.out.println("      -c                             // read and process commandfile (preferred)");
+		System.out.println("      -c                             // read and process commandfile (Mandatory)");
 		System.out.println("      -i <input.dir or input.pdf or rawDir>    // foo.pdf, or foo directory");
+		System.out.println("      -informat <input format>    // PDF or SVG (currently NYI)");
 		System.out.println("      -o <output.dir >               // overrides default output dir");
 		System.out.println("      -p <firstPage> <lastPage>      // lastPage can be 9999");
 		System.out.println("  ");
 		System.out.println("  the normal use is to have a number of PDFs in a directory (alpha.pdf, blob.pdf)");
 		System.out.println("  the first phase creates a directory for each (alpha/, blob/ ...");
-		System.out.println("  then suddirectories are created alpha/raw and alpha/final");
-		System.out.println("  each directory has page0.svg ... page99.svg");
-		System.out.println("  if there are figures, final/ has final/figure1.svg ...figure99.svg");
-		System.out.println("  if there are tables, final/ has final/table1.svg ...table99.svg");
-		System.out.println("  variants:");
+		System.out.println("  then raw svg is created by PDF2SVG. This is not normally written except for debug");
+		System.out.println("  in which case it will be in ./raw/page1.svg ... pagen.svg");
 		System.out.println("      -i foo.pdf processes a single file as above");
 		System.out.println("  ");
 		System.out.println("  typical usage is:");
-		System.out.println("      PDF2XMLConverter -i <pdfDir> -a");
+		System.out.println("      PDF2XMLConverter -c <commandfile> -i <pdfDir> ");
 		System.out.println("      or");
-		System.out.println("      PDF2XMLConverter -i <rawDir> -a // generally only for developers");
+		System.out.println("      PDF2XMLConverter -c <commandfile> -i <rawDir> // generally only for developers");
 	}
 
 	public void run(String argString) {
@@ -220,6 +221,8 @@ public class PDF2XMLConverter {
 					semanticDocumentFilename = args[++i]; i++;
 				} else if (INPUT_FILE.equals(args[i])) {
 					inputFilename = args[++i]; i++;
+				} else if (INPUT_FORMAT.equals(args[i])) {
+					inputFormat = args[++i]; i++;
 				} else if (OUTPUT_FILE.equals(args[i])) {
 					outputFilename = args[++i]; i++;
 				} else if (PAGES.equals(args[i])) {
@@ -235,10 +238,13 @@ public class PDF2XMLConverter {
 					System.err.println("unknown arg: "+args[i++]);
 				}
 			}
+			if (semanticDocumentFilename == null) {
+				throw new RuntimeException(MISSING_COMMAND_FILE);
+			}
 			try {
 				readSemanticDocumentSetValuesAndRun();
 			} catch (Exception e) {
-				throw new RuntimeException("Cannot read / process PDF", e);
+				throw new RuntimeException("Cannot read / process input ("+inputFormat+")", e);
 			}
 		}
 	}
@@ -250,7 +256,7 @@ public class PDF2XMLConverter {
 	}
 
 	public static void main(String[] args) {
-		PDF2XMLConverter converter = new PDF2XMLConverter();
+		SVGPlusConverter converter = new SVGPlusConverter();
 		converter.run(args);
 	}
 

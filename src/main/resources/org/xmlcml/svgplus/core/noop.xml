@@ -1,0 +1,14 @@
+<semanticDocument debug="true" xmlns="http://www.xml-cml.org/schema/ami2">
+  <documentIterator>
+    <documentActionList>
+      <documentReader/>
+      <pageIterator>
+        <pageAnalyzer>
+        </pageAnalyzer>
+      </pageIterator>
+    </documentActionList> 
+  </documentIterator>
+</semanticDocument>
+
+
+

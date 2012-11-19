@@ -25,9 +25,6 @@ public class DocumentReaderAction extends DocumentAction {
 			throw new RuntimeException("file does not exist or is not a directory: "+file.getAbsolutePath());
 		}
 		
-//		List<SVGSVG> svgPageList = PDF2SVGReader.createPageList(file);
-//		LOG.trace("pages read: "+svgPageList.size());
-//		documentAnalyzer.setPageList(svgPageList);
 	}
 
 }
