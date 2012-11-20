@@ -11,11 +11,10 @@ import org.xmlcml.svgplus.document.DocumentAction;
 public class DocumentAnalyzerAction extends AbstractAction {
 
 	private final static Logger LOG = Logger.getLogger(DocumentAnalyzerAction.class);
+	
 	public static final String PAGE_COUNT = SVGPlusConstants.D_DOT+"pageCount";
 	private List<DocumentAction> documentActions;
 	private DocumentAnalyzerElement documentAnalyzerActionCommand;
-	private List<AbstractActionElement> documentActionCommandElements;
-	private Integer zeroBasedPageNumber = null;
 	
 	public DocumentAnalyzerAction() {
 //		super(pageAnalyzerActionCommand);
@@ -24,10 +23,14 @@ public class DocumentAnalyzerAction extends AbstractAction {
 //		this.documentAnalyzerActionCommand = pageAnalyzerActionCommand;
 	}
 	
+	public DocumentAnalyzerAction(AbstractActionElement actionElement) {
+		super(actionElement);
+	}
+	
 
 	
 	public String getActionValue() {
-		return getActionCommandElement().getAttributeValue(AbstractActionElement.ACTION);
+		return getActionElement().getAttributeValue(AbstractActionElement.ACTION);
 	}
 
 	private List<DocumentAction> createDocumentActions() {
@@ -45,13 +48,13 @@ public class DocumentAnalyzerAction extends AbstractAction {
 
 
 	public void run() {
-		documentActionCommandElements = documentAnalyzerActionCommand.getDocumentActionCommandElements();
+//		documentActionCommandElements = documentAnalyzerActionCommand.getDocumentActionCommandElements();
 	}
 
 
 
 	void runActions() {
-		for (DocumentAction documentAction: documentActions) {
+		for (AbstractAction documentAction: documentActions) {
 //			PageSelector pageSelector = documentAction.getDocumentSelector();
 //			if (pageSelector == null || pageSelector.isSet(zeroBasedPageNumber)) {
 //				try {

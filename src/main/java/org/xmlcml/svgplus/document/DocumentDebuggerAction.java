@@ -15,7 +15,7 @@ public class DocumentDebuggerAction extends DocumentAction {
 	@Override
 	public void run() {
 //		LOG.debug(debugString("DOCUMENT DEBUG"));
-		semanticDocumentAction.debug();
+		getSemanticDocumentAction().debug();
 	}
 
 }

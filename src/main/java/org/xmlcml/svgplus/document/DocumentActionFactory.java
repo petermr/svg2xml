@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 
@@ -29,9 +30,9 @@ public class DocumentActionFactory {
 		ACTIONS.add(WRITE_FILE);
 	}
 	
-	public DocumentAction createAction(AbstractActionElement command, DocumentAnalyzer documentAnalyzer) {
+	public AbstractAction createAction(AbstractActionElement command, DocumentAnalyzer documentAnalyzer) {
 
-		DocumentAction documentAction = null;
+		AbstractAction documentAction = null;
 		if (command == null) {
 			throw new RuntimeException("No action given: ");
 		} else if(command instanceof DocumentIteratorElement) {
@@ -51,7 +52,6 @@ public class DocumentActionFactory {
 		} else {
 			throw new RuntimeException("Unknown action: "+command.getClass());
 		}
-		documentAction.setDocumentAnalyzer(documentAnalyzer);
 		return documentAction;
 	}
 

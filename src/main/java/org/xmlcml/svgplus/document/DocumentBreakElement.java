@@ -7,6 +7,7 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 
 public class DocumentBreakElement extends AbstractActionElement {
@@ -53,5 +54,11 @@ public class DocumentBreakElement extends AbstractActionElement {
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
 		});
-}
+	}
+	
+	@Override
+	protected AbstractAction createAction() {
+		return new DocumentBreakAction(this);
+	}
+
 }

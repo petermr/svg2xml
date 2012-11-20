@@ -8,6 +8,7 @@ import java.util.List;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
@@ -90,4 +91,8 @@ public class DocumentIteratorElement extends AbstractActionElement {
 		return documentActionListElement;
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return new DocumentIteratorAction(this);
+	}
 }

@@ -21,7 +21,7 @@ public class PageVariableAction extends PageAction {
 		String name = getName();
 		String value = getValue();
 		if (name == null || value == null) {
-			throw new RuntimeException("must give name and value attributes: "+getActionCommandElement().toXML());
+			throw new RuntimeException("must give name and value attributes: "+getActionElement().toXML());
 		}
 		checkValidName(name);
 		pageAnalyzer.putValue(name, value);

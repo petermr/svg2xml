@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.core.AbstractActionElement;
-import org.xmlcml.svgplus.core.Chunk;
 
 /**
 	<pageAction action="createWhitespaceChunks" depth="3"/>

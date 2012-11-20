@@ -7,8 +7,8 @@ public class DocumentBreakAction extends DocumentAction {
 
 	private final static Logger LOG = Logger.getLogger(DocumentBreakAction.class);
 	
-	public DocumentBreakAction(AbstractActionElement documentActionCommand) {
-		super(documentActionCommand);
+	public DocumentBreakAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

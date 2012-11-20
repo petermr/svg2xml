@@ -2,14 +2,12 @@ package org.xmlcml.svgplus.core;
 
 
 import java.io.File;
-
 import java.util.List;
+
 
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.document.DocumentAction;
 import org.xmlcml.svgplus.document.DocumentActionListElement;
-import org.xmlcml.svgplus.document.DocumentIteratorAction;
-import org.xmlcml.svgplus.document.DocumentIteratorElement;
 import org.xmlcml.svgplus.text.SimpleFont;
 
 public class SemanticDocumentAction extends DocumentAction {
@@ -23,7 +21,7 @@ public class SemanticDocumentAction extends DocumentAction {
 	public static final String SEMDOC = "semdoc";
 	public static final String S_SEMDOC = SVGPlusConstants.S_DOT+SEMDOC;
 	
-	private SemanticDocumentElement semanticDocumentElement;
+	public SemanticDocumentElement semanticDocumentElement;
 
 	private String semanticDocumentFilename;
 	private VariableStore variableStore;
@@ -44,16 +42,8 @@ public class SemanticDocumentAction extends DocumentAction {
 	public void run() {
 		if (getDebug() != null && getDebug()) {
 			debugSemanticDocument();
-			
 		}
-		DocumentIteratorElement documentIteratorElement = semanticDocumentElement.getDocumentIteratorElement();
-		if (documentIteratorElement != null) {
-			documentIteratorElement.setSemanticDocumentElement(semanticDocumentElement);
-			DocumentIteratorAction documentIteratorAction = documentIteratorElement.getDocumentIteratorAction();
-			documentIteratorAction.run();
-		} else {
-			runDocumentAction();
-		}
+		runChildActionList();
 	}
 
 	private void debugSemanticDocument() {
@@ -61,13 +51,6 @@ public class SemanticDocumentAction extends DocumentAction {
 		
 	}
 
-	private void runDocumentAction() {
-		DocumentActionListElement documentActionListElement = semanticDocumentElement.getDocumentActionList();
-		if (documentActionListElement != null) {
-			documentActionListElement.getDocumentActionListAction().run();
-		}
-	}
-	
 	public void setInfile(File infile) {
 		ensureVariableStore();
 		this.setVariable(S_INFILE, infile);

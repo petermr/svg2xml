@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 
 public class PageActionElement extends AbstractActionElement {
@@ -104,4 +105,9 @@ public class PageActionElement extends AbstractActionElement {
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return null;
+//		return new PageAction(this);
+	}
 }

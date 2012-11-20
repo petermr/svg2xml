@@ -7,6 +7,7 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 
 public class DocumentDebuggerElement extends AbstractActionElement {
@@ -56,4 +57,8 @@ public class DocumentDebuggerElement extends AbstractActionElement {
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return new DocumentDebuggerAction(this);
+	}
 }

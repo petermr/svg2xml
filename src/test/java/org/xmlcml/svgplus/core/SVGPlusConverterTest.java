@@ -18,20 +18,17 @@ public class SVGPlusConverterTest {
 
 	@Test
 	/** tests that we can read a minimal command file
-	 *  noop will throw exception as no input file given
+	 * we can run without an input file - jsut doesn't dso very much
 	 */
 	public void testCommand() {
 		SVGPlusConverter converter = new SVGPlusConverter(); 
 		try {
 			converter.run("" +
 				"-c src/main/resources/org/xmlcml/svgplus/core/noop.xml ");
-			Assert.fail("should throw no input file exception");
 		} catch (Exception e) {
-			Throwable t = e.getCause();
-			Assert.assertTrue(t instanceof RuntimeException);
-			String msg = t.getMessage();
-			Assert.assertTrue("should throw no input file", msg.startsWith("Must give input"));
+			throw new RuntimeException("should not fail run");
 		}
+		Assert.assertNull(converter.getSemanticDocumentAction().getVariable(SemanticDocumentAction.S_INFILE));
 	}
 	
 	@Test

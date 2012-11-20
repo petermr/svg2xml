@@ -26,18 +26,12 @@ public class SVGPlusConverter {
 
 	private final static Logger LOG = Logger.getLogger(SVGPlusConverter.class);
 	
-	private Integer firstPageNumber;
-	private Integer lastPageNumber;
 	private String inputFilename;
 	private String outputFilename;
     private String semanticDocumentFilename;
 	private File infile;
 	private File outfile = null;
 	private String inputFormat = PDF;
-	private String startPage;
-	private String endPage;
-	private Integer startPageNumber;
-	private Integer endPageNumber;
     
 	private SemanticDocumentElement semanticDocumentElement;
 	private SemanticDocumentAction semanticDocumentAction;
@@ -83,10 +77,15 @@ public class SVGPlusConverter {
 		if (semanticDocumentAction != null) {
 			semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);
 			createInputFileOrDirectoryName();
-			semanticDocumentAction.setInfile(infile);
 			createOutputFileOrDirectoryName();
-			semanticDocumentAction.setOutfile(outfile);
+			checkFiles();
 			semanticDocumentAction.run();
+		}
+	}
+
+	private void checkFiles() {
+		if (semanticDocumentFilename == null) {
+			throw new RuntimeException("Must give commandFile");
 		}
 	}
 
@@ -97,7 +96,7 @@ public class SVGPlusConverter {
 				throw new RuntimeException("input file does not exist: "+inputFilename);
 			}
 			LOG.debug("reading from: "+infile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
-			semanticDocumentAction.setVariable(SemanticDocumentAction.S_INFILE, inputFilename);
+			semanticDocumentAction.setInfile(infile);
 		}
 	}
 
@@ -105,9 +104,9 @@ public class SVGPlusConverter {
 		if (outputFilename != null) {
 			outfile = new File(outputFilename);
 			if (outfile.isDirectory()) {
-				LOG.debug("writing to: "+outfile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
+				LOG.debug("writing to: "+outfile.getAbsolutePath()+"(dir = "+outfile.isDirectory()+")");
 			}
-			semanticDocumentAction.setVariable(SemanticDocumentAction.S_OUTFILE, inputFilename);
+			semanticDocumentAction.setOutfile(outfile);
 		}
 	}
 
@@ -120,7 +119,7 @@ public class SVGPlusConverter {
 			throw new RuntimeException("command file (semanticDocument) does not exist: "+semanticDocumentFilename+": "+new File(semanticDocumentFilename).getAbsolutePath());
 		}
 		semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(semanticDocumentFile);
-		semanticDocumentAction = semanticDocumentElement.getSemanticDocumentAction();
+		semanticDocumentAction = (SemanticDocumentAction) semanticDocumentElement.getAction();
 	}
 
 	private void usage() {
@@ -156,8 +155,6 @@ public class SVGPlusConverter {
 		} else {
 			inputFilename = null;
 			outputFilename = null;
-			startPage = null;
-			endPage = null;
 			int i = 0;
 			while (i < args.length) {
 				if (COMMAND_FILE.equals(args[i])) {
@@ -169,11 +166,6 @@ public class SVGPlusConverter {
 					inputFormat = args[++i]; i++;
 				} else if (OUTPUT_FILE.equals(args[i])) {
 					outputFilename = args[++i]; i++;
-				} else if (PAGES.equals(args[i])) {
-					startPage = args[++i]; i++;
-					if (i < args.length && !args[i].startsWith("-")) {
-						endPage = args[i]; i++;
-					}
 				} else if (args[i].startsWith(PAGE_PREFIX) || args[i].startsWith(DOCUMENT_PREFIX)) {
 					if (semanticDocumentAction == null) {
 						throw new RuntimeException("commandfile must preceed variable setting in arguments");

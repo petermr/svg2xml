@@ -69,7 +69,7 @@ public class PageWriterAction extends PageAction {
 				writeFile(svg);
 			}
 		} else if (name != null) {
-			Object obj = semanticDocumentAction.getVariable(name);
+			Object obj = getSemanticDocumentAction().getVariable(name);
 			if (obj instanceof ToXML) {
 				writeFile((ToXML) obj);
 			} else {

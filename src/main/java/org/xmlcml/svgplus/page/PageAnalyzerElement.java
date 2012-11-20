@@ -8,7 +8,9 @@ import java.util.List;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.document.DocumentWriterAction;
 
 
 public class PageAnalyzerElement extends AbstractActionElement implements Iterable<AbstractActionElement> {
@@ -82,4 +84,8 @@ public class PageAnalyzerElement extends AbstractActionElement implements Iterab
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return new PageAnalyzerAction(this);
+	}
 }

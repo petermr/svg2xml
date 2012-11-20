@@ -15,10 +15,10 @@ public class DocumentReaderAction extends DocumentAction {
 	
 	@Override
 	public void run() {
-		LOG.trace("executing: \n"+getActionCommandElement().getString());
+		LOG.trace("executing: \n"+getActionElement().getString());
 		String filename = getFilename();
 		LOG.trace("reading file: "+filename);
-		LOG.trace(getActionCommandElement().getString());
+		LOG.trace(getActionElement().getString());
 		File file = new File(filename);
 		String skip = getSkip();
 		if (!file.exists() || !file.isDirectory()) {

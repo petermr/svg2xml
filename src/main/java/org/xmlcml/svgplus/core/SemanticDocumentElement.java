@@ -12,6 +12,7 @@ import nu.xom.Nodes;
 
 import org.xmlcml.svgplus.document.DocumentActionListElement;
 import org.xmlcml.svgplus.document.DocumentIteratorElement;
+import org.xmlcml.svgplus.document.DocumentWriterAction;
 import org.xmlcml.svgplus.page.PageActionElement;
 
 /*
@@ -36,7 +37,7 @@ public class SemanticDocumentElement extends AbstractActionElement {
 	
 	private DocumentIteratorElement documentIteratorElement;
 	private DocumentActionListElement documentActionListElement;
-	private SemanticDocumentAction semanticDocumentAction;
+	private AbstractAction semanticDocumentAction;
 
 	/** constructor
 	 */
@@ -45,10 +46,6 @@ public class SemanticDocumentElement extends AbstractActionElement {
 		semanticDocumentAction = new SemanticDocumentAction(this);
 	}
 	
-	public SemanticDocumentAction getSemanticDocumentAction() {
-		return semanticDocumentAction;
-	}
-
 	/** constructor
 	 */
 	public SemanticDocumentElement(AbstractActionElement element) {
@@ -89,12 +86,12 @@ public class SemanticDocumentElement extends AbstractActionElement {
 	}
 
 	public static SemanticDocumentElement createSemanticDocument(Element element) {
-		AbstractActionElement commandElement = AbstractActionElement.createCommand(element);
+		AbstractActionElement commandElement = AbstractActionElement.createActionElement(element);
 		return (commandElement instanceof SemanticDocumentElement) ? (SemanticDocumentElement) commandElement : null;
 	}
 
 	public static SemanticDocumentElement createSemanticDocument(File file) {
-		AbstractActionElement commandElement = AbstractActionElement.createCommand(file);
+		AbstractActionElement commandElement = AbstractActionElement.createActionElement(file);
 		if (!(commandElement instanceof SemanticDocumentElement)) {
 			throw new RuntimeException("commandFile must have root Element: "+SemanticDocumentElement.TAG);
 		}
@@ -118,4 +115,9 @@ public class SemanticDocumentElement extends AbstractActionElement {
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return new SemanticDocumentAction(this);
+	}
+	
 }

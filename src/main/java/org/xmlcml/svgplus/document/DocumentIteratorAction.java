@@ -11,6 +11,7 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.MenuSystem;
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
@@ -41,8 +42,7 @@ public class DocumentIteratorAction extends DocumentAction {
 	@Override
 	public void run() {
 		getSemanticDocumentAction();
-		ensureDocumentAnalyzer();
-		LOG.trace("executing: \n"+getActionCommandElement().getString());
+		LOG.trace("executing: \n"+getActionElement().getString());
 		infile = getInfile();
 		format = getFormat();
 		regex = getRegex();
@@ -56,14 +56,14 @@ public class DocumentIteratorAction extends DocumentAction {
 			String name = infile.getName();
 			convertSinglePDFFileAndStoreSVGInRawDir(name);
 		} else if (infile.isDirectory()) {
-			documentAnalyzer.putValue(SVGPlusConstants.D_DOT+SVGPlusConstants.ROOT_DIR, infile.getAbsolutePath());
-			LOG.trace("root dir: "+semanticDocumentAction.getVariable(SVGPlusConstants.ROOT_DIR));
+			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.ROOT_DIR, infile.getAbsolutePath());
+			LOG.trace("root dir: "+getSemanticDocumentAction().getVariable(SVGPlusConstants.ROOT_DIR));
 			rawDirList = createRawDirsAndGenerateSVGs(infile);
 			rawDirList = filterByRegex(rawDirList);
 			rawDirList = filterByCount(rawDirList);
-			documentAnalyzer.putValue(SVGPlusConstants.D_DOT+SVGPlusConstants.RAW_DIRECTORY_LIST, rawDirList);
+			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.RAW_DIRECTORY_LIST, rawDirList);
 		}
-		documentActionListElement = ((DocumentIteratorElement)actionCommandElement).getDocumentActionListElement();
+		documentActionListElement = ((DocumentIteratorElement)actionElement).getDocumentActionListElement();
 		if (documentActionListElement != null) {
 			DocumentActionListAction documentActionListAction = documentActionListElement.getDocumentActionListAction();
 			documentActionListAction.setRawDirList(rawDirList);
@@ -75,7 +75,7 @@ public class DocumentIteratorAction extends DocumentAction {
 	}
 
 	private File getInfile() {
-		infile = (File) semanticDocumentAction.getVariable(SemanticDocumentAction.S_INFILE);
+		infile = (File) getSemanticDocumentAction().getVariable(SemanticDocumentAction.S_INFILE);
 		if (infile == null) {
 			String filename = getFilename();
 			infile = (filename == null) ? null : new File(filename);
@@ -86,14 +86,6 @@ public class DocumentIteratorAction extends DocumentAction {
 		return infile;
 	}
 
-	DocumentAnalyzer ensureDocumentAnalyzer() {
-		if (this.documentAnalyzer == null) {
-			this.documentAnalyzer = new DocumentAnalyzer();
-//			documentAnalyzer.setSemanticDocument(((AbstractActionElement) getActionCommandElement()).getSemanticDocument());
-		}
-		return documentAnalyzer;
-	}
-	
 	private void convertSinglePDFFileAndStoreSVGInRawDir(String name) {
 		if (name.endsWith(SVGPlusConstants.PDF)) {
 //			File rawDir = generateRawDirAndGenerateSVGsElseSkip(infile);		

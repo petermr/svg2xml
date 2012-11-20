@@ -48,7 +48,7 @@ public abstract class AbstractAnalyzer {
 //		}
 	}
 
-	protected SemanticDocumentAction getSemanticDocumentAction() {
+	protected AbstractAction getSemanticDocumentAction() {
 		return semanticDocumentAction;
 	}
 

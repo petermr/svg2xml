@@ -9,6 +9,7 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
@@ -21,7 +22,6 @@ public class DocumentActionListElement extends AbstractActionElement {
 	private static final String FINAL = "final";
 	
 	private List<AbstractActionElement> documentActionCommands;
-	private DocumentAnalyzer documentAnalyzer;
 	private DocumentActionListAction documentActionListAction;
 	
 	private static final List<String> ATTNAMES = new ArrayList<String>();
@@ -81,15 +81,6 @@ public class DocumentActionListElement extends AbstractActionElement {
 	}
 
 
-	void ensurePhysicalLogicalStyleManager() {
-		Nodes nodes = this.query("ancestor::"+SemanticDocumentElement.TAG+"[1]");
-		if (nodes.size() != 1) {
-			CMLUtil.debug(this, "SEM");
-			throw new RuntimeException("Must have ancestor: "+SemanticDocumentElement.TAG);
-		}
-		documentAnalyzer = documentActionListAction.getDocumentAnalyzer();
-	}
-
 
 	protected List<String> getAttributeNames() {
 		return ATTNAMES;
@@ -98,6 +89,11 @@ public class DocumentActionListElement extends AbstractActionElement {
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
 		});
+	}
+
+	@Override
+	protected AbstractAction createAction() {
+		return new DocumentActionListAction(this);
 	}
 
 }

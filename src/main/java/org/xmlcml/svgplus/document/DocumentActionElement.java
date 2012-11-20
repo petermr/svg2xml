@@ -9,6 +9,7 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageAnalyzerElement;
 
@@ -85,4 +86,9 @@ public class DocumentActionElement extends AbstractActionElement {
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return null;
+//		return new DocumentAction(this);
+	}
 }

@@ -8,7 +8,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.core.Chunk;
+import org.xmlcml.svgplus.page.Chunk;
 
 
 /** a chunk of text 

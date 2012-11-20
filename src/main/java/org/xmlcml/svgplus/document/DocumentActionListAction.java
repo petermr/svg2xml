@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.page.PageActionElement;
 
 public class DocumentActionListAction extends DocumentAction {
@@ -35,20 +37,19 @@ public class DocumentActionListAction extends DocumentAction {
 
 
 	private void ensureDocumentListElementFunctions() {
-		documentActionListElement.ensurePhysicalLogicalStyleManager();
+//		documentActionListElement.ensurePhysicalLogicalStyleManager();
 	}
 	
 	@Override
 	public void run() {
-		getDocumentAnalyzer();
 		ensureDocumentListElementFunctions();
 		// get documentIterator
 		if (rawDirList != null) {
 			for (File rawDir : rawDirList) {
-				getAnalyzer().putValue(SVGPlusConstants.D_DOT+SVGPlusConstants.RAW_DIRECTORY, rawDir.getAbsolutePath());
+				getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.RAW_DIRECTORY, rawDir.getAbsolutePath());
 				outDir = getOutDir();
 				LOG.trace("outDir "+outDir);
-				getAnalyzer().putValue(SVGPlusConstants.D_DOT+SVGPlusConstants.OUT_DIR, outDir);
+				getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.OUT_DIR, outDir);
 				runActions(rawDir);
 			}
 		} else {
@@ -65,7 +66,6 @@ public class DocumentActionListAction extends DocumentAction {
 
 	private void runActions(File rawDir) {
 		clearVars();
-		getDocumentAnalyzer();
 		runActions();
 	}
 
@@ -73,7 +73,7 @@ public class DocumentActionListAction extends DocumentAction {
 		documentActionCommandElements = documentActionListElement.getDocumentActionCommandElements();
 		createDocumentActions();
 		LOG.trace("documentActions: "+documentActions.size());
-		for (DocumentAction documentAction: documentActions) {
+		for (AbstractAction documentAction: documentActions) {
 			documentAction.run();
 		}
 	}
@@ -83,8 +83,8 @@ public class DocumentActionListAction extends DocumentAction {
 			DocumentActionFactory documentActionFactory = new DocumentActionFactory();
 			documentActions = new ArrayList<DocumentAction>();
 			for (AbstractActionElement command : documentActionCommandElements) {
-				DocumentAction documentAction = documentActionFactory.createAction(command, documentAnalyzer);
-				documentActions.add(documentAction);
+//				DocumentAction documentAction = documentActionFactory.createAction(command, documentAnalyzer);
+//				documentActions.add(documentAction);
 			}
 		}
 		return documentActions;

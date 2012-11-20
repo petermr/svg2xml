@@ -63,7 +63,9 @@ public abstract class AbstractActionElement extends Element {
 	public static final String XPATH = "xpath";
 	public static final String MAX = "max";
 	public static final String TIMEOUT = "timeout";
+	
 	protected SemanticDocumentElement semanticDocumentElement;
+	protected AbstractAction abstractAction;
 
 	/** constructor.
 	 * 
@@ -74,16 +76,23 @@ public abstract class AbstractActionElement extends Element {
 		init();
 	}
 
-	public AbstractActionElement(AbstractActionElement commandElement) {
-		super(commandElement);
+	public AbstractActionElement(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	protected void init() {
+		this.abstractAction = createAction();
+	}
+	
+	public AbstractAction getAction() {
+		return abstractAction;
 	}
 
 	/** check attributes */
 	protected abstract List<String> getAttributeNames();
 	protected abstract List<String> getRequiredAttributeNames();
+	
+	protected abstract AbstractAction createAction();
 
 	public void checkAttributes() {
 		List<String> allowedNames = getAttributeNames();
@@ -110,7 +119,7 @@ public abstract class AbstractActionElement extends Element {
 
 	/** copy constructor from non-subclassed elements
 	 */
-	public static AbstractActionElement createCommand(Element element) {
+	public static AbstractActionElement createActionElement(Element element) {
 		AbstractActionElement newElement = null;
 		String tag = element.getLocalName();
 		LOGX.trace("TAG "+tag);
@@ -186,7 +195,7 @@ public abstract class AbstractActionElement extends Element {
 //			newElement = new SemanticDocumentElement();
 //			
 		} else {
-			throw new RuntimeException("unsupported command element: "+tag);
+			throw new RuntimeException("unsupported element: "+tag);
 		}
 		if (newElement != null) {
 			CMLUtil.copyAttributes(element, newElement);
@@ -209,7 +218,7 @@ public abstract class AbstractActionElement extends Element {
 				} else if (node instanceof ProcessingInstruction) {
 					newNode = new ProcessingInstruction((ProcessingInstruction) node);
 				} else if (node instanceof Element) {
-					newNode = createCommand((Element) node);
+					newNode = createActionElement((Element) node);
 				} else {
 					throw new RuntimeException("Cannot create new node: "+node.getClass());
 				}
@@ -222,24 +231,23 @@ public abstract class AbstractActionElement extends Element {
 		return this.getAttributeValue(NAME);
 	}
 
-	public static AbstractActionElement createCommand(File file) {
-		AbstractActionElement commandElement = null;
+	public static AbstractActionElement createActionElement(File file) {
+		AbstractActionElement actionElement = null;
 		try {
 			Element elem = new Builder().build(file).getRootElement();
 			elem = replaceIncludesRecursively(file, elem);
-			commandElement = AbstractActionElement.createCommand(elem);
+			actionElement = AbstractActionElement.createActionElement(elem);
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot read commandfile "+file, e);
 		}
-//		CMLUtil.debug(commandElement, "INCLUDE");
-		return commandElement;
+		return actionElement;
 	}
 
 	private static Element replaceIncludesRecursively(File file, Element elem) {
 		Nodes includes = elem.query(".//"+IncludeElement.TAG);
 		for (int i = 0; i < includes.size(); i++) {
-			Element includeCommandElement = (Element) includes.get(i);
-			String includeFilename = includeCommandElement.getAttributeValue(AbstractActionElement.FILENAME);
+			Element includeElement = (Element) includes.get(i);
+			String includeFilename = includeElement.getAttributeValue(AbstractActionElement.FILENAME);
 			if (includeFilename == null) {
 				throw new RuntimeException("must give filename");
 			}
@@ -247,7 +255,7 @@ public abstract class AbstractActionElement extends Element {
 				File includeFile = new File(file.getParentFile(), includeFilename).getCanonicalFile();
 				Element includeContentElement = new Builder().build(includeFile).getRootElement();
 				includeContentElement = replaceIncludesRecursively(includeFile, includeContentElement);
-				includeCommandElement.getParent().replaceChild(includeCommandElement, includeContentElement.copy());
+				includeElement.getParent().replaceChild(includeElement, includeContentElement.copy());
 			} catch (Exception e) {
 				throw new RuntimeException("Cannot create / parse includeFile "+file, e);
 			}

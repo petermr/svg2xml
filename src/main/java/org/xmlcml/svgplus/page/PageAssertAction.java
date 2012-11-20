@@ -41,21 +41,21 @@ public class PageAssertAction extends PageAction {
 				for (int i = 0; i < nnode; i++) {
 					LOG.trace(nodes.get(i).toXML());
 				}
-				fail(message+" expected "+expectedCount+" nodes from "+xpath+", found: "+nnode+" on "+getActionCommandElement().toXML());
+				fail(message+" expected "+expectedCount+" nodes from "+xpath+", found: "+nnode+" on "+getActionElement().toXML());
 			}
 		} else {
 			if (nnode != 1) {
-				fail(message+" expected 1 node from "+xpath+", found: "+nodes.size()+" on "+getActionCommandElement().toXML());
+				fail(message+" expected 1 node from "+xpath+", found: "+nodes.size()+" on "+getActionElement().toXML());
 			}
 			String value = getValue();
 			if (value == null) {
 				if (expectedCountS == null) {
-					warn("no value or count given: "+getActionCommandElement().toXML());
+					warn("no value or count given: "+getActionElement().toXML());
 				}
 			} else {
 				String nodeValue = nodes.get(0).getValue();
 				if (!value.equals(nodeValue)) {
-					fail(message+" expected "+value+" from "+xpath+", got: "+nodeValue+" on "+getActionCommandElement().toXML());
+					fail(message+" expected "+value+" from "+xpath+", got: "+nodeValue+" on "+getActionElement().toXML());
 				}
 			}
 		}
@@ -64,7 +64,7 @@ public class PageAssertAction extends PageAction {
 
 	private void compareXML(String message, String filename, String xpath, String name) {
 		if (name != null) {
-			Object obj = semanticDocumentAction.getVariable(name);
+			Object obj = getSemanticDocumentAction().getVariable(name);
 			if (obj == null) {
 				throw new RuntimeException("Cannot find object with name: "+name);
 			} else if (obj instanceof ToXML) {

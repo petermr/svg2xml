@@ -7,6 +7,7 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 
 public class PageIteratorElement extends AbstractActionElement {
@@ -55,4 +56,9 @@ public class PageIteratorElement extends AbstractActionElement {
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return null;
+//		return new PageIteratorAction(this);
+	}
 }

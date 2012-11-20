@@ -7,6 +7,7 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 
@@ -62,4 +63,8 @@ public class DocumentWriterElement extends AbstractActionElement {
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return new DocumentWriterAction(this);
+	}
 }

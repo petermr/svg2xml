@@ -6,7 +6,9 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.xmlcml.svgplus.core.AbstractAction;
 import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.document.DocumentWriterAction;
 
 
 public class PageWriterElement extends AbstractActionElement {
@@ -69,5 +71,9 @@ public class PageWriterElement extends AbstractActionElement {
 		});
 	}
 
+	@Override
+	protected AbstractAction createAction() {
+		return new PageWriterAction(this);
+	}
 
 }

@@ -121,7 +121,7 @@ public abstract class PageAction extends AbstractAction {
 	}
 	
 	public List<String> getVariables() {
-		String s = getActionCommandElement().getAttributeValue(PageActionElement.VARIABLES);
+		String s = getActionElement().getAttributeValue(PageActionElement.VARIABLES);
 		String[] ss = (s == null) ? null : s.split(CMLConstants.S_WHITEREGEX);
 		return (ss == null) ? null : Arrays.asList(ss);
 	}
@@ -139,7 +139,7 @@ public abstract class PageAction extends AbstractAction {
 	public PageSelector getPageSelector() {
 		if (pageSelector == null) {
 			String pageRange = getPageRange();
-			pageCount = (Integer) semanticDocumentAction.getVariable(DocumentAnalyzerAction.PAGE_COUNT);
+			pageCount = (Integer) getSemanticDocumentAction().getVariable(DocumentAnalyzerAction.PAGE_COUNT);
 			pageSelector = (pageRange == null) ? null : new PageSelector(pageCount);
 		}
 		return pageSelector;
@@ -148,7 +148,7 @@ public abstract class PageAction extends AbstractAction {
 	protected void fail(String string) {
 		String fail = getFail();
 		if (EXIT.equalsIgnoreCase(fail)) {
-			throw new RuntimeException(string+" ... "+getActionCommandElement().toXML());
+			throw new RuntimeException(string+" ... "+getActionElement().toXML());
 		} else {
 			LOG.error("******** FAIL: "+string+" *************");
 		}

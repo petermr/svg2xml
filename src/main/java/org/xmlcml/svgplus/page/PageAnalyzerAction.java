@@ -30,7 +30,10 @@ public class PageAnalyzerAction extends AbstractAction {
 		this.pageAnalyzerActionCommand = pageAnalyzerActionCommand;
 	}
 	
-
+	public PageAnalyzerAction(AbstractActionElement actionElement) {
+		super(actionElement);
+	}
+	
 	private AbstractAnalyzer ensurePageAnalyzer(DocumentAnalyzer documentAnalyzer) {
 		if (pageAnalyzer == null) {
 			this.pageAnalyzer = new PageAnalyzer();
@@ -48,7 +51,7 @@ public class PageAnalyzerAction extends AbstractAction {
 	}
 	
 	public String getActionValue() {
-		return getActionCommandElement().getAttributeValue(AbstractActionElement.ACTION);
+		return getActionElement().getAttributeValue(AbstractActionElement.ACTION);
 	}
 
 	private void setDocumentAnalyzer(DocumentAnalyzer documentAnalyzer) {
@@ -138,9 +141,9 @@ public class PageAnalyzerAction extends AbstractAction {
 				try {
 					pageAction.run();
 				} catch (RuntimeException e) {
-					throw new RuntimeException("failed on instruction "+pageAction.getActionCommandElement().toXML(), e);
+					throw new RuntimeException("failed on instruction "+pageAction.getActionElement().toXML(), e);
 				} catch (Exception e) {
-					throw new RuntimeException("problem on instruction "+pageAction.getActionCommandElement().toXML(), e);
+					throw new RuntimeException("problem on instruction "+pageAction.getActionElement().toXML(), e);
 				}
 			}
 		}

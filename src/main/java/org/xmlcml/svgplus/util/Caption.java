@@ -6,7 +6,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svgplus.core.AbstractAnalyzer;
-import org.xmlcml.svgplus.core.Chunk;
+import org.xmlcml.svgplus.page.Chunk;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 
 /**
