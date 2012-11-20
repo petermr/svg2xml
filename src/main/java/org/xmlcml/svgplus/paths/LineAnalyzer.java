@@ -4,25 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import nu.xom.Element;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Vector2;
-import org.xmlcml.svgplus.paths.Axis;
-import org.xmlcml.svgplus.control.page.AxisAnalyzer;
-import org.xmlcml.svgplus.control.page.PageAnalyzer;
-import org.xmlcml.svgplus.control.page.PathNormalizerAction;
-import org.xmlcml.svgplus.control.page.PlotBox;
-import org.xmlcml.svgplus.core.AbstractSVGAnalyzer;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.core.PageAnalyzer;
+import org.xmlcml.svgplus.page.PathNormalizerAction;
+import org.xmlcml.svgplus.page.PlotBox;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-public class LineAnalyzer extends AbstractSVGAnalyzer {
+public class LineAnalyzer extends AbstractAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(LineAnalyzer.class);
 
@@ -32,7 +28,6 @@ public class LineAnalyzer extends AbstractSVGAnalyzer {
 	private Axis horizontalAxis;
 	private Axis verticalAxis;
 	private List<PlotBox> plotBoxList;
-
 	private PlotBox plotBox;
 
 	public LineAnalyzer() {

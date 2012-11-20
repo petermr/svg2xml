@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.control.page.PageAnalyzer;
-import org.xmlcml.svgplus.core.AbstractSVGAnalyzer;
+import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.core.PageAnalyzer;
 
 /**
  * @author pm286
  *
  */
-public class TableAnalyzer extends AbstractSVGAnalyzer {
+public class TableAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(TableAnalyzer.class);
 	
 	private List<Table> tableList;

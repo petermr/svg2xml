@@ -10,7 +10,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.core.Chunk;
-import org.xmlcml.svgplus.util.PConstants;
+import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 /** FigurePanels are logical subunits of the FigureBody
  * They are usually determined heuristically by whitespace or explicit borders
@@ -61,7 +61,7 @@ public class FigurePanel extends Chunk {
 
 	private void makeAggregateAnalysis() {
 		panelAnalysis = new Element(PANEL_TAG);
-		panelAnalysis.addAttribute(new Attribute(PConstants.ID, this.getId()));
+		panelAnalysis.addAttribute(new Attribute(SVGPlusConstants.ID, this.getId()));
 		for (FigureFragment fragment : fragmentList) {
 			Element primitives = fragment.getPrimitivesElement();
 			if (primitives != null) {

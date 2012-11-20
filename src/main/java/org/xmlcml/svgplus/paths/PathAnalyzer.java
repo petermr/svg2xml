@@ -31,10 +31,10 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
-import org.xmlcml.svgplus.control.page.PageAnalyzer;
-import org.xmlcml.svgplus.control.page.PageNormalizerAction;
-import org.xmlcml.svgplus.core.AbstractSVGAnalyzer;
+import org.xmlcml.svgplus.core.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.Chunk;
+import org.xmlcml.svgplus.core.PageAnalyzer;
+import org.xmlcml.svgplus.page.PageNormalizerAction;
 import org.xmlcml.svgplus.util.BoundingBoxManager;
 import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
 
@@ -54,7 +54,7 @@ import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
  * @author pm286
  *
  */
-public class PathAnalyzer extends AbstractSVGAnalyzer {
+public class PathAnalyzer extends AbstractAnalyzer {
 
 	private static final String NONE = "none";
 
@@ -577,4 +577,6 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		}
 		return circle;
 	}
+	
+	
 }

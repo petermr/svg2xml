@@ -8,16 +8,16 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.control.page.PageAnalyzer;
-import org.xmlcml.svgplus.core.AbstractSVGAnalyzer;
+import org.xmlcml.svgplus.core.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.Chunk;
+import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.svgplus.util.Caption;
 
 /**
  * @author pm286
  *
  */
-public class FigureAnalyzer extends AbstractSVGAnalyzer {
+public class FigureAnalyzer extends AbstractAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(FigureAnalyzer.class);
 

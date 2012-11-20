@@ -8,12 +8,12 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.control.AbstractActionElement;
-import org.xmlcml.svgplus.control.page.PageAction;
+import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.core.Chunk;
+import org.xmlcml.svgplus.core.SVGPlusConstants;
+import org.xmlcml.svgplus.page.PageAction;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 import org.xmlcml.svgplus.util.GraphUtil;
-import org.xmlcml.svgplus.util.PConstants;
 
 public class FigureAnalyzerAction extends PageAction {
 
@@ -43,11 +43,11 @@ public class FigureAnalyzerAction extends PageAction {
 			figureAnalyzer.createFragmentsInsidePanelsForAllFigures();
 			analyzeFigures(figureList);
 			for (Figure figure : figureList) {
-				CMLUtil.outputQuietly(figure.getFigureAnalysis(), new File(filename+"."+figure.getId()+PConstants.XML), 1);
+				CMLUtil.outputQuietly(figure.getFigureAnalysis(), new File(filename+"."+figure.getId()+SVGPlusConstants.XML), 1);
 			}
 		}
 		for (Chunk figure : figureList) {
-			GraphUtil.writeFileAsSVGSVGWithMouse(filename+"."+figure.getId()+PConstants.SVG, figure);
+			GraphUtil.writeFileAsSVGSVGWithMouse(filename+"."+figure.getId()+SVGPlusConstants.SVG, figure);
 		}
 	}
 

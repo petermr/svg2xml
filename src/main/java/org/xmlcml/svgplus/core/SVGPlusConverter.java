@@ -2,39 +2,18 @@ package org.xmlcml.svgplus.core;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.control.SemanticDocumentAction;
-import org.xmlcml.svgplus.control.SemanticDocumentElement;
-import org.xmlcml.svgplus.util.PConstants;
 
-/** not yet a JumboConverter (was called PDF2SVGConverter)
- * can be used for developing resources such as fonts
- * 
- * PDF2XMLConverter uses PDF2SVGReader to create raw SVGPages
- * it then can use DocumentAnalyzer to analyze them (e.g. using pageAnalyzer and hence pathAnalyzer, etc)
- * it can also write them out, etc.
- * It can then create specific XML from the document
- * 
- * an intermediate allows pages to be written out by PDF2SVGReader and saved as page0.svg, etc. This is mainly
- * for developers
+/**
+ * Converts raw SVG to structured SVG
  * 
  * @author pm286
  *
  */
 public class SVGPlusConverter {
 
-
-	public static final String S_INPUTFILE = "s.inputfile";
-	public static final String S_OUTPUTFILE = "s.outputfile";
-	public static final String S_SEMDOC = "s.semdoc";
 	private static final String MISSING_COMMAND_FILE = "Must always give command file";
 	private static final String COMMAND_FILE = "-c";
 	private static final String DOCUMENT_PREFIX = "-d.";
@@ -46,37 +25,29 @@ public class SVGPlusConverter {
 	private static final String PDF = "pdf";
 
 	private final static Logger LOG = Logger.getLogger(SVGPlusConverter.class);
-//	private static final File DEFAULT_OUTPUT = new File("target/");
-
-	private List<SVGSVG> svgPageList;
+	
 	private Integer firstPageNumber;
 	private Integer lastPageNumber;
 	private String inputFilename;
 	private String outputFilename;
     private String semanticDocumentFilename;
 	private File infile;
-//	private File outfile = DEFAULT_OUTPUT;
 	private File outfile = null;
 	private String inputFormat = PDF;
 	private String startPage;
 	private String endPage;
 	private Integer startPageNumber;
 	private Integer endPageNumber;
-//	private Map<String, String> variableMap;
     
 	private SemanticDocumentElement semanticDocumentElement;
 	private SemanticDocumentAction semanticDocumentAction;
 
 	private FilenameFilter pdfFilter = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
-			return name.endsWith(PConstants.PDF);
+			return name.endsWith(SVGPlusConstants.PDF);
 		}
 	};
 
-
-	public List<SVGSVG> getSvgPageList() {
-		return svgPageList;
-	}
 
 	public SVGPlusConverter() {
 	}
@@ -86,7 +57,6 @@ public class SVGPlusConverter {
 	 * @param args
 	 */
 	public SVGPlusConverter(String[] args) {
-		
 	}
 
 	public String getSemanticDocumentFilename() {
@@ -101,78 +71,44 @@ public class SVGPlusConverter {
 		return semanticDocumentAction;
 	}
 
-	public void readPDF(File file) throws IOException {
-	}
-	
-	public void readPDF(InputStream is) throws IOException {
-	}
-
-	
-	/** reads existing SVGPages (output by PDF2SVGReader
-	 * 
-	 * @param pageList
-	 */
-	public void readSVGPages(List<SVGSVG> pageList) {
-		this.svgPageList = pageList;
-	}
-
 	/** this is the main workflow
 	 * 
 	 * @throws Exception
 	 */
 	private void readSemanticDocumentSetValuesAndRun() throws Exception {
-		LOG.trace("sem doc variables "+semanticDocumentAction.getVariableMap().size());
-		for (String var : semanticDocumentAction.getVariableMap().keySet()) {
+		LOG.trace("sem doc variables "+semanticDocumentAction.getVariableStore().size());
+		for (String var : semanticDocumentAction.getVariableStore().keySet()) {
 			LOG.trace("key: "+var);
 		}
 		if (semanticDocumentAction != null) {
 			semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);
-			getInputFileOrDirectory();
+			createInputFileOrDirectoryName();
 			semanticDocumentAction.setInfile(infile);
-			getOutputFileOrDirectory();
+			createOutputFileOrDirectoryName();
 			semanticDocumentAction.setOutfile(outfile);
-			findPageNumbers();
-			semanticDocumentAction.setPages(startPageNumber, endPageNumber);
 			semanticDocumentAction.run();
 		}
 	}
 
-	private void getInputFileOrDirectory() {
+	private void createInputFileOrDirectoryName() {
 		if (inputFilename != null) {
 			infile = new File(inputFilename);
 			if (!infile.exists()) {
 				throw new RuntimeException("input file does not exist: "+inputFilename);
 			}
 			LOG.debug("reading from: "+infile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
-			semanticDocumentAction.setVariable(S_INPUTFILE, inputFilename);
+			semanticDocumentAction.setVariable(SemanticDocumentAction.S_INFILE, inputFilename);
 		}
 	}
 
-	private void getOutputFileOrDirectory() {
+	private void createOutputFileOrDirectoryName() {
 		if (outputFilename != null) {
 			outfile = new File(outputFilename);
 			if (outfile.isDirectory()) {
 				LOG.debug("writing to: "+outfile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
 			}
-			semanticDocumentAction.setVariable(S_OUTPUTFILE, outputFilename);
+			semanticDocumentAction.setVariable(SemanticDocumentAction.S_OUTFILE, inputFilename);
 		}
-	}
-
-	private void findPageNumbers() {
-		startPageNumber = parsePageNumber(startPage);
-		endPageNumber = parsePageNumber(endPage);
-	}
-
-	private Integer parsePageNumber(String page) {
-		Integer pageNumber = null;
-		if (page != null) {
-			try {
-				pageNumber = new Integer(page);
-			} catch (Exception e) {
-				throw new RuntimeException("Cannot parse as page number: "+page);
-			}
-		}
-		return pageNumber;
 	}
 
 	private void readSemanticDocumentFile() {
@@ -194,11 +130,13 @@ public class SVGPlusConverter {
 		System.out.println("      -informat <input format>    // PDF or SVG (currently NYI)");
 		System.out.println("      -o <output.dir >               // overrides default output dir");
 		System.out.println("      -p <firstPage> <lastPage>      // lastPage can be 9999");
+		System.out.println("      -<x>.<name>  <value>    // x is s,d,p for sem/doc/page, name alphanum]");
+		System.out.println("         [e.g. -s.foo bar            // set $s.foo to value");
 		System.out.println("  ");
-		System.out.println("  the normal use is to have a number of PDFs in a directory (alpha.pdf, blob.pdf)");
-		System.out.println("  the first phase creates a directory for each (alpha/, blob/ ...");
+		System.out.println("  the normal use is to have a number of PDFs in a directory .../foo (alpha.pdf, blob.pdf)");
+		System.out.println("  the first phase creates a directory for each (.../foo/alpha/, .../foo/blob/ ...");
 		System.out.println("  then raw svg is created by PDF2SVG. This is not normally written except for debug");
-		System.out.println("  in which case it will be in ./raw/page1.svg ... pagen.svg");
+		System.out.println("  created by writePage or writeDocument");
 		System.out.println("      -i foo.pdf processes a single file as above");
 		System.out.println("  ");
 		System.out.println("  typical usage is:");

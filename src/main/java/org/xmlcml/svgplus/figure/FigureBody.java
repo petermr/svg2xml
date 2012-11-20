@@ -12,7 +12,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svgplus.core.Chunk;
-import org.xmlcml.svgplus.util.PConstants;
+import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 /** FigureBody consists of the non-caption part of the figure
  *  it will contain one or more SubFigures
@@ -41,7 +41,7 @@ public class FigureBody extends Chunk {
 			bodyAnalysis = new Element(BODY_TAG);
 			String id = this.getId();
 			if (id != null) {
-				bodyAnalysis.addAttribute(new Attribute(PConstants.ID, id));
+				bodyAnalysis.addAttribute(new Attribute(SVGPlusConstants.ID, id));
 			}
 			FigureAnalyzer figureAnalyzer = figure.getFigureAnalyzer();
 			Real2 margins = figureAnalyzer.getClusterWhitespaceBoxMargins();

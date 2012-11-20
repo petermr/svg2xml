@@ -6,14 +6,14 @@ import java.util.List;
 
 import nu.xom.Node;
 
-import org.xmlcml.svgplus.control.CommandElement;
+import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 
 /*
 <path d="M0.0 0.0 L57.984 0.0 L57.984 77.279 L0.0 77.279 L0.0 0.0 Z"/>
  */
-public class PathElement extends CommandElement {
+public class PathElement extends AbstractActionElement {
 
 	public final static String TAG ="path";
 	
@@ -36,7 +36,7 @@ public class PathElement extends CommandElement {
 	
 	/** constructor
 	 */
-	public PathElement(CommandElement element) {
+	public PathElement(AbstractActionElement element) {
         super(element);
 	}
 	

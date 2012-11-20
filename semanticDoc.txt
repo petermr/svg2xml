@@ -1,4 +1,4 @@
-AMI2-AVGPlus Semantic document
+AMI2-SVGPlus Semantic document
 ==============================
 
 rough nesting is shown. Order determines order of operations. simplistic checking of children.
@@ -23,9 +23,10 @@ Most attributes are specific to given element. Some (e.g. debug) are global
         $d.maxdocs. 
         Always holds SVG in memory. May write intermediate if directed
         May create overall fontList from all documents (and can write it)
-        <docAnalyzer>
+        <documentAnalyzer>
             holds per-document info; starts with List<SVG>
             may guess publisher/source
+            may make two-pass analysis to get tune parameters
             <pageIterator>
                 Iterates over pages in current document;
                 regex or other selector

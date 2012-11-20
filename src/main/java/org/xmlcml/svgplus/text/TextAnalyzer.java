@@ -30,11 +30,10 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.control.page.PageAnalyzer;
 import org.xmlcml.svgplus.core.AbstractAnalyzer;
-import org.xmlcml.svgplus.core.AbstractSVGAnalyzer;
 import org.xmlcml.svgplus.core.Chunk;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
+import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.svgplus.util.BoundingBoxManager;
 import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
 
@@ -46,7 +45,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class TextAnalyzer extends AbstractSVGAnalyzer {
+public class TextAnalyzer extends AbstractAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(TextAnalyzer.class);
 	static {
@@ -944,7 +943,7 @@ public class TextAnalyzer extends AbstractSVGAnalyzer {
 
 	SimpleFont ensureSimpleFont() {
 		if (this.simpleFont == null) {
-			simpleFont = pageAnalyzer == null || pageAnalyzer.getDocumentAnalyzer() == null ? null : pageAnalyzer.getDocumentAnalyzer().getSimpleFont();
+			simpleFont = pageAnalyzer == null || pageAnalyzer.getDocumentAnalyzer() == null ? null : pageAnalyzer.getSemanticDocumentAction().getSimpleFont();
 			if (this.simpleFont == null) {
 				simpleFont = SimpleFont.SIMPLE_FONT;
 			}

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.control.page.PageChunkSplitter;
+import org.xmlcml.svgplus.page.PageChunkSplitter;
 import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
 
 public class Chunk extends SVGElement {

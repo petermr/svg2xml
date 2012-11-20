@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nu.xom.Attribute;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Int2;
 import org.xmlcml.euclid.Real2;

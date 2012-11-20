@@ -1,0 +1,10 @@
+AMI2-SVGPlus Architecture
+=========================
+
+SVGPlus has the following design concepts:
+	commands and resources are defined in a 
+	core: 
+		SVGPlusConverter: the entryPoint for the conversion
+		AbstractAction, AbstractActionElement: toplevel abstract classes for Action and Element
+		Chunk (maybe obsolete)
+		DocumentAnalyzer: converts 

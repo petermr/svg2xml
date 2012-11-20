@@ -10,9 +10,9 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.core.Chunk;
+import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svgplus.util.Caption;
-import org.xmlcml.svgplus.util.PConstants;
 
 /** a figure consists of (possibly optional) Caption and FigureBody
  * these are directly accessible but are also child elements of Figure
@@ -151,7 +151,7 @@ public class Figure extends Chunk {
 		figureAnalysis = new Element(FIGURE_TAG);
 		String id = this.getId();
 		if (id != null) {
-			figureAnalysis.addAttribute(new Attribute(PConstants.ID, id));
+			figureAnalysis.addAttribute(new Attribute(SVGPlusConstants.ID, id));
 		}
 		if (figureBody.getBodyAnalysis() != null) {
 			figureAnalysis.appendChild(figureBody.getBodyAnalysis().copy());

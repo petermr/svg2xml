@@ -6,8 +6,7 @@ import java.util.List;
 
 import nu.xom.Node;
 
-import org.xmlcml.svgplus.control.AbstractActionElement;
-import org.xmlcml.svgplus.control.CommandElement;
+import org.xmlcml.svgplus.core.AbstractActionElement;
 
 
 public class FigureAnalyzerElement extends AbstractActionElement {
@@ -46,7 +45,7 @@ public class FigureAnalyzerElement extends AbstractActionElement {
 	
 	/** constructor
 	 */
-	public FigureAnalyzerElement(CommandElement element) {
+	public FigureAnalyzerElement(AbstractActionElement element) {
         super(element);
 	}
 	
