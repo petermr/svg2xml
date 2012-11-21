@@ -29,6 +29,28 @@
 	<name>AMI2-SVGPlus</name>
 	<description>Takes SVG from PDF2SVG and analyzes the domain-indepndent semantics</description>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<url>https://bitbucket.org/petermr/svgplus/src</url>
+		<connection>scm:hg:http://bitbucket.org/petermr/svgplus</connection>
+		<developerConnection>scm:hg:https://bitbucket.org/petermr/svgplus</developerConnection>
+	</scm>
+	
+	<!-- remove <repositories> for releases to maven central -->
+	<repositories>
+		<repository>
+			<id>ucc-repo</id>
+			<name>UCC Repository</name>
+			<url>https://maven.ch.cam.ac.uk/m2repo</url>
+		</repository>
+	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>

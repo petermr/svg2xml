@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,13 +6,12 @@ import java.util.List;
 
 import nu.xom.Node;
 
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
+import org.xmlcml.svgplus.page.PageActionElement;
 
-public class PageAssertElement extends AbstractActionElement {
+public class AssertElement extends AbstractActionElement {
 
-	public final static String TAG ="pageAssert";
+	public final static String TAG ="assert";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
@@ -27,13 +26,13 @@ public class PageAssertElement extends AbstractActionElement {
 
 	/** constructor
 	 */
-	public PageAssertElement() {
+	public AssertElement() {
 		super(TAG);
 	}
 	
 	/** constructor
 	 */
-	public PageAssertElement(AbstractActionElement element) {
+	public AssertElement(AbstractActionElement element) {
         super(element);
 	}
 	
@@ -43,7 +42,7 @@ public class PageAssertElement extends AbstractActionElement {
      * @return Node
      */
     public Node copy() {
-        return new PageAssertElement(this);
+        return new AssertElement(this);
     }
 
 	/**
@@ -64,6 +63,6 @@ public class PageAssertElement extends AbstractActionElement {
 
 	@Override
 	protected AbstractAction createAction() {
-		return new PageAssertAction(this);
+		return new AssertAction(this);
 	}
 }

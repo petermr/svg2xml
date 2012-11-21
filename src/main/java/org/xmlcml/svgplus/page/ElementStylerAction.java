@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 
 /**
 	<pageAction xpath="//svg:g[@LEAF='3']/svg:g" action="drawBoxes" 

@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.util;
+package org.xmlcml.svgplus.page.tools;
 
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;

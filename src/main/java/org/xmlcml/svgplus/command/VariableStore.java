@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.command;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
+import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 /** manages Page and Document lookup
  *  may not be necessary

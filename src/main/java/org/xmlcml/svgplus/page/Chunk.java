@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.page;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.page.PageChunkSplitter;
-import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svgplus.page.tools.PageChunkSplitter;
+import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
 
 public class Chunk extends SVGElement {
 	

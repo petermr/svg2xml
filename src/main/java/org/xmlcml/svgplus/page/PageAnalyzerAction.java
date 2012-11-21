@@ -1,43 +1,33 @@
 package org.xmlcml.svgplus.page;
 
-import java.util.ArrayList;
-
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.PageAnalyzer;
-import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
 public class PageAnalyzerAction extends AbstractAction {
 
 	private final static Logger LOG = Logger.getLogger(PageAnalyzerAction.class);
-	private List<PageAction> pageActions;
-	protected DocumentAnalyzer documentAnalyzer;
 	protected PageAnalyzer pageAnalyzer;
-	private PageAnalyzerElement pageAnalyzerActionCommand;
-	private List<AbstractActionElement> pageActionCommandElements;
-	private Integer zeroBasedPageNumber = null;
 	private long timeout = 60000L; // timeout in millis
 	
-	public PageAnalyzerAction(PageAnalyzerElement pageAnalyzerActionCommand, DocumentAnalyzer documentAnalyzer) {
-		super(pageAnalyzerActionCommand);
-		this.setDocumentAnalyzer(documentAnalyzer);
-		this.ensurePageAnalyzer(documentAnalyzer);
-		this.pageAnalyzerActionCommand = pageAnalyzerActionCommand;
+	public PageAnalyzerAction(PageAnalyzerElement pageAnalyzerActionElement) {
+		super(pageAnalyzerActionElement);
+		this.ensurePageAnalyzer();
 	}
 	
 	public PageAnalyzerAction(AbstractActionElement actionElement) {
 		super(actionElement);
 	}
 	
-	private AbstractAnalyzer ensurePageAnalyzer(DocumentAnalyzer documentAnalyzer) {
+	private AbstractAnalyzer ensurePageAnalyzer() {
 		if (pageAnalyzer == null) {
 			this.pageAnalyzer = new PageAnalyzer();
-			pageAnalyzer.setDocumentAnalyzer(documentAnalyzer);
+			pageAnalyzer.setSemanticDocumentAction(semanticDocumentAction);
 		}
 		return this.pageAnalyzer;
 	}
@@ -54,37 +44,17 @@ public class PageAnalyzerAction extends AbstractAction {
 		return getActionElement().getAttributeValue(AbstractActionElement.ACTION);
 	}
 
-	private void setDocumentAnalyzer(DocumentAnalyzer documentAnalyzer) {
-		this.documentAnalyzer = documentAnalyzer;
-	}
-
 	public void setSVGPage(SVGSVG svgPage) {
-		ensurePageAnalyzer(documentAnalyzer);
 		pageAnalyzer.setSVGPage(svgPage);
-	}
-
-	private List<PageAction> createPageActions() {
-		if (pageActions == null) {
-			PageActionFactory factory = new PageActionFactory();
-			pageActions = new ArrayList<PageAction>();
-			for (AbstractActionElement command : pageActionCommandElements) {
-				PageAction pageAction = factory.createAction(command);
-				pageAction.setPageAnalyzer(pageAnalyzer);
-				pageActions.add(pageAction);
-			}
-		}
-		return pageActions;
 	}
 
 
 	public void run() {
-		pageActionCommandElements = pageAnalyzerActionCommand.getPageActionCommandElements();
+//		pageActionCommandElements = pageAnalyzerActionCommand.getPageActionCommandElements();
 		if (exceededFileSize()) {
 			// skipped
 		} else {
 			timeout = getTimeout(16000L);
-			createPageActions();
-			LOG.trace("pageActions: "+pageActions.size()+" on page "+pageAnalyzer.getPageNumber());
 	
 			try {
 				runThread();
@@ -126,8 +96,6 @@ public class PageAnalyzerAction extends AbstractAction {
 		    if (delta > timeout && t.isAlive()) {
 			    LOG.debug("***************************** exited after timeout: "+delta+" millis");
                 t.interrupt();
-                // we should get the threads to kill themselves
-//                t.join();
 		    	break;
             }		    
 		}
@@ -135,24 +103,20 @@ public class PageAnalyzerAction extends AbstractAction {
 
 
 	void runActions() {
-		for (PageAction pageAction: pageActions) {
-			PageSelector pageSelector = pageAction.getPageSelector();
-			if (pageSelector == null || pageSelector.isSet(zeroBasedPageNumber)) {
-				try {
-					pageAction.run();
-				} catch (RuntimeException e) {
-					throw new RuntimeException("failed on instruction "+pageAction.getActionElement().toXML(), e);
-				} catch (Exception e) {
-					throw new RuntimeException("problem on instruction "+pageAction.getActionElement().toXML(), e);
-				}
-			}
-		}
+//		for (PageAction pageAction: pageActions) {
+//			PageSelector pageSelector = pageAction.getPageSelector();
+//			if (pageSelector == null || pageSelector.isSet(zeroBasedPageNumber)) {
+//				try {
+//					pageAction.run();
+//				} catch (RuntimeException e) {
+//					throw new RuntimeException("failed on instruction "+pageAction.getActionElement().toXML(), e);
+//				} catch (Exception e) {
+//					throw new RuntimeException("problem on instruction "+pageAction.getActionElement().toXML(), e);
+//				}
+//			}
+//		}
 	}
 	
-	public void setZeroBasedPageNumber(int i) {
-		this.zeroBasedPageNumber = i;
-	}
-
 }
 class RunPageAnalyzer implements Runnable {
 

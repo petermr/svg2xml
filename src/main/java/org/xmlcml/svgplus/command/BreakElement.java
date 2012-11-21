@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.document;
+package org.xmlcml.svgplus.command;
 
 
 import java.util.ArrayList;
@@ -7,10 +7,8 @@ import java.util.List;
 
 import nu.xom.Node;
 
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
 
-public class DocumentBreakElement extends AbstractActionElement {
+public class BreakElement extends AbstractActionElement {
 
 	public final static String TAG ="break";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
@@ -21,13 +19,13 @@ public class DocumentBreakElement extends AbstractActionElement {
 
 	/** constructor
 	 */
-	public DocumentBreakElement() {
+	public BreakElement() {
 		super(TAG);
 	}
 	
 	/** constructor
 	 */
-	public DocumentBreakElement(AbstractActionElement element) {
+	public BreakElement(AbstractActionElement element) {
         super(element);
 	}
 	
@@ -37,7 +35,7 @@ public class DocumentBreakElement extends AbstractActionElement {
      * @return Node
      */
     public Node copy() {
-        return new DocumentBreakElement(this);
+        return new BreakElement(this);
     }
 
 	/**
@@ -58,7 +56,7 @@ public class DocumentBreakElement extends AbstractActionElement {
 	
 	@Override
 	protected AbstractAction createAction() {
-		return new DocumentBreakAction(this);
+		return new BreakAction(this);
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.document;
+package org.xmlcml.svgplus.command;
 
 
 import java.util.ArrayList;
@@ -7,12 +7,10 @@ import java.util.List;
 
 import nu.xom.Node;
 
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
 
-public class DocumentDebuggerElement extends AbstractActionElement {
+public class DebugElement extends AbstractActionElement {
 
-	public final static String TAG ="documentDebugger";
+	public final static String TAG ="debug";
 
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
@@ -22,13 +20,13 @@ public class DocumentDebuggerElement extends AbstractActionElement {
 
 	/** constructor
 	 */
-	public DocumentDebuggerElement() {
+	public DebugElement() {
 		super(TAG);
 	}
 	
 	/** constructor
 	 */
-	public DocumentDebuggerElement(AbstractActionElement element) {
+	public DebugElement(AbstractActionElement element) {
         super(element);
 	}
 	
@@ -38,7 +36,7 @@ public class DocumentDebuggerElement extends AbstractActionElement {
      * @return Node
      */
     public Node copy() {
-        return new DocumentDebuggerElement(this);
+        return new DebugElement(this);
     }
 
 	/**
@@ -59,6 +57,6 @@ public class DocumentDebuggerElement extends AbstractActionElement {
 
 	@Override
 	protected AbstractAction createAction() {
-		return new DocumentDebuggerAction(this);
+		return new DebugAction(this);
 	}
 }

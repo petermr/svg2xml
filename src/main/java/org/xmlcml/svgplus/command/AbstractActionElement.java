@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.command;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,24 +15,19 @@ import nu.xom.Text;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.svgplus.core.SemanticDocumentElement;
 import org.xmlcml.svgplus.document.DocumentActionElement;
-import org.xmlcml.svgplus.document.DocumentActionListElement;
-import org.xmlcml.svgplus.document.DocumentBreakElement;
-import org.xmlcml.svgplus.document.DocumentDebuggerElement;
 import org.xmlcml.svgplus.document.DocumentIteratorElement;
+import org.xmlcml.svgplus.document.DocumentPageIteratorElement;
 import org.xmlcml.svgplus.document.DocumentWriterElement;
-import org.xmlcml.svgplus.document.PageIteratorElement;
-import org.xmlcml.svgplus.document.PageSelectorElement;
 import org.xmlcml.svgplus.figure.FigureAnalyzerElement;
 import org.xmlcml.svgplus.page.BoxDrawerElement;
 import org.xmlcml.svgplus.page.BoxProcessorElement;
 import org.xmlcml.svgplus.page.ChunkAnalyzerElement;
-import org.xmlcml.svgplus.page.DocumentAnalyzerElement;
 import org.xmlcml.svgplus.page.ElementStylerElement;
 import org.xmlcml.svgplus.page.NodeDeleterElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 import org.xmlcml.svgplus.page.PageAnalyzerElement;
-import org.xmlcml.svgplus.page.PageAssertElement;
 import org.xmlcml.svgplus.page.PageNormalizerElement;
 import org.xmlcml.svgplus.page.PageVariableElement;
 import org.xmlcml.svgplus.page.PageWriterElement;
@@ -131,8 +126,6 @@ public abstract class AbstractActionElement extends Element {
 			
 		} else if (tag.equals(DocumentActionElement.TAG)) {
 			newElement = new DocumentActionElement();
-		} else if (tag.equals(DocumentActionListElement.TAG)) {
-			newElement = new DocumentActionListElement();
 		} else if (tag.equals(PageActionElement.TAG)) {
 			newElement = new PageActionElement();
 		} else if (tag.equals(PageAnalyzerElement.TAG)) {
@@ -142,18 +135,12 @@ public abstract class AbstractActionElement extends Element {
 		} else if (tag.equals(SemanticDocumentElement.TAG)) {
 			newElement = new SemanticDocumentElement();
 			
-		} else if (tag.equals(DocumentBreakElement.TAG)) {
-			newElement = new DocumentBreakElement();
-		} else if (tag.equals(DocumentDebuggerElement.TAG)) {
-			newElement = new DocumentDebuggerElement();
-		} else if (tag.equals(PageIteratorElement.TAG)) {
-			newElement = new PageIteratorElement();
-		} else if (tag.equals(PageSelectorElement.TAG)) {
-			newElement = new PageSelectorElement();
-		} else if (tag.equals(DocumentAnalyzerElement.TAG)) {
-			newElement = new DocumentAnalyzerElement();
-//		} else if (tag.equals(DocumentReaderElement.TAG)) {
-//			newElement = new DocumentReaderElement();
+		} else if (tag.equals(BreakElement.TAG)) {
+			newElement = new BreakElement();
+		} else if (tag.equals(DebugElement.TAG)) {
+			newElement = new DebugElement();
+		} else if (tag.equals(DocumentPageIteratorElement.TAG)) {
+			newElement = new DocumentPageIteratorElement();
 		} else if (tag.equals(DocumentWriterElement.TAG)) {
 			newElement = new DocumentWriterElement();
 			
@@ -186,8 +173,8 @@ public abstract class AbstractActionElement extends Element {
 		} else if (tag.equals(WhitespaceChunkerElement.TAG)) {
 			newElement = new WhitespaceChunkerElement();
 			
-		} else if (tag.equals(PageAssertElement.TAG)) {
-			newElement = new PageAssertElement();
+		} else if (tag.equals(AssertElement.TAG)) {
+			newElement = new AssertElement();
 		} else if (tag.equals(PageVariableElement.TAG)) {
 			newElement = new PageVariableElement();
 			

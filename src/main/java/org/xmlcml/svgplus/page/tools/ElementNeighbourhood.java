@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.util;
+package org.xmlcml.svgplus.page.tools;
 
 import java.util.ArrayList;
 import java.util.List;

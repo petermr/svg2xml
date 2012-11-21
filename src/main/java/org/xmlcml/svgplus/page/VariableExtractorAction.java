@@ -9,7 +9,7 @@ import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 
 /**
 	<pageAction xpath="//svg:g[@id='chunk0.0.0']/svg:g/svg:g/svg:g[@name='para']/svg:text"
@@ -35,7 +35,7 @@ public class VariableExtractorAction extends PageAction {
 		String regex = this.getRegex();
 		List<String> varsList = this.getVariables();
 		String xpath = getXPath();
-		Nodes nodes = getSVGPageCopy().query(xpath, CMLConstants.SVG_XPATH);
+		Nodes nodes = getSVGPage().query(xpath, CMLConstants.SVG_XPATH);
 		for (int i = 0; i < nodes.size(); i++) {
 			extractValueFromNode(regex, varsList, nodes.get(i));
 		}

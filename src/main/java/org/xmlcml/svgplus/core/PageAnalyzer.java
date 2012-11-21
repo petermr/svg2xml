@@ -13,13 +13,14 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.document.PageIteratorElement;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
+import org.xmlcml.svgplus.document.DocumentPageIteratorElement;
 import org.xmlcml.svgplus.figure.Figure;
 import org.xmlcml.svgplus.figure.FigureAnalyzer;
 import org.xmlcml.svgplus.page.ChunkAnalyzer;
-import org.xmlcml.svgplus.page.PageChunkSplitter;
-import org.xmlcml.svgplus.page.PageClipPathAnalyzer;
-import org.xmlcml.svgplus.page.PageFontSizeAnalyzer;
+import org.xmlcml.svgplus.page.tools.PageChunkSplitter;
+import org.xmlcml.svgplus.page.tools.PageClipPathAnalyzer;
+import org.xmlcml.svgplus.page.tools.PageFontSizeAnalyzer;
 import org.xmlcml.svgplus.paths.PathAnalyzer;
 import org.xmlcml.svgplus.table.Table;
 import org.xmlcml.svgplus.table.TableAnalyzer;
@@ -75,7 +76,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	private BiMap<String, String> clipPathByIdMap;
 	
-	private SVGSVG svgPage;
+//	private SVGSVG svgPage;
 	private int pageNumber;
 	private String pageNumberString;
 	private Integer pageNumberInteger;
@@ -83,12 +84,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	private List<Figure> figureList;
 	private List<Table> tableList;
 
-	/** not sure how many of these are used
-	 */
-	
 	private PathAnalyzer pathAnalyzer;
-	
-	DocumentAnalyzer documentAnalyzer;
 	private PageClipPathAnalyzer clipPathAnalyzer;
 	private PageFontSizeAnalyzer fontSizeAnalyzer;
 	private PageChunkSplitter pageChunkSplitter;
@@ -106,9 +102,8 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		this(null, svgPage);
 	}
 
-	public PageAnalyzer(DocumentAnalyzer documentAnalyzer, SVGSVG svgPage) {
+	public PageAnalyzer(SemanticDocumentAction semanticDocumentAction, SVGSVG svgPage) {
 		this();
-		this.documentAnalyzer = documentAnalyzer;
 		this.svgPage = svgPage;
 	}
 
@@ -341,7 +336,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	
 	public boolean islastPage(int pageNumber) {
 		boolean isLastPage = false;
-		Object lastPageS = /*documentAnalyzer*/semanticDocumentAction.getVariable(PageIteratorElement.REPORTED_PAGE_COUNT);
+		Object lastPageS = /*documentAnalyzer*/semanticDocumentAction.getVariable(DocumentAnalyzer.REPORTED_PAGE_COUNT);
 		if (lastPageS != null && lastPageS instanceof String) {
 			try {
 				Integer lastPage = new Integer((String)lastPageS);
@@ -398,14 +393,6 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		return clipPathByIdMap;
 	}
 
-	public DocumentAnalyzer getDocumentAnalyzer() {
-		return documentAnalyzer;
-	}
-
-	public void setDocumentAnalyzer(DocumentAnalyzer documentAnalyzer) {
-		this.documentAnalyzer = documentAnalyzer;
-	}
-
 	public String getNamePrefix() {
 		return NAME_PREFIX;
 	}
@@ -424,5 +411,9 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	public SemanticDocumentAction getSemanticDocumentAction() {
 		return semanticDocumentAction;
+	}
+
+	public void setSemanticDocumentAction(SemanticDocumentAction semanticDocumentAction) {
+		this.semanticDocumentAction = semanticDocumentAction;
 	}
 }

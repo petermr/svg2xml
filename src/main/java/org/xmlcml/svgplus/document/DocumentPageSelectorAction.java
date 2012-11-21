@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageActionElement;
-import org.xmlcml.svgplus.page.PageSelector;
+import org.xmlcml.svgplus.page.tools.PageSelector;
 
 public class DocumentPageSelectorAction extends DocumentAction {
 

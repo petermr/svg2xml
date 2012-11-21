@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 
 public class PageActionElement extends AbstractActionElement {
 

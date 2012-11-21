@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.page.Chunk;
 import org.xmlcml.svgplus.page.PageAction;

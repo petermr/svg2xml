@@ -5,9 +5,9 @@ import java.util.List;
 
 
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
@@ -16,7 +16,6 @@ public abstract class DocumentAction extends AbstractAction {
 
 	public DocumentAction(AbstractActionElement documentActionElement) {
 		super(documentActionElement);
-		this.actionElement = documentActionElement;
 	}
 
 	protected DocumentAction() {
@@ -33,27 +32,4 @@ public abstract class DocumentAction extends AbstractAction {
 		return svgPageList;
 	}
 
-//	public DocumentAnalyzer getDocumentAnalyzer() {
-//		if (documentAnalyzer == null) {
-//			if (!(this instanceof DocumentIteratorAction)) {
-//				documentAnalyzer = getDocumentIteratorAction().getDocumentAnalyzer();
-//			} else {
-//				documentAnalyzer = ((DocumentIteratorAction)this).ensureDocumentAnalyzer();
-//				
-//			}
-//		}
-//		return documentAnalyzer;
-//	}
-
-//	protected DocumentIteratorAction getDocumentIteratorAction() {
-//		documentIteratorAction = null;
-//		if (this instanceof DocumentIteratorAction) {
-//			documentIteratorAction = (DocumentIteratorAction) this;
-//		} else {
-//			DocumentIteratorElement documentIteratorElement = documentActionElement.getAncestorDocumentIteratorElement();
-//			documentIteratorAction = documentIteratorElement.getDocumentIteratorAction();
-//		}
-//		return documentIteratorAction;
-//	}
-	
 }

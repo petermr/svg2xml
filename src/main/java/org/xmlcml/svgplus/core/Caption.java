@@ -1,11 +1,11 @@
-package org.xmlcml.svgplus.util;
+package org.xmlcml.svgplus.core;
 
 import java.util.regex.Pattern;
 
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.page.Chunk;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 

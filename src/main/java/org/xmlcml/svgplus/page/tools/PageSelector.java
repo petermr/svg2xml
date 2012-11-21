@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.page.tools;
 
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.svgplus.document.DocumentPageSelectorAction;

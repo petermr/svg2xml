@@ -4,10 +4,10 @@ package org.xmlcml.svgplus.core;
 import java.io.File;
 import java.util.List;
 
-
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.VariableStore;
 import org.xmlcml.svgplus.document.DocumentAction;
-import org.xmlcml.svgplus.document.DocumentActionListElement;
 import org.xmlcml.svgplus.text.SimpleFont;
 
 public class SemanticDocumentAction extends DocumentAction {
@@ -21,16 +21,13 @@ public class SemanticDocumentAction extends DocumentAction {
 	public static final String SEMDOC = "semdoc";
 	public static final String S_SEMDOC = SVGPlusConstants.S_DOT+SEMDOC;
 	
-	public SemanticDocumentElement semanticDocumentElement;
-
 	private String semanticDocumentFilename;
 	private VariableStore variableStore;
 
 	private SimpleFont simpleFont;
 	
-	public SemanticDocumentAction(AbstractActionElement documentActionCommand) {
-		super(documentActionCommand);
-		this.semanticDocumentElement = (SemanticDocumentElement) documentActionCommand;
+	public SemanticDocumentAction(AbstractActionElement documentActionElement) {
+		super(documentActionElement);
 	}
 	
 	public SemanticDocumentAction() {

@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 
 public class ChunkAnalyzerAction extends PageAction {

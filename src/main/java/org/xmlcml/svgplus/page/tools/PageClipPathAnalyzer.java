@@ -1,10 +1,10 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.page.tools;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
@@ -32,7 +32,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageClipPathAnalyzer {
+public class PageClipPathAnalyzer  extends AbstractAnalyzer {
 
 	public static String[] fillColors = {
 		"red",
@@ -47,8 +47,6 @@ public class PageClipPathAnalyzer {
 		"lime",
 	};
 	
-	private SVGSVG svgPage;
-	private AbstractAnalyzer pageAnalyzer;
 	private List<SVGElement> svgClipPathList;
 	private List<SVGElement> clipPathRefsList;
 	private Multimap<String, SVGElement> elementsByClip;
@@ -57,7 +55,6 @@ public class PageClipPathAnalyzer {
 
 	public PageClipPathAnalyzer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
-		this.svgPage = pageAnalyzer.getSVGPage();
 	}
 	
 	public void analyze() {

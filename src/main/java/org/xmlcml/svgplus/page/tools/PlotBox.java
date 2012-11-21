@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.page.tools;
 
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;

@@ -21,7 +21,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.euclid.Vector2;
-import org.xmlcml.svgplus.util.BoundingBoxManager;
+import org.xmlcml.svgplus.page.tools.BoundingBoxManager;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;

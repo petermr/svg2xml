@@ -1,6 +1,5 @@
 <semanticDocument debug="true" xmlns="http://www.xml-cml.org/schema/ami2">
   <documentIterator>
-    <documentActionList outDir="${d.rawDirectory}/../out" skipIfExists="${d.outDir}">
       <documentReader filename="${d.rawDirectory}" format="svgPages"/>
       <pageIterator>
         <pageAnalyzer timeout="15000" maxMbyte="5.0">
@@ -9,7 +8,6 @@
         </pageAnalyzer>
       </pageIterator>
       <documentWriter filename="${d.outDir}" format="htmlMenu" regex="((.*chunk.*\.xml)|(.*figure.*\.svg))"/>
-    </documentActionList> 
   </documentIterator>
 </semanticDocument>
 

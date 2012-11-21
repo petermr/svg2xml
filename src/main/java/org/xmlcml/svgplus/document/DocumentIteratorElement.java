@@ -8,8 +8,8 @@ import java.util.List;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
 public class DocumentIteratorElement extends AbstractActionElement {
@@ -26,9 +26,8 @@ public class DocumentIteratorElement extends AbstractActionElement {
 		ATTNAMES.add(SKIP_IF_EXISTS);
 	}
 
-	private SemanticDocumentElement semanticDocumentElement;
-	private DocumentActionListElement documentActionListElement;
-	private DocumentIteratorAction documentIteratorAction;
+//	private SemanticDocumentElement semanticDocumentElement;
+//	private DocumentIteratorAction documentIteratorAction;
 
 	/** constructor
 	 */
@@ -66,29 +65,6 @@ public class DocumentIteratorElement extends AbstractActionElement {
 		return Arrays.asList(new String[]{
 //				AbstractActionElement.FILENAME,
 		});
-	}
-
-	public DocumentIteratorAction getDocumentIteratorAction() {
-		if (documentIteratorAction == null) {
-			documentIteratorAction = new DocumentIteratorAction(this);
-		}
-		return documentIteratorAction;
-	}
-
-	public void setSemanticDocumentElement(SemanticDocumentElement commandFileElement) {
-		this.semanticDocumentElement = commandFileElement;
-	}
-
-	public SemanticDocumentElement getCommandFileElement() {
-		return semanticDocumentElement;
-	}
-	
-	public DocumentActionListElement getDocumentActionListElement() {
-		if (this.documentActionListElement == null) {
-			Nodes nodes = this.query(DocumentActionListElement.TAG);
-			documentActionListElement =  (nodes.size() == 1) ? (DocumentActionListElement) nodes.get(0) : null;
-		}
-		return documentActionListElement;
 	}
 
 	@Override

@@ -8,8 +8,8 @@ import java.util.List;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
 
 

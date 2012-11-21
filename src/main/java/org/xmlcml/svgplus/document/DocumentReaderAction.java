@@ -3,7 +3,7 @@ package org.xmlcml.svgplus.document;
 import java.io.File;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 
 public class DocumentReaderAction extends DocumentAction {
 

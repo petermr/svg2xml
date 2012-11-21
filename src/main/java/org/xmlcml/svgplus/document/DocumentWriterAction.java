@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 public class DocumentWriterAction extends DocumentAction {

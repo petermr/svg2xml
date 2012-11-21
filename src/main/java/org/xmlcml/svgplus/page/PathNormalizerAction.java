@@ -1,7 +1,7 @@
 package org.xmlcml.svgplus.page;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.paths.PathAnalyzer;
 
 /**

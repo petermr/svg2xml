@@ -1,9 +1,9 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.page.tools;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -17,7 +17,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageFontSizeAnalyzer {
+public class PageFontSizeAnalyzer extends AbstractAnalyzer {
 
 	private static final Logger LOG = Logger.getLogger(PageFontSizeAnalyzer.class);
 

@@ -13,7 +13,7 @@ import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -39,19 +39,18 @@ public class PageWriterAction extends PageAction {
 			LOG.warn("FORMAT NYI");
 		}
 		String deleteXPaths = getDeleteXPaths();
-		SVGSVG svgPageCopy = getSVGPageCopy();
 		if (deleteXPaths != null) {
-			deleteXPaths(svgPageCopy, deleteXPaths);
+			deleteXPaths(getSVGPage(), deleteXPaths);
 		}
 		String[] deleteNamespaces = getDeleteNamespaces();
 		if (deleteNamespaces != null) {
-			svgPageCopy = (SVGSVG) deleteNamespaces(svgPageCopy, deleteNamespaces);
+			deleteNamespaces(getSVGPage(), deleteNamespaces);
 		}
 		filename = getFilename();
 		String xpath = getXPath();
 		String name = getName();
 		if (xpath != null) {
-			List<SVGElement> elements = SVGUtil.getQuerySVGElements(svgPageCopy, xpath);
+			List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
 			if (elements.size() == 0) {
 				warn("No elements found: "+xpath);
 			} else if (elements.size() > 1) {
@@ -69,14 +68,14 @@ public class PageWriterAction extends PageAction {
 				writeFile(svg);
 			}
 		} else if (name != null) {
-			Object obj = getSemanticDocumentAction().getVariable(name);
+			Object obj = semanticDocumentAction.getVariable(name);
 			if (obj instanceof ToXML) {
 				writeFile((ToXML) obj);
 			} else {
 				writeFile(obj.toString());
 			}
 		} else {
-			writeFile(svgPageCopy);
+			writeFile(getSVGPage());
 		}
 	}
 

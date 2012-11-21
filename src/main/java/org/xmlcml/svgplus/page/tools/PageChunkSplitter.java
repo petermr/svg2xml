@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.page.tools;
 
 import java.util.ArrayList;
 
@@ -12,9 +12,10 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.PageAnalyzer;
-import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svgplus.page.Chunk;
+import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
 
 /**
  * page-oriented
@@ -39,7 +40,7 @@ import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
  * @author pm286
  *
  */
-public class PageChunkSplitter {
+public class PageChunkSplitter extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(PageChunkSplitter.class);
 
 	public static final String CLIP = "CLIP";
@@ -55,16 +56,10 @@ public class PageChunkSplitter {
 	private Double YSEP_1 = 5.;
 	private Double XSEP_0 = 10.0;
 	
-	private SVGSVG svgPage;
-	private PageAnalyzer pageAnalyzer;
 	private List<Chunk> finalChunkList;
 
-	public SVGSVG getSVGPage() {
-		return svgPage;
-	}
 	public PageChunkSplitter(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
-		this.svgPage = pageAnalyzer.getSVGPage();
 	}
 
 //	/** the main analysis routine

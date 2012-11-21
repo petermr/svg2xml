@@ -10,9 +10,9 @@ import nu.xom.Element;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
-import org.xmlcml.svgplus.document.DocumentActionListElement;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.document.DocumentIteratorElement;
-import org.xmlcml.svgplus.document.DocumentWriterAction;
 import org.xmlcml.svgplus.page.PageActionElement;
 
 /*
@@ -22,21 +22,20 @@ public class SemanticDocumentElement extends AbstractActionElement {
 
 	public final static String TAG ="semanticDocument";
 
+	private static final String COMMAND_DIRECTORY = "src/main/resources/org/xmlcml/graphics/styles";
+	private static final String DEFAULT_COMMAND_FILENAME = COMMAND_DIRECTORY+"/"+"basic.xml";
+	
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
 		ATTNAMES.add(PageActionElement.DEBUG);
 	}
 
-	private static final String COMMAND_DIRECTORY = "src/main/resources/org/xmlcml/graphics/styles";
-	private static final String DEFAULT_COMMAND_FILENAME = COMMAND_DIRECTORY+"/"+"basic.xml";
-	
 	public static String getDefaultCommandFilename() { 
 		return DEFAULT_COMMAND_FILENAME;
 	}
 	
 	private DocumentIteratorElement documentIteratorElement;
-	private DocumentActionListElement documentActionListElement;
 	private AbstractAction semanticDocumentAction;
 
 	/** constructor
@@ -67,14 +66,6 @@ public class SemanticDocumentElement extends AbstractActionElement {
 	 */
 	public String getTag() {
 		return TAG;
-	}
-
-	public DocumentActionListElement getDocumentActionList() {
-		if (documentActionListElement == null) {
-			Nodes nodes = this.query(".//"+DocumentActionListElement.TAG);
-			documentActionListElement =  (nodes.size() == 1) ? (DocumentActionListElement) nodes.get(0) : null;
-		}
-		return documentActionListElement;
 	}
 
 	public DocumentIteratorElement getDocumentIteratorElement() {

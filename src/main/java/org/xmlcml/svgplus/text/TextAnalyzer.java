@@ -30,12 +30,12 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.svgplus.page.Chunk;
-import org.xmlcml.svgplus.util.BoundingBoxManager;
-import org.xmlcml.svgplus.util.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svgplus.page.tools.BoundingBoxManager;
+import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -796,16 +796,6 @@ public class TextAnalyzer extends AbstractAnalyzer {
 		}
 	}
 	
-	private AbstractAnalyzer ensurePageAnalyzer(DocumentAnalyzer documentAnalyzer) {
-		if (pageAnalyzer == null) {
-			this.pageAnalyzer = new PageAnalyzer();
-			pageAnalyzer.setDocumentAnalyzer(documentAnalyzer);
-		}
-		return this.pageAnalyzer;
-	}
-
-
-
 	private boolean hasNoSVGGChildren() {
 		return SVGUtil.getQuerySVGElements(chunk, "svg:g").size() == 0;
 	}
@@ -943,7 +933,8 @@ public class TextAnalyzer extends AbstractAnalyzer {
 
 	SimpleFont ensureSimpleFont() {
 		if (this.simpleFont == null) {
-			simpleFont = pageAnalyzer == null || pageAnalyzer.getDocumentAnalyzer() == null ? null : pageAnalyzer.getSemanticDocumentAction().getSimpleFont();
+			simpleFont = pageAnalyzer == null || pageAnalyzer.getSemanticDocumentAction() == null ?
+					null : pageAnalyzer.getSemanticDocumentAction().getSimpleFont();
 			if (this.simpleFont == null) {
 				simpleFont = SimpleFont.SIMPLE_FONT;
 			}

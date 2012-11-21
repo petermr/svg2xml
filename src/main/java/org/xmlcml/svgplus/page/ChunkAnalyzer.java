@@ -11,9 +11,10 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
+import org.xmlcml.svgplus.page.tools.PlotBox;
 import org.xmlcml.svgplus.paths.LineAnalyzer;
 import org.xmlcml.svgplus.paths.PolylineAnalyzer;
 import org.xmlcml.svgplus.text.TextAnalyzer;
@@ -37,7 +38,6 @@ public class ChunkAnalyzer extends AbstractAnalyzer {
 
 	public ChunkAnalyzer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
-//		this.svgPage = pageAnalyzer.getSVGPage();
 		pageAnalyzer.setCurrentChunkAnalyzer(this);
 	}
 

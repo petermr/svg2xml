@@ -3,7 +3,8 @@ package org.xmlcml.svgplus.page;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.page.tools.PageChunkSplitter;
 
 /**
 	<pageAction action="createWhitespaceChunks" depth="3"/>

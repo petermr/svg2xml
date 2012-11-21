@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.command;
 
 import java.io.FileInputStream;
 
@@ -11,14 +11,14 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.page.PageAction;
 import org.xmlcml.svgplus.util.ToXML;
 
-public class PageAssertAction extends PageAction {
+public class AssertAction extends PageAction {
 
-	final static Logger LOG = Logger.getLogger(PageAssertAction.class);
+	final static Logger LOG = Logger.getLogger(AssertAction.class);
 
-	public PageAssertAction(AbstractActionElement documentActionCommand) {
+	public AssertAction(AbstractActionElement documentActionCommand) {
 		super(documentActionCommand);
 	}
 	
@@ -32,7 +32,7 @@ public class PageAssertAction extends PageAction {
 			compareXML(message, filename, xpath, name);
 			return;
 		}
-		Nodes nodes = getSVGPageCopy().query(xpath, CMLConstants.SVG_XPATH);
+		Nodes nodes = getSVGPage().query(xpath, CMLConstants.SVG_XPATH);
 		int nnode = nodes.size();
 		String expectedCountS = getCount();
 		int	expectedCount = getCountWithDefault();
@@ -64,7 +64,7 @@ public class PageAssertAction extends PageAction {
 
 	private void compareXML(String message, String filename, String xpath, String name) {
 		if (name != null) {
-			Object obj = getSemanticDocumentAction().getVariable(name);
+			Object obj = semanticDocumentAction.getVariable(name);
 			if (obj == null) {
 				throw new RuntimeException("Cannot find object with name: "+name);
 			} else if (obj instanceof ToXML) {
@@ -82,9 +82,9 @@ public class PageAssertAction extends PageAction {
 	private void compareXML(String message, String filename, String xpath) {
 		try {
 			
-			Element testElem = getSVGPageCopy();
+			Element testElem = getSVGPage();
 			if (xpath != null) {
-				Nodes nodes = getSVGPageCopy().query(xpath, CMLConstants.SVG_XPATH);
+				Nodes nodes = getSVGPage().query(xpath, CMLConstants.SVG_XPATH);
 				if (nodes.size() != 1) {
 					throw new RuntimeException("Cannot compare more than one node");
 				}

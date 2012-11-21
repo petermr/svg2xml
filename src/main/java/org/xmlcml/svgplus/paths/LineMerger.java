@@ -8,12 +8,12 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.svgplus.page.tools.BoundingBoxManager;
+import org.xmlcml.svgplus.page.tools.ElementMerger;
+import org.xmlcml.svgplus.page.tools.ElementNeighbourhood;
+import org.xmlcml.svgplus.page.tools.ElementNeighbourhoodManager;
 import org.xmlcml.svgplus.paths.ComplexLine.Direction;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svgplus.util.BoundingBoxManager;
-import org.xmlcml.svgplus.util.ElementMerger;
-import org.xmlcml.svgplus.util.ElementNeighbourhood;
-import org.xmlcml.svgplus.util.ElementNeighbourhoodManager;
 
 /** a convenience class to help join lines
  * 

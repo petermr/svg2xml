@@ -12,12 +12,13 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
-import org.xmlcml.svgplus.core.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAnalyzer;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.PageAnalyzer;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
+import org.xmlcml.svgplus.document.DocumentIteratorAction;
+import org.xmlcml.svgplus.page.tools.PageSelector;
 import org.xmlcml.svgplus.util.GraphUtil;
 
 
@@ -29,8 +30,7 @@ public abstract class PageAction extends AbstractAction {
 	public static final String EXIT = "exit";
 
 
-	// private so it can't be modified - have to copy it
-	private SVGSVG svgPage;
+	// private so it can't be modified - have to copy it - is this a good idea?
 	protected PageAnalyzer pageAnalyzer;
 	private PageSelector pageSelector;
 	private int pageCount;
@@ -45,11 +45,7 @@ public abstract class PageAction extends AbstractAction {
 	}
 	
 	protected SVGSVG getSVGPage() {
-		return svgPage;
-	}
-
-	protected SVGSVG getSVGPageCopy() {
-		return (SVGSVG) svgPage.copy();
+		return pageAnalyzer.getSVGPage();
 	}
 
 	/** not sure why we have this
@@ -59,13 +55,8 @@ public abstract class PageAction extends AbstractAction {
 		return pageAnalyzer;
 	}
 	
-	protected DocumentAnalyzer getDocumentAnalyzer() {
-		return pageAnalyzer.getDocumentAnalyzer();
-	}
-
 	void setPageAnalyzer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
-		this.svgPage = pageAnalyzer.getSVGPage();
 	}
 
 	public AbstractAnalyzer getPageAnalyzer() {
@@ -128,18 +119,17 @@ public abstract class PageAction extends AbstractAction {
 	
 	protected void deleteNodes(String xpath) {
 		if (xpath != null) {
-			Nodes nodes = GraphUtil.query(svgPage, xpath);
+			Nodes nodes = GraphUtil.query(getSVGPage(), xpath);
 			for (int i = 0; i < nodes.size(); i++) {
 				nodes.get(i).detach();
 			}
 		}
-		pageAnalyzer.setSVGPage(svgPage);
 	}
 
 	public PageSelector getPageSelector() {
 		if (pageSelector == null) {
 			String pageRange = getPageRange();
-			pageCount = (Integer) getSemanticDocumentAction().getVariable(DocumentAnalyzerAction.PAGE_COUNT);
+			pageCount = (Integer) semanticDocumentAction.getVariable(DocumentIteratorAction.PAGE_COUNT);
 			pageSelector = (pageRange == null) ? null : new PageSelector(pageCount);
 		}
 		return pageSelector;

@@ -7,31 +7,32 @@ import java.util.List;
 
 import nu.xom.Node;
 
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 
-public class PageSelectorElement extends AbstractActionElement {
+public class DocumentPageIteratorElement extends AbstractActionElement {
 
-	public final static String TAG ="pageSelector";
+	public final static String TAG ="pageIterator";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
-	
+
 	static {
 		ATTNAMES.add(PageActionElement.PAGE_RANGE);
 	}
+	
 	protected List<String> getAttributeNames() {
 		return ATTNAMES;
 	}
 
 	/** constructor
 	 */
-	public PageSelectorElement() {
+	public DocumentPageIteratorElement() {
 		super(TAG);
 	}
 	
 	/** constructor
 	 */
-	public PageSelectorElement(AbstractActionElement element) {
+	public DocumentPageIteratorElement(AbstractActionElement element) {
         super(element);
 	}
 	
@@ -41,7 +42,7 @@ public class PageSelectorElement extends AbstractActionElement {
      * @return Node
      */
     public Node copy() {
-        return new PageSelectorElement(this);
+        return new DocumentPageIteratorElement(this);
     }
 
 	/**
@@ -58,7 +59,6 @@ public class PageSelectorElement extends AbstractActionElement {
 
 	@Override
 	protected AbstractAction createAction() {
-		return null;
-//		return new PageSelectorAction(this);
+		return new DocumentPageIteratorAction(this);
 	}
 }

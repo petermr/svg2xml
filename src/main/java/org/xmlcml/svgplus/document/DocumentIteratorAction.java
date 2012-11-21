@@ -11,8 +11,8 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.core.AbstractAction;
-import org.xmlcml.svgplus.core.AbstractActionElement;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
@@ -21,8 +21,7 @@ public class DocumentIteratorAction extends DocumentAction {
 
 	private final static Logger LOG = Logger.getLogger(DocumentIteratorAction.class);
 
-	private DocumentActionListElement documentActionListElement;
-	private List<File> rawDirList;
+	public static final String PAGE_COUNT = SVGPlusConstants.D_DOT+"pageCount";
 
 	private String format;
 	private String regex;
@@ -41,7 +40,6 @@ public class DocumentIteratorAction extends DocumentAction {
 	
 	@Override
 	public void run() {
-		getSemanticDocumentAction();
 		LOG.trace("executing: \n"+getActionElement().getString());
 		infile = getInfile();
 		format = getFormat();
@@ -49,33 +47,33 @@ public class DocumentIteratorAction extends DocumentAction {
 		if (!infile.exists()) {
 			throw new RuntimeException("file does not exist: "+infile.getAbsolutePath());
 		}
-		rawDirList = new ArrayList<File>();
+//		rawDirList = new ArrayList<File>();
 		max = getInteger(DocumentIteratorElement.MAX);
 		skipList = getSkipList();
 		if (!infile.isDirectory()) {
 			String name = infile.getName();
 			convertSinglePDFFileAndStoreSVGInRawDir(name);
 		} else if (infile.isDirectory()) {
-			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.ROOT_DIR, infile.getAbsolutePath());
-			LOG.trace("root dir: "+getSemanticDocumentAction().getVariable(SVGPlusConstants.ROOT_DIR));
-			rawDirList = createRawDirsAndGenerateSVGs(infile);
-			rawDirList = filterByRegex(rawDirList);
-			rawDirList = filterByCount(rawDirList);
-			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.RAW_DIRECTORY_LIST, rawDirList);
+//			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.ROOT_DIR, infile.getAbsolutePath());
+//			LOG.trace("root dir: "+getSemanticDocumentAction().getVariable(SVGPlusConstants.ROOT_DIR));
+//			rawDirList = createRawDirsAndGenerateSVGs(infile);
+//			rawDirList = filterByRegex(rawDirList);
+//			rawDirList = filterByCount(rawDirList);
+//			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.RAW_DIRECTORY_LIST, rawDirList);
 		}
-		documentActionListElement = ((DocumentIteratorElement)actionElement).getDocumentActionListElement();
-		if (documentActionListElement != null) {
-			DocumentActionListAction documentActionListAction = documentActionListElement.getDocumentActionListAction();
-			documentActionListAction.setRawDirList(rawDirList);
-			documentActionListAction.run();
-			if (SVGPlusConstants.HTML_MENU_FORMAT.equals(format)) {
-				createHtmlMenuDisplay();
-			}
-		}
+//		documentActionListElement = ((DocumentIteratorElement)actionElement).getDocumentActionListElement();
+//		if (documentActionListElement != null) {
+//			DocumentActionListAction documentActionListAction = documentActionListElement.getDocumentActionListAction();
+//			documentActionListAction.setRawDirList(rawDirList);
+//			documentActionListAction.run();
+//			if (SVGPlusConstants.HTML_MENU_FORMAT.equals(format)) {
+//				createHtmlMenuDisplay();
+//			}
+//		}
 	}
 
 	private File getInfile() {
-		infile = (File) getSemanticDocumentAction().getVariable(SemanticDocumentAction.S_INFILE);
+		infile = (File) semanticDocumentAction.getVariable(SemanticDocumentAction.S_INFILE);
 		if (infile == null) {
 			String filename = getFilename();
 			infile = (filename == null) ? null : new File(filename);
@@ -123,13 +121,13 @@ public class DocumentIteratorAction extends DocumentAction {
 	}
 
 	private void createHtmlMenuDisplay() {
-		LOG.debug("FILES "+rawDirList.size());
+//		LOG.debug("FILES "+rawDirList.size());
 		MenuSystem menuSystem = new MenuSystem(infile);
 		menuSystem.setRoot("/../"+SVGPlusConstants.OUT+CMLConstants.S_SLASH+SVGPlusConstants.INDEX_HTML);
 		menuSystem.setLabel("../../");
 		menuSystem.setRowWidth(100);
 		menuSystem.setAddPdf(false);
-		menuSystem.writeDisplayFiles(rawDirList, "_dir");
+//		menuSystem.writeDisplayFiles(rawDirList, "_dir");
 
 	}
 

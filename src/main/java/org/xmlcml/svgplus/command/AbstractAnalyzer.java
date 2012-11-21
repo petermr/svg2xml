@@ -1,8 +1,10 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.command;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svgplus.core.PageAnalyzer;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
 public abstract class AbstractAnalyzer {
 	private final static Logger LOG = Logger.getLogger(AbstractAnalyzer.class);
