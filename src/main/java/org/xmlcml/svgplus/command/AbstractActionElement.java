@@ -16,7 +16,6 @@ import nu.xom.Text;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
-import org.xmlcml.svgplus.document.DocumentActionElement;
 import org.xmlcml.svgplus.document.DocumentIteratorElement;
 import org.xmlcml.svgplus.document.DocumentPageIteratorElement;
 import org.xmlcml.svgplus.document.DocumentWriterElement;
@@ -124,8 +123,6 @@ public abstract class AbstractActionElement extends Element {
 		} else if (tag.equals(DocumentIteratorElement.TAG)) {
 			newElement = new DocumentIteratorElement();
 			
-		} else if (tag.equals(DocumentActionElement.TAG)) {
-			newElement = new DocumentActionElement();
 		} else if (tag.equals(PageActionElement.TAG)) {
 			newElement = new PageActionElement();
 		} else if (tag.equals(PageAnalyzerElement.TAG)) {
@@ -250,13 +247,15 @@ public abstract class AbstractActionElement extends Element {
 		return elem;
 	}
 
-	public SemanticDocumentElement getSemanticDocument() {
+	public SemanticDocumentElement getSemanticDocumentElement() {
 		if (semanticDocumentElement == null) {
+// find parentage after it is added to tree			
 			Element element = (Element) this.query("/*").get(0);
 			if (!(element instanceof SemanticDocumentElement)) {
-				throw new RuntimeException("root element must be <semanticDocument>, found: <"+element.getLocalName()+">");
+//				throw new RuntimeException("root element must be <semanticDocument>, found: <"+element.getLocalName()+">");
+			} else {
+				semanticDocumentElement = (SemanticDocumentElement) element;
 			}
-			semanticDocumentElement = (SemanticDocumentElement) element;
 		}
 		return semanticDocumentElement;
 	}

@@ -77,10 +77,33 @@ public class SemanticDocumentElement extends AbstractActionElement {
 	}
 
 	public static SemanticDocumentElement createSemanticDocument(Element element) {
-		AbstractActionElement commandElement = AbstractActionElement.createActionElement(element);
-		return (commandElement instanceof SemanticDocumentElement) ? (SemanticDocumentElement) commandElement : null;
+		SemanticDocumentElement semanticDocumentElement = null;
+		AbstractActionElement actionElement = AbstractActionElement.createActionElement(element);
+		if (actionElement != null && actionElement instanceof SemanticDocumentElement) {
+			semanticDocumentElement = (SemanticDocumentElement) actionElement;
+			SemanticDocumentAction semanticDocumentAction = (SemanticDocumentAction) actionElement.getAction();
+			semanticDocumentElement.setAllDescendants(semanticDocumentAction);
+		}
+		return semanticDocumentElement;
 	}
 
+	private void setAllDescendants(SemanticDocumentAction semanticDocumentAction) {
+		Nodes elements = this.query("//*");
+		for (int i = 0; i <elements.size(); i++) {
+			Element element = (Element) elements.get(i);
+			if (element instanceof AbstractActionElement) {
+				AbstractActionElement actionElement = (AbstractActionElement) element; 
+				AbstractAction action = actionElement.getAction();
+				action.setSemanticDocumentAction(semanticDocumentAction);
+			}
+		}
+	}
+
+	/** factory
+	 * 
+	 * @param file
+	 * @return
+	 */
 	public static SemanticDocumentElement createSemanticDocument(File file) {
 		AbstractActionElement commandElement = AbstractActionElement.createActionElement(file);
 		if (!(commandElement instanceof SemanticDocumentElement)) {

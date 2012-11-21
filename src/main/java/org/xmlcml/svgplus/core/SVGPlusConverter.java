@@ -74,13 +74,11 @@ public class SVGPlusConverter {
 		for (String var : semanticDocumentAction.getVariableStore().keySet()) {
 			LOG.trace("key: "+var);
 		}
-		if (semanticDocumentAction != null) {
-			semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);
-			createInputFileOrDirectoryName();
-			createOutputFileOrDirectoryName();
-			checkFiles();
-			semanticDocumentAction.run();
-		}
+		semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);
+		createInputFileOrDirectoryName();
+		createOutputFileOrDirectoryName();
+		checkFiles();
+		semanticDocumentAction.run();
 	}
 
 	private void checkFiles() {
