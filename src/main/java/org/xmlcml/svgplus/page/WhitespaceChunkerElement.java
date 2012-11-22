@@ -5,6 +5,7 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
@@ -12,6 +13,8 @@ import org.xmlcml.svgplus.document.DocumentWriterAction;
 
 public class WhitespaceChunkerElement extends AbstractActionElement {
 
+	private final static Logger LOG = Logger.getLogger(WhitespaceChunkerElement.class);
+	
 	public final static String TAG ="whitespaceChunker";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	

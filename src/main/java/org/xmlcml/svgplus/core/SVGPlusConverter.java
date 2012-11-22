@@ -2,9 +2,13 @@ package org.xmlcml.svgplus.core;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
+import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.svgplus.document.DocumentIteratorAction;
 
 /**
  * Converts raw SVG to structured SVG
@@ -13,6 +17,8 @@ import org.xmlcml.cml.base.CMLConstants;
  *
  */
 public class SVGPlusConverter {
+
+	private final static Logger LOG = Logger.getLogger(SVGPlusConverter.class);
 
 	private static final String MISSING_COMMAND_FILE = "Must always give command file";
 	private static final String COMMAND_FILE = "-c";
@@ -24,8 +30,6 @@ public class SVGPlusConverter {
 	private static final String PAGE_PREFIX = "-p.";
 	private static final String PDF = "pdf";
 
-	private final static Logger LOG = Logger.getLogger(SVGPlusConverter.class);
-	
 	private String inputFilename;
 	private String outputFilename;
     private String semanticDocumentFilename;
@@ -41,6 +45,8 @@ public class SVGPlusConverter {
 			return name.endsWith(SVGPlusConstants.PDF);
 		}
 	};
+
+	private PDF2SVGConverter pdf2svgConverter;
 
 
 	public SVGPlusConverter() {
@@ -118,6 +124,7 @@ public class SVGPlusConverter {
 		}
 		semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(semanticDocumentFile);
 		semanticDocumentAction = (SemanticDocumentAction) semanticDocumentElement.getAction();
+		semanticDocumentAction.setSVGPlusConverter(this);
 	}
 
 	private void usage() {
@@ -193,6 +200,18 @@ public class SVGPlusConverter {
 	public static void main(String[] args) {
 		SVGPlusConverter converter = new SVGPlusConverter();
 		converter.run(args);
+	}
+
+	public List<SVGSVG> createSVGPageList(File infile) {
+		ensurePDF2SVGConverter();
+		pdf2svgConverter.run(infile.getAbsolutePath());
+		return pdf2svgConverter.getPageList();
+	}
+
+	private void ensurePDF2SVGConverter() {
+		if (pdf2svgConverter == null) {
+			pdf2svgConverter = new PDF2SVGConverter();
+		}
 	}
 
 }

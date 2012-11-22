@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.pdf2svg.util.MenuSystem;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
+import org.xmlcml.svgplus.page.tools.RegexFilenameFilter;
 
 public class DocumentWriterAction extends DocumentAction {
 
@@ -15,8 +16,8 @@ public class DocumentWriterAction extends DocumentAction {
 	
 	private File outdir;
 	
-	public DocumentWriterAction(AbstractActionElement documentActionCommand) {
-		super(documentActionCommand);
+	public DocumentWriterAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

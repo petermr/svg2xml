@@ -329,6 +329,7 @@ public abstract class AbstractAction {
 	protected void runChildActionList() {
 		List<AbstractAction> childActionList = getChildActionList();
 		for (AbstractAction abstractAction : childActionList) {
+			LOG.debug("running: "+abstractAction);
 			// maybe put filter in here
 			abstractAction.run();
 		}

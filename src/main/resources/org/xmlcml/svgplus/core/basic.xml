@@ -3,7 +3,7 @@
       <documentReader filename="${d.rawDirectory}" format="svgPages"/>
       <pageIterator>
         <pageAnalyzer timeout="15000" maxMbyte="5.0">
-          <pageVariable name="p.root" value="${d.outDir}/${p.page}"/>
+          <variable name="p.root" value="${d.outDir}/${p.page}"/>
           <pageWriter filename="${p.root}start.svg"/>
         </pageAnalyzer>
       </pageIterator>

@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.document;
+package org.xmlcml.svgplus.page.tools;
 
 import java.io.File;
 import java.io.FilenameFilter;

@@ -5,12 +5,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import nu.xom.Node;
 
 
 public class BreakElement extends AbstractActionElement {
 
+	private final static Logger LOG = Logger.getLogger(BreakElement.class);
+	
 	public final static String TAG ="break";
+	
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {

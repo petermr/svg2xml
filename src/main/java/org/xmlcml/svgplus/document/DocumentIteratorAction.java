@@ -6,18 +6,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import nu.xom.Nodes;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.core.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
 public class DocumentIteratorAction extends DocumentAction {
+
+	private static final String INPUT_FILE = SVGPlusConstants.D_DOT+SVGPlusConstants.INPUT_FILE;
+	private static final String OUTPUT_DIR = SVGPlusConstants.D_DOT+SVGPlusConstants.OUTPUT_DIR;
 
 	private final static Logger LOG = Logger.getLogger(DocumentIteratorAction.class);
 
@@ -29,10 +32,11 @@ public class DocumentIteratorAction extends DocumentAction {
 
 	private File infile;
 	private File outfile;
-	private Integer startPageNumber;
-	private Integer endPageNumber;
 
 	private List<String> skipList;
+	private List<File> infileList;
+
+	private File outdir;
 	
 	public DocumentIteratorAction(AbstractActionElement documentActionElement) {
 		super(documentActionElement);
@@ -49,30 +53,57 @@ public class DocumentIteratorAction extends DocumentAction {
 		} else if (!infile.exists()) {
 			LOG.trace("Input file does not exist: "+infile.getAbsolutePath());
 		} else {
-	//		rawDirList = new ArrayList<File>();
-			max = getInteger(DocumentIteratorElement.MAX);
-			skipList = getSkipList();
-			if (!infile.isDirectory()) {
-				String name = infile.getName();
-				convertSinglePDFFileAndStoreSVGInRawDir(name);
-			} else if (infile.isDirectory()) {
-	//			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.ROOT_DIR, infile.getAbsolutePath());
-	//			LOG.trace("root dir: "+getSemanticDocumentAction().getVariable(SVGPlusConstants.ROOT_DIR));
-	//			rawDirList = createRawDirsAndGenerateSVGs(infile);
-	//			rawDirList = filterByRegex(rawDirList);
-	//			rawDirList = filterByCount(rawDirList);
-	//			getSemanticDocumentAction().setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.RAW_DIRECTORY_LIST, rawDirList);
+			createInputFileList();
+			if (infileList.size() > 0) {
+				processInputFileList();
 			}
-	//		documentActionListElement = ((DocumentIteratorElement)actionElement).getDocumentActionListElement();
-	//		if (documentActionListElement != null) {
-	//			DocumentActionListAction documentActionListAction = documentActionListElement.getDocumentActionListAction();
-	//			documentActionListAction.setRawDirList(rawDirList);
-	//			documentActionListAction.run();
-	//			if (SVGPlusConstants.HTML_MENU_FORMAT.equals(format)) {
-	//				createHtmlMenuDisplay();
-	//			}
-	//		}
 		}
+	}
+
+	private void processInputFileList() {
+		PageIteratorAction pageIteratorAction = getChildPageIteratorAction();
+		if (pageIteratorAction != null) {
+			for (File infile : infileList) {
+				LOG.debug("file "+infile);
+				semanticDocumentAction.setVariable(INPUT_FILE, infile);
+				outdir = infile.getParentFile();
+				outdir.mkdirs();
+				semanticDocumentAction.setVariable(OUTPUT_DIR, outdir);
+				pageIteratorAction.convertFileToSVGList(infile);
+				runChildActionList();
+			}
+		}
+	}
+
+	private PageIteratorAction getChildPageIteratorAction() {
+		Nodes nodes = this.actionElement.query("./*[local-name()='"+PageIteratorElement.TAG+"']");
+		PageIteratorElement pageIteratorElement =  nodes.size() == 1 ? (PageIteratorElement) nodes.get(0) : null;
+		return pageIteratorElement == null ? null : (PageIteratorAction) pageIteratorElement.getAction();
+	}
+
+	private void createInputFileList() {
+		infileList = new ArrayList<File>();
+		max = getInteger(DocumentIteratorElement.MAX);
+		File indir = null;
+		if (!infile.isDirectory()) {
+			String name = infile.getName();
+			infileList.add(infile);
+			indir = infile.getParentFile();
+		} else if (infile.isDirectory()) {
+			indir = infile;
+			List<File> files = getFiles(infile);
+			infileList.addAll(files);
+		}
+		semanticDocumentAction.setVariable(SVGPlusConstants.D_DOT+SVGPlusConstants.ROOT_DIR, indir);
+	}
+	
+	private List<File> getFiles(File indir) {
+		File[] files = indir.listFiles(new FilenameFilter() {
+			public boolean accept(File file, String s) {
+				return file.getPath().endsWith(SVGPlusConstants.PDF); // for test
+			}
+		});
+		return files == null ? new ArrayList<File>() : Arrays.asList(files);
 	}
 
 	private File getInfile() {
@@ -82,13 +113,6 @@ public class DocumentIteratorAction extends DocumentAction {
 			infile = (filename == null) ? null : new File(filename);
 		}
 		return infile;
-	}
-
-	private void convertSinglePDFFileAndStoreSVGInRawDir(String name) {
-		if (name.endsWith(SVGPlusConstants.PDF)) {
-//			File rawDir = generateRawDirAndGenerateSVGsElseSkip(infile);		
-//			rawDirList.add(rawDir);
-		}
 	}
 
 

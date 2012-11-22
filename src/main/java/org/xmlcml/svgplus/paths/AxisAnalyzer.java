@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svgplus.core.PageAnalyzer;
+import org.xmlcml.svgplus.page.PageAnalyzer;
 import org.xmlcml.svgplus.page.tools.PlotBox;
 import org.xmlcml.svgplus.paths.ComplexLine.CombType;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;

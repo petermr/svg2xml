@@ -3,6 +3,7 @@ package org.xmlcml.svgplus.core;
 
 
 public class SVGPlusConstants {
+	
 	// suffixes
 	public static final String NEXML = ".nexml";
 	public static final String PDF = ".pdf";
@@ -43,4 +44,7 @@ public class SVGPlusConstants {
 	public static final String SVG_FORMAT = "svg";
 	public static final String HTML_FORMAT = "html";
 	public static final String HTML_MENU_FORMAT = "htmlMenu";
+	
+	public static final String INPUT_FILE = "inputFile";
+	public static final String OUTPUT_DIR = "outputDir";
 }

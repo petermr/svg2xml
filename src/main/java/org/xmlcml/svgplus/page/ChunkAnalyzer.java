@@ -12,7 +12,6 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.page.tools.PlotBox;
 import org.xmlcml.svgplus.paths.LineAnalyzer;

@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.page.tools;
 
 import java.util.regex.Pattern;
 

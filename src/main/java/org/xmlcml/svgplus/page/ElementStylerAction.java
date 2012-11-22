@@ -22,8 +22,8 @@ public class ElementStylerAction extends PageAction {
 	
 	public static final String ANNOTATION_BOX = "annotationBox";
 	
-	public ElementStylerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public ElementStylerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

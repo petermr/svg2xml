@@ -15,8 +15,8 @@ public class WhitespaceChunkerAction extends PageAction {
 
 	private final static Logger LOG = Logger.getLogger(WhitespaceChunkerAction.class);
 	
-	public WhitespaceChunkerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public WhitespaceChunkerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

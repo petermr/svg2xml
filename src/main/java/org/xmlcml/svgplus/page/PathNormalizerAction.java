@@ -16,8 +16,8 @@ public class PathNormalizerAction extends PageAction {
 	
 	public final static double EPS = 0.001;
 	
-	public PathNormalizerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public PathNormalizerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

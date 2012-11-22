@@ -12,12 +12,13 @@ import org.xmlcml.svgplus.text.TextAnalyzer;
 public class ChunkAnalyzerAction extends PageAction {
 
 	private final static Logger LOG = Logger.getLogger(ChunkAnalyzerAction.class);
+	
 	private boolean subSup;
 	private boolean removeNumericTSpans;
 	private boolean splitAtSpaces;
 	
-	public ChunkAnalyzerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public ChunkAnalyzerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

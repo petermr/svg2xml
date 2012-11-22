@@ -8,12 +8,15 @@ import java.util.List;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
 public class DocumentIteratorElement extends AbstractActionElement {
 
+	private final static Logger LOG = Logger.getLogger(DocumentIteratorElement.class);
+	
 	public final static String TAG ="documentIterator";
 
 	private static final List<String> ATTNAMES = new ArrayList<String>();

@@ -31,9 +31,9 @@ import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.core.DocumentAnalyzer;
-import org.xmlcml.svgplus.core.PageAnalyzer;
+import org.xmlcml.svgplus.document.DocumentAnalyzer;
 import org.xmlcml.svgplus.page.Chunk;
+import org.xmlcml.svgplus.page.PageAnalyzer;
 import org.xmlcml.svgplus.page.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
 

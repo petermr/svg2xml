@@ -13,8 +13,8 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.svgplus.page.Chunk;
+import org.xmlcml.svgplus.page.PageAnalyzer;
 import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
 
 /**

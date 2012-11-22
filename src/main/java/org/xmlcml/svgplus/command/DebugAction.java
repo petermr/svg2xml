@@ -8,8 +8,8 @@ public class DebugAction extends DocumentAction {
 
 	private final static Logger LOG = Logger.getLogger(DebugAction.class);
 	
-	public DebugAction(AbstractActionElement documentActionCommand) {
-		super(documentActionCommand);
+	public DebugAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

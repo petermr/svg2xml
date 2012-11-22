@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.core.PageAnalyzer;
+import org.xmlcml.svgplus.page.PageAnalyzer;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;

@@ -22,8 +22,9 @@ import org.xmlcml.svgplus.command.AbstractActionElement;
 public class VariableExtractorAction extends PageAction {
 
 	private final static Logger LOG = Logger.getLogger(VariableExtractorAction.class);
-	public VariableExtractorAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	
+	public VariableExtractorAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override
@@ -49,7 +50,8 @@ public class VariableExtractorAction extends PageAction {
 			if (matcher.groupCount() == varsList.size()) {
 				for (int i = 0; i < varsList.size(); i++) {
 					String val = matcher.group(i+1);
-					pageAnalyzer.putValue(varsList.get(i), val);
+					String name = varsList.get(i);
+					semanticDocumentAction.setVariable(name, val);
 				}
 			}
 		}

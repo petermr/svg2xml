@@ -8,8 +8,8 @@ public class NodeDeleterAction extends PageAction {
 
 	private final static Logger LOG = Logger.getLogger(NodeDeleterAction.class);
 	
-	public NodeDeleterAction(AbstractActionElement actionCommand) {
-		super(actionCommand);
+	public NodeDeleterAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

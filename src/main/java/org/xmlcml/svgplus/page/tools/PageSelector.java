@@ -1,7 +1,7 @@
 package org.xmlcml.svgplus.page.tools;
 
 import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.svgplus.document.DocumentPageSelectorAction;
+import org.xmlcml.svgplus.document.PageSelectorAction;
 
 public class PageSelector {
 
@@ -144,7 +144,7 @@ public class PageSelector {
 					setTrue(i);
 				}
 			}
-			DocumentPageSelectorAction.LOG.trace(this);
+			PageSelectorAction.LOG.trace(this);
 			last = (i1 == null) ? i0 : i1;
 		} catch (Exception e) {
 			throw new RuntimeException("Bad range: "+range, e);

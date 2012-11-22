@@ -5,12 +5,15 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
 
 
 public class PageNormalizerElement extends AbstractActionElement {
+
+	private final static Logger LOG = Logger.getLogger(PageNormalizerElement.class);
 
 	public final static String TAG ="pageNormalizer";
 	private static final List<String> ATTNAMES = new ArrayList<String>();

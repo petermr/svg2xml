@@ -1,15 +1,12 @@
 package org.xmlcml.svgplus.command;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Attribute;
-import nu.xom.Builder;
 import nu.xom.Comment;
 import nu.xom.Element;
 import nu.xom.Node;
-import nu.xom.Nodes;
 import nu.xom.ProcessingInstruction;
 import nu.xom.Text;
 
@@ -17,8 +14,8 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 import org.xmlcml.svgplus.document.DocumentIteratorElement;
-import org.xmlcml.svgplus.document.DocumentPageIteratorElement;
 import org.xmlcml.svgplus.document.DocumentWriterElement;
+import org.xmlcml.svgplus.document.PageIteratorElement;
 import org.xmlcml.svgplus.figure.FigureAnalyzerElement;
 import org.xmlcml.svgplus.page.BoxDrawerElement;
 import org.xmlcml.svgplus.page.BoxProcessorElement;
@@ -26,9 +23,7 @@ import org.xmlcml.svgplus.page.ChunkAnalyzerElement;
 import org.xmlcml.svgplus.page.ElementStylerElement;
 import org.xmlcml.svgplus.page.NodeDeleterElement;
 import org.xmlcml.svgplus.page.PageActionElement;
-import org.xmlcml.svgplus.page.PageAnalyzerElement;
 import org.xmlcml.svgplus.page.PageNormalizerElement;
-import org.xmlcml.svgplus.page.PageVariableElement;
 import org.xmlcml.svgplus.page.PageWriterElement;
 import org.xmlcml.svgplus.page.PathNormalizerElement;
 import org.xmlcml.svgplus.page.TextChunkerElement;
@@ -119,65 +114,52 @@ public abstract class AbstractActionElement extends Element {
 		LOG.trace("TAG "+tag);
 		if (tag == null || tag.equals("")) {
 			throw new RuntimeException("no tag");
-			
-		} else if (tag.equals(DocumentIteratorElement.TAG)) {
-			newElement = new DocumentIteratorElement();
-			
-		} else if (tag.equals(PageActionElement.TAG)) {
-			newElement = new PageActionElement();
-		} else if (tag.equals(PageAnalyzerElement.TAG)) {
-			newElement = new PageAnalyzerElement();
-		} else if (tag.equals(PathElement.TAG)) {
-			newElement = new PathElement();
-		} else if (tag.equals(SemanticDocumentElement.TAG)) {
-			newElement = new SemanticDocumentElement();
-			
-		} else if (tag.equals(BreakElement.TAG)) {
-			newElement = new BreakElement();
-		} else if (tag.equals(DebugElement.TAG)) {
-			newElement = new DebugElement();
-		} else if (tag.equals(DocumentPageIteratorElement.TAG)) {
-			newElement = new DocumentPageIteratorElement();
-		} else if (tag.equals(DocumentWriterElement.TAG)) {
-			newElement = new DocumentWriterElement();
-			
-		} else if (tag.equals(ChunkAnalyzerElement.TAG)) {
-			newElement = new ChunkAnalyzerElement();
+		} else if (tag.equals(AssertElement.TAG)) {
+			newElement = new AssertElement();
 		} else if (tag.equals(BoxDrawerElement.TAG)) {
 			newElement = new BoxDrawerElement();
 		} else if (tag.equals(BoxProcessorElement.TAG)) {
 			newElement = new BoxProcessorElement();
-		} else if (tag.equals(NodeDeleterElement.TAG)) {
-			newElement = new NodeDeleterElement();
+		} else if (tag.equals(BreakElement.TAG)) {
+			newElement = new BreakElement();
+		} else if (tag.equals(ChunkAnalyzerElement.TAG)) {
+			newElement = new ChunkAnalyzerElement();
+		} else if (tag.equals(DebugElement.TAG)) {
+			newElement = new DebugElement();
+		} else if (tag.equals(DocumentIteratorElement.TAG)) {
+			newElement = new DocumentIteratorElement();
+		} else if (tag.equals(PageIteratorElement.TAG)) {
+			newElement = new PageIteratorElement();
+		} else if (tag.equals(DocumentWriterElement.TAG)) {
+			newElement = new DocumentWriterElement();
 		} else if (tag.equals(ElementStylerElement.TAG)) {
 			newElement = new ElementStylerElement();
 		} else if (tag.equals(FigureAnalyzerElement.TAG)) {
 			newElement = new FigureAnalyzerElement();
+		} else if (tag.equals(IncludeElement.TAG)) {
+			newElement = new IncludeElement();
+		} else if (tag.equals(NodeDeleterElement.TAG)) {
+			newElement = new NodeDeleterElement();
 		} else if (tag.equals(PageActionElement.TAG)) {
-			throw new RuntimeException("PageActionElement is deprecated");
-		} else if (tag.equals(PageAnalyzerElement.TAG)) {
-			newElement = new PageAnalyzerElement();
+			throw new RuntimeException("PageActionElement is abstract");
 		} else if (tag.equals(PageNormalizerElement.TAG)) {
 			newElement = new PageNormalizerElement();
+		} else if (tag.equals(VariableElement.TAG)) {
+			newElement = new VariableElement();
 		} else if (tag.equals(PageWriterElement.TAG)) {
 			newElement = new PageWriterElement();
 		} else if (tag.equals(PathNormalizerElement.TAG)) {
 			newElement = new PathNormalizerElement();
+		} else if (tag.equals(PathElement.TAG)) {
+			newElement = new PathElement();
+		} else if (tag.equals(SemanticDocumentElement.TAG)) {
+			newElement = new SemanticDocumentElement();
 		} else if (tag.equals(TextChunkerElement.TAG)) {
 			newElement = new TextChunkerElement();
 		} else if (tag.equals(VariableExtractorElement.TAG)) {
 			newElement = new VariableExtractorElement();
 		} else if (tag.equals(WhitespaceChunkerElement.TAG)) {
 			newElement = new WhitespaceChunkerElement();
-			
-		} else if (tag.equals(AssertElement.TAG)) {
-			newElement = new AssertElement();
-		} else if (tag.equals(PageVariableElement.TAG)) {
-			newElement = new PageVariableElement();
-			
-//		} else if (tag.equals(SemanticDocumentElement.TAG)) {
-//			newElement = new SemanticDocumentElement();
-//			
 		} else {
 			throw new RuntimeException("unsupported element: "+tag);
 		}
@@ -217,11 +199,8 @@ public abstract class AbstractActionElement extends Element {
 
 	public SemanticDocumentElement getSemanticDocumentElement() {
 		if (semanticDocumentElement == null) {
-// find parentage after it is added to tree			
 			Element element = (Element) this.query("/*").get(0);
-			if (!(element instanceof SemanticDocumentElement)) {
-//				throw new RuntimeException("root element must be <semanticDocument>, found: <"+element.getLocalName()+">");
-			} else {
+			if (element instanceof SemanticDocumentElement) {
 				semanticDocumentElement = (SemanticDocumentElement) element;
 			}
 		}
@@ -243,20 +222,4 @@ public abstract class AbstractActionElement extends Element {
 		CMLUtil.debug(this, msg);
 	}
 
-	public DocumentIteratorElement getAncestorDocumentIteratorElement() {
-		return (DocumentIteratorElement) getAncestorElement(DocumentIteratorElement.TAG);
-	}
-
-	public SemanticDocumentElement getAncestorSemanticDocumentElement() {
-		return (SemanticDocumentElement) getAncestorElement(SemanticDocumentElement.TAG);
-	}
-
-	public AbstractActionElement getAncestorElement(String tag) {
-		LOG.trace(this.getLocalName());
-		Nodes nodes = this.query("ancestor-or-self::"+tag+"[1]");
-		if (nodes.size() != 1) {
-			throw new RuntimeException("Must have ancestor:"+tag);
-		}
-		return (AbstractActionElement) nodes.get(0);
-	}
 }

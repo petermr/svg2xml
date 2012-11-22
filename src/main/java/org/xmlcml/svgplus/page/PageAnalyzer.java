@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.page;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,10 +14,12 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.document.DocumentPageIteratorElement;
+import org.xmlcml.svgplus.core.SVGPlusConstants;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
+import org.xmlcml.svgplus.document.DocumentAnalyzer;
+import org.xmlcml.svgplus.document.PageIteratorElement;
 import org.xmlcml.svgplus.figure.Figure;
 import org.xmlcml.svgplus.figure.FigureAnalyzer;
-import org.xmlcml.svgplus.page.ChunkAnalyzer;
 import org.xmlcml.svgplus.page.tools.PageChunkSplitter;
 import org.xmlcml.svgplus.page.tools.PageClipPathAnalyzer;
 import org.xmlcml.svgplus.page.tools.PageFontSizeAnalyzer;

@@ -12,8 +12,8 @@ public class TextChunkerAction extends PageAction {
 
 	private final static Logger LOG = Logger.getLogger(TextChunkerAction.class);
 	
-	public TextChunkerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public TextChunkerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

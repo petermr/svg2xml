@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 
-public class PageActionElement extends AbstractActionElement {
+public abstract class PageActionElement extends AbstractActionElement {
+
+	private final static Logger LOG = Logger.getLogger(PageActionElement.class);
 
 	/** attribute names
 	 * 
@@ -72,13 +75,13 @@ public class PageActionElement extends AbstractActionElement {
 		ATTNAMES.add(VALUE);
 		ATTNAMES.add(VARIABLES);
 	}
+
+	public static final String MAX_MBYTE = "maxMbyte";
 	protected List<String> getAttributeNames() {
 		return ATTNAMES;
 	}
 
 	public final static String TAG = "pageAction";
-
-
 
 	/** constructor 
 	 */

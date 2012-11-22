@@ -1,18 +1,18 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.command;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.page.PageAction;
 
-public class PageVariableAction extends PageAction {
+public class VariableAction extends PageAction {
 
-	private final static Logger LOG = Logger.getLogger(PageVariableAction.class);
+	private final static Logger LOG = Logger.getLogger(VariableAction.class);
 	
 	public static final Pattern NAME_PATTERN = Pattern.compile("(p|d)\\.[a-zA-Z][a-zA-Z0-9_]*");
 	
-	public PageVariableAction(AbstractActionElement actionElement) {
+	public VariableAction(AbstractActionElement actionElement) {
 		super(actionElement);
 	}
 	
@@ -24,7 +24,7 @@ public class PageVariableAction extends PageAction {
 			throw new RuntimeException("must give name and value attributes: "+getActionElement().toXML());
 		}
 		checkValidName(name);
-		pageAnalyzer.putValue(name, value);
+		semanticDocumentAction.setVariable(name, value);
 //		log(getLog());
 	}
 

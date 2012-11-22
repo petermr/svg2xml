@@ -9,8 +9,8 @@ public class DocumentReaderAction extends DocumentAction {
 
 	private final static Logger LOG = Logger.getLogger(DocumentReaderAction.class);
 	
-	public DocumentReaderAction(AbstractActionElement documentActionCommand) {
-		super(documentActionCommand);
+	public DocumentReaderAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

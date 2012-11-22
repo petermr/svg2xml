@@ -21,8 +21,8 @@ public class FigureAnalyzerAction extends PageAction {
 	private final static Logger LOG = Logger.getLogger(FigureAnalyzerAction.class);
 	private String filename;
 
-	public FigureAnalyzerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public FigureAnalyzerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

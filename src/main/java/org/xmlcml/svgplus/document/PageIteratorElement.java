@@ -1,7 +1,7 @@
 package org.xmlcml.svgplus.document;
 
-
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,15 +12,18 @@ import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 
-public class DocumentPageIteratorElement extends AbstractActionElement {
+public class PageIteratorElement extends AbstractActionElement {
 
-	private static final Logger LOG = Logger.getLogger(DocumentPageIteratorElement.class);
+	private static final Logger LOG = Logger.getLogger(PageIteratorElement.class);
 	
-	public final static String TAG ="pageIterator";
+	public final static String TAG ="pageIterator";		
+
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 
 	static {
 		ATTNAMES.add(PageActionElement.PAGE_RANGE);
+		ATTNAMES.add(PageActionElement.MAX_MBYTE);
+		ATTNAMES.add(PageActionElement.TIMEOUT);
 	}
 	
 	protected List<String> getAttributeNames() {
@@ -29,13 +32,13 @@ public class DocumentPageIteratorElement extends AbstractActionElement {
 
 	/** constructor
 	 */
-	public DocumentPageIteratorElement() {
+	public PageIteratorElement() {
 		super(TAG);
 	}
 	
 	/** constructor
 	 */
-	public DocumentPageIteratorElement(AbstractActionElement element) {
+	public PageIteratorElement(AbstractActionElement element) {
         super(element);
 	}
 	
@@ -45,7 +48,7 @@ public class DocumentPageIteratorElement extends AbstractActionElement {
      * @return Node
      */
     public Node copy() {
-        return new DocumentPageIteratorElement(this);
+        return new PageIteratorElement(this);
     }
 
 	/**
@@ -62,6 +65,7 @@ public class DocumentPageIteratorElement extends AbstractActionElement {
 
 	@Override
 	protected AbstractAction createAction() {
-		return new DocumentPageIteratorAction(this);
+		return new PageIteratorAction(this);
 	}
+
 }

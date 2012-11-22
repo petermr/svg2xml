@@ -23,7 +23,6 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.core.PageAnalyzer;
 import org.xmlcml.svgplus.util.CodePointConverter;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -31,10 +30,11 @@ import com.google.common.collect.Multimap;
 
 public class PageNormalizerAction extends PageAction  {
 
+	private final static Logger LOG = Logger.getLogger(PageNormalizerAction.class);
+
 	private static final String OLD_FONT_SIZE = "oldFontSize";
 	private static final String IMAGE_REMOVED = "IMAGE_REMOVED";
 	private final static double EPS = 0.001;
-	private final static Logger LOG = Logger.getLogger(PageNormalizerAction.class);
 	
 
 	/**
@@ -61,8 +61,8 @@ public class PageNormalizerAction extends PageAction  {
 	private Multimap<Integer, SVGText> textByRotation;
 	private CodePointConverter codePointConverter = new CodePointConverter();
 
-	public PageNormalizerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public PageNormalizerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	public void run() {

@@ -9,9 +9,10 @@ import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 import org.xmlcml.svgplus.page.tools.PageSelector;
 
-public class DocumentPageSelectorAction extends DocumentAction {
+public class PageSelectorAction extends DocumentAction {
 
-	public final static Logger LOG = Logger.getLogger(DocumentPageSelectorAction.class);
+	public final static Logger LOG = Logger.getLogger(PageSelectorAction.class);
+	
 	private static final String ALL = "0-";
 	
 	private static final List<String> ATTNAMES = new ArrayList<String>();
@@ -24,8 +25,8 @@ public class DocumentPageSelectorAction extends DocumentAction {
 		return ATTNAMES;
 	}
 
-	public DocumentPageSelectorAction(AbstractActionElement documentActionCommand) {
-		super(documentActionCommand);
+	public PageSelectorAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	//  e.g. "4,5,8-9 12-"  or "first" or "notFirst" or "last" or "notLast" or "notFirstOrLast"

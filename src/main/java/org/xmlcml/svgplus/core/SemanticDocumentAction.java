@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.command.VariableStore;
 import org.xmlcml.svgplus.document.DocumentAction;
@@ -25,6 +26,8 @@ public class SemanticDocumentAction extends DocumentAction {
 	private VariableStore variableStore;
 
 	private SimpleFont simpleFont;
+
+	private SVGPlusConverter svgPlusConverter;
 	
 	public SemanticDocumentAction(AbstractActionElement documentActionElement) {
 		super(documentActionElement);
@@ -110,6 +113,14 @@ public class SemanticDocumentAction extends DocumentAction {
 
 	public SimpleFont getSimpleFont() {
 		return this.simpleFont;
+	}
+
+	public void setSVGPlusConverter(SVGPlusConverter svgPlusConverter) {
+		this.svgPlusConverter = svgPlusConverter;
+	}
+
+	public SVGPlusConverter getSVGPlusConverter() {
+		return svgPlusConverter;
 	}
 	
 }

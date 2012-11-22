@@ -11,6 +11,7 @@ import nu.xom.Element;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.command.IncludeElement;
@@ -22,6 +23,8 @@ import org.xmlcml.svgplus.page.PageActionElement;
  */
 public class SemanticDocumentElement extends AbstractActionElement {
 
+	private final static Logger LOG = Logger.getLogger(SemanticDocumentElement.class);
+	
 	public final static String TAG ="semanticDocument";
 
 	private static final String COMMAND_DIRECTORY = "src/main/resources/org/xmlcml/graphics/styles";
@@ -129,29 +132,12 @@ public class SemanticDocumentElement extends AbstractActionElement {
 			if (element instanceof AbstractActionElement) {
 				AbstractActionElement actionElement = (AbstractActionElement) element; 
 				AbstractAction action = actionElement.getAction();
-				if (action == null) {
-					throw new RuntimeException("null action: "+element);
+				if (action != null) {
+					action.setSemanticDocumentAction(semanticDocumentAction);
 				}
-				action.setSemanticDocumentAction(semanticDocumentAction);
 			}
 		}
 	}
-
-	/** factory
-	 * 
-	 * @param file
-	 * @return
-	 */
-//	public static SemanticDocumentElement createSemanticDocument(File file) {
-//		AbstractActionElement commandElement = AbstractActionElement.createActionElement(file);
-//		if (!(commandElement instanceof SemanticDocumentElement)) {
-//			throw new RuntimeException("commandFile must have root Element: "+SemanticDocumentElement.TAG);
-//		}
-//		
-//		SemanticDocumentElement semanticDocumentElement = (SemanticDocumentElement) commandElement;
-//		semanticDocumentElement.setFilename(file.getAbsolutePath());
-//		return semanticDocumentElement;
-//	}
 
 	private void setFilename(String filename) {
 		this.addAttribute(new Attribute(FILENAME, filename));

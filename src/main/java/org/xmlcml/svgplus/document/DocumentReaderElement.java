@@ -7,11 +7,14 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 
 public class DocumentReaderElement extends AbstractActionElement {
+
+	private final static Logger LOG = Logger.getLogger(DocumentReaderElement.class);
 
 	public final static String TAG ="documentReader";
 

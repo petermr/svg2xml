@@ -22,8 +22,8 @@ public class BoxDrawerAction extends PageAction {
 
 	private String title;
 	
-	public BoxDrawerAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public BoxDrawerAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

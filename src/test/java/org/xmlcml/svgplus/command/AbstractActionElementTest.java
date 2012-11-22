@@ -51,7 +51,23 @@ public class AbstractActionElementTest {
 	}
 	
 	@Test
+	public void testDescendantsSemanticDocument() {
+		SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(Fixtures.NOOP_FILE);
+		AbstractActionElement childElement = (AbstractActionElement) semanticDocumentElement.getChildElements().get(0);
+		AbstractAction childAction = childElement.getAction();
+		Assert.assertNotNull(childAction);
+		AbstractAction childSemanticDocumentAction = childAction.getSemanticDocumentAction();
+		Assert.assertNotNull(childSemanticDocumentAction);
+	}
+	
+	@Test
 	public void testCreateActionElementFileWithIncludes() {
-		// NYI
+		SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(Fixtures.INCLUDE_TEST_FILE);
+		AbstractAction abstractAction = semanticDocumentElement.getAction();
+		Assert.assertNotNull(abstractAction);
+		Assert.assertTrue(abstractAction instanceof SemanticDocumentAction);
+		SemanticDocumentAction semanticDocumentAction = abstractAction.getSemanticDocumentAction();
+		Assert.assertNotNull(semanticDocumentAction);
+		Assert.assertTrue(semanticDocumentAction instanceof SemanticDocumentAction);
 	}
 }

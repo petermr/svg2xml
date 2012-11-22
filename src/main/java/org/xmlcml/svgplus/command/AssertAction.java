@@ -18,8 +18,8 @@ public class AssertAction extends PageAction {
 
 	final static Logger LOG = Logger.getLogger(AssertAction.class);
 
-	public AssertAction(AbstractActionElement documentActionCommand) {
-		super(documentActionCommand);
+	public AssertAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

@@ -20,6 +20,7 @@ import org.xmlcml.svgplus.core.SVGPlusConstants;
 public class VariableStore {
 
 	private static final Logger LOG = Logger.getLogger(VariableStore.class);
+	
 	private Map<String, Object> variableMap;
 
 	public VariableStore() {

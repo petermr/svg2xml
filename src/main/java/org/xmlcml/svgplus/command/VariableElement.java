@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.page;
+package org.xmlcml.svgplus.command;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,17 +7,17 @@ import java.util.List;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractAction;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.document.DocumentPageIteratorElement;
+import org.xmlcml.svgplus.document.PageIteratorElement;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
+import org.xmlcml.svgplus.page.PageActionElement;
 
 
-public class PageVariableElement extends AbstractActionElement {
+public class VariableElement extends AbstractActionElement {
 
-	private static final Logger LOG = Logger.getLogger(PageVariableElement.class);
+	private static final Logger LOG = Logger.getLogger(VariableElement.class);
 
-	public final static String TAG ="pageVariable";
+	public final static String TAG ="variable";
+	
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
@@ -28,13 +28,13 @@ public class PageVariableElement extends AbstractActionElement {
 
 	/** constructor
 	 */
-	public PageVariableElement() {
+	public VariableElement() {
 		super(TAG);
 	}
 	
 	/** constructor
 	 */
-	public PageVariableElement(AbstractActionElement element) {
+	public VariableElement(AbstractActionElement element) {
         super(element);
 	}
 	
@@ -44,7 +44,7 @@ public class PageVariableElement extends AbstractActionElement {
      * @return Node
      */
     public Node copy() {
-        return new PageVariableElement(this);
+        return new VariableElement(this);
     }
 
 	/**
@@ -67,6 +67,6 @@ public class PageVariableElement extends AbstractActionElement {
 	
 	@Override
 	protected AbstractAction createAction() {
-		return new PageVariableAction(this);
+		return new VariableAction(this);
 	}
 }

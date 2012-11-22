@@ -15,14 +15,14 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.core.DocumentAnalyzer;
-import org.xmlcml.svgplus.core.PageAnalyzer;
+import org.xmlcml.svgplus.document.DocumentAnalyzer;
 import org.xmlcml.svgplus.document.DocumentIteratorAction;
 import org.xmlcml.svgplus.page.tools.PageSelector;
 import org.xmlcml.svgplus.util.GraphUtil;
 
 
 public abstract class PageAction extends AbstractAction {
+	
 	final static Logger LOG = Logger.getLogger(PageAction.class);
 
 	public static final String DOCUMENT = "document";
@@ -35,13 +35,13 @@ public abstract class PageAction extends AbstractAction {
 	private PageSelector pageSelector;
 	private int pageCount;
 
-	public PageAction(AbstractActionElement pageActionCommand, PageAnalyzer pageAnalyzer) {
-		super(pageActionCommand);
+	public PageAction(AbstractActionElement actionElement, PageAnalyzer pageAnalyzer) {
+		super(actionElement);
 		this.setPageAnalyzer(pageAnalyzer);
 	}
 	
-	protected PageAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	protected PageAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	protected SVGSVG getSVGPage() {

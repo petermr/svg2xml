@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.page.tools.PageChunkSplitter;
 import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
 
 public class Chunk extends SVGElement {
+	
+	private final static Logger LOG = Logger.getLogger(Chunk.class);
 	
 	public Chunk() {
 		super("chunk");

@@ -28,8 +28,8 @@ public class PageWriterAction extends PageAction {
 	private File file;
 	private String filename;
 	private HtmlUl ul;
-	public PageWriterAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public PageWriterAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

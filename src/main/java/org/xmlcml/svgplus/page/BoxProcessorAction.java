@@ -14,8 +14,8 @@ public class BoxProcessorAction extends PageAction {
 	
 	private PathAnalyzer pathAnalyzer;
 	
-	public BoxProcessorAction(AbstractActionElement pageActionCommand) {
-		super(pageActionCommand);
+	public BoxProcessorAction(AbstractActionElement actionElement) {
+		super(actionElement);
 	}
 	
 	@Override

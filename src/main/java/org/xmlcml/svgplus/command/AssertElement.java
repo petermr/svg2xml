@@ -6,10 +6,13 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
 import org.xmlcml.svgplus.page.PageActionElement;
 
 public class AssertElement extends AbstractActionElement {
+
+	private final static Logger LOG = Logger.getLogger(AssertElement.class);
 
 	public final static String TAG ="assert";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
