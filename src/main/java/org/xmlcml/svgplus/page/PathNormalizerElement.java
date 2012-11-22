@@ -38,10 +38,6 @@ public class PathNormalizerElement extends AbstractActionElement {
 	 */
 	public PathNormalizerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

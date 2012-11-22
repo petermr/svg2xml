@@ -26,10 +26,6 @@ public class NodeDeleterElement extends AbstractActionElement {
 	 */
 	public NodeDeleterElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

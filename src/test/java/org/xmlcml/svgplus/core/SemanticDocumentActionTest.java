@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.svgplus.Fixtures;
+import org.xmlcml.svgplus.TestUtils;
 
 public class SemanticDocumentActionTest {
 
@@ -42,12 +44,12 @@ public class SemanticDocumentActionTest {
 	@Test
 	/** read and set variables
 	 */
-	@Ignore // FIXME semanticDocumentAction null
+	//@Ignore // FIXME semanticDocumentAction null
 	public void testVariableMap() {
 		SVGPlusConverter converter = new SVGPlusConverter();
 		converter.run(
-				"-c src/main/resources/org/xmlcml/svgplus/core/noop.xml "+
-				"-i src/test/resources/org/xmlcml/svgplus/core/ajc-page6.pdf "
+				" -c "+Fixtures.NOOP_FILE+
+				" -i "+Fixtures.AJC_PAGE6_PDF
 				);
 		List<String> variableNames = converter.getSemanticDocumentAction().getVariableNames();
 		Assert.assertNotNull("value should not be null", variableNames);
@@ -57,13 +59,13 @@ public class SemanticDocumentActionTest {
 	/** read and set variables
 	 * read a PDF because current logic requires there to be one
 	 */
-	@Ignore // FIXME semanticDocumentAction null
+	//@Ignore // FIXME semanticDocumentAction null
 	public void testInjectVariable() {
 		SVGPlusConverter converter = new SVGPlusConverter();
 		converter.run(
-				"-c src/main/resources/org/xmlcml/svgplus/core/noop.xml "+
-				"-i src/test/resources/org/xmlcml/svgplus/core/ajc-page6.pdf "+
-			    "-d.dummy dummyValue"
+				" -c "+ Fixtures.NOOP_FILE +
+				" -i "+ Fixtures.AJC_PAGE6_PDF +
+			    " -d.dummy dummyValue"
 				);
 		SemanticDocumentAction semanticDocumentAction = converter.getSemanticDocumentAction();
 		List<String> variableNames = semanticDocumentAction.getVariableNames();
@@ -72,12 +74,12 @@ public class SemanticDocumentActionTest {
 			LOG.debug("name: "+name);
 		}
 		Assert.assertEquals("var names", 3, variableNames.size());
-		Assert.assertEquals("sem doc", "src/main/resources/org/xmlcml/svgplus/core/noop.xml", 
-				semanticDocumentAction.getVariable(SemanticDocumentAction.S_SEMDOC));
+		Assert.assertTrue("sem doc", TestUtils.fileEquals(Fixtures.NOOP_FILE, 
+				(String) semanticDocumentAction.getVariable(SemanticDocumentAction.S_SEMDOC)));
 		Object fileObj = semanticDocumentAction.getVariable(SemanticDocumentAction.S_INFILE);
 		Assert.assertNotNull("file ", fileObj);
 		Assert.assertTrue("file ", fileObj instanceof File);
-		Assert.assertEquals("input file", new File("src/test/resources/org/xmlcml/svgplus/core/ajc-page6.pdf").getPath(), 
+		Assert.assertEquals("input file", new File(Fixtures.AJC_PAGE6_PDF).getPath(), 
 				((File) fileObj).getPath());
 		Assert.assertNull("output file",  
 				semanticDocumentAction.getVariable(SemanticDocumentAction.S_OUTFILE));

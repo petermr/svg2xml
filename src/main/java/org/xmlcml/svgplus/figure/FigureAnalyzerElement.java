@@ -39,10 +39,6 @@ public class FigureAnalyzerElement extends AbstractActionElement {
 	 */
 	public FigureAnalyzerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

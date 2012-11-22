@@ -29,10 +29,6 @@ public class VariableExtractorElement extends AbstractActionElement {
 	 */
 	public VariableExtractorElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

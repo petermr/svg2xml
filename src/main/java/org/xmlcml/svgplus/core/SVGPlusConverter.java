@@ -155,7 +155,10 @@ public class SVGPlusConverter {
 			outputFilename = null;
 			int i = 0;
 			while (i < args.length) {
-				if (COMMAND_FILE.equals(args[i])) {
+				if (args[i].trim().length() == 0) {
+					i++;
+					// skip any blanks
+				} else if (COMMAND_FILE.equals(args[i])) {
 					semanticDocumentFilename = args[++i]; i++;
 					readSemanticDocumentFile();
 				} else if (INPUT_FILE.equals(args[i])) {

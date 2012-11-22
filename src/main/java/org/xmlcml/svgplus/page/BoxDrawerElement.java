@@ -34,10 +34,6 @@ public class BoxDrawerElement extends AbstractActionElement {
 	 */
 	public BoxDrawerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

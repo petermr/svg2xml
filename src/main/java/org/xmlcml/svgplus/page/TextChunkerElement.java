@@ -37,10 +37,6 @@ public class TextChunkerElement extends AbstractActionElement {
 	 */
 	public TextChunkerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

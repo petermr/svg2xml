@@ -84,7 +84,6 @@ public class PageActionElement extends AbstractActionElement {
 	 */
 	public PageActionElement() {
 		super(TAG);
-		init();
 	}
 	
 	/** constructor

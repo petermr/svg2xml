@@ -6,12 +6,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import nu.xom.Attribute;
+import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.IncludeElement;
 import org.xmlcml.svgplus.document.DocumentIteratorElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 
@@ -49,7 +51,6 @@ public class SemanticDocumentElement extends AbstractActionElement {
 	 */
 	public SemanticDocumentElement(AbstractActionElement element) {
         super(element);
-        init();
 	}
 	
     /**
@@ -76,6 +77,40 @@ public class SemanticDocumentElement extends AbstractActionElement {
 		return documentIteratorElement;
 	}
 
+	public static SemanticDocumentElement createSemanticDocument(File file) {
+		SemanticDocumentElement semanticDocumentElement = null;
+		try {
+			Element elem = new Builder().build(file).getRootElement();
+			elem = replaceIncludesRecursively(file, elem);
+			semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(elem);
+			semanticDocumentElement.setFilename(file.getAbsolutePath());
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot read commandfile "+file, e);
+		}
+		return semanticDocumentElement;
+	}
+
+	private static Element replaceIncludesRecursively(File file, Element elem) {
+		Nodes includes = elem.query(".//"+IncludeElement.TAG);
+		for (int i = 0; i < includes.size(); i++) {
+			Element includeElement = (Element) includes.get(i);
+			String includeFilename = includeElement.getAttributeValue(AbstractActionElement.FILENAME);
+			if (includeFilename == null) {
+				throw new RuntimeException("must give filename");
+			}
+			try {
+				File includeFile = new File(file.getParentFile(), includeFilename).getCanonicalFile();
+				Element includeContentElement = new Builder().build(includeFile).getRootElement();
+				includeContentElement = replaceIncludesRecursively(includeFile, includeContentElement);
+				includeElement.getParent().replaceChild(includeElement, includeContentElement.copy());
+			} catch (Exception e) {
+				throw new RuntimeException("Cannot create / parse includeFile "+file, e);
+			}
+		}
+		return elem;
+	}
+
+	
 	public static SemanticDocumentElement createSemanticDocument(Element element) {
 		SemanticDocumentElement semanticDocumentElement = null;
 		AbstractActionElement actionElement = AbstractActionElement.createActionElement(element);
@@ -94,6 +129,9 @@ public class SemanticDocumentElement extends AbstractActionElement {
 			if (element instanceof AbstractActionElement) {
 				AbstractActionElement actionElement = (AbstractActionElement) element; 
 				AbstractAction action = actionElement.getAction();
+				if (action == null) {
+					throw new RuntimeException("null action: "+element);
+				}
 				action.setSemanticDocumentAction(semanticDocumentAction);
 			}
 		}
@@ -104,16 +142,16 @@ public class SemanticDocumentElement extends AbstractActionElement {
 	 * @param file
 	 * @return
 	 */
-	public static SemanticDocumentElement createSemanticDocument(File file) {
-		AbstractActionElement commandElement = AbstractActionElement.createActionElement(file);
-		if (!(commandElement instanceof SemanticDocumentElement)) {
-			throw new RuntimeException("commandFile must have root Element: "+SemanticDocumentElement.TAG);
-		}
-		
-		SemanticDocumentElement semanticDocumentElement = (SemanticDocumentElement) commandElement;
-		semanticDocumentElement.setFilename(file.getAbsolutePath());
-		return semanticDocumentElement;
-	}
+//	public static SemanticDocumentElement createSemanticDocument(File file) {
+//		AbstractActionElement commandElement = AbstractActionElement.createActionElement(file);
+//		if (!(commandElement instanceof SemanticDocumentElement)) {
+//			throw new RuntimeException("commandFile must have root Element: "+SemanticDocumentElement.TAG);
+//		}
+//		
+//		SemanticDocumentElement semanticDocumentElement = (SemanticDocumentElement) commandElement;
+//		semanticDocumentElement.setFilename(file.getAbsolutePath());
+//		return semanticDocumentElement;
+//	}
 
 	private void setFilename(String filename) {
 		this.addAttribute(new Attribute(FILENAME, filename));
@@ -133,5 +171,5 @@ public class SemanticDocumentElement extends AbstractActionElement {
 	protected AbstractAction createAction() {
 		return new SemanticDocumentAction(this);
 	}
-	
+
 }

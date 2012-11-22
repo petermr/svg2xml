@@ -31,10 +31,6 @@ public class PageNormalizerElement extends AbstractActionElement {
 	 */
 	public PageNormalizerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

@@ -19,9 +19,8 @@ public class SVGPlusConverterTest {
 
 	@Test
 	/** tests that we can read a minimal command file
-	 * we can run without an input file - jsut doesn't dso very much
+	 * we can run without an input file - just doesn't do very much
 	 */
-	@Ignore // FIXME semanticDocumentAction null
 	public void testCommand() {
 		SVGPlusConverter converter = new SVGPlusConverter(); 
 		try {
@@ -52,7 +51,7 @@ public class SVGPlusConverterTest {
 	/** tests that input file can be read
 	 *  If any args are present, so must -c file be
 	 */
-	@Ignore // FIXME semanticDocumentAction null
+	//@Ignore // FIXME semanticDocumentAction null
 	public void testInputFile() {
 		SVGPlusConverter converter = new SVGPlusConverter(); 
 		try {

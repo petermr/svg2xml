@@ -34,10 +34,6 @@ public class ChunkAnalyzerElement extends AbstractActionElement {
 	 */
 	public ChunkAnalyzerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

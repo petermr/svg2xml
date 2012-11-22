@@ -30,10 +30,6 @@ public class PathElement extends AbstractActionElement {
 	 */
 	public PathElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

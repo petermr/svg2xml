@@ -7,27 +7,51 @@ import nu.xom.Element;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.xmlcml.svgplus.Fixtures;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
+import org.xmlcml.svgplus.document.DocumentIteratorElement;
 
 public class AbstractActionElementTest {
 
-	File NOOP_FILE = new File("src/main/resources/org/xmlcml/svgplus/core/noop.xml");
 
 	@Test
 	public void testCreateActionElementElement() throws Exception {
-		Element element = new Builder().build(NOOP_FILE).getRootElement();
+		Element element = new Builder().build(Fixtures.NOOP_FILE).getRootElement();
 		AbstractActionElement abstractActionElement = AbstractActionElement.createActionElement(element);
 		Assert.assertNotNull(abstractActionElement);
 		Assert.assertTrue(abstractActionElement instanceof SemanticDocumentElement);
-//		Assert.assertNotNull(object);
+	}
+	
+	@Test
+	public void testCreateDocumentIteratorElement() throws Exception {
+		Element element = new Builder().build(Fixtures.NOOP_FILE).getRootElement();
+		AbstractActionElement abstractActionElement = AbstractActionElement.createActionElement(element);
+		AbstractActionElement firstChildElement = (AbstractActionElement) abstractActionElement.getChildElements().get(0);
+		Assert.assertNotNull(firstChildElement);
+		Assert.assertTrue(firstChildElement instanceof DocumentIteratorElement);
 	}
 	
 	@Test
 	public void testCreateActionElementFile() {
-		File noopFile = new File("src/mani/resources/org/xmlcml/");
+		Element element = SemanticDocumentElement.createSemanticDocument(Fixtures.NOOP_FILE);
+		Assert.assertNotNull(element);
+		Assert.assertTrue(element instanceof SemanticDocumentElement);
+	}
+	
+	@Test
+	public void testCreateActionElementAction() {
+		SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(Fixtures.NOOP_FILE);
+		AbstractAction abstractAction = semanticDocumentElement.getAction();
+		Assert.assertNotNull(abstractAction);
+		Assert.assertTrue(abstractAction instanceof SemanticDocumentAction);
+		SemanticDocumentAction semanticDocumentAction = abstractAction.getSemanticDocumentAction();
+		Assert.assertNotNull(semanticDocumentAction);
+		Assert.assertTrue(semanticDocumentAction instanceof SemanticDocumentAction);
 	}
 	
 	@Test
 	public void testCreateActionElementFileWithIncludes() {
+		// NYI
 	}
 }

@@ -33,10 +33,6 @@ public class PageWriterElement extends AbstractActionElement {
 	 */
 	public PageWriterElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

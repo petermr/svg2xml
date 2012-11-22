@@ -24,7 +24,6 @@ import org.xmlcml.svgplus.page.PageActionElement;
  */
 public abstract class AbstractAction {
 
-
 	private final static Logger LOG = Logger.getLogger(AbstractAction.class);
 	
 	public final static Pattern VARIABLE_REF = Pattern.compile("\\$\\{([^\\{]*)\\}");
@@ -118,7 +117,7 @@ public abstract class AbstractAction {
 	}
 
 	public String getLog() {
-		return getAndExpand(AbstractActionElement.LOG);
+		return getAndExpand(AbstractActionElement.LOGAT);
 	}
 
 	protected boolean isTrue(String attName) {
@@ -333,6 +332,14 @@ public abstract class AbstractAction {
 			// maybe put filter in here
 			abstractAction.run();
 		}
+	}
+
+	/** the variable is also available as protected
+	 * 
+	 * @return
+	 */
+	public SemanticDocumentAction getSemanticDocumentAction() {
+		return semanticDocumentAction;
 	}
 
 

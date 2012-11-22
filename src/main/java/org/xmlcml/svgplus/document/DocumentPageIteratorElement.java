@@ -7,12 +7,15 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.page.PageActionElement;
 
 public class DocumentPageIteratorElement extends AbstractActionElement {
 
+	private static final Logger LOG = Logger.getLogger(DocumentPageIteratorElement.class);
+	
 	public final static String TAG ="pageIterator";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 

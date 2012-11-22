@@ -8,6 +8,7 @@ import java.util.List;
 import nu.xom.Node;
 import nu.xom.Nodes;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
@@ -15,6 +16,8 @@ import org.xmlcml.svgplus.document.DocumentWriterAction;
 
 public class PageAnalyzerElement extends AbstractActionElement implements Iterable<AbstractActionElement> {
 
+	private static final Logger LOG = Logger.getLogger(PageAnalyzerElement.class);
+	
 	public final static String TAG ="pageAnalyzer";
 	
 	private List<AbstractActionElement> pageActionCommandElements;
@@ -31,10 +34,6 @@ public class PageAnalyzerElement extends AbstractActionElement implements Iterab
 	 */
 	public PageAnalyzerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

@@ -24,11 +24,8 @@ public class WhitespaceChunkerElement extends AbstractActionElement {
 	 */
 	public WhitespaceChunkerElement() {
 		super(TAG);
-		init();
 	}
 	
-	protected void init() {
-	}
 	
 	/** constructor
 	 */

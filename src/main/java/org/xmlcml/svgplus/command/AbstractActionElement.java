@@ -38,7 +38,7 @@ import org.xmlcml.svgplus.paths.PathElement;
 
 public abstract class AbstractActionElement extends Element {
 
-	private static final Logger LOGX = Logger.getLogger(AbstractActionElement.class);
+	private static final Logger LOG = Logger.getLogger(AbstractActionElement.class);
 	
 	public static final String ACTION = "action";
 	public static final String DELETE_NAMESPACES = "deleteNamespaces";
@@ -47,7 +47,7 @@ public abstract class AbstractActionElement extends Element {
 	public static final String MARK = "mark";
 	public static final String DEBUG = "debug";
 	public static final String COUNT = "count";
-	public static final String LOG = "log";
+	public static final String LOGAT = "log";
 	public static final String MESSAGE = "message";
 	public static final String NAME = "name";
 	public static final String OUT_DIR = "outDir";
@@ -116,7 +116,7 @@ public abstract class AbstractActionElement extends Element {
 	public static AbstractActionElement createActionElement(Element element) {
 		AbstractActionElement newElement = null;
 		String tag = element.getLocalName();
-		LOGX.trace("TAG "+tag);
+		LOG.trace("TAG "+tag);
 		if (tag == null || tag.equals("")) {
 			throw new RuntimeException("no tag");
 			
@@ -215,38 +215,6 @@ public abstract class AbstractActionElement extends Element {
 		return this.getAttributeValue(NAME);
 	}
 
-	public static AbstractActionElement createActionElement(File file) {
-		AbstractActionElement actionElement = null;
-		try {
-			Element elem = new Builder().build(file).getRootElement();
-			elem = replaceIncludesRecursively(file, elem);
-			actionElement = AbstractActionElement.createActionElement(elem);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot read commandfile "+file, e);
-		}
-		return actionElement;
-	}
-
-	private static Element replaceIncludesRecursively(File file, Element elem) {
-		Nodes includes = elem.query(".//"+IncludeElement.TAG);
-		for (int i = 0; i < includes.size(); i++) {
-			Element includeElement = (Element) includes.get(i);
-			String includeFilename = includeElement.getAttributeValue(AbstractActionElement.FILENAME);
-			if (includeFilename == null) {
-				throw new RuntimeException("must give filename");
-			}
-			try {
-				File includeFile = new File(file.getParentFile(), includeFilename).getCanonicalFile();
-				Element includeContentElement = new Builder().build(includeFile).getRootElement();
-				includeContentElement = replaceIncludesRecursively(includeFile, includeContentElement);
-				includeElement.getParent().replaceChild(includeElement, includeContentElement.copy());
-			} catch (Exception e) {
-				throw new RuntimeException("Cannot create / parse includeFile "+file, e);
-			}
-		}
-		return elem;
-	}
-
 	public SemanticDocumentElement getSemanticDocumentElement() {
 		if (semanticDocumentElement == null) {
 // find parentage after it is added to tree			
@@ -284,7 +252,7 @@ public abstract class AbstractActionElement extends Element {
 	}
 
 	public AbstractActionElement getAncestorElement(String tag) {
-		LOGX.trace(this.getLocalName());
+		LOG.trace(this.getLocalName());
 		Nodes nodes = this.query("ancestor-or-self::"+tag+"[1]");
 		if (nodes.size() != 1) {
 			throw new RuntimeException("Must have ancestor:"+tag);

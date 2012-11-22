@@ -6,18 +6,22 @@ import java.util.List;
 
 import nu.xom.Node;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.document.DocumentPageIteratorElement;
 import org.xmlcml.svgplus.document.DocumentWriterAction;
 
 
 public class PageVariableElement extends AbstractActionElement {
 
+	private static final Logger LOG = Logger.getLogger(PageVariableElement.class);
+
 	public final static String TAG ="pageVariable";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.LOG);
+		ATTNAMES.add(PageActionElement.LOGAT);
 		ATTNAMES.add(PageActionElement.NAME);
 		ATTNAMES.add(PageActionElement.VALUE);
 	}
@@ -26,10 +30,6 @@ public class PageVariableElement extends AbstractActionElement {
 	 */
 	public PageVariableElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

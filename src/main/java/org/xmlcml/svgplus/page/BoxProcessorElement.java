@@ -29,10 +29,6 @@ public class BoxProcessorElement extends AbstractActionElement {
 	 */
 	public BoxProcessorElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

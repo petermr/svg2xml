@@ -29,10 +29,6 @@ public class PathAnalyzerElement extends AbstractActionElement {
 	 */
 	public PathAnalyzerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor

@@ -30,10 +30,6 @@ public class ElementStylerElement extends AbstractActionElement {
 	 */
 	public ElementStylerElement() {
 		super(TAG);
-		init();
-	}
-	
-	protected void init() {
 	}
 	
 	/** constructor
