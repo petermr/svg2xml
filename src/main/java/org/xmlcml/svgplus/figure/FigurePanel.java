@@ -10,7 +10,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.page.Chunk;
+import org.xmlcml.svgplus.tools.Chunk;
 
 /** FigurePanels are logical subunits of the FigureBody
  * They are usually determined heuristically by whitespace or explicit borders

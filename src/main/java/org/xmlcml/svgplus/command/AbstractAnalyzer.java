@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
-import org.xmlcml.svgplus.page.PageAnalyzer;
 
 public abstract class AbstractAnalyzer {
 	

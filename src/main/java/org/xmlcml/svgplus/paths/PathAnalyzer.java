@@ -32,11 +32,11 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.page.Chunk;
-import org.xmlcml.svgplus.page.PageAnalyzer;
-import org.xmlcml.svgplus.page.PageNormalizerAction;
-import org.xmlcml.svgplus.page.tools.BoundingBoxManager;
-import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.PageNormalizerAction;
+import org.xmlcml.svgplus.tools.BoundingBoxManager;
+import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 /**
  * Tries to interpret svg:path as

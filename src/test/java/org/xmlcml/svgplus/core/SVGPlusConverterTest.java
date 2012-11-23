@@ -82,4 +82,39 @@ public class SVGPlusConverterTest {
 		Assert.assertTrue("read file", true);
 	}
 
+	@Test
+	/** tests that input file can be read
+	 *  If any args are present, so must -c file be
+	 */
+	public void testInputFilesExecution() {
+		SVGPlusConverter converter = new SVGPlusConverter(); 
+		try {
+			converter.run("" +
+					" -c "+Fixtures.BASIC_FILE +
+					" -i "+Fixtures.PDF_DIR);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("failed: "+e.getCause());
+		}
+		Assert.assertTrue("read file", true);
+	}
+
+	@Test
+	/** tests that input file can be read and outputDir can be set
+	 *  If any args are present, so must -c file be
+	 */
+	public void testInputOutputFileExecution() {
+		SVGPlusConverter converter = new SVGPlusConverter(); 
+		try {
+			converter.run("" +
+					" -c "+Fixtures.BASIC_FILE +
+					" -i "+Fixtures.AJC_PAGE6_PDF +
+					" -o "+"target");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("failed: "+e.getCause());
+		}
+		Assert.assertTrue("read file", true);
+	}
+
 }

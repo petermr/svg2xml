@@ -12,7 +12,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.page.Chunk;
+import org.xmlcml.svgplus.tools.Chunk;
 
 /** FigureBody consists of the non-caption part of the figure
  *  it will contain one or more SubFigures

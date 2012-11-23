@@ -5,10 +5,11 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.DocumentAction;
+import org.xmlcml.svgplus.command.PageAnalyzer;
 import org.xmlcml.svgplus.command.VariableStore;
-import org.xmlcml.svgplus.document.DocumentAction;
 import org.xmlcml.svgplus.text.SimpleFont;
 
 public class SemanticDocumentAction extends DocumentAction {
@@ -24,10 +25,9 @@ public class SemanticDocumentAction extends DocumentAction {
 	
 	private String semanticDocumentFilename;
 	private VariableStore variableStore;
-
 	private SimpleFont simpleFont;
-
 	private SVGPlusConverter svgPlusConverter;
+	private PageAnalyzer pageAnalyzer;
 	
 	public SemanticDocumentAction(AbstractActionElement documentActionElement) {
 		super(documentActionElement);
@@ -121,6 +121,22 @@ public class SemanticDocumentAction extends DocumentAction {
 
 	public SVGPlusConverter getSVGPlusConverter() {
 		return svgPlusConverter;
+	}
+
+	public SVGSVG getSVGPage() {
+		ensurePageAnalyzer();
+		return pageAnalyzer.getSVGPage();
+	}
+
+	private void ensurePageAnalyzer() {
+		if (pageAnalyzer == null) {
+			this.pageAnalyzer = new PageAnalyzer();
+		}
+	}
+
+	public PageAnalyzer getPageAnalyzer() {
+		ensurePageAnalyzer();
+		return pageAnalyzer;
 	}
 	
 }

@@ -1,13 +1,11 @@
 <semanticDocument debug="true" xmlns="http://www.xml-cml.org/schema/ami2">
   <documentIterator>
-      <documentReader filename="${d.rawDirectory}" format="svgPages"/>
-      <pageIterator>
-        <pageAnalyzer timeout="15000" maxMbyte="5.0">
-          <variable name="p.root" value="${d.outDir}/${p.page}"/>
-          <pageWriter filename="${p.root}start.svg"/>
-        </pageAnalyzer>
-      </pageIterator>
-      <documentWriter filename="${d.outDir}" format="htmlMenu" regex="((.*chunk.*\.xml)|(.*figure.*\.svg))"/>
+     <pageIterator timeout="15000" maxMbyte="5.0">
+        <variable name="p.root" value="${d.outDir}/${p.page}"/>
+        <debug/>
+        <pageWriter filename="${p.root}_start.svg"/>
+     </pageIterator>
+     <documentWriter filename="${d.outDir}" format="htmlMenu" regex="((.*chunk.*\.xml)|(.*figure.*\.svg))"/>
   </documentIterator>
 </semanticDocument>
 

@@ -26,10 +26,10 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.page.ChunkAnalyzer;
-import org.xmlcml.svgplus.page.PageAnalyzer;
-import org.xmlcml.svgplus.page.tools.PlotBox;
+import org.xmlcml.svgplus.command.ChunkAnalyzer;
+import org.xmlcml.svgplus.command.PageAnalyzer;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svgplus.tools.PlotBox;
 import org.xmlcml.svgplus.util.GraphUtil;
 
 

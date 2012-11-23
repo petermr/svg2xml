@@ -8,7 +8,7 @@ import nu.xom.Node;
 
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.document.DocumentWriterAction;
+import org.xmlcml.svgplus.command.DocumentWriterAction;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 

@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -91,10 +92,12 @@ public class VariableStore {
 
 	public String debugString(String title) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(title);
+		sb.append("\n"+title+"\n");
 		if (variableMap != null) {
 			sb.append("values: "+this.size()+"\n");
-			for (String key : variableMap.keySet()) {
+			String[] keys = variableMap.keySet().toArray(new String[0]);
+			Arrays.sort(keys);
+			for (String key : keys) {
 				sb.append("  "+key+" = "+variableMap.get(key)+"\n");
 			}
 		}

@@ -2,7 +2,6 @@ package org.xmlcml.svgplus.command;
 
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.document.DocumentAction;
 
 public class DebugAction extends DocumentAction {
 
@@ -14,8 +13,7 @@ public class DebugAction extends DocumentAction {
 	
 	@Override
 	public void run() {
-//		LOG.debug(debugString("DOCUMENT DEBUG"));
-		semanticDocumentAction.debug();
+		LOG.debug(semanticDocumentAction.debug());
 	}
 
 }

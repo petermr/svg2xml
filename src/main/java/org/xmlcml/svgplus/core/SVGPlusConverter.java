@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svgplus.document.DocumentIteratorAction;
+import org.xmlcml.svgplus.command.DocumentIteratorAction;
 
 /**
  * Converts raw SVG to structured SVG
@@ -69,49 +69,6 @@ public class SVGPlusConverter {
 
 	public SemanticDocumentAction getSemanticDocumentAction() {
 		return semanticDocumentAction;
-	}
-
-	/** this is the main workflow
-	 * 
-	 * @throws Exception
-	 */
-	private void readSemanticDocumentSetValuesAndRun() throws Exception {
-		LOG.trace("sem doc variables "+semanticDocumentAction.getVariableStore().size());
-		for (String var : semanticDocumentAction.getVariableStore().keySet()) {
-			LOG.trace("key: "+var);
-		}
-		semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);
-		createInputFileOrDirectoryName();
-		createOutputFileOrDirectoryName();
-		checkFiles();
-		semanticDocumentAction.run();
-	}
-
-	private void checkFiles() {
-		if (semanticDocumentFilename == null) {
-			throw new RuntimeException("Must give commandFile");
-		}
-	}
-
-	private void createInputFileOrDirectoryName() {
-		if (inputFilename != null) {
-			infile = new File(inputFilename);
-			if (!infile.exists()) {
-				throw new RuntimeException("input file does not exist: "+inputFilename);
-			}
-			LOG.debug("reading from: "+infile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
-			semanticDocumentAction.setInfile(infile);
-		}
-	}
-
-	private void createOutputFileOrDirectoryName() {
-		if (outputFilename != null) {
-			outfile = new File(outputFilename);
-			if (outfile.isDirectory()) {
-				LOG.debug("writing to: "+outfile.getAbsolutePath()+"(dir = "+outfile.isDirectory()+")");
-			}
-			semanticDocumentAction.setOutfile(outfile);
-		}
 	}
 
 	private void readSemanticDocumentFile() {
@@ -197,6 +154,49 @@ public class SVGPlusConverter {
 		}
 	}
 	
+	/** this is the main workflow
+	 * 
+	 * @throws Exception
+	 */
+	private void readSemanticDocumentSetValuesAndRun() throws Exception {
+		LOG.trace("sem doc variables "+semanticDocumentAction.getVariableStore().size());
+		for (String var : semanticDocumentAction.getVariableStore().keySet()) {
+			LOG.trace("key: "+var);
+		}
+		semanticDocumentAction.setDocumentFilename(semanticDocumentFilename);
+		createInputFileOrDirectoryName();
+		createOutputFileOrDirectoryName();
+		checkFiles();
+		semanticDocumentAction.run();
+	}
+
+	private void checkFiles() {
+		if (semanticDocumentFilename == null) {
+			throw new RuntimeException("Must give commandFile");
+		}
+	}
+
+	private void createInputFileOrDirectoryName() {
+		if (inputFilename != null) {
+			infile = new File(inputFilename);
+			if (!infile.exists()) {
+				throw new RuntimeException("input file does not exist: "+inputFilename);
+			}
+			LOG.debug("reading from: "+infile.getAbsolutePath()+"(dir = "+infile.isDirectory()+")");
+			semanticDocumentAction.setInfile(infile);
+		}
+	}
+
+	private void createOutputFileOrDirectoryName() {
+		if (outputFilename != null) {
+			outfile = new File(outputFilename);
+			if (outfile.isDirectory()) {
+				LOG.debug("writing to: "+outfile.getAbsolutePath()+"(dir = "+outfile.isDirectory()+")");
+			}
+			semanticDocumentAction.setOutfile(outfile);
+		}
+	}
+
 	public static void main(String[] args) {
 		SVGPlusConverter converter = new SVGPlusConverter();
 		converter.run(args);

@@ -9,9 +9,9 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.page.Chunk;
-import org.xmlcml.svgplus.page.PageAnalyzer;
-import org.xmlcml.svgplus.page.tools.Caption;
+import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.tools.Caption;
+import org.xmlcml.svgplus.tools.Chunk;
 
 /**
  * @author pm286

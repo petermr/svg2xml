@@ -16,7 +16,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svgplus.page.Chunk;
+import org.xmlcml.svgplus.tools.Chunk;
 
 public class PixelBoxAnnotator {
 	private static Logger LOG = Logger.getLogger(PixelBoxAnnotator.class);

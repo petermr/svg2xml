@@ -11,9 +11,9 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.page.PageAnalyzer;
-import org.xmlcml.svgplus.page.PathNormalizerAction;
-import org.xmlcml.svgplus.page.tools.PlotBox;
+import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.PathNormalizerAction;
+import org.xmlcml.svgplus.tools.PlotBox;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

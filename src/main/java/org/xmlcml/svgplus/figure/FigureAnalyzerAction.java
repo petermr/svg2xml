@@ -9,10 +9,10 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.PageAction;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.page.Chunk;
-import org.xmlcml.svgplus.page.PageAction;
 import org.xmlcml.svgplus.text.TextAnalyzer;
+import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.util.GraphUtil;
 
 public class FigureAnalyzerAction extends PageAction {
@@ -27,13 +27,13 @@ public class FigureAnalyzerAction extends PageAction {
 	
 	@Override
 	public void run() {
-		FigureAnalyzer figureAnalyzer = pageAnalyzer.ensureFigureAnalyzer();
+		FigureAnalyzer figureAnalyzer = getPageAnalyzer().ensureFigureAnalyzer();
 		figureAnalyzer.setLocationStrategy(getAndExpand(FigureAnalyzerElement.LOCATION_STRATEGY));
 		List<Figure> figureList = figureAnalyzer.createFigures();
 		List<FigurePanel> panelList = figureAnalyzer.createPanelsUsingWhitespace();
 		filename = getFilename();
 		if (isTrue(FigureAnalyzerElement.CREATE_WORDS_LINES)) {
-			TextAnalyzer textAnalyzer = pageAnalyzer.ensureTextAnalyzer();
+			TextAnalyzer textAnalyzer = getPageAnalyzer().ensureTextAnalyzer();
 			for (FigurePanel figurePanel : panelList) {
 				List<SVGElement> elements = SVGUtil.getQuerySVGElements(figurePanel, ".");
 				textAnalyzer.analyzeSingleWordsOrLines(elements);

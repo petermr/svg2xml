@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.page.PageAction;
 import org.xmlcml.svgplus.util.ToXML;
 
 public class AssertAction extends PageAction {

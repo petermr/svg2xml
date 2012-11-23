@@ -21,7 +21,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.euclid.Vector2;
-import org.xmlcml.svgplus.page.tools.BoundingBoxManager;
+import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -191,7 +191,7 @@ public class GraphUtil {
 				}
 			}
 			CMLUtil.debug(svgElement, new FileOutputStream(file), 1);
-			LOG.trace("Wrote file "+file.getAbsolutePath()+ " element "+svgElement.hashCode());
+			LOG.trace("Wrote file "+file.getAbsolutePath());
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot write svg page "+filename, e);
 		}

@@ -17,8 +17,8 @@ import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.page.tools.BoundingBoxManager;
-import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svgplus.tools.BoundingBoxManager;
+import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;

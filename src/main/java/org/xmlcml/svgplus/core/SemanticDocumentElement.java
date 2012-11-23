@@ -14,9 +14,9 @@ import nu.xom.Nodes;
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAction;
 import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.DocumentIteratorElement;
 import org.xmlcml.svgplus.command.IncludeElement;
-import org.xmlcml.svgplus.document.DocumentIteratorElement;
-import org.xmlcml.svgplus.page.PageActionElement;
+import org.xmlcml.svgplus.command.PageActionElement;
 
 /*
  * rootElement

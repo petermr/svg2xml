@@ -7,9 +7,6 @@ import java.util.List;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.document.PageIteratorElement;
-import org.xmlcml.svgplus.document.DocumentWriterAction;
-import org.xmlcml.svgplus.page.PageActionElement;
 
 
 public class VariableElement extends AbstractActionElement {

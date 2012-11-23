@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
-import org.xmlcml.svgplus.document.DocumentIteratorElement;
 
 public class AbstractActionElementTest {
 

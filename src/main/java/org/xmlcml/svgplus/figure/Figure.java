@@ -10,9 +10,9 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.page.Chunk;
-import org.xmlcml.svgplus.page.tools.Caption;
-import org.xmlcml.svgplus.page.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svgplus.tools.Caption;
+import org.xmlcml.svgplus.tools.Chunk;
 
 /** a figure consists of (possibly optional) Caption and FigureBody
  * these are directly accessible but are also child elements of Figure

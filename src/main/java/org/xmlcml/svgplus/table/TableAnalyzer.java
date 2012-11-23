@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.page.PageAnalyzer;
+import org.xmlcml.svgplus.command.PageAnalyzer;
 
 /**
  * @author pm286
