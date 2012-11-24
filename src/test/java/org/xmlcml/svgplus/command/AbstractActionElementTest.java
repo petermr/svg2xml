@@ -8,6 +8,7 @@ import nu.xom.Element;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
+import org.xmlcml.svgplus.core.SVGPlusConverter;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
@@ -69,4 +70,14 @@ public class AbstractActionElementTest {
 		Assert.assertNotNull(semanticDocumentAction);
 		Assert.assertTrue(semanticDocumentAction instanceof SemanticDocumentAction);
 	}
+	
+	@Test
+	public void testInputFileOnDocumentIteratorWithAssert() {
+		SVGPlusConverter converter = new SVGPlusConverter();
+		converter.run(
+				" -c "+Fixtures.INFILE_TEST
+				);
+	}
+	
+	
 }

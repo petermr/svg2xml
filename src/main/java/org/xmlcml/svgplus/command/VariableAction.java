@@ -9,7 +9,7 @@ public class VariableAction extends PageAction {
 
 	private final static Logger LOG = Logger.getLogger(VariableAction.class);
 	
-	public static final Pattern NAME_PATTERN = Pattern.compile("(p|d)\\.[a-zA-Z][a-zA-Z0-9_]*");
+	public static final Pattern NAME_PATTERN = Pattern.compile("(s|p|d)\\.[a-zA-Z][a-zA-Z0-9_]*");
 	
 	public VariableAction(AbstractActionElement actionElement) {
 		super(actionElement);
@@ -23,6 +23,7 @@ public class VariableAction extends PageAction {
 			throw new RuntimeException("must give name and value attributes: "+getActionElement().toXML());
 		}
 		checkValidName(name);
+		LOG.trace("SD "+semanticDocumentAction);
 		semanticDocumentAction.setVariable(name, value);
 //		log(getLog());
 	}

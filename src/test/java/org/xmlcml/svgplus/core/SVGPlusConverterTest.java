@@ -91,7 +91,7 @@ public class SVGPlusConverterTest {
 		try {
 			converter.run("" +
 					" -c "+Fixtures.BASIC_FILE +
-					" -i "+Fixtures.PDF_DIR);
+					" -i "+Fixtures.CORE_DIR);
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail("failed: "+e.getCause());

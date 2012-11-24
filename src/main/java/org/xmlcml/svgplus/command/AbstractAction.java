@@ -323,8 +323,11 @@ public abstract class AbstractAction {
 
 	protected void runChildActionList() {
 		List<AbstractAction> childActionList = getChildActionList();
+		if (childActionList.size() == 0) {
+			LOG.debug("*** No child actions given ***");
+		}
 		for (AbstractAction abstractAction : childActionList) {
-			LOG.debug("running: "+abstractAction);
+			LOG.trace("running: "+abstractAction);
 			// maybe put filter in here
 			abstractAction.run();
 		}

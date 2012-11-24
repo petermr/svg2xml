@@ -158,4 +158,8 @@ public class SemanticDocumentElement extends AbstractActionElement {
 		return new SemanticDocumentAction(this);
 	}
 
+	public SemanticDocumentAction getSemanticDocumentAction() {
+		return (SemanticDocumentAction) this.getAction();
+	}
+
 }

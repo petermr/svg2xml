@@ -8,8 +8,8 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.tools.Caption;
 import org.xmlcml.svgplus.tools.Chunk;
 
@@ -17,7 +17,7 @@ import org.xmlcml.svgplus.tools.Chunk;
  * @author pm286
  *
  */
-public class FigureAnalyzer extends AbstractAnalyzer {
+public class FigureAnalyzer extends AbstractPageAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(FigureAnalyzer.class);
 
@@ -35,7 +35,7 @@ public class FigureAnalyzer extends AbstractAnalyzer {
 	private Real2 clusterWhitespaceBoxMargins = new Real2(5.0, 5.0);
 	private Double panelSeparation = 3.0;
 
-	public FigureAnalyzer(PageAnalyzer pageAnalyzer) {
+	public FigureAnalyzer(CurrentPage pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 	
@@ -145,7 +145,7 @@ public class FigureAnalyzer extends AbstractAnalyzer {
 	}
 
 	private Chunk createCaptionAndReplace(SVGElement captionElement) {
-		Chunk caption = new Caption(pageAnalyzer/*, figureCaptionStyle*/);
+		Chunk caption = new Caption(currentPage);
 		caption.copyAttributesAndChildrenFromSVGElement(captionElement);
 		captionElement.detach();
 		caption.createElementListAndCalculateBoundingBoxes();

@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.paths.ComplexLine.CombType;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svgplus.tools.PlotBox;
@@ -38,12 +38,12 @@ public class AxisAnalyzer {
 	private Axis horizontalAxis;
 	
 	private SVGElement container;
-	private PageAnalyzer pageAnalyzer;
+	private CurrentPage pageAnalyzer;
 	public double eps;
 
 	private PlotBox plotBox;
 
-	public AxisAnalyzer(SVGElement container, PageAnalyzer pageAnalyzer) {
+	public AxisAnalyzer(SVGElement container, CurrentPage pageAnalyzer) {
 		this.container = container;
 		this.setPageAnalyzer(pageAnalyzer);
 	}
@@ -154,11 +154,11 @@ public class AxisAnalyzer {
 		this.maxTickLength = maxTickLength;
 	}
 
-	public PageAnalyzer getPageAnalyzer() {
+	public CurrentPage getPageAnalyzer() {
 		return pageAnalyzer;
 	}
 
-	public void setPageAnalyzer(PageAnalyzer pageAnalyzer) {
+	public void setPageAnalyzer(CurrentPage pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
 	}
 

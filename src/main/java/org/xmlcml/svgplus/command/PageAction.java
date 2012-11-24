@@ -133,7 +133,8 @@ public abstract class PageAction extends AbstractAction {
 		CMLUtil.outputQuietly(svg, new File(filename), 1);
 	}
 
-	public PageAnalyzer getPageAnalyzer() {
-		return semanticDocumentAction.getPageAnalyzer();
+	public CurrentPage getPageAnalyzer() {
+		CurrentPage pageAnalyzer = semanticDocumentAction.getPageAnalyzer();
+		return pageAnalyzer;
 	}
 }

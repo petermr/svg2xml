@@ -17,7 +17,7 @@ import org.xmlcml.svgplus.paths.PolylineAnalyzer;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 import org.xmlcml.svgplus.tools.PlotBox;
 
-public class ChunkAnalyzer extends AbstractAnalyzer {
+public class ChunkAnalyzer extends AbstractPageAnalyzer {
 
 	private static final Logger LOG = Logger.getLogger(ChunkAnalyzer.class);
 
@@ -32,9 +32,9 @@ public class ChunkAnalyzer extends AbstractAnalyzer {
 	private PolylineAnalyzer polylineAnalyzer;
 	private SVGG svgg;
 	private PlotBox plotBox;
-	private PageAnalyzer pageAnalyzer;
+	private CurrentPage pageAnalyzer;
 
-	public ChunkAnalyzer(PageAnalyzer pageAnalyzer) {
+	public ChunkAnalyzer(CurrentPage pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
 		pageAnalyzer.setCurrentChunkAnalyzer(this);
 	}

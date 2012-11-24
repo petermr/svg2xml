@@ -6,76 +6,67 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
-public class Chunk extends SVGElement {
+public class Chunk extends SVGG {
 	
+	private static final String ROLE = "role";
+	private static final String CHUNK = "chunk";
 	private final static Logger LOG = Logger.getLogger(Chunk.class);
 	
+	protected CurrentPage currentPage;
 	public Chunk() {
-		super("chunk");
+		PDF2SVGUtil.setSVGXAttribute(this, ROLE, CHUNK);
 	}
 
-//	public Chunk(PageChunkSplitter pageChunkSplitter, SVGSVG svgPage) {
-//		this();
-//		// TODO Auto-generated constructor stub
-//	}
-
-
-	public Chunk(PageChunkSplitter pageChunkSplitter, SVGSVG svgPage) {
-		super("grot");
-		// TODO Auto-generated constructor stub
+	public Chunk(CurrentPage currentPage) {
+		this();
+		this.currentPage = currentPage;
 	}
 
 	public void writeTo(File outputDir, String type, int i) throws IOException  {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("NYI");
 	}
 
 	public void createElementListAndCalculateBoundingBoxes() {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("NYI");
 	}
 
 	public void copyAttributesAndChildrenFromSVGElement(SVGElement captionElement) {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("NYI");
 	}
 
 	public List<SVGElement> getElementList() {
-		// TODO Auto-generated method stub
+		LOG.error("NYI");
 		return null;
 	}
 
 	public String getStringValue() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("NYI");
 	}
 
 	public static Chunk createAndReplace(SVGElement chunkElement) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("NYI");
 	}
 
 	public void setBoundingBoxCacheForSelfAndDescendants(boolean b) {
-		// TODO Auto-generated method stub
-		
+		throw new RuntimeException("NYI");
 	}
 
 	public boolean isScript() {
-		// TODO Auto-generated method stub
-		return false;
+		throw new RuntimeException("NYI");
 	}
 
 	public boolean isTextChunk() {
-		// TODO Auto-generated method stub
-		return false;
+		throw new RuntimeException("NYI");
 	}
 
 	public List<Chunk> splitIntoChunks(Double ySEP_0, BoxEdge ymin) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("NYI");
 	}
 
 }

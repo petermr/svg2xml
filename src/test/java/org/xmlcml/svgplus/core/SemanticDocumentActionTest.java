@@ -26,9 +26,12 @@ public class SemanticDocumentActionTest {
 	@Test
 	public void testSetVariableWithIncorrectName() {
 		SemanticDocumentAction semanticDocumentAction = new SemanticDocumentAction();
-		semanticDocumentAction.setVariable("fooName", "barValue");
-		Object value = semanticDocumentAction.getVariable("fooName");
-		Assert.assertNull("value should be null", value);
+		try {
+			semanticDocumentAction.setVariable("fooName", "barValue");
+			Assert.fail("Should throw exception for bad name");
+		} catch (Exception e) {
+			Assert.assertEquals("Bad variable name: fooName", e.getMessage());
+		}
 	}
 	
 	@Test

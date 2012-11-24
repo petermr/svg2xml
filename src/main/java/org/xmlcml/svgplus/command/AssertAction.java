@@ -24,42 +24,19 @@ public class AssertAction extends PageAction {
 	@Override
 	public void run() {
 		String message = getMessage() == null ? "" : getMessage();
-		String filename = getFilename();
+		String refFilename = getFilename();
 		String xpath = getXPath();
 		String name = getName();
-		if (filename != null) {
-			compareXML(message, filename, xpath, name);
-			return;
+		String refValue = getValue();
+		if (refFilename != null) {
+			compareXML(message, refFilename, xpath, name);
+		} else if (xpath != null) {
+			testXPath(message, xpath, refValue);
+		} else if (name != null && refValue != null) {
+			testNameValue(name, refValue);
 		}
-		Nodes nodes = getSVGPage().query(xpath, CMLConstants.SVG_XPATH);
-		int nnode = nodes.size();
-		String expectedCountS = getCount();
-		int	expectedCount = getCountWithDefault();
-		if (expectedCount != 1) {
-			if (nnode != expectedCount) {
-				for (int i = 0; i < nnode; i++) {
-					LOG.trace(nodes.get(i).toXML());
-				}
-				fail(message+" expected "+expectedCount+" nodes from "+xpath+", found: "+nnode+" on "+getActionElement().toXML());
-			}
-		} else {
-			if (nnode != 1) {
-				fail(message+" expected 1 node from "+xpath+", found: "+nodes.size()+" on "+getActionElement().toXML());
-			}
-			String value = getValue();
-			if (value == null) {
-				if (expectedCountS == null) {
-					warn("no value or count given: "+getActionElement().toXML());
-				}
-			} else {
-				String nodeValue = nodes.get(0).getValue();
-				if (!value.equals(nodeValue)) {
-					fail(message+" expected "+value+" from "+xpath+", got: "+nodeValue+" on "+getActionElement().toXML());
-				}
-			}
-		}
-
 	}
+
 
 	private void compareXML(String message, String filename, String xpath, String name) {
 		if (name != null) {
@@ -78,6 +55,47 @@ public class AssertAction extends PageAction {
 		}
 	}
 	
+	private void testXPath(String message, String xpath, String refValue) {
+		Nodes nodes = getSVGPage().query(xpath, CMLConstants.SVG_XPATH);
+		int nnode = nodes.size();
+		String expectedCountS = getCount();
+		int	expectedCount = getCountWithDefault();
+		if (expectedCount != 1) {
+			if (nnode != expectedCount) {
+				for (int i = 0; i < nnode; i++) {
+					LOG.trace(nodes.get(i).toXML());
+				}
+				fail(message+" expected "+expectedCount+" nodes from "+xpath+", found: "+nnode+" on "+getActionElement().toXML());
+			}
+		} else {
+			if (nnode != 1) {
+				fail(message+" expected 1 node from "+xpath+", found: "+nodes.size()+" on "+getActionElement().toXML());
+			}
+			if (refValue == null) {
+				if (expectedCountS == null) {
+					warn("no value or count given: "+getActionElement().toXML());
+				}
+			} else {
+				String nodeValue = nodes.get(0).getValue();
+				if (!refValue.equals(nodeValue)) {
+					fail(message+" expected "+refValue+" from "+xpath+", got: "+nodeValue+" on "+getActionElement().toXML());
+				}
+			}
+		}
+	}
+	
+	private void testNameValue(String name, String refValue) {
+		LOG.trace(semanticDocumentAction.getDebugString());
+		Object testValue = semanticDocumentAction.getVariable(name);
+		if (testValue == null) {
+			throw new RuntimeException("Cannot find name: "+name);
+		}
+		String testString = testValue.toString();
+		if (!testString.equals(refValue)) {
+			throw new RuntimeException("Assert for: ("+name+") expected: "+refValue+"; found: "+testString);
+		}
+	}
+
 	private void compareXML(String message, String filename, String xpath) {
 		try {
 			

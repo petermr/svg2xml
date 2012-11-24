@@ -13,7 +13,7 @@ public class DebugAction extends DocumentAction {
 	
 	@Override
 	public void run() {
-		LOG.debug(semanticDocumentAction.debug());
+		LOG.debug(semanticDocumentAction.getDebugString());
 	}
 
 }

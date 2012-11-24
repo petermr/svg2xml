@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -32,7 +32,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageClipPathAnalyzer  extends AbstractAnalyzer {
+public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
 
 	public static String[] fillColors = {
 		"red",
@@ -52,8 +52,9 @@ public class PageClipPathAnalyzer  extends AbstractAnalyzer {
 	private Multimap<String, SVGElement> elementsByClip;
 	private Multimap<String, SVGPath> pathsByClip;
 	private Multimap<String, SVGText> textsByClip;
+	private CurrentPage pageAnalyzer;
 
-	public PageClipPathAnalyzer(PageAnalyzer pageAnalyzer) {
+	public PageClipPathAnalyzer(CurrentPage pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
 	}
 	
@@ -62,8 +63,8 @@ public class PageClipPathAnalyzer  extends AbstractAnalyzer {
 		elementsByClip = ArrayListMultimap.create();
 		pathsByClip = ArrayListMultimap.create();
 		textsByClip = ArrayListMultimap.create();
-		clipPathRefsList = SVGUtil.getQuerySVGElements(svgPage, "//svg:*[@clip-path]");
-		svgClipPathList = SVGUtil.getQuerySVGElements(svgPage, "/svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
+		clipPathRefsList = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), "//svg:*[@clip-path]");
+		svgClipPathList = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), "/svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
 		
 		createMapsByClipPath();
 		
@@ -127,6 +128,6 @@ public class PageClipPathAnalyzer  extends AbstractAnalyzer {
 		SVGRect  bb = svgElement.createGraphicalBoundingBox();
 		bb.setFill(fill);
 		bb.setOpacity(0.5);
-		svgPage.appendChild(bb);
+		pageAnalyzer.getSVGPage().appendChild(bb);
 	}
 }

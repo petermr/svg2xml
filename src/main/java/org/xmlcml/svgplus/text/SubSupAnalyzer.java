@@ -16,14 +16,14 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-public class SubSupAnalyzer extends AbstractAnalyzer {
+public class SubSupAnalyzer extends AbstractPageAnalyzer {
 
 	public static final String SCRIPT_TYPE = "scriptType";
 

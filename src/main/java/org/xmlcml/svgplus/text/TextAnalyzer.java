@@ -30,9 +30,9 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
 import org.xmlcml.svgplus.command.DocumentAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
@@ -45,7 +45,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class TextAnalyzer extends AbstractAnalyzer {
+public class TextAnalyzer extends AbstractPageAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(TextAnalyzer.class);
 	static {
@@ -97,16 +97,12 @@ public class TextAnalyzer extends AbstractAnalyzer {
 	private boolean removeNumericTSpans;
 	private boolean splitAtSpaces;
 	
-	public TextAnalyzer() {
-		super(new PageAnalyzer());
-	}
+//	public TextAnalyzer() {
+//		super(new CurrentPage());
+//	}
 	
-	public TextAnalyzer(SVGSVG svgPage) {
-		setSVGPage(svgPage);
-	}
-
-	public TextAnalyzer(PageAnalyzer pageAnalyzer) {
-		super(pageAnalyzer);
+	public TextAnalyzer(CurrentPage currentPage) {
+		super(currentPage);
 	}
 
 	public String getTag() {
@@ -185,7 +181,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 
 	public TextChunk analyzeRawText(Chunk chunk) {
 		this.chunk = chunk;
-		this.svgParent = (chunk != null) ? chunk : pageAnalyzer.getSVGPage();
+		this.svgParent = (chunk != null) ? chunk : currentPage.getSVGPage();
 		
 		this.getRawTextCharacterList();
 		this.createRawTextCharacterPositionMaps();
@@ -199,7 +195,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 	
 	public void applyAndRemoveCumulativeTransforms() {
 		Long time0 = System.currentTimeMillis();
-		SVGUtil.applyAndRemoveCumulativeTransformsFromDocument(getSVGPage());
+		SVGUtil.applyAndRemoveCumulativeTransformsFromDocument(currentPage.getSVGPage());
 		LOG.trace("cumulative transforms on text: "+(System.currentTimeMillis()-time0));
 	}
 
@@ -508,14 +504,14 @@ public class TextAnalyzer extends AbstractAnalyzer {
 		return spaceSizes;
 	}
 	
-	public SVGElement drawSubLineBoundingBoxes() {
+	public void /*SVGElement*/ drawSubLineBoundingBoxes() {
 		BoundingBoxManager boundingBoxManager = this.getSubLineBoundingBoxManager(SimpleFont.SIMPLE_FONT);
 		List<Real2Range> boxes = boundingBoxManager.getBBoxList();
-		return drawBoxes(boxes, "blue", "yellow", 0.3);
+		/*return */ drawBoxes(boxes, "blue", "yellow", 0.3);
 	}
 
-	public SVGElement drawBoxes(List<Real2Range> boxes, String stroke, String fill, Double opacity) {
-		SVGG g = (SVGG) svgPage.query("svg:g", SVGConstants.SVG_XPATH).get(0);
+	public void /*SVGElement*/ drawBoxes(List<Real2Range> boxes, String stroke, String fill, Double opacity) {
+		SVGG g = (SVGG) currentPage.getSVGPage().query("svg:g", SVGConstants.SVG_XPATH).get(0);
 		SVGG g1 = new SVGG();
 		g.appendChild(g1);
 		for (Real2Range bbox : boxes) {
@@ -526,7 +522,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 			rect.setOpacity(opacity);
 			g1.appendChild(rect);
 		}
-		return svgPage;
+//		return svgPage;
 	}
 
 	public void debug() {
@@ -742,7 +738,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 			if (chunk.isTextChunk()) {
 				chunk.setId("textChunk"+id);
 				if (SVGUtil.getQuerySVGElements(chunk, "svg:g").size() == 0) {
-					TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
+					TextAnalyzer textAnalyzer = new TextAnalyzer(currentPage);
 					textChunk = textAnalyzer.analyzeRawText(chunk);
 					// processing a probable sub/superscript
 					if (textChunk.isScript()) {
@@ -771,7 +767,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 		subLineByYCoord = ArrayListMultimap.create();
 		for (SVGElement element : elements) {
 			if (hasNoSVGGChildren()) {
-				TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
+				TextAnalyzer textAnalyzer = new TextAnalyzer(currentPage);
 				textAnalyzer.analyzeRawText(element);
 				horizontalCharacterList.addAll(textAnalyzer.horizontalCharacterList);
 				for (HorizontalCharacterList subline : horizontalCharacterList) {
@@ -786,7 +782,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 		subLineByYCoord = ArrayListMultimap.create();
 		for (SVGElement element : elements) {
 			if (hasNoSVGGChildren()) {
-				TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
+				TextAnalyzer textAnalyzer = new TextAnalyzer(currentPage);
 				textAnalyzer.analyzeRawText(element);
 				horizontalCharacterList.addAll(textAnalyzer.horizontalCharacterList);
 				for (HorizontalCharacterList subline : horizontalCharacterList) {
@@ -913,7 +909,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 	}
 
 	public void mergeChunks() {
-		List<SVGElement> textChunkList1 = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@"+TEXT+"='"+CHUNK+"']");
+		List<SVGElement> textChunkList1 = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), ".//svg:g[@"+TEXT+"='"+CHUNK+"']");
 		for (SVGElement textChunk : textChunkList1) {
 			List<SVGElement> paraList = SVGUtil.getQuerySVGElements(textChunk, "./*/svg:g[@"+Paragraph.NAME+"='"+Paragraph.PARA+"']");
 			for (SVGElement paraElement : paraList) {
@@ -933,8 +929,7 @@ public class TextAnalyzer extends AbstractAnalyzer {
 
 	SimpleFont ensureSimpleFont() {
 		if (this.simpleFont == null) {
-			simpleFont = pageAnalyzer == null || pageAnalyzer.getSemanticDocumentAction() == null ?
-					null : pageAnalyzer.getSemanticDocumentAction().getSimpleFont();
+			simpleFont = currentPage.getSemanticDocumentAction().getSimpleFont();
 			if (this.simpleFont == null) {
 				simpleFont = SimpleFont.SIMPLE_FONT;
 			}

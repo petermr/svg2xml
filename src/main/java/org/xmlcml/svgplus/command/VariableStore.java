@@ -82,6 +82,8 @@ public class VariableStore {
 		ensureVariableMap();
 		if (checkName(name)) {
 			variableMap.put(name, value);
+		} else {
+			throw new RuntimeException("Bad variable name: "+name);
 		}
 	}
 
@@ -111,10 +113,11 @@ public class VariableStore {
 
 	public void deleteKey(String name) {
 		ensureVariableMap();
-		Object obj = variableMap.get(name);
-		if (obj != null) {
-			variableMap.remove(obj);
-		}
+		variableMap.remove(name);
+//		Object obj = variableMap.get(name);
+//		if (obj != null) {
+//			variableMap.remove(obj);
+//		}
 	}
 	
 }

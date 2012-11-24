@@ -43,15 +43,15 @@ public class DocumentIteratorAction extends DocumentAction {
 	
 	@Override
 	public void run() {
-		LOG.trace("executing: \n"+getActionElement().getString());
+		LOG.debug("executing: \n"+getActionElement().getString());
 		infile = getInfile();
 		outfile = getOutfile();
 		format = getFormat();
 		regex = getRegex();
 		if (infile == null) {
-			LOG.trace("No input file given");
+			LOG.debug(" *** No input file given ***");
 		} else if (!infile.exists()) {
-			LOG.trace("Input file does not exist: "+infile.getAbsolutePath());
+			throw new RuntimeException("*** Input file does not exist: "+infile.getAbsolutePath()+" ***");
 		} else {
 			createInputFileList();
 			createOutputDirectory();

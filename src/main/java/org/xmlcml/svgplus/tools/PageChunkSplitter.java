@@ -12,8 +12,8 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 /**
@@ -39,7 +39,7 @@ import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
  * @author pm286
  *
  */
-public class PageChunkSplitter extends AbstractAnalyzer {
+public class PageChunkSplitter extends AbstractPageAnalyzer {
 	private static final Logger LOG = Logger.getLogger(PageChunkSplitter.class);
 
 	public static final String CLIP = "CLIP";
@@ -56,9 +56,12 @@ public class PageChunkSplitter extends AbstractAnalyzer {
 	private Double XSEP_0 = 10.0;
 	
 	private List<Chunk> finalChunkList;
+	private CurrentPage pageAnalyzer;
+	private SVGSVG svgPage;
 
-	public PageChunkSplitter(PageAnalyzer pageAnalyzer) {
+	public PageChunkSplitter(CurrentPage pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
+		this.svgPage = pageAnalyzer.getSVGPage();
 	}
 
 //	/** the main analysis routine
@@ -124,7 +127,7 @@ public class PageChunkSplitter extends AbstractAnalyzer {
 	public List<Chunk> splitByWhitespace() {
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
-		Chunk topChunk = new Chunk(this, svgPage);
+		Chunk topChunk = new Chunk(currentPage);
 		LOG.trace("descendants0: "+topChunk.getElementList().size()+"/"+(System.currentTimeMillis()-time0));
 		topChunk.setBoundingBoxCacheForSelfAndDescendants(true);
 		LOG.trace("descendants: "+topChunk.getElementList().size()+"/"+(System.currentTimeMillis()-time0));
@@ -173,8 +176,4 @@ public class PageChunkSplitter extends AbstractAnalyzer {
 		}
 	}
 	
-	public AbstractAnalyzer getPathInterpreter() {
-		return pageAnalyzer;
-	}
-
 }

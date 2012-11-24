@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 
 /**
  * @author pm286
  *
  */
-public class TableAnalyzer extends AbstractAnalyzer {
+public class TableAnalyzer extends AbstractPageAnalyzer {
 	private static final Logger LOG = Logger.getLogger(TableAnalyzer.class);
 	
 	private List<Table> tableList;
 
-	public TableAnalyzer(PageAnalyzer pageAnalyzer) {
+	public TableAnalyzer(CurrentPage pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 	

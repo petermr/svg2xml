@@ -21,14 +21,17 @@ public class WhitespaceChunkerAction extends PageAction {
 	
 	@Override
 	public void run() {
-		PageChunkSplitter pageChunkSplitter = getPageAnalyzer().ensurePageChunkSplitter();
-		Integer depth = getDepth();
-		if (depth != null) {
-			LOG.trace("DEPTH cannot yet be set");
+		if (true) {
+			LOG.error("NYI");
+		} else {
+			PageChunkSplitter pageChunkSplitter = getPageAnalyzer().ensurePageChunkSplitter();
+			Integer depth = getDepth();
+			if (depth != null) {
+				LOG.trace("DEPTH cannot yet be set");
+			}
+			List<Chunk> finalChunkList = pageChunkSplitter.splitByWhitespace();
+			pageChunkSplitter.labelLeafNodes(finalChunkList);
 		}
-		List<Chunk> finalChunkList = pageChunkSplitter.splitByWhitespace();
-		pageChunkSplitter.labelLeafNodes(finalChunkList);
-		
 	}
 
 }

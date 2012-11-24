@@ -3,8 +3,8 @@ package org.xmlcml.svgplus.tools;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -17,7 +17,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageFontSizeAnalyzer extends AbstractAnalyzer {
+public class PageFontSizeAnalyzer extends AbstractPageAnalyzer {
 
 	private static final Logger LOG = Logger.getLogger(PageFontSizeAnalyzer.class);
 
@@ -34,8 +34,6 @@ public class PageFontSizeAnalyzer extends AbstractAnalyzer {
 		"lime",
 	};
 	
-	private SVGSVG svg;
-	private AbstractAnalyzer pageAnalyzer;
 	private List<SVGElement> textList;
 	private Multimap<Integer, SVGElement> elementsByFontSize;
 
@@ -43,15 +41,14 @@ public class PageFontSizeAnalyzer extends AbstractAnalyzer {
 		return elementsByFontSize;
 	}
 
-	public PageFontSizeAnalyzer(PageAnalyzer pageAnalyzer) {
-		this.pageAnalyzer = pageAnalyzer;
-		this.svg = pageAnalyzer.getSVGPage();
+	public PageFontSizeAnalyzer(CurrentPage currentPage) {
+		super(currentPage);
 	}
 	
 	public void analyze() {
 		elementsByFontSize = ArrayListMultimap.create();
 		LOG.debug("getting font sizes");
-		textList = SVGUtil.getQuerySVGElements(svg, "//svg:text[@font-size]");
+		textList = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), "//svg:text[@font-size]");
 		LOG.debug("creating maps");
 		createMapsForElementsByFontSize();
 		LOG.debug("created maps");

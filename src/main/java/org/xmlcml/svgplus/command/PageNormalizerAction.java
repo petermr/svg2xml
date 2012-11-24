@@ -75,7 +75,7 @@ public class PageNormalizerAction extends PageAction  {
 			SVGUtil.denormalizeFontSizes(getSVGPage());
 		}
 		if (isTrue(PageActionElement.REMOVE_UNWANTED_ATTRIBUTES)) {
-			PageAnalyzer.removeUnwantedSVGAttributesAndAddIds(getSVGPage());
+			CurrentPage.removeUnwantedSVGAttributesAndAddIds(getSVGPage());
 		}
 		if (isTrue(PageActionElement.CLEAN_SVG_STYLES)) {
 			removeCSSStyleAndExpandAsSeparateAttributes();

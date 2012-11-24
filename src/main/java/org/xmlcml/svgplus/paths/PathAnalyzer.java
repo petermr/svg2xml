@@ -31,8 +31,8 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.command.PageNormalizerAction;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.Chunk;
@@ -54,7 +54,7 @@ import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
  * @author pm286
  *
  */
-public class PathAnalyzer extends AbstractAnalyzer {
+public class PathAnalyzer extends AbstractPageAnalyzer {
 
 	private static final String NONE = "none";
 
@@ -78,16 +78,10 @@ public class PathAnalyzer extends AbstractAnalyzer {
 	public PathAnalyzer() {
 	}
 
-	public PathAnalyzer(PageAnalyzer pageAnalyzer) {
+	public PathAnalyzer(CurrentPage pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 	
-	public PathAnalyzer(SVGSVG svgPage) {
-		this();
-		setSVGPage(svgPage);
-	}
-
-
 	public void addAnnotatedPaths(List<SVGPath> pathList) {
 		ensureAnnotatedPathListG();
 		for (SVGPath path: pathList) {
@@ -98,8 +92,8 @@ public class PathAnalyzer extends AbstractAnalyzer {
 	private void ensureAnnotatedPathListG() {
 		if (annotatedPathListG == null) {
 			this.annotatedPathListG = new SVGG();
-			annotatedPathListG.addAttribute(new Attribute(PageAnalyzer.ROLE, PageAnalyzer.PATH));
-			svgPage.appendChild(annotatedPathListG);
+			annotatedPathListG.addAttribute(new Attribute(CurrentPage.ROLE, CurrentPage.PATH));
+			currentPage.getSVGPage().appendChild(annotatedPathListG);
 		}
 	}
 	
@@ -229,14 +223,14 @@ public class PathAnalyzer extends AbstractAnalyzer {
  	} 
 
 	public void formatClipPaths() {
-		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(svgPage, ".//svg:clipPath/svg:path");
+		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:clipPath/svg:path");
 		for (SVGElement clipPath : clipPaths) {
-			clipPath.format(PageAnalyzer.DECIMAL_PLACES);
+			clipPath.format(CurrentPage.DECIMAL_PLACES);
 		}
 	}
 	
 	public void identifyAndRemoveBoxedChunksAndTidy() {
-		List<SVGElement> chunkElements = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@LEAF and [svg:path | svg:line | svg:rect ");
+		List<SVGElement> chunkElements = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:g[@LEAF and [svg:path | svg:line | svg:rect ");
 		
 	}
 
@@ -297,7 +291,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 				newSVGElement = polyline;
 				polyline.setId("polyline"+id);
 				LOG.trace("created polyline with lines: "+polyline.getLineList().size());
-				polyline.format(PageAnalyzer.DECIMAL_PLACES);
+				polyline.format(CurrentPage.DECIMAL_PLACES);
 				boolean duplicate = polyline.removeDuplicateLines();
 				if (duplicate) {
 					LOG.trace("polyline has duplicate lines");
@@ -306,7 +300,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 				if (line != null) {
 					line.setId("line"+id);
 					LOG.trace("created line");
-					line.format(PageAnalyzer.DECIMAL_PLACES);
+					line.format(CurrentPage.DECIMAL_PLACES);
 					replace(path, line);
 					newSVGElement = line;
 				} else {
@@ -321,11 +315,11 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 								rect.setTitle("was_polyline");
 								newSVGElement = rect;
 							} else {
-								polygon.format(PageAnalyzer.DECIMAL_PLACES);
+								polygon.format(CurrentPage.DECIMAL_PLACES);
 								replace(path, polygon);
 							}
 						} else {
-							polygon.format(PageAnalyzer.DECIMAL_PLACES);
+							polygon.format(CurrentPage.DECIMAL_PLACES);
 							replace(path, polygon);
 						}
 					} else {
@@ -345,7 +339,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		SVGCircle circle = path.createCircle(_CIRCLE_EPS);
 		if (circle != null) {
 			LOG.trace("created circle");
-			circle.format(PageAnalyzer.DECIMAL_PLACES);
+			circle.format(CurrentPage.DECIMAL_PLACES);
 			circle.setId("circle"+id);
 			replace(path, circle);
 			newSVGElement = circle;
@@ -369,7 +363,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 
 	private void createRect(SVGPath path, SVGRect rect, int id) {
 		LOG.trace("created rect: "+rect);
-		rect.format(PageAnalyzer.DECIMAL_PLACES);
+		rect.format(CurrentPage.DECIMAL_PLACES);
 		rect.setId("rect"+id);
 		replace(path, rect);
 	}
@@ -430,7 +424,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	 * if their paths are equal, remove the later one(s)
 	 */
 	public void removeDuplicatePaths() {
-		List<SVGElement> paths = SVGUtil.getQuerySVGElements(svgPage, "//svg:path");
+		List<SVGElement> paths = SVGUtil.getQuerySVGElements(getSVGPage(), "//svg:path");
 		Set<String> dStringSet = new HashSet<String>();
 		int count = 0;
 		for (SVGElement path : paths) {
@@ -451,7 +445,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	public List<SVGLine> splitPolylinesToLines(Integer minLinesInPolyline) {
 		LOG.trace("minLines: "+minLinesInPolyline);
 		List<SVGLine> lineList = new ArrayList<SVGLine>();
-		List<SVGElement> polylineList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:polyline");
+		List<SVGElement> polylineList = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:polyline");
 		for (SVGElement polyline : polylineList) {
 			List<SVGLine> lines = ((SVGPolyline)polyline).createLineList();
 			if (lines.size() < minLinesInPolyline) {
@@ -536,7 +530,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 
 	public void enforceVisibility() {
 		List<SVGElement> elements = SVGUtil.getQuerySVGElements(
-				svgPage, "//svg:path | //svg:polygon | //svg:line | //svg:polyline | //svg:circle | //svg:rect");
+				getSVGPage(), "//svg:path | //svg:polygon | //svg:line | //svg:polyline | //svg:circle | //svg:rect");
 		for (SVGElement element : elements) {
 			String stroke = element.getStroke();
 			String fill = element.getFill();

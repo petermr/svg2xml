@@ -10,15 +10,16 @@ import org.xmlcml.euclid.Vector2;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.command.PathNormalizerAction;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.PlotBox;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-public class LineAnalyzer extends AbstractAnalyzer {
+public class LineAnalyzer extends AbstractPageAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(LineAnalyzer.class);
 
@@ -30,16 +31,11 @@ public class LineAnalyzer extends AbstractAnalyzer {
 	private List<PlotBox> plotBoxList;
 	private PlotBox plotBox;
 
-	public LineAnalyzer() {
-		super(new PageAnalyzer());
+	protected LineAnalyzer() {
 	}
 	
-	public LineAnalyzer(SVGSVG svgPage) {
-		setSVGPage(svgPage);
-	}
-
-	public LineAnalyzer(PageAnalyzer pageAnalyzer) {
-		super(pageAnalyzer);
+	public LineAnalyzer(CurrentPage currentPage) {
+		super(currentPage);
 	}
 
 	/** copy lines for analysis
@@ -84,7 +80,7 @@ public class LineAnalyzer extends AbstractAnalyzer {
 
 	private void findAxes() {
 		plotBoxList = new ArrayList<PlotBox>();
-		AxisAnalyzer axisAnalyzer = new AxisAnalyzer(svgg, pageAnalyzer);
+		AxisAnalyzer axisAnalyzer = new AxisAnalyzer(svgg, currentPage);
 		axisAnalyzer.createVerticalHorizontalAxisList(lines, PathNormalizerAction.EPS);
 		plotBox = axisAnalyzer.getPlotBox();
 		if (plotBox != null) {

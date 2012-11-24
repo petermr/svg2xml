@@ -25,15 +25,15 @@ import org.xmlcml.graphics.svg.SVGMarker;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractAnalyzer;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
 import org.xmlcml.svgplus.command.ChunkAnalyzer;
-import org.xmlcml.svgplus.command.PageAnalyzer;
+import org.xmlcml.svgplus.command.CurrentPage;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svgplus.tools.PlotBox;
 import org.xmlcml.svgplus.util.GraphUtil;
 
 
-public class PolylineAnalyzer extends AbstractAnalyzer {
+public class PolylineAnalyzer extends AbstractPageAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(PolylineAnalyzer.class);
 
@@ -62,7 +62,7 @@ public class PolylineAnalyzer extends AbstractAnalyzer {
 	public PolylineAnalyzer() {
 	}
 
-	public PolylineAnalyzer(PageAnalyzer pageAnalyzer) {
+	public PolylineAnalyzer(CurrentPage pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 	
@@ -122,7 +122,7 @@ public class PolylineAnalyzer extends AbstractAnalyzer {
 			} else {
 				unorientedLineList.add(line);
 			}
-			line.format(PageAnalyzer.DECIMAL_PLACES);
+			line.format(CurrentPage.DECIMAL_PLACES);
 		}
 	}
 
@@ -170,7 +170,7 @@ public class PolylineAnalyzer extends AbstractAnalyzer {
 
 	public void analyzePolylines(SVGG svgg, List<SVGPolyline> polylines) {
 		this.svgg = svgg;
-		ChunkAnalyzer chunkAnalyzer = this.pageAnalyzer.getCurrentChunkAnalyzer();
+		ChunkAnalyzer chunkAnalyzer = this.currentPage.getCurrentChunkAnalyzer();
 		PlotBox plotBox = chunkAnalyzer.getPlotBox();
 //		List<SVGRect> axisBoxList = SVGRect.extractRects(SVGUtil.getQuerySVGElements(
 //				svgg, ".//svg:rect[@class='"+AxisAnalyzer.AXES_BOX+"']"));
