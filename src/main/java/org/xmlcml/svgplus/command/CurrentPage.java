@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGClipPath;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
@@ -46,9 +47,9 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageAnalyzer extends AbstractAnalyzer {
+public class CurrentPage {
 
-	private static final Logger LOG = Logger.getLogger(PageAnalyzer.class);
+	private static final Logger LOG = Logger.getLogger(CurrentPage.class);
 	
 	private static final String SHAPE_RENDERING = "shape-rendering";
 	private static final String SPACE = "space";
@@ -75,7 +76,8 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	private BiMap<String, String> clipPathByIdMap;
 	
-//	private SVGSVG svgPage;
+	private SVGSVG svgPage;             
+//	private SVGG svgg;                  
 	private int pageNumber;
 	private String pageNumberString;
 	private Integer pageNumberInteger;
@@ -94,16 +96,15 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	private Integer rotationAngle;
 
-	public PageAnalyzer() {
+	private SemanticDocumentAction semanticDocumentAction;
+
+	public CurrentPage() {
 	}
 	
-	public PageAnalyzer(SVGSVG svgPage) {
-		this(null, svgPage);
-	}
-
-	public PageAnalyzer(SemanticDocumentAction semanticDocumentAction, SVGSVG svgPage) {
+	public CurrentPage(SemanticDocumentAction semanticDocumentAction) {
 		this();
-		this.svgPage = svgPage;
+		this.semanticDocumentAction = semanticDocumentAction;
+		this.svgPage = semanticDocumentAction.getSVGPage();
 	}
 
 	public static void removeUnwantedSVGAttributesAndAddIds(SVGSVG svgPage) {
@@ -194,7 +195,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		}
 	}
 
-	public void analyzeClipPathsAndAddToMap(Multimap<String, PageAnalyzer> clipPathDMap) {
+	public void analyzeClipPathsAndAddToMap(Multimap<String, CurrentPage> clipPathDMap) {
 		analyzeClipPaths();
 		addClipPathsToMap(clipPathDMap);
 	}
@@ -210,7 +211,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		}
 	}
 
-	public void addClipPathsToMap(Multimap<String, PageAnalyzer> clipPathDMap) {
+	public void addClipPathsToMap(Multimap<String, CurrentPage> clipPathDMap) {
 		List<SVGElement> clipPaths  = this.getPageClipPathAnalyzer().getClipPathList();
 		for (SVGElement clipPath : clipPaths) {
 			SVGPath path = (SVGPath) ((SVGClipPath) clipPath).getChildElements().get(0);
@@ -220,7 +221,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		}
 	}
 
-	public void analyzeFontSizesAndAddToMap(Multimap<Integer, PageAnalyzer> fontSizeMap) {
+	public void analyzeFontSizesAndAddToMap(Multimap<Integer, CurrentPage> fontSizeMap) {
 		analyzeFontSizes();
 		addFontSizesToMap(fontSizeMap);
 	}
@@ -275,7 +276,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	}
 	
 
-	public void addFontSizesToMap(Multimap<Integer, PageAnalyzer> fontSizeMap) {
+	public void addFontSizesToMap(Multimap<Integer, CurrentPage> fontSizeMap) {
 		Multimap<Integer, SVGElement> elementsByFontSize = fontSizeAnalyzer.createMapsForElementsByFontSize();
 		for (Integer fontSize : elementsByFontSize.keySet()) {
 			fontSizeMap.put(fontSize, this);
