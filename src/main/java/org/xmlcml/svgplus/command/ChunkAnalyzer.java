@@ -32,11 +32,9 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 	private PolylineAnalyzer polylineAnalyzer;
 	private SVGG svgg;
 	private PlotBox plotBox;
-	private CurrentPage pageAnalyzer;
 
-	public ChunkAnalyzer(CurrentPage pageAnalyzer) {
-		this.pageAnalyzer = pageAnalyzer;
-		pageAnalyzer.setCurrentChunkAnalyzer(this);
+	public ChunkAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 
 	public void analyzeChunk(SVGG g) {
@@ -63,14 +61,14 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 		texts = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgg, ".//svg:text["+angleCondition+"]"));
 		LOG.trace("ROT "+angle+": "+texts.size());
 		if (texts.size() > 0) {
-//			textAnalyzer = new TextAnalyzer(pageAnalyzer);
+//			textAnalyzer = new TextAnalyzer(pageEditor);
 			textAnalyzer.analyzeTexts(svgg, texts);
 		}
 	}
 	
 	private TextAnalyzer ensureTextAnalyzer() {
 		if (textAnalyzer == null) {
-			textAnalyzer = new TextAnalyzer(pageAnalyzer);
+			textAnalyzer = new TextAnalyzer(semanticDocumentAction);
 		}
 		return textAnalyzer;
 	}
@@ -78,7 +76,7 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 	private void analyzeLines() {
 		lines = SVGLine.extractLines(SVGUtil.getQuerySVGElements(svgg, ".//svg:line"));
 		if (lines.size() > 0) {
-			lineAnalyzer = new LineAnalyzer(pageAnalyzer);
+			lineAnalyzer = new LineAnalyzer(semanticDocumentAction);
 			lineAnalyzer.analyzeLinesAsAxesAndWhatever(svgg, lines);
 		}
 	}
@@ -91,7 +89,7 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 	private void analyzePolylines() {
 		polylines = SVGPolyline.extractPolylines(SVGUtil.getQuerySVGElements(svgg, ".//svg:polyline"));
 		if (polylines.size() > 0) {
-			polylineAnalyzer = new PolylineAnalyzer(pageAnalyzer);
+			polylineAnalyzer = new PolylineAnalyzer(semanticDocumentAction);
 			polylineAnalyzer.analyzePolylines(svgg, polylines);
 		}
 	}

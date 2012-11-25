@@ -11,7 +11,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.command.PathNormalizerAction;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.PlotBox;
@@ -34,8 +34,8 @@ public class LineAnalyzer extends AbstractPageAnalyzer {
 	protected LineAnalyzer() {
 	}
 	
-	public LineAnalyzer(CurrentPage currentPage) {
-		super(currentPage);
+	public LineAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 
 	/** copy lines for analysis
@@ -80,7 +80,7 @@ public class LineAnalyzer extends AbstractPageAnalyzer {
 
 	private void findAxes() {
 		plotBoxList = new ArrayList<PlotBox>();
-		AxisAnalyzer axisAnalyzer = new AxisAnalyzer(svgg, currentPage);
+		AxisAnalyzer axisAnalyzer = new AxisAnalyzer(svgg, semanticDocumentAction);
 		axisAnalyzer.createVerticalHorizontalAxisList(lines, PathNormalizerAction.EPS);
 		plotBox = axisAnalyzer.getPlotBox();
 		if (plotBox != null) {

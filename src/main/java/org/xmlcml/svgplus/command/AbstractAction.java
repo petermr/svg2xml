@@ -342,6 +342,6 @@ public abstract class AbstractAction {
 	}
 
 	public SVGSVG getSVGPage() {
-		return semanticDocumentAction.getSVGPage();
+		return semanticDocumentAction.getPageEditor().getSVGPage();
 	}
 }

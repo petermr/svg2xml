@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
 /**
  * @author pm286
@@ -16,8 +17,8 @@ public class TableAnalyzer extends AbstractPageAnalyzer {
 	
 	private List<Table> tableList;
 
-	public TableAnalyzer(CurrentPage pageAnalyzer) {
-		super(pageAnalyzer);
+	public TableAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 	
 	public void analyze() {
@@ -26,7 +27,7 @@ public class TableAnalyzer extends AbstractPageAnalyzer {
 	public List<Table> findTables() {
 		tableList = new ArrayList<Table>();
 		// NYI
-//		caption = (Caption) Chunk.createFromAndReplace((SVGG)captions.get(0), new Caption(pageAnalyzer, "bar"));
+//		caption = (Caption) Chunk.createFromAndReplace((SVGG)captions.get(0), new Caption(pgeAnalyzer, "bar"));
 //
 //		List<SVGElement> tables = SVGUtil.getQuerySVGElements(
 //				svgPage, "//svg:g[svg:g/svg:g[@name='para']/svg:text[starts-with(., 'Table ')]]");

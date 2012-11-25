@@ -13,7 +13,8 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 /**
@@ -35,12 +36,12 @@ import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
  * 
  * each of these has a special analyzer (TextAnalyzer, etc.)
  * 
- * pageChunkSplitter communicates upwards through pageAnalyzer
+ * pageChunkSplitter communicates upwards through currentPage
  * @author pm286
  *
  */
-public class PageChunkSplitter extends AbstractPageAnalyzer {
-	private static final Logger LOG = Logger.getLogger(PageChunkSplitter.class);
+public class PageChunkSplitterAnalyzer extends AbstractPageAnalyzer {
+	private static final Logger LOG = Logger.getLogger(PageChunkSplitterAnalyzer.class);
 
 	public static final String CLIP = "CLIP";
 	public static final String WHITE = "WHITE";
@@ -56,12 +57,9 @@ public class PageChunkSplitter extends AbstractPageAnalyzer {
 	private Double XSEP_0 = 10.0;
 	
 	private List<Chunk> finalChunkList;
-	private CurrentPage pageAnalyzer;
-	private SVGSVG svgPage;
 
-	public PageChunkSplitter(CurrentPage pageAnalyzer) {
-		this.pageAnalyzer = pageAnalyzer;
-		this.svgPage = pageAnalyzer.getSVGPage();
+	public PageChunkSplitterAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 
 //	/** the main analysis routine
@@ -98,7 +96,7 @@ public class PageChunkSplitter extends AbstractPageAnalyzer {
 				chunk.addAttribute(new Attribute(LEAF, "1"));
 			}
 		}
-		List<SVGElement> topChunks = SVGUtil.getQuerySVGElements(svgPage, "svg:g[@id='"+TOP_CHUNK+"']");
+		List<SVGElement> topChunks = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), "svg:g[@id='"+TOP_CHUNK+"']");
 		if (topChunks.size() != 1) {
 			throw new RuntimeException("Should be ONE top chunk");
 		}
@@ -127,11 +125,11 @@ public class PageChunkSplitter extends AbstractPageAnalyzer {
 	public List<Chunk> splitByWhitespace() {
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
-		Chunk topChunk = new Chunk(currentPage);
+		Chunk topChunk = new Chunk(pageEditor);
 		LOG.trace("descendants0: "+topChunk.getElementList().size()+"/"+(System.currentTimeMillis()-time0));
 		topChunk.setBoundingBoxCacheForSelfAndDescendants(true);
 		LOG.trace("descendants: "+topChunk.getElementList().size()+"/"+(System.currentTimeMillis()-time0));
-		svgPage.appendChild(topChunk);
+		pageEditor.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(YSEP_0, BoxEdge.YMIN);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
@@ -161,7 +159,7 @@ public class PageChunkSplitter extends AbstractPageAnalyzer {
 	private void removeAttributes(String[] localNames) {
 		LOG.debug("removing attributes");
 		for (String localName : localNames) {
-			Nodes nodes = svgPage.query("//@*[local-name()='"+localName+"']");
+			Nodes nodes = pageEditor.getSVGPage().query("//@*[local-name()='"+localName+"']");
 			for (int i = 0; i < nodes.size(); i++) {
 				nodes.get(i).detach();
 			}

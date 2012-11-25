@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -52,10 +53,9 @@ public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
 	private Multimap<String, SVGElement> elementsByClip;
 	private Multimap<String, SVGPath> pathsByClip;
 	private Multimap<String, SVGText> textsByClip;
-	private CurrentPage pageAnalyzer;
 
-	public PageClipPathAnalyzer(CurrentPage pageAnalyzer) {
-		this.pageAnalyzer = pageAnalyzer;
+	public PageClipPathAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 	
 	public void analyze() {
@@ -63,8 +63,8 @@ public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
 		elementsByClip = ArrayListMultimap.create();
 		pathsByClip = ArrayListMultimap.create();
 		textsByClip = ArrayListMultimap.create();
-		clipPathRefsList = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), "//svg:*[@clip-path]");
-		svgClipPathList = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), "/svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
+		clipPathRefsList = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), "//svg:*[@clip-path]");
+		svgClipPathList = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), "/svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
 		
 		createMapsByClipPath();
 		
@@ -128,6 +128,6 @@ public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
 		SVGRect  bb = svgElement.createGraphicalBoundingBox();
 		bb.setFill(fill);
 		bb.setOpacity(0.5);
-		pageAnalyzer.getSVGPage().appendChild(bb);
+		pageEditor.getSVGPage().appendChild(bb);
 	}
 }

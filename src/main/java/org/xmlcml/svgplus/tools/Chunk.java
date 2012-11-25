@@ -9,7 +9,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 public class Chunk extends SVGG {
@@ -18,12 +18,12 @@ public class Chunk extends SVGG {
 	private static final String CHUNK = "chunk";
 	private final static Logger LOG = Logger.getLogger(Chunk.class);
 	
-	protected CurrentPage currentPage;
+	protected PageEditor currentPage;
 	public Chunk() {
 		PDF2SVGUtil.setSVGXAttribute(this, ROLE, CHUNK);
 	}
 
-	public Chunk(CurrentPage currentPage) {
+	public Chunk(PageEditor currentPage) {
 		this();
 		this.currentPage = currentPage;
 	}

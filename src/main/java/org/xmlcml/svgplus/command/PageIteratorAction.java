@@ -8,7 +8,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.core.SVGPlusConverter;
 
-public class PageIteratorAction extends DocumentAction {
+public class PageIteratorAction extends PageAction {
 
 	private final static Logger LOG = Logger.getLogger(PageIteratorAction.class);
 
@@ -37,7 +37,7 @@ public class PageIteratorAction extends DocumentAction {
 			if (convertPages) {
 				for (int i = 0; i < svgPageList.size(); i++) {
 					semanticDocumentAction.setVariable(PAGE_NUMBER, i+1);
-					semanticDocumentAction.getPageAnalyzer().setSVGPage(svgPageList.get(i));
+					this.getPageEditor().setSVGPage(svgPageList.get(i));
 					runChildActionList();
 				}
 			}

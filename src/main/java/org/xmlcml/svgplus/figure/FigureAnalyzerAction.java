@@ -27,13 +27,13 @@ public class FigureAnalyzerAction extends PageAction {
 	
 	@Override
 	public void run() {
-		FigureAnalyzer figureAnalyzer = getPageAnalyzer().ensureFigureAnalyzer();
+		FigureAnalyzer figureAnalyzer = getPageEditor().ensureFigureAnalyzer();
 		figureAnalyzer.setLocationStrategy(getAndExpand(FigureAnalyzerElement.LOCATION_STRATEGY));
 		List<Figure> figureList = figureAnalyzer.createFigures();
 		List<FigurePanel> panelList = figureAnalyzer.createPanelsUsingWhitespace();
 		filename = getFilename();
 		if (isTrue(FigureAnalyzerElement.CREATE_WORDS_LINES)) {
-			TextAnalyzer textAnalyzer = getPageAnalyzer().ensureTextAnalyzer();
+			TextAnalyzer textAnalyzer = getPageEditor().ensureTextAnalyzer();
 			for (FigurePanel figurePanel : panelList) {
 				List<SVGElement> elements = SVGUtil.getQuerySVGElements(figurePanel, ".");
 				textAnalyzer.analyzeSingleWordsOrLines(elements);

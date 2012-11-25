@@ -17,7 +17,7 @@ public class TextChunkerAction extends PageAction {
 	
 	@Override
 	public void run() {
-		TextAnalyzer textAnalyzer = getPageAnalyzer().ensureTextAnalyzer();
+		TextAnalyzer textAnalyzer = getPageEditor().ensureTextAnalyzer();
 		String xpath = getXPath();
 		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
 		LOG.trace(xpath+" => "+elements.size());

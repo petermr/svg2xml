@@ -20,7 +20,7 @@ public class BoxProcessorAction extends PageAction {
 	
 	@Override
 	public void run() {
-		pathAnalyzer = getPageAnalyzer().ensurePathAnalyzer();
+		pathAnalyzer = getPageEditor().ensurePathAnalyzer();
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(getSVGPage(), getXPath());
 		processRoundedBox(elementList);
 	}

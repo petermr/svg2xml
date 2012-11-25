@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.tools.Chunk;
-import org.xmlcml.svgplus.tools.PageChunkSplitter;
+import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 
 /**
 	<pageAction action="createWhitespaceChunks" depth="3"/>
@@ -24,7 +24,7 @@ public class WhitespaceChunkerAction extends PageAction {
 		if (true) {
 			LOG.error("NYI");
 		} else {
-			PageChunkSplitter pageChunkSplitter = getPageAnalyzer().ensurePageChunkSplitter();
+			PageChunkSplitterAnalyzer pageChunkSplitter = getPageEditor().ensurePageChunkSplitter();
 			Integer depth = getDepth();
 			if (depth != null) {
 				LOG.trace("DEPTH cannot yet be set");

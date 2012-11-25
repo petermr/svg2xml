@@ -1,7 +1,5 @@
 package org.xmlcml.svgplus.command;
 
-import java.io.File;
-
 import nu.xom.Builder;
 import nu.xom.Element;
 

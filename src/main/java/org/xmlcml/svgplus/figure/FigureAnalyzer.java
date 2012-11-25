@@ -9,7 +9,8 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.Caption;
 import org.xmlcml.svgplus.tools.Chunk;
 
@@ -35,8 +36,8 @@ public class FigureAnalyzer extends AbstractPageAnalyzer {
 	private Real2 clusterWhitespaceBoxMargins = new Real2(5.0, 5.0);
 	private Double panelSeparation = 3.0;
 
-	public FigureAnalyzer(CurrentPage pageAnalyzer) {
-		super(pageAnalyzer);
+	public FigureAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 	
 	public List<FigurePanel> createPanelsUsingWhitespace() {
@@ -145,7 +146,7 @@ public class FigureAnalyzer extends AbstractPageAnalyzer {
 	}
 
 	private Chunk createCaptionAndReplace(SVGElement captionElement) {
-		Chunk caption = new Caption(currentPage);
+		Chunk caption = new Caption(pageEditor);
 		caption.copyAttributesAndChildrenFromSVGElement(captionElement);
 		captionElement.detach();
 		caption.createElementListAndCalculateBoundingBoxes();

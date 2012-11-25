@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -41,14 +42,14 @@ public class PageFontSizeAnalyzer extends AbstractPageAnalyzer {
 		return elementsByFontSize;
 	}
 
-	public PageFontSizeAnalyzer(CurrentPage currentPage) {
-		super(currentPage);
+	public PageFontSizeAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 	
 	public void analyze() {
 		elementsByFontSize = ArrayListMultimap.create();
 		LOG.debug("getting font sizes");
-		textList = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), "//svg:text[@font-size]");
+		textList = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), "//svg:text[@font-size]");
 		LOG.debug("creating maps");
 		createMapsForElementsByFontSize();
 		LOG.debug("created maps");

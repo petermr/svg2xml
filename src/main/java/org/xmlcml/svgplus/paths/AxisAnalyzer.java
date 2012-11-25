@@ -7,12 +7,13 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.paths.ComplexLine.CombType;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svgplus.tools.PlotBox;
 
-public class AxisAnalyzer {
+public class AxisAnalyzer extends AbstractPageAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(AxisAnalyzer.class);
 
@@ -38,14 +39,13 @@ public class AxisAnalyzer {
 	private Axis horizontalAxis;
 	
 	private SVGElement container;
-	private CurrentPage pageAnalyzer;
 	public double eps;
 
 	private PlotBox plotBox;
 
-	public AxisAnalyzer(SVGElement container, CurrentPage pageAnalyzer) {
+	public AxisAnalyzer(SVGElement container, SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 		this.container = container;
-		this.setPageAnalyzer(pageAnalyzer);
 	}
 	
 	public void createVerticalHorizontalAxisList(List<SVGLine> svgLines, double eps) {
@@ -152,14 +152,6 @@ public class AxisAnalyzer {
 
 	public void setMaxTickLength(double maxTickLength) {
 		this.maxTickLength = maxTickLength;
-	}
-
-	public CurrentPage getPageAnalyzer() {
-		return pageAnalyzer;
-	}
-
-	public void setPageAnalyzer(CurrentPage pageAnalyzer) {
-		this.pageAnalyzer = pageAnalyzer;
 	}
 
 	public double getBoxLengthExtension() {

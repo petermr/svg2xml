@@ -42,7 +42,7 @@ public class ChunkAnalyzerAction extends PageAction {
 	}
 	
 	private void analyzeChunk(SVGG svgg) {
-		ChunkAnalyzer chunkAnalyzer = new ChunkAnalyzer(getPageAnalyzer());
+		ChunkAnalyzer chunkAnalyzer = new ChunkAnalyzer(semanticDocumentAction);
 		createTextAnalyzer(chunkAnalyzer);
 		chunkAnalyzer.analyzeChunk(svgg);
 	}

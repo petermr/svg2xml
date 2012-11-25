@@ -22,7 +22,7 @@ public class PathNormalizerAction extends PageAction {
 	@Override
 	public void run() {
 		debugFile("target/pathNorm0.svg");
-		PathAnalyzer pathAnalyzer = getPageAnalyzer().ensurePathAnalyzer();
+		PathAnalyzer pathAnalyzer = getPageEditor().ensurePathAnalyzer();
 		if (isTrue(PathNormalizerElement.REMOVE_DUPLICATE_PATHS)) {
 			pathAnalyzer.removeDuplicatePaths();
 			debugFile("target/pathNorm1Duplicate.svg");

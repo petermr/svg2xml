@@ -32,7 +32,8 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
 import org.xmlcml.svgplus.command.DocumentAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
@@ -101,8 +102,8 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 //		super(new CurrentPage());
 //	}
 	
-	public TextAnalyzer(CurrentPage currentPage) {
-		super(currentPage);
+	public TextAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 
 	public String getTag() {
@@ -181,7 +182,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 
 	public TextChunk analyzeRawText(Chunk chunk) {
 		this.chunk = chunk;
-		this.svgParent = (chunk != null) ? chunk : currentPage.getSVGPage();
+		this.svgParent = (chunk != null) ? chunk : pageEditor.getSVGPage();
 		
 		this.getRawTextCharacterList();
 		this.createRawTextCharacterPositionMaps();
@@ -195,7 +196,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 	
 	public void applyAndRemoveCumulativeTransforms() {
 		Long time0 = System.currentTimeMillis();
-		SVGUtil.applyAndRemoveCumulativeTransformsFromDocument(currentPage.getSVGPage());
+		SVGUtil.applyAndRemoveCumulativeTransformsFromDocument(pageEditor.getSVGPage());
 		LOG.trace("cumulative transforms on text: "+(System.currentTimeMillis()-time0));
 	}
 
@@ -511,7 +512,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 	}
 
 	public void /*SVGElement*/ drawBoxes(List<Real2Range> boxes, String stroke, String fill, Double opacity) {
-		SVGG g = (SVGG) currentPage.getSVGPage().query("svg:g", SVGConstants.SVG_XPATH).get(0);
+		SVGG g = (SVGG) pageEditor.getSVGPage().query("svg:g", SVGConstants.SVG_XPATH).get(0);
 		SVGG g1 = new SVGG();
 		g.appendChild(g1);
 		for (Real2Range bbox : boxes) {
@@ -738,7 +739,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 			if (chunk.isTextChunk()) {
 				chunk.setId("textChunk"+id);
 				if (SVGUtil.getQuerySVGElements(chunk, "svg:g").size() == 0) {
-					TextAnalyzer textAnalyzer = new TextAnalyzer(currentPage);
+					TextAnalyzer textAnalyzer = new TextAnalyzer(semanticDocumentAction);
 					textChunk = textAnalyzer.analyzeRawText(chunk);
 					// processing a probable sub/superscript
 					if (textChunk.isScript()) {
@@ -767,7 +768,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 		subLineByYCoord = ArrayListMultimap.create();
 		for (SVGElement element : elements) {
 			if (hasNoSVGGChildren()) {
-				TextAnalyzer textAnalyzer = new TextAnalyzer(currentPage);
+				TextAnalyzer textAnalyzer = new TextAnalyzer(semanticDocumentAction);
 				textAnalyzer.analyzeRawText(element);
 				horizontalCharacterList.addAll(textAnalyzer.horizontalCharacterList);
 				for (HorizontalCharacterList subline : horizontalCharacterList) {
@@ -782,7 +783,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 		subLineByYCoord = ArrayListMultimap.create();
 		for (SVGElement element : elements) {
 			if (hasNoSVGGChildren()) {
-				TextAnalyzer textAnalyzer = new TextAnalyzer(currentPage);
+				TextAnalyzer textAnalyzer = new TextAnalyzer(semanticDocumentAction);
 				textAnalyzer.analyzeRawText(element);
 				horizontalCharacterList.addAll(textAnalyzer.horizontalCharacterList);
 				for (HorizontalCharacterList subline : horizontalCharacterList) {
@@ -909,7 +910,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 	}
 
 	public void mergeChunks() {
-		List<SVGElement> textChunkList1 = SVGUtil.getQuerySVGElements(currentPage.getSVGPage(), ".//svg:g[@"+TEXT+"='"+CHUNK+"']");
+		List<SVGElement> textChunkList1 = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), ".//svg:g[@"+TEXT+"='"+CHUNK+"']");
 		for (SVGElement textChunk : textChunkList1) {
 			List<SVGElement> paraList = SVGUtil.getQuerySVGElements(textChunk, "./*/svg:g[@"+Paragraph.NAME+"='"+Paragraph.PARA+"']");
 			for (SVGElement paraElement : paraList) {
@@ -929,7 +930,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 
 	SimpleFont ensureSimpleFont() {
 		if (this.simpleFont == null) {
-			simpleFont = currentPage.getSemanticDocumentAction().getSimpleFont();
+			simpleFont = pageEditor.getSemanticDocumentAction().getSimpleFont();
 			if (this.simpleFont == null) {
 				simpleFont = SimpleFont.SIMPLE_FONT;
 			}

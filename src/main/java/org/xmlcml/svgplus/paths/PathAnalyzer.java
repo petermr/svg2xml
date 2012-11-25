@@ -32,8 +32,9 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.command.PageNormalizerAction;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
@@ -72,14 +73,13 @@ public class PathAnalyzer extends AbstractPageAnalyzer {
 	private static final String MERGED = "merged";
 	
 	private SVGG annotatedPathListG;
-
 	private SVGPolygon polygon;
 
 	public PathAnalyzer() {
 	}
 
-	public PathAnalyzer(CurrentPage pageAnalyzer) {
-		super(pageAnalyzer);
+	public PathAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+		super(semanticDocumentAction);
 	}
 	
 	public void addAnnotatedPaths(List<SVGPath> pathList) {
@@ -92,8 +92,8 @@ public class PathAnalyzer extends AbstractPageAnalyzer {
 	private void ensureAnnotatedPathListG() {
 		if (annotatedPathListG == null) {
 			this.annotatedPathListG = new SVGG();
-			annotatedPathListG.addAttribute(new Attribute(CurrentPage.ROLE, CurrentPage.PATH));
-			currentPage.getSVGPage().appendChild(annotatedPathListG);
+			annotatedPathListG.addAttribute(new Attribute(PageEditor.ROLE, PageEditor.PATH));
+			pageEditor.getSVGPage().appendChild(annotatedPathListG);
 		}
 	}
 	
@@ -225,7 +225,7 @@ public class PathAnalyzer extends AbstractPageAnalyzer {
 	public void formatClipPaths() {
 		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:clipPath/svg:path");
 		for (SVGElement clipPath : clipPaths) {
-			clipPath.format(CurrentPage.DECIMAL_PLACES);
+			clipPath.format(PageEditor.DECIMAL_PLACES);
 		}
 	}
 	
@@ -291,7 +291,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 				newSVGElement = polyline;
 				polyline.setId("polyline"+id);
 				LOG.trace("created polyline with lines: "+polyline.getLineList().size());
-				polyline.format(CurrentPage.DECIMAL_PLACES);
+				polyline.format(PageEditor.DECIMAL_PLACES);
 				boolean duplicate = polyline.removeDuplicateLines();
 				if (duplicate) {
 					LOG.trace("polyline has duplicate lines");
@@ -300,7 +300,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 				if (line != null) {
 					line.setId("line"+id);
 					LOG.trace("created line");
-					line.format(CurrentPage.DECIMAL_PLACES);
+					line.format(PageEditor.DECIMAL_PLACES);
 					replace(path, line);
 					newSVGElement = line;
 				} else {
@@ -315,11 +315,11 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 								rect.setTitle("was_polyline");
 								newSVGElement = rect;
 							} else {
-								polygon.format(CurrentPage.DECIMAL_PLACES);
+								polygon.format(PageEditor.DECIMAL_PLACES);
 								replace(path, polygon);
 							}
 						} else {
-							polygon.format(CurrentPage.DECIMAL_PLACES);
+							polygon.format(PageEditor.DECIMAL_PLACES);
 							replace(path, polygon);
 						}
 					} else {
@@ -339,7 +339,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		SVGCircle circle = path.createCircle(_CIRCLE_EPS);
 		if (circle != null) {
 			LOG.trace("created circle");
-			circle.format(CurrentPage.DECIMAL_PLACES);
+			circle.format(PageEditor.DECIMAL_PLACES);
 			circle.setId("circle"+id);
 			replace(path, circle);
 			newSVGElement = circle;
@@ -363,7 +363,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 
 	private void createRect(SVGPath path, SVGRect rect, int id) {
 		LOG.trace("created rect: "+rect);
-		rect.format(CurrentPage.DECIMAL_PLACES);
+		rect.format(PageEditor.DECIMAL_PLACES);
 		rect.setId("rect"+id);
 		replace(path, rect);
 	}

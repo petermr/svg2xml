@@ -22,7 +22,7 @@ import org.xmlcml.svgplus.paths.PathAnalyzer;
 import org.xmlcml.svgplus.table.Table;
 import org.xmlcml.svgplus.table.TableAnalyzer;
 import org.xmlcml.svgplus.text.TextAnalyzer;
-import org.xmlcml.svgplus.tools.PageChunkSplitter;
+import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 import org.xmlcml.svgplus.tools.PageClipPathAnalyzer;
 import org.xmlcml.svgplus.tools.PageFontSizeAnalyzer;
 
@@ -47,9 +47,9 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class CurrentPage {
+public class PageEditor {
 
-	private static final Logger LOG = Logger.getLogger(CurrentPage.class);
+	private static final Logger LOG = Logger.getLogger(PageEditor.class);
 	
 	private static final String SHAPE_RENDERING = "shape-rendering";
 	private static final String SPACE = "space";
@@ -77,7 +77,6 @@ public class CurrentPage {
 	private BiMap<String, String> clipPathByIdMap;
 	
 	private SVGSVG svgPage;             
-//	private SVGG svgg;                  
 	private int pageNumber;
 	private String pageNumberString;
 	private Integer pageNumberInteger;
@@ -88,7 +87,7 @@ public class CurrentPage {
 	private PathAnalyzer pathAnalyzer;
 	private PageClipPathAnalyzer clipPathAnalyzer;
 	private PageFontSizeAnalyzer fontSizeAnalyzer;
-	private PageChunkSplitter pageChunkSplitter;
+	private PageChunkSplitterAnalyzer pageChunkSplitter;
 	private TextAnalyzer textAnalyzer;
 	private FigureAnalyzer figureAnalyzer;
 	private TableAnalyzer tableAnalyzer;
@@ -98,13 +97,13 @@ public class CurrentPage {
 
 	private SemanticDocumentAction semanticDocumentAction;
 
-	public CurrentPage() {
+	public PageEditor() {
 	}
 	
-	public CurrentPage(SemanticDocumentAction semanticDocumentAction) {
+	public PageEditor(SemanticDocumentAction semanticDocumentAction) {
 		this();
 		this.semanticDocumentAction = semanticDocumentAction;
-		this.svgPage = semanticDocumentAction.getSVGPage();
+//		this.svgPage = semanticDocumentAction.getSVGPage();
 	}
 
 	public static void removeUnwantedSVGAttributesAndAddIds(SVGSVG svgPage) {
@@ -138,7 +137,7 @@ public class CurrentPage {
 	
 	public PathAnalyzer ensurePathAnalyzer() {
 		if (pathAnalyzer == null) {
-			pathAnalyzer = new PathAnalyzer(this);
+			pathAnalyzer = new PathAnalyzer(semanticDocumentAction);
 		}
 		return pathAnalyzer;
 	}
@@ -195,7 +194,7 @@ public class CurrentPage {
 		}
 	}
 
-	public void analyzeClipPathsAndAddToMap(Multimap<String, CurrentPage> clipPathDMap) {
+	public void analyzeClipPathsAndAddToMap(Multimap<String, PageEditor> clipPathDMap) {
 		analyzeClipPaths();
 		addClipPathsToMap(clipPathDMap);
 	}
@@ -207,11 +206,11 @@ public class CurrentPage {
 
 	private void ensureClipPathAnalyzer() {
 		if (clipPathAnalyzer == null) {
-			clipPathAnalyzer = new PageClipPathAnalyzer(this);
+			clipPathAnalyzer = new PageClipPathAnalyzer(semanticDocumentAction);
 		}
 	}
 
-	public void addClipPathsToMap(Multimap<String, CurrentPage> clipPathDMap) {
+	public void addClipPathsToMap(Multimap<String, PageEditor> clipPathDMap) {
 		List<SVGElement> clipPaths  = this.getPageClipPathAnalyzer().getClipPathList();
 		for (SVGElement clipPath : clipPaths) {
 			SVGPath path = (SVGPath) ((SVGClipPath) clipPath).getChildElements().get(0);
@@ -221,7 +220,7 @@ public class CurrentPage {
 		}
 	}
 
-	public void analyzeFontSizesAndAddToMap(Multimap<Integer, CurrentPage> fontSizeMap) {
+	public void analyzeFontSizesAndAddToMap(Multimap<Integer, PageEditor> fontSizeMap) {
 		analyzeFontSizes();
 		addFontSizesToMap(fontSizeMap);
 	}
@@ -233,41 +232,41 @@ public class CurrentPage {
 
 	public PageFontSizeAnalyzer ensureFontSizeAnalyzer() {
 		if (fontSizeAnalyzer == null) {
-			fontSizeAnalyzer = new PageFontSizeAnalyzer(this);
+			fontSizeAnalyzer = new PageFontSizeAnalyzer(semanticDocumentAction);
 		}
 		return fontSizeAnalyzer;
 	}
 
-	public PageChunkSplitter ensurePageChunkSplitter() {
+	public PageChunkSplitterAnalyzer ensurePageChunkSplitter() {
 		if (pageChunkSplitter == null) {
-			pageChunkSplitter = new PageChunkSplitter(this);
+			pageChunkSplitter = new PageChunkSplitterAnalyzer(semanticDocumentAction);
 		}
 		return pageChunkSplitter;
 	}
 
 	public TextAnalyzer ensureTextAnalyzer() {
 		if (textAnalyzer == null) {
-			textAnalyzer = new TextAnalyzer(this);
+			textAnalyzer = new TextAnalyzer(semanticDocumentAction);
 		}
 		return textAnalyzer;
 	}
 
 	public FigureAnalyzer ensureFigureAnalyzer() {
 		if (figureAnalyzer == null) {
-			figureAnalyzer = new FigureAnalyzer(this);
+			figureAnalyzer = new FigureAnalyzer(semanticDocumentAction);
 		}
 		return figureAnalyzer;
 	}
 
 	public TableAnalyzer ensureTableAnalyzer() {
 		if (tableAnalyzer == null) {
-			tableAnalyzer = new TableAnalyzer(this);
+			tableAnalyzer = new TableAnalyzer(semanticDocumentAction);
 		}
 		return tableAnalyzer;
 	}
 
 	private void applyBrowserScale() {
-		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id='"+PageChunkSplitter.TOP_CHUNK+"']");
+		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id='"+PageChunkSplitterAnalyzer.TOP_CHUNK+"']");
 		if (gList.size() != 1) {
 			LOG.error("should have one topChunk G");
 		} else {
@@ -276,7 +275,7 @@ public class CurrentPage {
 	}
 	
 
-	public void addFontSizesToMap(Multimap<Integer, CurrentPage> fontSizeMap) {
+	public void addFontSizesToMap(Multimap<Integer, PageEditor> fontSizeMap) {
 		Multimap<Integer, SVGElement> elementsByFontSize = fontSizeAnalyzer.createMapsForElementsByFontSize();
 		for (Integer fontSize : elementsByFontSize.keySet()) {
 			fontSizeMap.put(fontSize, this);
@@ -303,7 +302,7 @@ public class CurrentPage {
 		return fontSizeAnalyzer;
 	}
 
-	public PageChunkSplitter getPageChunkSplitter() {
+	public PageChunkSplitterAnalyzer getPageChunkSplitter() {
 		return pageChunkSplitter;
 	}
 

@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.command.DocumentAction;
-import org.xmlcml.svgplus.command.CurrentPage;
+import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.command.VariableStore;
 import org.xmlcml.svgplus.text.SimpleFont;
 
@@ -27,7 +27,7 @@ public class SemanticDocumentAction extends DocumentAction {
 	private VariableStore variableStore;
 	private SimpleFont simpleFont;
 	private SVGPlusConverter svgPlusConverter;
-	private CurrentPage pageAnalyzer;
+	private PageEditor pageEditor;
 	
 	public SemanticDocumentAction(AbstractActionElement documentActionElement) {
 		super(documentActionElement);
@@ -122,23 +122,17 @@ public class SemanticDocumentAction extends DocumentAction {
 	public SVGPlusConverter getSVGPlusConverter() {
 		return svgPlusConverter;
 	}
-
-	public SVGSVG getSVGPage() {
-		ensurePageAnalyzer();
-		return pageAnalyzer.getSVGPage();
-	}
-
-	private void ensurePageAnalyzer() {
-		if (pageAnalyzer == null) {
-			this.pageAnalyzer = new CurrentPage();
-			pageAnalyzer.setSVGPage(this.getSVGPage());
+	
+	public void ensurePageEditor() {
+		if (pageEditor == null) {
+			pageEditor = new PageEditor();
 		}
 	}
 
-	public CurrentPage getPageAnalyzer() {
-		ensurePageAnalyzer();
-		return pageAnalyzer;
+	public PageEditor getPageEditor() {
+		ensurePageEditor();
+		return pageEditor;
 	}
-	
+
 }
 

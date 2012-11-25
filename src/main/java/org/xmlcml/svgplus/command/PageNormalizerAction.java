@@ -75,7 +75,7 @@ public class PageNormalizerAction extends PageAction  {
 			SVGUtil.denormalizeFontSizes(getSVGPage());
 		}
 		if (isTrue(PageActionElement.REMOVE_UNWANTED_ATTRIBUTES)) {
-			CurrentPage.removeUnwantedSVGAttributesAndAddIds(getSVGPage());
+			PageEditor.removeUnwantedSVGAttributesAndAddIds(getSVGPage());
 		}
 		if (isTrue(PageActionElement.CLEAN_SVG_STYLES)) {
 			removeCSSStyleAndExpandAsSeparateAttributes();
@@ -235,7 +235,7 @@ public class PageNormalizerAction extends PageAction  {
 	}
 
 	private void rotatePage(Integer angle) {
-		this.getPageAnalyzer().setRotationAngle(angle);
+		this.getPageEditor().setRotationAngle(angle);
 		Angle newAngle = new Angle((double) angle, Units.DEGREES);
 		Transform2 t2 = new Transform2(newAngle);
 		// get leaf nodes or text (might have tspans)
@@ -278,7 +278,7 @@ public class PageNormalizerAction extends PageAction  {
 			for (SVGElement image : images) {
 				replaceImageByTextMessage(image);
 			}
-			CMLUtil.outputQuietly(svgPage, new File("target/deimage"+getPageAnalyzer().getPageNumber()+".xml"), 1);
+			CMLUtil.outputQuietly(svgPage, new File("target/deimage"+getPageEditor().getPageNumber()+".xml"), 1);
 		}
 	}
 
