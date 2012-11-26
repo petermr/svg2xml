@@ -44,8 +44,8 @@ public class Caption extends Chunk {
 	private SVGText label; // e.g. figure or table
 	private Pattern captionPattern;
 	
-	public Caption(PageEditor currentPage) {
-		super(currentPage);
+	public Caption(PageEditor pageEditor) {
+		super(pageEditor.getSVGPage());
 	}
 
 	public void setText(String text) {

@@ -6,6 +6,8 @@ import nu.xom.Builder;
 import nu.xom.Element;
 
 import org.junit.Assert;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.command.AbstractActionElement;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
@@ -24,11 +26,13 @@ public class Fixtures {
 	public static final File NO_ASSERT_TST = new File(COMMAND_DIR+"noAssertTst.xml");
 	public static final File VARIABLE_TST = new File(COMMAND_DIR+"variableTst.xml");
 	public static final File WHITESPACE_CHUNKER_TST = new File(Fixtures.COMMAND_DIR+"whitespaceChunkerTst.xml");
+	public static final File WHITESPACE_0_TST = new File(Fixtures.COMMAND_DIR+"pageTst0.xml");
+	public static final File PAGE0_SVG = new File(Fixtures.COMMAND_DIR+"test-page0.svg");
 	
-	public static SemanticDocumentAction getSemanticDocumentAction(File file) {
+	public static SemanticDocumentAction getSemanticDocumentAction(File commandFile) {
 		SemanticDocumentAction semanticDocumentAction = null;
 		try {
-			Element element = new Builder().build(file).getRootElement();
+			Element element = new Builder().build(commandFile).getRootElement();
 			SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(element);
 			semanticDocumentAction = semanticDocumentElement.getSemanticDocumentAction();
 		} catch (Exception e) {
@@ -36,4 +40,18 @@ public class Fixtures {
 		}
 		return semanticDocumentAction;
 	}
+	
+	public static SemanticDocumentAction createSemanticDocumentActionWithSVGPage(File svgFile) {
+		SemanticDocumentAction semanticDocumentAction = null;
+		try {
+			Element element = new Builder().build(svgFile).getRootElement();
+			SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(element);
+			semanticDocumentAction = new SemanticDocumentAction();
+			semanticDocumentAction.getPageEditor().setSVGPage(svgPage);
+		} catch (Exception e) {
+			throw new RuntimeException("cannot create page: ", e);
+		}
+		return semanticDocumentAction;
+	}
+
 }

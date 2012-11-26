@@ -1,8 +1,6 @@
 package org.xmlcml.svgplus.tools;
 
 import java.util.ArrayList;
-
-
 import java.util.List;
 
 import nu.xom.Attribute;
@@ -10,10 +8,8 @@ import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
@@ -120,15 +116,14 @@ public class PageChunkSplitterAnalyzer extends AbstractPageAnalyzer {
 //			throw new RuntimeException("file error: "+filename, e);
 //		}
 //	}
-
 	
 	public List<Chunk> splitByWhitespace() {
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
-		Chunk topChunk = new Chunk(pageEditor);
-		LOG.trace("descendants0: "+topChunk.getElementList().size()+"/"+(System.currentTimeMillis()-time0));
+		Chunk topChunk = new Chunk(pageEditor.getSVGPage());
+		LOG.debug("descendants0: "+topChunk.getDescendantSVGElementList().size()+"/"+(System.currentTimeMillis()-time0));
 		topChunk.setBoundingBoxCacheForSelfAndDescendants(true);
-		LOG.trace("descendants: "+topChunk.getElementList().size()+"/"+(System.currentTimeMillis()-time0));
+		LOG.debug("descendants: "+topChunk.getDescendantSVGElementList().size()+"/"+(System.currentTimeMillis()-time0));
 		pageEditor.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(YSEP_0, BoxEdge.YMIN);

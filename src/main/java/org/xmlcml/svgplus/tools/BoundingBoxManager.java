@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
@@ -17,6 +18,8 @@ import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
 
 public class BoundingBoxManager {
 
+	private final static Logger LOG = Logger.getLogger(BoundingBoxManager.class);
+	
 	public enum BoxEdge {
 		XMIN,
 		XMAX,
@@ -152,6 +155,7 @@ public class BoundingBoxManager {
 	 */
 	private List<Real2Range> getBoxesSortedByEdge(BoxEdge edge) {
 		if (bboxList == null) {
+			LOG.debug("Null bboxList in BBManager");
 			return null;
 		}
 		List<Real2Range> sortedList = new ArrayList<Real2Range>();
@@ -321,6 +325,11 @@ public class BoundingBoxManager {
 			new RealRange(corners[0].getX()+xExtension.getMin(), corners[1].getX()+xExtension.getMax()),
 			new RealRange(corners[0].getY()+yExtension.getMin(), corners[1].getY()+yExtension.getMax()));
 		return extendedBBox;
+	}
+
+	public void addBoxesFromElementList(List<SVGElement> elementList) {
+		List<Real2Range> bboxList = BoundingBoxManager.createBBoxList(elementList);
+		this.setBBoxList(bboxList);
 	}
 
 }

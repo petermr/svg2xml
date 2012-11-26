@@ -114,8 +114,8 @@ public class TextChunk {
 		return wordSequenceList == null || wordSequenceList.size() == 0 ? null : wordSequenceList.get(0);
 	}
 		
-	public boolean isScript() {
-		return chunk.isScript();
+	public boolean isSuscript() {
+		throw new RuntimeException("isSuscript used to depend on ChunkStyle: rewrite");
 	}
 
 	/** alternates between the two textChunks

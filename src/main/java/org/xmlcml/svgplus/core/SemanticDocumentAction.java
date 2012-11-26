@@ -123,14 +123,14 @@ public class SemanticDocumentAction extends DocumentAction {
 		return svgPlusConverter;
 	}
 	
-	public void ensurePageEditor() {
+	public void ensurePageEditor(SemanticDocumentAction semanticDocumentAction) {
 		if (pageEditor == null) {
-			pageEditor = new PageEditor();
+			pageEditor = new PageEditor(this);
 		}
 	}
 
 	public PageEditor getPageEditor() {
-		ensurePageEditor();
+		ensurePageEditor(this);
 		return pageEditor;
 	}
 

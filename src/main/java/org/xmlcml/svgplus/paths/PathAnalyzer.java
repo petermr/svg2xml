@@ -397,7 +397,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		);
 		LOG.trace("InnerBox "+ innerBox);
 		List<SVGElement> svgElementList = new ArrayList<SVGElement>();
-		for (SVGElement svgElement : chunk.getElementList()) {
+		for (SVGElement svgElement : chunk.getDescendantSVGElementList()) {
 			String id = svgElement.getId();
 			if (svgElement instanceof SVGPolyline) {
 //				svgElement.debug("POLY");

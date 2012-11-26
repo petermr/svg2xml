@@ -97,13 +97,12 @@ public class PageEditor {
 
 	private SemanticDocumentAction semanticDocumentAction;
 
-	public PageEditor() {
+	private PageEditor() {
 	}
 	
 	public PageEditor(SemanticDocumentAction semanticDocumentAction) {
 		this();
 		this.semanticDocumentAction = semanticDocumentAction;
-//		this.svgPage = semanticDocumentAction.getSVGPage();
 	}
 
 	public static void removeUnwantedSVGAttributesAndAddIds(SVGSVG svgPage) {

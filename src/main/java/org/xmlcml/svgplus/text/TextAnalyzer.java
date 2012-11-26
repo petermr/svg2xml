@@ -742,7 +742,7 @@ public class TextAnalyzer extends AbstractPageAnalyzer {
 					TextAnalyzer textAnalyzer = new TextAnalyzer(semanticDocumentAction);
 					textChunk = textAnalyzer.analyzeRawText(chunk);
 					// processing a probable sub/superscript
-					if (textChunk.isScript()) {
+					if (textChunk.isSuscript()) {
 						lastScriptTextChunk = analyzeSubSup(lastMainTextChunk, lastScriptTextChunk, textChunk);
 					} else {
 						analyzeBodyText(lastScriptTextChunk, textChunk);

@@ -134,6 +134,6 @@ public abstract class PageAction extends AbstractAction {
 	}
 
 	public PageEditor getPageEditor() {
-		return semanticDocumentAction.getPageEditor();
+		return this.semanticDocumentAction.getPageEditor();
 	}
 }
