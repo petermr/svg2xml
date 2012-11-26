@@ -114,14 +114,34 @@ public class ChunkTest {
 	}
 	
 	@Test
-	@Ignore // no idea what is wrong - should get text bouonding boxes
 	public void testSplit() {
 		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
+		chunk.createElementListAndCalculateBoundingBoxes();
 		LOG.debug("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
 		List<Chunk> chunkList = chunk.splitIntoChunks(10.0, BoxEdge.YMIN);
 		Assert.assertNotNull("split list not null", chunkList);
-		Assert.assertEquals("split list ", 10, chunkList.size());
+		Assert.assertEquals("split list ", 15, chunkList.size());
+		checkChunkList(
+				new Real2Range[] {
+        new Real2Range(new RealRange(72.024,133.191), new RealRange(29.48,40.52)),
+        new Real2Range(new RealRange(72.024,174.111), new RealRange(53.86,64.9)),
+        new Real2Range(new RealRange(72.024,220.341), new RealRange(78.22,89.26)),
+        new Real2Range(new RealRange(72.024,253.341), new RealRange(102.22,113.26)),
+        new Real2Range(new RealRange(72.024,253.341), new RealRange(126.46,137.5)),
+        new Real2Range(new RealRange(72.024,507.191), new RealRange(151.78,177.34)),
+        new Real2Range(new RealRange(72.024,201.621), new RealRange(190.9,201.94)),
+        new Real2Range(new RealRange(360.91,364.001), new RealRange(227.41,238.45)),
+        new Real2Range(new RealRange(72.024,200.301), new RealRange(263.53,274.57)),
+        new Real2Range(new RealRange(72.024,112.791), new RealRange(288.01,299.05)),
+        new Real2Range(new RealRange(72.024,103.911), new RealRange(312.61,323.65)),
+        new Real2Range(new RealRange(72.024,248.061), new RealRange(337.09,348.13)),
+        new Real2Range(new RealRange(72.024,75.115), new RealRange(361.69,372.73)),
+        new Real2Range(new RealRange(72.024,77.875), new RealRange(386.19,397.23)),
+        new Real2Range(new RealRange(72.024,75.115), new RealRange(410.19,421.23)),
+				},
+				chunkList,
+				0.001);
 	}
 
 	private void checkChunkList(Real2Range[] refList, List<? extends SVGElement> elementList, double eps) {
