@@ -338,10 +338,15 @@ public abstract class AbstractAction {
 	 * @return
 	 */
 	public SemanticDocumentAction getSemanticDocumentAction() {
+		if (semanticDocumentAction == null && this instanceof SemanticDocumentAction) {
+			semanticDocumentAction = (SemanticDocumentAction) this;
+		}
 		return semanticDocumentAction;
 	}
 
 	public SVGSVG getSVGPage() {
-		return semanticDocumentAction.getPageEditor().getSVGPage();
+		getSemanticDocumentAction();
+		PageEditor pageEditor = semanticDocumentAction.getPageEditor();
+		return pageEditor == null ? null : pageEditor.getSVGPage();
 	}
 }

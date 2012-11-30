@@ -143,6 +143,18 @@ public class ChunkTest {
 				chunkList,
 				0.001);
 	}
+	
+	@Test
+	public void testAJCPage6() {
+		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.AJC6_SVG);
+		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
+		chunk.createElementListAndCalculateBoundingBoxes();
+		LOG.debug("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
+		List<Chunk> chunkList = chunk.splitIntoChunks(1.0, BoxEdge.YMIN);
+		Assert.assertNotNull("split list not null", chunkList);
+		Assert.assertEquals("split list ", 1, chunkList.size());
+	}
+	
 
 	private void checkChunkList(Real2Range[] refList, List<? extends SVGElement> elementList, double eps) {
 		List<Real2Range> elementBoxes = BoundingBoxManager.createBBoxList(elementList);

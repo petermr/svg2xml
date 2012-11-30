@@ -132,7 +132,7 @@ public class Chunk extends SVGG {
 				}
 				newChunk.addSVGElement(element);
 				element = elementIterator.hasNext() ? elementIterator.next() : null;
-				LOG.trace("addChunk/element: "+(System.currentTimeMillis()-time0));
+				LOG.debug("addChunk/element: "+(System.currentTimeMillis()-time0));
 			} else {
 				box = null;
 				newChunk = null; // ?
@@ -147,9 +147,14 @@ public class Chunk extends SVGG {
 				}
 			}
 		}
+		LOG.debug("emptyBoxCount "+emptyBoxList.size());
 		for (Real2Range r2r : emptyBoxList) {
-			System.out.println("E "+r2r);
+			System.out.println("EmptyBox "+r2r);
+			if (r2r.getXRange() == null || r2r.getYRange() == null) {
+				throw new RuntimeException("Null empty box");
+			}
 		}
+		LOG.debug("======");
 		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis()-time0));
 		for (Chunk chunk0 : chunkList) {
 			chunk0.setBoundingBoxAttribute(PageEditor.DECIMAL_PLACES);
@@ -160,16 +165,24 @@ public class Chunk extends SVGG {
 	
 	private Real2Range addTerminatingEmptyBox(double chunkWidth, BoxEdge edge) {
 		Real2Range bbox = null;
+		double cc;
 		if (descendantSVGElementList.size() > 0) {
-			Real2Range lastR2R = descendantSVGElementList.get(descendantSVGElementList.size()-1).getBoundingBox();
+			SVGElement lastElement = descendantSVGElementList.get(descendantSVGElementList.size()-1);
+			Real2Range lastR2R = lastElement.getBoundingBox();
 			if (BoxEdge.YMIN.equals(edge)) {
-				double cc = lastR2R.getYRange().getMax();
+				cc = lastR2R.getYRange().getMax();
 				bbox = new Real2Range(lastR2R.getXRange(), new RealRange(cc, cc+chunkWidth));
 			} else if (BoxEdge.XMIN.equals(edge)) {
-				double cc = lastR2R.getXRange().getMax();
+				cc = lastR2R.getXRange().getMax();
 				bbox = new Real2Range(new RealRange(cc, cc+chunkWidth), lastR2R.getYRange());
 			} else {
-				throw new RuntimeException("unsuuported edge: "+edge);
+				throw new RuntimeException("unsupported edge: "+edge);
+			}
+			if (!bbox.isValid()) {
+				if (lastElement instanceof SVGText) {
+					LOG.debug("text w/o bbox "+lastElement.toXML());
+				}
+				throw new RuntimeException("Invalid box: "+bbox.getXRange()+" / "+bbox.getYRange()+" /"+lastElement.getClass());
 			}
 			emptyBoxList.add(bbox);
 		}

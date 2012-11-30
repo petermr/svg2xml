@@ -25,9 +25,12 @@ public class Fixtures {
 	public static final File ASSERT_TST = new File(COMMAND_DIR+"assertTst.xml");
 	public static final File NO_ASSERT_TST = new File(COMMAND_DIR+"noAssertTst.xml");
 	public static final File VARIABLE_TST = new File(COMMAND_DIR+"variableTst.xml");
-	public static final File WHITESPACE_CHUNKER_TST = new File(Fixtures.COMMAND_DIR+"whitespaceChunkerTst.xml");
+	public static final File WHITESPACE_CHUNKER_COMMAND = new File(Fixtures.COMMAND_DIR+"whitespaceChunkerTst.xml");
 	public static final File WHITESPACE_0_TST = new File(Fixtures.COMMAND_DIR+"pageTst0.xml");
 	public static final File PAGE0_SVG = new File(Fixtures.COMMAND_DIR+"test-page0.svg");
+	public static final File HARTER3_SVG = new File(Fixtures.COMMAND_DIR+"harter3.svg");
+	public static final File AJC6_SVG = new File(Fixtures.COMMAND_DIR+"ajc6.svg");
+	public static final File POLICIES_SVG = new File(Fixtures.COMMAND_DIR+"policies.svg");
 	
 	public static SemanticDocumentAction getSemanticDocumentAction(File commandFile) {
 		SemanticDocumentAction semanticDocumentAction = null;
@@ -41,10 +44,10 @@ public class Fixtures {
 		return semanticDocumentAction;
 	}
 	
-	public static SemanticDocumentAction createSemanticDocumentActionWithSVGPage(File svgFile) {
+	public static SemanticDocumentAction createSemanticDocumentActionWithSVGPage(File svgPageFile) {
 		SemanticDocumentAction semanticDocumentAction = null;
 		try {
-			Element element = new Builder().build(svgFile).getRootElement();
+			Element element = new Builder().build(svgPageFile).getRootElement();
 			SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(element);
 			semanticDocumentAction = new SemanticDocumentAction();
 			semanticDocumentAction.getPageEditor().setSVGPage(svgPage);
