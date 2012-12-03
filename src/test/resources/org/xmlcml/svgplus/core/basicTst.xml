@@ -2,7 +2,7 @@
   <documentIterator>
     <pageIterator timeout="15000" maxMbyte="5.0">
       <variable name="p.root" value="${d.outputDir}/page_${p.page}"/>
-      <debug/>
+<!--       <debug/> -->
       <deleteNodes xpath="//svg:text/svg:title | 
           //@*[local-name()='clip-path' or local-name()='width' or local-name()='fontName'] " />
       <pageWriter filename="${p.root}.svg"/>

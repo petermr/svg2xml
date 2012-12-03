@@ -135,8 +135,8 @@ public abstract class AbstractActionElement extends Element {
 			newElement = new PageWriterElement();
 		} else if (tag.equals(PathNormalizerElement.TAG)) {
 			newElement = new PathNormalizerElement();
-		} else if (tag.equals(PathElement.TAG)) {
-			newElement = new PathElement();
+//		} else if (tag.equals(PathElement.TAG)) {
+//			newElement = new PathElement();
 		} else if (tag.equals(SemanticDocumentElement.TAG)) {
 			newElement = new SemanticDocumentElement();
 		} else if (tag.equals(TextChunkerElement.TAG)) {

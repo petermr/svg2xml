@@ -42,7 +42,7 @@ public class ElementStylerAction extends PageAction {
 			if (getOpacity() != null) {
 				element.addAttribute(new Attribute(StyleBundle.OPACITY, ""+getOpacity()));
 			}
-			PageNormalizerAction.removeCSSStyleAndExpandAsSeparateAttributes(element);
+//			PageNormalizerAction.removeCSSStyleAndExpandAsSeparateAttributes(element);
 		}
 	}
 

@@ -1,20 +1,21 @@
 package org.xmlcml.svgplus.command;
 
-import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGPolyline;
+import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.paths.LineAnalyzer;
 import org.xmlcml.svgplus.paths.PolylineAnalyzer;
 import org.xmlcml.svgplus.text.TextAnalyzer;
+import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.PlotBox;
 
 public class ChunkAnalyzer extends AbstractPageAnalyzer {
@@ -25,30 +26,66 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 	public static final int PLACES = 6;
 
 	private List<SVGText> texts;
+	private List<SVGPath> pathList;
 	private TextAnalyzer textAnalyzer;
 	private List<SVGLine> lines;
 	private LineAnalyzer lineAnalyzer;
 	private List<SVGPolyline> polylines;
 	private PolylineAnalyzer polylineAnalyzer;
-	private SVGG svgg;
+	private Chunk chunk;
 	private PlotBox plotBox;
 
+	@Deprecated
 	public ChunkAnalyzer(SemanticDocumentAction semanticDocumentAction) {
 		super(semanticDocumentAction);
 	}
 
-	public void analyzeChunk(SVGG g) {
-		this.svgg = g;
-		debugLeaf();
-		analyzeTexts();
-		CMLUtil.outputQuietly(svgg, new File("target/text"+svgg.getId()+".svg"), 1);
-		analyzeLines();
-		
-		CMLUtil.outputQuietly(svgg, new File("target/line"+svgg.getId()+".svg"), 1);
-		analyzePolylines();
-		CMLUtil.outputQuietly(svgg, new File("target/poly"+svgg.getId()+".svg"), 1);
+	public ChunkAnalyzer(SemanticDocumentActionX semanticDocumentActionX) {
+//		super(semanticDocumentActionX);
+		// FIXME 
+		throw new RuntimeException("change ChunkAnalyzer to use new classes");
 	}
 
+	public void analyzeChunk(Chunk chunk) {
+		this.chunk = chunk;
+		ensurePaths();
+//		debugLeaf();
+		analyzeTexts();
+		analyzePaths();
+		analyzeLines();
+		analyzePolylines();
+	}
+
+	private void ensurePaths() {
+		if (pathList == null) {
+			pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(chunk, ".//svg:path"));
+		}
+	}
+
+	public List<SVGText> getTextCharacters() {
+		throw new RuntimeException("NYI");
+	}
+	
+	public List<SVGPath> getPaths() {
+		throw new RuntimeException("NYI");
+	}
+	
+	public List<SVGLine> getLines() {
+		throw new RuntimeException("NYI");
+	}
+	
+	public List<SVGRect> getRects() {
+		throw new RuntimeException("NYI");
+	}
+	
+	public List<SVGCircle> getCircles() {
+		throw new RuntimeException("NYI");
+	}
+	
+	public List<SVGPolyline> getPolylines() {
+		throw new RuntimeException("NYI");
+	}
+	
 	private void analyzeTexts() {
 		analyzeTexts(0);
 		analyzeTexts(90);
@@ -73,6 +110,10 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 		return textAnalyzer;
 	}
 
+	private void analyzePaths() {
+		throw new RuntimeException("NYI");
+	}
+
 	private void analyzeLines() {
 		lines = SVGLine.extractLines(SVGUtil.getQuerySVGElements(svgg, ".//svg:line"));
 		if (lines.size() > 0) {
@@ -94,15 +135,15 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 		}
 	}
 
-	private void debugLeaf() {
-		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgg, "./svg:g");
-		LOG.trace("G children: "+gList.size());
-		for (SVGElement g : gList) {
-			debugG();
-		}
-	}
+//	private void debugLeaf() {
+//		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgg, "./svg:g");
+//		LOG.trace("G children: "+gList.size());
+//		for (SVGElement g : gList) {
+//			debugG();
+//		}
+//	}
 
-	private void debugG() {
+//	private void debugG() {
 //		List<SVGElement> texts = SVGUtil.getQuerySVGElements(svgg, "./svg:text");
 //		List<SVGElement> lines = SVGUtil.getQuerySVGElements(svgg, "./svg:line");
 //		if (lines.size() > 0) {
@@ -112,7 +153,7 @@ public class ChunkAnalyzer extends AbstractPageAnalyzer {
 //		}
 //		List<SVGElement> polylines = SVGUtil.getQuerySVGElements(svgg, "./svg:polyline");
 //		LOG.debug("G "+texts.size()+" texts;    "+lines.size()+" lines;    "+polylines.size()+" polylines; ");
-	}
+//	}
 
 	public PlotBox getPlotBox() {
 		if (plotBox == null) {

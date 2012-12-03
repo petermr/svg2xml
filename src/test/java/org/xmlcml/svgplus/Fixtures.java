@@ -29,6 +29,7 @@ public class Fixtures {
 	public static final File WHITESPACE_0_TST = new File(Fixtures.COMMAND_DIR+"pageTst0.xml");
 	public static final File PAGE0_SVG = new File(Fixtures.COMMAND_DIR+"test-page0.svg");
 	public static final File HARTER3_SVG = new File(Fixtures.COMMAND_DIR+"harter3.svg");
+	public static final File HARTER3SMALL_SVG = new File(Fixtures.COMMAND_DIR+"harter3small.svg");
 	public static final File AJC6_SVG = new File(Fixtures.COMMAND_DIR+"ajc6.svg");
 	public static final File POLICIES_SVG = new File(Fixtures.COMMAND_DIR+"policies.svg");
 	

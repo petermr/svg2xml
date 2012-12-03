@@ -34,6 +34,7 @@ import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
 import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.command.PageNormalizerAction;
+import org.xmlcml.svgplus.command.PathNormalizerElement;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.Chunk;
@@ -47,7 +48,7 @@ import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
  * svg:circle
  * svg:symbol/svg:use
  * svg:marker
- * scg:text (single characters)
+ * svg:text (single characters)
  * 
  * VERY heuristic
  * omit clipPath children
@@ -58,7 +59,6 @@ import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 public class PathAnalyzer extends AbstractPageAnalyzer {
 
 	private static final String NONE = "none";
-
 	private static final String DEFAULT_STROKE = "gray";
 
 	public final static Logger LOG = Logger.getLogger(PathAnalyzer.class);
@@ -66,14 +66,16 @@ public class PathAnalyzer extends AbstractPageAnalyzer {
 	private static final double _CIRCLE_EPS = 0.7;
 	private static final double RECT_EPS = 0.01;
 	private static final double MOVE_EPS = 0.001;
-
 	private static final Double DEFAULT_MARGIN_X = 5.0;
 	private static final Double DEFAULT_MARGIN_Y = 5.0;
 
-	private static final String MERGED = "merged";
-	
-	private SVGG annotatedPathListG;
 	private SVGPolygon polygon;
+	
+	private boolean removeDuplicatePaths = true;
+	private boolean removeRedundantMoveCommands = true;
+	private boolean splitAtMoveCommands = true;
+	private Integer minLinesInPolyline = 8;
+	private List<SVGPath> pathList;
 
 	public PathAnalyzer() {
 	}
@@ -81,39 +83,30 @@ public class PathAnalyzer extends AbstractPageAnalyzer {
 	public PathAnalyzer(SemanticDocumentAction semanticDocumentAction) {
 		super(semanticDocumentAction);
 	}
-	
-	public void addAnnotatedPaths(List<SVGPath> pathList) {
-		ensureAnnotatedPathListG();
-		for (SVGPath path: pathList) {
-//			annotatedPathListG.appendChild(PDF2SVGUtil.makeCopyWithId(path));
-		}
-	}
 
-	private void ensureAnnotatedPathListG() {
-		if (annotatedPathListG == null) {
-			this.annotatedPathListG = new SVGG();
-			annotatedPathListG.addAttribute(new Attribute(PageEditor.ROLE, PageEditor.PATH));
-			pageEditor.getSVGPage().appendChild(annotatedPathListG);
-		}
-	}
-	
-	public SVGG getAnnotatedPathListG() {
-		return annotatedPathListG;
+	/** runs components having set true/false flags if required
+	 * 
+	 */
+	public void runAnalyses(List<SVGPath> pathList) {
+		this.pathList = pathList;
+		this.removeDuplicatePaths();
+		this.removeRedundantMoveCommands();
+		this.splitAtMoveCommands();
+		this.interpretPathsAsRectCirclePolylineAndReplace();
+		this.splitPolylinesToLines(minLinesInPolyline);
+		getSVGPage().removeEmptySVGG();
 	}
 
 	public void splitAtMoveCommands() {
-		List<SVGElement> paths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:*[not(self::svg:clipPath)]/svg:path");
-		splitAtMoveCommands(paths);
-	}
-
-	public void splitAtMoveCommands(List<SVGElement> paths) {
-		 for (SVGElement path : paths) {
-			 splitAtMoveCommands((SVGPath) path);
-		 }
+		if (this.splitAtMoveCommands ) {
+			 for (SVGPath path : pathList) {
+				 splitAtMoveCommands(path);
+			 }
+		}
 	}
 
 	private void splitAtMoveCommands(SVGPath path) {
-		 List<SVGElement> splitPaths = new ArrayList<SVGElement>();
+		 List<SVGPath> splitPaths = new ArrayList<SVGPath>();
 		 String d = path.getDString();
 		 List<String> dd = splitAtMoveCommands(d);
 		 if (dd.size() == 1) {
@@ -149,100 +142,21 @@ public class PathAnalyzer extends AbstractPageAnalyzer {
 		return strings;
 	}
 
-	/** sort polylines along X and Y coords and find common points to merge lines
-	 *  replace joined lines by common new line
-	 */
-	public void mergePolylinesAtContiguousEndPoints(double eps) {
-		mergePolylinesAtContigousEndPoints(Axis2.X, eps);
-		mergePolylinesAtContigousEndPoints(Axis2.Y, eps);
-	}
-
-	private void mergePolylinesAtContigousEndPoints(Axis2 axis, double eps) {
-		while (true) {
-			List<SVGElement> polylines0 = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:polyline");
-			LOG.trace("POL "+polylines0.size());
-			List<SVGElement> polylines = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:polyline[not(@"+MERGED+")]");
-			if (polylines.size() == 0) {
-				break;
-			}
-			mergePolylinesAtContiguousPoints(axis, eps, polylines);
-		}
-	}
-
-	private void mergePolylinesAtContiguousPoints(Axis2 axis, double eps, List<SVGElement> polylines) {
-		// will modify all polylines so they are monotonic increasing
-		List<SVGPolyline> polylinesXIncreasing = getNormalizedMonotonicity(polylines, Monotonicity.INCREASING, axis);
-		BoxEdge boxEdge = (Axis2.X.equals(axis)) ? BoxEdge.XMIN : BoxEdge.YMIN;
-		List<SVGElement> sortedPolylines = BoundingBoxManager.getElementsSortedByEdge(polylinesXIncreasing, boxEdge);
-		for (SVGElement pp : sortedPolylines) {
-			SVGPolyline p = (SVGPolyline) pp;
-			LOG.trace(""+p.getFirst()+" ==> "+p.getLast());
-		}
-		SVGPolyline newPolyline = null;
-		Real2 lastXY = null;
-		for (int i = 0; i < sortedPolylines.size(); i++) {
-			SVGPolyline polyline = (SVGPolyline) sortedPolylines.get(i);
-			if (newPolyline == null) {
-				newPolyline = new SVGPolyline(polyline);
-				polyline.getParent().replaceChild(polyline, newPolyline);
-				newPolyline.addAttribute(new Attribute(MERGED, "true"));
-			} else {
-				Real2 firstXY = polyline.getFirst();
-				double delta = (axis.equals(Axis2.X)) ? 
-						firstXY.getX() - lastXY.getX() : firstXY.getY() - lastXY.getY(); 
-				if (delta > eps) { // no remaining lines in range
-					break;
-				} else if (delta < -eps) {
-					// else skip overlapping lines
-				} else if (firstXY.getDistance(lastXY) < eps) {
-					newPolyline.appendIntoSingleLine(polyline, 1);
-					LOG.trace("SIZE: "+newPolyline.getPointList().size());
-					polyline.detach();
-				}
-			}
-			lastXY = newPolyline.getLast();
-		}
-		LOG.trace("new points "+newPolyline.getPointList().size());
-//		newPolyline.debug("NEW POLY");
-	}
-
-
-	private List<SVGPolyline> getNormalizedMonotonicity(List<SVGElement> polylines, Monotonicity monotonicity, Axis2 axis) {
-		List<SVGPolyline> polylineSubset = new ArrayList<SVGPolyline>();
-		for (SVGElement polylineE : polylines) {
-			SVGPolyline polyline = (SVGPolyline) polylineE;
-			Monotonicity monotonicity0  = polyline.getMonotonicity(axis);
-			if (monotonicity0 != null) {
-				if (!monotonicity.equals(monotonicity0)) {
-					polyline.reverse();
-				}
-				polylineSubset.add(polyline);
-			}
-		}
-		return polylineSubset;
- 	} 
-
-	public void formatClipPaths() {
-		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:clipPath/svg:path");
-		for (SVGElement clipPath : clipPaths) {
-			clipPath.format(PageEditor.DECIMAL_PLACES);
-		}
-	}
+//	private void formatClipPaths() {
+//		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:clipPath/svg:path");
+//		for (SVGElement clipPath : clipPaths) {
+//			clipPath.format(PageEditor.DECIMAL_PLACES);
+//		}
+//	}
 	
-	public void identifyAndRemoveBoxedChunksAndTidy() {
-		List<SVGElement> chunkElements = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:g[@LEAF and [svg:path | svg:line | svg:rect ");
-		
-	}
+//	/** not yet implemented
+//	 * 
+//	 */
+//	private void identifyAndRemoveBoxedChunksAndTidy() {
+//		List<SVGElement> chunkElements = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:g[@LEAF and [svg:path | svg:line | svg:rect ");
+//		
+//	}
 
-
-	/** main routine?
-	 * 
-	 * @param pathList
-	 */
-	public void interpretPathsAsRectCirclePolylineAndReplace() {
-		List<SVGElement> pathList = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:*[not(self::svg:clipPath)]/svg:path");
-		interpretPathsAsRectCirclePolylineAndReplace(pathList);
-	}
 
 	/** with help from
 http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circle-using-multiple-points
@@ -273,10 +187,9 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	 * 
 	 * @param pathList
 	 */
-	public void interpretPathsAsRectCirclePolylineAndReplace(List<SVGElement> pathList) {
+	public void interpretPathsAsRectCirclePolylineAndReplace() {
 		int id = 0;
-		for (SVGElement elem : pathList) {
-			SVGPath path = (SVGPath) elem;
+		for (SVGPath path : pathList) {
 			SVGElement newSVGElement = null;
 			
 			SVGRect rect = path.createRectangle(RECT_EPS);
@@ -329,7 +242,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 			}
 			if (newSVGElement != null) {
 				copyAttributes(path, newSVGElement);
-				PageNormalizerAction.removeCSSStyleAndExpandAsSeparateAttributes(newSVGElement);
+//				PageNormalizerAction.removeCSSStyleAndExpandAsSeparateAttributes(newSVGElement);
 			}
 			id++;
 		}
@@ -424,21 +337,22 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	 * if their paths are equal, remove the later one(s)
 	 */
 	public void removeDuplicatePaths() {
-		List<SVGElement> paths = SVGUtil.getQuerySVGElements(getSVGPage(), "//svg:path");
-		Set<String> dStringSet = new HashSet<String>();
-		int count = 0;
-		for (SVGElement path : paths) {
-			String dString = ((SVGPath)path).getDString();
-			if (dStringSet.contains(dString)) {
-				LOG.trace("detached a duplicate path "+dString);
-				path.detach();
-				count++;
-			} else {
-				dStringSet.add(dString);
+		if (this.removeDuplicatePaths && pathList != null) {
+			Set<String> dStringSet = new HashSet<String>();
+			int count = 0;
+			for (SVGPath path : pathList) {
+				String dString = path.getDString();
+				if (dStringSet.contains(dString)) {
+					LOG.trace("detached a duplicate path "+dString);
+					path.detach();
+					count++;
+				} else {
+					dStringSet.add(dString);
+				}
 			}
-		}
-		if (count > 0) {
-			LOG.trace("detached "+count+" duplicate paths");
+			if (count > 0) {
+				LOG.trace("detached "+count+" duplicate paths");
+			}
 		}
 	}
 
@@ -468,12 +382,14 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 
 	/** modifies the paths
 	 * 
-	 * @param paths
+	 * @param pathList
 	 */
 	public void removeRedundantMoveCommands() {
-		List<SVGElement> paths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:*[not(self::svg:clipPath)]/svg:path");
-		for (SVGElement path : paths) {
-			removeRedundantMoveCommands((SVGPath) path, MOVE_EPS);
+		if (this.removeRedundantMoveCommands ) {
+//			List<SVGElement> paths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:*[not(self::svg:clipPath)]/svg:path");
+			for (SVGPath path : pathList) {
+				removeRedundantMoveCommands(path, MOVE_EPS);
+			}
 		}
 	}
 
@@ -528,17 +444,17 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		}
 	}
 
-	public void enforceVisibility() {
-		List<SVGElement> elements = SVGUtil.getQuerySVGElements(
-				getSVGPage(), "//svg:path | //svg:polygon | //svg:line | //svg:polyline | //svg:circle | //svg:rect");
-		for (SVGElement element : elements) {
-			String stroke = element.getStroke();
-			String fill = element.getFill();
-			if ((stroke == null || NONE.equals(stroke)) && (fill == null || NONE.equals(fill))) {
-				element.setStroke(DEFAULT_STROKE);
-			}
-		}
-	}
+//	public void enforceVisibility() {
+//		List<SVGElement> elements = SVGUtil.getQuerySVGElements(
+//				getSVGPage(), "//svg:path | //svg:polygon | //svg:line | //svg:polyline | //svg:circle | //svg:rect");
+//		for (SVGElement element : elements) {
+//			String stroke = element.getStroke();
+//			String fill = element.getFill();
+//			if ((stroke == null || NONE.equals(stroke)) && (fill == null || NONE.equals(fill))) {
+//				element.setStroke(DEFAULT_STROKE);
+//			}
+//		}
+//	}
 
 	public static SVGCircle findCircleFromPoints(Real2Array r2a, double eps) {
 		SVGCircle circle = null;
@@ -572,5 +488,37 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		return circle;
 	}
 	
+	public boolean isRemoveDuplicatePaths() {
+		return removeDuplicatePaths;
+	}
+
+	public void setRemoveDuplicatePaths(boolean removeDuplicatePaths) {
+		this.removeDuplicatePaths = removeDuplicatePaths;
+	}
+
+	public boolean isRemoveRedundantMoveCommands() {
+		return removeRedundantMoveCommands;
+	}
+
+	public void setRemoveRedundantMoveCommands(boolean removeRedundantMoveCommands) {
+		this.removeRedundantMoveCommands = removeRedundantMoveCommands;
+	}
+
+	public boolean isSplitAtMoveCommands() {
+		return splitAtMoveCommands;
+	}
+
+	public void setSplitAtMoveCommands(boolean splitAtMoveCommands) {
+		this.splitAtMoveCommands = splitAtMoveCommands;
+	}
+
+	public Integer getMinLinesInPolyline() {
+		return minLinesInPolyline;
+	}
+
+	public void setMinLinesInPolyline(Integer minLinesInPolyline) {
+		this.minLinesInPolyline = minLinesInPolyline;
+	}
+
 	
 }

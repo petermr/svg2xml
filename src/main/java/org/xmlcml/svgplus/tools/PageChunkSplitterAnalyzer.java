@@ -1,10 +1,10 @@
 package org.xmlcml.svgplus.tools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import nu.xom.Attribute;
-import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
@@ -47,41 +47,45 @@ public class PageChunkSplitterAnalyzer extends AbstractPageAnalyzer {
 	private static final String LEAF = "LEAF";
 	public static final String TOP_CHUNK = "topChunk";
 
+	
+	private List<SplitterParams> splitterParams = null;
+	
+	
 	// empirical borderwidths
-	private Double YSEP_0 = 10.;
-	private Double YSEP_1 = 5.;
-	private Double XSEP_0 = 10.0;
+	// Y0, X0, Y1, X1...
+	private static double YSEP_0 = 10.;
+	private static Double YSEP_1 = 5.;
+	private static Double XSEP_0 = 10.0;
 	
 	private List<Chunk> finalChunkList;
 
 	public PageChunkSplitterAnalyzer(SemanticDocumentAction semanticDocumentAction) {
 		super(semanticDocumentAction);
+		init();
+	}
+	
+	private void init() {
+		setSplitterParams(
+				new SplitterParams[] {
+				new SplitterParams(BoxEdge.YMIN, YSEP_0),
+				new SplitterParams(BoxEdge.XMIN, XSEP_0),
+				new SplitterParams(BoxEdge.YMIN, YSEP_1)
+				}
+		);
 	}
 
-//	/** the main analysis routine
-//	 * includes text, paths, figures, tables
-//	 */
-//	@Deprecated
-//	public void splitByWhitespaceThenSplitByClipPath() {
-//		finalChunkList = splitByWhitespace();
-//		labelLeafNodes(finalChunkList);
-//		splitByClipPath(finalChunkList);
-//	}
+	public void setSplitterParams(SplitterParams[] spParams) {
+		this.splitterParams = Arrays.asList(spParams);
+	}
 	
 	/** the main analysis routine
 	 * includes text, paths, figures, tables
 	 */
-	public void splitByWhitespaceThenSplitByPhysicalStyle() {
+	public void splitByWhitespaceAndLabelLeafNodes() {
 		finalChunkList = splitByWhitespace();
 		labelLeafNodes(finalChunkList);
-		splitByPhysicalStyle(finalChunkList);
-//		splitByClipPath(finalChunkList);
 	}
 	
-	private void splitByPhysicalStyle(List<Chunk> finalChunkList2) {
-		// TODO Auto-generated method stub
-		
-	}
 	public void labelLeafNodes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
 			if (SVGUtil.getQuerySVGElements(chunk, "self::svg:g[@edge='YMIN' and parent::svg:g[@edge='XMIN' and parent::svg:g[@edge='YMIN']]]").size() >0) {
@@ -108,15 +112,8 @@ public class PageChunkSplitterAnalyzer extends AbstractPageAnalyzer {
 			labelXYMINDescendants(childChunk, id);
 		}
 	}
-	
-//	private void debugPage(String filename) {
-//		try {
-//			CMLUtil.debug(svgPage, new FileOutputStream(filename), 1);
-//		} catch (IOException e) {
-//			throw new RuntimeException("file error: "+filename, e);
-//		}
-//	}
-	
+
+	// FIXME add variable levels
 	public List<Chunk> splitByWhitespace() {
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
@@ -126,42 +123,22 @@ public class PageChunkSplitterAnalyzer extends AbstractPageAnalyzer {
 		LOG.debug("descendants: "+topChunk.getDescendantSVGElementList().size()+"/"+(System.currentTimeMillis()-time0));
 		pageEditor.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
-		List<Chunk> subChunkList = topChunk.splitIntoChunks(YSEP_0, BoxEdge.YMIN);
+		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
 		List<Chunk> subSubSubChunkList = null;
 		for (Chunk subChunk : subChunkList) {
-			List<Chunk> cc = subChunk.splitIntoChunks(XSEP_0, BoxEdge.XMIN);
+			List<Chunk> cc = subChunk.splitIntoChunks(splitterParams.get(1).width, splitterParams.get(1).boxEdge);
 			subSubChunkList.addAll(cc);
 			subSubSubChunkList = new ArrayList<Chunk>();
 			for (Chunk subSubChunk : subSubChunkList) {
-				cc = subSubChunk.splitIntoChunks(YSEP_1, BoxEdge.YMIN);
+				cc = subSubChunk.splitIntoChunks(splitterParams.get(2).width, splitterParams.get(2).boxEdge);
 				subSubSubChunkList.addAll(cc);
 			}
 		}
 		removeEmptyChunks(topChunk);
-		if (false) removeAttributes( new String[] {
-//				"clip-path",
-				"text-rendering",
-				"shape-rendering",
-				"space",
-				"fill-rule",
-		});
-		Long time = System.currentTimeMillis();
-		LOG.trace("pageChunkSplitter: "+(time-time0));
 		return subSubSubChunkList;
 	}
 
-	private void removeAttributes(String[] localNames) {
-		LOG.debug("removing attributes");
-		for (String localName : localNames) {
-			Nodes nodes = pageEditor.getSVGPage().query("//@*[local-name()='"+localName+"']");
-			for (int i = 0; i < nodes.size(); i++) {
-				nodes.get(i).detach();
-			}
-		}
-		LOG.debug("removed attributes");
-	}
-	
 	private void removeEmptyChunks(Chunk topChunk) {
 		List<SVGElement> emptyGList = SVGUtil.getQuerySVGElements(topChunk, "//svg:g[count(*)=0]");
 		for (SVGElement g : emptyGList) {

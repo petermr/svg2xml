@@ -42,14 +42,26 @@ public class WhitespaceChunkerTest {
 		PageChunkSplitterAnalyzer pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzer(semanticDocumentAction);
 		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace();
 		Assert.assertNotNull(finalChunkList);
-		Assert.assertEquals("chunks", 28, finalChunkList.size());
+		Assert.assertEquals("chunks", 29, finalChunkList.size());
 		drawChunkBoxes(semanticDocumentAction, finalChunkList);
 		CMLUtil.debug(semanticDocumentAction.getSVGPage(), new FileOutputStream("target/testHarter3.svg"), 1);
 	}
 
 	@Test
+	public void testHarter3small() throws Exception {
+		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.HARTER3SMALL_SVG);
+		SVGSVG svgPage = semanticDocumentAction.getSVGPage();
+		PageChunkSplitterAnalyzer pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzer(semanticDocumentAction);
+		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace();
+		Assert.assertNotNull(finalChunkList);
+		Assert.assertEquals("chunks", 29, finalChunkList.size());
+		drawChunkBoxes(semanticDocumentAction, finalChunkList);
+		CMLUtil.debug(semanticDocumentAction.getSVGPage(), new FileOutputStream("target/testHarter3small.svg"), 1);
+	}
+
+	@Test
 	public void testPolicies() {
-		testSplit(Fixtures.POLICIES_SVG, 8, new File("target/policies.svg"));
+		testSplit(Fixtures.POLICIES_SVG, 7, new File("target/policies.svg"));
 	}
 	
 	@Test

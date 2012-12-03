@@ -3,6 +3,8 @@ package org.xmlcml.svgplus.command;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.action.AbstractActionX;
+import org.xmlcml.svgplus.action.PageActionX;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 

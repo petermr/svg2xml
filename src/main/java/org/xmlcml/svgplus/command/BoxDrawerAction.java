@@ -39,7 +39,7 @@ public class BoxDrawerAction extends PageAction {
         		if (title != null) {
         			box.setTitle(title);
         		}
-        		PageNormalizerAction.removeCSSStyleAndExpandAsSeparateAttributes(box);
+//        		PageNormalizerAction.removeCSSStyleAndExpandAsSeparateAttributes(box);
     		}
     	}
 	}

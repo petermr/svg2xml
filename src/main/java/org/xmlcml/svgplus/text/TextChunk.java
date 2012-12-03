@@ -79,7 +79,15 @@ public class TextChunk {
 		WordSequence scriptWordSequence = scriptChunk.getLastWordSequence();
 		WordSequence thisWordSequence = this.getFirstWordSequence();
 		return thisWordSequence != null && scriptWordSequence != null && 
-				liesInSubSupRange(thisWordSequence, scriptWordSequence, this.getChunkStyle().getSuperscriptY(), 1. / SCRIPTFACTOR);
+				liesInSubSupRange(thisWordSequence, scriptWordSequence, this.getSuperscriptY(), 1. / SCRIPTFACTOR);
+	}
+
+	private Double getSuperscriptY() {
+		throw new RuntimeException("NYI");
+	}
+
+	private Double getSubscriptY() {
+		throw new RuntimeException("NYI");
 	}
 
 	public void addSubscriptsFrom(TextChunk scriptChunk) {
@@ -89,12 +97,7 @@ public class TextChunk {
 	public boolean hasSubscriptsIn(TextChunk scriptChunk) {
 		WordSequence thisWordSequence = this.getLastWordSequence();
 		WordSequence scriptWordSequence = scriptChunk.getFirstWordSequence();
-		return liesInSubSupRange(thisWordSequence, scriptWordSequence, this.getChunkStyle().getSubscriptY(), SCRIPTFACTOR);
-	}
-
-	private ChunkStyle getChunkStyle() {
-		// TODO Auto-generated method stub
-		return null;
+		return liesInSubSupRange(thisWordSequence, scriptWordSequence, this.getSubscriptY(), SCRIPTFACTOR);
 	}
 
 	private boolean liesInSubSupRange(WordSequence thisWordSequence, WordSequence scriptWordSequence, Double script, double tolerance) {
@@ -154,10 +157,6 @@ public class TextChunk {
 				theList = wordSequenceList;
 			}
 		}
-	}
-
-	private void addChunk(WordSequence subSupSequence) {
-//		LOG.debug("ADD "+chunk.toXML());
 	}
 
 	/**

@@ -299,7 +299,7 @@ public class PageNormalizerAction extends PageAction  {
 		elements = SVGUtil.getQuerySVGElements(getSVGPage(), "//*[@style]");
 	}
 
-	public static void removeCSSStyleAndExpandAsSeparateAttributes(SVGElement element) {
+	private static void removeCSSStyleAndExpandAsSeparateAttributes(SVGElement element) {
 		if (element.getAttribute(STYLE) != null) {
 			StyleBundle bundle = element.getStyleBundle();
 			if (bundle != null) {

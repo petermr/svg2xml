@@ -7,6 +7,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.text.TextAnalyzer;
+import org.xmlcml.svgplus.tools.Chunk;
 
 public class ChunkAnalyzerAction extends PageAction {
 
@@ -35,16 +36,16 @@ public class ChunkAnalyzerAction extends PageAction {
 					throw new RuntimeException("Must operate on <g> elements");
 				}
 				LOG.trace("*********************ELEMENT "+element.getId());
-				analyzeChunk((SVGG)element);
+				analyzeChunk(new Chunk((SVGG)element));
 			}
 			debugFile("target/chunkAnalyzer1Axes.svg");
 		}
 	}
 	
-	private void analyzeChunk(SVGG svgg) {
+	private void analyzeChunk(Chunk chunk) {
 		ChunkAnalyzer chunkAnalyzer = new ChunkAnalyzer(semanticDocumentAction);
 		createTextAnalyzer(chunkAnalyzer);
-		chunkAnalyzer.analyzeChunk(svgg);
+		chunkAnalyzer.analyzeChunk(chunk);
 	}
 
 	private void createTextAnalyzer(ChunkAnalyzer chunkAnalyzer) {

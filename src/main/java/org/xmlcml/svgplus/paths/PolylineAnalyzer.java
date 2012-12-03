@@ -17,6 +17,8 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Array;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.euclid.Axis.Axis2;
+import org.xmlcml.euclid.RealArray.Monotonicity;
 import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -30,7 +32,9 @@ import org.xmlcml.svgplus.command.ChunkAnalyzer;
 import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.PlotBox;
+import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svgplus.util.GraphUtil;
 
 
@@ -41,11 +45,13 @@ public class PolylineAnalyzer extends AbstractPageAnalyzer {
 	private static final String VERT = "VERT";
 	private static final String HOR = "HOR";
 	private static final String IS_SAME_AS = "isSameAs";
+	private static final String MERGED = "merged";
 	private static final String PLOT = "plot";
 	private static final String POLYLINES = "extractedPolylines";
 	private static final String XAXIS = "xaxis";
 	private static final String YAXIS = "yaxis";
 	private static final String ROLE = "role";
+	
 
 	private Double eps = 0.0000001;
 	private Double eps1 = 0.01;
@@ -59,6 +65,7 @@ public class PolylineAnalyzer extends AbstractPageAnalyzer {
 	private List<SVGLine> unorientedLineList;
 	private Map<Integer, List<SVGLine>> horizontalMap;
 	private Map<Integer, List<SVGLine>> verticalMap;
+	private boolean mergePolylinesAtContiguousEndPoints = true;
 
 	public PolylineAnalyzer() {
 	}
@@ -67,14 +74,14 @@ public class PolylineAnalyzer extends AbstractPageAnalyzer {
 		super(semanticDocumentAction);
 	}
 	
-	public void analyzePolylines() {
-		polylines = new ArrayList<SVGPolyline>();
-		List<SVGElement> svgElems = SVGUtil.getQuerySVGElements(
-				getSVGPage(), "/svg:svg/svg:g[@title='"+POLYLINES+"']/svg:polyline");
-		for (SVGElement svgElem : svgElems) {
-			polylines.add((SVGPolyline)svgElem);
-		}
-	}
+//	public void analyzePolylines() {
+//		polylines = new ArrayList<SVGPolyline>();
+//		List<SVGElement> svgElems = SVGUtil.getQuerySVGElements(
+//				getSVGPage(), "/svg:svg/svg:g[@title='"+POLYLINES+"']/svg:polyline");
+//		for (SVGElement svgElem : svgElems) {
+//			polylines.add((SVGPolyline)svgElem);
+//		}
+//	}
 	
 	public void createNetwork() {
 		indexHorizonalVertical();
@@ -360,5 +367,81 @@ public class PolylineAnalyzer extends AbstractPageAnalyzer {
 			}
 		}
 	}
+	
+	/** sort polylines along X and Y coords and find common points to merge lines
+	 *  replace joined lines by common new line
+	 */
+	public void mergePolylinesAtContiguousEndPoints(double eps) {
+		if (this.mergePolylinesAtContiguousEndPoints ) {
+			mergePolylinesAtContigousEndPoints(Axis2.X, eps);
+			mergePolylinesAtContigousEndPoints(Axis2.Y, eps);
+		}
+	}
+
+	private void mergePolylinesAtContigousEndPoints(Axis2 axis, double eps) {
+		while (true) {
+			List<SVGElement> polylines0 = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:polyline");
+			LOG.trace("POL "+polylines0.size());
+			List<SVGElement> polylines = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:polyline[not(@"+MERGED+")]");
+			if (polylines.size() == 0) {
+				break;
+			}
+			mergePolylinesAtContiguousPoints(axis, eps, polylines);
+		}
+	}
+
+	private void mergePolylinesAtContiguousPoints(Axis2 axis, double eps, List<SVGElement> polylines) {
+		// will modify all polylines so they are monotonic increasing
+		List<SVGPolyline> polylinesXIncreasing = getNormalizedMonotonicity(polylines, Monotonicity.INCREASING, axis);
+		BoxEdge boxEdge = (Axis2.X.equals(axis)) ? BoxEdge.XMIN : BoxEdge.YMIN;
+		List<SVGElement> sortedPolylines = BoundingBoxManager.getElementsSortedByEdge(polylinesXIncreasing, boxEdge);
+		for (SVGElement pp : sortedPolylines) {
+			SVGPolyline p = (SVGPolyline) pp;
+			LOG.trace(""+p.getFirst()+" ==> "+p.getLast());
+		}
+		SVGPolyline newPolyline = null;
+		Real2 lastXY = null;
+		for (int i = 0; i < sortedPolylines.size(); i++) {
+			SVGPolyline polyline = (SVGPolyline) sortedPolylines.get(i);
+			if (newPolyline == null) {
+				newPolyline = new SVGPolyline(polyline);
+				polyline.getParent().replaceChild(polyline, newPolyline);
+				newPolyline.addAttribute(new Attribute(MERGED, "true"));
+			} else {
+				Real2 firstXY = polyline.getFirst();
+				double delta = (axis.equals(Axis2.X)) ? 
+						firstXY.getX() - lastXY.getX() : firstXY.getY() - lastXY.getY(); 
+				if (delta > eps) { // no remaining lines in range
+					break;
+				} else if (delta < -eps) {
+					// else skip overlapping lines
+				} else if (firstXY.getDistance(lastXY) < eps) {
+					newPolyline.appendIntoSingleLine(polyline, 1);
+					LOG.trace("SIZE: "+newPolyline.getPointList().size());
+					polyline.detach();
+				}
+			}
+			lastXY = newPolyline.getLast();
+		}
+		LOG.trace("new points "+newPolyline.getPointList().size());
+//		newPolyline.debug("NEW POLY");
+	}
+
+
+	private List<SVGPolyline> getNormalizedMonotonicity(List<SVGElement> polylines, Monotonicity monotonicity, Axis2 axis) {
+		List<SVGPolyline> polylineSubset = new ArrayList<SVGPolyline>();
+		for (SVGElement polylineE : polylines) {
+			SVGPolyline polyline = (SVGPolyline) polylineE;
+			Monotonicity monotonicity0  = polyline.getMonotonicity(axis);
+			if (monotonicity0 != null) {
+				if (!monotonicity.equals(monotonicity0)) {
+					polyline.reverse();
+				}
+				polylineSubset.add(polyline);
+			}
+		}
+		return polylineSubset;
+ 	} 
+
 
 }

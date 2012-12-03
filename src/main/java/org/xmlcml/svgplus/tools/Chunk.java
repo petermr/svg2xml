@@ -107,14 +107,14 @@ public class Chunk extends SVGG {
 		SVGUtil.setBoundingBoxCached(descendantSVGElementList, true);
 		Long time0 = System.currentTimeMillis();
 		descendantSVGElementList = BoundingBoxManager.getElementsSortedByEdge(descendantSVGElementList, edge);
-		LOG.debug("sort edge: "+edge+" "+(System.currentTimeMillis()-time0));
+		LOG.trace("sort edge: "+edge);
 		addTerminatingEmptyBox(1.5*chunkWidth, edge);
 		List<Chunk> chunkList = new ArrayList<Chunk>();
 		if (emptyBoxList == null) {
 			return chunkList;
 		}
 		Chunk newChunk = null;
-		LOG.debug("emptyBoxes "+emptyBoxList.size());
+		LOG.trace("emptyBoxes "+emptyBoxList.size());
 		Iterator<Real2Range> boxIterator = emptyBoxList.iterator();
 		Iterator<SVGElement> elementIterator = descendantSVGElementList.iterator();
 		Real2Range box = boxIterator.next();
@@ -132,7 +132,7 @@ public class Chunk extends SVGG {
 				}
 				newChunk.addSVGElement(element);
 				element = elementIterator.hasNext() ? elementIterator.next() : null;
-				LOG.debug("addChunk/element: "+(System.currentTimeMillis()-time0));
+				LOG.trace("addChunk/element: "+(System.currentTimeMillis()-time0));
 			} else {
 				box = null;
 				newChunk = null; // ?
@@ -147,14 +147,14 @@ public class Chunk extends SVGG {
 				}
 			}
 		}
-		LOG.debug("emptyBoxCount "+emptyBoxList.size());
+		LOG.trace("emptyBoxCount "+emptyBoxList.size());
 		for (Real2Range r2r : emptyBoxList) {
-			System.out.println("EmptyBox "+r2r);
+			LOG.trace("EmptyBox "+r2r);
 			if (r2r.getXRange() == null || r2r.getYRange() == null) {
 				throw new RuntimeException("Null empty box");
 			}
 		}
-		LOG.debug("======");
+		LOG.trace("======");
 		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis()-time0));
 		for (Chunk chunk0 : chunkList) {
 			chunk0.setBoundingBoxAttribute(PageEditor.DECIMAL_PLACES);
@@ -181,8 +181,16 @@ public class Chunk extends SVGG {
 			if (!bbox.isValid()) {
 				if (lastElement instanceof SVGText) {
 					LOG.debug("text w/o bbox "+lastElement.toXML());
+					LOG.debug("lastR2R "+lastR2R);
+					SVGText svgText = (SVGText) lastElement;
+					String textContent = svgText.getText();
+					if (textContent == null) {
+						throw new RuntimeException("Null text");
+					}
+					LOG.debug("text "+textContent.length());
+					LOG.debug("char "+(textContent.length() > 0 ? "NULL" : textContent.charAt(0)));
 				}
-				throw new RuntimeException("Invalid box: "+bbox.getXRange()+" / "+bbox.getYRange()+" /"+lastElement.getClass());
+				throw new RuntimeException("Invalid box: "+cc+" / "+bbox.getXRange()+" / "+bbox.getYRange()+" /"+lastElement.getClass());
 			}
 			emptyBoxList.add(bbox);
 		}

@@ -152,7 +152,7 @@ public class ChunkTest {
 		LOG.debug("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
 		List<Chunk> chunkList = chunk.splitIntoChunks(1.0, BoxEdge.YMIN);
 		Assert.assertNotNull("split list not null", chunkList);
-		Assert.assertEquals("split list ", 1, chunkList.size());
+		Assert.assertEquals("split list ", 25, chunkList.size());
 	}
 	
 
