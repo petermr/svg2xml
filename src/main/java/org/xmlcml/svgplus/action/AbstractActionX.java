@@ -559,4 +559,8 @@ public abstract class AbstractActionX extends Element {
 		String[] ss = (s == null) ? null : s.split(CMLConstants.S_WHITEREGEX);
 		return (ss == null) ? null : Arrays.asList(ss);
 	}
+
+	public SemanticDocumentActionX getSemanticDocumentActionX() {
+		return semanticDocumentActionX;
+	}
 }

@@ -8,8 +8,6 @@ import nu.xom.Element;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
-import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
 public class Fixtures {
 

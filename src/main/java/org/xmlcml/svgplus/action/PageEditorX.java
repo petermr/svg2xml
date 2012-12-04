@@ -21,7 +21,6 @@ import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.figure.Figure;
 import org.xmlcml.svgplus.table.Table;
-import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -218,7 +217,7 @@ public class PageEditorX {
 	}
 
 	private void applyBrowserScale() {
-		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id='"+PageChunkSplitterAnalyzer.TOP_CHUNK+"']");
+		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id='"+PageChunkSplitterAnalyzerX.TOP_CHUNK+"']");
 		if (gList.size() != 1) {
 			LOG.error("should have one topChunk G");
 		} else {

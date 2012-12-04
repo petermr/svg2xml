@@ -13,7 +13,6 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
 import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.text.TextAnalyzer;
 import org.xmlcml.svgplus.tools.Chunk;
 
 public class ChunkAnalyzerActionX extends PageActionX {

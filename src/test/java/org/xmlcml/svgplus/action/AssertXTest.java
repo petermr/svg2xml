@@ -3,7 +3,6 @@ package org.xmlcml.svgplus.action;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
 /** tests <assert> and <variable> commands
  * 

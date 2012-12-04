@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.io.File;
+
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -11,9 +12,7 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.Fixtures;
 import org.xmlcml.svgplus.analyzer.PageChunkSplitterAnalyzerX;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.Chunk;
-import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 
 public class WhitespaceChunkerXTest {
 

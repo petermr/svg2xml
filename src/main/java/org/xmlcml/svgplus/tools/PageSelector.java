@@ -1,9 +1,12 @@
 package org.xmlcml.svgplus.tools;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.svgplus.command.PageSelectorAction;
+
 
 public class PageSelector {
+	
+	private static final Logger LOG = Logger.getLogger(PageSelector.class);
 
 	public static final String NOT_FIRST = "notFirst";
 	public static final String FIRST = "first";
@@ -144,7 +147,7 @@ public class PageSelector {
 					setTrue(i);
 				}
 			}
-			PageSelectorAction.LOG.trace(this);
+			PageSelector.LOG.trace(this);
 			last = (i1 == null) ? i0 : i1;
 		} catch (Exception e) {
 			throw new RuntimeException("Bad range: "+range, e);

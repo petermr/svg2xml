@@ -2,6 +2,7 @@ package org.xmlcml.svgplus.action;
 
 import java.util.List;
 
+
 import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
@@ -14,8 +15,6 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svgplus.Fixtures;
-import org.xmlcml.svgplus.command.PageEditor;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;

@@ -7,7 +7,8 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svgplus.text.SubSupAnalyzer.SubSup;
+import org.xmlcml.svgplus.analyzer.SubSupAnalyzerX;
+import org.xmlcml.svgplus.analyzer.SubSupAnalyzerX.SubSup;
 
 public class TypedNumber {
 
@@ -81,7 +82,7 @@ public class TypedNumber {
 			SVGTSpan tSpan0 = tSpans.get(0);
 			SVGTSpan tSpan1 = tSpans.get(1);
 			Integer power = null;
-			if (SubSup.SUPERSCRIPT.toString().equals(tSpan1.getAttributeValue(SubSupAnalyzer.SCRIPT_TYPE))) {
+			if (SubSup.SUPERSCRIPT.toString().equals(tSpan1.getAttributeValue(SubSupAnalyzerX.SCRIPT_TYPE))) {
 				try {
 					power = new Integer(tSpan1.getValue());
 					typedNumber = createAndParseExponentialForm(tSpan0.getValue().trim(), power);

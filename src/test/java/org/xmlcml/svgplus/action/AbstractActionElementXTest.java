@@ -6,12 +6,6 @@ import nu.xom.Element;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
-import org.xmlcml.svgplus.command.AbstractAction;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.DocumentIteratorElement;
-import org.xmlcml.svgplus.core.SVGPlusConverter;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
-import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
 public class AbstractActionElementXTest {
 
@@ -35,46 +29,28 @@ public class AbstractActionElementXTest {
 	
 	@Test
 	public void testCreateActionElementFile() {
-		Element element = SemanticDocumentElement.createSemanticDocument(Fixtures.NOOP_FILE);
+		Element element = SemanticDocumentActionX.createSemanticDocument(Fixtures.NOOP_FILE);
 		Assert.assertNotNull(element);
-		Assert.assertTrue(element instanceof SemanticDocumentElement);
-	}
-	
-	@Test
-	public void testCreateActionElementAction() {
-		SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(Fixtures.NOOP_FILE);
-		AbstractAction abstractAction = semanticDocumentElement.getAction();
-		Assert.assertNotNull(abstractAction);
-		Assert.assertTrue(abstractAction instanceof SemanticDocumentAction);
-		SemanticDocumentAction semanticDocumentAction = abstractAction.getSemanticDocumentAction();
-		Assert.assertNotNull(semanticDocumentAction);
-		Assert.assertTrue(semanticDocumentAction instanceof SemanticDocumentAction);
+		Assert.assertTrue(element instanceof SemanticDocumentActionX);
 	}
 	
 	@Test
 	public void testDescendantsSemanticDocument() {
-		SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(Fixtures.NOOP_FILE);
-		AbstractActionElement childElement = (AbstractActionElement) semanticDocumentElement.getChildElements().get(0);
-		AbstractAction childAction = childElement.getAction();
-		Assert.assertNotNull(childAction);
-		AbstractAction childSemanticDocumentAction = childAction.getSemanticDocumentAction();
+		SemanticDocumentActionX semanticDocumentElement = SemanticDocumentActionX.createSemanticDocument(Fixtures.NOOP_FILE);
+		AbstractActionX childElement = (AbstractActionX) semanticDocumentElement.getChildElements().get(0);
+		AbstractActionX childSemanticDocumentAction = childElement.getSemanticDocumentActionX();
 		Assert.assertNotNull(childSemanticDocumentAction);
 	}
 	
 	@Test
 	public void testCreateActionElementFileWithIncludes() {
-		SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(Fixtures.INCLUDE_TEST_FILE);
-		AbstractAction abstractAction = semanticDocumentElement.getAction();
-		Assert.assertNotNull(abstractAction);
-		Assert.assertTrue(abstractAction instanceof SemanticDocumentAction);
-		SemanticDocumentAction semanticDocumentAction = abstractAction.getSemanticDocumentAction();
-		Assert.assertNotNull(semanticDocumentAction);
-		Assert.assertTrue(semanticDocumentAction instanceof SemanticDocumentAction);
+		SemanticDocumentActionX semanticDocumentElement = SemanticDocumentActionX.createSemanticDocument(Fixtures.INCLUDE_TEST_FILE);
+		Assert.assertNotNull(semanticDocumentElement);
 	}
 	
 	@Test
 	public void testInputFileOnDocumentIteratorWithAssert() {
-		SVGPlusConverter converter = new SVGPlusConverter();
+		SVGPlusConverterX converter = new SVGPlusConverterX();
 		converter.run(
 				" -c "+Fixtures.INFILE_TEST
 				);

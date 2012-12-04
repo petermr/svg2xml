@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.text;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,18 +53,10 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 	private List<HorizontalCharacterList> subLines;
 	private WordSequence wordSequence;
 	private TextAnalyzerX textAnalyzerX;
-	@Deprecated
-	private TextAnalyzer textAnalyzer;
 	private SimpleFont simpleFont;
 	private Integer y;
 	private RealArray characterWidthArray;
 
-	@Deprecated
-	public HorizontalCharacterList(TextAnalyzer textAnalyzer, List<SVGText> characterList) {
-		this.characterList = characterList;
-		this.textAnalyzer = textAnalyzer;
-	}
-	
 	public HorizontalCharacterList(TextAnalyzerX textAnalyzerX, List<SVGText> characterList) {
 		this.characterList = characterList;
 		this.textAnalyzerX = textAnalyzerX;
@@ -71,10 +64,6 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 	
 	public HorizontalCharacterList(TextAnalyzerX textAnalyzerX) {
 		this(textAnalyzerX, new ArrayList<SVGText>());
-	}
-	
-	public HorizontalCharacterList(TextAnalyzer textAnalyzer) {
-		this(textAnalyzer, new ArrayList<SVGText>());
 	}
 	
 	/**
@@ -465,7 +454,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 
 	private void ensureSimpleFont() {
 		if (simpleFont == null) {
-			simpleFont = textAnalyzer.ensureSimpleFont();
+			simpleFont = textAnalyzerX.ensureSimpleFont();
 		}
 	}
 

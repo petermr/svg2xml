@@ -933,7 +933,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		this.createHTML = createHTML;
 	}
 
-	SimpleFont ensureSimpleFont() {
+	public SimpleFont ensureSimpleFont() {
 		if (this.simpleFont == null) {
 			simpleFont = pageEditorX.getSemanticDocumentAction().getSimpleFont();
 			if (this.simpleFont == null) {

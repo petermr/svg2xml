@@ -4,15 +4,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.PageEditor;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
+import org.xmlcml.svgplus.analyzer.AbstractPageAnalyzerX;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -33,7 +31,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
+public class PageClipPathAnalyzerX  extends AbstractPageAnalyzerX {
 
 	public static String[] fillColors = {
 		"red",
@@ -54,7 +52,7 @@ public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
 	private Multimap<String, SVGPath> pathsByClip;
 	private Multimap<String, SVGText> textsByClip;
 
-	public PageClipPathAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+	public PageClipPathAnalyzerX(SemanticDocumentActionX semanticDocumentAction) {
 		super(semanticDocumentAction);
 	}
 	
@@ -63,8 +61,8 @@ public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
 		elementsByClip = ArrayListMultimap.create();
 		pathsByClip = ArrayListMultimap.create();
 		textsByClip = ArrayListMultimap.create();
-		clipPathRefsList = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), "//svg:*[@clip-path]");
-		svgClipPathList = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), "/svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
+		clipPathRefsList = SVGUtil.getQuerySVGElements(pageEditorX.getSVGPage(), "//svg:*[@clip-path]");
+		svgClipPathList = SVGUtil.getQuerySVGElements(pageEditorX.getSVGPage(), "/svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
 		
 		createMapsByClipPath();
 		
@@ -128,6 +126,6 @@ public class PageClipPathAnalyzer  extends AbstractPageAnalyzer {
 		SVGRect  bb = svgElement.createGraphicalBoundingBox();
 		bb.setFill(fill);
 		bb.setOpacity(0.5);
-		pageEditor.getSVGPage().appendChild(bb);
+		pageEditorX.getSVGPage().appendChild(bb);
 	}
 }

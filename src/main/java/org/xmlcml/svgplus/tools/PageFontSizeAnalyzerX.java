@@ -3,12 +3,10 @@ package org.xmlcml.svgplus.tools;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractPageAnalyzer;
-import org.xmlcml.svgplus.command.PageEditor;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
+import org.xmlcml.svgplus.analyzer.AbstractPageAnalyzerX;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -18,9 +16,9 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageFontSizeAnalyzer extends AbstractPageAnalyzer {
+public class PageFontSizeAnalyzerX extends AbstractPageAnalyzerX {
 
-	private static final Logger LOG = Logger.getLogger(PageFontSizeAnalyzer.class);
+	private static final Logger LOG = Logger.getLogger(PageFontSizeAnalyzerX.class);
 
 	public static String[] fillColors = {
 		"red",
@@ -42,14 +40,14 @@ public class PageFontSizeAnalyzer extends AbstractPageAnalyzer {
 		return elementsByFontSize;
 	}
 
-	public PageFontSizeAnalyzer(SemanticDocumentAction semanticDocumentAction) {
+	public PageFontSizeAnalyzerX(SemanticDocumentActionX semanticDocumentAction) {
 		super(semanticDocumentAction);
 	}
 	
 	public void analyze() {
 		elementsByFontSize = ArrayListMultimap.create();
 		LOG.debug("getting font sizes");
-		textList = SVGUtil.getQuerySVGElements(pageEditor.getSVGPage(), "//svg:text[@font-size]");
+		textList = SVGUtil.getQuerySVGElements(pageEditorX.getSVGPage(), "//svg:text[@font-size]");
 		LOG.debug("creating maps");
 		createMapsForElementsByFontSize();
 		LOG.debug("created maps");

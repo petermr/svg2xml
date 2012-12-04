@@ -55,7 +55,7 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 		return panelList;
 	}
 
-	void createFragmentsInsidePanelsForAllFigures() {
+	public void createFragmentsInsidePanelsForAllFigures() {
 		for (Figure figure : figureList) {
 			figure.createFragmentsInsidePanels();
 		}

@@ -29,8 +29,6 @@ public class Figure extends Chunk {
 	
 	private Chunk caption;
 	private FigureBody figureBody;
-	@Deprecated
-	private FigureAnalyzer figureAnalyzer;
 	private FigureAnalyzerX figureAnalyzerX;
 	private List<FigurePanel> panelList;
 	private List<FigureFragment> fragmentList;
@@ -42,12 +40,6 @@ public class Figure extends Chunk {
 
 	public Figure() {
 		super();
-	}
-
-	@Deprecated
-	public Figure(FigureAnalyzer figureAnalyzer) {
-		this();
-		this.figureAnalyzer = figureAnalyzer;
 	}
 
 	public Figure(FigureAnalyzerX figureAnalyzerX) {
@@ -82,7 +74,7 @@ public class Figure extends Chunk {
 	private List<FigurePanel> createPanelList() {
 		// chunk the figureBody by horizontal whitespace and add to new container
 		// (may have to do vertical space later)
-		List<Chunk> panelChunkList = figureBody.splitIntoChunks(figureAnalyzer.getPanelSeparation(), BoxEdge.XMIN);
+		List<Chunk> panelChunkList = figureBody.splitIntoChunks(figureAnalyzerX.getPanelSeparation(), BoxEdge.XMIN);
 		String id = this.getId();
 		int i = 0;
 		ensurePanelList();
@@ -148,12 +140,12 @@ public class Figure extends Chunk {
 		figureBody.remove(figurePanel);
 	}
 
-	List<FigurePanel> getFigurePanelList() {
+	public List<FigurePanel> getFigurePanelList() {
 		return figureBody == null ? null : figureBody.getFigurePanelList();
 	}
 
-	public FigureAnalyzer getFigureAnalyzer() {
-		return figureAnalyzer;
+	public FigureAnalyzerX getFigureAnalyzer() {
+		return figureAnalyzerX;
 	}
 
 	public Element getFigureAnalysis() {

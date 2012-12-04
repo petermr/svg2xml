@@ -9,15 +9,14 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
 import org.xmlcml.svgplus.TestUtils;
-import org.xmlcml.svgplus.core.SVGPlusConverter;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
 public class SemanticDocumentActionXTest {
 
 	private final static Logger LOG = Logger.getLogger(SemanticDocumentActionXTest.class);
+	
 	@Test
 	public void testSetVariable() {
-		SemanticDocumentAction semanticDocumentAction = new SemanticDocumentAction();
+		SemanticDocumentActionX semanticDocumentAction = new SemanticDocumentActionX();
 		semanticDocumentAction.setVariable("s.fooName", "barValue");
 		Object value = semanticDocumentAction.getVariable("s.fooName");
 		Assert.assertNotNull("value should not be null", value);
@@ -27,7 +26,7 @@ public class SemanticDocumentActionXTest {
 	
 	@Test
 	public void testSetVariableWithIncorrectName() {
-		SemanticDocumentAction semanticDocumentAction = new SemanticDocumentAction();
+		SemanticDocumentActionX semanticDocumentAction = new SemanticDocumentActionX();
 		try {
 			semanticDocumentAction.setVariable("fooName", "barValue");
 			Assert.fail("Should throw exception for bad name");
@@ -38,7 +37,7 @@ public class SemanticDocumentActionXTest {
 	
 	@Test
 	public void testResetVariable() {
-		SemanticDocumentAction semanticDocumentAction = new SemanticDocumentAction();
+		SemanticDocumentActionX semanticDocumentAction = new SemanticDocumentActionX();
 		semanticDocumentAction.setVariable("d.fooName", "barValue1");
 		semanticDocumentAction.setVariable("d.fooName", "barValue2");
 		Object value = semanticDocumentAction.getVariable("d.fooName");
@@ -51,7 +50,7 @@ public class SemanticDocumentActionXTest {
 	 */
 	//@Ignore // FIXME semanticDocumentAction null
 	public void testVariableMap() {
-		SVGPlusConverter converter = new SVGPlusConverter();
+		SVGPlusConverterX converter = new SVGPlusConverterX();
 		converter.run(
 				" -c "+Fixtures.NOOP_FILE+
 				" -i "+Fixtures.AJC_PAGE6_PDF
@@ -66,13 +65,13 @@ public class SemanticDocumentActionXTest {
 	 */
 	//@Ignore // FIXME semanticDocumentAction null
 	public void testInjectVariable() {
-		SVGPlusConverter converter = new SVGPlusConverter();
+		SVGPlusConverterX converter = new SVGPlusConverterX();
 		converter.run(
 				" -c "+ Fixtures.NOOP_FILE +
 				" -i "+ Fixtures.AJC_PAGE6_PDF +
 			    " -d.dummy dummyValue"
 				);
-		SemanticDocumentAction semanticDocumentAction = converter.getSemanticDocumentAction();
+		SemanticDocumentActionX semanticDocumentAction = converter.getSemanticDocumentAction();
 		List<String> variableNames = semanticDocumentAction.getVariableNames();
 		Assert.assertNotNull(variableNames);
 		for (String name : variableNames) {
@@ -80,14 +79,14 @@ public class SemanticDocumentActionXTest {
 		}
 		Assert.assertTrue("var names", variableNames.size() > 3);
 		Assert.assertTrue("sem doc", TestUtils.fileEquals(Fixtures.NOOP_FILE, 
-				(String) semanticDocumentAction.getVariable(SemanticDocumentAction.S_SEMDOC)));
-		Object fileObj = semanticDocumentAction.getVariable(SemanticDocumentAction.S_INFILE);
+				(String) semanticDocumentAction.getVariable(SemanticDocumentActionX.S_SEMDOC)));
+		Object fileObj = semanticDocumentAction.getVariable(SemanticDocumentActionX.S_INFILE);
 		Assert.assertNotNull("file ", fileObj);
 		Assert.assertTrue("file ", fileObj instanceof File);
 		Assert.assertEquals("input file", new File(Fixtures.AJC_PAGE6_PDF).getPath(), 
 				((File) fileObj).getPath());
 		Assert.assertNull("output file",  
-				semanticDocumentAction.getVariable(SemanticDocumentAction.S_OUTFILE));
+				semanticDocumentAction.getVariable(SemanticDocumentActionX.S_OUTFILE));
 		Assert.assertEquals("dummy", "dummyValue", 
 				semanticDocumentAction.getVariable("d.dummy"));
 		Assert.assertNull("null",  

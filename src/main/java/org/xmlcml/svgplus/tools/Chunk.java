@@ -21,7 +21,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svgplus.command.PageEditor;
+import org.xmlcml.svgplus.action.PageEditorX;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 /**
@@ -126,7 +126,7 @@ public class Chunk extends SVGG {
 			if (box == null || elementLagsBehindBox(edge, box, element)) {
 				time0 = System.currentTimeMillis();
 				if (newChunk == null) {
-					newChunk = makeChunk(chunkWidth, edge, PageEditor.DECIMAL_PLACES, count);
+					newChunk = makeChunk(chunkWidth, edge, PageEditorX.DECIMAL_PLACES, count);
 					chunkList.add(newChunk);
 					this.appendChild(newChunk);
 				}
@@ -157,7 +157,7 @@ public class Chunk extends SVGG {
 		LOG.trace("======");
 		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis()-time0));
 		for (Chunk chunk0 : chunkList) {
-			chunk0.setBoundingBoxAttribute(PageEditor.DECIMAL_PLACES);
+			chunk0.setBoundingBoxAttribute(PageEditorX.DECIMAL_PLACES);
 		}
 		LOG.trace("reformat chunkList: "+chunkList.size()+"/"+(System.currentTimeMillis()-time0));
 		return chunkList;
