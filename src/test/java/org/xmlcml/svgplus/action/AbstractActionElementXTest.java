@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.command;
+package org.xmlcml.svgplus.action;
 
 import nu.xom.Builder;
 import nu.xom.Element;
@@ -6,28 +6,31 @@ import nu.xom.Element;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
+import org.xmlcml.svgplus.command.AbstractAction;
+import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.command.DocumentIteratorElement;
 import org.xmlcml.svgplus.core.SVGPlusConverter;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
-public class AbstractActionElementTest {
+public class AbstractActionElementXTest {
 
 
 	@Test
 	public void testCreateActionElementElement() throws Exception {
 		Element element = new Builder().build(Fixtures.NOOP_FILE).getRootElement();
-		AbstractActionElement abstractActionElement = AbstractActionElement.createActionElement(element);
+		AbstractActionX abstractActionElement = AbstractActionX.createActionX(element);
 		Assert.assertNotNull(abstractActionElement);
-		Assert.assertTrue(abstractActionElement instanceof SemanticDocumentElement);
+		Assert.assertTrue(abstractActionElement instanceof SemanticDocumentActionX);
 	}
 	
 	@Test
 	public void testCreateDocumentIteratorElement() throws Exception {
 		Element element = new Builder().build(Fixtures.NOOP_FILE).getRootElement();
-		AbstractActionElement abstractActionElement = AbstractActionElement.createActionElement(element);
-		AbstractActionElement firstChildElement = (AbstractActionElement) abstractActionElement.getChildElements().get(0);
+		AbstractActionX abstractActionX = AbstractActionX.createActionX(element);
+		AbstractActionX firstChildElement = (AbstractActionX) abstractActionX.getChildElements().get(0);
 		Assert.assertNotNull(firstChildElement);
-		Assert.assertTrue(firstChildElement instanceof DocumentIteratorElement);
+		Assert.assertTrue(firstChildElement instanceof DocumentIteratorActionX);
 	}
 	
 	@Test

@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.paths.Axis;
 import org.xmlcml.svgplus.paths.ComplexLine;
 import org.xmlcml.svgplus.paths.ComplexLine.CombType;

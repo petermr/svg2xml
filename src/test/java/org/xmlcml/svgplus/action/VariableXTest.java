@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.command;
+package org.xmlcml.svgplus.action;
 
 import org.junit.Assert;
 
@@ -12,12 +12,12 @@ import org.xmlcml.svgplus.core.SemanticDocumentAction;
  * @author pm286
  *
  */
-public class VariableTest {
+public class VariableXTest {
 
 
 	@Test
 	public void variableTest() {
-		SemanticDocumentAction semanticDocumentAction = new SemanticDocumentAction();
+		SemanticDocumentActionX semanticDocumentAction = new SemanticDocumentActionX();
 		semanticDocumentAction.setVariable("s.foo", "bar");
 		Assert.assertEquals("get variable", "bar", semanticDocumentAction.getVariable("s.foo"));
 		semanticDocumentAction.setVariable("s.foo", "boo");
@@ -30,6 +30,6 @@ public class VariableTest {
 	@Test
 	@Ignore
 	public void variableTestFromCommand() {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.VARIABLE_TST);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.VARIABLE_TST);
 	}
 }

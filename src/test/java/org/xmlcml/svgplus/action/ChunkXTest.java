@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.tools;
+package org.xmlcml.svgplus.action;
 
 import java.util.List;
 
@@ -16,18 +16,20 @@ import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svgplus.Fixtures;
 import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
+import org.xmlcml.svgplus.tools.BoundingBoxManager;
+import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
-public class ChunkTest {
+public class ChunkXTest {
 
-	private final static Logger LOG = Logger.getLogger(ChunkTest.class);
+	private final static Logger LOG = Logger.getLogger(ChunkXTest.class);
 	
 	private static final int _PAGE0_SIZE = 351 - 1;
 
 	@Test
 	public void testChunkFromPageEditorWithPage() {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
-		PageEditor pageEditor = semanticDocumentAction.getPageEditor();
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
+		PageEditorX pageEditor = semanticDocumentAction.getPageEditor();
 		Assert.assertNotNull("page editor should not be null", pageEditor);
 		Chunk chunk = new Chunk(pageEditor.getSVGPage());
 		String roleValue = chunk.getAttributeValue(Chunk.ROLE, PDF2SVGUtil.SVGX_NS);
@@ -36,7 +38,7 @@ public class ChunkTest {
 	
 	@Test
 	public void testGetDescendantElementList() {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
 		List<SVGElement> descendantList = chunk.getDescendantSVGElementList();
 		Assert.assertNotNull("descendantlist should not be null", descendantList);
@@ -48,7 +50,7 @@ public class ChunkTest {
 	@Test
 	@Ignore // page count wrong
 	public void testBoundingBoxManager() {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
 		chunk.createElementListAndCalculateBoundingBoxes();
 		BoundingBoxManager boundingBoxManager = chunk.getBoundingBoxManager();
@@ -115,7 +117,7 @@ public class ChunkTest {
 	
 	@Test
 	public void testSplit() {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
 		chunk.createElementListAndCalculateBoundingBoxes();
 		LOG.debug("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
@@ -146,7 +148,7 @@ public class ChunkTest {
 	
 	@Test
 	public void testAJCPage6() {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.AJC6_SVG);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.AJC6_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
 		chunk.createElementListAndCalculateBoundingBoxes();
 		LOG.debug("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());

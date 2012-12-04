@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.command;
+package org.xmlcml.svgplus.action;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,18 +10,18 @@ import org.xmlcml.svgplus.core.SemanticDocumentAction;
  * @author pm286
  *
  */
-public class AssertTest {
+public class AssertXTest {
 
 	@Test
 	public void assertTestFromCommand() {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.ASSERT_TST);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.ASSERT_TST);
 		semanticDocumentAction.run();
 		semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.NO_ASSERT_TST);
 		try {
 			semanticDocumentAction.run();
 			Assert.fail("should fail assertion");
 		} catch (Exception e) {
-			Assert.assertEquals("Assert for: (s.foo) expected: nobar; found: bar", e.getMessage());
+			Assert.assertEquals("Assert for: (s.foo) expected: nobar; found: (bar)", e.getMessage());
 		}
 	}
 	

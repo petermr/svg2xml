@@ -6,7 +6,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
 
-public class SVGPlusConverterTestX {
+public class SVGPlusConverterXTest {
 
 	@Test
 	/** prints usage
@@ -108,6 +108,24 @@ public class SVGPlusConverterTestX {
 		try {
 			converter.run("" +
 					" -c "+Fixtures.BASIC_FILE +
+					" -i "+Fixtures.AJC_PAGE6_PDF +
+					" -o "+"target");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("failed: "+e.getCause());
+		}
+		Assert.assertTrue("read file", true);
+	}
+
+	@Test
+	/** tests chunkAnalyzer
+	 * 
+	 */
+	public void testChunkAnalyzer() {
+		SVGPlusConverterX converter = new SVGPlusConverterX(); 
+		try {
+			converter.run("" +
+					" -c "+Fixtures.CHUNK_ANALYZE +
 					" -i "+Fixtures.AJC_PAGE6_PDF +
 					" -o "+"target");
 		} catch (Exception e) {

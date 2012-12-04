@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.action;
 
 import java.io.File;
 import java.util.List;
@@ -9,10 +9,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svgplus.Fixtures;
 import org.xmlcml.svgplus.TestUtils;
+import org.xmlcml.svgplus.core.SVGPlusConverter;
+import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
-public class SemanticDocumentActionTest {
+public class SemanticDocumentActionXTest {
 
-	private final static Logger LOG = Logger.getLogger(SemanticDocumentActionTest.class);
+	private final static Logger LOG = Logger.getLogger(SemanticDocumentActionXTest.class);
 	@Test
 	public void testSetVariable() {
 		SemanticDocumentAction semanticDocumentAction = new SemanticDocumentAction();

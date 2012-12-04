@@ -34,12 +34,12 @@ public class VariableExtractorActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(AbstractActionX.ACTION);
 		ATTNAMES.add(PageActionX.PAGE_RANGE);
-		ATTNAMES.add(PageActionX.REGEX);
-		ATTNAMES.add(PageActionX.TITLE);
-		ATTNAMES.add(PageActionX.VARIABLES);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.REGEX);
+		ATTNAMES.add(AbstractActionX.TITLE);
+		ATTNAMES.add(AbstractActionX.VARIABLES);
+		ATTNAMES.add(AbstractActionX.XPATH);
 	}
 
 	/** constructor
@@ -71,7 +71,7 @@ public class VariableExtractorActionX extends PageActionX {
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
 				AbstractActionX.REGEX,
-				PageActionX.VARIABLES,
+				AbstractActionX.VARIABLES,
 				AbstractActionX.XPATH,
 		});
 	}

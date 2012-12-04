@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 
 import java.util.ArrayList;
@@ -30,6 +30,7 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.text.HorizontalCharacterList;
 import org.xmlcml.svgplus.text.Paragraph;
 import org.xmlcml.svgplus.text.SimpleFont;

@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.tools;
+package org.xmlcml.svgplus.action;
 
 import java.util.List;
 
@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.svgplus.tools.BoundingBoxManager;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 
 public class BoundingBoxManagerTest {

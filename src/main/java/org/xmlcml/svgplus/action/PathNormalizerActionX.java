@@ -8,6 +8,7 @@ import java.util.List;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.analyzer.PathAnalyzerX;
 
 /**
 	<pageAction xpath="//svg:g[@LEAF='3']/svg:g" action="drawBoxes" 

@@ -9,7 +9,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.FigureAnalyzerX;
+import org.xmlcml.svgplus.analyzer.FigureAnalyzerX;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svgplus.tools.Caption;

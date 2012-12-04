@@ -39,8 +39,8 @@ public class BoxDrawerActionX extends PageActionX {
 		ATTNAMES.add(PageActionX.OPACITY);
 		ATTNAMES.add(PageActionX.STROKE_WIDTH);
 		ATTNAMES.add(PageActionX.STROKE);
-		ATTNAMES.add(PageActionX.TITLE);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.TITLE);
+		ATTNAMES.add(AbstractActionX.XPATH);
 	}
 
 	/** constructor

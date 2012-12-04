@@ -27,8 +27,8 @@ public class VariableActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionX.LOGAT);
-		ATTNAMES.add(PageActionX.NAME);
+		ATTNAMES.add(AbstractActionX.LOGAT);
+		ATTNAMES.add(AbstractActionX.NAME);
 		ATTNAMES.add(PageActionX.VALUE);
 	}
 
@@ -68,7 +68,7 @@ public class VariableActionX extends PageActionX {
 	@Override
 	public void run() {
 		String name = getName();
-		String value = getValue();
+		String value = getValueString();
 		if (name == null || value == null) {
 			throw new RuntimeException("must give name and value attributes: "+this.toXML());
 		}

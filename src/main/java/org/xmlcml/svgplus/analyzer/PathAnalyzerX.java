@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -27,6 +27,8 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
+import org.xmlcml.svgplus.action.PageEditorX;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.tools.Chunk;
 
 /**

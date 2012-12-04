@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.PlotBox;
 

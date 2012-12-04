@@ -42,13 +42,13 @@ public class PageWriterActionX extends PageActionX {
 	public static String MAKE_DISPLAY = "makeDisplay";
 
 	static {
-		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(AbstractActionX.ACTION);
 		ATTNAMES.add(PageActionX.DELETE_XPATHS);
-		ATTNAMES.add(PageActionX.DELETE_NAMESPACES);
-		ATTNAMES.add(PageActionX.FILENAME);
-		ATTNAMES.add(PageActionX.FORMAT);
-		ATTNAMES.add(PageActionX.NAME);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.DELETE_NAMESPACES);
+		ATTNAMES.add(AbstractActionX.FILENAME);
+		ATTNAMES.add(AbstractActionX.FORMAT);
+		ATTNAMES.add(AbstractActionX.NAME);
+		ATTNAMES.add(AbstractActionX.XPATH);
 		ATTNAMES.add(MAKE_DISPLAY);
 	}
 
@@ -94,32 +94,40 @@ public class PageWriterActionX extends PageActionX {
 		String xpath = getXPath();
 		String name = getName();
 		if (xpath != null) {
-			List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
-			if (elements.size() == 0) {
-				warn("No elements found: "+xpath);
-			} else if (elements.size() > 1) {
-				info("Multiple elements found ("+elements.size()+"): "+xpath);
-			} else {
-				SVGElement svgElement = elements.get(0);
-				SVGSVG svg = null;
-				if (!(svgElement instanceof SVGSVG)) {
-					svg = new SVGSVG();
-					svgElement.detach();
-					svg.appendChild(svgElement);
-				} else {
-					svg = (SVGSVG) svgElement;
-				}
-				writeFile(svg);
-			}
+			writeSVGForXPath(xpath);
 		} else if (name != null) {
-			Object obj = semanticDocumentActionX.getVariable(name);
-			if (obj instanceof ToXML) {
-				writeFile((ToXML) obj);
-			} else {
-				writeFile(obj.toString());
-			}
+			writeVariableValueToFile(name);
 		} else {
 			writeFile(getSVGPage());
+		}
+	}
+
+	private void writeVariableValueToFile(String name) {
+		Object obj = semanticDocumentActionX.getVariable(name);
+		if (obj instanceof ToXML) {
+			writeFile((ToXML) obj);
+		} else {
+			writeFile(obj.toString());
+		}
+	}
+
+	private void writeSVGForXPath(String xpath) {
+		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
+		if (elements.size() == 0) {
+			warn("No elements found: "+xpath);
+		} else if (elements.size() > 1) {
+			info("Multiple elements found ("+elements.size()+"): "+xpath);
+		} else {
+			SVGElement svgElement = elements.get(0);
+			SVGSVG svg = null;
+			if (!(svgElement instanceof SVGSVG)) {
+				svg = new SVGSVG();
+				svgElement.detach();
+				svg.appendChild(svgElement);
+			} else {
+				svg = (SVGSVG) svgElement;
+			}
+			writeFile(svg);
 		}
 	}
 
@@ -139,6 +147,7 @@ public class PageWriterActionX extends PageActionX {
 	}
 	
 	private void writeFile(Element element) {
+		LOG.debug("writing "+new File(filename).getAbsolutePath());
 		GraphUtil.writeFileAsSVGSVGWithMouse(filename, element);
 	}
 	

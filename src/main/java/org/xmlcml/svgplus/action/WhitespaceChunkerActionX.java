@@ -7,6 +7,7 @@ import java.util.List;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.analyzer.PageChunkSplitterAnalyzerX;
 import org.xmlcml.svgplus.tools.Chunk;
 /**
 	<pageAction action="createWhitespaceChunks" depth="3"/>
@@ -27,7 +28,7 @@ public class WhitespaceChunkerActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(AbstractActionX.ACTION);
 		ATTNAMES.add(PageActionX.DEPTH);
 	}
 

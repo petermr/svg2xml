@@ -34,7 +34,7 @@ public class PageIteratorActionX extends PageActionX {
 	static {
 		ATTNAMES.add(PageActionX.PAGE_RANGE);
 		ATTNAMES.add(PageActionX.MAX_MBYTE);
-		ATTNAMES.add(PageActionX.TIMEOUT);
+		ATTNAMES.add(AbstractActionX.TIMEOUT);
 	}
 	
 	protected List<String> getAttributeNames() {

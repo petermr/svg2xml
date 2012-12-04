@@ -10,6 +10,7 @@ import nu.xom.Node;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.analyzer.PathAnalyzerX;
 import org.xmlcml.svgplus.tools.Chunk;
 
 public class BoxProcessorActionX extends PageActionX {
@@ -26,8 +27,8 @@ public class BoxProcessorActionX extends PageActionX {
 		ATTNAMES.add(PageActionX.BOX_COUNT);
 		ATTNAMES.add(PageActionX.MARGIN_X);
 		ATTNAMES.add(PageActionX.MARGIN_Y);
-		ATTNAMES.add(PageActionX.TITLE);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.TITLE);
+		ATTNAMES.add(AbstractActionX.XPATH);
 	}
 
 	/** constructor

@@ -9,6 +9,7 @@ import nu.xom.Node;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
 
 public class TextChunkerActionX extends PageActionX {
 
@@ -29,9 +30,9 @@ public class TextChunkerActionX extends PageActionX {
 	static String MERGE_CHUNKS = "mergeChunks";
 
 	static {
-		ATTNAMES.add(PageActionX.ACTION);
-		ATTNAMES.add(PageActionX.TITLE);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.ACTION);
+		ATTNAMES.add(AbstractActionX.TITLE);
+		ATTNAMES.add(AbstractActionX.XPATH);
 		ATTNAMES.add(CREATE_WORDS_LINES_PARAS_SUB_SUP);
 		ATTNAMES.add(CREATE_WORDS_LINES);
 		ATTNAMES.add(CREATE_TSPANS);

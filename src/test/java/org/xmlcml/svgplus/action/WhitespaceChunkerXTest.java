@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.command;
+package org.xmlcml.svgplus.action;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,24 +10,18 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.Fixtures;
-import org.xmlcml.svgplus.core.SVGPlusConverter;
+import org.xmlcml.svgplus.analyzer.PageChunkSplitterAnalyzerX;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 
-public class WhitespaceChunkerTest {
-
-	@Test
-	public void testWhitespaceChunkerRuns() {
-		SVGPlusConverter converter = new SVGPlusConverter();
-		converter.run("-c "+Fixtures.WHITESPACE_CHUNKER_COMMAND);
-	}
+public class WhitespaceChunkerXTest {
 
 	@Test
 	public void testPageSplitter0() throws Exception {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
 		SVGSVG svgPage = semanticDocumentAction.getSVGPage();
-		PageChunkSplitterAnalyzer pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzer(semanticDocumentAction);
+		PageChunkSplitterAnalyzerX pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzerX(semanticDocumentAction);
 		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace();
 		Assert.assertNotNull(finalChunkList);
 		Assert.assertEquals("chunks", 15, finalChunkList.size());
@@ -37,9 +31,9 @@ public class WhitespaceChunkerTest {
 
 	@Test
 	public void testHarter3() throws Exception {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.HARTER3_SVG);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.HARTER3_SVG);
 		SVGSVG svgPage = semanticDocumentAction.getSVGPage();
-		PageChunkSplitterAnalyzer pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzer(semanticDocumentAction);
+		PageChunkSplitterAnalyzerX pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzerX(semanticDocumentAction);
 		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace();
 		Assert.assertNotNull(finalChunkList);
 		Assert.assertEquals("chunks", 29, finalChunkList.size());
@@ -49,9 +43,9 @@ public class WhitespaceChunkerTest {
 
 	@Test
 	public void testHarter3small() throws Exception {
-		SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.HARTER3SMALL_SVG);
+		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.HARTER3SMALL_SVG);
 		SVGSVG svgPage = semanticDocumentAction.getSVGPage();
-		PageChunkSplitterAnalyzer pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzer(semanticDocumentAction);
+		PageChunkSplitterAnalyzerX pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzerX(semanticDocumentAction);
 		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace();
 		Assert.assertNotNull(finalChunkList);
 		Assert.assertEquals("chunks", 29, finalChunkList.size());
@@ -69,7 +63,7 @@ public class WhitespaceChunkerTest {
 		testSplit(Fixtures.AJC6_SVG, 14, new File("target/page6.svg"));
 	}
 	
-	private static void drawChunkBoxes(SemanticDocumentAction semanticDocumentAction,
+	private static void drawChunkBoxes(SemanticDocumentActionX semanticDocumentAction,
 			List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
 			SVGRect bbox = chunk.createGraphicalBoundingBox();
@@ -81,9 +75,9 @@ public class WhitespaceChunkerTest {
 
 	private static void testSplit(File svgFile, int chunkCount, File outputFile) {
 		try {
-			SemanticDocumentAction semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(svgFile);
+			SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(svgFile);
 			SVGSVG svgPage = semanticDocumentAction.getSVGPage();
-			PageChunkSplitterAnalyzer pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzer(semanticDocumentAction);
+			PageChunkSplitterAnalyzerX pageChunkSplitterAnalyzer = new PageChunkSplitterAnalyzerX(semanticDocumentAction);
 			List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace();
 			Assert.assertNotNull(finalChunkList);
 			Assert.assertEquals("chunks", chunkCount, finalChunkList.size());

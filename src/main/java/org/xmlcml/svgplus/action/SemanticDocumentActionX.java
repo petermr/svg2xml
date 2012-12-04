@@ -44,7 +44,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionX.DEBUG);
+		ATTNAMES.add(AbstractActionX.DEBUG);
 	}
 
 	public static String getDefaultCommandFilename() { 
@@ -210,7 +210,11 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	
 	public Object getVariable(String name) {
 		ensureVariableStore();
+		for (String key : variableStore.keySet()) {
+			System.out.println(key+": "+"("+variableStore.getVariable(key)+")");
+		}
 		return variableStore.getVariable(name);
+		
 	}
 
 	public void setVariable(String name, Object value) {

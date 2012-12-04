@@ -30,10 +30,10 @@ public class DocumentWriterActionX extends DocumentActionX {
 	
 	static {
 //		ATTNAMES.add(PageActionX.ACTION);
-		ATTNAMES.add(PageActionX.FILENAME);
-		ATTNAMES.add(PageActionX.FORMAT);
-		ATTNAMES.add(PageActionX.REGEX);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.FILENAME);
+		ATTNAMES.add(AbstractActionX.FORMAT);
+		ATTNAMES.add(AbstractActionX.REGEX);
+		ATTNAMES.add(AbstractActionX.XPATH);
 	}
 
 	/** constructor

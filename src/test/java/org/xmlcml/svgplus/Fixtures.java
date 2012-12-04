@@ -5,10 +5,9 @@ import java.io.File;
 import nu.xom.Builder;
 import nu.xom.Element;
 
-import org.junit.Assert;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.command.AbstractActionElement;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 
@@ -17,6 +16,8 @@ public class Fixtures {
 	public static final String SVGPLUS_DIR = "src/test/resources/org/xmlcml/svgplus/";
 	public static final String COMMAND_DIR= SVGPLUS_DIR+"command/";
 	public static final String CORE_DIR = SVGPLUS_DIR+"core/";
+	public static final String ACTION_DIR = SVGPLUS_DIR+"action/";
+	
 	public static final String AJC_PAGE6_PDF = CORE_DIR+"ajc-page6.pdf";
 	public final static File NOOP_FILE = new File(CORE_DIR+"noopTst.xml");
 	public final static File BASIC_FILE = new File(CORE_DIR+"basicTst.xml");
@@ -32,25 +33,25 @@ public class Fixtures {
 	public static final File HARTER3SMALL_SVG = new File(Fixtures.COMMAND_DIR+"harter3small.svg");
 	public static final File AJC6_SVG = new File(Fixtures.COMMAND_DIR+"ajc6.svg");
 	public static final File POLICIES_SVG = new File(Fixtures.COMMAND_DIR+"policies.svg");
+	public static final File CHUNK_ANALYZE = new File(Fixtures.ACTION_DIR+"chunkAnalyzeTst.xml");
 	
-	public static SemanticDocumentAction getSemanticDocumentAction(File commandFile) {
-		SemanticDocumentAction semanticDocumentAction = null;
+	public static SemanticDocumentActionX getSemanticDocumentAction(File commandFile) {
+		SemanticDocumentActionX semanticDocumentAction = null;
 		try {
 			Element element = new Builder().build(commandFile).getRootElement();
-			SemanticDocumentElement semanticDocumentElement = SemanticDocumentElement.createSemanticDocument(element);
-			semanticDocumentAction = semanticDocumentElement.getSemanticDocumentAction();
+			semanticDocumentAction = SemanticDocumentActionX.createSemanticDocument(element);
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot create semanticDocumentAction ", e);
 		}
 		return semanticDocumentAction;
 	}
 	
-	public static SemanticDocumentAction createSemanticDocumentActionWithSVGPage(File svgPageFile) {
-		SemanticDocumentAction semanticDocumentAction = null;
+	public static SemanticDocumentActionX createSemanticDocumentActionWithSVGPage(File svgPageFile) {
+		SemanticDocumentActionX semanticDocumentAction = null;
 		try {
 			Element element = new Builder().build(svgPageFile).getRootElement();
 			SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(element);
-			semanticDocumentAction = new SemanticDocumentAction();
+			semanticDocumentAction = new SemanticDocumentActionX();
 			semanticDocumentAction.getPageEditor().setSVGPage(svgPage);
 		} catch (Exception e) {
 			throw new RuntimeException("cannot create page: ", e);

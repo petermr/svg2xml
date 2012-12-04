@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.figure.Figure;
 import org.xmlcml.svgplus.figure.FigurePanel;
 import org.xmlcml.svgplus.tools.Caption;

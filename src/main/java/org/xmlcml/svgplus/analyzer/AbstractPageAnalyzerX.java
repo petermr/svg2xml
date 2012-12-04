@@ -1,9 +1,11 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import org.apache.log4j.Logger;
 
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svgplus.action.PageEditorX;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 
 public abstract class AbstractPageAnalyzerX {
 	

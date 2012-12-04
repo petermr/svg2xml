@@ -1,10 +1,11 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import java.util.ArrayList;
 
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.table.Table;
 
 /**

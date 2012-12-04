@@ -15,7 +15,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.TextAnalyzerX;
+import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
 
 /** holds a list of characters, normally in a horizontal line
  * 

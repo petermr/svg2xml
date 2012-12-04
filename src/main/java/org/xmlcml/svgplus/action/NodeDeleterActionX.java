@@ -23,8 +23,8 @@ public class NodeDeleterActionX extends PageActionX {
 	
 	static {
 		ATTNAMES.add(PageActionX.PAGE_RANGE);
-		ATTNAMES.add(PageActionX.TITLE);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.TITLE);
+		ATTNAMES.add(AbstractActionX.XPATH);
 	}
 
 	/** constructor

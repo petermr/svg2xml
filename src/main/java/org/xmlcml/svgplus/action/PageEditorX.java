@@ -11,6 +11,13 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
+import org.xmlcml.svgplus.analyzer.DocumentAnalyzerX;
+import org.xmlcml.svgplus.analyzer.FigureAnalyzerX;
+import org.xmlcml.svgplus.analyzer.PageChunkSplitterAnalyzerX;
+import org.xmlcml.svgplus.analyzer.PathAnalyzerX;
+import org.xmlcml.svgplus.analyzer.TableAnalyzerX;
+import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.figure.Figure;
 import org.xmlcml.svgplus.table.Table;
@@ -181,49 +188,6 @@ public class PageEditorX {
 			figureList = new ArrayList<Figure>();
 		}
 	}
-
-//	public void analyzeClipPathsAndAddToMap(Multimap<String, PageEditorX> clipPathDMap) {
-//		analyzeClipPaths();
-//		addClipPathsToMap(clipPathDMap);
-//	}
-
-//	public void analyzeClipPaths() {
-//		ensureClipPathAnalyzer();
-//		clipPathAnalyzerX.analyze();
-//	}
-
-//	private void ensureClipPathAnalyzer() {
-//		if (clipPathAnalyzerX == null) {
-//			clipPathAnalyzerX = new PageClipPathAnalyzerX(semanticDocumentActionX);
-//		}
-//	}
-
-//	public void addClipPathsToMap(Multimap<String, PageEditorX> clipPathDMap) {
-//		List<SVGElement> clipPaths  = this.getPageClipPathAnalyzer().getClipPathList();
-//		for (SVGElement clipPath : clipPaths) {
-//			SVGPath path = (SVGPath) ((SVGClipPath) clipPath).getChildElements().get(0);
-//			String d = path.getDString();
-//			LOG.trace(""+this.getPageNumber()+" .. "+d);
-//			clipPathDMap.put(d, this);
-//		}
-//	}
-
-//	public void analyzeFontSizesAndAddToMap(Multimap<Integer, PageEditorX> fontSizeMap) {
-//		analyzeFontSizes();
-//		addFontSizesToMap(fontSizeMap);
-//	}
-
-//	private void analyzeFontSizes() {
-//		ensureFontSizeAnalyzer();
-//		fontSizeAnalyzer.analyze();
-//	}
-
-//	public PageFontSizeAnalyzer ensureFontSizeAnalyzer() {
-//		if (fontSizeAnalyzer == null) {
-//			fontSizeAnalyzer = new PageFontSizeAnalyzerX(semanticDocumentActionX);
-//		}
-//		return fontSizeAnalyzer;
-//	}
 
 	public PageChunkSplitterAnalyzerX ensurePageChunkSplitter() {
 		if (pageChunkSplitterX == null) {

@@ -1,4 +1,5 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
+
 
 
 public class DocumentAnalyzerX extends AbstractPageAnalyzerX {

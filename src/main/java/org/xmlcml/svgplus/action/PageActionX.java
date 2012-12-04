@@ -1,6 +1,5 @@
 package org.xmlcml.svgplus.action;
 
-import java.io.File;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,11 +8,6 @@ import java.util.List;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.tools.PageSelector;
 import org.xmlcml.svgplus.util.GraphUtil;
 
@@ -24,8 +18,6 @@ public abstract class PageActionX extends AbstractActionX {
 
 	public static final String DOCUMENT = "document";
 	public static final String PAGE = "page";
-	public static final String EXIT = "exit";
-
 	/** attribute names
 	 * 
 	 */
@@ -52,7 +44,6 @@ public abstract class PageActionX extends AbstractActionX {
 	public static final String STROKE_WIDTH = "strokeWidth";
 	public static final String TRANSLATE_CLIP_PATHS_TO_PHYSICAL_STYLES = "translateClipPathsToPhysicalStyles";
 	public static final String VALUE = "value";
-	public static final String VARIABLES = "variables";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
@@ -140,10 +131,6 @@ public abstract class PageActionX extends AbstractActionX {
 		return getAndExpand(PageActionX.DELETE_XPATHS);
 	}
 	
-	public String getFail() {
-		return getAndExpand(PageActionX.FAIL);
-	}
-	
 	public String getFill() {
 		return getAndExpand(PageActionX.FILL);
 	}
@@ -172,12 +159,6 @@ public abstract class PageActionX extends AbstractActionX {
 		return getDouble(PageActionX.STROKE_WIDTH);
 	}
 	
-	public List<String> getVariables() {
-		String s = this.getAttributeValue(PageActionX.VARIABLES);
-		String[] ss = (s == null) ? null : s.split(CMLConstants.S_WHITEREGEX);
-		return (ss == null) ? null : Arrays.asList(ss);
-	}
-	
 	protected void deleteNodes(String xpath) {
 		if (xpath != null) {
 			Nodes nodes = GraphUtil.query(getSVGPage(), xpath);
@@ -194,34 +175,6 @@ public abstract class PageActionX extends AbstractActionX {
 			pageSelector = (pageRange == null) ? null : new PageSelector(pageCount);
 		}
 		return pageSelector;
-	}
-
-	protected void fail(String string) {
-		String fail = getFail();
-		if (EXIT.equalsIgnoreCase(fail)) {
-			throw new RuntimeException(string+" ... "+this.toXML());
-		} else {
-			LOG.error("******** FAIL: "+string+" *************");
-		}
-	}
-
-	protected void warn(String string) {
-		LOG.error("******** WARN: "+string+" *************");
-	}
-
-	protected void info(String string) {
-		LOG.error("******** INFO: "+string+" *************");
-	}
-
-	protected void log(String string) {
-		info(string);
-	}
-
-	protected void debugFile(String filename) {
-		SVGSVG svg = new SVGSVG(getSVGPage());
-		List<SVGElement> defs = SVGUtil.getQuerySVGElements(svg, ".//svg:defs");
-		for (SVGElement def : defs) def.detach();
-		CMLUtil.outputQuietly(svg, new File(filename), 1);
 	}
 
 	public PageEditorX getPageEditor() {

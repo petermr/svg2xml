@@ -23,8 +23,8 @@ public class DocumentReaderActionX extends DocumentActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 
 	static {
-		ATTNAMES.add(PageActionX.FILENAME);
-		ATTNAMES.add(PageActionX.FORMAT);
+		ATTNAMES.add(AbstractActionX.FILENAME);
+		ATTNAMES.add(AbstractActionX.FORMAT);
 	}
 
 	/** constructor

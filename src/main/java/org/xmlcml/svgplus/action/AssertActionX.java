@@ -18,7 +18,7 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.util.ToXML;
 
-public class AssertActionX extends PageActionX {
+public class AssertActionX extends AbstractActionX {
 
 	final static Logger LOG = Logger.getLogger(AssertActionX.class);
 
@@ -30,13 +30,13 @@ public class AssertActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionX.COUNT);
+		ATTNAMES.add(AbstractActionX.COUNT);
 		ATTNAMES.add(PageActionX.FAIL);
-		ATTNAMES.add(PageActionX.FILENAME);
-		ATTNAMES.add(PageActionX.NAME);
-		ATTNAMES.add(PageActionX.MESSAGE);
+		ATTNAMES.add(AbstractActionX.FILENAME);
+		ATTNAMES.add(AbstractActionX.NAME);
+		ATTNAMES.add(AbstractActionX.MESSAGE);
 		ATTNAMES.add(PageActionX.VALUE);
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.XPATH);
 	}
 
 	/** constructor
@@ -76,7 +76,7 @@ public class AssertActionX extends PageActionX {
 		String refFilename = getFilename();
 		String xpath = getXPath();
 		String name = getName();
-		String refValue = getValue();
+		String refValue = getValueString();
 		if (refFilename != null) {
 			compareXML(message, refFilename, xpath, name);
 		} else if (xpath != null) {
@@ -110,16 +110,17 @@ public class AssertActionX extends PageActionX {
 		String expectedCountS = getCount();
 		int	expectedCount = getCountWithDefault();
 		if (expectedCount != 1) {
-			if (nnode != expectedCount) {
-				for (int i = 0; i < nnode; i++) {
-					LOG.trace(nodes.get(i).toXML());
-				}
-				fail(message+" expected "+expectedCount+" nodes from "+xpath+", found: "+nnode+" on "+toXML());
-			}
+			compareCounts(message, xpath, nodes, nnode, expectedCount);
 		} else {
-			if (nnode != 1) {
-				fail(message+" expected 1 node from "+xpath+", found: "+nodes.size()+" on "+toXML());
-			}
+			compareValues(message, xpath, refValue, nodes, nnode, expectedCountS);
+		}
+	}
+
+	private void compareValues(String message, String xpath, String refValue,
+			Nodes nodes, int nnode, String expectedCountS) {
+		if (nnode != 1) {
+			fail(message+" expected 1 node from "+xpath+", found: "+nodes.size()+" on "+toXML());
+		} else{
 			if (refValue == null) {
 				if (expectedCountS == null) {
 					warn("no value or count given: "+toXML());
@@ -132,6 +133,16 @@ public class AssertActionX extends PageActionX {
 			}
 		}
 	}
+
+	private void compareCounts(String message, String xpath, Nodes nodes,
+			int nnode, int expectedCount) {
+		if (nnode != expectedCount) {
+			for (int i = 0; i < nnode; i++) {
+				LOG.trace(nodes.get(i).toXML());
+			}
+			fail(message+" expected "+expectedCount+" nodes from "+xpath+", found: "+nnode+" on "+toXML());
+		}
+	}
 	
 	private void testNameValue(String name, String refValue) {
 		LOG.trace(semanticDocumentActionX.getDebugString());
@@ -141,7 +152,7 @@ public class AssertActionX extends PageActionX {
 		}
 		String testString = testValue.toString();
 		if (!testString.equals(refValue)) {
-			throw new RuntimeException("Assert for: ("+name+") expected: "+refValue+"; found: "+testString);
+			throw new RuntimeException("Assert for: ("+name+") expected: "+refValue+"; found: ("+testString+")");
 		}
 	}
 

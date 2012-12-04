@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ import nu.xom.Attribute;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svgplus.tools.Chunk;
 import org.xmlcml.svgplus.tools.SplitterParams;

@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
+import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 import org.xmlcml.svgplus.tools.Chunk;
 
@@ -34,7 +36,7 @@ public class ChunkAnalyzerActionX extends PageActionX {
 	 */
 
 	static {
-		ATTNAMES.add(PageActionX.XPATH);
+		ATTNAMES.add(AbstractActionX.XPATH);
 		ATTNAMES.add(SUBSUP);
 		ATTNAMES.add(REMOVE_NUMERIC_TSPANS);
 	}
@@ -67,7 +69,7 @@ public class ChunkAnalyzerActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionX.XPATH,
+//				AbstractActionX.XPATH,    // optional now
 		});
 	}
 
@@ -79,23 +81,37 @@ public class ChunkAnalyzerActionX extends PageActionX {
 	public void run() {
 		String xpath = getXPath();
 		if (xpath != null) {
-			List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
-			LOG.debug("LEAFS "+elements.size());
-			this.subSup = isTrue(ChunkAnalyzerActionX.SUBSUP);
-			this.splitAtSpaces = isTrue(ChunkAnalyzerActionX.SPLIT_AT_SPACES);
-			this.removeNumericTSpans = isTrue(ChunkAnalyzerActionX.REMOVE_NUMERIC_TSPANS);
-
-			for (SVGElement element : elements) {
-				if (!(element instanceof SVGG)) {
-					throw new RuntimeException("Must operate on <g> elements");
-				}
-				LOG.trace("*********************ELEMENT "+element.getId());
-				analyzeChunk(new Chunk((SVGG)element));
-			}
-			debugFile("target/chunkAnalyzer1Axes.svg");
+			analyzeSpecificChunks(xpath);
+		} else {
+			analyzeLeafChunks();
 		}
 	}
+
+	private void analyzeSpecificChunks(String xpath) {
+		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
+		LOG.trace("XPATHS "+elements.size());
+		this.subSup = isTrue(ChunkAnalyzerActionX.SUBSUP);
+		this.splitAtSpaces = isTrue(ChunkAnalyzerActionX.SPLIT_AT_SPACES);
+		this.removeNumericTSpans = isTrue(ChunkAnalyzerActionX.REMOVE_NUMERIC_TSPANS);
+
+		for (SVGElement element : elements) {
+			if (!(element instanceof SVGG)) {
+				throw new RuntimeException("Must operate on <g> elements");
+			}
+			LOG.trace("*********************ELEMENT "+element.getId());
+			analyzeChunk(new Chunk((SVGG)element));
+		}
+		debugFile("target/chunkAnalyzer1Axes.svg");
+	}
 	
+	/** svgx:role="chunk" */
+	private void analyzeLeafChunks() {
+//		String xpath = ".//svg:g[@*[local-name()='role' and .='chunk'] and not(svg:g)]'";
+		String xpath = ".//svg:g[@*[local-name()='role' and .='chunk'] ]'";
+		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
+		LOG.debug("analysing leaf chunks: "+elements.size());
+	}
+
 	private void analyzeChunk(Chunk chunk) {
 		ChunkAnalyzerX chunkAnalyzer = new ChunkAnalyzerX(semanticDocumentActionX);
 		createTextAnalyzer(chunkAnalyzer);

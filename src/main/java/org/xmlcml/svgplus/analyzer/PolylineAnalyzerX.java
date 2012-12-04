@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.action;
+package org.xmlcml.svgplus.analyzer;
 
 import java.util.ArrayList;
 
@@ -28,6 +28,8 @@ import org.xmlcml.graphics.svg.SVGMarker;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.PageEditorX;
+import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.paths.Axis;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svgplus.tools.BoundingBoxManager;

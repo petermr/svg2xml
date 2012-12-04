@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.svgplus.core.SemanticDocumentElement;
 import org.xmlcml.svgplus.figure.FigureAnalyzerElement;
-import org.xmlcml.svgplus.paths.PathElement;
 
 public abstract class AbstractActionElement extends Element {
 
