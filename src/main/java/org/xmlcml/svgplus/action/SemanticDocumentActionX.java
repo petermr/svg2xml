@@ -2,6 +2,8 @@ package org.xmlcml.svgplus.action;
 
 
 import java.io.File;
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,17 +15,8 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractAction;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.DocumentIteratorElement;
-import org.xmlcml.svgplus.command.IncludeElement;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.command.VariableStore;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.core.SVGPlusConverter;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
-import org.xmlcml.svgplus.core.SemanticDocumentElement;
 import org.xmlcml.svgplus.text.SimpleFont;
 
 public class SemanticDocumentActionX extends DocumentActionX {
@@ -40,7 +33,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	private String semanticDocumentFilename;
 	private VariableStore variableStore;
 	private SimpleFont simpleFont;
-	private SVGPlusConverter svgPlusConverter;
+	private SVGPlusConverterX svgPlusConverterX;
 	private PageEditorX pageEditor;
 	
 	public final static String TAG ="semanticDocument";
@@ -51,15 +44,15 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.DEBUG);
+		ATTNAMES.add(PageActionX.DEBUG);
 	}
 
 	public static String getDefaultCommandFilename() { 
 		return DEFAULT_COMMAND_FILENAME;
 	}
 	
-	private DocumentIteratorElement documentIteratorElement;
-	private AbstractActionX semanticDocumentActionX;
+	private DocumentIteratorActionX documentIteratorElement;
+//	private AbstractActionX semanticDocumentActionX;
 
 	/** constructor
 	 */
@@ -84,10 +77,10 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		return TAG;
 	}
 
-	public DocumentIteratorElement getDocumentIteratorElement() {
+	public DocumentIteratorActionX getDocumentIteratorElement() {
 		if (documentIteratorElement == null) {
-			Nodes nodes = this.query(DocumentIteratorElement.TAG);
-			documentIteratorElement =  (nodes.size() == 1) ? (DocumentIteratorElement) nodes.get(0) : null;
+			Nodes nodes = this.query(DocumentIteratorActionX.TAG);
+			documentIteratorElement =  (nodes.size() == 1) ? (DocumentIteratorActionX) nodes.get(0) : null;
 		}
 		return documentIteratorElement;
 	}
@@ -106,10 +99,10 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	}
 
 	private static Element replaceIncludesRecursively(File file, Element elem) {
-		Nodes includes = elem.query(".//"+IncludeElement.TAG);
+		Nodes includes = elem.query(".//"+IncludeActionX.TAG);
 		for (int i = 0; i < includes.size(); i++) {
 			Element includeElement = (Element) includes.get(i);
-			String includeFilename = includeElement.getAttributeValue(AbstractActionElement.FILENAME);
+			String includeFilename = includeElement.getAttributeValue(AbstractActionX.FILENAME);
 			if (includeFilename == null) {
 				throw new RuntimeException("must give filename");
 			}
@@ -127,26 +120,22 @@ public class SemanticDocumentActionX extends DocumentActionX {
 
 	
 	public static SemanticDocumentActionX createSemanticDocument(Element element) {
-		SemanticDocumentActionX semanticDocumentElement = null;
+		SemanticDocumentActionX semanticDocumentActionX = null;
 		AbstractActionX actionElement = AbstractActionX.createActionX(element);
 		if (actionElement != null && actionElement instanceof SemanticDocumentActionX) {
-			semanticDocumentElement = (SemanticDocumentActionX) actionElement;
-			SemanticDocumentAction semanticDocumentAction = (SemanticDocumentAction) actionElement.getAction();
-			semanticDocumentElement.setAllDescendants(semanticDocumentAction);
+			semanticDocumentActionX = (SemanticDocumentActionX) actionElement;
+			semanticDocumentActionX.setAllDescendants(semanticDocumentActionX);
 		}
-		return semanticDocumentElement;
+		return semanticDocumentActionX;
 	}
 
-	private void setAllDescendants(SemanticDocumentAction semanticDocumentAction) {
+	private void setAllDescendants(SemanticDocumentActionX semanticDocumentActionX) {
 		Nodes elements = this.query("//*");
 		for (int i = 0; i <elements.size(); i++) {
 			Element element = (Element) elements.get(i);
-			if (element instanceof AbstractActionElement) {
-				AbstractActionElement actionElement = (AbstractActionElement) element; 
-				AbstractAction action = actionElement.getAction();
-				if (action != null) {
-					action.setSemanticDocumentAction(semanticDocumentAction);
-				}
+			if (element instanceof AbstractActionX) {
+				AbstractActionX actionElement = (AbstractActionX) element; 
+				actionElement.setSemanticDocumentActionX(semanticDocumentActionX);
 			}
 		}
 	}
@@ -163,10 +152,6 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
 		});
-	}
-
-	public SemanticDocumentAction getSemanticDocumentAction() {
-		return (SemanticDocumentAction) this.getAction();
 	}
 
 
@@ -251,12 +236,12 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		return this.simpleFont;
 	}
 
-	public void setSVGPlusConverter(SVGPlusConverter svgPlusConverter) {
-		this.svgPlusConverter = svgPlusConverter;
+	public void setSVGPlusConverter(SVGPlusConverterX svgPlusConverterX) {
+		this.svgPlusConverterX = svgPlusConverterX;
 	}
 
-	public SVGPlusConverter getSVGPlusConverter() {
-		return svgPlusConverter;
+	public SVGPlusConverterX getSVGPlusConverter() {
+		return svgPlusConverterX;
 	}
 	
 	public void ensurePageEditor(SemanticDocumentActionX semanticDocumentAction) {

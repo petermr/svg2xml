@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,9 +9,6 @@ import java.util.List;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.DocumentReaderElement;
-import org.xmlcml.svgplus.command.PageActionElement;
 
 public class DocumentReaderActionX extends DocumentActionX {
 
@@ -25,8 +23,8 @@ public class DocumentReaderActionX extends DocumentActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 
 	static {
-		ATTNAMES.add(PageActionElement.FILENAME);
-		ATTNAMES.add(PageActionElement.FORMAT);
+		ATTNAMES.add(PageActionX.FILENAME);
+		ATTNAMES.add(PageActionX.FORMAT);
 	}
 
 	/** constructor

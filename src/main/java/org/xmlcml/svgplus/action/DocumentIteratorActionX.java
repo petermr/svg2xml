@@ -7,17 +7,13 @@ import java.util.Arrays;
 import java.util.List;
 
 import nu.xom.Node;
-import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.DocumentIteratorElement;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 
 public class DocumentIteratorActionX extends DocumentActionX {
 
@@ -156,7 +152,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	}
 
 	private File getInfile() {
-		infile = (File) semanticDocumentActionX.getVariable(SemanticDocumentAction.S_INFILE);
+		infile = (File) semanticDocumentActionX.getVariable(SemanticDocumentActionX.S_INFILE);
 		if (infile == null) {
 			String filename = getFilename();
 			infile = (filename == null) ? null : new File(filename);
@@ -165,7 +161,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	}
 
 	private File getOutfile() {
-		outfile = (File) semanticDocumentActionX.getVariable(SemanticDocumentAction.S_OUTFILE);
+		outfile = (File) semanticDocumentActionX.getVariable(SemanticDocumentActionX.S_OUTFILE);
 		// no attribute to set directory - yet
 //		if (outfile == null) {
 //			String filename = getFilename();

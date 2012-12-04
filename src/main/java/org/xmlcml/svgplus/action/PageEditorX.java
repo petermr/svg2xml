@@ -7,29 +7,17 @@ import nu.xom.Attribute;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Transform2;
-import org.xmlcml.graphics.svg.SVGClipPath;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.ChunkAnalyzer;
-import org.xmlcml.svgplus.command.DocumentAnalyzer;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.core.SemanticDocumentAction;
 import org.xmlcml.svgplus.figure.Figure;
-import org.xmlcml.svgplus.figure.FigureAnalyzer;
-import org.xmlcml.svgplus.paths.PathAnalyzer;
 import org.xmlcml.svgplus.table.Table;
-import org.xmlcml.svgplus.table.TableAnalyzer;
-import org.xmlcml.svgplus.text.TextAnalyzer;
 import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
-import org.xmlcml.svgplus.tools.PageClipPathAnalyzer;
-import org.xmlcml.svgplus.tools.PageFontSizeAnalyzer;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Multimap;
 
 /** the key class controlling the analysis of a page.
  * 
@@ -85,28 +73,20 @@ public class PageEditorX {
 	private List<Figure> figureList;
 	private List<Table> tableList;
 
-	private PathAnalyzer pathAnalyzer;
-	private PageClipPathAnalyzer clipPathAnalyzer;
-	private PageFontSizeAnalyzer fontSizeAnalyzer;
-	private PageChunkSplitterAnalyzer pageChunkSplitter;
-	private TextAnalyzer textAnalyzer;
-	private FigureAnalyzer figureAnalyzer;
-	private TableAnalyzer tableAnalyzer;
-	private ChunkAnalyzer currentChunkAnalyzer;
+	private PathAnalyzerX pathAnalyzerX;
+//	private PageClipPathAnalyzer clipPathAnalyzer;
+//	private PageFontSizeAnalyzer fontSizeAnalyzer;
+	private PageChunkSplitterAnalyzerX pageChunkSplitterX;
+	private TextAnalyzerX textAnalyzerX;
+	private FigureAnalyzerX figureAnalyzerX;
+	private TableAnalyzerX tableAnalyzerX;
+	private ChunkAnalyzerX currentChunkAnalyzerX;
 
 	private Integer rotationAngle;
 
-	@Deprecated
-	private SemanticDocumentAction semanticDocumentAction;
 	private SemanticDocumentActionX semanticDocumentActionX;
 
 	private PageEditorX() {
-	}
-
-	@Deprecated
-	public PageEditorX(SemanticDocumentAction semanticDocumentAction) {
-		this();
-		this.semanticDocumentAction = semanticDocumentAction;
 	}
 
 	public PageEditorX(SemanticDocumentActionX semanticDocumentActionX) {
@@ -143,24 +123,24 @@ public class PageEditorX {
 
 	// ========================= TRANSFERRED ELSEWHERE ======================
 	
-	public PathAnalyzer ensurePathAnalyzer() {
-		if (pathAnalyzer == null) {
-			pathAnalyzer = new PathAnalyzer(semanticDocumentAction);
+	public PathAnalyzerX ensurePathAnalyzer() {
+		if (pathAnalyzerX == null) {
+			pathAnalyzerX = new PathAnalyzerX(semanticDocumentActionX);
 		}
-		return pathAnalyzer;
+		return pathAnalyzerX;
 	}
 
 	public int getPageNumber() {
 		return pageNumber;
 	}
 
-	public PathAnalyzer getPathAnalyzer() {
-		return pathAnalyzer;
+	public PathAnalyzerX getPathAnalyzer() {
+		return pathAnalyzerX;
 	}
 
 
-	public TextAnalyzer getTextAnalyzer() {
-		return textAnalyzer;
+	public TextAnalyzerX getTextAnalyzer() {
+		return textAnalyzerX;
 	}
 
 	/** returns a conventional page number (e.g. at top or bottom of page)
@@ -202,75 +182,75 @@ public class PageEditorX {
 		}
 	}
 
-	public void analyzeClipPathsAndAddToMap(Multimap<String, PageEditorX> clipPathDMap) {
-		analyzeClipPaths();
-		addClipPathsToMap(clipPathDMap);
-	}
+//	public void analyzeClipPathsAndAddToMap(Multimap<String, PageEditorX> clipPathDMap) {
+//		analyzeClipPaths();
+//		addClipPathsToMap(clipPathDMap);
+//	}
 
-	public void analyzeClipPaths() {
-		ensureClipPathAnalyzer();
-		clipPathAnalyzer.analyze();
-	}
+//	public void analyzeClipPaths() {
+//		ensureClipPathAnalyzer();
+//		clipPathAnalyzerX.analyze();
+//	}
 
-	private void ensureClipPathAnalyzer() {
-		if (clipPathAnalyzer == null) {
-			clipPathAnalyzer = new PageClipPathAnalyzer(semanticDocumentAction);
+//	private void ensureClipPathAnalyzer() {
+//		if (clipPathAnalyzerX == null) {
+//			clipPathAnalyzerX = new PageClipPathAnalyzerX(semanticDocumentActionX);
+//		}
+//	}
+
+//	public void addClipPathsToMap(Multimap<String, PageEditorX> clipPathDMap) {
+//		List<SVGElement> clipPaths  = this.getPageClipPathAnalyzer().getClipPathList();
+//		for (SVGElement clipPath : clipPaths) {
+//			SVGPath path = (SVGPath) ((SVGClipPath) clipPath).getChildElements().get(0);
+//			String d = path.getDString();
+//			LOG.trace(""+this.getPageNumber()+" .. "+d);
+//			clipPathDMap.put(d, this);
+//		}
+//	}
+
+//	public void analyzeFontSizesAndAddToMap(Multimap<Integer, PageEditorX> fontSizeMap) {
+//		analyzeFontSizes();
+//		addFontSizesToMap(fontSizeMap);
+//	}
+
+//	private void analyzeFontSizes() {
+//		ensureFontSizeAnalyzer();
+//		fontSizeAnalyzer.analyze();
+//	}
+
+//	public PageFontSizeAnalyzer ensureFontSizeAnalyzer() {
+//		if (fontSizeAnalyzer == null) {
+//			fontSizeAnalyzer = new PageFontSizeAnalyzerX(semanticDocumentActionX);
+//		}
+//		return fontSizeAnalyzer;
+//	}
+
+	public PageChunkSplitterAnalyzerX ensurePageChunkSplitter() {
+		if (pageChunkSplitterX == null) {
+			pageChunkSplitterX = new PageChunkSplitterAnalyzerX(semanticDocumentActionX);
 		}
+		return pageChunkSplitterX;
 	}
 
-	public void addClipPathsToMap(Multimap<String, PageEditorX> clipPathDMap) {
-		List<SVGElement> clipPaths  = this.getPageClipPathAnalyzer().getClipPathList();
-		for (SVGElement clipPath : clipPaths) {
-			SVGPath path = (SVGPath) ((SVGClipPath) clipPath).getChildElements().get(0);
-			String d = path.getDString();
-			LOG.trace(""+this.getPageNumber()+" .. "+d);
-			clipPathDMap.put(d, this);
+	public TextAnalyzerX ensureTextAnalyzer() {
+		if (textAnalyzerX == null) {
+			textAnalyzerX = new TextAnalyzerX(semanticDocumentActionX);
 		}
+		return textAnalyzerX;
 	}
 
-	public void analyzeFontSizesAndAddToMap(Multimap<Integer, PageEditorX> fontSizeMap) {
-		analyzeFontSizes();
-		addFontSizesToMap(fontSizeMap);
-	}
-
-	private void analyzeFontSizes() {
-		ensureFontSizeAnalyzer();
-		fontSizeAnalyzer.analyze();
-	}
-
-	public PageFontSizeAnalyzer ensureFontSizeAnalyzer() {
-		if (fontSizeAnalyzer == null) {
-			fontSizeAnalyzer = new PageFontSizeAnalyzer(semanticDocumentAction);
+	public FigureAnalyzerX ensureFigureAnalyzer() {
+		if (figureAnalyzerX == null) {
+			figureAnalyzerX = new FigureAnalyzerX(semanticDocumentActionX);
 		}
-		return fontSizeAnalyzer;
+		return figureAnalyzerX;
 	}
 
-	public PageChunkSplitterAnalyzer ensurePageChunkSplitter() {
-		if (pageChunkSplitter == null) {
-			pageChunkSplitter = new PageChunkSplitterAnalyzer(semanticDocumentAction);
+	public TableAnalyzerX ensureTableAnalyzer() {
+		if (tableAnalyzerX == null) {
+			tableAnalyzerX = new TableAnalyzerX(semanticDocumentActionX);
 		}
-		return pageChunkSplitter;
-	}
-
-	public TextAnalyzer ensureTextAnalyzer() {
-		if (textAnalyzer == null) {
-			textAnalyzer = new TextAnalyzer(semanticDocumentAction);
-		}
-		return textAnalyzer;
-	}
-
-	public FigureAnalyzer ensureFigureAnalyzer() {
-		if (figureAnalyzer == null) {
-			figureAnalyzer = new FigureAnalyzer(semanticDocumentAction);
-		}
-		return figureAnalyzer;
-	}
-
-	public TableAnalyzer ensureTableAnalyzer() {
-		if (tableAnalyzer == null) {
-			tableAnalyzer = new TableAnalyzer(semanticDocumentAction);
-		}
-		return tableAnalyzer;
+		return tableAnalyzerX;
 	}
 
 	private void applyBrowserScale() {
@@ -283,12 +263,12 @@ public class PageEditorX {
 	}
 	
 
-	public void addFontSizesToMap(Multimap<Integer, PageEditorX> fontSizeMap) {
-		Multimap<Integer, SVGElement> elementsByFontSize = fontSizeAnalyzer.createMapsForElementsByFontSize();
-		for (Integer fontSize : elementsByFontSize.keySet()) {
-			fontSizeMap.put(fontSize, this);
-		}
-	}
+//	public void addFontSizesToMap(Multimap<Integer, PageEditorX> fontSizeMap) {
+//		Multimap<Integer, SVGElement> elementsByFontSize = fontSizeAnalyzer.createMapsForElementsByFontSize();
+//		for (Integer fontSize : elementsByFontSize.keySet()) {
+//			fontSizeMap.put(fontSize, this);
+//		}
+//	}
 	
 	public SVGSVG getSVGPage() {
 		return svgPage;
@@ -302,16 +282,16 @@ public class PageEditorX {
 		this.pageNumber = pageNumber;
 	}
 
-	public PageClipPathAnalyzer getPageClipPathAnalyzer() {
-		return clipPathAnalyzer;
-	}
+//	public PageClipPathAnalyzer getPageClipPathAnalyzer() {
+//		return clipPathAnalyzerX;
+//	}
+//
+//	public PageFontSizeAnalyzer getPageFontSizeAnalyzer() {
+//		return fontSizeAnalyzer;
+//	}
 
-	public PageFontSizeAnalyzer getPageFontSizeAnalyzer() {
-		return fontSizeAnalyzer;
-	}
-
-	public PageChunkSplitterAnalyzer getPageChunkSplitter() {
-		return pageChunkSplitter;
+	public PageChunkSplitterAnalyzerX getPageChunkSplitter() {
+		return pageChunkSplitterX;
 	}
 
 	public List<Table> getTableList() {
@@ -343,7 +323,7 @@ public class PageEditorX {
 	
 	public boolean islastPage(int pageNumber) {
 		boolean isLastPage = false;
-		Object lastPageS = /*documentAnalyzer*/semanticDocumentAction.getVariable(DocumentAnalyzer.REPORTED_PAGE_COUNT);
+		Object lastPageS = /*documentAnalyzer*/semanticDocumentActionX.getVariable(DocumentAnalyzerX.REPORTED_PAGE_COUNT);
 		if (lastPageS != null && lastPageS instanceof String) {
 			try {
 				Integer lastPage = new Integer((String)lastPageS);
@@ -404,23 +384,23 @@ public class PageEditorX {
 		return NAME_PREFIX;
 	}
 
-	public void setCurrentChunkAnalyzer(ChunkAnalyzer chunkAnalyzer) {
-		this.currentChunkAnalyzer = chunkAnalyzer;
+	public void setCurrentChunkAnalyzer(ChunkAnalyzerX chunkAnalyzerX) {
+		this.currentChunkAnalyzerX = chunkAnalyzerX;
 	}
 
-	public ChunkAnalyzer getCurrentChunkAnalyzer() {
-		return currentChunkAnalyzer;
+	public ChunkAnalyzerX getCurrentChunkAnalyzer() {
+		return currentChunkAnalyzerX;
 	}
 
 	public void setRotationAngle(Integer angle) {
 		this.rotationAngle = angle;
 	}
 
-	public SemanticDocumentAction getSemanticDocumentAction() {
-		return semanticDocumentAction;
+	public SemanticDocumentActionX getSemanticDocumentAction() {
+		return semanticDocumentActionX;
 	}
 
-	public void setSemanticDocumentAction(SemanticDocumentAction semanticDocumentAction) {
-		this.semanticDocumentAction = semanticDocumentAction;
+	public void setSemanticDocumentAction(SemanticDocumentActionX semanticDocumentAction) {
+		this.semanticDocumentActionX = semanticDocumentAction;
 	}
 }

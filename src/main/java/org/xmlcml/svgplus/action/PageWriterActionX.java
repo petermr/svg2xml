@@ -2,6 +2,7 @@ package org.xmlcml.svgplus.action;
 
 import java.io.File;
 
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.StringReader;
@@ -19,9 +20,6 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.PageWriterElement;
 import org.xmlcml.svgplus.util.GraphUtil;
 import org.xmlcml.svgplus.util.ToXML;
 import org.xmlcml.html.HtmlUl;
@@ -44,13 +42,13 @@ public class PageWriterActionX extends PageActionX {
 	public static String MAKE_DISPLAY = "makeDisplay";
 
 	static {
-		ATTNAMES.add(PageActionElement.ACTION);
-		ATTNAMES.add(PageActionElement.DELETE_XPATHS);
-		ATTNAMES.add(PageActionElement.DELETE_NAMESPACES);
-		ATTNAMES.add(PageActionElement.FILENAME);
-		ATTNAMES.add(PageActionElement.FORMAT);
-		ATTNAMES.add(PageActionElement.NAME);
-		ATTNAMES.add(PageActionElement.XPATH);
+		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(PageActionX.DELETE_XPATHS);
+		ATTNAMES.add(PageActionX.DELETE_NAMESPACES);
+		ATTNAMES.add(PageActionX.FILENAME);
+		ATTNAMES.add(PageActionX.FORMAT);
+		ATTNAMES.add(PageActionX.NAME);
+		ATTNAMES.add(PageActionX.XPATH);
 		ATTNAMES.add(MAKE_DISPLAY);
 	}
 
@@ -82,7 +80,7 @@ public class PageWriterActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.FILENAME,
+				AbstractActionX.FILENAME,
 		});
 	}
 	

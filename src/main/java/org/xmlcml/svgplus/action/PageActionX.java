@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,9 +14,6 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.PageEditor;
-import org.xmlcml.svgplus.command.PageIteratorAction;
 import org.xmlcml.svgplus.tools.PageSelector;
 import org.xmlcml.svgplus.util.GraphUtil;
 
@@ -127,55 +125,55 @@ public abstract class PageActionX extends AbstractActionX {
 
 	
 	public Integer getBoxCount() {
-		return getInteger(PageActionElement.BOX_COUNT);
+		return getInteger(PageActionX.BOX_COUNT);
 	}
 	
 	public Integer getDecimalPlaces() {
-		return getInteger(PageActionElement.FORMAT_DECIMAL_PLACES);
+		return getInteger(PageActionX.FORMAT_DECIMAL_PLACES);
 	}
 	
 	public Integer getDepth() {
-		return getInteger(PageActionElement.DEPTH);
+		return getInteger(PageActionX.DEPTH);
 	}
 	
 	public String getDeleteXPaths() {
-		return getAndExpand(PageActionElement.DELETE_XPATHS);
+		return getAndExpand(PageActionX.DELETE_XPATHS);
 	}
 	
 	public String getFail() {
-		return getAndExpand(PageActionElement.FAIL);
+		return getAndExpand(PageActionX.FAIL);
 	}
 	
 	public String getFill() {
-		return getAndExpand(PageActionElement.FILL);
+		return getAndExpand(PageActionX.FILL);
 	}
 	
 	public Double getMarginX() {
-		return getDouble(PageActionElement.MARGIN_X);
+		return getDouble(PageActionX.MARGIN_X);
 	}
 	
 	public Double getMarginY() {
-		return getDouble(PageActionElement.MARGIN_Y);
+		return getDouble(PageActionX.MARGIN_Y);
 	}
 	
 	public Double getOpacity() {
-		return getDouble(PageActionElement.OPACITY);
+		return getDouble(PageActionX.OPACITY);
 	}
 	
 	public String getPageRange() {
-		return getAndExpand(PageActionElement.PAGE_RANGE);
+		return getAndExpand(PageActionX.PAGE_RANGE);
 	}
 	
 	public String getStroke() {
-		return getAndExpand(PageActionElement.STROKE);
+		return getAndExpand(PageActionX.STROKE);
 	}
 	
 	public Double getStrokeWidth() {
-		return getDouble(PageActionElement.STROKE_WIDTH);
+		return getDouble(PageActionX.STROKE_WIDTH);
 	}
 	
 	public List<String> getVariables() {
-		String s = this.getAttributeValue(PageActionElement.VARIABLES);
+		String s = this.getAttributeValue(PageActionX.VARIABLES);
 		String[] ss = (s == null) ? null : s.split(CMLConstants.S_WHITEREGEX);
 		return (ss == null) ? null : Arrays.asList(ss);
 	}
@@ -192,7 +190,7 @@ public abstract class PageActionX extends AbstractActionX {
 	public PageSelector getPageSelector() {
 		if (pageSelector == null) {
 			String pageRange = getPageRange();
-			pageCount = (Integer) semanticDocumentActionX.getVariable(PageIteratorAction.PAGE_COUNT);
+			pageCount = (Integer) semanticDocumentActionX.getVariable(PageIteratorActionX.PAGE_COUNT);
 			pageSelector = (pageRange == null) ? null : new PageSelector(pageCount);
 		}
 		return pageSelector;

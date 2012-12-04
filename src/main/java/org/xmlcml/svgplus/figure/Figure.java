@@ -9,6 +9,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.FigureAnalyzerX;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svgplus.tools.Caption;
@@ -28,7 +29,9 @@ public class Figure extends Chunk {
 	
 	private Chunk caption;
 	private FigureBody figureBody;
+	@Deprecated
 	private FigureAnalyzer figureAnalyzer;
+	private FigureAnalyzerX figureAnalyzerX;
 	private List<FigurePanel> panelList;
 	private List<FigureFragment> fragmentList;
 	private Element figureAnalysis;
@@ -40,10 +43,16 @@ public class Figure extends Chunk {
 	public Figure() {
 		super();
 	}
-	
+
+	@Deprecated
 	public Figure(FigureAnalyzer figureAnalyzer) {
 		this();
 		this.figureAnalyzer = figureAnalyzer;
+	}
+
+	public Figure(FigureAnalyzerX figureAnalyzerX) {
+		this();
+		this.figureAnalyzerX = figureAnalyzerX;
 	}
 
 	public void addCaption(Chunk caption) {
@@ -102,7 +111,7 @@ public class Figure extends Chunk {
 		return fragmentList;
 	}
 
-	List<FigurePanel> splitByHorizontalWhitespace() {
+	public List<FigurePanel> splitByHorizontalWhitespace() {
 		createFigureBody();
 		createPanelList();
 		this.annotateWithBoxes();

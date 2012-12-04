@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,11 +10,7 @@ import nu.xom.Node;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.PageIteratorElement;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
-import org.xmlcml.svgplus.core.SVGPlusConverter;
 
 public class PageIteratorActionX extends PageActionX {
 
@@ -21,7 +18,7 @@ public class PageIteratorActionX extends PageActionX {
 
 	public static final String PAGE_COUNT = SVGPlusConstants.D_DOT+"pageCount";
 	public static final String PAGE_NUMBER = SVGPlusConstants.P_DOT+"page";
-	private SVGPlusConverter svgPlusConverter;
+	private SVGPlusConverterX svgPlusConverterX;
 	private List<SVGSVG> svgPageList;
 	boolean convertPages = true; // settable by attributes later
 
@@ -35,9 +32,9 @@ public class PageIteratorActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 
 	static {
-		ATTNAMES.add(PageActionElement.PAGE_RANGE);
-		ATTNAMES.add(PageActionElement.MAX_MBYTE);
-		ATTNAMES.add(PageActionElement.TIMEOUT);
+		ATTNAMES.add(PageActionX.PAGE_RANGE);
+		ATTNAMES.add(PageActionX.MAX_MBYTE);
+		ATTNAMES.add(PageActionX.TIMEOUT);
 	}
 	
 	protected List<String> getAttributeNames() {
@@ -80,7 +77,7 @@ public class PageIteratorActionX extends PageActionX {
 		File infile = (File) semanticDocumentActionX.getVariable(DocumentIteratorActionX.INPUT_FILE);
 		if (infile != null) {
 			ensureSVGPlusConverter();
-			svgPageList = svgPlusConverter.createSVGPageList(infile);
+			svgPageList = svgPlusConverterX.createSVGPageList(infile);
 			semanticDocumentActionX.setVariable(PAGE_COUNT, svgPageList.size());
 			LOG.debug("pages "+svgPageList.size());
 			if (convertPages) {
@@ -94,8 +91,8 @@ public class PageIteratorActionX extends PageActionX {
 	}
 	
 	private void ensureSVGPlusConverter() {
-		if (svgPlusConverter == null) {
-			svgPlusConverter = semanticDocumentActionX.getSVGPlusConverter();
+		if (svgPlusConverterX == null) {
+			svgPlusConverterX = semanticDocumentActionX.getSVGPlusConverter();
 		}
 	}
 

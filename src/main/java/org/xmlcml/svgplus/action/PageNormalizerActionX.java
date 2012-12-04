@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +25,6 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.PageNormalizerElement;
 import org.xmlcml.svgplus.util.CodePointConverter;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -74,15 +72,15 @@ public class PageNormalizerActionX extends PageActionX  {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.APPLY_AND_REMOVE_CUMULATIVE_TRANSFORMS);
-		ATTNAMES.add(PageActionElement.CAN_ROTATE_LANDSCAPE);
-		ATTNAMES.add(PageActionElement.CLEAN_SVG_STYLES);
-		ATTNAMES.add(PageActionElement.DENORMALIZE_FONT_SIZES);
-		ATTNAMES.add(PageActionElement.FORMAT_DECIMAL_PLACES);
-		ATTNAMES.add(PageActionElement.NORMALIZE_HIGH_CODE_POINTS);
-		ATTNAMES.add(PageActionElement.REMOVE_IMAGE_DATA);
-		ATTNAMES.add(PageActionElement.REMOVE_UNIT_TRANSFORMS);
-		ATTNAMES.add(PageActionElement.REMOVE_UNWANTED_ATTRIBUTES);
+		ATTNAMES.add(PageActionX.APPLY_AND_REMOVE_CUMULATIVE_TRANSFORMS);
+		ATTNAMES.add(PageActionX.CAN_ROTATE_LANDSCAPE);
+		ATTNAMES.add(PageActionX.CLEAN_SVG_STYLES);
+		ATTNAMES.add(PageActionX.DENORMALIZE_FONT_SIZES);
+		ATTNAMES.add(PageActionX.FORMAT_DECIMAL_PLACES);
+		ATTNAMES.add(PageActionX.NORMALIZE_HIGH_CODE_POINTS);
+		ATTNAMES.add(PageActionX.REMOVE_IMAGE_DATA);
+		ATTNAMES.add(PageActionX.REMOVE_UNIT_TRANSFORMS);
+		ATTNAMES.add(PageActionX.REMOVE_UNWANTED_ATTRIBUTES);
 	}
 
 	/** constructor

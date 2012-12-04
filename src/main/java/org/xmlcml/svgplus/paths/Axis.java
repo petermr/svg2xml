@@ -23,6 +23,8 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.AxisAnalyzerX;
+import org.xmlcml.svgplus.action.TextAnalyzerX;
 import org.xmlcml.svgplus.paths.ComplexLine.CombType;
 import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svgplus.text.TextAnalyzer;
@@ -53,8 +55,12 @@ public class Axis {
 	private List<SVGElement> texts;
 	private Double boxThickness;
 	private Double boxLengthExtension;
+	@Deprecated
 	private AxisAnalyzer axisAnalyzer;
+	private AxisAnalyzerX axisAnalyzerX;
+	@Deprecated
 	private TextAnalyzer textAnalyzer;
+	private TextAnalyzerX textAnalyzerX;
 	private String id;
 
 	private double minTickLengthPixels;
@@ -92,6 +98,12 @@ public class Axis {
 		this.axisAnalyzer = axisAnalyzer;
 		this.boxLengthExtension = axisAnalyzer.getBoxLengthExtension();
 		this.boxThickness = axisAnalyzer.getBoxThickness();
+	}
+
+	public Axis(AxisAnalyzerX axisAnalyzerX) {
+		this.axisAnalyzerX = axisAnalyzerX;
+		this.boxLengthExtension = axisAnalyzerX.getBoxLengthExtension();
+		this.boxThickness = axisAnalyzerX.getBoxThickness();
 	}
 
 	public Double getBoxThickness() {
@@ -580,8 +592,13 @@ public class Axis {
 		}
 	}
 
+	@Deprecated
 	public TextAnalyzer getTextAnalyzer() {
 		return textAnalyzer;
+	}
+
+	public TextAnalyzerX getTextAnalyzerX() {
+		return textAnalyzerX;
 	}
 
 	private List<SVGText> getTexts(List<SVGText> textList, LineOrientation orientation) {

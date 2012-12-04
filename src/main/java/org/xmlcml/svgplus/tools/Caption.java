@@ -4,8 +4,8 @@ import java.util.regex.Pattern;
 
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svgplus.command.PageEditor;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 
 /**
@@ -44,8 +44,12 @@ public class Caption extends Chunk {
 	private SVGText label; // e.g. figure or table
 	private Pattern captionPattern;
 	
-	public Caption(PageEditor pageEditor) {
-		super(pageEditor.getSVGPage());
+	public Caption(Chunk chunk) {
+		super(chunk);
+	}
+
+	public Caption(SVGSVG svg) {
+		super(svg);
 	}
 
 	public void setText(String text) {

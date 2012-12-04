@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -9,9 +10,6 @@ import java.util.regex.Pattern;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.VariableElement;
 
 public class VariableActionX extends PageActionX {
 
@@ -29,9 +27,9 @@ public class VariableActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.LOGAT);
-		ATTNAMES.add(PageActionElement.NAME);
-		ATTNAMES.add(PageActionElement.VALUE);
+		ATTNAMES.add(PageActionX.LOGAT);
+		ATTNAMES.add(PageActionX.NAME);
+		ATTNAMES.add(PageActionX.VALUE);
 	}
 
 	/** constructor
@@ -62,8 +60,8 @@ public class VariableActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.NAME,
-				PageActionElement.VALUE,
+				AbstractActionX.NAME,
+				PageActionX.VALUE,
 		});
 	}
 	

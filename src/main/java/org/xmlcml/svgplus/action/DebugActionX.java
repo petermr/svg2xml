@@ -2,14 +2,13 @@ package org.xmlcml.svgplus.action;
 
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.DebugElement;
 
 public class DebugActionX extends DocumentActionX {
 

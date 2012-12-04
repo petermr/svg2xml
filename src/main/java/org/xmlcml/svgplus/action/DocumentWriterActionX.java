@@ -10,9 +10,6 @@ import nu.xom.Node;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.DocumentWriterElement;
-import org.xmlcml.svgplus.command.PageActionElement;
 import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.tools.RegexFilenameFilter;
 
@@ -32,11 +29,11 @@ public class DocumentWriterActionX extends DocumentActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-//		ATTNAMES.add(PageActionElement.ACTION);
-		ATTNAMES.add(PageActionElement.FILENAME);
-		ATTNAMES.add(PageActionElement.FORMAT);
-		ATTNAMES.add(PageActionElement.REGEX);
-		ATTNAMES.add(PageActionElement.XPATH);
+//		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(PageActionX.FILENAME);
+		ATTNAMES.add(PageActionX.FORMAT);
+		ATTNAMES.add(PageActionX.REGEX);
+		ATTNAMES.add(PageActionX.XPATH);
 	}
 
 	/** constructor
@@ -67,7 +64,7 @@ public class DocumentWriterActionX extends DocumentActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.FILENAME,
+				AbstractActionX.FILENAME,
 		});
 	}
 	@Override

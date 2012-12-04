@@ -15,6 +15,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.TextAnalyzerX;
 
 /** holds a list of characters, normally in a horizontal line
  * 
@@ -50,14 +51,26 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 	private String lineContentIncludingSpaces = null;
 	private List<HorizontalCharacterList> subLines;
 	private WordSequence wordSequence;
+	private TextAnalyzerX textAnalyzerX;
+	@Deprecated
 	private TextAnalyzer textAnalyzer;
 	private SimpleFont simpleFont;
 	private Integer y;
 	private RealArray characterWidthArray;
-	
+
+	@Deprecated
 	public HorizontalCharacterList(TextAnalyzer textAnalyzer, List<SVGText> characterList) {
 		this.characterList = characterList;
 		this.textAnalyzer = textAnalyzer;
+	}
+	
+	public HorizontalCharacterList(TextAnalyzerX textAnalyzerX, List<SVGText> characterList) {
+		this.characterList = characterList;
+		this.textAnalyzerX = textAnalyzerX;
+	}
+	
+	public HorizontalCharacterList(TextAnalyzerX textAnalyzerX) {
+		this(textAnalyzerX, new ArrayList<SVGText>());
 	}
 	
 	public HorizontalCharacterList(TextAnalyzer textAnalyzer) {
@@ -147,7 +160,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 	 * if there is any variation
 	 * 
 	 */
-	Double getFontSize() {
+	public Double getFontSize() {
 		if (fontSize == null) {
 			getFontSizeList();
 			for (Double fSize : fontSizeList) {
@@ -210,7 +223,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 		return yCoordList;
 	}
 
-	RealArray getCharacterWidthArray() {
+	public RealArray getCharacterWidthArray() {
 		if (characterWidthArray == null) {
 			characterWidthArray = new RealArray();
 			for (int i = 1; i < characterList.size(); i++) {
@@ -247,7 +260,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 		return characterList.get(i);
 	}
 
-	void add(SVGText svgText) {
+	public void add(SVGText svgText) {
 		yCoord = (yCoord == null) ? svgText.getY() : yCoord;
 		characterList.add(svgText);
 	}
@@ -265,7 +278,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 		return characterList.iterator();
 	}
 
-    void sortLineByX() {
+    public void sortLineByX() {
 		// assumes no coincident text??
 		Map<Integer, SVGText> lineByXCoordMap = new HashMap<Integer, SVGText>();
 		for (SVGText text : this) {
@@ -491,7 +504,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 		return s;
 	}
 
-	List<HorizontalCharacterList> getSubLines() {
+	public List<HorizontalCharacterList> getSubLines() {
 		return subLines;
 	}
 

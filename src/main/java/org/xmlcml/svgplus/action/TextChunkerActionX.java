@@ -9,10 +9,6 @@ import nu.xom.Node;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.TextChunkerElement;
-import org.xmlcml.svgplus.text.TextAnalyzer;
 
 public class TextChunkerActionX extends PageActionX {
 
@@ -33,9 +29,9 @@ public class TextChunkerActionX extends PageActionX {
 	static String MERGE_CHUNKS = "mergeChunks";
 
 	static {
-		ATTNAMES.add(PageActionElement.ACTION);
-		ATTNAMES.add(PageActionElement.TITLE);
-		ATTNAMES.add(PageActionElement.XPATH);
+		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(PageActionX.TITLE);
+		ATTNAMES.add(PageActionX.XPATH);
 		ATTNAMES.add(CREATE_WORDS_LINES_PARAS_SUB_SUP);
 		ATTNAMES.add(CREATE_WORDS_LINES);
 		ATTNAMES.add(CREATE_TSPANS);
@@ -71,27 +67,27 @@ public class TextChunkerActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.XPATH,
+				AbstractActionX.XPATH,
 		});
 	}
 	
 	@Override
 	public void run() {
-		TextAnalyzer textAnalyzer = getPageEditor().ensureTextAnalyzer();
+		TextAnalyzerX textAnalyzerX = getPageEditor().ensureTextAnalyzer();
 		String xpath = getXPath();
 		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
 		LOG.trace(xpath+" => "+elements.size());
-		textAnalyzer.setCreateTSpans(isTrue(TextChunkerActionX.CREATE_TSPANS));
-		textAnalyzer.setCreateHTML(isTrue(TextChunkerActionX.CREATE_HTML));
+		textAnalyzerX.setCreateTSpans(isTrue(TextChunkerActionX.CREATE_TSPANS));
+		textAnalyzerX.setCreateHTML(isTrue(TextChunkerActionX.CREATE_HTML));
 		if (isTrue(TextChunkerActionX.CREATE_WORDS_LINES_PARAS_SUB_SUP)) {
-			textAnalyzer.analyzeTextChunksCreateWordsLinesParasAndSubSup(elements);
+			textAnalyzerX.analyzeTextChunksCreateWordsLinesParasAndSubSup(elements);
 		}
 		if (isTrue(TextChunkerActionX.CREATE_WORDS_LINES)) {
-			textAnalyzer.analyzeSingleWordsOrLines(elements);
+			textAnalyzerX.analyzeSingleWordsOrLines(elements);
 		}
 		
 		if (isTrue(TextChunkerActionX.MERGE_CHUNKS)) {
-			textAnalyzer.mergeChunks();
+			textAnalyzerX.mergeChunks();
 		}
 	}
 

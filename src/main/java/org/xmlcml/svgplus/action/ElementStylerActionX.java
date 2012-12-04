@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,9 +12,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.ElementStylerElement;
-import org.xmlcml.svgplus.command.PageActionElement;
 
 /**
 	<pageAction xpath="//svg:g[@LEAF='3']/svg:g" action="drawBoxes" 
@@ -36,13 +34,13 @@ public class ElementStylerActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-//		ATTNAMES.add(PageActionElement.ACTION);
-		ATTNAMES.add(PageActionElement.FILL);
-		ATTNAMES.add(PageActionElement.OPACITY);
-		ATTNAMES.add(PageActionElement.STROKE_WIDTH);
-		ATTNAMES.add(PageActionElement.STROKE);
-		ATTNAMES.add(PageActionElement.TITLE);
-		ATTNAMES.add(PageActionElement.XPATH);
+//		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(PageActionX.FILL);
+		ATTNAMES.add(PageActionX.OPACITY);
+		ATTNAMES.add(PageActionX.STROKE_WIDTH);
+		ATTNAMES.add(PageActionX.STROKE);
+		ATTNAMES.add(PageActionX.TITLE);
+		ATTNAMES.add(PageActionX.XPATH);
 	}
 
 	/** constructor
@@ -73,7 +71,7 @@ public class ElementStylerActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.XPATH,
+				AbstractActionX.XPATH,
 		});
 	}
 

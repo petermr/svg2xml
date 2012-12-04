@@ -146,7 +146,7 @@ public class FigureAnalyzer extends AbstractPageAnalyzer {
 	}
 
 	private Chunk createCaptionAndReplace(SVGElement captionElement) {
-		Chunk caption = new Caption(pageEditor);
+		Chunk caption = new Caption(pageEditor.getSVGPage());
 		caption.copyAttributesAndChildrenFromSVGElement(captionElement);
 		captionElement.detach();
 		caption.createElementListAndCalculateBoundingBoxes();

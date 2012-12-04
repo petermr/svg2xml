@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,15 +10,13 @@ import nu.xom.Node;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.BoxProcessorElement;
-import org.xmlcml.svgplus.paths.PathAnalyzer;
 import org.xmlcml.svgplus.tools.Chunk;
 
 public class BoxProcessorActionX extends PageActionX {
 
 	private final static Logger LOG = Logger.getLogger(BoxProcessorActionX.class);
 	
-	private PathAnalyzer pathAnalyzer;
+	private PathAnalyzerX pathAnalyzerX;
 
 	public final static String TAG ="boxProcessor";
 	private static final List<String> ATTNAMES = new ArrayList<String>();
@@ -72,7 +71,7 @@ public class BoxProcessorActionX extends PageActionX {
 	
 	@Override
 	public void run() {
-		pathAnalyzer = getPageEditor().ensurePathAnalyzer();
+		pathAnalyzerX = getPageEditor().ensurePathAnalyzer();
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(getSVGPage(), getXPath());
 		processRoundedBox(elementList);
 	}
@@ -85,7 +84,7 @@ public class BoxProcessorActionX extends PageActionX {
 				chunk = (Chunk) element;
 			}
 			List<SVGElement> outerElements = 
-					pathAnalyzer.getBoxOutsideMargins(chunk, this.getMarginX(), this.getMarginY());
+					pathAnalyzerX.getBoxOutsideMargins(chunk, this.getMarginX(), this.getMarginY());
 			if (outerElements.size() != 0) {
 				Integer boxCount = this.getBoxCount();
 				if (false && outerElements.size() < boxCount) { // because title page has strange boxes

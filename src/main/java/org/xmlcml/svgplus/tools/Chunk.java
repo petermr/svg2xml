@@ -269,7 +269,7 @@ public class Chunk extends SVGG {
 		}
 	}
 
-	void setBoundingBoxCacheForSelfAndDescendants(boolean cached) {
+	public void setBoundingBoxCacheForSelfAndDescendants(boolean cached) {
 		Long time0 = System.currentTimeMillis();
 		for (SVGElement element : descendantSVGElementList) {
 			element.setBoundingBoxCached(cached);

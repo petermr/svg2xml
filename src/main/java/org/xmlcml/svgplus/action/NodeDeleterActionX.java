@@ -2,15 +2,13 @@ package org.xmlcml.svgplus.action;
 
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.NodeDeleterElement;
-import org.xmlcml.svgplus.command.PageActionElement;
 
 public class NodeDeleterActionX extends PageActionX {
 
@@ -24,9 +22,9 @@ public class NodeDeleterActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.PAGE_RANGE);
-		ATTNAMES.add(PageActionElement.TITLE);
-		ATTNAMES.add(PageActionElement.XPATH);
+		ATTNAMES.add(PageActionX.PAGE_RANGE);
+		ATTNAMES.add(PageActionX.TITLE);
+		ATTNAMES.add(PageActionX.XPATH);
 	}
 
 	/** constructor
@@ -57,7 +55,7 @@ public class NodeDeleterActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.XPATH,
+				AbstractActionX.XPATH,
 		});
 	}
 

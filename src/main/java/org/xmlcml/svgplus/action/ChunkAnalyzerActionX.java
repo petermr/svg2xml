@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,9 +11,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.ChunkAnalyzer;
-import org.xmlcml.svgplus.command.PageActionElement;
 import org.xmlcml.svgplus.text.TextAnalyzer;
 import org.xmlcml.svgplus.tools.Chunk;
 
@@ -36,7 +34,7 @@ public class ChunkAnalyzerActionX extends PageActionX {
 	 */
 
 	static {
-		ATTNAMES.add(PageActionElement.XPATH);
+		ATTNAMES.add(PageActionX.XPATH);
 		ATTNAMES.add(SUBSUP);
 		ATTNAMES.add(REMOVE_NUMERIC_TSPANS);
 	}
@@ -69,7 +67,7 @@ public class ChunkAnalyzerActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.XPATH,
+				AbstractActionX.XPATH,
 		});
 	}
 
@@ -99,16 +97,16 @@ public class ChunkAnalyzerActionX extends PageActionX {
 	}
 	
 	private void analyzeChunk(Chunk chunk) {
-		ChunkAnalyzer chunkAnalyzer = new ChunkAnalyzer(semanticDocumentActionX);
+		ChunkAnalyzerX chunkAnalyzer = new ChunkAnalyzerX(semanticDocumentActionX);
 		createTextAnalyzer(chunkAnalyzer);
 		chunkAnalyzer.analyzeChunk(chunk);
 	}
 
-	private void createTextAnalyzer(ChunkAnalyzer chunkAnalyzer) {
-		TextAnalyzer textAnalyzer = chunkAnalyzer.getTextAnalyzer();
-		textAnalyzer.setSubSup(subSup);
-		textAnalyzer.setRemoveNumericTSpans(removeNumericTSpans);
-		textAnalyzer.setSplitAtSpaces(splitAtSpaces);
+	private void createTextAnalyzer(ChunkAnalyzerX chunkAnalyzer) {
+		TextAnalyzerX textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
+		textAnalyzerX.setSubSup(subSup);
+		textAnalyzerX.setRemoveNumericTSpans(removeNumericTSpans);
+		textAnalyzerX.setSplitAtSpaces(splitAtSpaces);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.io.FileInputStream;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,9 +16,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.AssertElement;
-import org.xmlcml.svgplus.command.PageActionElement;
 import org.xmlcml.svgplus.util.ToXML;
 
 public class AssertActionX extends PageActionX {
@@ -32,13 +30,13 @@ public class AssertActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.COUNT);
-		ATTNAMES.add(PageActionElement.FAIL);
-		ATTNAMES.add(PageActionElement.FILENAME);
-		ATTNAMES.add(PageActionElement.NAME);
-		ATTNAMES.add(PageActionElement.MESSAGE);
-		ATTNAMES.add(PageActionElement.VALUE);
-		ATTNAMES.add(PageActionElement.XPATH);
+		ATTNAMES.add(PageActionX.COUNT);
+		ATTNAMES.add(PageActionX.FAIL);
+		ATTNAMES.add(PageActionX.FILENAME);
+		ATTNAMES.add(PageActionX.NAME);
+		ATTNAMES.add(PageActionX.MESSAGE);
+		ATTNAMES.add(PageActionX.VALUE);
+		ATTNAMES.add(PageActionX.XPATH);
 	}
 
 	/** constructor

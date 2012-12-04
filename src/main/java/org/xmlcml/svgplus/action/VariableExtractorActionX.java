@@ -1,6 +1,7 @@
 package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -11,9 +12,6 @@ import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.VariableExtractorElement;
 
 /**
 	<pageAction xpath="//svg:g[@id='chunk0.0.0']/svg:g/svg:g/svg:g[@name='para']/svg:text"
@@ -36,12 +34,12 @@ public class VariableExtractorActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.ACTION);
-		ATTNAMES.add(PageActionElement.PAGE_RANGE);
-		ATTNAMES.add(PageActionElement.REGEX);
-		ATTNAMES.add(PageActionElement.TITLE);
-		ATTNAMES.add(PageActionElement.VARIABLES);
-		ATTNAMES.add(PageActionElement.XPATH);
+		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(PageActionX.PAGE_RANGE);
+		ATTNAMES.add(PageActionX.REGEX);
+		ATTNAMES.add(PageActionX.TITLE);
+		ATTNAMES.add(PageActionX.VARIABLES);
+		ATTNAMES.add(PageActionX.XPATH);
 	}
 
 	/** constructor
@@ -72,9 +70,9 @@ public class VariableExtractorActionX extends PageActionX {
 
 	protected List<String> getRequiredAttributeNames() {
 		return Arrays.asList(new String[]{
-				AbstractActionElement.REGEX,
-				PageActionElement.VARIABLES,
-				AbstractActionElement.XPATH,
+				AbstractActionX.REGEX,
+				PageActionX.VARIABLES,
+				AbstractActionX.XPATH,
 		});
 	}
 	

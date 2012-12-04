@@ -1,15 +1,13 @@
 package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.PageActionElement;
-import org.xmlcml.svgplus.command.WhitespaceChunkerAction;
 import org.xmlcml.svgplus.tools.Chunk;
-import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 /**
 	<pageAction action="createWhitespaceChunks" depth="3"/>
  * @author pm286
@@ -18,7 +16,7 @@ import org.xmlcml.svgplus.tools.PageChunkSplitterAnalyzer;
 
 public class WhitespaceChunkerActionX extends PageActionX {
 
-	private final static Logger LOG = Logger.getLogger(WhitespaceChunkerAction.class);
+	private final static Logger LOG = Logger.getLogger(WhitespaceChunkerActionX.class);
 	
 	public WhitespaceChunkerActionX(AbstractActionX actionElement) {
 		super(actionElement);
@@ -29,8 +27,8 @@ public class WhitespaceChunkerActionX extends PageActionX {
 	private static final List<String> ATTNAMES = new ArrayList<String>();
 	
 	static {
-		ATTNAMES.add(PageActionElement.ACTION);
-		ATTNAMES.add(PageActionElement.DEPTH);
+		ATTNAMES.add(PageActionX.ACTION);
+		ATTNAMES.add(PageActionX.DEPTH);
 	}
 
 	/** constructor
@@ -66,13 +64,13 @@ public class WhitespaceChunkerActionX extends PageActionX {
 	
 	@Override
 	public void run() {
-		PageChunkSplitterAnalyzer pageChunkSplitter = getPageEditor().ensurePageChunkSplitter();
+		PageChunkSplitterAnalyzerX pageChunkSplitterX = getPageEditor().ensurePageChunkSplitter();
 		Integer depth = getDepth();
 		if (depth != null) {
 			LOG.trace("DEPTH cannot yet be set");
 		}
-		List<Chunk> finalChunkList = pageChunkSplitter.splitByWhitespace();
-		pageChunkSplitter.labelLeafNodes(finalChunkList);
+		List<Chunk> finalChunkList = pageChunkSplitterX.splitByWhitespace();
+		pageChunkSplitterX.labelLeafNodes(finalChunkList);
 	}
 
 }

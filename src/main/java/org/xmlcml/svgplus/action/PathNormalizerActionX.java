@@ -1,15 +1,13 @@
 package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.AbstractActionElement;
-import org.xmlcml.svgplus.command.PathNormalizerElement;
-import org.xmlcml.svgplus.paths.PathAnalyzer;
 
 /**
 	<pageAction xpath="//svg:g[@LEAF='3']/svg:g" action="drawBoxes" 
@@ -82,22 +80,22 @@ public class PathNormalizerActionX extends PageActionX {
 
 	@Override
 	public void run() {
-		PathAnalyzer pathAnalyzer = getPageEditor().ensurePathAnalyzer();
+		PathAnalyzerX pathAnalyzerX = getPageEditor().ensurePathAnalyzer();
 		if (isTrue(PathNormalizerActionX.REMOVE_DUPLICATE_PATHS)) {
-			pathAnalyzer.removeDuplicatePaths();
+			pathAnalyzerX.removeDuplicatePaths();
 		}
 		if (isTrue(PathNormalizerActionX.CREATE_HIGHER_PRIMITIVES)) {
-			pathAnalyzer.removeRedundantMoveCommands();
-			pathAnalyzer.splitAtMoveCommands();
-			pathAnalyzer.interpretPathsAsRectCirclePolylineAndReplace();
+			pathAnalyzerX.removeRedundantMoveCommands();
+			pathAnalyzerX.splitAtMoveCommands();
+			pathAnalyzerX.interpretPathsAsRectCirclePolylineAndReplace();
 		}
 		// process min lines anyway
 		Integer minLinesInPolyline = getMinLinesInPolyline();
-		pathAnalyzer.splitPolylinesToLines(minLinesInPolyline);
+		pathAnalyzerX.splitPolylinesToLines(minLinesInPolyline);
 		
 		if (isTrue(PathNormalizerActionX.JOIN_POLYLINES)) {
 			throw new RuntimeException("refactor mergePolylinesAtContiguousEndPoints");
-//			pathAnalyzer.mergePolylinesAtContiguousEndPoints(EPS);
+//			pathAnalyzerX.mergePolylinesAtContiguousEndPoints(EPS);
 		}
 		if (isTrue(PathNormalizerActionX.REMOVE_EMPTY_SVGG)) {
 			getSVGPage().removeEmptySVGG();
