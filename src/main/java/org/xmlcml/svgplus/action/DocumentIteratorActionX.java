@@ -124,6 +124,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 				outdir = (infile.isDirectory()) ? infile : infile.getParentFile();
 			}
 		} else {
+			outfile.mkdirs();
 			outdir = (outfile.isDirectory()) ? outfile : outfile.getParentFile();
 		}
 	}

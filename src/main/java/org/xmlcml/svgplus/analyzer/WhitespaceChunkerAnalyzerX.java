@@ -8,6 +8,7 @@ import java.util.List;
 import nu.xom.Attribute;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.action.SemanticDocumentActionX;
@@ -137,6 +138,7 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 				subSubSubChunkList.addAll(cc);
 			}
 		}
+		topChunk.debug("TOP");
 		removeEmptyChunks(topChunk);
 		return subSubSubChunkList;
 	}
