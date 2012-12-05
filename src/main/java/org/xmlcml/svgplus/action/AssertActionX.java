@@ -1,7 +1,7 @@
 package org.xmlcml.svgplus.action;
 
+import java.io.File;
 import java.io.FileInputStream;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -150,9 +150,17 @@ public class AssertActionX extends AbstractActionX {
 		if (testValue == null) {
 			throw new RuntimeException("Cannot find name: "+name);
 		}
-		String testString = testValue.toString();
-		if (!testString.equals(refValue)) {
-			throw new RuntimeException("Assert for: ("+name+") expected: "+refValue+"; found: ("+testString+")");
+		if (testValue instanceof File) {
+			File refValueFile = new File(refValue);
+			File testValueFile = (File) testValue;
+			if (!(testValueFile).getAbsolutePath().equals(refValueFile.getAbsolutePath())) {
+				throw new RuntimeException("Assert for: ("+name+") expected: "+refValue+"; found: ("+testValueFile.getAbsolutePath()+")");
+			}
+		} else {
+			String testString = testValue.toString();
+			if (!testString.equals(refValue)) {
+				throw new RuntimeException("Assert for: ("+name+") expected: "+refValue+"; found: ("+testString+")");
+			}
 		}
 	}
 

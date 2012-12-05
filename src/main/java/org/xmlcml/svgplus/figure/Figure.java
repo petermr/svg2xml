@@ -9,8 +9,8 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svgplus.action.SVGPlusConstantsX;
 import org.xmlcml.svgplus.analyzer.FigureAnalyzerX;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svgplus.tools.Caption;
 import org.xmlcml.svgplus.tools.Chunk;
@@ -152,7 +152,7 @@ public class Figure extends Chunk {
 		figureAnalysis = new Element(FIGURE_TAG);
 		String id = this.getId();
 		if (id != null) {
-			figureAnalysis.addAttribute(new Attribute(SVGPlusConstants.ID, id));
+			figureAnalysis.addAttribute(new Attribute(SVGPlusConstantsX.ID, id));
 		}
 		if (figureBody.getBodyAnalysis() != null) {
 			figureAnalysis.appendChild(figureBody.getBodyAnalysis().copy());

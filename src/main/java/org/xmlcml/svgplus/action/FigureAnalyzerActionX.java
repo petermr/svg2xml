@@ -14,7 +14,6 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.analyzer.FigureAnalyzerX;
 import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.figure.Figure;
 import org.xmlcml.svgplus.figure.FigureFragment;
 import org.xmlcml.svgplus.figure.FigurePanel;
@@ -103,11 +102,11 @@ public class FigureAnalyzerActionX extends PageActionX {
 			figureAnalyzer.createFragmentsInsidePanelsForAllFigures();
 			analyzeFigures(figureList);
 			for (Figure figure : figureList) {
-				CMLUtil.outputQuietly(figure.getFigureAnalysis(), new File(filename+"."+figure.getId()+SVGPlusConstants.XML), 1);
+				CMLUtil.outputQuietly(figure.getFigureAnalysis(), new File(filename+"."+figure.getId()+SVGPlusConstantsX.XML), 1);
 			}
 		}
 		for (Chunk figure : figureList) {
-			GraphUtil.writeFileAsSVGSVGWithMouse(filename+"."+figure.getId()+SVGPlusConstants.SVG, figure);
+			GraphUtil.writeFileAsSVGSVGWithMouse(filename+"."+figure.getId()+SVGPlusConstantsX.SVG, figure);
 		}
 	}
 

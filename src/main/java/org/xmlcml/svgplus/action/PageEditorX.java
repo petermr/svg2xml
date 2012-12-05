@@ -14,11 +14,10 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
 import org.xmlcml.svgplus.analyzer.DocumentAnalyzerX;
 import org.xmlcml.svgplus.analyzer.FigureAnalyzerX;
-import org.xmlcml.svgplus.analyzer.PageChunkSplitterAnalyzerX;
+import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svgplus.analyzer.PathAnalyzerX;
 import org.xmlcml.svgplus.analyzer.TableAnalyzerX;
 import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.figure.Figure;
 import org.xmlcml.svgplus.table.Table;
 
@@ -67,7 +66,7 @@ public class PageEditorX {
 	public static final String LAST = "last";
 	public static final String REPORTED_PAGE_NUMBER = "reportedPageNumber";
 	private static final String BEFORE_TEXT = "beforeText";
-	public static final String NAME_PREFIX = SVGPlusConstants.P;
+	public static final String NAME_PREFIX = SVGPlusConstantsX.P;
 
 	private BiMap<String, String> clipPathByIdMap;
 	
@@ -82,7 +81,7 @@ public class PageEditorX {
 	private PathAnalyzerX pathAnalyzerX;
 //	private PageClipPathAnalyzer clipPathAnalyzer;
 //	private PageFontSizeAnalyzer fontSizeAnalyzer;
-	private PageChunkSplitterAnalyzerX pageChunkSplitterX;
+	private WhitespaceChunkerAnalyzerX pageChunkSplitterX;
 	private TextAnalyzerX textAnalyzerX;
 	private FigureAnalyzerX figureAnalyzerX;
 	private TableAnalyzerX tableAnalyzerX;
@@ -188,9 +187,9 @@ public class PageEditorX {
 		}
 	}
 
-	public PageChunkSplitterAnalyzerX ensurePageChunkSplitter() {
+	public WhitespaceChunkerAnalyzerX ensureWhiteSpaceChunker() {
 		if (pageChunkSplitterX == null) {
-			pageChunkSplitterX = new PageChunkSplitterAnalyzerX(semanticDocumentActionX);
+			pageChunkSplitterX = new WhitespaceChunkerAnalyzerX(semanticDocumentActionX);
 		}
 		return pageChunkSplitterX;
 	}
@@ -217,7 +216,7 @@ public class PageEditorX {
 	}
 
 	private void applyBrowserScale() {
-		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id='"+PageChunkSplitterAnalyzerX.TOP_CHUNK+"']");
+		List<SVGElement> gList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id='"+WhitespaceChunkerAnalyzerX.TOP_CHUNK+"']");
 		if (gList.size() != 1) {
 			LOG.error("should have one topChunk G");
 		} else {
@@ -253,7 +252,7 @@ public class PageEditorX {
 //		return fontSizeAnalyzer;
 //	}
 
-	public PageChunkSplitterAnalyzerX getPageChunkSplitter() {
+	public WhitespaceChunkerAnalyzerX getPageChunkSplitter() {
 		return pageChunkSplitterX;
 	}
 

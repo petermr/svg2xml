@@ -1,4 +1,4 @@
-package org.xmlcml.svgplus.command;
+package org.xmlcml.svgplus.action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 /** manages Page and Document lookup
  *  may not be necessary
@@ -35,7 +34,7 @@ public class VariableStore {
 			String[] names = name.split(CMLConstants.S_BACKSLASH+CMLConstants.S_PERIOD);
 			if (names.length == 2){
 				if (names[0].length() == 1) {
-					for (String prefix : SVGPlusConstants.PREFIXES) {
+					for (String prefix : SVGPlusConstantsX.PREFIXES) {
 						if (prefix.equals(names[0])) {
 							ok = true;
 							break;

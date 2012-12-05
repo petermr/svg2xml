@@ -87,7 +87,7 @@ public abstract class PageActionX extends AbstractActionX {
 	}
 
 	public final static String TAG = "pageAction";
-
+	
 	// private so it can't be modified - have to copy it - is this a good idea?
 	private PageSelector pageSelector;
 	private int pageCount;

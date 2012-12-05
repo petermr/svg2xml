@@ -13,13 +13,12 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 public class DocumentIteratorActionX extends DocumentActionX {
 
-	private static final String INPUT_DIR = SVGPlusConstants.D_DOT+SVGPlusConstants.ROOT_DIR;
-	static final String INPUT_FILE = SVGPlusConstants.D_DOT+SVGPlusConstants.INPUT_FILE;
-	private static final String OUTPUT_DIR = SVGPlusConstants.D_DOT+SVGPlusConstants.OUTPUT_DIR;
+	private static final String INPUT_DIR = SVGPlusConstantsX.D_DOT+SVGPlusConstantsX.ROOT_DIR;
+	static final String INPUT_FILE = SVGPlusConstantsX.D_DOT+SVGPlusConstantsX.INPUT_FILE;
+	private static final String OUTPUT_DIR = SVGPlusConstantsX.D_DOT+SVGPlusConstantsX.OUTPUT_DIR;
 
 	private final static Logger LOG = Logger.getLogger(DocumentIteratorActionX.class);
 
@@ -43,9 +42,9 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	public final static String TAG ="documentIterator";
 
 	private static final List<String> ATTNAMES = new ArrayList<String>();
-
 	static {
 		ATTNAMES.add(FILENAME);
+		ATTNAMES.add(OUTFILE);
 		ATTNAMES.add(FORMAT);
 		ATTNAMES.add(MAX);
 		ATTNAMES.add(REGEX);
@@ -104,7 +103,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 
 	private void createInputFileList() {
 		infileList = new ArrayList<File>();
-		max = getInteger(DocumentIteratorActionX.MAX);
+		max = getInteger(DocumentActionX.MAX);
 		File indir = null;
 		if (!infile.isDirectory()) {
 			String name = infile.getName();
@@ -121,13 +120,11 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private void createOutputDirectory() {
 		// outfile may have been set by commandline
 		if (outfile == null) {
-			outdir = infile.getParentFile();
-		} else if (!infile.isDirectory()) { // single file
-			outdir = outfile != null ? outfile : infile.getParentFile();
-		} else {
-			if (outfile != null) {
-				outdir = outfile;
+			if (infile != null) {
+				outdir = (infile.isDirectory()) ? infile : infile.getParentFile();
 			}
+		} else {
+			outdir = (outfile.isDirectory()) ? outfile : outfile.getParentFile();
 		}
 	}
 
@@ -145,7 +142,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private List<File> getFiles(File indir) {
 		File[] files = indir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String path) {
-				return path.endsWith(SVGPlusConstants.PDF); // for test
+				return path.endsWith(SVGPlusConstantsX.PDF); // for test
 			}
 		});
 		return files == null ? new ArrayList<File>() : Arrays.asList(files);
@@ -161,12 +158,15 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	}
 
 	private File getOutfile() {
+		// variable set takes precedence
 		outfile = (File) semanticDocumentActionX.getVariable(SemanticDocumentActionX.S_OUTFILE);
-		// no attribute to set directory - yet
-//		if (outfile == null) {
-//			String filename = getFilename();
-//			infile = (filename == null) ? null : new File(filename);
-//		}
+		if (outfile == null) {
+			String outfilename = this.getAndExpand(OUTFILE);
+			if (outfilename != null) {
+				outfile = new File(outfilename);
+				semanticDocumentActionX.setVariable(SemanticDocumentActionX.S_OUTFILE, outfile);
+			}
+		}
 		return outfile;
 	}
 
@@ -201,7 +201,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private void createHtmlMenuDisplay() {
 //		LOG.debug("FILES "+rawDirList.size());
 		MenuSystem menuSystem = new MenuSystem(infile);
-		menuSystem.setRoot("/../"+SVGPlusConstants.OUT+CMLConstants.S_SLASH+SVGPlusConstants.INDEX_HTML);
+		menuSystem.setRoot("/../"+SVGPlusConstantsX.OUT+CMLConstants.S_SLASH+SVGPlusConstantsX.INDEX_HTML);
 		menuSystem.setLabel("../../");
 		menuSystem.setRowWidth(100);
 		menuSystem.setAddPdf(false);
@@ -212,7 +212,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private File[] listSVGFiles(File rawDir) {
 		File[] svgFiles = rawDir.listFiles(new FilenameFilter() {
 			public boolean accept(File rawDir, String name) {
-				return name.endsWith(SVGPlusConstants.SVG);
+				return name.endsWith(SVGPlusConstantsX.SVG);
 			}
 		});
 		return svgFiles;
@@ -222,7 +222,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private void outputSVGsToRawDir(File rawDir, List<SVGSVG> pageList) {
 		int page = 0;
 		for (SVGSVG svgPage :pageList) {
-			CMLUtil.outputQuietly(svgPage, new File(rawDir, SVGPlusConstants.PAGE+(++page)+SVGPlusConstants.SVG), 1);
+			CMLUtil.outputQuietly(svgPage, new File(rawDir, SVGPlusConstantsX.PAGE+(++page)+SVGPlusConstantsX.SVG), 1);
 		}
 	}
 
@@ -245,10 +245,10 @@ public class DocumentIteratorActionX extends DocumentActionX {
 
 	private File generateRawFileDirectory(File pdfFile) {
 		String name = pdfFile.getName();
-		String root = name.substring(0, name.length()-SVGPlusConstants.PDF.length());
+		String root = name.substring(0, name.length()-SVGPlusConstantsX.PDF.length());
 		File subRootDir = new File(pdfFile.getParentFile(), root);
 		subRootDir.mkdir();
-		File rawDir = new File(subRootDir, SVGPlusConstants.RAW);
+		File rawDir = new File(subRootDir, SVGPlusConstantsX.RAW);
 		rawDir.mkdir();
 		return rawDir;
 	}
@@ -257,7 +257,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 		File[] pdfFiles = file.listFiles(
 			new FilenameFilter() {
 				public boolean accept(File file, String name) {
-					return name.endsWith(SVGPlusConstants.PDF);
+					return name.endsWith(SVGPlusConstantsX.PDF);
 				}
 			});
 		return pdfFiles;

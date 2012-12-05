@@ -10,7 +10,6 @@ import nu.xom.Node;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.tools.RegexFilenameFilter;
 
 public class DocumentWriterActionX extends DocumentActionX {
@@ -72,8 +71,8 @@ public class DocumentWriterActionX extends DocumentActionX {
 		String outdirName = getFilename();
 		outdir = new File(outdirName);
 		String regex = getRegex();
-		String format = getFormat(SVGPlusConstants.XML_FORMAT);
-		if (SVGPlusConstants.HTML_MENU_FORMAT.equals(format)) {
+		String format = getFormat(SVGPlusConstantsX.XML_FORMAT);
+		if (SVGPlusConstantsX.HTML_MENU_FORMAT.equals(format)) {
 			createHtmlMenu(regex);
 		}
 	}

@@ -148,12 +148,7 @@ public class Chunk extends SVGG {
 			}
 		}
 		LOG.trace("emptyBoxCount "+emptyBoxList.size());
-		for (Real2Range r2r : emptyBoxList) {
-			LOG.trace("EmptyBox "+r2r);
-			if (r2r.getXRange() == null || r2r.getYRange() == null) {
-				throw new RuntimeException("Null empty box");
-			}
-		}
+		checkAndDebugEmptyBoxes();
 		LOG.trace("======");
 		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis()-time0));
 		for (Chunk chunk0 : chunkList) {
@@ -161,6 +156,15 @@ public class Chunk extends SVGG {
 		}
 		LOG.trace("reformat chunkList: "+chunkList.size()+"/"+(System.currentTimeMillis()-time0));
 		return chunkList;
+	}
+
+	private void checkAndDebugEmptyBoxes() {
+		for (Real2Range r2r : emptyBoxList) {
+			LOG.trace("EmptyBox "+r2r);
+			if (r2r.getXRange() == null || r2r.getYRange() == null) {
+				throw new RuntimeException("Null empty box");
+			}
+		}
 	}
 	
 	private Real2Range addTerminatingEmptyBox(double chunkWidth, BoxEdge edge) {

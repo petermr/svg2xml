@@ -1,8 +1,8 @@
-package org.xmlcml.svgplus.core;
+package org.xmlcml.svgplus.action;
 
 
 
-public class SVGPlusConstants {
+public class SVGPlusConstantsX {
 	
 	// suffixes
 	public static final String NEXML = ".nexml";

@@ -10,15 +10,13 @@ import nu.xom.Node;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 public class PageIteratorActionX extends PageActionX {
 
 	private final static Logger LOG = Logger.getLogger(PageIteratorActionX.class);
 
-	public static final String PAGE_COUNT = SVGPlusConstants.D_DOT+"pageCount";
-	public static final String PAGE_NUMBER = SVGPlusConstants.P_DOT+"page";
-	private SVGPlusConverterX svgPlusConverterX;
+	public static final String PAGE_COUNT = SVGPlusConstantsX.D_DOT+"pageCount";
+	public static final String PAGE_NUMBER = SVGPlusConstantsX.P_DOT+"page";
 	private List<SVGSVG> svgPageList;
 	boolean convertPages = true; // settable by attributes later
 
@@ -75,8 +73,8 @@ public class PageIteratorActionX extends PageActionX {
 
 	private void getOrCreateSVGPageList() {
 		File infile = (File) semanticDocumentActionX.getVariable(DocumentIteratorActionX.INPUT_FILE);
+		SVGPlusConverterX svgPlusConverterX = semanticDocumentActionX.ensureSVGPlusConverter();
 		if (infile != null) {
-			ensureSVGPlusConverter();
 			svgPageList = svgPlusConverterX.createSVGPageList(infile);
 			semanticDocumentActionX.setVariable(PAGE_COUNT, svgPageList.size());
 			LOG.debug("pages "+svgPageList.size());
@@ -90,11 +88,5 @@ public class PageIteratorActionX extends PageActionX {
 		}
 	}
 	
-	private void ensureSVGPlusConverter() {
-		if (svgPlusConverterX == null) {
-			svgPlusConverterX = semanticDocumentActionX.getSVGPlusConverter();
-		}
-	}
-
 
 }

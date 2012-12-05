@@ -11,8 +11,8 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.svgplus.action.SVGPlusConstantsX;
 import org.xmlcml.svgplus.analyzer.FigureAnalyzerX;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.tools.Chunk;
 
 /** FigureBody consists of the non-caption part of the figure
@@ -42,7 +42,7 @@ public class FigureBody extends Chunk {
 			bodyAnalysis = new Element(BODY_TAG);
 			String id = this.getId();
 			if (id != null) {
-				bodyAnalysis.addAttribute(new Attribute(SVGPlusConstants.ID, id));
+				bodyAnalysis.addAttribute(new Attribute(SVGPlusConstantsX.ID, id));
 			}
 			FigureAnalyzerX figureAnalyzer = figure.getFigureAnalyzer();
 			Real2 margins = figureAnalyzer.getClusterWhitespaceBoxMargins();

@@ -57,6 +57,8 @@ public abstract class AbstractActionX extends Element {
 	public static final String EXIT = "exit";
 
 	public static final String VARIABLES = "variables";
+
+	public static final String TYPE = "type";
 	
 	protected SemanticDocumentActionX semanticDocumentActionX;
 
@@ -264,6 +266,10 @@ public abstract class AbstractActionX extends Element {
 	protected String getAndExpand(String attName, String defaultValue) {
 		String value = getValue(attName, defaultValue);
 		return expandVariables(value);
+	}
+
+	public String getType() {
+		return getAndExpand(AbstractActionX.TYPE);
 	}
 
 	protected String getValue(String attName, String defaultValue) {
@@ -555,7 +561,7 @@ public abstract class AbstractActionX extends Element {
 	}
 
 	public List<String> getVariables() {
-		String s = this.getAttributeValue(PageActionX.VARIABLES);
+		String s = this.getAttributeValue(AbstractActionX.VARIABLES);
 		String[] ss = (s == null) ? null : s.split(CMLConstants.S_WHITEREGEX);
 		return (ss == null) ? null : Arrays.asList(ss);
 	}

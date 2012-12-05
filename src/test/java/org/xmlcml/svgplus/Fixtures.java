@@ -1,13 +1,16 @@
 package org.xmlcml.svgplus;
 
 import java.io.File;
+import java.util.List;
 
 import nu.xom.Builder;
 import nu.xom.Element;
 
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svgplus.action.SemanticDocumentActionX;
+import org.xmlcml.svgplus.tools.Chunk;
 
 public class Fixtures {
 
@@ -17,6 +20,7 @@ public class Fixtures {
 	public static final String ACTION_DIR = SVGPLUS_DIR+"action/";
 	
 	public static final String AJC_PAGE6_PDF = CORE_DIR+"ajc-page6.pdf";
+	
 	public final static File NOOP_FILE = new File(CORE_DIR+"noopTst.xml");
 	public final static File BASIC_FILE = new File(CORE_DIR+"basicTst.xml");
 	public static final File INCLUDE_TEST_FILE = new File(CORE_DIR+"includeTst.xml");
@@ -32,6 +36,8 @@ public class Fixtures {
 	public static final File AJC6_SVG = new File(Fixtures.COMMAND_DIR+"ajc6.svg");
 	public static final File POLICIES_SVG = new File(Fixtures.COMMAND_DIR+"policies.svg");
 	public static final File CHUNK_ANALYZE = new File(Fixtures.ACTION_DIR+"chunkAnalyzeTst.xml");
+	public static final File CHUNK_ANALYZE0 = new File(Fixtures.ACTION_DIR+"chunkAnalyzeTst0.xml");
+	public static final File CHUNK_ANALYZE_POLICIES = new File(Fixtures.ACTION_DIR+"chunkAnalyzePolicies.xml");
 	
 	public static SemanticDocumentActionX getSemanticDocumentAction(File commandFile) {
 		SemanticDocumentActionX semanticDocumentAction = null;
@@ -57,4 +63,13 @@ public class Fixtures {
 		return semanticDocumentAction;
 	}
 
+	public static void drawChunkBoxes(SemanticDocumentActionX semanticDocumentAction,
+			List<Chunk> finalChunkList) {
+		for (Chunk chunk : finalChunkList) {
+			SVGRect bbox = chunk.createGraphicalBoundingBox();
+			if (bbox != null) {
+				chunk.appendChild(bbox);
+			}
+		}
+	}
 }

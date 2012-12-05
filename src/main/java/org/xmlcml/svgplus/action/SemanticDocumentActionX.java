@@ -15,8 +15,6 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.command.VariableStore;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 import org.xmlcml.svgplus.text.SimpleFont;
 
 public class SemanticDocumentActionX extends DocumentActionX {
@@ -24,11 +22,10 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	private final static Logger LOG = Logger.getLogger(SemanticDocumentActionX.class);
 
 	public static final String INFILE = "infile";
-	public static final String S_INFILE = SVGPlusConstants.S_DOT+INFILE;
-	public static final String OUTFILE = "outfile";
-	public static final String S_OUTFILE = SVGPlusConstants.S_DOT+OUTFILE;
+	public static final String S_INFILE = SVGPlusConstantsX.S_DOT+INFILE;
+	public static final String S_OUTFILE = SVGPlusConstantsX.S_DOT+OUTFILE;
 	public static final String SEMDOC = "semdoc";
-	public static final String S_SEMDOC = SVGPlusConstants.S_DOT+SEMDOC;
+	public static final String S_SEMDOC = SVGPlusConstantsX.S_DOT+SEMDOC;
 	
 	private String semanticDocumentFilename;
 	private VariableStore variableStore;
@@ -51,7 +48,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		return DEFAULT_COMMAND_FILENAME;
 	}
 	
-	private DocumentIteratorActionX documentIteratorElement;
+	private DocumentActionX documentIteratorElement;
 //	private AbstractActionX semanticDocumentActionX;
 
 	/** constructor
@@ -77,7 +74,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		return TAG;
 	}
 
-	public DocumentIteratorActionX getDocumentIteratorElement() {
+	public DocumentActionX getDocumentIteratorElement() {
 		if (documentIteratorElement == null) {
 			Nodes nodes = this.query(DocumentIteratorActionX.TAG);
 			documentIteratorElement =  (nodes.size() == 1) ? (DocumentIteratorActionX) nodes.get(0) : null;
@@ -257,6 +254,13 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	public PageEditorX getPageEditor() {
 		ensurePageEditor(this);
 		return pageEditor;
+	}
+
+	public SVGPlusConverterX ensureSVGPlusConverter() {
+		if (svgPlusConverterX == null) {
+			svgPlusConverterX = new SVGPlusConverterX();
+		}
+		return svgPlusConverterX;
 	}
 
 }

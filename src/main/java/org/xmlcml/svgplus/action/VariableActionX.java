@@ -1,7 +1,7 @@
 package org.xmlcml.svgplus.action;
 
+import java.io.File;
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -25,10 +25,13 @@ public class VariableActionX extends PageActionX {
 	public final static String TAG ="variable";
 	
 	private static final List<String> ATTNAMES = new ArrayList<String>();
+
+	private static final String FILE = "file";
 	
 	static {
 		ATTNAMES.add(AbstractActionX.LOGAT);
 		ATTNAMES.add(AbstractActionX.NAME);
+		ATTNAMES.add(AbstractActionX.TYPE);
 		ATTNAMES.add(PageActionX.VALUE);
 	}
 
@@ -69,12 +72,17 @@ public class VariableActionX extends PageActionX {
 	public void run() {
 		String name = getName();
 		String value = getValueString();
+		Object objectValue = value;
+		String type = getType();
 		if (name == null || value == null) {
 			throw new RuntimeException("must give name and value attributes: "+this.toXML());
 		}
 		checkValidName(name);
+		if (FILE.equalsIgnoreCase(type)) {
+			objectValue = new File(value);
+		}
 		LOG.trace("SD "+semanticDocumentActionX);
-		semanticDocumentActionX.setVariable(name, value);
+		semanticDocumentActionX.setVariable(name, objectValue);
 //		log(getLog());
 	}
 

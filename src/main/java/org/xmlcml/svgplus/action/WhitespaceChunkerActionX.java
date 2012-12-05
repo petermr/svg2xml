@@ -7,7 +7,7 @@ import java.util.List;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.analyzer.PageChunkSplitterAnalyzerX;
+import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svgplus.tools.Chunk;
 /**
 	<pageAction action="createWhitespaceChunks" depth="3"/>
@@ -65,13 +65,13 @@ public class WhitespaceChunkerActionX extends PageActionX {
 	
 	@Override
 	public void run() {
-		PageChunkSplitterAnalyzerX pageChunkSplitterX = getPageEditor().ensurePageChunkSplitter();
+		WhitespaceChunkerAnalyzerX whiteSpaceChunkerAnalyzer = getPageEditor().ensureWhiteSpaceChunker();
 		Integer depth = getDepth();
 		if (depth != null) {
 			LOG.trace("DEPTH cannot yet be set");
 		}
-		List<Chunk> finalChunkList = pageChunkSplitterX.splitByWhitespace();
-		pageChunkSplitterX.labelLeafNodes(finalChunkList);
+		List<Chunk> finalChunkList = whiteSpaceChunkerAnalyzer.splitByWhitespace();
+		whiteSpaceChunkerAnalyzer.labelLeafNodes(finalChunkList);
 	}
 
 }

@@ -38,8 +38,8 @@ import org.xmlcml.svgplus.tools.SplitterParams;
  * @author pm286
  *
  */
-public class PageChunkSplitterAnalyzerX extends AbstractPageAnalyzerX {
-	private static final Logger LOG = Logger.getLogger(PageChunkSplitterAnalyzerX.class);
+public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
+	private static final Logger LOG = Logger.getLogger(WhitespaceChunkerAnalyzerX.class);
 
 	public static final String CLIP = "CLIP";
 	public static final String WHITE = "WHITE";
@@ -61,7 +61,7 @@ public class PageChunkSplitterAnalyzerX extends AbstractPageAnalyzerX {
 	
 	private List<Chunk> finalChunkList;
 
-	public PageChunkSplitterAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
+	public WhitespaceChunkerAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
 		init();
 	}

@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svgplus.core.SVGPlusConstants;
 
 /**
  * Converts raw SVG to structured SVG
@@ -41,7 +40,7 @@ public class SVGPlusConverterX {
 
 	private FilenameFilter pdfFilter = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
-			return name.endsWith(SVGPlusConstants.PDF);
+			return name.endsWith(SVGPlusConstantsX.PDF);
 		}
 	};
 
