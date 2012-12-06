@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import nu.xom.Attribute;
+import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
@@ -62,6 +63,8 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 	
 	private List<Chunk> finalChunkList;
 
+	private Chunk topChunk;
+
 	public WhitespaceChunkerAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
 		init();
@@ -84,8 +87,8 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 	/** the main analysis routine
 	 * includes text, paths, figures, tables
 	 */
-	public void splitByWhitespaceAndLabelLeafNodes() {
-		finalChunkList = splitByWhitespace();
+	public void splitByWhitespaceAndLabelLeafNodes(SVGElement svgElement) {
+		finalChunkList = splitByWhitespace(svgElement);
 		labelLeafNodes(finalChunkList);
 	}
 	
@@ -99,11 +102,11 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 				chunk.addAttribute(new Attribute(LEAF, "1"));
 			}
 		}
-		List<SVGElement> topChunks = SVGUtil.getQuerySVGElements(pageEditorX.getSVGPage(), "svg:g[@id='"+TOP_CHUNK+"']");
-		if (topChunks.size() != 1) {
-			throw new RuntimeException("Should be ONE top chunk");
-		}
-		labelXYMINDescendants((Chunk)topChunks.get(0), "chunk0");
+//		List<SVGElement> topChunks = SVGUtil.getQuerySVGElements(to, "svg:g[@id='"+TOP_CHUNK+"']");
+//		if (topChunks.size() != 1) {
+//			throw new RuntimeException("Should be ONE top chunk");
+//		}
+		labelXYMINDescendants(topChunk, "chunk0");
 	}
 	
 	private void labelXYMINDescendants(Chunk chunk, String idRoot) {
@@ -116,15 +119,21 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 		}
 	}
 
+	/** splits topChunk into subchunks (altering topChunk)
+	 * 
+	 * @param topChunk
+	 * @return
+	 */
 	// FIXME add variable levels
-	public List<Chunk> splitByWhitespace() {
+	public List<Chunk> splitByWhitespace(SVGElement elementToBeChunked) {
+		Chunk topChunk = new Chunk(elementToBeChunked);
+		topChunk.debug("PRE"+topChunk.getParent());
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
-		Chunk topChunk = new Chunk(pageEditorX.getSVGPage());
-		LOG.debug("descendants0: "+topChunk.getDescendantSVGElementList().size()+"/"+(System.currentTimeMillis()-time0));
+		LOG.debug("descendants0: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
 		topChunk.setBoundingBoxCacheForSelfAndDescendants(true);
-		LOG.debug("descendants: "+topChunk.getDescendantSVGElementList().size()+"/"+(System.currentTimeMillis()-time0));
-		pageEditorX.getSVGPage().appendChild(topChunk);
+		LOG.debug("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
+//		pageEditorX.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
@@ -138,9 +147,26 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 				subSubSubChunkList.addAll(cc);
 			}
 		}
-		topChunk.debug("TOP");
 		removeEmptyChunks(topChunk);
+		topChunk.debug("TOP");
+		removeChildren(elementToBeChunked);
+		moveChildrenFromChunkToElement(elementToBeChunked, topChunk);
 		return subSubSubChunkList;
+	}
+
+	private void moveChildrenFromChunkToElement(SVGElement elementToBeChunked, Chunk topChunk) {
+		Elements childElements1 = topChunk.getChildElements();
+		for (int i = 0; i < childElements1.size(); i++) {
+			childElements1.get(i).detach();
+			elementToBeChunked.appendChild(childElements1.get(i));
+		}
+	}
+
+	private void removeChildren(SVGElement elementToBeChunked) {
+		Elements childElements = elementToBeChunked.getChildElements();
+		for (int i = 0; i < childElements.size(); i++) {
+			childElements.get(i).detach();
+		}
 	}
 
 	private void removeEmptyChunks(Chunk topChunk) {

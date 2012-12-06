@@ -4,6 +4,7 @@
       <assert name="d.outputDir" value="target/chunkAnalyzer" fail="true"/>
       <variable name="p.root" value="${d.outputDir}/whitespace_${p.page}" type="file"/>
       <assert name="p.root" value="target/chunkAnalyzer/whitespace_1" fail="true"/>
+      <pageWriter filename="target/raw.svg" />
       <whitespaceChunker depth="3" />
       <pageWriter filename="target/chunked.svg" />
       <chunkAnalyzer/>

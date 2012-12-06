@@ -42,6 +42,7 @@ public class Chunk extends SVGG {
 	protected BoundingBoxManager boundingBoxManager;
 	private List<Real2Range> emptyBoxList;
 	private Set<Class<?>> descendantSVGClassSet;
+	private SVGElement originalSVGElement;
 	
 	protected Chunk() {
 		PDF2SVGUtil.setSVGXAttribute(this, ROLE, CHUNK);
@@ -55,6 +56,7 @@ public class Chunk extends SVGG {
 		if (!(svgElement instanceof SVGG || svgElement instanceof SVGSVG)) {
 			throw new RuntimeException("svgChunk must be svg:g or svg:svg");
 		}
+		this.originalSVGElement = svgElement;
 		copyAttributesAndChildrenFromSVGElement(svgElement);
 	}
 
@@ -68,10 +70,14 @@ public class Chunk extends SVGG {
 	}
 
 	void createElementListAndCalculateBoundingBoxes(SVGElement element) {
-		// remove grouping elements and defs
-		descendantSVGElementList = SVGUtil.getQuerySVGElements(element, 
-				".//svg:*[not(self::svg:svg or self::svg:g or self::*[ancestor-or-self::svg:defs])]");
+		descendantSVGElementList = getDescendantsWithoutGroupingElementsOrDefs(element);
 		calculateBoundingBoxes();
+	}
+
+	private static List<SVGElement> getDescendantsWithoutGroupingElementsOrDefs(SVGElement element) {
+		List<SVGElement> descendantSVGElementList = SVGUtil.getQuerySVGElements(element, 
+				".//svg:*[not(self::svg:svg or self::svg:g or self::*[ancestor-or-self::svg:defs])]");
+		return descendantSVGElementList;
 	}
 	
 	private List<Real2Range> calculateBoundingBoxes() {
@@ -93,16 +99,13 @@ public class Chunk extends SVGG {
 		}
 	}
 	
-	public List<SVGElement> getDescendantSVGElementList() {
-		if (descendantSVGElementList == null) {
-			descendantSVGElementList = SVGUtil.getQuerySVGElements(this, ".//svg:*");
-		}
+	public List<SVGElement> getDescendantSVGElementListWithoutDefsDescendants() {
+		descendantSVGElementList =  getDescendantsWithoutGroupingElementsOrDefs(this);
 		return descendantSVGElementList;
 	}
 	
-	
 	public List<Chunk> splitIntoChunks(Double chunkWidth, BoxEdge edge) {
-		getDescendantSVGElementList();
+		getDescendantSVGElementListWithoutDefsDescendants();
 		ensureEmptyBoxList(edge);
 		SVGUtil.setBoundingBoxCached(descendantSVGElementList, true);
 		Long time0 = System.currentTimeMillis();

@@ -70,7 +70,7 @@ public class WhitespaceChunkerActionX extends PageActionX {
 		if (depth != null) {
 			LOG.trace("DEPTH cannot yet be set");
 		}
-		List<Chunk> finalChunkList = whiteSpaceChunkerAnalyzer.splitByWhitespace();
+		List<Chunk> finalChunkList = whiteSpaceChunkerAnalyzer.splitByWhitespace(getSVGPage());
 		whiteSpaceChunkerAnalyzer.labelLeafNodes(finalChunkList);
 	}
 

@@ -9,6 +9,7 @@ import nu.xom.Element;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.action.SemanticDocumentActionX;
 import org.xmlcml.svgplus.tools.Chunk;
 
@@ -18,6 +19,7 @@ public class Fixtures {
 	public static final String COMMAND_DIR= SVGPLUS_DIR+"command/";
 	public static final String CORE_DIR = SVGPLUS_DIR+"core/";
 	public static final String ACTION_DIR = SVGPLUS_DIR+"action/";
+	public static final File ACTION_SVG_DIR = new File(Fixtures.ACTION_DIR, "svg");
 	
 	public static final String AJC_PAGE6_PDF = CORE_DIR+"ajc-page6.pdf";
 	
@@ -37,7 +39,9 @@ public class Fixtures {
 	public static final File POLICIES_SVG = new File(Fixtures.COMMAND_DIR+"policies.svg");
 	public static final File CHUNK_ANALYZE = new File(Fixtures.ACTION_DIR+"chunkAnalyzeTst.xml");
 	public static final File CHUNK_ANALYZE0 = new File(Fixtures.ACTION_DIR+"chunkAnalyzeTst0.xml");
-	public static final File CHUNK_ANALYZE_POLICIES = new File(Fixtures.ACTION_DIR+"chunkAnalyzePolicies.xml");
+	
+	public static final File CHUNK_ANALYZE_POLICIES = new File(Fixtures.ACTION_DIR, "chunkAnalyzePolicies.xml");
+	public static final File TWO_CHUNKS_SVG = new File(Fixtures.ACTION_SVG_DIR, "twoChunks.svg");
 	
 	public static SemanticDocumentActionX getSemanticDocumentAction(File commandFile) {
 		SemanticDocumentActionX semanticDocumentAction = null;
@@ -71,5 +75,15 @@ public class Fixtures {
 				chunk.appendChild(bbox);
 			}
 		}
+	}
+	
+	public final static SVGElement createSVGElement(File file) {
+		SVGElement svgElement =  null;
+		try {
+			svgElement = SVGElement.readAndCreateSVG(new Builder().build(file).getRootElement());
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot create SVGElement", e);
+		}
+		return svgElement;
 	}
 }

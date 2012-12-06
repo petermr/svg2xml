@@ -39,7 +39,7 @@ public class ChunkXTest {
 	public void testGetDescendantElementList() {
 		SemanticDocumentActionX semanticDocumentAction = Fixtures.createSemanticDocumentActionWithSVGPage(Fixtures.PAGE0_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
-		List<SVGElement> descendantList = chunk.getDescendantSVGElementList();
+		List<SVGElement> descendantList = chunk.getDescendantSVGElementListWithoutDefsDescendants();
 		Assert.assertNotNull("descendantlist should not be null", descendantList);
 		Assert.assertTrue("descendantlist should not be empty", descendantList.size() >0);
 		Assert.assertEquals("descendantlist", _PAGE0_SIZE, descendantList.size());

@@ -1,13 +1,8 @@
 package org.xmlcml.svgplus.action;
 
-import java.io.FileOutputStream;
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.svgplus.Fixtures;
 import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svgplus.tools.Chunk;
@@ -26,6 +21,17 @@ public class ChunkAnalyzerTest {
 	public void testChunkAnalyze0() throws Exception {
 		SemanticDocumentActionX semanticDocumentAction = SemanticDocumentActionX.createSemanticDocument(Fixtures.CHUNK_ANALYZE0);
 		semanticDocumentAction.run();
+	}
+
+	@Test
+	public void testChunkAnalyze00() throws Exception {
+//		SemanticDocumentActionX semanticDocumentAction = SemanticDocumentActionX.createSemanticDocument(Fixtures.NOOP_FILE);
+		SemanticDocumentActionX semanticDocumentAction = new SemanticDocumentActionX();
+		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX(semanticDocumentAction);
+		SVGElement svgElement = Fixtures.createSVGElement(Fixtures.TWO_CHUNKS_SVG);
+		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgElement);
+		svgElement.debug("CHUNKED");
+		
 	}
 
 
