@@ -4,8 +4,6 @@ package org.xmlcml.svgplus.action;
 
 public abstract class DocumentActionX extends AbstractActionX {
 
-	protected static final String OUTFILE = "outfile";
-
 	public DocumentActionX(AbstractActionX documentActionElement) {
 		super(documentActionElement);
 	}

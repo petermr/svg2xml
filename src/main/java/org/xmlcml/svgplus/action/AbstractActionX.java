@@ -59,6 +59,12 @@ public abstract class AbstractActionX extends Element {
 	public static final String VARIABLES = "variables";
 
 	public static final String TYPE = "type";
+	protected static final String OUTFILE = "outfile";
+
+	public static final String INFILE = "infile";
+
+	protected static final String OUTDIR = "outputDir";
+
 	
 	protected SemanticDocumentActionX semanticDocumentActionX;
 
@@ -196,7 +202,7 @@ public abstract class AbstractActionX extends Element {
 		}
 	}
 
-	public SemanticDocumentActionX getSemanticDocumentElement() {
+	public AbstractActionX getSemanticDocumentElement() {
 		if (semanticDocumentActionX == null) {
 			Element element = (Element) this.query("/*").get(0);
 			if (element instanceof SemanticDocumentActionX) {
@@ -511,7 +517,7 @@ public abstract class AbstractActionX extends Element {
 	 * 
 	 * @return
 	 */
-	public SemanticDocumentActionX getSemanticDocumentX() {
+	public AbstractActionX getSemanticDocumentX() {
 		if (semanticDocumentActionX == null && this instanceof SemanticDocumentActionX) {
 			semanticDocumentActionX = (SemanticDocumentActionX) this;
 		}
@@ -566,7 +572,7 @@ public abstract class AbstractActionX extends Element {
 		return (ss == null) ? null : Arrays.asList(ss);
 	}
 
-	public SemanticDocumentActionX getSemanticDocumentActionX() {
+	public AbstractActionX getSemanticDocumentActionX() {
 		return semanticDocumentActionX;
 	}
 }

@@ -10,7 +10,10 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.svgplus.action.AbstractActionX;
 import org.xmlcml.svgplus.action.SemanticDocumentActionX;
+import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svgplus.tools.Chunk;
 
 public class Fixtures {
@@ -20,6 +23,7 @@ public class Fixtures {
 	public static final String CORE_DIR = SVGPLUS_DIR+"core/";
 	public static final String ACTION_DIR = SVGPLUS_DIR+"action/";
 	public static final File ACTION_SVG_DIR = new File(Fixtures.ACTION_DIR, "svg");
+	public static final File ACTION_PDF_DIR = new File(Fixtures.ACTION_DIR, "pdf");
 	
 	public static final String AJC_PAGE6_PDF = CORE_DIR+"ajc-page6.pdf";
 	
@@ -42,9 +46,14 @@ public class Fixtures {
 	
 	public static final File CHUNK_ANALYZE_POLICIES = new File(Fixtures.ACTION_DIR, "chunkAnalyzePolicies.xml");
 	public static final File TWO_CHUNKS_SVG = new File(Fixtures.ACTION_SVG_DIR, "twoChunks.svg");
+	public static final File TWO_CHUNKS1_PDF = new File(Fixtures.ACTION_PDF_DIR, "twoChunks1.pdf");
+	public static final File TWO_COLUMNS_PDF = new File(Fixtures.ACTION_PDF_DIR, "twoColumns.pdf");
+	public static final File BMC310_PDF = new File(Fixtures.ACTION_PDF_DIR, "bmc11-310.pdf");
+	public static final File BMC313_PDF = new File(Fixtures.ACTION_PDF_DIR, "bmc11-313.pdf");
+	public static final File SUSCRIPTS_PDF = new File(Fixtures.ACTION_PDF_DIR, "suscripts.pdf");
 	
-	public static SemanticDocumentActionX getSemanticDocumentAction(File commandFile) {
-		SemanticDocumentActionX semanticDocumentAction = null;
+	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
+		AbstractActionX semanticDocumentAction = null;
 		try {
 			Element element = new Builder().build(commandFile).getRootElement();
 			semanticDocumentAction = SemanticDocumentActionX.createSemanticDocument(element);
@@ -67,7 +76,7 @@ public class Fixtures {
 		return semanticDocumentAction;
 	}
 
-	public static void drawChunkBoxes(SemanticDocumentActionX semanticDocumentAction,
+	public static void drawChunkBoxes(AbstractActionX semanticDocumentAction,
 			List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
 			SVGRect bbox = chunk.createGraphicalBoundingBox();
@@ -86,4 +95,31 @@ public class Fixtures {
 		}
 		return svgElement;
 	}
+	
+	/** page numbered from ONE
+	 * 
+	 * @param file
+	 * @param page
+	 * @return
+	 */
+	public static SVGSVG getSVGPageFromPDF(File file, int page) {
+		PDF2SVGConverter converter = new PDF2SVGConverter();
+		converter.run("-outdir target "+file);
+		SVGSVG svgPage = (page < 1 || page > converter.getPageList().size()) ? null : converter.getPageList().get(page-1);
+		return svgPage;
+	}
+
+	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
+		SVGSVG svgPage = Fixtures.getSVGPageFromPDF(pdfFile, pageNum);
+		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX(new SemanticDocumentActionX());
+		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgPage);
+		return svgPage;
+	}
+
+	public static List<Chunk> createLeafChunks(File pdfFile, int pageNum) {
+		SVGSVG svgPage = createChunkedSVGPage(pdfFile, pageNum);
+		List<Chunk> chunkList = Chunk.extractChunks(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@LEAF]"));
+		return chunkList;
+	}
+
 }

@@ -13,7 +13,7 @@ public class AssertXTest {
 
 	@Test
 	public void assertTestFromCommand() {
-		SemanticDocumentActionX semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.ASSERT_TST);
+		AbstractActionX semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.ASSERT_TST);
 		semanticDocumentAction.run();
 		semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.NO_ASSERT_TST);
 		try {

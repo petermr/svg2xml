@@ -103,7 +103,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 
 	private void createInputFileList() {
 		infileList = new ArrayList<File>();
-		max = getInteger(DocumentActionX.MAX);
+		max = getInteger(AbstractActionX.MAX);
 		File indir = null;
 		if (!infile.isDirectory()) {
 			String name = infile.getName();

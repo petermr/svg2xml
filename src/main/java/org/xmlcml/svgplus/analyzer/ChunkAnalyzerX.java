@@ -23,8 +23,9 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 	public static final int PLACES = 6;
 
 	private List<SVGText> texts;
-	private List<SVGPath> pathList;
+	private List<SVGPath> paths;
 	private TextAnalyzerX textAnalyzerX;
+	private PathAnalyzerX pathAnalyzerX;
 	private List<SVGLine> lines;
 	private LineAnalyzerX lineAnalyzerX;
 	private List<SVGPolyline> polylines;
@@ -37,10 +38,12 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 		super(semanticDocumentActionX);
 	}
 
+	public ChunkAnalyzerX() {
+		super(new SemanticDocumentActionX());
+	}
+
 	public void analyzeChunk(Chunk chunk) {
 		this.chunk = chunk;
-		ensurePaths();
-//		debugLeaf();
 		analyzeTexts();
 		analyzePaths();
 		analyzeLines();
@@ -48,8 +51,8 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	private void ensurePaths() {
-		if (pathList == null) {
-			pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(chunk, ".//svg:path"));
+		if (paths == null) {
+			paths = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(chunk, ".//svg:path"));
 		}
 	}
 
@@ -86,11 +89,10 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 	private void analyzeTexts(int angle) {
 		ensureTextAnalyzer();
 		String angleCondition = (angle == 0) ? "@angle='0' or not(@angle)" : "@angle='"+angle+"'";
-		texts = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgg, ".//svg:text["+angleCondition+"]"));
+		texts = SVGText.extractTexts(SVGUtil.getQuerySVGElements(chunk, ".//svg:text["+angleCondition+"]"));
 		LOG.trace("ROT "+angle+": "+texts.size());
 		if (texts.size() > 0) {
-//			textAnalyzer = new TextAnalyzer(pageEditor);
-			textAnalyzerX.analyzeTexts(svgg, texts);
+			textAnalyzerX.analyzeTexts(texts);
 		}
 	}
 	
@@ -102,14 +104,18 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	private void analyzePaths() {
-		throw new RuntimeException("NYI");
+		ensurePaths();
+		if (paths.size() > 0) {
+			pathAnalyzerX = new PathAnalyzerX(semanticDocumentActionX);
+			pathAnalyzerX.interpretPathsAsRectCirclePolylineAndReplace();
+		}
 	}
 
 	private void analyzeLines() {
-		lines = SVGLine.extractLines(SVGUtil.getQuerySVGElements(svgg, ".//svg:line"));
+		lines = SVGLine.extractLines(SVGUtil.getQuerySVGElements(chunk, ".//svg:line"));
 		if (lines.size() > 0) {
 			lineAnalyzerX = new LineAnalyzerX(semanticDocumentActionX);
-			lineAnalyzerX.analyzeLinesAsAxesAndWhatever(svgg, lines);
+			lineAnalyzerX.analyzeLinesAsAxesAndWhatever(chunk, lines);
 		}
 	}
 
@@ -119,10 +125,10 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	private void analyzePolylines() {
-		polylines = SVGPolyline.extractPolylines(SVGUtil.getQuerySVGElements(svgg, ".//svg:polyline"));
+		polylines = SVGPolyline.extractPolylines(SVGUtil.getQuerySVGElements(chunk, ".//svg:polyline"));
 		if (polylines.size() > 0) {
 			polylineAnalyzerX = new PolylineAnalyzerX(semanticDocumentActionX);
-			polylineAnalyzerX.analyzePolylines(svgg, polylines);
+			polylineAnalyzerX.analyzePolylines(chunk, polylines);
 		}
 	}
 

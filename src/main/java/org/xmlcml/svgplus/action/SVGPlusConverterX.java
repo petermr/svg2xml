@@ -186,6 +186,7 @@ public class SVGPlusConverterX {
 			outfile = new File(outputFilename);
 			if (outfile.isDirectory()) {
 				LOG.debug("writing to: "+outfile.getAbsolutePath()+"(dir = "+outfile.isDirectory()+")");
+				semanticDocumentActionX.setOutdir(outfile);
 			}
 			semanticDocumentActionX.setOutfile(outfile);
 		}

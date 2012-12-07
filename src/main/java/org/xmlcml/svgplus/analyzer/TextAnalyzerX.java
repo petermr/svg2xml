@@ -136,10 +136,9 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return horizontalCharacterList;
 	}
 
-	public void analyzeTexts(SVGG svgg, List<SVGText> textCharacters) {
-		LOG.trace("ANALYZE TEXT "+textCharacters.size());
-		this.svgg = svgg;
-		createHorizontalCharacterLists(textCharacters);
+	public void analyzeTextsOld(List<SVGText> textCharacters) {
+		LOG.debug("ANALYZE TEXT "+textCharacters.size());
+		createHorizontalCharacterListsOld(textCharacters);
 		analyzeSpaces();
 		createWordsInSublines();
 		mergeSubSup();
@@ -148,6 +147,23 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		normalizeTSpanToText();
 	}
 
+	public void analyzeTexts(List<SVGText> textCharacters) {
+		LOG.debug("ANALYZE TEXT "+textCharacters.size());
+		createHorizontalCharacterLists(textCharacters);
+//		analyzeSpaces();
+//		createWordsInSublines();
+//		mergeSubSup();
+//		addNumericValues();
+//		splitAtSpaces();
+//		normalizeTSpanToText();
+	}
+
+
+	private void createHorizontalCharacterLists(List<SVGText> textCharacters) {
+		List<TextLine> textLines = sortByY();
+		for (TextLine)
+		
+	}
 
 	private void normalizeTSpanToText() {
 		List<SVGText> textWithTSpans = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgg, ".//svg:text[svg:tspan]"));
@@ -178,7 +194,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		this.getSpaceSizes();
 	}
 
-	private void createHorizontalCharacterLists(List<SVGText> textCharacters) {
+	private void createHorizontalCharacterListsOld(List<SVGText> textCharacters) {
 		// refactor
 		this.createRawCharacterListText(textCharacters);
 		this.createRawTextCharacterPositionMaps();
@@ -367,7 +383,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private void createWordsInSublines() {
 		for (HorizontalCharacterList subline : horizontalCharacterList) {
 			LOG.trace("SUBLINE "+subline);
-			LOG.trace("Guess "+subline.guessAndApplySpacingInLine());
+//			LOG.trace("Guess "+subline.guessAndApplySpacingInLine());
 			WordSequence wordSequence = subline.createWords();
 			LOG.trace("WordSeq "+wordSequence.getWords().size()+" .. "+wordSequence.getStringValue());
 		}
@@ -940,7 +956,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 				simpleFont = SimpleFont.SIMPLE_FONT;
 			}
 			if (this.simpleFont == null) {
-				throw new RuntimeException("Cannot make simpleFont");
+				//throw new RuntimeException("Cannot make simpleFont");
+				LOG.warn("Cannot make simpleFont");
 			}
 		}
 		return simpleFont;

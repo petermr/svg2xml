@@ -52,6 +52,7 @@ public class AbstractActionElementXTest {
 	public void testInputFileOnDocumentIteratorWithAssert() {
 		SVGPlusConverterX converter = new SVGPlusConverterX();
 		converter.run(
+				" -o target "+
 				" -c "+Fixtures.INFILE_TEST
 				);
 	}

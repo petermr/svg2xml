@@ -21,8 +21,8 @@ public class SemanticDocumentActionX extends DocumentActionX {
 
 	private final static Logger LOG = Logger.getLogger(SemanticDocumentActionX.class);
 
-	public static final String INFILE = "infile";
 	public static final String S_INFILE = SVGPlusConstantsX.S_DOT+INFILE;
+	public static final String S_OUTDIR = SVGPlusConstantsX.S_DOT+OUTDIR;
 	public static final String S_OUTFILE = SVGPlusConstantsX.S_DOT+OUTFILE;
 	public static final String SEMDOC = "semdoc";
 	public static final String S_SEMDOC = SVGPlusConstantsX.S_DOT+SEMDOC;
@@ -48,7 +48,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		return DEFAULT_COMMAND_FILENAME;
 	}
 	
-	private DocumentActionX documentIteratorElement;
+	private AbstractActionX documentIteratorElement;
 //	private AbstractActionX semanticDocumentActionX;
 
 	/** constructor
@@ -74,7 +74,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		return TAG;
 	}
 
-	public DocumentActionX getDocumentIteratorElement() {
+	public AbstractActionX getDocumentIteratorElement() {
 		if (documentIteratorElement == null) {
 			Nodes nodes = this.query(DocumentIteratorActionX.TAG);
 			documentIteratorElement =  (nodes.size() == 1) ? (DocumentIteratorActionX) nodes.get(0) : null;
@@ -174,6 +174,11 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		this.setVariable(S_INFILE, infile);
 	}
 	
+	public void setOutdir(File outfile) {
+		ensureVariableStore();
+		this.setVariable(S_OUTDIR, outfile);
+	}
+
 	public void setOutfile(File outfile) {
 		ensureVariableStore();
 		this.setVariable(S_OUTFILE, outfile);
@@ -245,7 +250,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 		return svgPlusConverterX;
 	}
 	
-	public void ensurePageEditor(SemanticDocumentActionX semanticDocumentAction) {
+	public void ensurePageEditor(AbstractActionX semanticDocumentAction) {
 		if (pageEditor == null) {
 			pageEditor = new PageEditorX(this);
 		}

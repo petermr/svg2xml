@@ -334,4 +334,20 @@ public class Chunk extends SVGG {
 		}
 	}
 
+
+	/** makes a new list composed of the Chunks in the list
+	 * 
+	 * @param elements
+	 * @return
+	 */
+	public static List<Chunk> extractChunks(List<SVGElement> elements) {
+		List<Chunk> chunkList = new ArrayList<Chunk>();
+		for (SVGElement element : elements) {
+			if (element instanceof Chunk) {
+				chunkList.add((Chunk) element);
+			}
+		}
+		return chunkList;
+	}
+
 }

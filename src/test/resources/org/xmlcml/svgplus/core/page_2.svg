@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg height="800.0" stroke="none" stroke-width="0.0" xmlns="http://www.w3.org/2000/svg" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+ <defs id="defs1">
+  <clipPath id="clipPath1">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M0.0 0.0 L595.0 0.0 L595.0 841.0 L0.0 841.0 L0.0 0.0 Z"/>
+  </clipPath>
+ </defs>
  <text stroke="#000000" font-family="Verdana" x="93.624" y="82.0" font-size="12.0"> </text>
  <text font-weight="bold" stroke="#000000" font-family="Arial,old" x="93.624" y="112.98" font-size="12.0" font-style="bold">1</text>
  <text font-weight="bold" stroke="#000000" font-family="Arial,old" x="100.34" y="112.98" font-size="12.0" font-style="bold"> </text>
@@ -1810,9 +1815,4 @@
  <text stroke="#000000" font-family="Verdana" x="526.372" y="764.656" font-size="12.0">r</text>
  <text stroke="#000000" font-family="Verdana" x="531.544" y="764.656" font-size="12.0">e</text>
  <text stroke="#000000" font-family="Verdana" x="538.732" y="764.656" font-size="12.0"> </text>
- <defs id="defs1">
-  <clipPath id="clipPath1">
-   <path stroke="black" stroke-width="0.5" fill="none" d="M0.0 0.0 L595.0 0.0 L595.0 841.0 L0.0 841.0 L0.0 0.0 Z"/>
-  </clipPath>
- </defs>
 </svg>

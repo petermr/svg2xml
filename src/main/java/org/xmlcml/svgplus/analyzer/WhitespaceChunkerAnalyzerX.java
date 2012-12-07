@@ -87,9 +87,10 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 	/** the main analysis routine
 	 * includes text, paths, figures, tables
 	 */
-	public void splitByWhitespaceAndLabelLeafNodes(SVGElement svgElement) {
-		finalChunkList = splitByWhitespace(svgElement);
-		labelLeafNodes(finalChunkList);
+	public List<Chunk> splitByWhitespaceAndLabelLeafNodes(SVGElement svgElement) {
+		List<Chunk> chunkList = splitByWhitespace(svgElement);
+		labelLeafNodes(chunkList);
+		return chunkList;
 	}
 	
 	public void labelLeafNodes(List<Chunk> finalChunkList) {
@@ -127,7 +128,7 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 	// FIXME add variable levels
 	public List<Chunk> splitByWhitespace(SVGElement elementToBeChunked) {
 		Chunk topChunk = new Chunk(elementToBeChunked);
-		topChunk.debug("PRE"+topChunk.getParent());
+//		topChunk.debug("PRE"+topChunk.getParent());
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
 		LOG.debug("descendants0: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
@@ -148,7 +149,7 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 			}
 		}
 		removeEmptyChunks(topChunk);
-		topChunk.debug("TOP");
+//		topChunk.debug("TOP");
 		removeChildren(elementToBeChunked);
 		moveChildrenFromChunkToElement(elementToBeChunked, topChunk);
 		return subSubSubChunkList;

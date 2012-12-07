@@ -28,14 +28,20 @@ public class BoundingBoxManager {
 		/** gets appropriate coordinate of box */
 		public Double getCoord(Real2Range r2r) {
 			Double coord = null;
-			if (XMIN.equals(this)) {
-				coord = r2r.getXRange().getMin();
+			if (r2r == null) {
+				return coord;
+			} else if (XMIN.equals(this)) {
+				RealRange xRange = r2r.getXRange();
+				coord = (xRange == null) ? null : xRange.getMin();
 			} else if (XMAX.equals(this)) {
-				coord = r2r.getXRange().getMax();
+				RealRange xRange = r2r.getXRange();
+				coord = (xRange == null) ? null : xRange.getMax();
 			} else if (YMIN.equals(this)) {
-				coord = r2r.getYRange().getMin();
+				RealRange yRange = r2r.getYRange();
+				coord = (yRange == null) ? null : yRange.getMin();
 			} else if (YMAX.equals(this)) {
-				coord = r2r.getYRange().getMax();
+				RealRange yRange = r2r.getYRange();
+				coord = (yRange == null) ? null : yRange.getMax();
 			}
 			return coord;
 		}
@@ -162,13 +168,16 @@ public class BoundingBoxManager {
 		Map<Integer, List<Real2Range>> bboxByXmin = new HashMap<Integer, List<Real2Range>>();
 		for (Real2Range bbox : bboxList) {
 			if (bbox != null) {
-				Integer coord = (int) Math.round(edge.getCoord(bbox)); 
-				List<Real2Range> bList = bboxByXmin.get(coord);
-				if (bList == null) {
-					bList = new ArrayList<Real2Range>();
-					bboxByXmin.put(coord, bList);
+				Double dCoord = edge.getCoord(bbox); 
+				if (dCoord != null) {
+					Integer coord = (int) Math.round(dCoord); 
+					List<Real2Range> bList = bboxByXmin.get(coord);
+					if (bList == null) {
+						bList = new ArrayList<Real2Range>();
+						bboxByXmin.put(coord, bList);
+					}
+					bList.add(bbox);
 				}
-				bList.add(bbox);
 			} else {
 //				System.err.println("null bbox");
 			}

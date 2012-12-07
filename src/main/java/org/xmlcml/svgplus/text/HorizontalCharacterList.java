@@ -85,16 +85,16 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 				LOG.trace("fontSize "+fontSize);
 				Double yCoord = text.getY();
 //				String physicalStyle = getPhysicalStyle(text);
-//				if (i == 0 || LineAttributesHaveChanged(lastFontSize, lastYCoord, lastPhysicalStyle, fontSize, yCoord,
-//						physicalStyle)
-//					) {
-//					charList = new HorizontalCharacterList(this.textAnalyzer);
-//					getSubLines().add(charList);
-//				}
+				if (i == 0 
+//						|| LineAttributesHaveChanged(lastFontSize, lastYCoord, lastPhysicalStyle, fontSize, yCoord, physicalStyle)
+					) {
+					charList = new HorizontalCharacterList(this.textAnalyzerX);
+					getSubLines().add(charList);
+				}
 				charList.add(text);
 				lastFontSize = fontSize;
 				lastYCoord = yCoord;
-				lastPhysicalStyle = physicalStyle;
+//				lastPhysicalStyle = physicalStyle;
 			}
 			if (getSubLines().size() != 1) {
 				for (HorizontalCharacterList chList : getSubLines()) {
@@ -133,7 +133,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 	 * @return
 	 */
 	private String getSinglePhysicalStyle() {
-		if (physicalStyle == null) {
+		if (physicalStyle == null && physicalStyleList != null) {
 			for (String pstyle : physicalStyleList) {
 				if (pstyle == null || (physicalStyle != null && !pstyle.equals(physicalStyle))) {
 					physicalStyle = null;

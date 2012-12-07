@@ -30,6 +30,6 @@ public class VariableXTest {
 	@Test
 	@Ignore
 	public void variableTestFromCommand() {
-		SemanticDocumentActionX semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.VARIABLE_TST);
+		AbstractActionX semanticDocumentAction = Fixtures.getSemanticDocumentAction(Fixtures.VARIABLE_TST);
 	}
 }
