@@ -19,7 +19,9 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.Fixtures;
 import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
+import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
 import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
+import org.xmlcml.svgplus.text.TextLine;
 import org.xmlcml.svgplus.tools.Chunk;
 
 public class ChunkAnalyzerTest {
@@ -58,7 +60,7 @@ public class ChunkAnalyzerTest {
 	}
 
 	@Test
-	// does the same but without creating semanticDocument
+	// does the same but without reading semanticDocument (commandfile)
 	public void testTwoChunksSVGElement() throws Exception {
 		SemanticDocumentActionX semanticDocumentAction = new SemanticDocumentActionX();
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX(semanticDocumentAction);
@@ -101,11 +103,13 @@ public class ChunkAnalyzerTest {
 	
 	@Test
 	public void testTwoLargerChunkTypes() throws Exception {
-		SVGSVG svgPage = Fixtures.createChunkedSVGPage(Fixtures.TWO_CHUNKS1_PDF, 1);
 		List<Chunk> leafChunks = Fixtures.createLeafChunks(Fixtures.TWO_CHUNKS1_PDF, 1);
 		ChunkAnalyzerX chunkAnalyzer = new ChunkAnalyzerX();
 		chunkAnalyzer.analyzeChunk(leafChunks.get(0));
-		CMLUtil.debug(svgPage, new FileOutputStream("target/chunkAnalyzer/twoChunks1.svg"), 1);
+		TextAnalyzerX textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
+		textAnalyzerX.getTextLineByYCoordMap();
+		List<TextLine> lineList = textAnalyzerX.getLinesInIncreasingY();
+//		CMLUtil.debug(svgPage, new FileOutputStream("target/chunkAnalyzer/twoChunks1.svg"), 1);
 	}
 		
 

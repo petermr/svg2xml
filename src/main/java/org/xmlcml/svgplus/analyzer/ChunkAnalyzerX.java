@@ -44,7 +44,7 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 
 	public void analyzeChunk(Chunk chunk) {
 		this.chunk = chunk;
-		analyzeTexts();
+		textAnalyzerX = analyzeTexts();
 		analyzePaths();
 		analyzeLines();
 		analyzePolylines();
@@ -80,14 +80,15 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 		throw new RuntimeException("NYI");
 	}
 	
-	private void analyzeTexts() {
+	private TextAnalyzerX analyzeTexts() {
+		ensureTextAnalyzer();
 		analyzeTexts(0);
 		analyzeTexts(90);
 		analyzeTexts(180);
+		return textAnalyzerX;
 	}
 
 	private void analyzeTexts(int angle) {
-		ensureTextAnalyzer();
 		String angleCondition = (angle == 0) ? "@angle='0' or not(@angle)" : "@angle='"+angle+"'";
 		texts = SVGText.extractTexts(SVGUtil.getQuerySVGElements(chunk, ".//svg:text["+angleCondition+"]"));
 		LOG.trace("ROT "+angle+": "+texts.size());

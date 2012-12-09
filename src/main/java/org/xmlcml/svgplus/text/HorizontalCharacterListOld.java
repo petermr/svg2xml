@@ -25,10 +25,10 @@ import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
  * @author pm286
  *
  */
-public class HorizontalCharacterList implements Iterable<SVGText> {
+public class HorizontalCharacterListOld implements Iterable<SVGText> {
 
 	private static final String SERIF = "Serif";
-	private final static Logger LOG = Logger.getLogger(HorizontalCharacterList.class);
+	private final static Logger LOG = Logger.getLogger(HorizontalCharacterListOld.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
@@ -50,19 +50,19 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 	
 	private String lineContent = null;
 	private String lineContentIncludingSpaces = null;
-	private List<HorizontalCharacterList> subLines;
+	private List<HorizontalCharacterListOld> subLines;
 	private WordSequence wordSequence;
 	private TextAnalyzerX textAnalyzerX;
 	private SimpleFont simpleFont;
 	private Integer y;
 	private RealArray characterWidthArray;
 
-	public HorizontalCharacterList(TextAnalyzerX textAnalyzerX, List<SVGText> characterList) {
+	public HorizontalCharacterListOld(TextAnalyzerX textAnalyzerX, List<SVGText> characterList) {
 		this.characterList = characterList;
 		this.textAnalyzerX = textAnalyzerX;
 	}
 	
-	public HorizontalCharacterList(TextAnalyzerX textAnalyzerX) {
+	public HorizontalCharacterListOld(TextAnalyzerX textAnalyzerX) {
 		this(textAnalyzerX, new ArrayList<SVGText>());
 	}
 	
@@ -72,13 +72,13 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 	 * 
 	 * @return
 	 */
-	private List<HorizontalCharacterList> splitLineByCharacterAttributes() {
+	private List<HorizontalCharacterListOld> splitLineByCharacterAttributes() {
 		if (subLines == null) {
-			subLines = new ArrayList<HorizontalCharacterList>();
+			subLines = new ArrayList<HorizontalCharacterListOld>();
 			Double lastFontSize = null;
 			Double lastYCoord = null;
 			String lastPhysicalStyle = null;
-			HorizontalCharacterList charList = null;
+			HorizontalCharacterListOld charList = null;
 			for (int i = 0; i < characterList.size(); i++) {
 				SVGText text = characterList.get(i);
 				Double fontSize = text.getFontSize();
@@ -88,7 +88,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 				if (i == 0 
 //						|| LineAttributesHaveChanged(lastFontSize, lastYCoord, lastPhysicalStyle, fontSize, yCoord, physicalStyle)
 					) {
-					charList = new HorizontalCharacterList(this.textAnalyzerX);
+					charList = new HorizontalCharacterListOld(this.textAnalyzerX);
 					getSubLines().add(charList);
 				}
 				charList.add(text);
@@ -97,7 +97,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 //				lastPhysicalStyle = physicalStyle;
 			}
 			if (getSubLines().size() != 1) {
-				for (HorizontalCharacterList chList : getSubLines()) {
+				for (HorizontalCharacterListOld chList : getSubLines()) {
 					chList.normalizeAndCreateWords();
 				}
 			}
@@ -479,7 +479,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 		String s;
 		if (getSubLines() != null && getSubLines().size() > 1) {
 			s = "split: \n";
-			for (HorizontalCharacterList splitList : getSubLines()) {
+			for (HorizontalCharacterListOld splitList : getSubLines()) {
 				s += "   "+splitList+"\n";
 			}
 		} else {
@@ -493,7 +493,7 @@ public class HorizontalCharacterList implements Iterable<SVGText> {
 		return s;
 	}
 
-	public List<HorizontalCharacterList> getSubLines() {
+	public List<HorizontalCharacterListOld> getSubLines() {
 		return subLines;
 	}
 

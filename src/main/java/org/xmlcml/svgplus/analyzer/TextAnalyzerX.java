@@ -2,10 +2,11 @@ package org.xmlcml.svgplus.analyzer;
 
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,10 +32,11 @@ import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.text.HorizontalCharacterList;
+import org.xmlcml.svgplus.text.FontSizeContainer;
 import org.xmlcml.svgplus.text.Paragraph;
 import org.xmlcml.svgplus.text.SimpleFont;
 import org.xmlcml.svgplus.text.TextChunk;
+import org.xmlcml.svgplus.text.TextLine;
 import org.xmlcml.svgplus.text.TypedNumber;
 import org.xmlcml.svgplus.text.TypedNumberList;
 import org.xmlcml.svgplus.text.Word;
@@ -70,15 +72,18 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private static final double YPARA_SEPARATION_FACTOR = 1.15;
 	
 	public static final double DEFAULT_TEXTWIDTH_FACTOR = 0.9;
+	private static final double Y_SCALE = 10;
 	public static Double TEXT_EPS = 1.0;
 
 
-	private HorizontalCharacterList rawCharacterList;
-	private Map<Integer, HorizontalCharacterList> characterByXCoordMap;
-	private Map<Integer, HorizontalCharacterList> characterByYCoordMap;
+	private TextLine rawCharacterList;
+	private Map<Integer, TextLine> characterByXCoordMap;
+	@Deprecated
+	private Map<Integer, TextLine> characterByYCoordMap;
+	private Map<Integer, TextLine> textLineByYCoordMap;
 	private Map<String, RealArray> widthByCharacter;
-	private Multimap<Integer, HorizontalCharacterList> subLineByYCoord;
-	private List<HorizontalCharacterList> horizontalCharacterList;
+	private Multimap<Integer, TextLine> subLineByYCoord;
+	private List<TextLine> horizontalCharacterList;
 	private List<WordSequence> wordSequenceList;
 	private List<Real2Range> subLineBBoxList;
 	private BoundingBoxManager boundingBoxManager;
@@ -102,6 +107,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private boolean subSup;
 	private boolean removeNumericTSpans;
 	private boolean splitAtSpaces;
+	private List<TextLine> textLineList;
 	
 //	public TextAnalyzer() {
 //		super(new CurrentPage());
@@ -115,23 +121,28 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return TEXT1;
 	}
 	
-	public Map<Integer, HorizontalCharacterList> getCharacterByXCoordMap() {
+	public Map<Integer, TextLine> getCharacterByXCoordMap() {
 		return characterByXCoordMap;
 	}
 
-	public Map<Integer, HorizontalCharacterList> getTextByYCoordMap() {
-		return characterByYCoordMap;
-	}
+//	public Map<Integer, TextLine> getTextByYCoordMap() {
+//		return characterByYCoordMap;
+//	}
 
 	public Map<String, RealArray> getWidthByText() {
 		return widthByCharacter;
 	}
 
-	public Multimap<Integer, HorizontalCharacterList> getLineByYCoord() {
+	public Multimap<Integer, TextLine> getLineByYCoord() {
 		return subLineByYCoord;
 	}
 
-	public List<HorizontalCharacterList> getSortedHorizontalLineList() {
+//	public List<TextLine> getSortedTextLineList() {
+//		List<TextLine> textlineList;
+//		return textlineList;
+//	}
+
+	public List<TextLine> getSortedHorizontalLineListOld() {
 		createHorizontalCharacterListAndCreateWords();
 		return horizontalCharacterList;
 	}
@@ -149,20 +160,31 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	public void analyzeTexts(List<SVGText> textCharacters) {
 		LOG.debug("ANALYZE TEXT "+textCharacters.size());
-		createHorizontalCharacterLists(textCharacters);
-//		analyzeSpaces();
-//		createWordsInSublines();
-//		mergeSubSup();
-//		addNumericValues();
-//		splitAtSpaces();
-//		normalizeTSpanToText();
+		getSortedTextLines(textCharacters);
 	}
 
 
-	private void createHorizontalCharacterLists(List<SVGText> textCharacters) {
-		List<TextLine> textLines = sortByY();
-		for (TextLine)
+	private void getSortedTextLines(List<SVGText> textCharacters) {
+		Multimap<Integer, SVGText> charactersByY = ArrayListMultimap.create();
+		textLineByYCoordMap = new HashMap<Integer, TextLine>();
+		for (SVGText text : textCharacters) {
+			Integer yCoord = getScaledYCoord(text);
+			LOG.trace("Y "+yCoord);
+			charactersByY.put(yCoord, text);
+		}
 		
+		for (Integer yCoord : charactersByY.keySet()) {
+			Collection<SVGText> characters = charactersByY.get(yCoord);
+			TextLine textLine = new TextLine(characters);
+			textLine.sortLineByX();
+			System.out.println(yCoord+" / "+textLine);
+			textLineByYCoordMap.put(yCoord, textLine);
+		}
+	}
+
+	private Integer getScaledYCoord(SVGText text) {
+		Double y = text.getY();
+		return (y == null) ? null : (int) Math.round((y*Y_SCALE));
 	}
 
 	private void normalizeTSpanToText() {
@@ -223,7 +245,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	@Deprecated // use getRawCharacterListText
 	private void getRawCharacterList(List<SVGElement> textElements) {
-		this.rawCharacterList = new HorizontalCharacterList(this);
+		this.rawCharacterList = new TextLine(this);
 		for (int i = 0; i < textElements.size(); i++) {
 			SVGText text = (SVGText) textElements.get(i);
 			text.setBoundingBoxCached(true);
@@ -232,7 +254,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	private void createRawCharacterListText(List<SVGText> texts) {
-		this.rawCharacterList = new HorizontalCharacterList(this);
+		this.rawCharacterList = new TextLine(this);
 		for (SVGText text : texts) {
 			text.setBoundingBoxCached(true);
 			rawCharacterList.add(text);
@@ -244,7 +266,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	 * a single container
 	 * @return
 	 */
-	public HorizontalCharacterList getRawTextCharacterList() {
+	public TextLine getRawTextCharacterList() {
 		if (rawCharacterList == null) {
 			List<SVGElement> textElements = SVGUtil.getQuerySVGElements(svgParent, ".//svg:text");
 			getRawCharacterList(textElements);
@@ -259,8 +281,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	public void createRawTextCharacterPositionMaps() {
 		if (characterByXCoordMap == null) {
 			getRawTextCharacterList();
-			characterByXCoordMap = new HashMap<Integer, HorizontalCharacterList>();
-			characterByYCoordMap = new HashMap<Integer, HorizontalCharacterList>();
+			characterByXCoordMap = new HashMap<Integer, TextLine>();
+			characterByYCoordMap = new HashMap<Integer, TextLine>();
 			for (SVGText rawCharacter : rawCharacterList) {
 				Real2 xy = SVGUtil.getTransformedXY(rawCharacter);
 				Integer xx = (int) Math.round(xy.getX());
@@ -284,10 +306,10 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			Arrays.sort(yList);
 			subLineByYCoord = ArrayListMultimap.create();
 			for (Integer y : yList) {
-				HorizontalCharacterList line = characterByYCoordMap.get(y);
+				TextLine line = characterByYCoordMap.get(y);
 				line.sortLineByX();
-				List<HorizontalCharacterList> splitLines = line.getSubLines();
-				for (HorizontalCharacterList subLine : splitLines) {
+				List<TextLine> splitLines = line.getSubLines();
+				for (TextLine subLine : splitLines) {
 					addSubLine(y, subLine);
 				}
 			}
@@ -337,7 +359,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return dubble;
 	}
 
-	private void addSubLine(Integer y, HorizontalCharacterList subLine) {
+	private void addSubLine(Integer y, TextLine subLine) {
 		subLineByYCoord.put(y, subLine);
 		subLine.setY(y);
 	}
@@ -347,7 +369,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	 * @return
 	 */
 	@Deprecated // use createWords separately
-	public List<HorizontalCharacterList> createHorizontalCharacterListAndCreateWords() {
+	public List<TextLine> createHorizontalCharacterListAndCreateWords() {
 		Long time0 = System.currentTimeMillis();
 		if (horizontalCharacterList == null) {
 			makeHorizontalCharacterList();
@@ -363,17 +385,17 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			Set<Integer> keys = subLineByYCoord.keySet();
 			Integer[] yList = keys.toArray(new Integer[keys.size()]);
 			Arrays.sort(yList);
-			this.horizontalCharacterList = new ArrayList<HorizontalCharacterList>();
+			this.horizontalCharacterList = new ArrayList<TextLine>();
 			for (Integer y : yList) {
-				Collection<HorizontalCharacterList> subLineList = subLineByYCoord.get(y);
+				Collection<TextLine> subLineList = subLineByYCoord.get(y);
 				LOG.trace("SUBLINELIST "+subLineList.size());
-				for (HorizontalCharacterList subLine : subLineList) {
+				for (TextLine subLine : subLineList) {
 					horizontalCharacterList.add(subLine);
 				}
 			}
 			LOG.trace("created lines: "+horizontalCharacterList.size());
 			if (Level.TRACE.equals(LOG.getLevel())) {
-				for (HorizontalCharacterList cl : horizontalCharacterList) {
+				for (TextLine cl : horizontalCharacterList) {
 					LOG.debug("sorted line "+cl.toString());
 				}
 			}
@@ -381,7 +403,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	private void createWordsInSublines() {
-		for (HorizontalCharacterList subline : horizontalCharacterList) {
+		for (TextLine subline : horizontalCharacterList) {
 			LOG.trace("SUBLINE "+subline);
 //			LOG.trace("Guess "+subline.guessAndApplySpacingInLine());
 			WordSequence wordSequence = subline.createWords();
@@ -454,7 +476,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		if (widthByCharacter == null) {
 			createHorizontalCharacterListAndCreateWords();
 			widthByCharacter = new HashMap<String, RealArray>();
-			for (HorizontalCharacterList characterList : horizontalCharacterList) {
+			for (TextLine characterList : horizontalCharacterList) {
 				Double fontSize = characterList.getFontSize();
 				Map<String, RealArray> widthByCharacter0 = characterList.getInterCharacterWidthsByCharacterNormalizedByFont();
 				for (String charr : widthByCharacter0.keySet()) {
@@ -512,7 +534,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	public RealArray getSpaceSizes() {
 		spaceSizes = new RealArray();
 		getMedianWidthOfCharacterNormalizedByFont();
-		for (HorizontalCharacterList sortedLine : horizontalCharacterList) {
+		for (TextLine sortedLine : horizontalCharacterList) {
 			RealArray interCharacterSpaces = sortedLine.getCharacterWidthArray();
 			for (int i = 0; i < sortedLine.size()-1; i++) {
 				String charr = sortedLine.get(i).getValue();
@@ -554,12 +576,12 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	// =======================================
 	
-	private void debug(String string, Map<Integer, HorizontalCharacterList> textByCoordMap) {
+	private void debug(String string, Map<Integer, TextLine> textByCoordMap) {
 		Set<Integer> keys = textByCoordMap.keySet();
 		Integer[] ii = keys.toArray(new Integer[keys.size()]);
 		Arrays.sort(ii);
 		for (int iz : ii) {
-			HorizontalCharacterList textList = textByCoordMap.get(iz);
+			TextLine textList = textByCoordMap.get(iz);
 			for (SVGText text : textList) {
 //				System.out.print(text.getXY()+" "+text.getText()+ " ");
 			}
@@ -567,10 +589,10 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 //		System.out.println();
 	}
 
-	private void addCharacterToMap(Map<Integer, HorizontalCharacterList> map, Integer x, SVGText rawCharacter) {
-		HorizontalCharacterList textList = map.get(x);
+	private void addCharacterToMap(Map<Integer, TextLine> map, Integer x, SVGText rawCharacter) {
+		TextLine textList = map.get(x);
 		if (textList == null) {
-			textList = new HorizontalCharacterList(this);
+			textList = new TextLine(this);
 			map.put(x, textList);
 		}
 		textList.add(rawCharacter);
@@ -687,7 +709,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 					createHorizontalCharacterListAndCreateWords();
 					Double interlineSeparation = getInterlineSeparation();
 					wordSequenceList = new ArrayList<WordSequence>();
-					for (HorizontalCharacterList sortedLine : horizontalCharacterList) {
+					for (TextLine sortedLine : horizontalCharacterList) {
 						boolean added = false;
 						WordSequence wordSequence = sortedLine.createWords();
 						Real2 xy = wordSequence.getXY();
@@ -785,14 +807,14 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	public void analyzeSingleWordsOrLines(List<SVGElement> elements) {
-		horizontalCharacterList = new ArrayList<HorizontalCharacterList>();
+		horizontalCharacterList = new ArrayList<TextLine>();
 		subLineByYCoord = ArrayListMultimap.create();
 		for (SVGElement element : elements) {
 			if (hasNoSVGGChildren()) {
 				TextAnalyzerX textAnalyzer = new TextAnalyzerX(semanticDocumentActionX);
 				textAnalyzer.analyzeRawText(element);
 				horizontalCharacterList.addAll(textAnalyzer.horizontalCharacterList);
-				for (HorizontalCharacterList subline : horizontalCharacterList) {
+				for (TextLine subline : horizontalCharacterList) {
 					addSubLine(subline.getY(), subline);
 				}
 			}
@@ -800,14 +822,14 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	public void sortLines(List<SVGElement> elements) {
-		horizontalCharacterList = new ArrayList<HorizontalCharacterList>();
+		horizontalCharacterList = new ArrayList<TextLine>();
 		subLineByYCoord = ArrayListMultimap.create();
 		for (SVGElement element : elements) {
 			if (hasNoSVGGChildren()) {
 				TextAnalyzerX textAnalyzer = new TextAnalyzerX(semanticDocumentActionX);
 				textAnalyzer.analyzeRawText(element);
 				horizontalCharacterList.addAll(textAnalyzer.horizontalCharacterList);
-				for (HorizontalCharacterList subline : horizontalCharacterList) {
+				for (TextLine subline : horizontalCharacterList) {
 					addSubLine(subline.getY(), subline);
 				}
 			}
@@ -1077,5 +1099,38 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	public static String getNumericValue(SVGText numericText) {
 		return numericText.getAttributeValue(NUMBER);
 	}
+
+	public Map<Integer, TextLine> getTextLineByYCoordMap() {
+		return textLineByYCoordMap;
+	}
+
+	public List<TextLine> getLinesInIncreasingY() {
+		if (textLineList == null) {
+			ensureTextLineByYCoordMap();
+			List<Integer> yCoordList = Arrays.asList(textLineByYCoordMap.keySet().toArray(new Integer[0]));
+			Collections.sort(yCoordList);
+			textLineList = new ArrayList<TextLine>();
+			for (Integer y : yCoordList) {
+				System.out.println(y);
+				textLineList.add(textLineByYCoordMap.get(y));
+			}
+		}
+		return textLineList;
+	}
+
+	private void ensureTextLineByYCoordMap() {
+		if (textLineByYCoordMap == null) {
+			textLineByYCoordMap = new HashMap<Integer, TextLine>();
+		}
+	}
 	
+	public Set<FontSizeContainer> getFontSizeContainerSet() {
+		Set<FontSizeContainer> fontSizeContainerSet = new HashSet<FontSizeContainer>();
+		if (fontSizeContainerSet == null) {
+			for (TextLine textLine : textLineList) {
+				fontSizeContainerSet.addAll(textLine.getFontSizeContainerSet());
+			}
+		}
+		return fontSizeContainerSet;
+	}
 }

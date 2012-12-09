@@ -90,14 +90,14 @@
  <path stroke="black" fill="#000000" stroke-width="0.30000001192092896" d="M228.26 94.412 L222.709 93.067 C223.108 93.401 223.337 93.893 223.337 94.412 C223.337 94.932 223.108 95.424 222.709 95.758 L228.26 94.412 "/>
  <path stroke="black" fill="#000000" stroke-width="0.30000001192092896" d="M159.183 91.842 L159.183 91.842 C159.183 91.529 158.944 91.275 158.649 91.275 C158.354 91.275 158.114 91.529 158.114 91.842 C158.114 92.155 158.354 92.409 158.649 92.409 C158.944 92.409 159.183 92.155 159.183 91.842 "/>
  <path fill="none" stroke="#000000" stroke-width="0.5" d="M159.183 91.842 L159.183 91.842 C159.183 91.529 158.944 91.275 158.649 91.275 C158.354 91.275 158.114 91.529 158.114 91.842 C158.114 92.155 158.354 92.409 158.649 92.409 C158.944 92.409 159.183 92.155 159.183 91.842 Z"/>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="138.063" y="148.231" font-size="8.468" font-style="bold">S</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="142.771" y="148.231" font-size="8.468" font-style="bold">c</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="146.531" y="148.231" font-size="8.468" font-style="bold">h</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="151.239" y="148.231" font-size="8.468" font-style="bold">e</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="154.999" y="148.231" font-size="8.468" font-style="bold">m</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="162.053" y="148.231" font-size="8.468" font-style="bold">e</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="167.93" y="148.231" font-size="8.468" font-style="bold">1</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="172.164" y="148.231" font-size="8.468" font-style="bold">.</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="138.063" y="148.231" font-size="8.468" font-weight="bold">S</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="142.771" y="148.231" font-size="8.468" font-weight="bold">c</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="146.531" y="148.231" font-size="8.468" font-weight="bold">h</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="151.239" y="148.231" font-size="8.468" font-weight="bold">e</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="154.999" y="148.231" font-size="8.468" font-weight="bold">m</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="162.053" y="148.231" font-size="8.468" font-weight="bold">e</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="167.93" y="148.231" font-size="8.468" font-weight="bold">1</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="172.164" y="148.231" font-size="8.468" font-weight="bold">.</text>
  <text stroke="#000000" font-family="Helvetica" x="121.105" y="180.613" font-size="7.0">P</text>
  <text stroke="#000000" font-family="Helvetica" x="125.774" y="182.613" font-size="5.25" font-style="italic">n</text>
  <text stroke="#000000" font-family="Helvetica" x="190.605" y="180.613" font-size="7.0">P</text>
@@ -123,14 +123,14 @@
  <path fill="none" stroke="#000000" stroke-width="0.5" d="M129.559 175.088 L129.559 175.088 C129.559 174.774 129.32 174.52 129.025 174.52 C128.729 174.52 128.49 174.774 128.49 175.088 C128.49 175.401 128.729 175.655 129.025 175.655 C129.32 175.655 129.559 175.401 129.559 175.088 Z"/>
  <path stroke="black" fill="#000000" stroke-width="0.5" d="M160.255 175.699 L160.255 175.699 C160.255 175.386 160.015 175.132 159.72 175.132 C159.425 175.132 159.185 175.386 159.185 175.699 C159.185 176.012 159.425 176.266 159.72 176.266 C160.015 176.266 160.255 176.012 160.255 175.699 "/>
  <path fill="none" stroke="#000000" stroke-width="0.5" d="M160.255 175.699 L160.255 175.699 C160.255 175.386 160.015 175.132 159.72 175.132 C159.425 175.132 159.185 175.386 159.185 175.699 C159.185 176.012 159.425 176.266 159.72 176.266 C160.015 176.266 160.255 176.012 160.255 175.699 Z"/>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="97.606" y="229.696" font-size="8.468" font-style="bold">S</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="102.314" y="229.696" font-size="8.468" font-style="bold">c</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="106.074" y="229.696" font-size="8.468" font-style="bold">h</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="110.782" y="229.696" font-size="8.468" font-style="bold">e</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="114.542" y="229.696" font-size="8.468" font-style="bold">m</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="121.596" y="229.696" font-size="8.468" font-style="bold">e</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="127.473" y="229.696" font-size="8.468" font-style="bold">2</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="131.707" y="229.696" font-size="8.468" font-style="bold">.</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="97.606" y="229.696" font-size="8.468" font-weight="bold">S</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="102.314" y="229.696" font-size="8.468" font-weight="bold">c</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="106.074" y="229.696" font-size="8.468" font-weight="bold">h</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="110.782" y="229.696" font-size="8.468" font-weight="bold">e</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="114.542" y="229.696" font-size="8.468" font-weight="bold">m</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="121.596" y="229.696" font-size="8.468" font-weight="bold">e</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="127.473" y="229.696" font-size="8.468" font-weight="bold">2</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="131.707" y="229.696" font-size="8.468" font-weight="bold">.</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="143.29" y="229.696" font-size="8.468">R</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="148.938" y="229.696" font-size="8.468">e</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="152.487" y="229.696" font-size="8.468">v</text>
@@ -194,14 +194,14 @@
  <path fill="none" stroke="#000000" stroke-width="0.5" d="M108.742 255.544 L108.742 255.544 C108.742 255.23 108.503 254.977 108.208 254.977 C107.912 254.977 107.673 255.23 107.673 255.544 C107.673 255.857 107.912 256.111 108.208 256.111 C108.503 256.111 108.742 255.857 108.742 255.544 Z"/>
  <path stroke="black" fill="#000000" stroke-width="0.30000001192092896" d="M191.166 255.59 L191.166 255.59 C191.166 255.276 190.927 255.022 190.633 255.022 C190.337 255.022 190.097 255.276 190.097 255.59 C190.097 255.903 190.337 256.156 190.633 256.156 C190.927 256.156 191.166 255.903 191.166 255.59 "/>
  <path fill="none" stroke="#000000" stroke-width="0.5" d="M191.166 255.59 L191.166 255.59 C191.166 255.276 190.927 255.022 190.633 255.022 C190.337 255.022 190.097 255.276 190.097 255.59 C190.097 255.903 190.337 256.156 190.633 256.156 C190.927 256.156 191.166 255.903 191.166 255.59 Z"/>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="95.163" y="311.161" font-size="8.468" font-style="bold">S</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="99.871" y="311.161" font-size="8.468" font-style="bold">c</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="103.631" y="311.161" font-size="8.468" font-style="bold">h</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="108.339" y="311.161" font-size="8.468" font-style="bold">e</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="112.099" y="311.161" font-size="8.468" font-style="bold">m</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="119.153" y="311.161" font-size="8.468" font-style="bold">e</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="125.03" y="311.161" font-size="8.468" font-style="bold">3</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="129.264" y="311.161" font-size="8.468" font-style="bold">.</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="95.163" y="311.161" font-size="8.468" font-weight="bold">S</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="99.871" y="311.161" font-size="8.468" font-weight="bold">c</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="103.631" y="311.161" font-size="8.468" font-weight="bold">h</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="108.339" y="311.161" font-size="8.468" font-weight="bold">e</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="112.099" y="311.161" font-size="8.468" font-weight="bold">m</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="119.153" y="311.161" font-size="8.468" font-weight="bold">e</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="125.03" y="311.161" font-size="8.468" font-weight="bold">3</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="129.264" y="311.161" font-size="8.468" font-weight="bold">.</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="140.847" y="311.161" font-size="8.468">R</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="146.495" y="311.161" font-size="8.468">e</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="150.044" y="311.161" font-size="8.468">v</text>
@@ -2606,12 +2606,12 @@
  <text stroke="#000000" font-family="Helvetica" x="439.925" y="268.499" font-size="8.0">[</text>
  <text stroke="#000000" font-family="Helvetica" x="442.149" y="268.499" font-size="8.0">%</text>
  <text stroke="#000000" font-family="Helvetica" x="449.261" y="268.499" font-size="8.0">]</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="298.389" y="288.231" font-size="8.468" font-style="bold">F</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="303.563" y="288.231" font-size="8.468" font-style="bold">i</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="305.917" y="288.231" font-size="8.468" font-style="bold">g</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="310.024" y="288.231" font-size="8.468" font-style="bold">.</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="314.459" y="288.231" font-size="8.468" font-style="bold">1</text>
- <text font-weight="bold" stroke="#000000" font-family="TimesNewRoman" x="318.693" y="288.231" font-size="8.468" font-style="bold">.</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="298.389" y="288.231" font-size="8.468" font-weight="bold">F</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="303.563" y="288.231" font-size="8.468" font-weight="bold">i</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="305.917" y="288.231" font-size="8.468" font-weight="bold">g</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="310.024" y="288.231" font-size="8.468" font-weight="bold">.</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="314.459" y="288.231" font-size="8.468" font-weight="bold">1</text>
+ <text stroke="#000000" font-family="TimesNewRoman" x="318.693" y="288.231" font-size="8.468" font-weight="bold">.</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="330.276" y="288.231" font-size="8.468">E</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="335.45" y="288.231" font-size="8.468">v</text>
  <text stroke="#000000" font-family="TimesNewRoman" x="339.515" y="288.231" font-size="8.468">o</text>

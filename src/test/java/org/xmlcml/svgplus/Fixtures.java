@@ -51,6 +51,7 @@ public class Fixtures {
 	public static final File BMC310_PDF = new File(Fixtures.ACTION_PDF_DIR, "bmc11-310.pdf");
 	public static final File BMC313_PDF = new File(Fixtures.ACTION_PDF_DIR, "bmc11-313.pdf");
 	public static final File SUSCRIPTS_PDF = new File(Fixtures.ACTION_PDF_DIR, "suscripts.pdf");
+	public static final File FONT_STYLES_PDF = new File(Fixtures.ACTION_PDF_DIR, "fontStyles.pdf");
 	
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;
