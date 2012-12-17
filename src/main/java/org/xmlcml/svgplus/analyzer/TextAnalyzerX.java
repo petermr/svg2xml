@@ -2,6 +2,7 @@ package org.xmlcml.svgplus.analyzer;
 
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -32,11 +33,12 @@ import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.text.FontSizeContainer;
 import org.xmlcml.svgplus.text.Paragraph;
 import org.xmlcml.svgplus.text.SimpleFont;
+import org.xmlcml.svgplus.text.SvgPlusCoordinate;
 import org.xmlcml.svgplus.text.TextChunk;
 import org.xmlcml.svgplus.text.TextLine;
+import org.xmlcml.svgplus.text.TextLineSet;
 import org.xmlcml.svgplus.text.TypedNumber;
 import org.xmlcml.svgplus.text.TypedNumberList;
 import org.xmlcml.svgplus.text.Word;
@@ -73,6 +75,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	
 	public static final double DEFAULT_TEXTWIDTH_FACTOR = 0.9;
 	private static final double Y_SCALE = 10;
+	public static final int NDEC_FONTSIZE = 3;
 	public static Double TEXT_EPS = 1.0;
 
 
@@ -108,10 +111,16 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private boolean removeNumericTSpans;
 	private boolean splitAtSpaces;
 	private List<TextLine> textLineList;
+	private RealArray meanFontSizeArray;
+	private List<Double> actualWidthsOfSpaceCharactersList;
+	private List<String> textLineContentList;
+	private RealArray modalExcessWidthArray;
+	private Set<SvgPlusCoordinate> fontSizeSet;
+	private Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize;
 	
-//	public TextAnalyzer() {
-//		super(new CurrentPage());
-//	}
+	public TextAnalyzerX() {
+		this(new SemanticDocumentActionX());
+	}
 	
 	public TextAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
@@ -159,29 +168,39 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public void analyzeTexts(List<SVGText> textCharacters) {
-		LOG.debug("ANALYZE TEXT "+textCharacters.size());
+		LOG.trace("ANALYZE TEXT "+textCharacters.size());
 		getSortedTextLines(textCharacters);
 	}
 
 
 	private void getSortedTextLines(List<SVGText> textCharacters) {
+		if (textLineByYCoordMap == null) {
+			textLineByYCoordMap = new HashMap<Integer, TextLine>();
+			Multimap<Integer, SVGText> charactersByY = createCharactersByY(textCharacters);
+			for (Integer yCoord : charactersByY.keySet()) {
+				Collection<SVGText> characters = charactersByY.get(yCoord);
+				TextLine textLine = new TextLine(characters);
+				textLine.sortLineByX();
+				textLineByYCoordMap.put(yCoord, textLine);
+			}
+		}
+	}
+
+	private Multimap<Integer, SVGText> createCharactersByY(List<SVGText> textCharacters) {
 		Multimap<Integer, SVGText> charactersByY = ArrayListMultimap.create();
-		textLineByYCoordMap = new HashMap<Integer, TextLine>();
 		for (SVGText text : textCharacters) {
 			Integer yCoord = getScaledYCoord(text);
 			LOG.trace("Y "+yCoord);
 			charactersByY.put(yCoord, text);
 		}
-		
-		for (Integer yCoord : charactersByY.keySet()) {
-			Collection<SVGText> characters = charactersByY.get(yCoord);
-			TextLine textLine = new TextLine(characters);
-			textLine.sortLineByX();
-			System.out.println(yCoord+" / "+textLine);
-			textLineByYCoordMap.put(yCoord, textLine);
-		}
+		return charactersByY;
 	}
 
+	/** replace by SVGPlusCoordinate
+	 * // FIXME
+	 * @param text
+	 * @return
+	 */
 	private Integer getScaledYCoord(SVGText text) {
 		Double y = text.getY();
 		return (y == null) ? null : (int) Math.round((y*Y_SCALE));
@@ -1111,7 +1130,6 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			Collections.sort(yCoordList);
 			textLineList = new ArrayList<TextLine>();
 			for (Integer y : yCoordList) {
-				System.out.println(y);
 				textLineList.add(textLineByYCoordMap.get(y));
 			}
 		}
@@ -1124,8 +1142,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		}
 	}
 	
-	public Set<FontSizeContainer> getFontSizeContainerSet() {
-		Set<FontSizeContainer> fontSizeContainerSet = new HashSet<FontSizeContainer>();
+	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
+		Set<SvgPlusCoordinate> fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
 		if (fontSizeContainerSet == null) {
 			for (TextLine textLine : textLineList) {
 				fontSizeContainerSet.addAll(textLine.getFontSizeContainerSet());
@@ -1133,4 +1151,120 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		}
 		return fontSizeContainerSet;
 	}
+
+	public RealArray getMeanFontSizeArray() {
+		if (meanFontSizeArray == null) {
+			getLinesInIncreasingY();
+			if (textLineList != null && textLineList.size() > 0) {
+				meanFontSizeArray = new RealArray(textLineList.size());
+				for (int i = 0; i < textLineList.size(); i++) {
+					meanFontSizeArray.setElementAt(i, textLineList.get(i).getMeanFontSize());
+				}
+			}
+			meanFontSizeArray.format(NDEC_FONTSIZE);
+		}
+		return meanFontSizeArray;
+	}
+
+	/** some lines may not have spaces
+	 * 
+	 * @return
+	 */
+	public List<Double> getActualWidthsOfSpaceCharactersList() {
+		if (actualWidthsOfSpaceCharactersList == null) {
+			getLinesInIncreasingY();
+			if (textLineList != null && textLineList.size() > 0) {
+				actualWidthsOfSpaceCharactersList = new ArrayList<Double>();
+				for (int i = 0; i < textLineList.size(); i++) {
+					Double meanWidth = textLineList.get(i).getMeanWidthOfSpaceCharacters();
+					meanWidth = meanWidth == null ? null : Real.normalize(meanWidth, NDEC_FONTSIZE);
+					actualWidthsOfSpaceCharactersList.add(meanWidth);
+				}
+			}
+//			actualWidthsOfSpaceCharactersArray.format(NDEC_FONTSIZE);
+		}
+		return actualWidthsOfSpaceCharactersList;
+	}
+
+	public List<String> getTextLineContentList() {
+		textLineContentList = null;
+		if (textLineList != null) {
+			textLineContentList = new ArrayList<String>();
+			for (TextLine textLine : textLineList) {
+				textLineContentList.add(textLine.getLineString());
+			}
+		}
+		return textLineContentList;
+	}
+
+	public void insertSpaces() {
+		if (textLineList != null) {
+			for (TextLine textLine : textLineList) {
+				textLine.insertSpaces();
+			}
+		}
+	}
+
+	public void insertSpaces(double scaleFactor) {
+		if (textLineList != null) {
+			for (TextLine textLine : textLineList) {
+				textLine.insertSpaces(scaleFactor);
+			}
+		}
+	}
+
+	public RealArray getModalExcessWidthArray() {
+		if (modalExcessWidthArray == null) {
+			getLinesInIncreasingY();
+			if (textLineList != null && textLineList.size() > 0) {
+				modalExcessWidthArray = new RealArray(textLineList.size());
+				for (int i = 0; i < textLineList.size(); i++) {
+					Double modalExcessWidth = textLineList.get(i).getModalExcessWidth();
+					modalExcessWidthArray.setElementAt(i, modalExcessWidth);
+				}
+			}
+			modalExcessWidthArray.format(NDEC_FONTSIZE);
+		}
+		return modalExcessWidthArray;
+	}
+
+	public Set<SvgPlusCoordinate> getFontSizeSet() {
+		if (fontSizeSet == null) {
+			if (textLineList != null) {
+				fontSizeSet = new HashSet<SvgPlusCoordinate>();
+				for (TextLine textLine : textLineList) {
+					Set<SvgPlusCoordinate> textLineFontSizeSet = textLine.getFontSizeSet();
+					fontSizeSet.addAll(textLineFontSizeSet);
+				}
+			}
+		}
+		return fontSizeSet;
+	}
+
+	public List<TextLine> getTextLines() {
+		return textLineList;
+	}
+
+	public Multimap<SvgPlusCoordinate, TextLine> getTextLineListByFontSize() {
+		if (textLineListByFontSize == null) {
+			textLineListByFontSize = ArrayListMultimap.create();
+			for (TextLine textLine : textLineList) {
+				Set<SvgPlusCoordinate> fontSizeSet = textLine.getFontSizeSet();
+				if (fontSizeSet != null) {
+					for (SvgPlusCoordinate fontSize : fontSizeSet) {
+						textLineListByFontSize.put(fontSize, textLine);
+					}
+				}
+			}
+		}
+		return textLineListByFontSize;
+		
+	}
+
+	public TextLineSet getTextLineSetByFontSize(double fontSize) {
+		Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize = this.getTextLineListByFontSize();
+		List<TextLine> textLines = (List<TextLine>) textLineListByFontSize.get(new SvgPlusCoordinate(fontSize));
+		return new TextLineSet(textLines);
+	}
+
 }

@@ -127,7 +127,44 @@ public class SVGPlusConverterXTest {
 			converter.run("" +
 					" -c "+Fixtures.CHUNK_ANALYZE +
 					" -i "+Fixtures.AJC_PAGE6_PDF +
-					" -o "+"target");
+					" -o "+"target/chunkAnalyze0");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("failed: "+e.getCause());
+		}
+		Assert.assertTrue("read file", true);
+	}
+
+	@Test
+	@Ignore //runs OOM on commandline
+	/** tests chunkAnalyzer
+	 * 
+	 */
+	public void testChunkAnalyzerCSIRO0() {
+		SVGPlusConverterX converter = new SVGPlusConverterX(); 
+		try {
+			converter.run("" +
+					" -c "+Fixtures.CHUNK_ANALYZE +
+					" -i "+Fixtures.CSIRO_DIR0 +
+					" -o "+"target/csiro/test0");
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("failed: "+e.getCause());
+		}
+		Assert.assertTrue("read file", true);
+	}
+
+	@Test
+	/** tests chunkAnalyzer
+	 * 
+	 */
+	public void testChunkAnalyzerCSIRO1() {
+		SVGPlusConverterX converter = new SVGPlusConverterX(); 
+		try {
+			converter.run("" +
+					" -c "+Fixtures.CHUNK_ANALYZE +
+					" -i "+Fixtures.CSIRO_DIR1 +
+					" -o "+"target/csiro/test1");
 		} catch (Exception e) {
 			e.printStackTrace();
 			Assert.fail("failed: "+e.getCause());

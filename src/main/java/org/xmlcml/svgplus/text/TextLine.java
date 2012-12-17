@@ -12,11 +12,16 @@ import java.util.Set;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.cml.base.CMLConstants;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
 
 /** holds a list of characters, normally in a horizontal line
@@ -40,12 +45,13 @@ public class TextLine implements Iterable<SVGText> {
 	private static final double EPS = 0.05;
 	private static final double COORD_EPS = 0.0001;
 	private static final double FONT_EPS = 0.001;
+	private static final double SPACE_FUDGE = 0.8;
 	
 	private List<SVGText> characterList;
 	private Double yCoord = null;
 	private List<Double> yCoordList = null;
 	private Double fontSize = null;
-	private Set<FontSizeContainer> fontSizeContainerSet = null;
+	private Set<SvgPlusCoordinate> fontSizeContainerSet = null;
 	private String physicalStyle;
 	private List<String> physicalStyleList;
 	
@@ -58,7 +64,40 @@ public class TextLine implements Iterable<SVGText> {
 	private Integer y;
 	private RealArray characterWidthArray;
 	private Set<FontStyle> fontStyleSet;
+	private Double SCALE = 0.001;
+	private Double SPACE_WIDTH1000 = /*274.0*/ 200.;
+	private Double SPACE_WIDTH = SPACE_WIDTH1000 * SCALE;
+	private Double DEFAULT_SPACE_FACTOR = 0.3;
+	private Real2Range boundingBox = null;
+	private Double meanFontSize;
+	private RealArray fontSizeArray;
+	private RealArray characterSeparationArray;
+	private RealArray spaceWidthArray;
+	private RealArray svgCharacterWidthArray;
+	private RealArray excessWidthArray;
+	private double spaceFactor = DEFAULT_SPACE_FACTOR;
+	private Set<SvgPlusCoordinate> fontSizeSet;
 
+	private void resetWhenLineContentChanged() {
+		characterList = null;
+		yCoord = null;
+		yCoordList = null;
+		fontSize = null;
+		fontSizeContainerSet = null;
+		physicalStyle = null;
+		physicalStyleList = null;
+		boundingBox = null;
+		meanFontSize =null;
+		fontSizeArray = null;
+		
+		lineContent = null;
+		lineContentIncludingSpaces = null;
+		subLines = null;
+		wordSequence = null;
+		y = null;
+		characterWidthArray = null;
+	}
+	
 	public TextLine(TextAnalyzerX textAnalyzerX, List<SVGText> characterList) {
 		this.characterList = characterList;
 		this.textAnalyzerX = textAnalyzerX;
@@ -162,18 +201,18 @@ public class TextLine implements Iterable<SVGText> {
 		Double fs = null;
 		if (fontSizeContainerSet != null) {
 			if (fontSizeContainerSet.size() == 1) {
-				fs = fontSizeContainerSet.iterator().next().getSize();
+				fs = fontSizeContainerSet.iterator().next().getDouble();
 			}
 		}
 		return fs;
 	}
 		
-	public Set<FontSizeContainer> getFontSizeContainerSet() {
+	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
 		if (fontSizeContainerSet == null) {
-			fontSizeContainerSet = new HashSet<FontSizeContainer>();
+			fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
 			for (int i = 0; i < characterList.size(); i++) {
 				SVGText text = characterList.get(i);
-				FontSizeContainer fontSize = new FontSizeContainer(text.getFontSize());
+				SvgPlusCoordinate fontSize = new SvgPlusCoordinate(text.getFontSize());
 				fontSizeContainerSet.add(fontSize);
 			}
 		}
@@ -270,6 +309,10 @@ public class TextLine implements Iterable<SVGText> {
 
 	public Iterator<SVGText> iterator() {
 		return characterList.iterator();
+	}
+	
+	public List<SVGText> getSVGTextCharacters() {
+		return characterList;
 	}
 
     public void sortLineByX() {
@@ -520,5 +563,242 @@ public class TextLine implements Iterable<SVGText> {
 		}
 		return fontStyleSet;
 	}
+
+	public String getLineString() {
+		StringBuilder sb = new StringBuilder();
+		for (SVGText text : characterList) {
+			sb.append(text.getText());
+		}
+		return sb.toString();
+	}
 	
+	public void insertSpaces() {
+		insertSpaces(spaceFactor);
+	}
+	
+	/** computes inter-char gaps. If >= computed width of space adds ONE space
+	 * later routies can calculateexact number of spaces if wished
+	 * this is essentially a word break detector and marker
+	 */
+	public void insertSpaces(double sFactor) {
+		if (characterList.size() > 0) {
+			List<SVGText> newCharacters = new ArrayList<SVGText>();
+			SVGText lastText = characterList.get(0);
+			newCharacters.add(lastText);
+			Double fontSize = lastText.getFontSize();
+			Double lastWidth = getWidth(lastText);
+			Double lastX = lastText.getX();
+			for (int i = 1; i < characterList.size(); i++) {
+				SVGText text = characterList.get(i);
+				double x = text.getX();
+				double separation = x -lastX;
+				double extraWidth = separation - lastWidth;
+			    if (extraWidth > sFactor * fontSize) {
+			    	addSpaceCharacter(newCharacters, lastX + lastWidth, lastText);
+			    }
+			    newCharacters.add(text);
+				lastWidth = getWidth(text);
+				lastX = x;
+			}
+			resetWhenLineContentChanged();
+			characterList = newCharacters;
+		}
+	}
+
+	
+	private double getWidthOfSpaceCharacter(Double fontSize) {
+		return SPACE_FUDGE * SPACE_WIDTH * fontSize;
+	}
+	
+	/** counts spaces between leftMargin and first character
+	 * often used with bbox for chunk in which text occurs
+	 * @param leftMarginX
+	 * @return spaceCount (can be negative)
+	 */
+	public Double leadingSpaceCount(Double leftMarginX) {
+		Double spaceCount = null;
+		if (leftMarginX != null) {
+			getBoundingBox();
+			getMeanFontSize();
+			if (boundingBox != null) {
+				Double xmin = boundingBox.getXRange().getMin();
+				Double separation = xmin - leftMarginX;
+				spaceCount = separation / getWidthOfSpaceCharacter(meanFontSize);
+			}
+		}
+		return spaceCount;
+	}
+
+	/** counts spaces between lastCharacter and rightMargin
+	 * often used with bbox for chunk in which text occurs
+	 * @param rightMarginX
+	 * @return spaceCount (can be negative)
+	 */
+	public Double trailingSpaceCount(Double rightMarginX) {
+		Double spaceCount = null;
+		if (rightMarginX != null) {
+			getBoundingBox();
+			getMeanFontSize();
+			if (boundingBox != null) {
+				Double xmax = boundingBox.getXRange().getMax();
+				Double separation = rightMarginX - xmax;
+				spaceCount = separation / getWidthOfSpaceCharacter(meanFontSize);
+			}
+		}
+		return spaceCount;
+	}
+
+	public Double getMeanFontSize() {
+		if (meanFontSize == null) {
+			getFontSizeArray();
+			meanFontSize = fontSizeArray.getMean();
+		}
+		return meanFontSize;
+	}
+
+	public RealArray getFontSizeArray() {
+		if (fontSizeArray == null || characterList != null || characterList.size() == 0) {
+			fontSizeArray = new RealArray(characterList.size());
+			for (int i = 0; i < characterList.size(); i++) {
+				fontSizeArray.setElementAt(i, characterList.get(i).getFontSize());
+			}
+		}
+		return fontSizeArray;
+	}
+
+	public Real2Range getBoundingBox() {
+		if (characterList == null || characterList.size() == 0) {
+			boundingBox = null;
+		} else if (boundingBox == null) {
+			boundingBox = new Real2Range();
+			for (SVGText charx : characterList) {
+				Real2Range bbox = charx.getBoundingBox();
+				boundingBox.plus(bbox);
+			}
+		}
+		return boundingBox;
+	}
+
+	/** Array of width from SVGText @svgx:width attribute
+	 * @return array of widths
+	 */
+	public RealArray getSVGCharacterWidthArray() {
+		if (svgCharacterWidthArray == null) { 
+			svgCharacterWidthArray = new RealArray(characterList.size());
+			for (int i = 0; i < characterList.size() ; i++) {
+				Double width = getWidth(characterList.get(i));
+				svgCharacterWidthArray.setElementAt(i,  width);
+			}
+			svgCharacterWidthArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+		}
+		return svgCharacterWidthArray;
+	}
+	
+
+	/** actual separation of characters by delta X of coordinates
+	 * Last character cannot have separation, so array length is characterList.size()-1
+	 * @return array of separations
+	 */
+	public RealArray getCharacterSeparationArray() {
+		if (characterSeparationArray == null) { 
+			characterSeparationArray = new RealArray(characterList.size() - 1);
+			Double x = characterList.get(0).getX();
+			for (int i = 0; i < characterList.size() - 1; i++) {
+				Double nextX = characterList.get(i + 1).getX();
+				Double separation = nextX - x;
+				characterSeparationArray.setElementAt(i, separation);
+				x = nextX;
+			}
+			characterSeparationArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+		}
+		return characterSeparationArray;
+	}
+	
+	/** actual separation of space characters by delta X of coordinates
+	 * array is in order of space characters but normally shorter
+	 * and does not directly map onto characters
+	 * we may provide a mapping index
+	 * initially used for stats on space sizes
+	 * @return array of separations
+	 */
+	public RealArray getActualWidthsOfSpaceCharacters() {
+		getCharacterSeparationArray();
+		if (characterSeparationArray != null) { 
+			spaceWidthArray = new RealArray();
+			for (int i = 0; i < characterList.size() - 1; i++) {
+				SVGText charx = characterList.get(i);
+				String text = charx.getText();
+				if (CMLConstants.S_SPACE.equals(charx.getText())) {
+					spaceWidthArray.addElement(characterSeparationArray.elementAt(i));
+				}
+			}
+		}
+		return spaceWidthArray;
+	}
+
+
+	/**
+	 * @param newCharacters
+	 * @param spaceX
+	 * @param templateText to copy attributes from
+	 */
+	private void addSpaceCharacter(List<SVGText> newCharacters, double spaceX, SVGText templateText) {
+		SVGText spaceText = new SVGText();
+		CMLUtil.copyAttributes(templateText, spaceText);
+		spaceText.setText(" ");
+		spaceText.setX(spaceX);
+		PDF2SVGUtil.setSVGXAttribute(spaceText, PDF2SVGUtil.CHARACTER_WIDTH, ""+SPACE_WIDTH1000);
+		newCharacters.add(spaceText);
+	}
+
+	private Double getWidth(SVGText text) {
+		String widthS = PDF2SVGUtil.getSVGXAttribute(text, PDF2SVGUtil.CHARACTER_WIDTH);
+		Double fontSize = text.getFontSize();
+		Double width = new Double(widthS) * SCALE;
+		return width * fontSize;
+	}
+
+	public Double getMeanWidthOfSpaceCharacters() {
+		RealArray spaceWidths = getActualWidthsOfSpaceCharacters();
+		return spaceWidths == null ? null : spaceWidths.getMean();
+	}
+
+	public Double getModalExcessWidth() {
+		RealArray excessWidthArray = getExcessWidthArray();
+//		excessWidthArray.sortAscending();
+		System.out.println(this.getLineContent());
+		System.out.println(excessWidthArray);
+		return -99.9; // junk
+	}
+
+	public RealArray getExcessWidthArray() {
+		if (excessWidthArray == null) {
+			excessWidthArray = new RealArray(characterList.size() - 1);
+			getCharacterSeparationArray();
+			getSVGCharacterWidthArray();
+			for (int i = 0; i < characterList.size() - 1; i++){
+				double deltaX = characterSeparationArray.get(i) - svgCharacterWidthArray.get(i);
+				excessWidthArray.setElementAt(i,  deltaX);
+			}
+			excessWidthArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+		}
+		return excessWidthArray;
+	}
+
+	public Set<SvgPlusCoordinate> getFontSizeSet() {
+		if (fontSizeSet == null) {
+			fontSizeSet = new HashSet<SvgPlusCoordinate>();
+			for (SVGText text : characterList) {
+				double fontSize = text.getFontSize();
+				fontSizeSet.add(new SvgPlusCoordinate(fontSize));
+			}
+		}
+		return fontSizeSet;
+	}
+
+	public static RealArray getCoordinatesOfLines(List<TextLine> largeLines) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -24,6 +24,9 @@ public class Fixtures {
 	public static final String ACTION_DIR = SVGPLUS_DIR+"action/";
 	public static final File ACTION_SVG_DIR = new File(Fixtures.ACTION_DIR, "svg");
 	public static final File ACTION_PDF_DIR = new File(Fixtures.ACTION_DIR, "pdf");
+	public static final File CSIRO_DIR = new File("../pdfs/csiro/test");
+	public static final File CSIRO_DIR0 = new File("../pdfs/csiro/test0");
+	public static final File CSIRO_DIR1 = new File("../pdfs/csiro/test1");
 	
 	public static final String AJC_PAGE6_PDF = CORE_DIR+"ajc-page6.pdf";
 	
@@ -109,6 +112,19 @@ public class Fixtures {
 		SVGSVG svgPage = (page < 1 || page > converter.getPageList().size()) ? null : converter.getPageList().get(page-1);
 		return svgPage;
 	}
+	
+	public static SVGSVG createSVGPage(File svgFile) {
+		SVGSVG svgPage = null;
+		try {
+			svgPage = (SVGSVG) SVGElement.readAndCreateSVG(new Builder().build(svgFile).getRootElement());
+		} catch (Exception e){
+			throw new RuntimeException("Cannot create SVG: ", e);
+		}
+		return svgPage;
+	}
+
+	
+	
 
 	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
 		SVGSVG svgPage = Fixtures.getSVGPageFromPDF(pdfFile, pageNum);
