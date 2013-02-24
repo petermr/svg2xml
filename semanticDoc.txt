@@ -1,4 +1,4 @@
-AMI2-SVGPlus Semantic document
+AMI2-SVG2XML Semantic document
 ==============================
 
 rough nesting is shown. Order determines order of operations. simplistic checking of children.
@@ -9,11 +9,16 @@ Most attributes are specific to given element. Some (e.g. debug) are global
 <semanticDocument>    
         Holds global vars in name-value store.
         Uses s.*, d.*, p.* for vars with total, doc, and page scope
-        Vars can be injected by commandline, explicit on elements, or computed
+        Vars can be 
+           (1) injected by commandline
+           (2) explicit attributes on elements
+           (3) computed
         Accessible to all elements
-        the run() command pokes in the values:
+
+        the run() command pokes in the values :
             s.inputfile
             s.outputfile
+        before analyzing the commands
             
     <documentIterator>
         determines policy of which documents to process. 
