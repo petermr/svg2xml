@@ -12,8 +12,8 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.svgplus.paths.ComplexLine;
-import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.paths.ComplexLine;
+import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 
 
 public class BoundingBoxManager {

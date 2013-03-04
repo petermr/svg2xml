@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.analyzer.ChunkAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.tools.Chunk;
 
 public class ChunkAnalyzerActionX extends PageActionX {
 

@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.analyzer.AbstractPageAnalyzerX;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

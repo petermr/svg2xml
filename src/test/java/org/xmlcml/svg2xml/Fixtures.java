@@ -11,14 +11,14 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svgplus.action.AbstractActionX;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.action.AbstractActionX;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.analyzer.WhitespaceChunkerAnalyzerX;
+import org.xmlcml.svg2xml.tools.Chunk;
 
 public class Fixtures {
 
-	public static final String SVGPLUS_DIR = "src/test/resources/org/xmlcml/svgplus/";
+	public static final String SVGPLUS_DIR = "src/test/resources/org/xmlcml/svg2xml/";
 	public static final String COMMAND_DIR= SVGPLUS_DIR+"command/";
 	public static final String CORE_DIR = SVGPLUS_DIR+"core/";
 	public static final String ACTION_DIR = SVGPLUS_DIR+"action/";

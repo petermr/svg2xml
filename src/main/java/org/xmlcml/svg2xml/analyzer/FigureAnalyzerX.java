@@ -9,11 +9,11 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.figure.Figure;
-import org.xmlcml.svgplus.figure.FigurePanel;
-import org.xmlcml.svgplus.tools.Caption;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.figure.Figure;
+import org.xmlcml.svg2xml.figure.FigurePanel;
+import org.xmlcml.svg2xml.tools.Caption;
+import org.xmlcml.svg2xml.tools.Chunk;
 
 /**
  * @author pm286

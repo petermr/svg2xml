@@ -12,13 +12,13 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.analyzer.FigureAnalyzerX;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.figure.Figure;
-import org.xmlcml.svgplus.figure.FigureFragment;
-import org.xmlcml.svgplus.figure.FigurePanel;
-import org.xmlcml.svgplus.tools.Chunk;
-import org.xmlcml.svgplus.util.GraphUtil;
+import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.figure.Figure;
+import org.xmlcml.svg2xml.figure.FigureFragment;
+import org.xmlcml.svg2xml.figure.FigurePanel;
+import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.util.GraphUtil;
 
 public class FigureAnalyzerActionX extends PageActionX {
 

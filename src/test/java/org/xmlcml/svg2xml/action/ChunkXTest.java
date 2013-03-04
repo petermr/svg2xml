@@ -15,9 +15,9 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svgplus.tools.BoundingBoxManager;
-import org.xmlcml.svgplus.tools.Chunk;
-import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager;
+import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
 public class ChunkXTest {
 

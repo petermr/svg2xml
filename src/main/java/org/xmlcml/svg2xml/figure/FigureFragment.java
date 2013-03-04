@@ -22,10 +22,10 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.SVGPlusConstantsX;
-import org.xmlcml.svgplus.paths.ComplexLine;
-import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svgplus.util.GraphUtil;
+import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.paths.ComplexLine;
+import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.util.GraphUtil;
 
 public class FigureFragment {
 

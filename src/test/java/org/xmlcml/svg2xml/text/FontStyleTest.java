@@ -10,10 +10,10 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.GraphicsElement.FontWeight;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.text.FontStyle.Style;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.analyzer.ChunkAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.text.FontStyle.Style;
+import org.xmlcml.svg2xml.tools.Chunk;
 
 public class FontStyleTest {
 

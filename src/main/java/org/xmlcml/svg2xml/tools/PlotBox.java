@@ -3,7 +3,7 @@ package org.xmlcml.svg2xml.tools;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svgplus.paths.Axis;
+import org.xmlcml.svg2xml.paths.Axis;
 
 public class PlotBox {
 

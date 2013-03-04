@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.action;
 
 import java.util.ArrayList;
 
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,14 +11,14 @@ import nu.xom.Node;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.analyzer.PathAnalyzerX;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
+import org.xmlcml.svg2xml.tools.Chunk;
 
 public class BoxProcessorActionX extends PageActionX {
 
 	private final static Logger LOG = Logger.getLogger(BoxProcessorActionX.class);
 	
-	private PathAnalyzerX pathAnalyzerX;
+	private PathAnalyzerX pathAnalyzerX;	
 
 	public final static String TAG ="boxProcessor";
 	private static final List<String> ATTNAMES = new ArrayList<String>();

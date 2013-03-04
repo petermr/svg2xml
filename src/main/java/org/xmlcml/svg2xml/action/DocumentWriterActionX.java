@@ -10,7 +10,7 @@ import nu.xom.Node;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.pdf2svg.util.MenuSystem;
-import org.xmlcml.svgplus.tools.RegexFilenameFilter;
+import org.xmlcml.svg2xml.tools.RegexFilenameFilter;
 
 public class DocumentWriterActionX extends DocumentActionX {
 

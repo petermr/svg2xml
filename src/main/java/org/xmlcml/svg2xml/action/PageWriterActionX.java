@@ -20,8 +20,8 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.util.GraphUtil;
-import org.xmlcml.svgplus.util.ToXML;
+import org.xmlcml.svg2xml.util.GraphUtil;
+import org.xmlcml.svg2xml.util.ToXML;
 import org.xmlcml.html.HtmlUl;
 
 public class PageWriterActionX extends PageActionX {

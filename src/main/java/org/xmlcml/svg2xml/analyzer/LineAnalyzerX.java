@@ -10,10 +10,10 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Vector2;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.svgplus.action.PathNormalizerActionX;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.paths.Axis;
-import org.xmlcml.svgplus.tools.PlotBox;
+import org.xmlcml.svg2xml.action.PathNormalizerActionX;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.paths.Axis;
+import org.xmlcml.svg2xml.tools.PlotBox;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

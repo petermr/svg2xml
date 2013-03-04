@@ -12,10 +12,10 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
-import org.xmlcml.svgplus.tools.Chunk;
-import org.xmlcml.svgplus.tools.SplitterParams;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.tools.SplitterParams;
 
 /**
  * page-oriented

@@ -11,9 +11,9 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.tools.Chunk;
-import org.xmlcml.svgplus.tools.PlotBox;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.tools.PlotBox;
 
 public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 

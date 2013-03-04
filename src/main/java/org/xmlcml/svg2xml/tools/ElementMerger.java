@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.tools;
 
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.svgplus.paths.LineMerger;
+import org.xmlcml.svg2xml.paths.LineMerger;
 
 /** merges two or more SVGElements
  * 

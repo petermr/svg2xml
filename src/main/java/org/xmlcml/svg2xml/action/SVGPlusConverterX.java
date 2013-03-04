@@ -79,7 +79,7 @@ public class SVGPlusConverterX {
 	}
 
 	private void usage() {
-		System.out.println("usage: org.xmlcml.svgplus.PDF2XMLConverter [args]");
+		System.out.println("usage: org.xmlcml.svg2xml.PDF2XMLConverter [args]");
 		System.out.println("      -c                             // read and process commandfile (Mandatory)");
 		System.out.println("      -i <input.dir or input.pdf or rawDir>    // foo.pdf, or foo directory");
 		System.out.println("      -informat <input format>    // PDF or SVG (currently NYI)");

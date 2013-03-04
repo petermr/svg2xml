@@ -9,7 +9,7 @@ import nu.xom.Node;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
 public class TextChunkerActionX extends PageActionX {
 

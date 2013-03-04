@@ -25,7 +25,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
-import org.xmlcml.svgplus.util.CodePointConverter;
+import org.xmlcml.svg2xml.util.CodePointConverter;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

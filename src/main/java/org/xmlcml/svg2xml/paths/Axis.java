@@ -24,12 +24,12 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.analyzer.AxisAnalyzerX;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.paths.ComplexLine.CombType;
-import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svgplus.tools.BoundingBoxManager;
-import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.analyzer.AxisAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
+import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
 public class Axis {
 

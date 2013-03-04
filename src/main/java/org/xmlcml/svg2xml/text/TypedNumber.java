@@ -7,8 +7,8 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svgplus.analyzer.SubSupAnalyzerX;
-import org.xmlcml.svgplus.analyzer.SubSupAnalyzerX.SubSup;
+import org.xmlcml.svg2xml.analyzer.SubSupAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.SubSupAnalyzerX.SubSup;
 
 public class TypedNumber {
 

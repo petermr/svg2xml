@@ -8,8 +8,8 @@ import java.util.List;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.tools.PageSelector;
-import org.xmlcml.svgplus.util.GraphUtil;
+import org.xmlcml.svg2xml.tools.PageSelector;
+import org.xmlcml.svg2xml.util.GraphUtil;
 
 
 public abstract class PageActionX extends AbstractActionX {

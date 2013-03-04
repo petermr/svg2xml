@@ -28,14 +28,14 @@ import org.xmlcml.graphics.svg.SVGMarker;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.PageEditorX;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.paths.Axis;
-import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svgplus.tools.BoundingBoxManager;
-import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
-import org.xmlcml.svgplus.tools.PlotBox;
-import org.xmlcml.svgplus.util.GraphUtil;
+import org.xmlcml.svg2xml.action.PageEditorX;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.paths.Axis;
+import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.tools.PlotBox;
+import org.xmlcml.svg2xml.util.GraphUtil;
 
 
 public class PolylineAnalyzerX extends AbstractPageAnalyzerX {

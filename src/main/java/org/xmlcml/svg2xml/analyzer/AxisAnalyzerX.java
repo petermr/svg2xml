@@ -8,12 +8,12 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.paths.Axis;
-import org.xmlcml.svgplus.paths.ComplexLine;
-import org.xmlcml.svgplus.paths.ComplexLine.CombType;
-import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svgplus.tools.PlotBox;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.paths.Axis;
+import org.xmlcml.svg2xml.paths.ComplexLine;
+import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
+import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.tools.PlotBox;
 
 public class AxisAnalyzerX extends AbstractPageAnalyzerX {
 

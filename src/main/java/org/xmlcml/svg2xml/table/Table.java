@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.table;
 
 
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.tools.Chunk;
 
 public class Table extends Chunk {
 

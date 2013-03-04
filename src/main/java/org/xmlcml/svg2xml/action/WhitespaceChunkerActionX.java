@@ -7,8 +7,8 @@ import java.util.List;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.analyzer.WhitespaceChunkerAnalyzerX;
+import org.xmlcml.svg2xml.tools.Chunk;
 /**
 	<pageAction action="createWhitespaceChunks" depth="3"/>
  * @author pm286

@@ -7,8 +7,8 @@ import java.util.Set;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerTest;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerTest;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
 public class TextLineTest {
 

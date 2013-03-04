@@ -1,6 +1,6 @@
 package org.xmlcml.svg2xml.tools;
 
-import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
 public class SplitterParams {
 

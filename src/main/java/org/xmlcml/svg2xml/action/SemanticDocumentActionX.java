@@ -15,7 +15,7 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.svgplus.text.SimpleFont;
+import org.xmlcml.svg2xml.text.SimpleFont;
 
 public class SemanticDocumentActionX extends DocumentActionX {
 

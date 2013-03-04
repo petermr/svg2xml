@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svgplus.util.ToXML;
+import org.xmlcml.svg2xml.util.ToXML;
 
 public class AssertActionX extends AbstractActionX {
 

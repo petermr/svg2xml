@@ -11,8 +11,8 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.svgplus.tools.ElementNeighbourhood;
-import org.xmlcml.svgplus.tools.ElementNeighbourhoodManager;
+import org.xmlcml.svg2xml.tools.ElementNeighbourhood;
+import org.xmlcml.svg2xml.tools.ElementNeighbourhoodManager;
 
 /** aggregates of Lines
  * 

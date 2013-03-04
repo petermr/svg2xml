@@ -14,7 +14,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.svgplus.paths.ComplexLine;
+import org.xmlcml.svg2xml.paths.ComplexLine;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

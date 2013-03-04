@@ -7,8 +7,8 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
-import org.xmlcml.svgplus.tools.BoundingBoxManager;
-import org.xmlcml.svgplus.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager;
+import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
 public class BoundingBoxManagerTest {
 	

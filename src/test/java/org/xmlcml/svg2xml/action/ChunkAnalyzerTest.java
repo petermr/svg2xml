@@ -18,11 +18,11 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svgplus.analyzer.ChunkAnalyzerX;
-import org.xmlcml.svgplus.analyzer.TextAnalyzerX;
-import org.xmlcml.svgplus.analyzer.WhitespaceChunkerAnalyzerX;
-import org.xmlcml.svgplus.text.TextLine;
-import org.xmlcml.svgplus.tools.Chunk;
+import org.xmlcml.svg2xml.analyzer.ChunkAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.WhitespaceChunkerAnalyzerX;
+import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.svg2xml.tools.Chunk;
 
 public class ChunkAnalyzerTest {
 

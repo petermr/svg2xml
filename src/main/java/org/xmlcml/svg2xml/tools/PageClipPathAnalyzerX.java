@@ -9,8 +9,8 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svgplus.action.SemanticDocumentActionX;
-import org.xmlcml.svgplus.analyzer.AbstractPageAnalyzerX;
+import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

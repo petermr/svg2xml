@@ -1,5 +1,5 @@
 <semanticDocument xmlns="http://www.xml-cml.org/schema/ami2">
-	<documentIterator filename="src/test/resources/org/xmlcml/svgplus/command/test0.svg">
+	<documentIterator filename="src/test/resources/org/xmlcml/svg2xml/command/test0.svg">
 		<pageIterator>
 			<variable name="p.root" value="${d.outputDir}/whitespace_${p.page}" />
 			<whitespaceChunker depth="3" />

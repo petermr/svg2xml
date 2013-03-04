@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlcml.euclid.Real2;
-import org.xmlcml.svgplus.paths.ComplexLine.Direction;
-import org.xmlcml.svgplus.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svgplus.paths.ComplexLine.SideOrientation;
+import org.xmlcml.svg2xml.paths.ComplexLine.Direction;
+import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.paths.ComplexLine.SideOrientation;
 import org.xmlcml.graphics.svg.SVGLine;
 
 public class Joint implements Comparable<Joint> {
