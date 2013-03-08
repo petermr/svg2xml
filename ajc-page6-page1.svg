@@ -102,7 +102,7 @@
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="Helvetica" svgx:fontName="KAIKCD+Helvetica-Oblique" svgx:width="556.0" x="125.774" y="182.613" font-size="5.25" font-style="italic">n</text>
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="Helvetica" svgx:fontName="KAIHCK+Helvetica" svgx:width="667.0" x="190.605" y="180.613" font-size="7.0">P</text>
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="Helvetica" svgx:fontName="KAIKCD+Helvetica-Oblique" svgx:width="556.0" x="195.274" y="182.613" font-size="5.25" font-style="italic">n</text>
- <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="MathematicalPi-One" svgx:fontName="KAILAO+MathematicalPi-One" svgx:width="0.0" x="137.791" y="180.613" font-size="7.0">+</text>
+ <text clip-path="url(#clipPath1)" svgx:fontName="KAILAO+MathematicalPi-One" svgx:width="0.0" x="137.791" y="180.613" font-size="7.0" stroke="red" fill="red" font-family="Helvetica" stroke-width="0.5">&#10110;</text>
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="Helvetica" svgx:fontName="KAIHCK+Helvetica" svgx:width="667.0" x="152.234" y="180.613" font-size="7.0">X</text>
  <path fill="none" clip-path="url(#clipPath3)" stroke="#000000" stroke-width="0.30000001192092896" d="M114.655 184.363 C108.748 190.242 108.726 199.807 114.605 205.713 C120.483 211.619 130.048 211.642 135.954 205.763 C141.069 200.673 141.866 192.675 137.857 186.676 "/>
  <path stroke="black" clip-path="url(#clipPath1)" fill="#000000" stroke-width="0.5" d="M135.635 184.001 L139.333 186.477 C138.843 186.384 138.336 186.514 137.95 186.83 C137.564 187.146 137.337 187.617 137.332 188.116 L135.635 184.001 "/>
@@ -156,8 +156,8 @@
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="TimesNewRoman" svgx:fontName="TimesNewRomanPS" svgx:width="250.0" x="222.087" y="229.696" font-size="8.468">.</text>
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="Helvetica" svgx:fontName="KAIHCK+Helvetica" svgx:width="667.0" x="101.008" y="260.903" font-size="7.0">P</text>
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="Helvetica" svgx:fontName="KAIKCD+Helvetica-Oblique" svgx:width="556.0" x="105.677" y="262.903" font-size="5.25" font-style="italic">n</text>
- <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="MathematicalPi-One" svgx:fontName="KAILAO+MathematicalPi-One" svgx:width="0.0" x="112.487" y="260.903" font-size="7.0">+</text>
- <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="MathematicalPi-One" svgx:fontName="KAILAO+MathematicalPi-One" svgx:width="0.0" x="194.936" y="260.903" font-size="7.0">+</text>
+ <text clip-path="url(#clipPath1)" svgx:fontName="KAILAO+MathematicalPi-One" svgx:width="0.0" x="112.487" y="260.903" font-size="7.0" stroke="red" fill="red" font-family="Helvetica" stroke-width="0.5">&#10110;</text>
+ <text clip-path="url(#clipPath1)" svgx:fontName="KAILAO+MathematicalPi-One" svgx:width="0.0" x="194.936" y="260.903" font-size="7.0" stroke="red" fill="red" font-family="Helvetica" stroke-width="0.5">&#10110;</text>
  <path fill="none" clip-path="url(#clipPath4)" stroke="#000000" stroke-width="0.30000001192092896" d="M93.961 266.553 C88.082 272.432 88.082 281.974 93.961 287.853 C99.84 293.732 109.383 293.732 115.261 287.853 C120.349 282.765 121.128 274.788 117.118 268.812 "/>
  <path stroke="black" clip-path="url(#clipPath1)" fill="#000000" stroke-width="0.5" d="M114.891 266.142 L118.594 268.61 C118.104 268.518 117.597 268.648 117.212 268.965 C116.826 269.282 116.601 269.753 116.596 270.253 L114.891 266.142 "/>
  <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" font-family="Helvetica" svgx:fontName="KAIHCK+Helvetica" svgx:width="833.0" x="119.611" y="291.653" font-size="7.0">M</text>

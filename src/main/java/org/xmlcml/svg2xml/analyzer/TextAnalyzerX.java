@@ -10,10 +10,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 import nu.xom.Attribute;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -33,6 +33,10 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.text.Paragraph;
 import org.xmlcml.svg2xml.text.SimpleFont;
@@ -80,6 +84,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	public static final double DEFAULT_TEXTWIDTH_FACTOR = 0.9;
 	private static final double Y_SCALE = 10;
 	public static final int NDEC_FONTSIZE = 3;
+	private static final double INDENT_MIN = 1.0; //pixels
 	public static Double TEXT_EPS = 1.0;
 
 
@@ -127,6 +132,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private SvgPlusCoordinate largestFontSize;
 	private List<TextLine> linesWithLargestFont;
 	private Map<TextLine, Integer> textLineSerialMap;
+	private Real2Range textLinesLargetFontBoundingBox;
+	private List<TextLine> textLineListWithLargestFont;
 	
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
@@ -439,7 +446,6 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		// not quite sure when the TSpans get added so this is messy
 		List<SVGText> texts = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgg, ".//svg:g[@class='word']/svg:text"));
 		for (SVGText text : texts) {
-			System.out.println(text.toXML());
 			TypedNumberList typedNumberList = interpretTypedNumberList(text);
 			TypedNumber typedNumber = interpretTypedNumber(text);
 		}
@@ -607,10 +613,10 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		for (int iz : ii) {
 			TextLine textList = textByCoordMap.get(iz);
 			for (SVGText text : textList) {
-//				System.out.print(text.getXY()+" "+text.getText()+ " ");
+				System.out.print(text.getXY()+" "+text.getText()+ " ");
 			}
 		}
-//		System.out.println();
+		System.out.println();
 	}
 
 	private void addCharacterToMap(Map<Integer, TextLine> map, Integer x, SVGText rawCharacter) {
@@ -1353,15 +1359,172 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public List<TextLine> getLinesWithLargestFont() {
-		linesWithLargestFont = new ArrayList<TextLine>();
-		getLargestFont();
-		for (int i = 0; i < textLineList.size(); i++){
-			TextLine textLine = textLineList.get(i);
-			if (Real.isEqual(textLine.getFontSize(), largestFontSize.getDouble(), 0.001)) {
-				linesWithLargestFont.add( textLine);
+		if (linesWithLargestFont == null) {
+			linesWithLargestFont = new ArrayList<TextLine>();
+			getLargestFont();
+			for (int i = 0; i < textLineList.size(); i++){
+				TextLine textLine = textLineList.get(i);
+				if (Real.isEqual(textLine.getFontSize(), largestFontSize.getDouble(), 0.001)) {
+					linesWithLargestFont.add( textLine);
+				}
 			}
 		}
 		return linesWithLargestFont;
 	}
+
+	/** creates one "para" per line
+	 * usually needs tidying with createHtmlDivWithParas
+	 * @return
+	 */
+	public HtmlElement createHtmlRawDiv() {
+		textLineListWithLargestFont = getLinesWithLargestFont();
+		HtmlDiv div = new HtmlDiv();
+		for (TextLine textLine : textLineListWithLargestFont) {
+			HtmlElement p = textLine.createHtmlLine();
+			div.appendChild(p);
+		}
+		return div;
+	}
+
+	public HtmlElement createHtmlDivWithParas() {
+		textLineListWithLargestFont = getLinesWithLargestFont();
+		HtmlElement div = null;
+		if (textLineListWithLargestFont.size() == 0){
+			 div = null;
+		} else if (textLineListWithLargestFont.size() == 1){
+			 div = textLineListWithLargestFont.get(0).createHtmlLine();
+		} else {
+			HtmlElement rawDiv = createHtmlRawDiv();
+			Double leftIndent = this.getMaximumLeftIndentForLargestFont();
+			Double deltaLeftIndent = leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin();
+			this.getTextLinesLargestFontBoundingBox();
+			Double indentBoundary = textLinesLargetFontBoundingBox.getXRange().getMin() + deltaLeftIndent/2.0;
+			LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
+			div = new HtmlDiv();
+			Elements htmlLines = rawDiv.getChildElements();
+			// always start with para
+			HtmlP pCurrent = createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
+			for (int i = 1; i < textLineListWithLargestFont.size(); i++) {
+				TextLine textLine = textLineListWithLargestFont.get(i);
+				HtmlP pNext = (HtmlP) HtmlElement.create(htmlLines.get(i));
+				// indent, create new para
+				if (textLine.getFirstXCoordinate() > indentBoundary) {
+					pCurrent = createAndAddNewPara(div, pNext);
+				} else {
+					mergeParas(pCurrent, pNext);
+				}
+			}
+		}
+		return div;
+	}
+
+	private void mergeParas(HtmlP pCurrent, HtmlP pNext) {
+		Elements currentChildren = pCurrent.getChildElements();
+		HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
+		HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
+		Elements nextChildren = pNext.getChildElements();
+		HtmlElement firstNext = (HtmlElement) nextChildren.get(0);
+		HtmlSpan nextFirstSpan = (firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
+		int nextCounter = 0;
+		// merge texts
+		if (currentLastSpan != null && nextFirstSpan != null) {
+			String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
+			LOG.trace("Merged "+mergedText);
+			lastCurrent.setValue(mergedText);
+			nextCounter = 1;
+		}
+		//merge next line's children
+		for (int i = nextCounter; i < nextChildren.size(); i++) {
+			pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
+		}
+	}
+
+	private String mergeLineText(String last, String next) {
+		//merge hyphen minus
+		if (last.endsWith("-")) {
+			return last.substring(0, last.length()-1) + next;
+		} else {
+			return last + " " + next;
+		}
+	}
+
+	private HtmlP createAndAddNewPara(HtmlElement div, HtmlP p) {
+		HtmlP pNew = (HtmlP) HtmlElement.create(p);
+		div.appendChild(pNew);
+		return pNew;
+	}
+
+	private Real2Range getTextLinesLargestFontBoundingBox() {
+		if (textLinesLargetFontBoundingBox == null) {
+			if (textLineListWithLargestFont.size() > 0) {
+				textLinesLargetFontBoundingBox = new Real2Range(new Real2Range(textLineListWithLargestFont.get(0).getBoundingBox()));
+				for (int i = 1; i < textLineListWithLargestFont.size(); i++) {
+					textLinesLargetFontBoundingBox.plus(textLineListWithLargestFont.get(i).getBoundingBox());
+				}
+			}
+		}
+		return textLinesLargetFontBoundingBox;
+	}
+
+	/** finds maximum indent of lines
+	 * must be at least 2 lines
+	 * currently does not check for capitals, etc.
+	 * 
+	 */
+	public Double getMaximumLeftIndentForLargestFont() {
+		Double indent = null;
+		Double xLeft = null;
+		if (textLineListWithLargestFont != null && textLineListWithLargestFont.size() > 1) {
+			for (TextLine textLine : textLineListWithLargestFont) {
+				Double xStart = textLine.getFirstXCoordinate();
+				if (xStart == null) {
+					throw new RuntimeException("null start");
+				}
+				if (xLeft == null) {
+					xLeft = xStart;
+				}
+				if (xLeft - xStart > INDENT_MIN) {
+					indent = xLeft;
+				} else if (xStart - xLeft > INDENT_MIN) {
+					indent = xStart;
+				}
+			}
+		}
+		return indent;
+	}
+
+	/** finds maximum indent of lines
+	 * must be at least 2 lines
+	 * currently does not check for capitals, etc.
+	 * 
+	 */
+	public Double getMaxiumumRightIndent() {
+		Double indent = null;
+		Double xRight = null;
+		if (textLineList != null && textLineList.size() > 1) {
+			for (TextLine textLine : textLineList) {
+				Double xLast = textLine.getLastXCoordinate();
+				if (xRight == null) {
+					xRight = xLast;
+				}
+				if (xRight - xLast > INDENT_MIN) {
+					indent = xLast;
+				} else if (xLast - xRight > INDENT_MIN) {
+					indent = xRight;
+				}
+			}
+		}
+		return indent;
+	}
+
+//	private RealArray getTextLineXArray() {
+//		RealArray xStartArray = null;
+//		getLinesInIncreasingY();
+//		if (textLineList == null) {
+//			for (TextLine textLine : textLineList) {
+//				Double x = textLine.getXCoordinate();
+//			}
+//		}
+//	}
 
 }

@@ -18,9 +18,14 @@ import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
-import org.xmlcml.euclid.Univariate;
+import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlSpan;
+import org.xmlcml.html.HtmlSub;
+import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
@@ -46,6 +51,9 @@ public class TextLine implements Iterable<SVGText> {
 	private static final double COORD_EPS = 0.0001;
 	private static final double FONT_EPS = 0.001;
 	private static final double SPACE_FUDGE = 0.8;
+	private static final SVGText SUP = new SVGText(new Real2(0., 0.), "SUP");
+	private static final SVGText SUB = new SVGText(new Real2(0., 0.), "SUB");
+	private static final Double FONT_Y_FACTOR = 0.5;
 	
 	private List<SVGText> characterList;
 	private Double yCoord = null;
@@ -67,7 +75,7 @@ public class TextLine implements Iterable<SVGText> {
 	private Double SCALE = 0.001;
 	private Double SPACE_WIDTH1000 = /*274.0*/ 200.;
 	private Double SPACE_WIDTH = SPACE_WIDTH1000 * SCALE;
-	private Double DEFAULT_SPACE_FACTOR = 0.3;
+	private Double DEFAULT_SPACE_FACTOR = 0.12;
 	private Real2Range boundingBox = null;
 	private Double meanFontSize;
 	private RealArray fontSizeArray;
@@ -77,6 +85,7 @@ public class TextLine implements Iterable<SVGText> {
 	private RealArray excessWidthArray;
 	private double spaceFactor = DEFAULT_SPACE_FACTOR;
 	private Set<SvgPlusCoordinate> fontSizeSet;
+	private Suscript suscript;
 
 	private void resetWhenLineContentChanged() {
 		characterList = null;
@@ -291,6 +300,10 @@ public class TextLine implements Iterable<SVGText> {
 		return widthByText;
 	}
 	
+	public List<SVGText> getCharacterList() {
+		return characterList;
+	}
+
 	public SVGText get(int i) {
 		return characterList.get(i);
 	}
@@ -670,14 +683,15 @@ public class TextLine implements Iterable<SVGText> {
 		return fontSizeArray;
 	}
 
-	public Real2Range getBoundingBox() {
-		if (characterList == null || characterList.size() == 0) {
-			boundingBox = null;
-		} else if (boundingBox == null) {
-			boundingBox = new Real2Range();
-			for (SVGText charx : characterList) {
-				Real2Range bbox = charx.getBoundingBox();
-				boundingBox.plus(bbox);
+	public Real2Range getBoundingBox() {{
+		if (boundingBox == null) 
+			if (characterList != null && characterList.size() > 0) {
+				boundingBox = new Real2Range(characterList.get(0).getBoundingBox());
+				for (int i = 1; i < characterList.size(); i++) {
+					SVGText charx = characterList.get(i);
+					Real2Range bbox = charx.getBoundingBox();
+					boundingBox.plus(bbox);
+				}
 			}
 		}
 		return boundingBox;
@@ -813,7 +827,7 @@ public class TextLine implements Iterable<SVGText> {
 			Double thisY = this.getYCoord();
 			TextLine previousLine = textAnalyzerX.getLinesInIncreasingY().get(ii-1);
 			Double previousY = previousLine.getYCoord();
-			if (thisY - previousY < fontSize) {
+			if (thisY - previousY < fontSize * FONT_Y_FACTOR) {
 				superscript = previousLine;
 			}
 		}
@@ -828,13 +842,17 @@ public class TextLine implements Iterable<SVGText> {
 			Double thisY = this.getYCoord();
 			TextLine nextLine = textAnalyzerX.getLinesInIncreasingY().get(ii+1);
 			Double nextY = nextLine.getYCoord();
-			if (nextY - thisY < fontSize) {
+			if (nextY - thisY < fontSize * FONT_Y_FACTOR) {
 				subscript = nextLine;
 			}
 		}
 		return subscript;
 	}
 
+	/** mainly debug
+	 * 
+	 * @return
+	 */
 	public List<SVGText> createSuscriptString() {
 		List<SVGText> textList = new ArrayList<SVGText>();
 		Integer thisIndex = 0;
@@ -852,16 +870,102 @@ public class TextLine implements Iterable<SVGText> {
 			if (nextText == null) {
 				break;
 			}
+			SVGText mark = null;
 			if (nextText.equals(nextSup)) {
 				superIndex++;
+				mark = (SVGText) SUP.copy();
 			} else if (nextText.equals(nextThis)) {
 				thisIndex++;
 			} else if (nextText.equals(nextSub)) {
 				subIndex++;
+				mark = (SVGText) SUB.copy();
+			}
+			if (mark != null) {
+				mark.setXY(nextText.getXY());
+				textList.add(mark);
 			}
 			textList.add(nextText);
 		}
 		return textList;
+	}
+
+	/** mainly debug
+	 * 
+	 * @return
+	 */
+	public List<TextLine> createSuscriptTextLineList() {
+		List<TextLine> textLineList = new ArrayList<TextLine>();
+		Integer thisIndex = 0;
+		TextLine superscript = this.getSuperscript();
+		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.characterList;
+		Integer superIndex = 0;
+		TextLine subscript = this.getSubscript();
+		List<SVGText> subChars = (subscript == null) ? new ArrayList<SVGText>() : subscript.characterList;
+		Integer subIndex = 0;
+		TextLine textLine = null;
+		while (true) {
+			SVGText nextSup = peekNext(superChars, superIndex);
+			SVGText nextThis = peekNext(characterList, thisIndex);
+			SVGText nextSub = peekNext(subChars, subIndex);
+			SVGText nextText = textWithLowestX(nextSup, nextThis, nextSub);
+			if (nextText == null) {
+				break;
+			}
+			Suscript suscript = Suscript.NONE;
+			if (nextText.equals(nextSup)) {
+				superIndex++;
+				suscript = Suscript.SUP;
+			} else if (nextText.equals(nextThis)) {
+				thisIndex++;
+				suscript = Suscript.NONE;
+			} else if (nextText.equals(nextSub)) {
+				subIndex++;
+				suscript = Suscript.SUB;
+			}
+			if (textLine == null || !(suscript.equals(textLine.getSuscript()))) {
+				textLine = new TextLine(textAnalyzerX);
+				textLine.setSuscript(suscript);
+				textLineList.add(textLine);
+			}
+			textLine.add(nextText);
+		}
+		for (TextLine tLine : textLineList) {
+			tLine.insertSpaces();
+		}
+		return textLineList;
+	}
+	
+	public HtmlElement createHtmlLine() {
+		List<TextLine> textLineList = createSuscriptTextLineList();
+		HtmlP p = new HtmlP();
+		for (TextLine textLine : textLineList) {
+			HtmlElement pp = textLine.getHtmlElement();
+			p.appendChild(pp.copy());
+		}
+		return p;
+	}
+
+
+	private HtmlElement getHtmlElement() {
+		HtmlElement htmlElement = null;
+		Suscript suscript = this.getSuscript();
+		if (suscript == null || suscript.equals(Suscript.NONE)) {
+			htmlElement = new HtmlSpan();
+		} else if (suscript.equals(Suscript.SUB)) {
+			htmlElement = new HtmlSub();
+		} else if (suscript.equals(Suscript.SUP)) {
+			htmlElement = new HtmlSup();
+		}
+		htmlElement.appendChild(this.getLineContent());
+		return htmlElement;
+	}
+
+	public Suscript getSuscript() {
+		return suscript;
+	}
+
+	private void setSuscript(Suscript suscript) {
+		this.suscript = suscript;
 	}
 
 	private SVGText textWithLowestX(SVGText nextSup, SVGText nextThis, SVGText nextSub) {
@@ -880,6 +984,30 @@ public class TextLine implements Iterable<SVGText> {
 
 	private SVGText peekNext(List<SVGText> characterList, Integer index) {
 		return (index >= characterList.size()) ? null : characterList.get(index);
+	}
+
+	public String getSpacedLineString() {
+		StringBuilder sb = new StringBuilder();
+		for (SVGText text : characterList) {
+			String s = text.getValue();
+			if (s.trim().length() == 0) {
+				s = " ";
+			}
+			sb.append(s);
+		}
+		return sb.toString();
+	}
+
+	public Double getFirstXCoordinate() {
+		getBoundingBox();
+		RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
+		return xRange == null ? null : xRange.getMin();
+	}
+
+	public Double getLastXCoordinate() {
+		getBoundingBox();
+		RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
+		return xRange == null ? null : xRange.getMax();
 	}
 
 }
