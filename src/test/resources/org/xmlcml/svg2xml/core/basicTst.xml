@@ -6,6 +6,7 @@
       <deleteNodes xpath="//svg:text/svg:title | 
           //@*[local-name()='clip-path' or local-name()='width' or local-name()='fontName'] " />
       <pageWriter filename="${p.root}.svg"/>
+      <pageWriter filename="${p.root}XXX.svg"/>
     </pageIterator>
   </documentIterator>
 </semanticDocument>

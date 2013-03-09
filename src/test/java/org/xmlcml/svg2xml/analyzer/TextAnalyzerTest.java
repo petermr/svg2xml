@@ -592,7 +592,7 @@ public class TextAnalyzerTest {
 	public void testCreateHTMLRawDiv() throws Exception {
 		TextAnalyzerX analyzerX = createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
 		HtmlElement div = analyzerX.createHtmlRawDiv();
-		CMLUtil.debug(div, new FileOutputStream("target/div.html"), 1);
+		CMLUtil.debug(div, new FileOutputStream("target/div.html"), 0);
 	}
 	
 	@Test
@@ -602,7 +602,7 @@ public class TextAnalyzerTest {
 	public void testCreateHTMLDivWithParas() throws Exception {
 		TextAnalyzerX analyzerX = createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
 		HtmlElement div = analyzerX.createHtmlDivWithParas();
-		CMLUtil.debug(div, new FileOutputStream("target/divParas.html"), 1);
+		CMLUtil.debug(div, new FileOutputStream("target/divParas.html"), 0);
 	}
 	
 

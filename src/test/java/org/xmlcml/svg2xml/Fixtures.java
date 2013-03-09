@@ -6,6 +6,7 @@ import java.util.List;
 import nu.xom.Builder;
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -18,6 +19,8 @@ import org.xmlcml.svg2xml.tools.Chunk;
 
 public class Fixtures {
 
+	private static final Logger LOG = Logger.getLogger(Fixtures.class);
+	
 	public static final String SVGPLUS_DIR = "src/test/resources/org/xmlcml/svg2xml/";
 	public static final String COMMAND_DIR= SVGPLUS_DIR+"command/";
 	public static final String CORE_DIR = SVGPLUS_DIR+"core/";
@@ -128,6 +131,7 @@ public class Fixtures {
 
 	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
 		SVGSVG svgPage = Fixtures.getSVGPageFromPDF(pdfFile, pageNum);
+		LOG.debug("svgPage "+svgPage.query("//*").size());
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX(new SemanticDocumentActionX());
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgPage);
 		return svgPage;

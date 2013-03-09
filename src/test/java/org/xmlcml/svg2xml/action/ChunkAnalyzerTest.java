@@ -41,8 +41,11 @@ public class ChunkAnalyzerTest {
 	// splits into 2 simple chunks
 	public void testTwoChunks0() throws Exception {
 		AbstractActionX semanticDocumentAction = SemanticDocumentActionX.createSemanticDocument(Fixtures.CHUNK_ANALYZE0);
+		Assert.assertNotNull("semanticDocumentAction not null", semanticDocumentAction);
 		semanticDocumentAction.run();
 		SVGElement svgPage = semanticDocumentAction.getSVGPage();
+		Assert.assertNotNull("svgPage not null", svgPage);
+		CMLUtil.debug(svgPage, new FileOutputStream("target/twoChunks0.svg"), 1);
 		Assert.assertEquals("child Elements", 5, svgPage.getChildElements().size()); // we have 2 script elements - get rid ?
 		SVGDefs defs = (SVGDefs) svgPage.getChildElements().get(0);
 		SVGG g1 = (SVGG) svgPage.getChildElements().get(1);

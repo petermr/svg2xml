@@ -26,6 +26,7 @@ public class SVGPlusConverterXTest {
 		SVGPlusConverterX converter = new SVGPlusConverterX(); 
 		try {
 			converter.run("" +
+				" -o target" +
 				"-c "+Fixtures.NOOP_FILE);
 		} catch (Exception e) {
 			throw new RuntimeException("should not fail run", e);
@@ -41,6 +42,7 @@ public class SVGPlusConverterXTest {
 		SVGPlusConverterX converter = new SVGPlusConverterX(); 
 		try {
 			converter.run("" +
+					" -o target" +
 					"-i " + Fixtures.AJC_PAGE6_PDF);
 			Assert.fail("Should trap missing command file");
 		} catch (Exception e) {
@@ -56,6 +58,7 @@ public class SVGPlusConverterXTest {
 		SVGPlusConverterX converter = new SVGPlusConverterX(); 
 		try {
 			converter.run("" +
+					" -o target" +
 					" -c "+Fixtures.NOOP_FILE +
 					" -i "+Fixtures.AJC_PAGE6_PDF);
 		} catch (Exception e) {
@@ -73,6 +76,7 @@ public class SVGPlusConverterXTest {
 		SVGPlusConverterX converter = new SVGPlusConverterX(); 
 		try {
 			converter.run("" +
+					" -o target" +
 					" -c "+Fixtures.BASIC_FILE +
 					" -i "+Fixtures.AJC_PAGE6_PDF);
 		} catch (Exception e) {
@@ -90,6 +94,7 @@ public class SVGPlusConverterXTest {
 		SVGPlusConverterX converter = new SVGPlusConverterX(); 
 		try {
 			converter.run("" +
+					" -o target" +
 					" -c "+Fixtures.BASIC_FILE +
 					" -i "+Fixtures.CORE_DIR);
 		} catch (Exception e) {
@@ -155,6 +160,7 @@ public class SVGPlusConverterXTest {
 	}
 
 	@Test
+	@Ignore // crashes with GC limit on maven
 	/** tests chunkAnalyzer
 	 * 
 	 */
