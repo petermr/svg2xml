@@ -199,7 +199,9 @@ public class SVGPlusConverterX {
 
 	public List<SVGSVG> createSVGPageList(File infile) {
 		ensurePDF2SVGConverter();
-		pdf2svgConverter.run(infile.getAbsolutePath());
+		// default: output is ephemeral
+		pdf2svgConverter.run(infile.getAbsolutePath()+" -outdir target");
+		LOG.trace("converted PDF "+infile);
 		return pdf2svgConverter.getPageList();
 	}
 

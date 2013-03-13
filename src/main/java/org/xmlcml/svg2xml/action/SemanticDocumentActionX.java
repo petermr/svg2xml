@@ -213,7 +213,7 @@ public class SemanticDocumentActionX extends DocumentActionX {
 	public Object getVariable(String name) {
 		ensureVariableStore();
 		for (String key : variableStore.keySet()) {
-			System.out.println(key+": "+"("+variableStore.getVariable(key)+")");
+			LOG.trace(key+": "+"("+variableStore.getVariable(key)+")");
 		}
 		return variableStore.getVariable(name);
 		

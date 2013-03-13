@@ -7,6 +7,11 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 
+/** general management of documents, etc
+ * 
+ * @author pm286
+ *
+ */
 public class AbstractActionElementXTest {
 
 

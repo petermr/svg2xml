@@ -21,10 +21,11 @@ public class Fixtures {
 
 	private static final Logger LOG = Logger.getLogger(Fixtures.class);
 	
-	public static final String SVGPLUS_DIR = "src/test/resources/org/xmlcml/svg2xml/";
-	public static final String COMMAND_DIR= SVGPLUS_DIR+"command/";
-	public static final String CORE_DIR = SVGPLUS_DIR+"core/";
-	public static final String ACTION_DIR = SVGPLUS_DIR+"action/";
+	public static final String SVG2XML_DIR = "src/test/resources/org/xmlcml/svg2xml/";
+	public static final String COMMAND_DIR= SVG2XML_DIR+"command/";
+	public static final String CORE_DIR = SVG2XML_DIR+"core/";
+	public static final String ACTION_DIR = SVG2XML_DIR+"action/";
+	public static final String SVG_DIR = SVG2XML_DIR+"svg/";
 	public static final File ACTION_SVG_DIR = new File(Fixtures.ACTION_DIR, "svg");
 	public static final File ACTION_PDF_DIR = new File(Fixtures.ACTION_DIR, "pdf");
 	public static final File CSIRO_DIR = new File("../pdfs/csiro/test");
@@ -58,6 +59,9 @@ public class Fixtures {
 	public static final File BMC313_PDF = new File(Fixtures.ACTION_PDF_DIR, "bmc11-313.pdf");
 	public static final File SUSCRIPTS_PDF = new File(Fixtures.ACTION_PDF_DIR, "suscripts.pdf");
 	public static final File FONT_STYLES_PDF = new File(Fixtures.ACTION_PDF_DIR, "fontStyles.pdf");
+	
+	public static final File SVG_AJC_DIR = new File(Fixtures.SVG_DIR, "ajc");
+	public static final File SVG_AJC_PAGE6_SPLIT_SVG = new File(Fixtures.SVG_AJC_DIR, "ajc_page6_split.svg");
 	
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;

@@ -254,7 +254,6 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
 					Double yy0 = (HOR.equals(orient)) ? line.getXY(0).getX() : line.getXY(0).getY();
 					Double yy1 = (HOR.equals(orient)) ? line.getXY(1).getX() : line.getXY(1).getY();
 					if (GraphUtil.isInSegment(yy, yy0, yy1)) {
-//						System.out.println("LINE "+xy+"/"+line.getXYString());
 						SVGMarker marker = new SVGMarker(xx, yy);
 						marker.addLine(line);
 						marker.addLine(line0);
@@ -286,7 +285,6 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
 			if (element != null) {
 				g.appendChild(element.copy());
 			} else {
-//				System.out.println("NULL MARKER");
 			}
 		}
 		
@@ -304,7 +302,6 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
 			Real2 midpoint = line1.getEuclidLine().getMidPoint();
 			if (end.getDistance(midpoint) < 1.0) {
 				col = "green";
-//				System.out.println("GREEN"+end);
 				break;
 			}
 		}

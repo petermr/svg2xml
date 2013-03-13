@@ -57,7 +57,6 @@ public class FontStyle {
 		Style style = null;
 		if (text != null) {
 			String fontWeight = text.getFontWeight();
-			System.out.println(text.toXML());
 			boolean bold = Style.BOLD.toString().equalsIgnoreCase(fontWeight);
 			String fontStyle = text.getFontStyle();
 			boolean italic = Style.ITALIC.toString().equalsIgnoreCase(fontStyle);

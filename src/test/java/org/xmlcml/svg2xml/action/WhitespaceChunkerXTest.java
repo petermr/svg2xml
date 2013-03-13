@@ -59,7 +59,7 @@ public class WhitespaceChunkerXTest {
 	
 	@Test
 	public void testPage6() {
-		testSplit(Fixtures.AJC6_SVG, 14, new File("target/page6.svg"));
+		testSplit(Fixtures.AJC6_SVG, 14, new File("target/ajc_page6_split.svg"));
 	}
 	
 

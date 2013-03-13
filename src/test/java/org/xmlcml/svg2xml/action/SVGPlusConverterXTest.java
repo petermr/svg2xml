@@ -26,7 +26,6 @@ public class SVGPlusConverterXTest {
 		SVGPlusConverterX converter = new SVGPlusConverterX(); 
 		try {
 			converter.run("" +
-				" -o target" +
 				"-c "+Fixtures.NOOP_FILE);
 		} catch (Exception e) {
 			throw new RuntimeException("should not fail run", e);

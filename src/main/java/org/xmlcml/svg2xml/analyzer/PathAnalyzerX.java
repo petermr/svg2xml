@@ -19,6 +19,7 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.MovePrimitive;
 import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGPathPrimitive;
@@ -75,11 +76,19 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 		super(semanticDocumentActionX);
 	}
 
+	public void readPathList(List<SVGPath> pathList) {
+		this.pathList = new ArrayList<SVGPath>();
+		for (SVGPath path : pathList) {
+			this.pathList.add(path); 
+		}
+	}
+	
+	public List<SVGPath> getPathList() { return pathList;}
 	/** runs components having set true/false flags if required
 	 * 
 	 */
 	public void runAnalyses(List<SVGPath> pathList) {
-		this.pathList = pathList;
+		readPathList(pathList);
 		this.removeDuplicatePaths();
 		this.removeRedundantMoveCommands();
 		this.splitAtMoveCommands();

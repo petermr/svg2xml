@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nu.xom.Attribute;
+import nu.xom.Elements;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
@@ -939,14 +942,21 @@ public class TextLine implements Iterable<SVGText> {
 		List<TextLine> textLineList = createSuscriptTextLineList();
 		HtmlP p = new HtmlP();
 		for (TextLine textLine : textLineList) {
-			HtmlElement pp = textLine.getHtmlElement();
-			p.appendChild(pp.copy());
+			HtmlElement pp = textLine.getHtmlElements();
+			if (pp instanceof HtmlSpan) {
+				Elements childElements = pp.getChildElements();
+				for (int i = 0; i < childElements.size(); i++) {
+					p.appendChild(HtmlElement.create(childElements.get(i)));
+				}
+			} else {
+				p.appendChild(HtmlElement.create(pp));
+			}
 		}
 		return p;
 	}
 
 
-	private HtmlElement getHtmlElement() {
+	private HtmlElement getHtmlElements() {
 		HtmlElement htmlElement = null;
 		Suscript suscript = this.getSuscript();
 		if (suscript == null || suscript.equals(Suscript.NONE)) {
@@ -956,8 +966,74 @@ public class TextLine implements Iterable<SVGText> {
 		} else if (suscript.equals(Suscript.SUP)) {
 			htmlElement = new HtmlSup();
 		}
-		htmlElement.appendChild(this.getLineContent());
+		// this may create one or more span children as we encounter fonts and styles
+		// even sub/super may have different styles within them
+		addCharacters(htmlElement);
+		LOG.trace("Html Element: "+htmlElement.toXML());
 		return htmlElement;
+	}
+
+	private void addCharacters(HtmlElement htmlElement) {
+		String currentFontFamily = null;
+		String currentFontStyle = null;
+		String currentColor = null;
+		Double currentFontSize = null;
+		HtmlSpan span = null;
+		StringBuffer sb = null;
+		for (SVGText character : characterList) {
+			String fontFamily = character.getFontFamily();
+			String fontStyle = character.getFontStyle();
+			String color = character.getFill();
+			Double fontSize = character.getFontSize();
+			if (!equals(currentFontSize, fontSize, 0.01) ||
+				!equals(currentColor, color) ||
+				!equals(currentFontStyle, fontStyle) ||
+				!equals(currentFontFamily, fontFamily)
+				) {
+				if (span != null) {
+					span.setValue(sb.toString());
+				}
+				span = new HtmlSpan();
+				StringBuffer sbatt = new StringBuffer();
+				addStyle(sbatt, "font-size", fontSize);
+				addStyle(sbatt, "color", color);
+				addStyle(sbatt, "font-style", fontStyle);
+				addStyle(sbatt, "font-family", fontFamily);
+				span.addAttribute(new Attribute("style", sbatt.toString()));
+				htmlElement.appendChild(span);
+				sb = new StringBuffer();
+				currentFontFamily = fontFamily;
+				currentFontStyle = fontStyle;
+				currentColor = color;
+				currentFontSize = fontSize;
+			}
+			sb.append(character.getValue());
+		}
+		if (span != null) {
+			span.setValue(sb.toString());
+		}
+	}
+
+	private static void addStyle(StringBuffer sbatt, String attName, String value) {
+		if (value != null) {
+			sbatt.append(attName+":"+value+";");
+		}
+	}
+
+	private static void addStyle(StringBuffer sbatt, String attName, Double value) {
+		if (value != null) {
+			sbatt.append(attName+":"+value+"px;");
+		}
+	}
+
+	private boolean equals(String s1, String s2) {
+		return (s1 == null && s2 == null) ||
+				(s1 != null && s2 != null && s1.equals(s2));
+	}
+
+	private boolean equals(Double s1, Double s2, double eps) {
+		return (s1 == null && s2 == null) ||
+				(s1 != null && s2 != null && Real.isEqual(s1, s2, eps));
 	}
 
 	public Suscript getSuscript() {

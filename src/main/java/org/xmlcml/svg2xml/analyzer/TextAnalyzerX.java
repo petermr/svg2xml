@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 
 import nu.xom.Attribute;
-import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.log4j.Level;
@@ -30,6 +30,7 @@ import org.xmlcml.graphics.svg.SVGConstants;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -134,6 +135,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private Map<TextLine, Integer> textLineSerialMap;
 	private Real2Range textLinesLargetFontBoundingBox;
 	private List<TextLine> textLineListWithLargestFont;
+	private List<SVGText> textCharacters;
 	
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
@@ -169,7 +171,6 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public void analyzeTextsOld(List<SVGText> textCharacters) {
-		LOG.debug("ANALYZE TEXT "+textCharacters.size());
 		createHorizontalCharacterListsOld(textCharacters);
 		analyzeSpaces();
 		createWordsInSublines();
@@ -180,7 +181,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public void analyzeTexts(List<SVGText> textCharacters) {
-		LOG.trace("ANALYZE TEXT "+textCharacters.size());
+		this.textCharacters = textCharacters;
 		getSortedTextLines(textCharacters);
 	}
 
@@ -613,7 +614,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		for (int iz : ii) {
 			TextLine textList = textByCoordMap.get(iz);
 			for (SVGText text : textList) {
-				System.out.print(text.getXY()+" "+text.getText()+ " ");
+				System.out.print(">> "+text.getXY()+" "+text.getText()+ " ");
 			}
 		}
 		System.out.println();
@@ -1396,7 +1397,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		} else {
 			HtmlElement rawDiv = createHtmlRawDiv();
 			Double leftIndent = this.getMaximumLeftIndentForLargestFont();
-			Double deltaLeftIndent = leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin();
+			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin());
 			this.getTextLinesLargestFontBoundingBox();
 			Double indentBoundary = textLinesLargetFontBoundingBox.getXRange().getMin() + deltaLeftIndent/2.0;
 			LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
@@ -1517,14 +1518,25 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return indent;
 	}
 
-//	private RealArray getTextLineXArray() {
-//		RealArray xStartArray = null;
-//		getLinesInIncreasingY();
-//		if (textLineList == null) {
-//			for (TextLine textLine : textLineList) {
-//				Double x = textLine.getXCoordinate();
-//			}
-//		}
-//	}
+	public static TextAnalyzerX createTextAnalyzerWithSortedLines(File svgFile) {
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
+		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgPage, ".//svg:text"));
+		return createTextAnalyzerWithSortedLines(textCharacters);
+	}
+
+	public static TextAnalyzerX createTextAnalyzerWithSortedLines(List<SVGText> textCharacters) {
+		TextAnalyzerX textAnalyzer = new TextAnalyzerX();
+		textAnalyzer.analyzeTexts(textCharacters);
+		textAnalyzer.getLinesInIncreasingY();
+		return textAnalyzer;
+	}
+
+	public static List<TextLine> createTextLineList(File svgFile) {
+		TextAnalyzerX textAnalyzer = createTextAnalyzerWithSortedLines(svgFile);
+		List<TextLine> textLineList = textAnalyzer.getLinesInIncreasingY();
+		return textLineList;
+	}
+
+	public List<SVGText> getTextCharacters() {return textCharacters;}
 
 }

@@ -7,6 +7,8 @@ import java.util.Set;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.xmlcml.cml.testutil.JumboTestUtils;
+import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerTest;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
@@ -87,9 +89,71 @@ public class TextLineTest {
 		Assert.assertEquals("line5 fontSize", 9.465, fontSizeSet.iterator().next().getDouble(), 0.01);
 	}
 
+	@Test
+	public void testCreateHtmlLine1() {
+		// no suscripts
+		TextLine textLine2 = TextLineTest.getTextLine(TextAnalyzerTest.PARA_SUSCRIPT_SVG, 1);
+		HtmlElement element = textLine2.createHtmlLine();
+		String ref = "" +
+		"<p xmlns='http://www.w3.org/1999/xhtml'>" +
+		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The rate constant is 0.61795 mg L</span>" +
+		"<sup>" +
+		"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
+		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
+		"</sup>" +
+		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>h</span>" +
+		"<sup>" +
+		"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
+		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
+		"</sup>" +
+		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>.</span>" +
+		"</p>";
+		JumboTestUtils.assertEqualsIncludingFloat("htmlLine ", ref, element, true, 0.00001);
+	}
+
+	@Test
+	public void testCreateHtmlLine2() {
+		// no suscripts
+		TextLine textLine2 = TextLineTest.getTextLine(TextAnalyzerTest.PARA_SUSCRIPT_SVG, 2);
+		HtmlElement element = textLine2.createHtmlLine();
+		String ref = "" +
+			"<p xmlns='http://www.w3.org/1999/xhtml'>"+
+			"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The temperature dependence of the rate constants is described</span>"+
+			"</p>";
+		JumboTestUtils.assertEqualsIncludingFloat("htmlLine ", ref, element, true, 0.00001);
+	}
+	
+	@Test
+	public void testCreateHtmlLine8() {
+		// sub and super
+		TextLine textLine8 = TextLineTest.getTextLine(TextAnalyzerTest.PARA_SUSCRIPT_SVG, 8);
+		HtmlElement element = textLine8.createHtmlLine();
+		String ref = "" +
+		"<p xmlns='http://www.w3.org/1999/xhtml'>" +
+		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>130 and 200</span>" +
+		"<sup>" +
+		"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>"+(char)9702+"</span>" +
+		"</sup>" +
+		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>C yields the results of </span>" +
+		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
+		"<sub>" +
+		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>0</span>" +
+		"</sub>" +
+		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>and </span>" +
+		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
+		"<sub>" +
+		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
+		"</sub>" +
+		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>at higher tem-</span>" +
+		"</p>";
+		JumboTestUtils.assertEqualsIncludingFloat("htmlLine ", ref, element, true, 0.00001);
+	}
+	
+// ==========================================================================
+	
 	// FIXTURES
 	private static TextLine getTextLine(File file, int lineNumber) {
-		TextAnalyzerX analyzerX = TextAnalyzerTest.createTextAnalyzerWithSortedLines(file);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(file);
 		analyzerX.getLinesInIncreasingY();
 		List<TextLine> textLines = analyzerX.getLinesInIncreasingY();
 		TextLine textLine = textLines.get(lineNumber);

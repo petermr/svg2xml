@@ -10,6 +10,11 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
+/** tests BoundingBoxManager which manages a list of Bounding boxes
+ * 
+ * @author pm286
+ *
+ */
 public class BoundingBoxManagerTest {
 	
 	@Test
