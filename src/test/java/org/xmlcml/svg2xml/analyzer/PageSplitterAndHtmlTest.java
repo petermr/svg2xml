@@ -543,6 +543,7 @@ public class PageSplitterAndHtmlTest {
 // ====================================================================
 	
 	private void testSingleLineInChunk(int chunk, String expected) {
+		// note this has been split already
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractPageAnalyzerX.getAnalyzer(gList.get(chunk));
@@ -555,6 +556,10 @@ public class PageSplitterAndHtmlTest {
 
 	private void testMultipleLineInMixedChunk(int chunk, int nlines, Element ref) {
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+		analyzeChunkInSVGPage(chunk, nlines, ref, svg);
+	}
+
+	private static void analyzeChunkInSVGPage(int chunk, int nlines, Element ref, Element svg) {
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) AbstractPageAnalyzerX.getAnalyzer(gList.get(chunk));
 		TextAnalyzerX textAnalyzer = new TextAnalyzerX();

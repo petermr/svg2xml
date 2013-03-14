@@ -1365,8 +1365,11 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			getLargestFont();
 			for (int i = 0; i < textLineList.size(); i++){
 				TextLine textLine = textLineList.get(i);
-				if (Real.isEqual(textLine.getFontSize(), largestFontSize.getDouble(), 0.001)) {
-					linesWithLargestFont.add( textLine);
+				Double fontSize = (textLine == null) ? null : textLine.getFontSize();
+				if (fontSize != null) {
+					if (Real.isEqual(fontSize, largestFontSize.getDouble(), 0.001)) {
+						linesWithLargestFont.add( textLine);
+					}
 				}
 			}
 		}

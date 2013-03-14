@@ -11,6 +11,7 @@ import nu.xom.Elements;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
@@ -78,6 +79,13 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 				new SplitterParams(BoxEdge.YMIN, YSEP_1)
 				}
 		);
+	}
+
+	public static List<Chunk> chunkCreateWhitespaceChunkList(SemanticDocumentActionX semanticDocumentAction) {
+		SVGSVG svgPage = semanticDocumentAction.getSVGPage();
+		WhitespaceChunkerAnalyzerX pageChunkSplitterAnalyzer = new WhitespaceChunkerAnalyzerX(semanticDocumentAction);
+		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace(svgPage);
+		return finalChunkList;
 	}
 
 	public void setSplitterParams(SplitterParams[] spParams) {

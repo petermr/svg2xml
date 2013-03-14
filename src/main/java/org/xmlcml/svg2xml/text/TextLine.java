@@ -976,6 +976,7 @@ public class TextLine implements Iterable<SVGText> {
 	private void addCharacters(HtmlElement htmlElement) {
 		String currentFontFamily = null;
 		String currentFontStyle = null;
+		String currentFontWeight = null;
 		String currentColor = null;
 		Double currentFontSize = null;
 		HtmlSpan span = null;
@@ -983,11 +984,13 @@ public class TextLine implements Iterable<SVGText> {
 		for (SVGText character : characterList) {
 			String fontFamily = character.getFontFamily();
 			String fontStyle = character.getFontStyle();
+			String fontWeight = character.getFontWeight();
 			String color = character.getFill();
 			Double fontSize = character.getFontSize();
 			if (!equals(currentFontSize, fontSize, 0.01) ||
 				!equals(currentColor, color) ||
 				!equals(currentFontStyle, fontStyle) ||
+				!equals(currentFontWeight, fontWeight) ||
 				!equals(currentFontFamily, fontFamily)
 				) {
 				if (span != null) {
@@ -998,12 +1001,14 @@ public class TextLine implements Iterable<SVGText> {
 				addStyle(sbatt, "font-size", fontSize);
 				addStyle(sbatt, "color", color);
 				addStyle(sbatt, "font-style", fontStyle);
+				addStyle(sbatt, "font-weight", fontWeight);
 				addStyle(sbatt, "font-family", fontFamily);
 				span.addAttribute(new Attribute("style", sbatt.toString()));
 				htmlElement.appendChild(span);
 				sb = new StringBuffer();
 				currentFontFamily = fontFamily;
 				currentFontStyle = fontStyle;
+				currentFontWeight = fontWeight;
 				currentColor = color;
 				currentFontSize = fontSize;
 			}

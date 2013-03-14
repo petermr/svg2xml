@@ -2,6 +2,11 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.util.List;
 
+import nu.xom.Element;
+import nu.xom.Node;
+import nu.xom.Nodes;
+import nu.xom.Text;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -10,8 +15,12 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlB;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlI;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public abstract class AbstractPageAnalyzerX {
 	
@@ -36,6 +45,52 @@ public abstract class AbstractPageAnalyzerX {
 	
 	public SVGSVG getSVGPage() {
 		return getPageEditor().getSVGPage();
+	}
+
+	private static void addBoldOrItalic(HtmlElement bi, Element parent) {
+		for (int j = 0; j < parent.getChildCount(); j++) {
+			Node child = parent.getChild(0);
+			child.detach();
+			bi.appendChild(child);
+		}
+		parent.appendChild(bi);
+	}
+
+	public static void tidyStyles(Element element) {
+		if (element != null) {
+			convertFontWeightStyleToHTML(element);
+			mergeSpans(element);
+			SVG2XMLUtil.tidyTagWhiteTag(element, HtmlI.TAG);
+			SVG2XMLUtil.tidyTagWhiteTag(element, HtmlB.TAG);
+		}
+	}
+
+	public static void mergeSpans(Element element) {
+		while (true) {
+			Nodes spanNodes = element.query(".//*[local-name()='span']");
+			if (spanNodes.size() == 0) {
+				break;
+			}
+			for (int i = 0; i < spanNodes.size(); i++) {
+				SVG2XMLUtil.replaceNodeByChildren((Element) spanNodes.get(i));
+			}
+		}
+	}
+
+	private static void convertFontWeightStyleToHTML(Element element) {
+		Nodes styleAtts = element.query("//@style");
+		for (int i = 0; i < styleAtts.size(); i++) {
+			Node styleAtt = styleAtts.get(i);
+			String style = styleAtt.getValue(); 
+			Element parent = (Element) styleAtt.getParent();
+			if (style.contains("font-style:italic")) {
+				addBoldOrItalic(new HtmlI(), parent);
+			}
+			if (style.contains("font-weight:bold")) {
+				addBoldOrItalic(new HtmlB(), parent);
+			}
+			styleAtt.detach();
+		}
 	}
 
 	public static AbstractPageAnalyzerX getAnalyzer(SVGElement svgElement) {

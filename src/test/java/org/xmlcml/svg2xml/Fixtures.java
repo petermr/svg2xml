@@ -74,19 +74,6 @@ public class Fixtures {
 		return semanticDocumentAction;
 	}
 	
-	public static SemanticDocumentActionX createSemanticDocumentActionWithSVGPage(File svgPageFile) {
-		SemanticDocumentActionX semanticDocumentAction = null;
-		try {
-			Element element = new Builder().build(svgPageFile).getRootElement();
-			SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(element);
-			semanticDocumentAction = new SemanticDocumentActionX();
-			semanticDocumentAction.getPageEditor().setSVGPage(svgPage);
-		} catch (Exception e) {
-			throw new RuntimeException("cannot create page: ", e);
-		}
-		return semanticDocumentAction;
-	}
-
 	public static void drawChunkBoxes(AbstractActionX semanticDocumentAction,
 			List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {

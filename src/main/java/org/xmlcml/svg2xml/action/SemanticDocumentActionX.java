@@ -15,6 +15,8 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.text.SimpleFont;
 
 public class SemanticDocumentActionX extends DocumentActionX {
@@ -80,6 +82,16 @@ public class SemanticDocumentActionX extends DocumentActionX {
 			documentIteratorElement =  (nodes.size() == 1) ? (DocumentIteratorActionX) nodes.get(0) : null;
 		}
 		return documentIteratorElement;
+	}
+	public static SemanticDocumentActionX createSemanticDocumentActionWithSVGPageFile(File svgPageFile) {
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(svgPageFile);
+		return createSemanticDocumentActionWithSVGPage(svgPage);
+	}
+
+	public static SemanticDocumentActionX createSemanticDocumentActionWithSVGPage(SVGSVG svgPage) {
+		SemanticDocumentActionX semanticDocumentAction = new SemanticDocumentActionX();
+		semanticDocumentAction.getPageEditor().setSVGPage(svgPage);
+		return semanticDocumentAction;
 	}
 
 	public static SemanticDocumentActionX createSemanticDocument(File file) {

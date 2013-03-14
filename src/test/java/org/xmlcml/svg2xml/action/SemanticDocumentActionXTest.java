@@ -7,6 +7,8 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.TestUtils;
 
@@ -92,4 +94,5 @@ public class SemanticDocumentActionXTest {
 		Assert.assertNull("null",  
 				semanticDocumentAction.getVariable(null));
 	}
+
 }
