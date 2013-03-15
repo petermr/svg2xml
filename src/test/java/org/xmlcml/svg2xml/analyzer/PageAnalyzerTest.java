@@ -25,9 +25,9 @@ public class PageAnalyzerTest {
 	public final static File BMCINDIR = new File(PDFTOP, "bmc");
 	public final static File BMCOUTDIR = new File(SVGTOP, "bmc");
 	public final static String GEOTABLE = "geotable-1471-2148-11-310";
-	private static final String MATHS = "maths-1471-2148-11-311";
-	private static final String MULTIPLE = "multiple-1471-2148-11-312";
-	private static final String TREE = "tree-1471-2148-11-313";
+	public final static String MATHS = "maths-1471-2148-11-311";
+	public final static String MULTIPLE = "multiple-1471-2148-11-312";
+	public final static String TREE = "tree-1471-2148-11-313";
 	
 	@Before
 	public void createSVGFixtures() {
@@ -64,10 +64,22 @@ public class PageAnalyzerTest {
 	}
 	
 	@Test
-	public void testPages() {
+	public void testGeoTablePages() {
 		File[] files = new File(BMCOUTDIR, GEOTABLE).listFiles();
 		for (int page = 0; page < files.length; page++) {
 			analyzeChunkInSVGPage(BMCOUTDIR, GEOTABLE, page+1);
+		}
+	}
+	
+	@Test
+	public void testTreePages() {
+		analyzePaper(BMCOUTDIR, TREE);
+	}
+
+	private void analyzePaper(File outdir, String paperRoot) {
+		File[] files = new File(outdir, paperRoot).listFiles();
+		for (int page = 0; page < files.length; page++) {
+			analyzeChunkInSVGPage(outdir, paperRoot, page+1);
 		}
 	}
 	

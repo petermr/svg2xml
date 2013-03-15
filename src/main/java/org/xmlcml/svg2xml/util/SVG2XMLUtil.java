@@ -27,6 +27,20 @@ public class SVG2XMLUtil {
 		}
 	}
 	
+	public static void removeTagWithWhiteContent(Element element, String tag) {
+		String query = ".//*[*[local-name()='"+tag+"' and normalize-space(.)='']]'";
+		Nodes nodes = element.query(query);
+		for (int i = 0; i < nodes.size(); i++) {
+			removeTagWithWhiteContent((Element) nodes.get(i));
+		}
+	}
+	
+	private static void removeTagWithWhiteContent(Element element) {
+		String value = element.getValue();
+		Element parent = (Element) element.getParent();
+		parent.replaceChild(element, new Text(value));
+	}
+
 	private static void tidyChildren(Element element, String tag) {
 		int nChild = element.getChildCount();
 		System.out.println();

@@ -830,8 +830,10 @@ public class TextLine implements Iterable<SVGText> {
 			Double thisY = this.getYCoord();
 			TextLine previousLine = textAnalyzerX.getLinesInIncreasingY().get(ii-1);
 			Double previousY = previousLine.getYCoord();
-			if (thisY - previousY < fontSize * FONT_Y_FACTOR) {
-				superscript = previousLine;
+			if (previousY != null) {
+				if (thisY - previousY < fontSize * FONT_Y_FACTOR) {
+					superscript = previousLine;
+				}
 			}
 		}
 		return superscript;
@@ -845,8 +847,10 @@ public class TextLine implements Iterable<SVGText> {
 			Double thisY = this.getYCoord();
 			TextLine nextLine = textAnalyzerX.getLinesInIncreasingY().get(ii+1);
 			Double nextY = nextLine.getYCoord();
-			if (nextY - thisY < fontSize * FONT_Y_FACTOR) {
-				subscript = nextLine;
+			if (nextY != null) {
+				if (nextY - thisY < fontSize * FONT_Y_FACTOR) {
+					subscript = nextLine;
+				}
 			}
 		}
 		return subscript;
