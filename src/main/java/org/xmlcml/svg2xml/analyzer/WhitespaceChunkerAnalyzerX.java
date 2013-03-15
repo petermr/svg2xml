@@ -10,7 +10,11 @@ import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.svg.SVGConstants;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
@@ -144,6 +148,7 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 		LOG.debug("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
 //		pageEditorX.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
+		LOG.debug(""+splitterParams.get(0).width+"; "+""+splitterParams.get(1).width+"; "+""+splitterParams.get(2).width+"; ");
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
 		List<Chunk> subSubSubChunkList = null;
@@ -184,5 +189,18 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 			g.detach();
 		}
 	}
-	
+
+	public static void drawBoxes(List<Chunk> chunkList, String stroke, String fill, Double opacity) {
+		for (Chunk chunk : chunkList) {
+			Real2Range bbox = chunk.getBoundingBox();
+			SVGRect rect = new SVGRect( bbox);
+			rect.setStroke(stroke);
+			rect.setFill(fill);
+			rect.setStrokeWidth(0.9);
+			rect.setOpacity(opacity);
+			chunk.appendChild(rect);
+		}
+	}
+
+
 }

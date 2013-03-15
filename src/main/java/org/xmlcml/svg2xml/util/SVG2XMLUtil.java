@@ -43,7 +43,6 @@ public class SVG2XMLUtil {
 
 	private static void tidyChildren(Element element, String tag) {
 		int nChild = element.getChildCount();
-		System.out.println();
 		for (int i = nChild - 1; i >= 2; i--) {
 			Node n0 = element.getChild(i);
 			Node n1 = element.getChild(i-1);
@@ -76,14 +75,14 @@ public class SVG2XMLUtil {
 		}
 	}
 
-	private static void printElement(String x, Element element) {
-		int nChild = element.getChildCount();
-		System.out.print(x+"...");
-		for (int i = 0; i < nChild; i++){
-			Node child = element.getChild(i);
-			System.out.print("{"+child.toXML()+"}"+((child instanceof Element)? ((Element)child).getChildCount() : ""));
-		}
-	}
+//	private static void printElement(String x, Element element) {
+//		int nChild = element.getChildCount();
+//		System.out.print(x+"...");
+//		for (int i = 0; i < nChild; i++){
+//			Node child = element.getChild(i);
+//			System.out.print("{"+child.toXML()+"}"+((child instanceof Element)? ((Element)child).getChildCount() : ""));
+//		}
+//	}
 
 	private static void appendText(Element e, Text text) {
 		if (e.getChildCount() == 0) {
