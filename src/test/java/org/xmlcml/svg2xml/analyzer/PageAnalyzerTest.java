@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import nu.xom.Element;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
@@ -21,20 +22,32 @@ import org.xmlcml.svg2xml.text.TextLine;
 public class PageAnalyzerTest {
 
 	public final static File PDFTOP = new File("src/test/resources/pdfs");
+	public final static File PDFTOP1 = new File("../pdfs");
 	public final static File SVGTOP = new File("src/test/resources/svg");
+	public final static File TARGET = new File("target");
+
 	public final static File BMCINDIR = new File(PDFTOP, "bmc");
 	public final static File BMCOUTDIR = new File(SVGTOP, "bmc");
-	public final static String GEOTABLE = "geotable-1471-2148-11-310";
+
+	public final static File AJCINDIR = new File(PDFTOP1, "ajc");
+	public final static File AJCOUTDIR = new File(TARGET, "ajc");
+	
+	public final static String BMC_GEOTABLE = "geotable-1471-2148-11-310";
 	public final static String MATHS = "maths-1471-2148-11-311";
 	public final static String MULTIPLE = "multiple-1471-2148-11-312";
 	public final static String TREE = "tree-1471-2148-11-313";
+
+	public final static String AJC1 = "CH01182";
 	
 	@Before
 	public void createSVGFixtures() {
-		createSVG(BMCINDIR, BMCOUTDIR, GEOTABLE);
+		createSVG(BMCINDIR, BMCOUTDIR, BMC_GEOTABLE);
 		createSVG(BMCINDIR, BMCOUTDIR, MATHS);
 		createSVG(BMCINDIR, BMCOUTDIR, MULTIPLE);
 		createSVG(BMCINDIR, BMCOUTDIR, TREE);
+
+//		createSVG(AJCINDIR, AJCOUTDIR, AJC1);    // uncomment for AJC
+
 	}
 	
 	private static void createSVG(File indir, File outtop, String fileRoot) {
@@ -60,20 +73,26 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage() {
 		int page = 2;
-		analyzeChunkInSVGPage(BMCOUTDIR, GEOTABLE, page);
+		analyzeChunkInSVGPage(BMCOUTDIR, BMC_GEOTABLE, page);
 	}
 	
 	@Test
 	public void testGeoTablePages() {
-		File[] files = new File(BMCOUTDIR, GEOTABLE).listFiles();
+		File[] files = new File(BMCOUTDIR, BMC_GEOTABLE).listFiles();
 		for (int page = 0; page < files.length; page++) {
-			analyzeChunkInSVGPage(BMCOUTDIR, GEOTABLE, page+1);
+			analyzeChunkInSVGPage(BMCOUTDIR, BMC_GEOTABLE, page+1);
 		}
 	}
 	
 	@Test
 	public void testTreePages() {
 		analyzePaper(BMCOUTDIR, TREE);
+	}
+
+	@Test
+	@Ignore
+	public void testAJC1Pages() {
+		analyzePaper(AJCOUTDIR, AJC1);
 	}
 
 	private void analyzePaper(File outdir, String paperRoot) {
