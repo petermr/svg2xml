@@ -143,12 +143,12 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 //		topChunk.debug("PRE"+topChunk.getParent());
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
-		LOG.debug("descendants0: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
+		LOG.trace("descendants0: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
 		topChunk.setBoundingBoxCacheForSelfAndDescendants(true);
-		LOG.debug("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
+		LOG.trace("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
 //		pageEditorX.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
-		LOG.debug(""+splitterParams.get(0).width+"; "+""+splitterParams.get(1).width+"; "+""+splitterParams.get(2).width+"; ");
+		LOG.trace(""+splitterParams.get(0).width+"; "+""+splitterParams.get(1).width+"; "+""+splitterParams.get(2).width+"; ");
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
 		List<Chunk> subSubSubChunkList = null;

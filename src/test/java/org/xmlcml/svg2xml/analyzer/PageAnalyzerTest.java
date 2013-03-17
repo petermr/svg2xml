@@ -1,9 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -21,6 +19,7 @@ import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -30,42 +29,20 @@ public class PageAnalyzerTest {
 
 	private final static Logger LOG = Logger.getLogger(PageAnalyzerTest.class);
 	
-	public final static File PDFTOP = new File("src/test/resources/pdfs");
-	public final static File PDFTOP1 = new File("../pdfs");
-	public final static File SVGTOP = new File("src/test/resources/svg");
-	public final static File TARGET = new File("target");
-
-	public final static File BMCINDIR = new File(PDFTOP, "bmc");
-	public final static File BMCSVGDIR = new File(SVGTOP, "bmc");
-	public final static File BMCOUTDIR = new File(TARGET, "bmc");
-
-	public final static File AJCINDIR = new File(PDFTOP1, "ajc");
-	public final static File AJCSVGDIR = new File(TARGET, "ajc");
-	public final static File AJCOUTDIR = new File(TARGET, "ajc");
-	
 	public final static String BMC_GEOTABLE = "geotable-1471-2148-11-310";
-	public final static String MATHS = "maths-1471-2148-11-311";
-	public final static String MULTIPLE = "multiple-1471-2148-11-312";
-	public final static String TREE = "tree-1471-2148-11-313";
 
 	public final static String AJC1 = "CH01182";
 	
 	@Before
 	public void createSVGFixtures() {
-		createSVG(BMCINDIR, BMCSVGDIR, BMC_GEOTABLE);
-		createSVG(BMCINDIR, BMCSVGDIR, MATHS);
-		createSVG(BMCINDIR, BMCSVGDIR, MULTIPLE);
-		createSVG(BMCINDIR, BMCSVGDIR, TREE);
-
-//		createSVG(AJCINDIR, AJCOUTDIR, AJC1);    // uncomment for AJC
-
+		createSVG(Fixtures.BMCINDIR, Fixtures.BMCSVGDIR, BMC_GEOTABLE);
 	}
 	
-	private static void createSVG(File indir, File outtop, String fileRoot) {
+	public static void createSVG(File indir, File outtop, String fileRoot) {
 		PDF2SVGConverter converter = new PDF2SVGConverter();
 		File infile = new File(indir, fileRoot+".pdf");
 		if (!infile.exists()) {
-			throw new RuntimeException("no inpiut file: "+infile);
+			throw new RuntimeException("no input file: "+infile);
 		}
 		File outdir = new File(outtop, fileRoot);
 		if (!outdir.exists() || outdir.listFiles() == null) {
@@ -84,37 +61,44 @@ public class PageAnalyzerTest {
 	@Test
 	public void testGeoTablePage() {
 		int page = 2;
-		analyzeChunkInSVGPage(BMCSVGDIR, BMC_GEOTABLE, page, BMCOUTDIR);
+		analyzeChunkInSVGPage(Fixtures.BMCSVGDIR, BMC_GEOTABLE, page, Fixtures.BMCOUTDIR);
 	}
 	
 	@Test
 	public void testGeoTablePages() {
-		File[] files = new File(BMCSVGDIR, BMC_GEOTABLE).listFiles();
+		File[] files = new File(Fixtures.BMCSVGDIR, BMC_GEOTABLE).listFiles();
+		analyzeChunksInPagesInFiles(files, Fixtures.BMCSVGDIR, BMC_GEOTABLE, Fixtures.BMCOUTDIR);
+	}
+
+	private void analyzeChunksInPagesInFiles(File[] files, File svgDir, String fileRoot, File outdir) {
 		for (int page = 0; page < files.length; page++) {
-			analyzeChunkInSVGPage(BMCSVGDIR, BMC_GEOTABLE, page+1, BMCOUTDIR);
+			analyzeChunkInSVGPage(svgDir, fileRoot, page+1, outdir);
 		}
 	}
 	
 	@Test
-	public void testTreePages() {
-		analyzePaper(BMCSVGDIR, TREE, BMCOUTDIR);
+	public void testBoldResults() {
+		SVGElement svgElement = SVGElement.readAndCreateSVG(new File("src/test/resources/org/xmlcml/svg2xml/svg/bmc/tree-page-2-results.svg"));
+		analyzeChunkInSVGPage((SVGElement) svgElement.getChildElements().get(0), "chunk", Fixtures.BMCOUTDIR, "results");
 	}
-
-	@Test
-	@Ignore
-	public void testAJC1Pages() {
-		analyzePaper(AJCSVGDIR, AJC1, AJCOUTDIR);
+	
+	//================================================================
+	
+	public static void analyzePDF(File pdfDir, File svgDir, String paperRoot, File outDir) {
+		createSVG(pdfDir, svgDir, paperRoot);
+		analyzePaper(svgDir, paperRoot, outDir);
 	}
-
-	private void analyzePaper(File svgdir, String paperRoot, File outdir) {
+	public static void analyzePaper(File svgdir, String paperRoot, File outdir) {
 		File paperRootDir = new File(svgdir, paperRoot);
 		File[] files = paperRootDir.listFiles();
 		if (files == null) {
 			throw new RuntimeException("No files in "+paperRootDir);
 		}
 		for (int page = 0; page < files.length; page++) {
+			System.out.print(page+"=");
 			analyzeChunkInSVGPage(svgdir, paperRoot, page+1, outdir);
 		}
+		System.out.println();
 	}
 	
 	private static void analyzeChunkInSVGPage(File svgdir, String fileRoot, int page, File outdir) {
@@ -124,7 +108,7 @@ public class PageAnalyzerTest {
 		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
-			analyzeChunkInSVGPage(gList, ichunk, page, outdir, fileRoot);
+			analyzeChunkInSVGPage(gList.get(ichunk), "page-"+page+"-"+ichunk, outdir, fileRoot);
 			checkImages((SVGElement)gList.get(ichunk), outdir, fileRoot, page, ichunk);
 		}
 		try {
@@ -144,7 +128,9 @@ public class PageAnalyzerTest {
 			SVGSVG svg = new SVGSVG();
 			svg.appendChild(new SVGImage(image));
 			try {
-				File file = new File(new File(outdir, fileRoot), page+"-image-"+ii+"-"+ichunk+".svg");
+				File dir = new File(outdir, fileRoot);
+				dir.mkdirs();
+				File file = new File(dir, page+"-image-"+ii+"-"+ichunk+".svg");
 				CMLUtil.debug(svg, new FileOutputStream(file), 1);
 				System.out.println("FILE: "+file);
 			} catch (Exception e) {
@@ -153,9 +139,7 @@ public class PageAnalyzerTest {
 		}
 	}
 
-	private static void analyzeChunkInSVGPage(List<SVGElement> gList, int ichunk, int page, File outdir, String fileRoot) {
-//		System.out.println(">> "+ichunk);
-		SVGElement chunkSvg = gList.get(ichunk);
+	private static void analyzeChunkInSVGPage(SVGElement chunkSvg, String name, File outdir, String fileRoot) {
 		AbstractPageAnalyzerX analyzerX = AbstractPageAnalyzerX.getAnalyzer(chunkSvg);
 		TextAnalyzerX textAnalyzer = null;
 		if (analyzerX instanceof TextAnalyzerX) {
@@ -167,17 +151,23 @@ public class PageAnalyzerTest {
 			return;
 		}
 		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+		LOG.debug("lines "+textLines.size());
+		for (TextLine textLine : textLines){
+			LOG.trace(">> "+textLine);
+		}
 		Element element = textAnalyzer.createHtmlDivWithParas();
-		try {
-			AbstractPageAnalyzerX.tidyStyles(element);
-			File outdir0 = new File(outdir+"/"+fileRoot);
-			outdir0.mkdirs();
-			File outfile = new File(outdir0, "page-"+page+"-"+ichunk+".html");
-			OutputStream os = new FileOutputStream(outfile);
-			CMLUtil.debug(element, os, 1);
-			os.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (element != null) {
+			try {
+				AbstractPageAnalyzerX.tidyStyles(element);
+				File outdir0 = new File(outdir+"/"+fileRoot);
+				outdir0.mkdirs();
+				File outfile = new File(outdir0, name+".html");
+				OutputStream os = new FileOutputStream(outfile);
+				CMLUtil.debug(element, os, 1);
+				os.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

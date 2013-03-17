@@ -44,6 +44,7 @@ import org.xmlcml.svg2xml.text.SimpleFont;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextChunk;
 import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.svg2xml.text.TextLineContainer;
 import org.xmlcml.svg2xml.text.TextLineSet;
 import org.xmlcml.svg2xml.text.TypedNumber;
 import org.xmlcml.svg2xml.text.TypedNumberList;
@@ -113,7 +114,9 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private List<Paragraph> paragraphList;
 
 	private List<Chunk> textChunkList;
+	// refactor
 	private boolean createTSpans;
+	// refactor
 	private boolean createHTML;
 	private SimpleFont simpleFont;
 	
@@ -125,17 +128,21 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	private List<Double> actualWidthsOfSpaceCharactersList;
 	private List<String> textLineContentList;
 	private RealArray modalExcessWidthArray;
-	private Set<SvgPlusCoordinate> fontSizeSet;
+//	private Set<SvgPlusCoordinate> fontSizeSet;
 	private Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize;
 	private RealArray textLineCoordinateArray;
 	private RealArray interTextLineSeparationArray;
 	private Multiset<Double> separationSet;
-	private SvgPlusCoordinate largestFontSize;
-	private List<TextLine> linesWithLargestFont;
+//X	private SvgPlusCoordinate largestFontSize;
+//X	private List<TextLine> linesWithLargestFont;
 	private Map<TextLine, Integer> textLineSerialMap;
-	private Real2Range textLinesLargetFontBoundingBox;
-	private List<TextLine> textLineListWithLargestFont;
+//	private Real2Range textLinesLargetFontBoundingBox;
+//	private List<TextLine> textLineListWithLargestFont;
 	private List<SVGText> textCharacters;
+//	private List<TextLine> textLineListWithCommonestFont;
+	
+	/** refactored container */
+	private TextLineContainer textLineContainer;
 	
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
@@ -994,10 +1001,12 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		}
 	}
 
+	// obsolete?
 	public void setCreateTSpans(boolean createTSpans) {
 		this.createTSpans = createTSpans;
 	}
 	
+	// obsolete?
 	public void setCreateHTML(boolean createHTML) {
 		this.createHTML = createHTML;
 	}
@@ -1249,18 +1258,19 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return modalExcessWidthArray;
 	}
 
-	public Set<SvgPlusCoordinate> getFontSizeSet() {
-		if (fontSizeSet == null) {
-			if (textLineList != null) {
-				fontSizeSet = new HashSet<SvgPlusCoordinate>();
-				for (TextLine textLine : textLineList) {
-					Set<SvgPlusCoordinate> textLineFontSizeSet = textLine.getFontSizeSet();
-					fontSizeSet.addAll(textLineFontSizeSet);
-				}
-			}
-		}
-		return fontSizeSet;
-	}
+	// X
+//	public Set<SvgPlusCoordinate> getFontSizeSet() {
+//		if (fontSizeSet == null) {
+//			if (textLineList != null) {
+//				fontSizeSet = new HashSet<SvgPlusCoordinate>();
+//				for (TextLine textLine : textLineList) {
+//					Set<SvgPlusCoordinate> textLineFontSizeSet = textLine.getFontSizeSet();
+//					fontSizeSet.addAll(textLineFontSizeSet);
+//				}
+//			}
+//		}
+//		return fontSizeSet;
+//	}
 
 	public List<TextLine> getTextLines() {
 		return textLineList;
@@ -1348,32 +1358,56 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return mainTextLineSeparation;
 	}
 
-	public SvgPlusCoordinate getLargestFont() {
-		largestFontSize = null;
-		Set<SvgPlusCoordinate> fontSizes = this.getFontSizeSet();
-		for (SvgPlusCoordinate fontSize : fontSizes) {
-			if (largestFontSize == null || largestFontSize.getDouble() < fontSize.getDouble()) {
-				largestFontSize = fontSize;
-			}
-		}
-		return largestFontSize;
-	}
+	// X
+//	public SvgPlusCoordinate getLargestFont() {
+//		largestFontSize = null;
+//		Set<SvgPlusCoordinate> fontSizes = this.getFontSizeSet();
+//		for (SvgPlusCoordinate fontSize : fontSizes) {
+//			if (largestFontSize == null || largestFontSize.getDouble() < fontSize.getDouble()) {
+//				largestFontSize = fontSize;
+//			}
+//		}
+//		return largestFontSize;
+//	}
+//
+// X
+//	public List<TextLine> getLinesWithLargestFont() {
+//		if (linesWithLargestFont == null) {
+//			linesWithLargestFont = new ArrayList<TextLine>();
+//			getLargestFont();
+//			for (int i = 0; i < textLineList.size(); i++){
+//				TextLine textLine = textLineList.get(i);
+//				Double fontSize = (textLine == null) ? null : textLine.getFontSize();
+//				if (fontSize != null) {
+//					if (Real.isEqual(fontSize, largestFontSize.getDouble(), 0.001)) {
+//						linesWithLargestFont.add( textLine);
+//					}
+//				}
+//			}
+//		}
+//		return linesWithLargestFont;
+//	}
 
-	public List<TextLine> getLinesWithLargestFont() {
-		if (linesWithLargestFont == null) {
-			linesWithLargestFont = new ArrayList<TextLine>();
-			getLargestFont();
-			for (int i = 0; i < textLineList.size(); i++){
-				TextLine textLine = textLineList.get(i);
-				Double fontSize = (textLine == null) ? null : textLine.getFontSize();
-				if (fontSize != null) {
-					if (Real.isEqual(fontSize, largestFontSize.getDouble(), 0.001)) {
-						linesWithLargestFont.add( textLine);
-					}
-				}
-			}
-		}
-		return linesWithLargestFont;
+	// NEW
+//	public List<TextLine> getLinesWithCommonestFont() {
+//		if (textLineListWithCommonestFont == null) {
+//			textLineListWithCommonestFont = new ArrayList<TextLine>();
+//			getCommonestFont();
+//			for (int i = 0; i < textLineList.size(); i++){
+//				TextLine textLine = textLineList.get(i);
+//				Double fontSize = (textLine == null) ? null : textLine.getFontSize();
+//				if (fontSize != null) {
+//					if (Real.isEqual(fontSize, largestFontSize.getDouble(), 0.001)) {
+//						textLineListWithCommonestFont.add( textLine);
+//					}
+//				}
+//			}
+//		}
+//		return textLineListWithCommonestFont;
+//	}
+
+	private void getCommonestFont() {
+		throw new RuntimeException("NYI");
 	}
 
 	/** creates one "para" per line
@@ -1381,7 +1415,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	 * @return
 	 */
 	public HtmlElement createHtmlRawDiv() {
-		textLineListWithLargestFont = getLinesWithLargestFont();
+		ensureTextLineContainer();
+		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithLargestFont();
 		HtmlDiv div = new HtmlDiv();
 		for (TextLine textLine : textLineListWithLargestFont) {
 			HtmlElement p = textLine.createHtmlLine();
@@ -1390,8 +1425,23 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return div;
 	}
 
+	/** creates one "para" per line
+	 * usually needs tidying with createHtmlDivWithParas
+	 * @return
+	 */
+	public HtmlElement createHtmlRawDiv(List<TextLine> linesToBeAnalyzed) {
+//		textLineListWithLargestFont = getLinesWithLargestFont();
+		HtmlDiv div = new HtmlDiv();
+		for (TextLine textLine : linesToBeAnalyzed) {
+			HtmlElement p = textLine.createHtmlLine();
+			div.appendChild(p);
+		}
+		return div;
+	}
+
 	public HtmlElement createHtmlDivWithParas() {
-		textLineListWithLargestFont = getLinesWithLargestFont();
+		ensureTextLineContainer();
+		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithLargestFont();
 		HtmlElement div = null;
 		if (textLineListWithLargestFont.size() == 0){
 			 div = null;
@@ -1401,8 +1451,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			HtmlElement rawDiv = createHtmlRawDiv();
 			Double leftIndent = this.getMaximumLeftIndentForLargestFont();
 			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin());
-			this.getTextLinesLargestFontBoundingBox();
-			Double indentBoundary = textLinesLargetFontBoundingBox.getXRange().getMin() + deltaLeftIndent/2.0;
+			Real2Range largestFontBB = textLineContainer.getLargestFontBoundingBox();
+			Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
 			LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
 			div = new HtmlDiv();
 			Elements htmlLines = rawDiv.getChildElements();
@@ -1420,6 +1470,41 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			}
 		}
 		return div;
+	}
+
+	public HtmlElement createHtmlDivWithParasNew() {
+		throw new RuntimeException("NYI");
+//		textLineListWithLargestFont = getLinesWithLargestFont();
+//		textLineListWithCommonestFont = getLinesWithCommonestFont();
+//		List<TextLine> linesToBeAnalyzed = textLineListWithCommonestFont;
+//		HtmlElement div = null;
+//		if (linesToBeAnalyzed.size() == 0){
+//			 div = null;
+//		} else if (linesToBeAnalyzed.size() == 1){
+//			 div = linesToBeAnalyzed.get(0).createHtmlLine();
+//		} else {
+//			HtmlElement rawDiv = createHtmlRawDiv(linesToBeAnalyzed);
+//			Double leftIndent = this.getMaximumLeftIndentForLargestFont();
+//			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin());
+//			this.getTextLinesLargestFontBoundingBox();
+//			Double indentBoundary = textLineListWithCommonestFont.getXRange().getMin() + deltaLeftIndent/2.0;
+//			LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
+//			div = new HtmlDiv();
+//			Elements htmlLines = rawDiv.getChildElements();
+//			// always start with para
+//			HtmlP pCurrent = createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
+//			for (int i = 1; i < linesToBeAnalyzed.size(); i++) {
+//				TextLine textLine = linesToBeAnalyzed.get(i);
+//				HtmlP pNext = (HtmlP) HtmlElement.create(htmlLines.get(i));
+//				// indent, create new para
+//				if (textLine.getFirstXCoordinate() > indentBoundary) {
+//					pCurrent = createAndAddNewPara(div, pNext);
+//				} else {
+//					mergeParas(pCurrent, pNext);
+//				}
+//			}
+//		}
+//		return div;
 	}
 
 	private void mergeParas(HtmlP pCurrent, HtmlP pNext) {
@@ -1458,17 +1543,17 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return pNew;
 	}
 
-	private Real2Range getTextLinesLargestFontBoundingBox() {
-		if (textLinesLargetFontBoundingBox == null) {
-			if (textLineListWithLargestFont.size() > 0) {
-				textLinesLargetFontBoundingBox = new Real2Range(new Real2Range(textLineListWithLargestFont.get(0).getBoundingBox()));
-				for (int i = 1; i < textLineListWithLargestFont.size(); i++) {
-					textLinesLargetFontBoundingBox.plus(textLineListWithLargestFont.get(i).getBoundingBox());
-				}
-			}
-		}
-		return textLinesLargetFontBoundingBox;
-	}
+//	private Real2Range getTextLinesLargestFontBoundingBox() {
+//		if (textLinesLargetFontBoundingBox == null) {
+//			if (textLineListWithLargestFont.size() > 0) {
+//				textLinesLargetFontBoundingBox = new Real2Range(new Real2Range(textLineListWithLargestFont.get(0).getBoundingBox()));
+//				for (int i = 1; i < textLineListWithLargestFont.size(); i++) {
+//					textLinesLargetFontBoundingBox.plus(textLineListWithLargestFont.get(i).getBoundingBox());
+//				}
+//			}
+//		}
+//		return textLinesLargetFontBoundingBox;
+//	}
 
 	/** finds maximum indent of lines
 	 * must be at least 2 lines
@@ -1478,6 +1563,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	public Double getMaximumLeftIndentForLargestFont() {
 		Double indent = null;
 		Double xLeft = null;
+		ensureTextLineContainer();
+		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithLargestFont();
 		if (textLineListWithLargestFont != null && textLineListWithLargestFont.size() > 1) {
 			for (TextLine textLine : textLineListWithLargestFont) {
 				Double xStart = textLine.getFirstXCoordinate();
@@ -1495,6 +1582,13 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			}
 		}
 		return indent;
+	}
+
+	private void ensureTextLineContainer() {
+		if (this.textLineContainer == null) {
+			this.textLineContainer = new TextLineContainer();
+			this.textLineContainer.setTextLines(textLineList);
+		}
 	}
 
 	/** finds maximum indent of lines
@@ -1541,5 +1635,20 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public List<SVGText> getTextCharacters() {return textCharacters;}
+
+	public TextLineContainer getTextLineContainer() {
+		ensureTextLineContainer();
+		return textLineContainer;
+	}
+
+	public List<TextLine> getLinesWithLargestFont() {
+		ensureTextLineContainer();
+		return textLineContainer.getLinesWithLargestFont();
+	}
+
+	public Real2Range getTextLinesLargestFontBoundingBox() {
+		ensureTextLineContainer();
+		return textLineContainer.getLargestFontBoundingBox();
+	}
 
 }

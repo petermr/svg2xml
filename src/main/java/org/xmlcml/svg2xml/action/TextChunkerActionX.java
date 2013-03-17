@@ -78,7 +78,9 @@ public class TextChunkerActionX extends PageActionX {
 		String xpath = getXPath();
 		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
 		LOG.trace(xpath+" => "+elements.size());
+		// not needed?
 		textAnalyzerX.setCreateTSpans(isTrue(TextChunkerActionX.CREATE_TSPANS));
+		// not needed?
 		textAnalyzerX.setCreateHTML(isTrue(TextChunkerActionX.CREATE_HTML));
 		if (isTrue(TextChunkerActionX.CREATE_WORDS_LINES_PARAS_SUB_SUP)) {
 			textAnalyzerX.analyzeTextChunksCreateWordsLinesParasAndSubSup(elements);

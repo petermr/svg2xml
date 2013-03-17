@@ -62,7 +62,29 @@ public class Fixtures {
 	
 	public static final File SVG_AJC_DIR = new File(Fixtures.SVG_DIR, "ajc");
 	public static final File SVG_AJC_PAGE6_SPLIT_SVG = new File(Fixtures.SVG_AJC_DIR, "ajc_page6_split.svg");
+
+	public final static File TARGET = new File("target");
+	public final static File TEST_PDFTOP = new File("src/test/resources/pdfs");
+	public final static File EXT_PDFTOP = new File("../pdfs");
+	public final static File SVGTOP = new File("src/test/resources/svg");
 	
+	public final static File BMCINDIR = new File(TEST_PDFTOP, "bmc");
+	public final static File BMCOUTDIR = new File(TARGET, "bmc");
+	public final static File BMCSVGDIR = new File(SVGTOP, "bmc");
+	
+	public final static File ELIFEINDIR = new File(TEST_PDFTOP, "elife");
+	public final static File ELIFEOUTDIR = new File(TARGET, "elife");
+	public final static File ELIFESVGDIR = new File(SVGTOP, "elife");
+
+	public final static File MISCINDIR = new File(TEST_PDFTOP, "misc");
+	public final static File MISCOUTDIR = new File(TARGET, "misc");
+	public final static File MISCSVGDIR = new File(SVGTOP, "misc");
+
+	public final static File PEERJINDIR = new File(TEST_PDFTOP, "peerj");
+	public final static File PEERJOUTDIR = new File(TARGET, "peerj");
+	public final static File PEERJSVGDIR = new File(SVGTOP, "peerj");
+
+
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;
 		try {
@@ -133,5 +155,9 @@ public class Fixtures {
 		List<Chunk> chunkList = Chunk.extractChunks(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@LEAF]"));
 		return chunkList;
 	}
+
+
+
+
 
 }

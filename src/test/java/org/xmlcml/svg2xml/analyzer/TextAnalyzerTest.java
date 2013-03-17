@@ -310,7 +310,7 @@ public class TextAnalyzerTest {
 	 */
 	public void getFontSizeSetTest() {
 		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
-		Set<SvgPlusCoordinate> fontSizeSet = analyzerX.getFontSizeSet();
+		Set<SvgPlusCoordinate> fontSizeSet = analyzerX.getTextLineContainer().getFontSizeSet();
 		Assert.assertEquals("font sizes", 2, fontSizeSet.size());
 		Assert.assertTrue("font large", fontSizeSet.contains(new SvgPlusCoordinate(9.465)));
 		Assert.assertTrue("font small", fontSizeSet.contains(new SvgPlusCoordinate(7.07)));
@@ -345,7 +345,7 @@ public class TextAnalyzerTest {
 	 */
 	public void getLargestFontTest() {
 		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
-		SvgPlusCoordinate maxSize = analyzerX.getLargestFont();
+		SvgPlusCoordinate maxSize = analyzerX.getTextLineContainer().getLargestFont();
 		Assert.assertEquals("largest font", 9.47, maxSize.getDouble(), 0.001);
 	}
 

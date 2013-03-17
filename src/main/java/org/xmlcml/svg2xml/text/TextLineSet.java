@@ -6,6 +6,7 @@ import java.util.List;
 
 /** an ordered set of TextLines.
  * usually created by extracted TextLines out of a Chunk/TextAnalyzer
+ * not widely used ?obsolete
  * @author pm286
  *
  */
