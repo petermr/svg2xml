@@ -39,16 +39,21 @@ public class PageAnalyzerTest {
 	}
 	
 	public static void createSVG(File indir, File outtop, String fileRoot) {
+		LOG.debug("createSVG");
 		PDF2SVGConverter converter = new PDF2SVGConverter();
 		File infile = new File(indir, fileRoot+".pdf");
 		if (!infile.exists()) {
 			throw new RuntimeException("no input file: "+infile);
 		}
 		File outdir = new File(outtop, fileRoot);
+		LOG.debug("outdir "+outdir);
 		if (!outdir.exists() || outdir.listFiles() == null) {
 			outdir.mkdirs();
 			Assert.assertTrue("outdir "+outtop, outtop.exists());
+			LOG.debug("running "+infile.toString()+" to "+outdir.toString());
 			converter.run("-outdir", outdir.toString(), infile.toString() );
+		} else {
+			LOG.debug("Skipping SVG");
 		}
 
 	}
@@ -88,6 +93,7 @@ public class PageAnalyzerTest {
 		createSVG(pdfDir, svgDir, paperRoot);
 		analyzePaper(svgDir, paperRoot, outDir);
 	}
+	
 	public static void analyzePaper(File svgdir, String paperRoot, File outdir) {
 		File paperRootDir = new File(svgdir, paperRoot);
 		File[] files = paperRootDir.listFiles();
@@ -102,6 +108,11 @@ public class PageAnalyzerTest {
 	}
 	
 	private static void analyzeChunkInSVGPage(File svgdir, String fileRoot, int page, File outdir) {
+		File svgFile = new File(new File(outdir, fileRoot), "page-"+page+".svg");
+		if (svgFile.exists()) {
+			LOG.debug("Skipping: "+svgFile);
+			return;
+		}
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(new File(new File(svgdir, fileRoot),fileRoot+"-page"+page+".svg"));
 		SemanticDocumentActionX semanticDocumentAction = SemanticDocumentActionX.createSemanticDocumentActionWithSVGPage(svg);
 		List<Chunk> chunkList = WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);

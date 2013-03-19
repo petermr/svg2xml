@@ -119,6 +119,9 @@ public class Chunk extends SVGG {
 		Chunk newChunk = null;
 		LOG.trace("emptyBoxes "+emptyBoxList.size());
 		Iterator<Real2Range> boxIterator = emptyBoxList.iterator();
+		if (!boxIterator.hasNext()) {
+			return chunkList;
+		}
 		Iterator<SVGElement> elementIterator = descendantSVGElementList.iterator();
 		Real2Range box = boxIterator.next();
 		SVGElement element = elementIterator.next();

@@ -53,6 +53,10 @@ public class SvgPlusCoordinate {
 		return doubleCoordinate;
 	}
 	
+	public void setDouble(Double value) {
+		this.doubleCoordinate = value;
+	}
+	
 	private static double calculateEpsilon(int decimalPlaces) {
 		return 1/(Math.pow(10.0, (double) decimalPlaces));
 	} 

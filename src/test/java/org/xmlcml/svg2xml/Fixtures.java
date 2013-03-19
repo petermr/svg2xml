@@ -84,6 +84,9 @@ public class Fixtures {
 	public final static File PEERJOUTDIR = new File(TARGET, "peerj");
 	public final static File PEERJSVGDIR = new File(SVGTOP, "peerj");
 
+	public final static File ANYINDIR = new File(TEST_PDFTOP, "any");
+	public final static File ANYOUTDIR = new File(TARGET, "any");
+	public final static File ANYSVGDIR = new File(SVGTOP, "any");
 
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;

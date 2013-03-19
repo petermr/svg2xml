@@ -1416,9 +1416,10 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	 */
 	public HtmlElement createHtmlRawDiv() {
 		ensureTextLineContainer();
-		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithLargestFont();
+//		List<TextLine> textLineList = textLineContainer.getLinesWithLargestFont();
+		List<TextLine> textLineList = textLineContainer.getLinesWithCommonestFont();
 		HtmlDiv div = new HtmlDiv();
-		for (TextLine textLine : textLineListWithLargestFont) {
+		for (TextLine textLine : textLineList) {
 			HtmlElement p = textLine.createHtmlLine();
 			div.appendChild(p);
 		}
@@ -1441,7 +1442,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	public HtmlElement createHtmlDivWithParas() {
 		ensureTextLineContainer();
-		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithLargestFont();
+		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithCommonestFont();
 		HtmlElement div = null;
 		if (textLineListWithLargestFont.size() == 0){
 			 div = null;
@@ -1450,22 +1451,28 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		} else {
 			HtmlElement rawDiv = createHtmlRawDiv();
 			Double leftIndent = this.getMaximumLeftIndentForLargestFont();
-			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin());
-			Real2Range largestFontBB = textLineContainer.getLargestFontBoundingBox();
-			Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
-			LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
-			div = new HtmlDiv();
-			Elements htmlLines = rawDiv.getChildElements();
-			// always start with para
-			HtmlP pCurrent = createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
-			for (int i = 1; i < textLineListWithLargestFont.size(); i++) {
-				TextLine textLine = textLineListWithLargestFont.get(i);
-				HtmlP pNext = (HtmlP) HtmlElement.create(htmlLines.get(i));
-				// indent, create new para
-				if (textLine.getFirstXCoordinate() > indentBoundary) {
-					pCurrent = createAndAddNewPara(div, pNext);
-				} else {
-					mergeParas(pCurrent, pNext);
+			Real2Range leftBB = this.getTextLinesLargestFontBoundingBox();
+			if (leftBB != null) {
+				Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin());
+				Real2Range largestFontBB = textLineContainer.getLargestFontBoundingBox();
+				if (largestFontBB != null) {
+					RealRange xRange = largestFontBB.getXRange();
+					Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
+					LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
+					div = new HtmlDiv();
+					Elements htmlLines = rawDiv.getChildElements();
+					// always start with para
+					HtmlP pCurrent = createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
+					for (int i = 1; i < textLineListWithLargestFont.size(); i++) {
+						TextLine textLine = textLineListWithLargestFont.get(i);
+						HtmlP pNext = (HtmlP) HtmlElement.create(htmlLines.get(i));
+						// indent, create new para
+						if (textLine.getFirstXCoordinate() > indentBoundary) {
+							pCurrent = createAndAddNewPara(div, pNext);
+						} else {
+							mergeParas(pCurrent, pNext);
+						}
+					}
 				}
 			}
 		}
@@ -1564,7 +1571,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		Double indent = null;
 		Double xLeft = null;
 		ensureTextLineContainer();
-		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithLargestFont();
+		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithCommonestFont();
 		if (textLineListWithLargestFont != null && textLineListWithLargestFont.size() > 1) {
 			for (TextLine textLine : textLineListWithLargestFont) {
 				Double xStart = textLine.getFirstXCoordinate();
@@ -1643,7 +1650,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	public List<TextLine> getLinesWithLargestFont() {
 		ensureTextLineContainer();
-		return textLineContainer.getLinesWithLargestFont();
+		return textLineContainer.getLinesWithCommonestFont();
 	}
 
 	public Real2Range getTextLinesLargestFontBoundingBox() {

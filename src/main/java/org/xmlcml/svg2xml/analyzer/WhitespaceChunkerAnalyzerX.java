@@ -191,14 +191,16 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public static void drawBoxes(List<Chunk> chunkList, String stroke, String fill, Double opacity) {
-		for (Chunk chunk : chunkList) {
-			Real2Range bbox = chunk.getBoundingBox();
-			SVGRect rect = new SVGRect( bbox);
-			rect.setStroke(stroke);
-			rect.setFill(fill);
-			rect.setStrokeWidth(0.9);
-			rect.setOpacity(opacity);
-			chunk.appendChild(rect);
+		if (chunkList != null) {
+			for (Chunk chunk : chunkList) {
+				Real2Range bbox = chunk.getBoundingBox();
+				SVGRect rect = new SVGRect( bbox);
+				rect.setStroke(stroke);
+				rect.setFill(fill);
+				rect.setStrokeWidth(0.9);
+				rect.setOpacity(opacity);
+				chunk.appendChild(rect);
+			}
 		}
 	}
 

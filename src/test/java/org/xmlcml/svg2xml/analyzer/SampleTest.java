@@ -1,11 +1,16 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.svg2xml.Fixtures;
 
 public class SampleTest {
@@ -73,5 +78,38 @@ public class SampleTest {
 		PageAnalyzerTest.analyzePDF(Fixtures.PEERJINDIR, Fixtures.PEERJSVGDIR, "50", Fixtures.PEERJOUTDIR);
 	}
 	
-
+	@Test
+	public void testAny() {
+		File[] files = Fixtures.ANYINDIR.listFiles();
+		System.out.println(Fixtures.ANYSVGDIR+" ... "+Fixtures.ANYOUTDIR);
+		if (files != null) {
+			for (File file : files) {
+				String path = file.getName().toLowerCase();
+				LOG.debug("path: "+path);
+				if (path.endsWith(".pdf")) {
+					String path0 = path.substring(0, path.length() - 4);
+					PageAnalyzerTest.analyzePDF(Fixtures.ANYINDIR, Fixtures.ANYSVGDIR, path0, Fixtures.ANYOUTDIR);
+					File htmlDir = (new File(Fixtures.ANYOUTDIR, path0));
+					try {
+						IOUtils.copy(new FileInputStream(file), new FileOutputStream(new File(htmlDir, "00_"+path)));
+					} catch (Exception e1) {
+						throw new RuntimeException(e1);
+					}
+//					HtmlMenuSystem menuSystem = HtmlMenuSystem.readDirectory(htmlDir);
+					LOG.debug("HTML system");
+					HtmlMenuSystem menuSystem = new HtmlMenuSystem();
+					menuSystem.setOutdir(htmlDir.toString());
+					File[] filesh = htmlDir.listFiles();
+					for (File filex : filesh) {
+						menuSystem.addHRef(filex.toString());
+					}
+					try {
+						menuSystem.outputMenuAndBottomAndIndexFrame();
+					} catch (Exception e) {
+						throw new RuntimeException(e);
+					}
+				}
+			}
+		}
+	}
 }
