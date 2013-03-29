@@ -121,7 +121,6 @@ public class ChunkAnalyzerActionX extends PageActionX {
 		TextAnalyzerX textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
 		textAnalyzerX.setSubSup(subSup);
 		textAnalyzerX.setRemoveNumericTSpans(removeNumericTSpans);
-		textAnalyzerX.setSplitAtSpaces(splitAtSpaces);
 	}
 	
 }

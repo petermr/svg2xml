@@ -32,6 +32,9 @@ import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+
 /** holds a list of characters, normally in a horizontal line
  * 
  * exclusively used by TextAnalyzer
@@ -89,6 +92,8 @@ public class TextLine implements Iterable<SVGText> {
 	private double spaceFactor = DEFAULT_SPACE_FACTOR;
 	private Set<SvgPlusCoordinate> fontSizeSet;
 	private Suscript suscript;
+	private Set<String> fontFamilySet;
+	private Multiset<String> fontFamilyMultiset;
 
 	private void resetWhenLineContentChanged() {
 		characterList = null;
@@ -220,7 +225,46 @@ public class TextLine implements Iterable<SVGText> {
 		}
 		return fs;
 	}
-		
+
+	/** returns the common value of fontFamily
+	 * if there is any variation
+	 * 
+	 */
+	public String getFontFamily() {
+		String family = null;
+		getFontFamilySet();
+		if (fontFamilySet != null) {
+			if (fontFamilySet.size() == 1) {
+				family = fontFamilySet.iterator().next();
+			}
+		}
+		return family;
+	}
+			
+	public Multiset<String> getFontFamilyMultiset() {
+		if (fontFamilyMultiset == null) {
+			fontFamilyMultiset = HashMultiset.create();
+			for (int i = 0; i < characterList.size(); i++) {
+				SVGText text = characterList.get(i);
+				String family = text.getFontFamily();
+				fontFamilyMultiset.add(family);
+			}
+		}
+		return fontFamilyMultiset;
+	}
+	
+	public Set<String> getFontFamilySet() {
+		if (fontFamilySet == null) {
+			fontFamilySet = new HashSet<String>();
+			for (int i = 0; i < characterList.size(); i++) {
+				SVGText text = characterList.get(i);
+				String family = text.getFontFamily();
+				fontFamilySet.add(family);
+			}
+		}
+		return fontFamilySet;
+	}
+	
 	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
 		if (fontSizeContainerSet == null) {
 			fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
@@ -689,12 +733,13 @@ public class TextLine implements Iterable<SVGText> {
 	public Real2Range getBoundingBox() {{
 		if (boundingBox == null) 
 			if (characterList != null && characterList.size() > 0) {
-				boundingBox = new Real2Range(characterList.get(0).getBoundingBox());
-				for (int i = 1; i < characterList.size(); i++) {
-					SVGText charx = characterList.get(i);
-					Real2Range bbox = charx.getBoundingBox();
-					boundingBox.plus(bbox);
-				}
+				double xmin = characterList.get(0).getBoundingBox().getXRange().getMin();
+				double xmax = characterList.get(characterList.size()-1).getBoundingBox().getXRange().getMax();
+				RealRange xRange = new RealRange(xmin, xmax); 
+				double ymin = characterList.get(0).getBoundingBox().getYRange().getMin();
+				double ymax = characterList.get(characterList.size()-1).getBoundingBox().getYRange().getMax();
+				RealRange yRange = new RealRange(ymin, ymax); 
+				boundingBox = new Real2Range(xRange, yRange);
 			}
 		}
 		return boundingBox;

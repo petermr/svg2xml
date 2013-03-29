@@ -1,6 +1,5 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Set;
@@ -13,10 +12,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.cml.testutil.JumboTestUtils;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.test.StringTestBase;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextLineSet;
@@ -26,27 +27,20 @@ import com.google.common.collect.Multiset;
 
 public class TextAnalyzerTest {
 
-	private static final File TEXT_ANALYZER_DIR = new File("src/test/resources/org/xmlcml/svg2xml/analyzer/");
-	/** a 4 line chunk (paragraph) with no suscripts */
-	private static final File PARA1_SVG = new File(TEXT_ANALYZER_DIR, "1parachunk.svg");
-	// 3 paragraphs
-	public static final File PARA_SUSCRIPT_SVG = new File(TEXT_ANALYZER_DIR, "parasWithSuscripts.svg");
-	
-	private static final File LINE1_SVG = new File(TEXT_ANALYZER_DIR, "singleLine.svg");
 
 	/** checks there are 4 lines in para
 	 * 
 	 */
 	@Test
 	public void analyze1ParaTest() {
-		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(PARA1_SVG);
+		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(Fixtures.PARA1_SVG);
 		Assert.assertEquals("lines ", 4, textLineList.size());
 	}
 
 	/** checks 52 characters in first line */
 	@Test
 	public void analyzeLine() {
-		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(PARA1_SVG);
+		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(Fixtures.PARA1_SVG);
 		TextLine textLine0 = textLineList.get(0);
 		List<SVGText> characters = textLine0.getSVGTextCharacters();
 		Assert.assertEquals("textLine0", 52, characters.size());
@@ -57,7 +51,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void getTextLineStringTest() {
-		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(PARA1_SVG);
+		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(Fixtures.PARA1_SVG);
 		TextLine textLine0 = textLineList.get(0);
 		String lineContent = textLine0.getLineString();
 		Assert.assertEquals("text line", "dependentonreactiontimet,whichisafeatureofzero-order", lineContent);
@@ -66,7 +60,7 @@ public class TextAnalyzerTest {
 	/** inserts spaces into line 0 */
 	@Test
 	public void insertSpacesInTextLineStringTest() {
-		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(PARA1_SVG);
+		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(Fixtures.PARA1_SVG);
 		TextLine textLine0 = textLineList.get(0);
 		textLine0.insertSpaces();
 		String lineContent = textLine0.getLineString();
@@ -77,7 +71,7 @@ public class TextAnalyzerTest {
 	 */
 	@Test
 	public void getMeanFontSizeArrayTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA1_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA1_SVG);
 		 RealArray meanFontSizeArray = analyzerX.getMeanFontSizeArray();
 		 Assert.assertNotNull(meanFontSizeArray);
 		 Assert.assertTrue(meanFontSizeArray.equals(new RealArray(new double[] {9.465,9.465,9.465,9.465}), 0.001));
@@ -89,7 +83,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void getTextLinesParaSuscriptTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		analyzerX.getLinesInIncreasingY();
 		List<String> textLineContentList = analyzerX.getTextLineContentList();
 		StringTestBase.assertEquals("unspaced strings", 
@@ -121,7 +115,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void getTextLinesParaSuscriptWithSpacesTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		analyzerX.getLinesInIncreasingY();
 		analyzerX.insertSpaces();
 		List<String> textLineContentList = analyzerX.getTextLineContentList();
@@ -154,7 +148,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void defaultSpaceTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		analyzerX.getLinesInIncreasingY();
 		analyzerX.insertSpaces();
 		List<String> textLineContentList = analyzerX.getTextLineContentList();
@@ -187,7 +181,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void minSpaceFactorTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		analyzerX.getLinesInIncreasingY();
 		analyzerX.insertSpaces(0.05); // this seems to be minimum
 //		analyzerX.insertSpaces(0.12); // this seems to be maximum
@@ -221,7 +215,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void maxSpaceFactorTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		analyzerX.getLinesInIncreasingY();
 //		analyzerX.insertSpaces(0.05); // this seems to be minimum
 		analyzerX.insertSpaces(0.12); // this seems to be maximum
@@ -253,7 +247,7 @@ public class TextAnalyzerTest {
 	
 	@Test
 	public void getMeanSpaceSeparationArrayParaSuscriptTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		analyzerX.insertSpaces();
 		List<TextLine> textLineList = analyzerX.getLinesInIncreasingY();
 		List<String> textLineContentList = analyzerX.getTextLineContentList();
@@ -263,7 +257,7 @@ public class TextAnalyzerTest {
 	
 	@Test
 	public void getMeanFontSizeArrayParaSuscriptTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		RealArray meanFontSizeArray = analyzerX.getMeanFontSizeArray();
 		Assert.assertNotNull(meanFontSizeArray);
 		Assert.assertTrue("fontSizes "+meanFontSizeArray, meanFontSizeArray.equals(
@@ -295,7 +289,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void getModalExcessWidthArrayTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		analyzerX.insertSpaces();
 		RealArray modalExcessWidthArray = analyzerX.getModalExcessWidthArray();
 		Assert.assertNotNull(modalExcessWidthArray);
@@ -309,7 +303,7 @@ public class TextAnalyzerTest {
 	 * 
 	 */
 	public void getFontSizeSetTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		Set<SvgPlusCoordinate> fontSizeSet = analyzerX.getTextLineContainer().getFontSizeSet();
 		Assert.assertEquals("font sizes", 2, fontSizeSet.size());
 		Assert.assertTrue("font large", fontSizeSet.contains(new SvgPlusCoordinate(9.465)));
@@ -321,7 +315,7 @@ public class TextAnalyzerTest {
 	 * indexes lines by font sizes
 	 */
 	public void getTextLinesByFontSizeTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize = analyzerX.getTextLineListByFontSize();
 		Assert.assertEquals("font sizes", 17, textLineListByFontSize.size());
 		List<TextLine> largeLines = (List<TextLine>) textLineListByFontSize.get(new SvgPlusCoordinate(9.465));
@@ -334,7 +328,7 @@ public class TextAnalyzerTest {
 	 * retrieve by font size
 	 */
 	public void getTextLineSetByFontSizeTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		TextLineSet textLineSetByFontSize = analyzerX.getTextLineSetByFontSize(9.465);
 		Assert.assertEquals("textLineSet", 11, textLineSetByFontSize.size());
 	}
@@ -344,8 +338,8 @@ public class TextAnalyzerTest {
 	 * get Mainlines
 	 */
 	public void getLargestFontTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
-		SvgPlusCoordinate maxSize = analyzerX.getTextLineContainer().getLargestFont();
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		SvgPlusCoordinate maxSize = analyzerX.getTextLineContainer().getLargestFontSize();
 		Assert.assertEquals("largest font", 9.47, maxSize.getDouble(), 0.001);
 	}
 
@@ -354,7 +348,7 @@ public class TextAnalyzerTest {
 	 * get Mainlines
 	 */
 	public void getLinesWithLargestFontTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		Assert.assertEquals("largest", 11, largestLineList.size());
 	}
@@ -364,7 +358,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testAnalyzeSuscripts0() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		TextLine largeLine = largestLineList.get(0);
 		TextLine superscript = largeLine.getSuperscript();
@@ -380,7 +374,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testAnalyzeSuscripts1() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		TextLine largeLine = largestLineList.get(1);
 		TextLine superscript = largeLine.getSuperscript();
@@ -394,7 +388,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testAnalyzeSuscripts2() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		TextLine largeLine = largestLineList.get(2);
 		TextLine superscript = largeLine.getSuperscript();
@@ -409,7 +403,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testAnalyzeSuscripts5() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		TextLine largeLine = largestLineList.get(5);
 		TextLine superscript = largeLine.getSuperscript();
@@ -427,7 +421,7 @@ public class TextAnalyzerTest {
 	 * suscripts - mainly debugging routine
 	 */
 	public void testCreateSuscriptLine0() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		TextLine largeLine = analyzerX.getLinesWithLargestFont().get(0);
 		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
 		printLine(largeLineSVG);
@@ -438,7 +432,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptTextLines0() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		TextLine largeLine = analyzerX.getLinesWithLargestFont().get(0);
 		List<TextLine> suscriptLines = largeLine.createSuscriptTextLineList();
 		printTextLines(suscriptLines);
@@ -449,7 +443,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptTextLines1() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> suscriptLines = analyzerX.getLinesWithLargestFont().get(1).createSuscriptTextLineList();
 		printTextLines(suscriptLines);
 	}
@@ -459,7 +453,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptTextLines2() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> suscriptLines = analyzerX.getLinesWithLargestFont().get(2).createSuscriptTextLineList();
 		printTextLines(suscriptLines);
 	}
@@ -469,7 +463,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptTextLines5() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> suscriptLines = analyzerX.getLinesWithLargestFont().get(5).createSuscriptTextLineList();
 		printTextLines(suscriptLines);
 	}
@@ -479,7 +473,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptTextLines7() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> suscriptLines = analyzerX.getLinesWithLargestFont().get(7).createSuscriptTextLineList();
 		printTextLines(suscriptLines);
 	}
@@ -489,7 +483,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptWordTextLines0() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		TextLine largeLine = analyzerX.getLinesWithLargestFont().get(0);
 		List<TextLine> suscriptLines = largeLine.createSuscriptTextLineList();
 		for (TextLine textLine : suscriptLines) {
@@ -503,7 +497,7 @@ public class TextAnalyzerTest {
 	 * superscripts
 	 */
 	public void testCreateHTML0() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		TextLine largeLine = analyzerX.getLinesWithLargestFont().get(0);
 		HtmlElement p = largeLine.createHtmlLine();
 		Element ref = CMLUtil.parseXML(
@@ -530,7 +524,7 @@ public class TextAnalyzerTest {
 	 * superscripts
 	 */
 	public void testCreateHTML1() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		HtmlElement p = analyzerX.getLinesWithLargestFont().get(1).createHtmlLine();
 		Element ref = CMLUtil.parseXML(
 				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
@@ -545,7 +539,7 @@ public class TextAnalyzerTest {
 	 * superscripts
 	 */
 	public void testCreateHTML2() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		HtmlElement p = analyzerX.getLinesWithLargestFont().get(2).createHtmlLine();
 		Element ref = CMLUtil.parseXML(""+
 		"<p xmlns='http://www.w3.org/1999/xhtml'>" +
@@ -585,7 +579,7 @@ public class TextAnalyzerTest {
 	 * superscripts
 	 */
 	public void testCreateHTML5() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		HtmlElement p = analyzerX.getLinesWithLargestFont().get(5).createHtmlLine();
 		Element ref = CMLUtil.parseXML(
 				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
@@ -614,7 +608,7 @@ public class TextAnalyzerTest {
 	 * superscripts
 	 */
 	public void testCreateHTMLRawDiv() throws Exception {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		HtmlElement div = analyzerX.createHtmlRawDiv();
 		CMLUtil.debug(div, new FileOutputStream("target/div.html"), 0);
 	}
@@ -624,7 +618,7 @@ public class TextAnalyzerTest {
 	 * superscripts
 	 */
 	public void testCreateHTMLDivWithParas() throws Exception {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		HtmlElement div = analyzerX.createHtmlDivWithParas();
 		CMLUtil.debug(div, new FileOutputStream("target/divParas.html"), 0);
 	}
@@ -643,7 +637,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptLine4() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		TextLine largeLine = largestLineList.get(4);
 		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
@@ -656,7 +650,7 @@ public class TextAnalyzerTest {
 	 * suscripts
 	 */
 	public void testCreateSuscriptLine5() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		TextLine largeLine = largestLineList.get(5);
 		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
@@ -676,7 +670,7 @@ public class TextAnalyzerTest {
 	 * get serial of text
 	 */
 	public void testgetSerial() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLine> largestLineList = analyzerX.getLinesWithLargestFont();
 		Assert.assertEquals("super", 1, (int) analyzerX.getSerialNumber(largestLineList.get(0)));
 	}
@@ -688,7 +682,7 @@ public class TextAnalyzerTest {
 	 * get Interline separation
 	 */
 	public void getInterTextLineSeparationSetTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		Multiset<Double> separationSet = analyzerX.createSeparationSet(2);
 		Assert.assertEquals("separationSet", 16, separationSet.size());
 		Assert.assertEquals("separationSet", 6, separationSet.entrySet().size());
@@ -699,7 +693,7 @@ public class TextAnalyzerTest {
 	 * get Interline separation
 	 */
 	public void getMainInterTextLineSeparationTest() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		Double sep = analyzerX.getMainInterTextLineSeparation(2);
 		Assert.assertEquals("sep ", 10.96, sep, 0.001);
 	}
@@ -709,12 +703,41 @@ public class TextAnalyzerTest {
 	 * get Interline separation
 	 */
 	public void getInterTextLineSeparation() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		RealArray interTextLineSeparationArray = analyzerX.getInterTextLineSeparationArray();
 		Assert.assertNotNull(interTextLineSeparationArray);
 		RealArray ref = new RealArray(new double[]{
 				3.436,10.959,10.959,1.419,9.54,10.959,7.523,3.436,1.419,9.539,1.42,6.104,3.435,10.959,10.959,10.959});
 		Assert.assertTrue("interline separation "+interTextLineSeparationArray, interTextLineSeparationArray.equals(ref, 0.001));
+	}
+
+	@Test
+	/** 
+	 * get merged boxes
+	 */
+	public void testgetDiscreteBoxes() {
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<Real2Range> discreteBoxes  = analyzerX.getDiscreteBoxes();
+		Assert.assertNotNull(discreteBoxes);
+		// lines 7subscript and 8superscrip overlap 
+		Assert.assertEquals("boxes", 10, discreteBoxes.size());
+	}
+
+	@Test
+	/** 
+	 * get lines in merged boxes
+	 */
+	public void testLinesInDiscreteBoxes() {
+		int[] count = {2, 1, 2, 1, 1, 3, 4, 1, 1, 1};
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<List<TextLine>> lineListList  = analyzerX.getTextLineBoxList();
+		Assert.assertNotNull(lineListList);
+		Assert.assertEquals("boxes", 10, lineListList.size());
+		int i = 0;
+		for (List<TextLine> lineList : lineListList) {
+			Assert.assertEquals("box"+i, count[i], lineList.size());
+			i++;
+		}
 	}
 
 
@@ -723,7 +746,7 @@ public class TextAnalyzerTest {
 	 * get coordinates of lines
 	 */
 	public void getTextLineCoordinateArray() {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(PARA_SUSCRIPT_SVG);
+		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		RealArray textLineCoordinateArray = analyzerX.getTextLineCoordinateArray();
 		Assert.assertNotNull(textLineCoordinateArray);
 		RealArray ref = new RealArray(new double[] 

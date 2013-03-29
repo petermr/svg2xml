@@ -24,7 +24,7 @@
     </parent>
     
 	<groupId>org.xml-cml</groupId>
-	<artifactId>svg2xml</artifactId>
+	<artifactId>svg2xml-dev</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<name>AMI2-SVGPlus</name>
 	<description>Takes SVG from PDF2SVG and analyzes the domain-indepndent semantics</description>
@@ -52,10 +52,17 @@
 	</repositories>
 	
 	<dependencies>
+	<!-- 
 		<dependency>
 			<groupId>org.apache.pdfbox</groupId>
 			<artifactId>pdfbox</artifactId>
 			<version>1.7.1</version>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>1.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -90,7 +97,7 @@
 
 		<dependency>
 			<groupId>org.xml-cml</groupId>
-			<artifactId>pdf2svg</artifactId>
+			<artifactId>pdf2svg-dev</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		

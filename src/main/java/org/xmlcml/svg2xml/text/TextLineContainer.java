@@ -1,5 +1,7 @@
 package org.xmlcml.svg2xml.text;
 
+import java.io.File;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,8 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
 
 /** holds text lines in order
  * to simplify TextAnalyzer
@@ -18,6 +25,8 @@ import org.xmlcml.euclid.Real2Range;
  */
 public class TextLineContainer {
 
+	private static final Logger LOG = Logger.getLogger(TextLineContainer.class);
+	
 	private List<TextLine> linesWithCommonestFont;
 	private List<TextLine> linesWithLargestFont;
 	private List<TextLine> textLineList;
@@ -25,9 +34,20 @@ public class TextLineContainer {
 	private SvgPlusCoordinate commonestFontSize;
 	private Real2Range textLinesLargetFontBoundingBox;
 	private Set<SvgPlusCoordinate> fontSizeSet;
+
+	private Multiset<String> fontFamilySet;
 	
 	public TextLineContainer() {
 		
+	}
+
+	public static TextLineContainer createTextLineContainer(File svgFile) {
+		TextLineContainer container = new TextLineContainer();
+		List<TextLine> textLineList = TextAnalyzerX.createTextLineList(svgFile);
+		if (textLineList != null) {
+			container.setTextLines(textLineList);
+		}
+		return container;
 	}
 
 	public void setTextLines(List<TextLine> textLineList) {
@@ -40,7 +60,7 @@ public class TextLineContainer {
 	public List<TextLine> getLinesWithLargestFont() {
 		if (linesWithLargestFont == null) {
 			linesWithLargestFont = new ArrayList<TextLine>();
-			getLargestFont();
+			getLargestFontSize();
 			for (int i = 0; i < textLineList.size(); i++){
 				TextLine textLine = textLineList.get(i);
 				Double fontSize = (textLine == null) ? null : textLine.getFontSize();
@@ -57,7 +77,7 @@ public class TextLineContainer {
 	public List<TextLine> getLinesWithCommonestFont() {
 		if (linesWithCommonestFont == null) {
 			linesWithCommonestFont = new ArrayList<TextLine>();
-			getCommonestFont();
+			getCommonestFontSize();
 			for (int i = 0; i < textLineList.size(); i++){
 				TextLine textLine = textLineList.get(i);
 				Double fontSize = (textLine == null) ? null : textLine.getFontSize();
@@ -71,7 +91,7 @@ public class TextLineContainer {
 		return linesWithCommonestFont;
 	}
 
-	public SvgPlusCoordinate getCommonestFont() {
+	public SvgPlusCoordinate getCommonestFontSize() {
 		commonestFontSize = null;
 		Map<Double, Integer> fontCountMap = new HashMap<Double, Integer>();
 		for (TextLine textLine : textLineList) {
@@ -88,7 +108,7 @@ public class TextLineContainer {
 			}
 		}
 		for (Double fontSize : fontCountMap.keySet()) {
-			System.out.println(">> "+fontSize+" .. "+fontCountMap.get(fontSize));
+			LOG.trace(">> "+fontSize+" .. "+fontCountMap.get(fontSize));
 			if (commonestFontSize == null || commonestFontSize.getDouble() < fontSize)  {
 			    commonestFontSize = new SvgPlusCoordinate(fontSize);
 			}
@@ -96,7 +116,7 @@ public class TextLineContainer {
 		return commonestFontSize;
 	}
 	
-	public SvgPlusCoordinate getLargestFont() {
+	public SvgPlusCoordinate getLargestFontSize() {
 		largestFontSize = null;
 		Set<SvgPlusCoordinate> fontSizes = this.getFontSizeSet();
 		for (SvgPlusCoordinate fontSize : fontSizes) {
@@ -133,5 +153,56 @@ public class TextLineContainer {
 		return fontSizeSet;
 	}
 
+	/** creates a multiset from addAll() on multisets for each line
+	 *  
+	 * @return
+	 */
+	public Multiset<String> getFontFamilyMultiset() {
+		if (fontFamilySet == null) {
+			fontFamilySet = HashMultiset.create();
+			for (TextLine textLine : textLineList) {
+				Multiset<String> listFontFamilySet = textLine.getFontFamilyMultiset();
+				fontFamilySet.addAll(listFontFamilySet);
+			}
+		}
+		return fontFamilySet;
+	}
+
+	/** gets commonest font
+	 *  
+	 * @return
+	 */
+	public String getCommonestFontFamily() {
+		getFontFamilyMultiset();
+		String commonestFontFamily = null;
+		int highestCount = -1;
+		Set<String> fontFamilyElementSet = fontFamilySet.elementSet();
+		for (String fontFamily : fontFamilyElementSet) {
+			int count = fontFamilySet.count(fontFamily);
+			if (count > highestCount) {
+				highestCount = count;
+				commonestFontFamily = fontFamily;
+			}
+		}
+		return commonestFontFamily;
+	}
+
+	/** gets commonest font
+	 *  
+	 * @return
+	 */
+	public int getFontFamilyCount() {
+		getFontFamilyMultiset();
+		return fontFamilySet.elementSet().size();
+	}
+
+	/** get non-overlapping boundingBoxes
+	 * @return
+	 */
+	public List<Real2Range> getDiscreteLineBoxes() {
+		List<Real2Range> discreteLineBoxes = new ArrayList<Real2Range>();
+//		List<TextLine> textLines = this.getLinesSortedByYCoord();
+		return discreteLineBoxes;
+	}
 
 }

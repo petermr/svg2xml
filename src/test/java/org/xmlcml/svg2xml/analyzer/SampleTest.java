@@ -81,35 +81,38 @@ public class SampleTest {
 	@Test
 	public void testAny() {
 		File[] files = Fixtures.ANYINDIR.listFiles();
-		System.out.println(Fixtures.ANYSVGDIR+" ... "+Fixtures.ANYOUTDIR);
 		if (files != null) {
 			for (File file : files) {
 				String path = file.getName().toLowerCase();
-				LOG.debug("path: "+path);
+				LOG.trace("path: "+path);
 				if (path.endsWith(".pdf")) {
-					String path0 = path.substring(0, path.length() - 4);
-					PageAnalyzerTest.analyzePDF(Fixtures.ANYINDIR, Fixtures.ANYSVGDIR, path0, Fixtures.ANYOUTDIR);
-					File htmlDir = (new File(Fixtures.ANYOUTDIR, path0));
-					try {
-						IOUtils.copy(new FileInputStream(file), new FileOutputStream(new File(htmlDir, "00_"+path)));
-					} catch (Exception e1) {
-						throw new RuntimeException(e1);
-					}
-//					HtmlMenuSystem menuSystem = HtmlMenuSystem.readDirectory(htmlDir);
-					LOG.debug("HTML system");
-					HtmlMenuSystem menuSystem = new HtmlMenuSystem();
-					menuSystem.setOutdir(htmlDir.toString());
-					File[] filesh = htmlDir.listFiles();
-					for (File filex : filesh) {
-						menuSystem.addHRef(filex.toString());
-					}
-					try {
-						menuSystem.outputMenuAndBottomAndIndexFrame();
-					} catch (Exception e) {
-						throw new RuntimeException(e);
-					}
+					processAnyDirPDF(file, path);
 				}
 			}
+		}
+	}
+
+	private void processAnyDirPDF(File file, String path) {
+		String path0 = path.substring(0, path.length() - 4);
+		PageAnalyzerTest.analyzePDF(Fixtures.ANYINDIR, Fixtures.ANYSVGDIR, path0, Fixtures.ANYOUTDIR);
+		File htmlDir = (new File(Fixtures.ANYOUTDIR, path0));
+		try {
+			IOUtils.copy(new FileInputStream(file), new FileOutputStream(new File(htmlDir, "00_"+path)));
+		} catch (Exception e1) {
+			throw new RuntimeException(e1);
+		}
+//					HtmlMenuSystem menuSystem = HtmlMenuSystem.readDirectory(htmlDir);
+		LOG.trace("HTML system");
+		HtmlMenuSystem menuSystem = new HtmlMenuSystem();
+		menuSystem.setOutdir(htmlDir.toString());
+		File[] filesh = htmlDir.listFiles();
+		for (File filex : filesh) {
+			menuSystem.addHRef(filex.toString());
+		}
+		try {
+			menuSystem.outputMenuAndBottomAndIndexFrame();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

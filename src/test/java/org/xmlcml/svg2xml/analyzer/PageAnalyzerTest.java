@@ -39,21 +39,21 @@ public class PageAnalyzerTest {
 	}
 	
 	public static void createSVG(File indir, File outtop, String fileRoot) {
-		LOG.debug("createSVG");
+		LOG.trace("createSVG");
 		PDF2SVGConverter converter = new PDF2SVGConverter();
 		File infile = new File(indir, fileRoot+".pdf");
 		if (!infile.exists()) {
 			throw new RuntimeException("no input file: "+infile);
 		}
 		File outdir = new File(outtop, fileRoot);
-		LOG.debug("outdir "+outdir);
+		LOG.trace("outdir "+outdir);
 		if (!outdir.exists() || outdir.listFiles() == null) {
 			outdir.mkdirs();
 			Assert.assertTrue("outdir "+outtop, outtop.exists());
 			LOG.debug("running "+infile.toString()+" to "+outdir.toString());
 			converter.run("-outdir", outdir.toString(), infile.toString() );
 		} else {
-			LOG.debug("Skipping SVG");
+			LOG.trace("Skipping SVG");
 		}
 
 	}
@@ -110,7 +110,7 @@ public class PageAnalyzerTest {
 	private static void analyzeChunkInSVGPage(File svgdir, String fileRoot, int page, File outdir) {
 		File svgFile = new File(new File(outdir, fileRoot), "page-"+page+".svg");
 		if (svgFile.exists()) {
-			LOG.debug("Skipping: "+svgFile);
+			LOG.trace("Skipping: "+svgFile);
 			return;
 		}
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(new File(new File(svgdir, fileRoot),fileRoot+"-page"+page+".svg"));
@@ -135,7 +135,7 @@ public class PageAnalyzerTest {
 		List<SVGImage> images = SVGImage.extractImages(SVGUtil.getQuerySVGElements(element, ".//svg:image"));
 		for (int ii = 0; ii < images.size(); ii++) {
 			SVGImage image = images.get(ii);
-			LOG.debug("BBB "+image.getBoundingBox());
+			LOG.trace("BBB "+image.getBoundingBox());
 			SVGSVG svg = new SVGSVG();
 			svg.appendChild(new SVGImage(image));
 			try {
@@ -143,7 +143,7 @@ public class PageAnalyzerTest {
 				dir.mkdirs();
 				File file = new File(dir, page+"-image-"+ii+"-"+ichunk+".svg");
 				CMLUtil.debug(svg, new FileOutputStream(file), 1);
-				System.out.println("FILE: "+file);
+				LOG.trace("FILE: "+file);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -162,7 +162,7 @@ public class PageAnalyzerTest {
 			return;
 		}
 		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-		LOG.debug("lines "+textLines.size());
+		LOG.trace("lines "+textLines.size());
 		for (TextLine textLine : textLines){
 			LOG.trace(">> "+textLine);
 		}

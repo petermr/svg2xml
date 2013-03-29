@@ -21,11 +21,13 @@ public class Fixtures {
 
 	private static final Logger LOG = Logger.getLogger(Fixtures.class);
 	
-	public static final String SVG2XML_DIR = "src/test/resources/org/xmlcml/svg2xml/";
+	public static final String RESOURCES_DIR = "src/test/resources/";
+	public static final String SVG2XML_DIR = RESOURCES_DIR+"org/xmlcml/svg2xml/";
 	public static final String COMMAND_DIR= SVG2XML_DIR+"command/";
 	public static final String CORE_DIR = SVG2XML_DIR+"core/";
 	public static final String ACTION_DIR = SVG2XML_DIR+"action/";
 	public static final String SVG_DIR = SVG2XML_DIR+"svg/";
+	public static final String BMC_DIR = SVG_DIR+"bmc/";
 	public static final File ACTION_SVG_DIR = new File(Fixtures.ACTION_DIR, "svg");
 	public static final File ACTION_PDF_DIR = new File(Fixtures.ACTION_DIR, "pdf");
 	public static final File CSIRO_DIR = new File("../pdfs/csiro/test");
@@ -64,9 +66,9 @@ public class Fixtures {
 	public static final File SVG_AJC_PAGE6_SPLIT_SVG = new File(Fixtures.SVG_AJC_DIR, "ajc_page6_split.svg");
 
 	public final static File TARGET = new File("target");
-	public final static File TEST_PDFTOP = new File("src/test/resources/pdfs");
+	public final static File TEST_PDFTOP = new File(RESOURCES_DIR+"pdfs");
 	public final static File EXT_PDFTOP = new File("../pdfs");
-	public final static File SVGTOP = new File("src/test/resources/svg");
+	public final static File SVGTOP = new File(RESOURCES_DIR+"svg");
 	
 	public final static File BMCINDIR = new File(TEST_PDFTOP, "bmc");
 	public final static File BMCOUTDIR = new File(TARGET, "bmc");
@@ -87,6 +89,13 @@ public class Fixtures {
 	public final static File ANYINDIR = new File(TEST_PDFTOP, "any");
 	public final static File ANYOUTDIR = new File(TARGET, "any");
 	public final static File ANYSVGDIR = new File(SVGTOP, "any");
+
+	public static final File TEXT_ANALYZER_DIR = new File(RESOURCES_DIR+"org/xmlcml/svg2xml/analyzer/");
+	/** a 4 line chunk (paragraph) with no suscripts */
+	public static final File PARA1_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "1parachunk.svg");
+	// 3 paragraphs
+	public static final File PARA_SUSCRIPT_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "parasWithSuscripts.svg");
+	private static final File LINE1_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "singleLine.svg");
 
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;
