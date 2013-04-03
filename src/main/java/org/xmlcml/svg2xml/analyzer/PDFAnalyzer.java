@@ -117,7 +117,9 @@ public class PDFAnalyzer implements Annotatable {
 			try {
 				html = new Builder().build(file).getRootElement();
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				LOG.error("Failed on html File: "+file);
+				return;
+//				throw new RuntimeException(e);
 			}
 			Nodes nodes = html.query(xpath);
 			for (int i = 0; i < nodes.size(); i++) {

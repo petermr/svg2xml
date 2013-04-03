@@ -12,6 +12,8 @@ import org.junit.Test;
  */
 public class DocumentListAnalyzerTest {
 
+	// DO NOT RUN THESE AS DISTRIBUTION TESTS if you get out of memory
+	
 	public final static File BMCDIR = new File("src/test/resources/pdfs/bmc");
 	public final static File PDFDIR = new File("../pdfs");
 	public final static File PEERJDIR = new File(PDFDIR, "peerj");
@@ -29,4 +31,5 @@ public class DocumentListAnalyzerTest {
 		DocumentListAnalyzer analyzer = new DocumentListAnalyzer();
 		analyzer.analyzeDirectory(PEERJDIR);
 	}
+	
 }

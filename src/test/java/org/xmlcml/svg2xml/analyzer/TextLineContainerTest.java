@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
@@ -70,6 +72,7 @@ public class TextLineContainerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testCommonestBMCGeotableFontSizes() {
 		double[] sizes = {7.97, 7.97, 9.76, 10.26, 9.76, 10.26, 9.76};
 		int i = 0;
@@ -82,6 +85,8 @@ public class TextLineContainerTest {
 	}
 	
 	@Test
+	@Ignore
+
 	public void testCommonestBMCGeotableFontFamilies() {
 		String[] family = {"AdvOT46dcae81", "AdvOT46dcae81", "AdvOTa9103878", "AdvOTa9103878", 
 				           "AdvOTa9103878", "AdvOTa9103878", "AdvOTa9103878"};
@@ -95,6 +100,8 @@ public class TextLineContainerTest {
 	}
 	
 	@Test
+	@Ignore
+
 	public void testBMCGeotableFontFamilyDiversity() {
 		int[] nfont = {3, 1, 3, 3, 1, 5, 3};
 		int i = 0;

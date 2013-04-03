@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- ! Licensed to the Apache Software Foundation (ASF) under one or more 
-	! contributor license agreements. See the NOTICE file distributed with ! 
-	this work for additional information regarding copyright ownership. ! The 
-	ASF licenses this file to You under the Apache License, Version 2.0 ! (the 
-	"License"); you may not use this file except in compliance with ! the License. 
-	You may obtain a copy of the License at ! ! http://www.apache.org/licenses/LICENSE-2.0 
-	! ! Unless required by applicable law or agreed to in writing, software ! 
-	distributed under the License is distributed on an "AS IS" BASIS, ! WITHOUT 
-	WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. ! See the 
-	License for the specific language governing permissions and ! limitations 
-	under the License. ! -->
+    ! contributor license agreements. See the NOTICE file distributed with ! 
+    this work for additional information regarding copyright ownership. ! The 
+    ASF licenses this file to You under the Apache License, Version 2.0 ! (the 
+    "License"); you may not use this file except in compliance with ! the License. 
+    You may obtain a copy of the License at ! ! http://www.apache.org/licenses/LICENSE-2.0 
+    ! ! Unless required by applicable law or agreed to in writing, software ! 
+    distributed under the License is distributed on an "AS IS" BASIS, ! WITHOUT 
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. ! See the 
+    License for the specific language governing permissions and ! limitations 
+    under the License. ! -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
 <!--  changed project -->
     <parent>
@@ -23,173 +23,179 @@
         <version>4</version> 
     </parent>
     
-	<groupId>org.xml-cml</groupId>
-	<artifactId>svg2xml-dev</artifactId>
-	<version>0.1-SNAPSHOT</version>
-	<name>AMI2-SVGPlus</name>
-	<description>Takes SVG from PDF2SVG and analyzes the domain-indepndent semantics</description>
+    <groupId>org.xml-cml</groupId>
+    <artifactId>svg2xml-dev</artifactId>
+    <version>0.1-SNAPSHOT</version>
+    <name>AMI2-SVGPlus</name>
+    <description>Takes SVG from PDF2SVG and analyzes the domain-indepndent semantics</description>
 
-	<licenses>
-		<license>
-			<name>Apache License, Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<scm>
-		<url>https://bitbucket.org/petermr/svg2xml/src</url>
-		<connection>scm:hg:http://bitbucket.org/petermr/svg2xml</connection>
-		<developerConnection>scm:hg:https://bitbucket.org/petermr/svg2xml</developerConnection>
-	</scm>
-	
-	<!-- remove <repositories> for releases to maven central -->
-	<repositories>
-		<repository>
-			<id>ucc-repo</id>
-			<name>UCC Repository</name>
-			<url>https://maven.ch.cam.ac.uk/m2repo</url>
-		</repository>
-	</repositories>
-	
-	<dependencies>
-	<!-- 
-		<dependency>
-			<groupId>org.apache.pdfbox</groupId>
-			<artifactId>pdfbox</artifactId>
-			<version>1.7.1</version>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>org.apache.pdfbox</groupId>
-			<artifactId>pdfbox</artifactId>
-			<version>1.8.0</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>xom</groupId>
-			<artifactId>xom</artifactId>
-			<version>1.2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>euclid</artifactId>
-			<version>1.1-SNAPSHOT</version>
-		</dependency>
-		<!-- 
-		<dependency>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>svg</artifactId>
-			<version>0.1-SNAPSHOT</version>
-		</dependency>
-		-->
-		<dependency>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>html</artifactId>
-			<version>0.1-SNAPSHOT</version>
-		</dependency>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://bitbucket.org/petermr/svg2xml/src</url>
+        <connection>scm:hg:http://bitbucket.org/petermr/svg2xml</connection>
+        <developerConnection>scm:hg:https://bitbucket.org/petermr/svg2xml</developerConnection>
+    </scm>
+    
+    <!-- remove <repositories> for releases to maven central -->
+    <repositories>
+        <repository>
+            <id>ucc-repo</id>
+            <name>UCC Repository</name>
+            <url>https://maven.ch.cam.ac.uk/m2repo</url>
+        </repository>
+    </repositories>
+    
+    <dependencies>
+    <!-- 
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>1.7.1</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>1.8.0</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>xom</groupId>
+            <artifactId>xom</artifactId>
+            <version>1.2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xml-cml</groupId>
+            <artifactId>euclid</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <!-- 
+        <dependency>
+            <groupId>org.xml-cml</groupId>
+            <artifactId>svg</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.xml-cml</groupId>
+            <artifactId>html</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>pdf2svg-dev</artifactId>
-			<version>0.1-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>12.0</version>
-		</dependency>
+        <dependency>
+            <groupId>org.xml-cml</groupId>
+            <artifactId>svg-dev</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.xml-cml</groupId>
+            <artifactId>pdf2svg-dev</artifactId>
+            <version>0.1-SNAPSHOT</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>12.0</version>
+        </dependency>
 
 <!--  test  -->
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.1</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.1</version>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>euclid-testutil</artifactId>
-			<version>1.1-SNAPSHOT</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<version>1.1-SNAPSHOT</version>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>jumbo-testutil</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.xml-cml</groupId>
+            <artifactId>euclid-testutil</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <version>1.1-SNAPSHOT</version>
+            <groupId>org.xml-cml</groupId>
+            <artifactId>jumbo-testutil</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
 
-	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
-		<plugins>
-			<!-- Use java 1.5 -->
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
-					<optimize>true</optimize>
-				</configuration>
-			</plugin>
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- Use java 1.5 -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <optimize>true</optimize>
+                </configuration>
+            </plugin>
 
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<argLine>-Xmx64m</argLine>
-					<includes>
-						<include>**/*Test.*</include>
-					</includes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.felix</groupId>
-				<artifactId>maven-bundle-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<instructions>
-						<Bundle-DocURL>http://pdfbox.apache.org/</Bundle-DocURL>
-						<Include-Resource>
-							{maven-resources},
-							META-INF=target/maven-shared-archive-resources/META-INF,
-							org/apache/pdfbox/resources=target/classes/org/apache/pdfbox/resources
-						</Include-Resource>
-					</instructions>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.rat</groupId>
-				<artifactId>apache-rat-plugin</artifactId>
-				<configuration>
-					<excludes>
-						<exclude>src/main/resources/org/apache/pdfbox/resources/cmap/*</exclude>
-						<exclude>src/test/resources/input/rendering/*.ai</exclude>
-						<exclude>download/glyphlist.txt</exclude>
-						<exclude>release.properties</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <argLine>-Xmx64m</argLine>
+                    <includes>
+                        <include>**/*Test.*</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Bundle-DocURL>http://pdfbox.apache.org/</Bundle-DocURL>
+                        <Include-Resource>
+                            {maven-resources},
+                            META-INF=target/maven-shared-archive-resources/META-INF,
+                            org/apache/pdfbox/resources=target/classes/org/apache/pdfbox/resources
+                        </Include-Resource>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>src/main/resources/org/apache/pdfbox/resources/cmap/*</exclude>
+                        <exclude>src/test/resources/input/rendering/*.ai</exclude>
+                        <exclude>download/glyphlist.txt</exclude>
+                        <exclude>release.properties</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
 

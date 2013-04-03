@@ -134,5 +134,18 @@ public class DocumentListAnalyzer {
 		file.mkdirs();
 		return file;
 	}
+	
+	public static void main(String[] args) {
+		// mvn exec:java -Dexec.mainClass="main.org.xmlcml.svg2xml.analyzer.DocumentListAnalyzerTest" -Dargs="src/test/resources/pdfs/bmc"
+		if (args.length == 0) {
+			System.out.println("DocumentListAnalyzerTest <directory>");
+			System.out.println("java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.DocumentListAnalyzer\" " +
+					" -Dexec.args=\"src/test/resources/pdfs/bmc\"");
+			System.exit(0);
+		} else {
+			DocumentListAnalyzer analyzer = new DocumentListAnalyzer();
+			analyzer.analyzeDirectory(new File(args[0]));
+		}
+	}
 
 }

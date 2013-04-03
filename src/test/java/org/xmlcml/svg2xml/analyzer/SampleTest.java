@@ -38,6 +38,7 @@ public class SampleTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testAnalyzePDFSInBMCDirectory() {
 		PageAnalyzerTest.testDirectory(Fixtures.BMCINDIR, Fixtures.BMCSVGDIR, Fixtures.BMCOUTDIR, false);
 	}
