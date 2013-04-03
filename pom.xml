@@ -84,11 +84,13 @@
 			<artifactId>euclid</artifactId>
 			<version>1.1-SNAPSHOT</version>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>org.xml-cml</groupId>
 			<artifactId>svg</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.xml-cml</groupId>
 			<artifactId>html</artifactId>

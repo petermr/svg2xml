@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,6 +85,12 @@ public class LineAnalyzerX extends AbstractPageAnalyzerX {
 			plotBoxList.add(plotBox);
 		}
 	}
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
+	}
+	
+
 
 	public String debug() {
 		getLineAngleMap();

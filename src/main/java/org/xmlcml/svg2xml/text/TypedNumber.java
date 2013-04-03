@@ -2,6 +2,8 @@ package org.xmlcml.svg2xml.text;
 
 import java.util.List;
 
+import nu.xom.Attribute;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real;
@@ -17,6 +19,12 @@ public class TypedNumber {
 	Number number = null;
 	private List<Number> numberList = null;
 	private String dataType = null;
+
+	public static final String DATA_TYPE = "dataType";
+
+	public static final String NUMBER = "number";
+
+	public static final String NUMBERS = "numbers";
 
 	/** create either from the text value of Child TSpans
 	 * 
@@ -160,6 +168,65 @@ public class TypedNumber {
 		if (!(number instanceof Double) || !CMLConstants.XSD_DOUBLE.equals(dataType)) {
 			number = new Double((Integer)number);
 			dataType = CMLConstants.XSD_DOUBLE;
+		}
+	}
+
+	public static String getNumericValue(SVGText numericText) {
+		return numericText.getAttributeValue(NUMBER);
+	}
+
+	//	private void addNumericValues() {
+	//		// not quite sure when the TSpans get added so this is messy
+	//		List<SVGText> texts = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgg, ".//svg:g[@class='word']/svg:text"));
+	//		for (SVGText text : texts) {
+	//			TypedNumberList typedNumberList = interpretTypedNumberList(text);
+	//			TypedNumber typedNumber = interpretTypedNumber(text);
+	//		}
+	//	}
+	
+		private static TypedNumber interpretTypedNumber(SVGText text, boolean removeNumericTSpans) {
+			TypedNumber typedNumber = TypedNumber.createNumber(text);
+			if (typedNumber != null) {
+				String number = ""+typedNumber.getNumber();
+				text.addAttribute(new Attribute(NUMBER, number));
+				text.addAttribute(new Attribute(DATA_TYPE, typedNumber.getDataType()));
+				if (removeNumericTSpans) {
+					removeNumericTSpans(text, number);
+				}
+			}
+			return typedNumber;
+		}
+
+	private static TypedNumberList interpretTypedNumberList(SVGText text, boolean removeNumericTSpans) {
+		TypedNumberList typedNumberList = TypedNumberList.createFromTextSpans(text);
+		if (typedNumberList != null) {
+			String numbers = typedNumberList.getNumberString();
+			text.addAttribute(new Attribute(NUMBERS, numbers));
+			text.addAttribute(new Attribute(DATA_TYPE, typedNumberList.getDataType()));
+			if (removeNumericTSpans) {
+				removeNumericTSpanList(text, numbers);
+			}
+		}
+		return typedNumberList;
+	}
+
+	private static void removeNumericTSpanList(SVGText text, String number) {
+		List<SVGTSpan> tSpans = text.getChildTSpans();
+		text.setText(number);
+		for (SVGTSpan tSpan : tSpans) {
+			tSpan.detach();
+		}
+	}
+
+	private static void removeNumericTSpans(SVGText text, String number) {
+		List<SVGTSpan> tSpans = text.getChildTSpans();
+		if (tSpans.size() == 1) {
+			tSpans.get(0).detach();
+			text.setText(number);
+		} else if (tSpans.size() == 2) {
+			tSpans.get(0).detach();
+			tSpans.get(1).detach();
+			text.setText(number);
 		}
 	}
 

@@ -79,14 +79,14 @@ public class TextChunkerActionX extends PageActionX {
 		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
 		LOG.trace(xpath+" => "+elements.size());
 		if (isTrue(TextChunkerActionX.CREATE_WORDS_LINES_PARAS_SUB_SUP)) {
-			textAnalyzerX.analyzeTextChunksCreateWordsLinesParasAndSubSup(elements);
+			textAnalyzerX.analyzeTextChunksCreateWordsLinesParasAndSubSupRUN(elements);
 		}
 		if (isTrue(TextChunkerActionX.CREATE_WORDS_LINES)) {
-			textAnalyzerX.analyzeSingleWordsOrLines(elements);
+			textAnalyzerX.analyzeSingleWordsOrLinesRUN(elements);
 		}
 		
 		if (isTrue(TextChunkerActionX.MERGE_CHUNKS)) {
-			textAnalyzerX.mergeChunks();
+			textAnalyzerX.mergeChunksRUN();
 		}
 	}
 

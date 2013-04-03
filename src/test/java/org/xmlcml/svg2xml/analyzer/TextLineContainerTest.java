@@ -27,7 +27,7 @@ public class TextLineContainerTest {
 		File bmcDir = new File(Fixtures.BMC_DIR);
 		Assert.assertTrue(bmcDir.exists());
 		File[] files = bmcDir.listFiles();
-		Assert.assertTrue(files.length > 8);
+		Assert.assertTrue(files.length > 0);
 		geoFileList = new ArrayList<File>();
 		for (File file : files) {
 			String name = file.getName();

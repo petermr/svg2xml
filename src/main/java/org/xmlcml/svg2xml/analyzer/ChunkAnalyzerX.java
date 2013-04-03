@@ -2,9 +2,9 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.util.List;
 
-
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGCircle;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGPolyline;
@@ -97,7 +97,7 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 		}
 	}
 	
-	private TextAnalyzerX ensureTextAnalyzer() {
+	private AbstractPageAnalyzerX ensureTextAnalyzer() {
 		if (textAnalyzerX == null) {
 			textAnalyzerX = new TextAnalyzerX(semanticDocumentActionX);
 		}
@@ -142,4 +142,9 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 		return plotBox;
 	}
 
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
+	}
+	
 }

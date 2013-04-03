@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.paths;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import nu.xom.Attribute;
@@ -24,10 +23,13 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.AxisAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.text.TypedNumber;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
@@ -56,7 +58,7 @@ public class Axis {
 	private Double boxThickness;
 	private Double boxLengthExtension;
 	private AxisAnalyzerX axisAnalyzerX;
-	private TextAnalyzerX textAnalyzerX;
+	private AbstractPageAnalyzerX textAnalyzerX;
 	private String id;
 
 	private double minTickLengthPixels;
@@ -488,11 +490,11 @@ public class Axis {
 	private void processHorizontalScaleValuesAndScaleTitle(List<SVGText> texts) {
 		createNumericAndNonNumericTexts(texts);
 		Integer y = null;
-		Double numericYCoord = TextAnalyzerX.getCommonYCoordinate(numericTexts, axisAnalyzerX.eps);
+		Double numericYCoord = TextAnalyzerUtils.getCommonYCoordinate(numericTexts, axisAnalyzerX.eps);
 		if (numericYCoord != null) {
 			majorTickMarkValues = createNumericValues(numericTexts);
 		}
-		Double nonNumericYCoord = TextAnalyzerX.getCommonYCoordinate(nonNumericTexts, axisAnalyzerX.eps);
+		Double nonNumericYCoord = TextAnalyzerUtils.getCommonYCoordinate(nonNumericTexts, axisAnalyzerX.eps);
 		if (nonNumericYCoord != null && nonNumericTexts.size() > 0) {
 			axisLabel = nonNumericTexts.get(0).getValue();
 		}
@@ -506,12 +508,12 @@ public class Axis {
 		
 		createNumericAndNonNumericTexts(texts);
 		Integer y = null;
-		Double numericRightXCoord = TextAnalyzerX.getCommonRightXCoordinate(numericTexts, TextAnalyzerX.TEXT_EPS);
-		Double numericLeftXCoord = TextAnalyzerX.getCommonLeftXCoordinate(numericTexts, TextAnalyzerX.TEXT_EPS);
+		Double numericRightXCoord = TextAnalyzerUtils.getCommonRightXCoordinate(numericTexts, TextAnalyzerX.TEXT_EPS);
+		Double numericLeftXCoord = TextAnalyzerUtils.getCommonLeftXCoordinate(numericTexts, TextAnalyzerX.TEXT_EPS);
 		if (numericRightXCoord != null || numericLeftXCoord != null) {
 			majorTickMarkValues = createNumericValues(numericTexts);
 		}
-		Double nonNumericYCoord = TextAnalyzerX.getCommonYCoordinate(nonNumericTexts, axisAnalyzerX.eps);
+		Double nonNumericYCoord = TextAnalyzerUtils.getCommonYCoordinate(nonNumericTexts, axisAnalyzerX.eps);
 		if (nonNumericYCoord != null && nonNumericTexts.size() == 1) {
 			axisLabel = nonNumericTexts.get(0).getValue();
 		}
@@ -521,8 +523,8 @@ public class Axis {
 		CMLArray array = null;
 		if (numericTexts.size() == 1 ) {
 			SVGText text = numericTexts.get(0);
-			String dataType = text.getAttributeValue(TextAnalyzerX.DATA_TYPE);
-			String numbers = text.getAttributeValue(TextAnalyzerX.NUMBERS);
+			String dataType = text.getAttributeValue(TypedNumber.DATA_TYPE);
+			String numbers = text.getAttributeValue(TypedNumber.NUMBERS);
 			LOG.debug("NUMBERS: "+numbers);
 			if (CMLConstants.XSD_INTEGER.equals(dataType)) {
 				IntArray intArray = new IntArray(numbers);
@@ -536,7 +538,7 @@ public class Axis {
 			if (dataType != null) {
 				List<String> values = new ArrayList<String>();
 				for (SVGText numericText : numericTexts) {
-					values.add(TextAnalyzerX.getNumericValue(numericText));
+					values.add(TypedNumber.getNumericValue(numericText));
 				}
 				if (CMLConstants.XSD_INTEGER.equals(dataType)) {
 					IntArray intArray = new IntArray(values.toArray(new String[0]));
@@ -553,7 +555,7 @@ public class Axis {
 	private String getCommonDataType(List<SVGText> numericTexts) {
 		String dataType = null;
 		for (SVGText numericText : numericTexts) {
-			String dt = numericText.getAttributeValue(TextAnalyzerX.DATA_TYPE);
+			String dt = numericText.getAttributeValue(TypedNumber.DATA_TYPE);
 			if (dataType == null) {
 				dataType = dt;
 			} else if (!dataType.equals(dt)) {
@@ -569,8 +571,8 @@ public class Axis {
 			numericTexts = new ArrayList<SVGText>();
 			nonNumericTexts = new ArrayList<SVGText>();
 			for (SVGText text : texts) {
-				if (text.query("@"+TextAnalyzerX.NUMBER).size() > 0 ||
-					text.query("@"+TextAnalyzerX.NUMBERS).size() > 0  ) {
+				if (text.query("@"+TypedNumber.NUMBER).size() > 0 ||
+					text.query("@"+TypedNumber.NUMBERS).size() > 0  ) {
 					numericTexts.add(text);
 				} else {
 					if (text.getValue().trim().length() != 0) {
@@ -582,7 +584,7 @@ public class Axis {
 		}
 	}
 
-	public TextAnalyzerX getTextAnalyzerX() {
+	public AbstractPageAnalyzerX getTextAnalyzerX() {
 		return textAnalyzerX;
 	}
 

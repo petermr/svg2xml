@@ -11,6 +11,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.ChunkAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.DocumentAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
@@ -139,12 +140,12 @@ public class PageEditorX {
 		return pageNumber;
 	}
 
-	public PathAnalyzerX getPathAnalyzer() {
+	public AbstractPageAnalyzerX getPathAnalyzer() {
 		return pathAnalyzerX;
 	}
 
 
-	public TextAnalyzerX getTextAnalyzer() {
+	public AbstractPageAnalyzerX getTextAnalyzer() {
 		return textAnalyzerX;
 	}
 

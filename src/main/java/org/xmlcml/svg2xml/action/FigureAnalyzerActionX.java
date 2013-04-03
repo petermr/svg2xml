@@ -95,7 +95,7 @@ public class FigureAnalyzerActionX extends PageActionX {
 			TextAnalyzerX textAnalyzer = getPageEditor().ensureTextAnalyzer();
 			for (FigurePanel figurePanel : panelList) {
 				List<SVGElement> elements = SVGUtil.getQuerySVGElements(figurePanel, ".");
-				textAnalyzer.analyzeSingleWordsOrLines(elements);
+				textAnalyzer.analyzeSingleWordsOrLinesRUN(elements);
 			}
 		}
 		if (isTrue(FigureAnalyzerActionX.ANALYZE_FRAGMENTS)) {

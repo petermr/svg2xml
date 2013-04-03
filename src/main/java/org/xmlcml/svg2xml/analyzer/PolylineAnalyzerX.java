@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -440,5 +439,10 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
 		return polylineSubset;
  	} 
 
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
+	}
+	
 
 }

@@ -96,7 +96,7 @@ public class WordSequence extends SVGG implements Iterable<Word> {
 			getWordBoundingBoxList();
 			boundingBox = new Real2Range();
 			for (Real2Range bbox : boundingBoxList) {
-				boundingBox = boundingBox.plus(bbox);
+				boundingBox = boundingBox.plusEquals(bbox);
 			}
 		}
 		return boundingBox;

@@ -19,6 +19,7 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.MovePrimitive;
 import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
@@ -26,6 +27,7 @@ import org.xmlcml.graphics.svg.SVGPathPrimitive;
 import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.svg2xml.action.PageEditorX;
@@ -68,7 +70,6 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 	private boolean splitAtMoveCommands = true;
 	private Integer minLinesInPolyline = 8;
 	private List<SVGPath> pathList;
-
 	public PathAnalyzerX() {
 	}
 
@@ -81,8 +82,9 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 		for (SVGPath path : pathList) {
 			this.pathList.add(path); 
 		}
+		getBoundingBoxAndParent(pathList.get(0));
 	}
-	
+
 	public List<SVGPath> getPathList() { return pathList;}
 	/** runs components having set true/false flags if required
 	 * 
@@ -142,22 +144,18 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 		return strings;
 	}
 
-//	private void formatClipPaths() {
-//		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:clipPath/svg:path");
-//		for (SVGElement clipPath : clipPaths) {
-//			clipPath.format(PageEditor.DECIMAL_PLACES);
-//		}
-//	}
+	@Override
+	public SVGG annotate() {
+		SVGG g = new SVGG();
+		for (int i = 0; i < pathList.size(); i++) {
+			SVGPath path = pathList.get(i);
+			annotateElement(path, "purple", "blue", 0.5, 0.2);
+			g.appendChild(path.copy());
+		}
+		outputAnnotatedBox(g, 0.2, 0.7, "PATH "+pathList.size(), 5.0, "cyan");
+		return g;
+	}
 	
-//	/** not yet implemented
-//	 * 
-//	 */
-//	private void identifyAndRemoveBoxedChunksAndTidy() {
-//		List<SVGElement> chunkElements = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:g[@LEAF and [svg:path | svg:line | svg:rect ");
-//		
-//	}
-
-
 	/** with help from
 http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circle-using-multiple-points
 	 * @param p1
@@ -444,18 +442,6 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		}
 	}
 
-//	public void enforceVisibility() {
-//		List<SVGElement> elements = SVGUtil.getQuerySVGElements(
-//				getSVGPage(), "//svg:path | //svg:polygon | //svg:line | //svg:polyline | //svg:circle | //svg:rect");
-//		for (SVGElement element : elements) {
-//			String stroke = element.getStroke();
-//			String fill = element.getFill();
-//			if ((stroke == null || NONE.equals(stroke)) && (fill == null || NONE.equals(fill))) {
-//				element.setStroke(DEFAULT_STROKE);
-//			}
-//		}
-//	}
-
 	public static SVGCircle findCircleFromPoints(Real2Array r2a, double eps) {
 		SVGCircle circle = null;
 		if (r2a == null || r2a.size() < 3) {
@@ -520,5 +506,11 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		this.minLinesInPolyline = minLinesInPolyline;
 	}
 
-	
+	//=========================
+	public String toString() {
+		String s = "";
+		s += "paths: "+pathList.size();
+		return s;
+	}
+
 }

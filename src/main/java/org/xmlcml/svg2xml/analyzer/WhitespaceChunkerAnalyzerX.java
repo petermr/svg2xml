@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,9 +8,7 @@ import nu.xom.Attribute;
 import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.graphics.svg.SVGConstants;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -204,5 +201,10 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 		}
 	}
 
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
+	}
+	
 
 }

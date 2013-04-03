@@ -12,6 +12,9 @@ public class CheckAnalyzer {
 	private Integer imageCount;
 	private Integer pathCount;
 	private Integer textCount;
+	private AbstractPageAnalyzerX imageAnalyzer;
+	private AbstractPageAnalyzerX pathAnalyzer;
+	private AbstractPageAnalyzerX textAnalyzer;
 	
 	public static CheckAnalyzer createCheckAnalyzer(AbstractPageAnalyzerX analyzer) {
 		CheckAnalyzer  checkAnalyzer = null;
@@ -37,9 +40,9 @@ public class CheckAnalyzer {
 	
 	public CheckAnalyzer(MixedAnalyzer mixedAnalyzer) {
 		this(MixedAnalyzer.class, 
-				mixedAnalyzer.getImageList().size(),
-				mixedAnalyzer.getPathList().size(),
-				mixedAnalyzer.getTextList().size());
+				mixedAnalyzer.getImageAnalyzer(),
+				mixedAnalyzer.getPathAnalyzer(),
+				mixedAnalyzer.getTextAnalyzer());
 	}
 	
 	public CheckAnalyzer(TextAnalyzerX textAnalyzer) {
@@ -51,7 +54,16 @@ public class CheckAnalyzer {
 		this.count = count;
 	}
 	
-	public CheckAnalyzer(Class<? extends MixedAnalyzer> clazz, int imageCount, int pathCount, int textCount) {
+	public CheckAnalyzer(Class<? extends MixedAnalyzer> clazz, 
+			ImageAnalyzerX imageAnalyzer, PathAnalyzerX pathAnalyzer, TextAnalyzerX textAnalyzer) {
+		this.clazz = clazz;
+		this.imageCount = imageAnalyzer == null ? 0 : imageAnalyzer.getImageList().size();
+		this.pathCount = pathAnalyzer == null ? 0 : pathAnalyzer.getPathList().size();
+		this.textCount = textAnalyzer == null ? 0 : textAnalyzer.getTextCharacters().size();
+	}
+	
+	public CheckAnalyzer(Class<? extends MixedAnalyzer> clazz, 
+			int imageCount, int pathCount, int textCount) {
 		this.clazz = clazz;
 		this.imageCount = imageCount;
 		this.pathCount = pathCount;

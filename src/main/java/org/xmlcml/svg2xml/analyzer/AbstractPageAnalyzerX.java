@@ -5,13 +5,14 @@ import java.util.List;
 import nu.xom.Element;
 import nu.xom.Node;
 import nu.xom.Nodes;
-import nu.xom.Text;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -20,15 +21,18 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.text.TextLineContainer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-public abstract class AbstractPageAnalyzerX {
+public abstract class AbstractPageAnalyzerX implements Annotatable {
 	
 	private final static Logger LOG = Logger.getLogger(AbstractPageAnalyzerX.class);
 
 	protected SVGG svgg; // current svg:gelement
 	protected SemanticDocumentActionX semanticDocumentActionX;
 	protected PageEditorX pageEditorX;
+	protected Real2Range bbox;
+	protected SVGElement parentElement;
 	
 	protected AbstractPageAnalyzerX() {
 	}
@@ -99,7 +103,7 @@ public abstract class AbstractPageAnalyzerX {
 		List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(svgElement, ".//svg:path"));
 		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(svgElement, ".//svg:image"));
 		if (textList.size() != 0 && (pathList.size() == 0 && imageList.size() == 0)) {
-			analyzer = TextAnalyzerX.createTextAnalyzerWithSortedLines(textList);
+			analyzer = TextLineContainer.createTextAnalyzerWithSortedLines(textList);
 		} else if (pathList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {
 			analyzer = new PathAnalyzerX();
 			((PathAnalyzerX)analyzer).readPathList(pathList);
@@ -111,9 +115,69 @@ public abstract class AbstractPageAnalyzerX {
 			((MixedAnalyzer)analyzer).readImageList(imageList);
 			((MixedAnalyzer)analyzer).readPathList(pathList);
 			((MixedAnalyzer)analyzer).readTextList(textList);
+//			throw new RuntimeException("MIXEDAA: "+analyzer);
 		}
 
 		return analyzer;
+	}
+
+	public abstract SVGG annotate();
+
+	protected void getBoundingBoxAndParent(SVGElement element) {
+		parentElement = (SVGElement) element.getParent();
+		bbox = parentElement == null ? null : parentElement.getBoundingBox();
+	}
+
+	protected Real2Range annotateElement(SVGElement element, String fill, String stroke,
+			Double strokeWidth, Double opacity) {
+				Real2Range bbox = element.getBoundingBox();
+				SVGElement parent =  (SVGElement) element.getParent();
+				SVGElement.drawBox(bbox, parent, fill, stroke, strokeWidth, opacity);
+				return bbox;
+			}
+
+	protected void outputAnnotatedBox(SVGG g, double rectOpacity, double textOpacity,
+			String message, double fontSize, String rectFill) {
+				Real2Range bbox = g.getBoundingBox();
+				g.appendChild(AbstractPageAnalyzerX.createTextInBox(textOpacity, bbox, message, fontSize));
+				SVGRect rect = SVGRect.createFromReal2Range(bbox);
+				rect.setFill(rectFill);
+				rect.setOpacity(rectOpacity);
+				g.appendChild(rect);
+			}
+
+	public static SVGG createAnnotationDetails(String fill, Double opacity, Real2Range bbox, String message, Double fontSize) {
+		if (bbox == null) {
+			throw new RuntimeException("Null bbox");
+		}
+		SVGG g = new SVGG();
+		SVGRect rect = SVGRect.createFromReal2Range(bbox);
+		if (rect == null) {
+			rect = new SVGRect(10., 10., 100., 20.); // dummy
+		}
+		rect.setFill(fill);
+		rect.setOpacity(opacity);
+		g.appendChild(rect);
+		if (message != null) {
+			SVGText text = createTextInBox(opacity, bbox, message, fontSize);
+			if (text == null) {
+				throw new RuntimeException("Null text: "+bbox);
+			}
+			g.appendChild(text);
+		}
+		return g;
+	}
+
+	public static SVGText createTextInBox(Double opacity, Real2Range bbox, String message,
+			Double fontSize) {
+
+		SVGText text = null;
+		if (bbox != null &&  bbox.getCorners() != null) {
+			text = new SVGText(bbox.getCorners()[0], message);
+			text.setOpacity(opacity);
+			text.setFontSize(fontSize);
+		}
+		return text;
 	}
 
 }

@@ -6,7 +6,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 
 /**
  * structure is:
@@ -53,7 +53,7 @@ public class Caption extends Chunk {
 	}
 
 	public void setText(String text) {
-		SVGText svgText = TextAnalyzerX.getConcatenatedText(this);
+		SVGText svgText = TextAnalyzerUtils.getConcatenatedText(this);
 		if (svgText != null) {
 			svgText.setText(text);
 		}

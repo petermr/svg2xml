@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
@@ -128,4 +129,10 @@ public class PageClipPathAnalyzerX  extends AbstractPageAnalyzerX {
 		bb.setOpacity(0.5);
 		pageEditorX.getSVGPage().appendChild(bb);
 	}
+	
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
+	}
+	
 }

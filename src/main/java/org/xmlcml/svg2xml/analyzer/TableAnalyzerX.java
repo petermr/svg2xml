@@ -1,10 +1,10 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.table.Table;
 
@@ -38,6 +38,11 @@ public class TableAnalyzerX extends AbstractPageAnalyzerX {
 //			tableList.add(table);
 //		}
 		return tableList;
+	}
+	
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
 	}
 	
 	

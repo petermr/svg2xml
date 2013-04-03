@@ -1,11 +1,11 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
@@ -148,6 +148,13 @@ public class AxisAnalyzerX extends AbstractPageAnalyzerX {
 		return axis;
 	}
 
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
+	}
+	
+// ================================================
+	
 	public double getMaxTickLength() {
 		return maxTickLength;
 	}

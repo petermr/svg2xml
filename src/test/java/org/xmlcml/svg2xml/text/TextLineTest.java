@@ -188,9 +188,9 @@ public class TextLineTest {
 	
 	// FIXTURES
 	private static TextLine getTextLine(File file, int lineNumber) {
-		TextAnalyzerX analyzerX = TextAnalyzerX.createTextAnalyzerWithSortedLines(file);
-		analyzerX.getLinesInIncreasingY();
-		List<TextLine> textLines = analyzerX.getLinesInIncreasingY();
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(file);
+		textLineContainer.getLinesInIncreasingY();
+		List<TextLine> textLines = textLineContainer.getLinesInIncreasingY();
 		TextLine textLine = textLines.get(lineNumber);
 		return textLine;
 	}

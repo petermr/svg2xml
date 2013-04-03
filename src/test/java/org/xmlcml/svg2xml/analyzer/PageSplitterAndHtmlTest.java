@@ -1,12 +1,14 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.FileOutputStream;
+
 import java.util.List;
 
 import junit.framework.Assert;
 import nu.xom.Element;
 import nu.xom.Nodes;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.cml.testutil.JumboTestUtils;
@@ -17,6 +19,8 @@ import org.xmlcml.svg2xml.text.TextLine;
 
 public class PageSplitterAndHtmlTest {
 
+	private final static Logger LOG = Logger.getLogger(PageSplitterAndHtmlTest.class);
+	
 	@Test
 	public void testTransformChunksToXML() {
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
@@ -562,8 +566,10 @@ public class PageSplitterAndHtmlTest {
 	private static void analyzeChunkInSVGPage(int chunk, int nlines, Element ref, Element svg) {
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) AbstractPageAnalyzerX.getAnalyzer(gList.get(chunk));
-		TextAnalyzerX textAnalyzer = new TextAnalyzerX();
-		textAnalyzer.analyzeTexts(mixedAnalyzer.getTextList());
+		LOG.debug("MixedAnalyzer "+mixedAnalyzer);
+		TextAnalyzerX textAnalyzer = mixedAnalyzer.getTextAnalyzer();
+		LOG.debug("TextAnalyzer "+textAnalyzer);
+//		TextAnalyzerX textAnalyzer = new TextAnalyzerX();
 		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
 		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
 		Element element = textAnalyzer.createHtmlDivWithParas();

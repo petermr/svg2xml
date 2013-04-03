@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -45,7 +45,7 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 	private final static Logger LOG = Logger.getLogger(SubSupAnalyzerX.class);
 	private final static Double ANGLE_EPS = 0.1;
 	
-	private TextAnalyzerX textAnalyzerX;
+	private AbstractPageAnalyzerX textAnalyzerX;
 	private List<Integer> sortedYCoords;
 	private Map<Integer, List<SVGText>> textByYCoordAndXCoord;
 	private int currentYCoordIndex;
@@ -60,7 +60,7 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 	private SubSup currentSubSupType;
 	private List<SVGText> texts;
 
-	public SubSupAnalyzerX(TextAnalyzerX textAnalyzerX) {
+	public SubSupAnalyzerX(AbstractPageAnalyzerX textAnalyzerX) {
 		this.textAnalyzerX = textAnalyzerX;
 	}
 
@@ -296,6 +296,12 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 		}
 		return sortedYCoords;
 	}
+	@Override
+	public SVGG annotate() {
+		throw new RuntimeException("annotate NYI");
+	}
+	
+
 
 	private Integer getPreviousYCoord() {
 		return currentYCoordIndex <= 0 || currentYCoordIndex >= sortedYCoords.size()? null : sortedYCoords.get(currentYCoordIndex-1);

@@ -287,7 +287,7 @@ public class BoundingBoxManager {
 						if (totalBox == null) {
 							totalBox = new Real2Range(bbox);
 						} else {
-							totalBox = totalBox.plus(bbox);
+							totalBox = totalBox.plusEquals(bbox);
 						}
 					}
 				}
