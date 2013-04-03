@@ -38,7 +38,6 @@ public class SampleTest {
 	}
 	
 	@Test
-	@Ignore
 	public void testAnalyzePDFSInBMCDirectory() {
 		PageAnalyzerTest.testDirectory(Fixtures.BMCINDIR, Fixtures.BMCSVGDIR, Fixtures.BMCOUTDIR, false);
 	}
@@ -55,8 +54,8 @@ public class SampleTest {
 		PageAnalyzerTest.testDirectory(Fixtures.PEERJINDIR, Fixtures.PEERJSVGDIR, Fixtures.PEERJOUTDIR, false);
 	}
 	
-	@Ignore
 	@Test
+	@Ignore
 	public void testAny() {
 		PageAnalyzerTest.testDirectory(Fixtures.ANYINDIR, Fixtures.ANYSVGDIR, Fixtures.ANYOUTDIR);
 	}
