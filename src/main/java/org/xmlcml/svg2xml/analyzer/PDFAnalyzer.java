@@ -2,7 +2,9 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,8 +26,11 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlUl;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.text.TextLine;
@@ -106,27 +111,35 @@ public class PDFAnalyzer implements Annotatable {
 		} catch (Exception e1) {
 			throw new RuntimeException(e1);
 		}
-		createHtmlMenuSystem(htmlDir);
 		List<File> htmlFiles = analyzeHtml(htmlDir);
-		searchHtml(htmlFiles, ".//*[local-name()='i']");
+		HtmlElement speciesList = searchHtml(htmlFiles, ".//*[local-name()='i' and contains(normalize-space(.),' ')]");
+		try {
+			CMLUtil.debug(speciesList, new FileOutputStream(new File(outputDocumentDir, "species.html")), 1);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+		createHtmlMenuSystem(htmlDir);
 	}
 
-	private void searchHtml(List<File> htmlFiles, String xpath) {
+	private HtmlElement searchHtml(List<File> htmlFiles, String xpath) {
+		HtmlUl ul = new HtmlUl();
 		for (File file : htmlFiles) {
 			Element html = null;
 			try {
 				html = new Builder().build(file).getRootElement();
 			} catch (Exception e) {
 				LOG.error("Failed on html File: "+file);
-				return;
-//				throw new RuntimeException(e);
 			}
-			Nodes nodes = html.query(xpath);
-			for (int i = 0; i < nodes.size(); i++) {
-				LOG.debug(nodes.get(i).getValue());
+			if (html != null) {
+				Nodes nodes = html.query(xpath);
+				for (int i = 0; i < nodes.size(); i++) {
+					HtmlLi li = new HtmlLi();
+					ul.appendChild(li);
+					li.setValue(nodes.get(i).getValue());
+				}
 			}
-			
 		}
+		return ul;
 	}
 
 	private List<File> analyzeHtml(File htmlDir) {
