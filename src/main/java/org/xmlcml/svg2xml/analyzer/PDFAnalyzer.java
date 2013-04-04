@@ -2,15 +2,15 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import nu.xom.Builder;
 import nu.xom.Element;
@@ -51,6 +51,8 @@ public class PDFAnalyzer implements Annotatable {
 	private static final String SVG = ".svg";
 	private static final String HTML = ".html";
 	private static final String PDF = ".pdf";
+
+	private static final Pattern BINOM_REGEX = Pattern.compile("[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s*[a-z]+)*");
 	
 	private File inputTopDir;
 	private File inFile;
@@ -123,6 +125,7 @@ public class PDFAnalyzer implements Annotatable {
 
 	private HtmlElement searchHtml(List<File> htmlFiles, String xpath) {
 		HtmlUl ul = new HtmlUl();
+		Set<String> binomialSet = new HashSet<String>();
 		for (File file : htmlFiles) {
 			Element html = null;
 			try {
@@ -133,9 +136,16 @@ public class PDFAnalyzer implements Annotatable {
 			if (html != null) {
 				Nodes nodes = html.query(xpath);
 				for (int i = 0; i < nodes.size(); i++) {
-					HtmlLi li = new HtmlLi();
-					ul.appendChild(li);
-					li.setValue(nodes.get(i).getValue());
+					String value = nodes.get(i).getValue();
+					if (BINOM_REGEX.matcher(value).matches()) {	
+						if (!binomialSet.contains(value)) {
+							LOG.trace(value);
+							HtmlLi li = new HtmlLi();
+							ul.appendChild(li);
+							li.setValue(value);
+							binomialSet.add(value);
+						}
+					}
 				}
 			}
 		}
