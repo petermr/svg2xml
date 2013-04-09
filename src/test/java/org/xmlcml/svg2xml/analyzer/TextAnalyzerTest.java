@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +9,7 @@ import java.util.regex.Pattern;
 import junit.framework.Assert;
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
@@ -21,6 +23,7 @@ import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextLineContainer;
+import org.xmlcml.svg2xml.text.TextLineGroup;
 import org.xmlcml.svg2xml.text.TextLineSet;
 
 import com.google.common.collect.Multimap;
@@ -28,7 +31,11 @@ import com.google.common.collect.Multiset;
 
 public class TextAnalyzerTest {
 
+	private final static Logger LOG = Logger.getLogger(TextAnalyzerTest.class);
 
+	private final static char MINUS = (char)8722;
+	private final static char WHITE_BULLET = (char)9702;
+	
 	/** checks there are 4 lines in para
 	 * 
 	 */
@@ -88,19 +95,19 @@ public class TextAnalyzerTest {
 		textLineContainer.getLinesInIncreasingY();
 		List<String> textLineContentList = textLineContainer.getTextLineContentList();
 		StringTestBase.assertEquals("unspaced strings", 
-		    new String[]{""+(char)8722+"1"+(char)8722+"1",
+		    new String[]{""+MINUS+"1"+MINUS+"1",
 			"Therateconstantis0.61795mgLh.",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
-			"bytheArrheniusequationk=kexp("+(char)8722+"E/RT),whereEisthe",
+			"bytheArrheniusequationk=kexp("+MINUS+"E/RT),whereEisthe",
 			"0aa",
 			"activationenergy.Takingthenaturallogarithmofthisequa-",
 			"tionandcombiningthekvaluesobtainedforthereactionat",
-			""+(char)9702,
+			""+WHITE_BULLET,
 			"130and200CyieldstheresultsofkandEathighertem-",
 			"0a",
 			"peratures.Therefore,thecalculatedactivationenergy(E)is",
 			"a",
-			"5"+(char)8722+"1",
+			"5"+MINUS+"1",
 			"1.11×10Jmol.",
 			"Theaboveanalysisseemstoindicatethatindifferentreac-",
 			"tiontemperaturerangesthesolvothermalreactioninthereverse",
@@ -121,19 +128,19 @@ public class TextAnalyzerTest {
 		textLineContainer.insertSpaces();
 		List<String> textLineContentList = textLineContainer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+(char)8722+" "+"1"+" "+(char)8722+" "+"1",
+		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795mgL h .",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
 			"by theArrhenius equation k =k exp(− E /RT), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+(char)9702,
+			""+WHITE_BULLET,
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
-			"5"+" "+(char)8722+" "+"1",
+			"5"+" "+MINUS+" "+"1",
 			"1.11×10 Jmol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
@@ -154,19 +161,19 @@ public class TextAnalyzerTest {
 		textLineContainer.insertSpaces();
 		List<String> textLineContentList = textLineContainer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+(char)8722+" "+"1"+" "+(char)8722+" "+"1",
+		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
 			"by theArrhenius equation k =k exp(− E /RT), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+(char)9702,
+			""+WHITE_BULLET,
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
-			"5"+" "+(char)8722+" "+"1",
+			"5"+" "+MINUS+" "+"1",
 			"1.11×10 Jmol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
@@ -188,19 +195,19 @@ public class TextAnalyzerTest {
 //		textLineContainer.insertSpaces(0.12); // this seems to be maximum
 		List<String> textLineContentList = textLineContainer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+(char)8722+" "+"1"+" "+(char)8722+" "+"1",
+		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"The temperature dependence of the rate constants is described",
 			"by the Arrhenius equation k = k exp(− E /RT ), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+(char)9702,
+			""+WHITE_BULLET,
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
-			"5"+" "+(char)8722+" "+"1",
+			"5"+" "+MINUS+" "+"1",
 			"1.11 × 10 J mol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
@@ -223,19 +230,19 @@ public class TextAnalyzerTest {
 		                              // but very critically balanced
 		List<String> textLineContentList = textLineContainer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+(char)8722+" "+"1"+" "+(char)8722+" "+"1",
+		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"The temperature dependence of the rate constants is described",
 			"by the Arrhenius equation k = k exp(− E /RT ), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+(char)9702,
+			""+WHITE_BULLET,
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
-			"5"+" "+(char)8722+" "+"1",
+			"5"+" "+MINUS+" "+"1",
 			"1.11 × 10 J mol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
@@ -411,7 +418,7 @@ public class TextAnalyzerTest {
 		Assert.assertNotNull(superscript);
 		String s = superscript.getLineString();
 		// this is a WHITE BULLET (should be a degree sign)
-		Assert.assertEquals("sup"+(int)s.charAt(0), ""+(char)9702, superscript.getLineString());
+		Assert.assertEquals("sup"+(int)s.charAt(0), ""+WHITE_BULLET, superscript.getLineString());
 		TextLine subscript = largeLine.getSubscript();
 		Assert.assertNotNull(subscript);
 		Assert.assertEquals("sub", "0a", subscript.getLineString());
@@ -419,7 +426,8 @@ public class TextAnalyzerTest {
 
 	@Test
 	/** 
-	 * suscripts - mainly debugging routine
+	 * suscripts - mainly debugging routine 
+	 * does not produce html
 	 */
 	public void testCreateSuscriptLine0() {
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
@@ -555,7 +563,7 @@ public class TextAnalyzerTest {
 		"</sub>" +
 		"<span style='font-size:9.465px;font-family:Times-Roman;'>exp</span>" +
 		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>(</span>" +
-		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>"+(char)8722+"</span>" +
+		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>"+MINUS+"</span>" +
 		"<span style='font-size:9.465px;font-family:Times-Roman;' />" +
 		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
 		"<sub>" +
@@ -586,7 +594,7 @@ public class TextAnalyzerTest {
 				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>130 and 200</span>" +
 				"<sup>" +
-				"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>"+(char)9702+"</span>" +
+				"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>"+WHITE_BULLET+"</span>" +
 				"</sup>" +
 				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>C yields the results of </span>" +
 				"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
@@ -621,7 +629,29 @@ public class TextAnalyzerTest {
 	public void testCreateHTMLDivWithParas() throws Exception {
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		HtmlElement div = textLineContainer.getTextAnalyzer().createHtmlDivWithParas();
-		CMLUtil.debug(div, new FileOutputStream("target/divParas.html"), 0);
+		CMLUtil.debug(div, new FileOutputStream("target/divParas0.html"), 0);
+	}
+	
+	@Test
+	/** 
+	 * superscripts
+	 */
+	public void testCreateHTMLDivWithParasNew() throws Exception {
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<TextLineGroup> textGroupList = textLineContainer.getSeparatedTextLineGroupList();
+		HtmlElement div = textLineContainer.createHtmlDivWithParas(textGroupList);
+		CMLUtil.debug(div, new FileOutputStream("target/divParasNew.html"), 0);
+	}
+	
+	@Test
+	/** 
+	 * bold
+	 */
+	public void testCreateHTMLDivWithParasBold() throws Exception {
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PAGE3RESULTS_SVG);
+		List<TextLineGroup> textGroupList = textLineContainer.getSeparatedTextLineGroupList();
+		HtmlElement div = textLineContainer.createHtmlDivWithParas(textGroupList);
+		CMLUtil.debug(div, new FileOutputStream("target/divBold.html"), 0);
 	}
 	
 
@@ -718,7 +748,7 @@ public class TextAnalyzerTest {
 	 */
 	public void testgetDiscreteBoxes() {
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<Real2Range> discreteBoxes  = textLineContainer.getDiscreteBoxes();
+		List<Real2Range> discreteBoxes  = textLineContainer.getTextLineChunkBoxes();
 		Assert.assertNotNull(discreteBoxes);
 		// lines 7subscript and 8superscrip overlap 
 		Assert.assertEquals("boxes", 10, discreteBoxes.size());
@@ -731,14 +761,31 @@ public class TextAnalyzerTest {
 	public void testLinesInDiscreteBoxes() {
 		int[] count = {2, 1, 2, 1, 1, 3, 4, 1, 1, 1};
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<List<TextLine>> lineListList  = textLineContainer.getTextLineBoxList();
-		Assert.assertNotNull(lineListList);
-		Assert.assertEquals("boxes", 10, lineListList.size());
+		List<TextLineGroup> textLineChunkList  = textLineContainer.getInitialTextLineGroupList();
+		Assert.assertNotNull(textLineChunkList);
+		Assert.assertEquals("boxes", 10, textLineChunkList.size());
 		int i = 0;
-		for (List<TextLine> lineList : lineListList) {
-			Assert.assertEquals("box"+i, count[i], lineList.size());
+		for (TextLineGroup textLineChunk : textLineChunkList) {
+			Assert.assertEquals("box"+i, count[i], textLineChunk.size());
+			System.out.println(">>");
+			for (TextLine textLine: textLineChunk) {
+				System.out.println(textLine);
+			}
+			System.out.println("<<");
 			i++;
 		}
+	}
+
+	@Test
+	/** 
+	 * get lines in merged boxes
+	 */
+	public void testGetInitialTextLineChunkList() {
+		int[] count = {2, 1, 2, 1, 1, 3, 4, 1, 1, 1};
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<TextLineGroup> textLineChunkList  = textLineContainer.getInitialTextLineGroupList();
+		Assert.assertNotNull(textLineChunkList);
+		Assert.assertEquals("boxes", 10, textLineChunkList.size());
 	}
 
 
@@ -754,6 +801,80 @@ public class TextAnalyzerTest {
 			        { 343.872,347.308,358.267,369.226,370.645,380.185,391.144,398.667,402.103,403.522,413.061,414.481,420.585,424.02,434.979,445.938,456.897});
 		Assert.assertTrue("textline coordinates "+textLineCoordinateArray, textLineCoordinateArray.equals(ref, 0.001));
 	}
+
+	@Test
+	/**
+	 * 
+	 */
+	public void testGetPrimaryTextLineList() {
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<TextLine> primary = textLineContainer.getPrimaryTextLineList();
+		Assert.assertEquals("primary", 11, primary.size());
+	}
+	
+	@Test
+	/** splits textGroups into lines with sub/superscripts
+	 * 
+	 */
+	public void testGetSeparatedTextLineGroupList() {
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<TextLineGroup> textLineChunkList  = textLineContainer.getInitialTextLineGroupList();
+		Assert.assertEquals("TextLines ", 10, textLineChunkList.size());
+		List<TextLineGroup> separated = textLineContainer.getSeparatedTextLineGroupList();
+		Assert.assertEquals("split", 11, separated.size());
+		for (TextLineGroup group : separated) {
+			LOG.trace(group);
+		}
+	}
+	
+	@Test
+	public void testCreateTextListLines0() {
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		TextLineGroup group0 = textLineContainer.getSeparatedTextLineGroupList().get(0);
+		Assert.assertEquals("group0", 2, group0.size());
+		List<TextLine> textLineList = group0.createSuscriptTextLineList();
+		Assert.assertEquals("group0", 5, textLineList.size());
+	}
+	
+	@Test
+	public void testCreateTextListLinesAll() {
+		int[] groupSize = new int[]{5,1,7,1,1,7,3,5,1,1,1};
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<TextLineGroup> groupList = textLineContainer.getSeparatedTextLineGroupList();
+		Assert.assertEquals("groups", 11, groupList.size());
+		int i = 0;
+		for (TextLineGroup group : groupList) {
+			List<TextLine> textLineList = group.createSuscriptTextLineList();
+			Assert.assertEquals("group"+i, groupSize[i], textLineList.size());
+			i++;
+		}
+	}
+	
+	@Test
+	public void testCreateTextListHtml0() {
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		TextLineGroup group0 = textLineContainer.getSeparatedTextLineGroupList().get(0);
+		HtmlElement textLineHtml = group0.createHtml();
+		Assert.assertEquals("group0", 
+				"<p xmlns=\"http://www.w3.org/1999/xhtml\">" +
+				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">The rate constant is 0.61795 mg L</span>" +
+				"<sup><span style=\"font-size:7.074px;color:red;font-family:MTSYN;\">"+MINUS+" </span>" +
+				"<span style=\"font-size:7.074px;font-family:TimesNewRoman;\">1</span></sup>" +
+				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">h</span>" +
+				"<sup><span style=\"font-size:7.074px;color:red;font-family:MTSYN;\">"+MINUS+" </span><span style=\"font-size:7.074px;font-family:TimesNewRoman;\">1</span></sup>" +
+				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">.</span></p>",
+				textLineHtml.toXML());
+	}
+	
+	@Test
+	public void testCreateTextListHtmlDiv() {
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+		List<TextLineGroup> textLineGroupList = textLineContainer.getSeparatedTextLineGroupList();
+		HtmlElement divElement = TextLineContainer.createHtmlDiv(textLineGroupList);
+		Element ref = CMLUtil.parseQuietlyToDocument(new File("src/test/resources/org/xmlcml/svg2xml/analyzer/textLineGroup0.html")).getRootElement();
+		JumboTestUtils.assertEqualsCanonically("html", ref, divElement, true);
+	}
+	
 
 	/** FIXTURES */
 

@@ -11,14 +11,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import nu.xom.Elements;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
@@ -62,9 +69,13 @@ public class TextLineContainer {
 	private RealArray textLineCoordinateArray;
 	private Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize;
 
-	private List<Real2Range> discreteBoxes;
+	private List<Real2Range> textLineChunkBoxes;
 
-	private List<List<TextLine>> textLineBoxList;
+	private List<TextLineGroup> initialTextLineGroupList;
+	private List<TextLine> primaryTextLineList;
+	private List<TextLineGroup> textLineGroupList;
+
+	private List<TextLineGroup> separatedTextLineGroupList;
 	
 	public TextLineContainer(TextAnalyzerX textAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
@@ -241,13 +252,21 @@ public class TextLineContainer {
 				fontCountMap.put(fontSize, sum);
 			}
 		}
+		extracted(fontCountMap);
+		return commonestFontSize;
+	}
+
+	private void extracted(Map<Double, Integer> fontCountMap) {
+		int frequency = -1;
 		for (Double fontSize : fontCountMap.keySet()) {
+			int count = fontCountMap.get(fontSize);
 			LOG.trace(">> "+fontSize+" .. "+fontCountMap.get(fontSize));
-			if (commonestFontSize == null || commonestFontSize.getDouble() < fontSize)  {
+			if (commonestFontSize == null || count > frequency) {
 			    commonestFontSize = new SvgPlusCoordinate(fontSize);
+			    frequency = count;
 			}
 		}
-		return commonestFontSize;
+		LOG.trace("commonest "+commonestFontSize.getDouble());
 	}
 	
 	public SvgPlusCoordinate getLargestFontSize() {
@@ -264,14 +283,20 @@ public class TextLineContainer {
 	public Real2Range getLargestFontBoundingBox() {
 		if (textLinesLargetFontBoundingBox == null) {
 			getLinesWithLargestFont();
-			if (linesWithLargestFont.size() > 0) {
-				textLinesLargetFontBoundingBox = new Real2Range(new Real2Range(linesWithLargestFont.get(0).getBoundingBox()));
-				for (int i = 1; i < linesWithLargestFont.size(); i++) {
-					textLinesLargetFontBoundingBox.plus(linesWithLargestFont.get(i).getBoundingBox());
-				}
-			}
+			getBoundingBox(linesWithLargestFont);
 		}
 		return textLinesLargetFontBoundingBox;
+	}
+
+	public static Real2Range getBoundingBox(List<TextLine> textLines) {
+		Real2Range boundingBox = null;
+		if (textLines.size() > 0) {
+			boundingBox = new Real2Range(new Real2Range(textLines.get(0).getBoundingBox()));
+			for (int i = 1; i < textLines.size(); i++) {
+				boundingBox.plus(textLines.get(i).getBoundingBox());
+			}
+		}
+		return boundingBox;
 	}
 
 	public Set<SvgPlusCoordinate> getFontSizeSet() {
@@ -477,45 +502,92 @@ public class TextLineContainer {
 		return new TextLineSet(textLines);
 	}
 
-	public List<List<TextLine>> getTextLineBoxList() {
-		getDiscreteBoxes();
-		return textLineBoxList;
+	public List<TextLineGroup> getInitialTextLineGroupList() {
+		getTextLineChunkBoxes();
+		return initialTextLineGroupList;
 	}
 
-	public List<Real2Range> getDiscreteBoxes() {
-		if (discreteBoxes == null) {
-			List<TextLine> textLineList = getLinesInIncreasingY();
-			discreteBoxes = new ArrayList<Real2Range>();
-			Real2Range bbox = null;
-			List<TextLine> boxTextLineList = null;
+	/**
+	 * The PRIMARY lines are the commonest with the most common features. 
+	 * This is heuristic. At present it is font-size equality. Font families
+	 * are suspect as there are "synonyms", e.g. TimesRoman and TimesNR
+	 * 
+	 * @return
+	 */
+	public List<TextLine> getPrimaryTextLineList() {
+		if (primaryTextLineList == null) {
+			String commonestFontFamily = getCommonestFontFamily();
+			Double commonestFontSize = getCommonestFontSize().getDouble();
+			primaryTextLineList = new ArrayList<TextLine>();
+			for (TextLine textLine : textLineList) {
+				if (Real.isEqual(textLine.getFontSize(), commonestFontSize, 0.01) 
+						// omit as fontFamily can change within line :-( e.g. Times-Roman and TimesNR
+						// && commonestFontFamily.equals(textLine.getFontFamily()) 
+						) {
+					primaryTextLineList.add(textLine);
+					LOG.trace("PRIMARY "+textLine);
+					textLine.setPrimary(true);
+				} else {
+					textLine.setPrimary(false);
+				}
+			}
+		}
+		LOG.trace("primary "+primaryTextLineList.size());
+		return primaryTextLineList;
+	}
+
+	public List<TextLineGroup> getSeparatedTextLineGroupList() {
+		if (separatedTextLineGroupList == null) {
+			getPrimaryTextLineList();
+			getInitialTextLineGroupList();
+			separatedTextLineGroupList = new ArrayList<TextLineGroup>();
 			int i = 0;
-			textLineBoxList = new ArrayList<List<TextLine>>();
+			for (TextLineGroup textLineGroup : initialTextLineGroupList) {
+				List<TextLineGroup> splitChunks = textLineGroup.splitIntoUniqueChunks();
+				for (TextLineGroup textLineChunk0 : splitChunks) {
+					separatedTextLineGroupList.add(textLineChunk0);
+				}
+				i++;
+			}
+		}
+		LOG.debug("separated "+separatedTextLineGroupList.size());
+		return separatedTextLineGroupList;
+	}
+
+	public List<Real2Range> getTextLineChunkBoxes() {
+		if (textLineChunkBoxes == null) {
+			List<TextLine> textLineList = getLinesInIncreasingY();
+			textLineChunkBoxes = new ArrayList<Real2Range>();
+			Real2Range bbox = null;
+			TextLineGroup textLineGroup = null;
+			int i = 0;
+			initialTextLineGroupList = new ArrayList<TextLineGroup>();
 			for (TextLine textLine : textLineList) {
 				Real2Range bbox0 = textLine.getBoundingBox();
 				LOG.trace(">> "+textLine.getLineString());
 				if (bbox == null) {
 					bbox = bbox0;
-					boxTextLineList = new ArrayList<TextLine>();
-					addBoxAndLines(bbox, boxTextLineList);
+					textLineGroup = new TextLineGroup();
+					addBoxAndLines(bbox, textLineGroup);
 				} else {
 					Real2Range intersectionBox = bbox.intersectionWith(bbox0);
 					if (intersectionBox == null) {
 						bbox = bbox0;
-						boxTextLineList = new ArrayList<TextLine>();
-						addBoxAndLines(bbox, boxTextLineList);
+						textLineGroup = new TextLineGroup();
+						addBoxAndLines(bbox, textLineGroup);
 					} else {
 						bbox = bbox.plusEquals(bbox0);
 					}
 				}
-				boxTextLineList.add(textLine);
+				textLineGroup.add(textLine);
 			}
 		}
-		return discreteBoxes;
+		return textLineChunkBoxes;
 	}
 
-	private void addBoxAndLines(Real2Range bbox, List<TextLine> textLineList) {
-		discreteBoxes.add(bbox);
-		textLineBoxList.add(textLineList);
+	private void addBoxAndLines(Real2Range bbox, TextLineGroup textLineGroup) {
+		textLineChunkBoxes.add(bbox);
+		initialTextLineGroupList.add(textLineGroup);
 	}
 
 	public static TextLineContainer createTextLineContainerWithSortedLines(File svgFile) {
@@ -574,6 +646,33 @@ public class TextLineContainer {
 		return indent;
 	}
 
+	/** finds maximum indent of lines
+	 * must be at least 2 lines
+	 * currently does not check for capitals, etc.
+	 * 
+	 */
+	public static Double getMaximumLeftIndent(List<TextLine> textLineList) {
+		Double indent = null;
+		Double xLeft = null;
+		if (textLineList != null && textLineList.size() > 1) {
+			for (TextLine textLine : textLineList) {
+				Double xStart = textLine.getFirstXCoordinate();
+				if (xStart == null) {
+					throw new RuntimeException("null start");
+				}
+				if (xLeft == null) {
+					xLeft = xStart;
+				}
+				if (xLeft - xStart > TextAnalyzerX.INDENT_MIN) {
+					indent = xLeft;
+				} else if (xStart - xLeft > TextAnalyzerX.INDENT_MIN) {
+					indent = xStart;
+				}
+			}
+		}
+		return indent;
+	}
+
 	public static List<TextLine> createTextLineList(File svgFile) {
 		TextLineContainer textLineContainer = createTextLineContainerWithSortedLines(svgFile);
 		List<TextLine> textLineList = textLineContainer.getLinesInIncreasingY();
@@ -594,6 +693,106 @@ public class TextLineContainer {
 
 	public List<TextLine> getTextlineList() {
 		return textLineList;
+	}
+
+	public static HtmlElement createHtmlDiv(List<TextLineGroup> textLineGroupList) {
+		HtmlDiv div = new HtmlDiv();
+		for (TextLineGroup group : textLineGroupList) {
+			HtmlElement el = group.createHtml();
+			div.appendChild(el);
+		}
+		return div;
+	}
+
+	public HtmlElement createHtmlDivWithParas() {
+		List<TextLineGroup> textLineGroupList = this.getSeparatedTextLineGroupList();
+		HtmlElement htmlElement = createHtmlDivWithParas(textLineGroupList);
+		return htmlElement;
+	}
+
+	public HtmlElement createHtmlDivWithParas(List<TextLineGroup> textLineGroupList) {
+		List<TextLine> primaryTextLineList = this.getPrimaryTextLineList();
+		HtmlElement div = null;
+		if (primaryTextLineList.size() == 0){
+			 div = null;
+		} else if (primaryTextLineList.size() == 1){
+			 div = primaryTextLineList.get(0).createHtmlLine();
+		} else {
+			HtmlElement rawDiv = createHtmlDiv(textLineGroupList);
+//			rawDiv.debug("RAW");
+			div = createDivWithParas(primaryTextLineList, rawDiv);
+//			div.debug("DIV");
+		}
+		return div;
+	}
+
+	private HtmlElement createDivWithParas(List<TextLine> textLineList, HtmlElement rawDiv) {
+		HtmlElement div = null;
+		Double leftIndent = TextLineContainer.getMaximumLeftIndent(textLineList);
+		Real2Range leftBB = TextLineContainer.getBoundingBox(textLineList);
+		if (leftBB != null) {
+			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - leftBB.getXRange().getMin());
+			Real2Range largestFontBB = TextLineContainer.getBoundingBox(textLineList);
+			if (largestFontBB != null) {
+				RealRange xRange = largestFontBB.getXRange();
+				Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
+				LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
+				div = new HtmlDiv();
+				Elements htmlLines = rawDiv.getChildElements();
+				// always start with para
+				HtmlP pCurrent = TextLineContainer.createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
+				for (int i = 1; i < textLineList.size(); i++) {
+					TextLine textLine = textLineList.get(i);
+					LOG.trace(">> "+textLine);
+					HtmlP pNext = i < htmlLines.size() ? (HtmlP) HtmlElement.create(htmlLines.get(i)) : null;
+					// indent, create new para
+					if (pNext == null) {
+						LOG.error("Skipping HTML");
+					} else if (textLine.getFirstXCoordinate() > indentBoundary) {
+						pCurrent = createAndAddNewPara(div, pNext);
+					} else {
+						mergeParas(pCurrent, pNext);
+					}
+				}
+			}
+		}
+		return div;
+	}
+	
+	public static HtmlP createAndAddNewPara(HtmlElement div, HtmlP p) {
+		HtmlP pNew = (HtmlP) HtmlElement.create(p);
+		div.appendChild(pNew);
+		return pNew;
+	}
+
+	public static void mergeParas(HtmlP pCurrent, HtmlP pNext) {
+		Elements currentChildren = pCurrent.getChildElements();
+		HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
+		HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
+		Elements nextChildren = pNext.getChildElements();
+		HtmlElement firstNext = (HtmlElement) nextChildren.get(0);
+		HtmlSpan nextFirstSpan = (firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
+		int nextCounter = 0;
+		// merge texts
+		if (currentLastSpan != null && nextFirstSpan != null) {
+			String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
+			LOG.trace("Merged "+mergedText);
+			lastCurrent.setValue(mergedText);
+			nextCounter = 1;
+		}
+		//merge next line's children
+		for (int i = nextCounter; i < nextChildren.size(); i++) {
+			pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
+		}
+	}
+
+	private static String mergeLineText(String last, String next) {
+		//merge hyphen minus
+		if (last.endsWith("-")) {
+			return last.substring(0, last.length()-1) + next;
+		} else {
+			return last + " " + next;
+		}
 	}
 
 }

@@ -161,12 +161,13 @@ public class TextLineTest {
 		Assert.assertNotNull("fontFamilyMultiset", fontFamilyMultiset);
 		Assert.assertEquals("single", 45, fontFamilyMultiset.size());
 		Assert.assertEquals("single", 1, fontFamilyMultiset.entrySet().size());
+		System.out.println(textLine8);
 	}
 	
 	@Test
 	public void testgetSimpleFontFamilyMultiset0() {
-		TextLine textLine8 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 0);
-		Multiset<String> fontFamilyMultiset = textLine8.getFontFamilyMultiset();
+		TextLine textLine0 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 0);
+		Multiset<String> fontFamilyMultiset = textLine0.getFontFamilyMultiset();
 		Assert.assertNotNull("fontFamilyMultiset", fontFamilyMultiset);
 		Assert.assertEquals("single", 4, fontFamilyMultiset.size());
 		Set<Entry<String>> entrySet = fontFamilyMultiset.entrySet();
@@ -177,8 +178,9 @@ public class TextLineTest {
 		Iterator<Entry<String>> iterator = entrySet.iterator();
 		while (iterator.hasNext()) {
 			Entry<String> entry = iterator.next();
-//			System.out.println(entry.getElement()+" "+entry.getCount());
+			System.out.println(entry.getElement()+" "+entry.getCount());
 		}
+		System.out.println(textLine0);
 	}
 	
 

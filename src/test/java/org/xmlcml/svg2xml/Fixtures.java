@@ -97,6 +97,8 @@ public class Fixtures {
 	public static final File PARA_SUSCRIPT_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "parasWithSuscripts.svg");
 	private static final File LINE1_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "singleLine.svg");
 
+	public static File PAGE3RESULTS_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "page3results.svg");
+
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;
 		try {

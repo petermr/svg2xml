@@ -736,8 +736,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	 * usually needs tidying with createHtmlDivWithParas
 	 * @return
 	 */
-	public HtmlElement createHtmlRawDiv(List<TextLine> linesToBeAnalyzed) {
-//		textLineListWithLargestFont = getLinesWithLargestFont();
+	public static HtmlElement createHtmlRawDiv(List<TextLine> linesToBeAnalyzed) {
 		HtmlDiv div = new HtmlDiv();
 		for (TextLine textLine : linesToBeAnalyzed) {
 			HtmlElement p = textLine.createHtmlLine();
@@ -748,79 +747,11 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	public HtmlElement createHtmlDivWithParas() {
 		ensureTextLineContainer();
-		List<TextLine> textLineListWithLargestFont = textLineContainer.getLinesWithCommonestFont();
-		HtmlElement div = null;
-		if (textLineListWithLargestFont.size() == 0){
-			 div = null;
-		} else if (textLineListWithLargestFont.size() == 1){
-			 div = textLineListWithLargestFont.get(0).createHtmlLine();
-		} else {
-			HtmlElement rawDiv = createHtmlRawDiv();
-			Double leftIndent = textLineContainer.getMaximumLeftIndentForLargestFont();
-			Real2Range leftBB = this.getTextLinesLargestFontBoundingBox();
-			if (leftBB != null) {
-				Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - this.getTextLinesLargestFontBoundingBox().getXRange().getMin());
-				Real2Range largestFontBB = textLineContainer.getLargestFontBoundingBox();
-				if (largestFontBB != null) {
-					RealRange xRange = largestFontBB.getXRange();
-					Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
-					LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
-					div = new HtmlDiv();
-					Elements htmlLines = rawDiv.getChildElements();
-					// always start with para
-					HtmlP pCurrent = createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
-					for (int i = 1; i < textLineListWithLargestFont.size(); i++) {
-						TextLine textLine = textLineListWithLargestFont.get(i);
-						HtmlP pNext = (HtmlP) HtmlElement.create(htmlLines.get(i));
-						// indent, create new para
-						if (textLine.getFirstXCoordinate() > indentBoundary) {
-							pCurrent = createAndAddNewPara(div, pNext);
-						} else {
-							mergeParas(pCurrent, pNext);
-						}
-					}
-				}
-			}
-		}
+		HtmlElement div = textLineContainer.createHtmlDivWithParas();
 		return div;
 	}
 
-	private void mergeParas(HtmlP pCurrent, HtmlP pNext) {
-		Elements currentChildren = pCurrent.getChildElements();
-		HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
-		HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
-		Elements nextChildren = pNext.getChildElements();
-		HtmlElement firstNext = (HtmlElement) nextChildren.get(0);
-		HtmlSpan nextFirstSpan = (firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
-		int nextCounter = 0;
-		// merge texts
-		if (currentLastSpan != null && nextFirstSpan != null) {
-			String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
-			LOG.trace("Merged "+mergedText);
-			lastCurrent.setValue(mergedText);
-			nextCounter = 1;
-		}
-		//merge next line's children
-		for (int i = nextCounter; i < nextChildren.size(); i++) {
-			pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
-		}
-	}
-
-	private String mergeLineText(String last, String next) {
-		//merge hyphen minus
-		if (last.endsWith("-")) {
-			return last.substring(0, last.length()-1) + next;
-		} else {
-			return last + " " + next;
-		}
-	}
-
-	private HtmlP createAndAddNewPara(HtmlElement div, HtmlP p) {
-		HtmlP pNew = (HtmlP) HtmlElement.create(p);
-		div.appendChild(pNew);
-		return pNew;
-	}
-
+	
 	private TextLineContainer ensureTextLineContainer() {
 		if (this.textLineContainer == null) {
 			this.textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(textCharacters, this);
@@ -853,7 +784,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		for (int iz : ii) {
 			TextLine textList = textByCoordMap.get(iz);
 			for (SVGText text : textList) {
-				System.out.print(">> "+text.getXY()+" "+text.getText()+ " ");
+				LOG.trace(">> "+text.getXY()+" "+text.getText()+ " ");
 			}
 		}
 		System.out.println();

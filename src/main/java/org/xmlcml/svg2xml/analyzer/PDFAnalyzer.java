@@ -41,6 +41,7 @@ import com.google.common.collect.Multimap;
 
 public class PDFAnalyzer implements Annotatable {
 
+
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
 
 	public static final String IMAGE = "image";
@@ -52,7 +53,10 @@ public class PDFAnalyzer implements Annotatable {
 	private static final String HTML = ".html";
 	private static final String PDF = ".pdf";
 
-	private static final Pattern BINOM_REGEX = Pattern.compile("[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s*[a-z]+)*");
+	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s*[a-z]+)*";
+	private String htmlRegexS = BINOMIAL_REGEX_S;
+	private static final String ITALIC_XPATH_S = ".//*[local-name()='i']";
+	private String htmlXPath = ITALIC_XPATH_S;
 	
 	private File inputTopDir;
 	private File inFile;
@@ -100,6 +104,14 @@ public class PDFAnalyzer implements Annotatable {
 		this.skipFile = skipFile;
 	}
 	
+	public void setHtmlRegex(String htmlRegexS) {
+		this.htmlRegexS = htmlRegexS;
+	}
+	
+	public void setHtmlXPath(String htmlXPath) {
+		this.htmlXPath = htmlXPath;
+	}
+	
 	public void analyzePDFFile(File inFile) {
 		this.inFile = inFile;
 		inputName = inFile.getName();
@@ -114,7 +126,7 @@ public class PDFAnalyzer implements Annotatable {
 			throw new RuntimeException(e1);
 		}
 		List<File> htmlFiles = analyzeHtml(htmlDir);
-		HtmlElement speciesList = searchHtml(htmlFiles, ".//*[local-name()='i' and contains(normalize-space(.),' ')]");
+		HtmlElement speciesList = searchHtml(htmlFiles, htmlXPath, htmlRegexS);
 		try {
 			CMLUtil.debug(speciesList, new FileOutputStream(new File(outputDocumentDir, "species.html")), 1);
 		} catch (Exception e) {
@@ -123,9 +135,10 @@ public class PDFAnalyzer implements Annotatable {
 		createHtmlMenuSystem(htmlDir);
 	}
 
-	private HtmlElement searchHtml(List<File> htmlFiles, String xpath) {
+	private HtmlElement searchHtml(List<File> htmlFiles, String xpath, String regex) {
 		HtmlUl ul = new HtmlUl();
 		Set<String> binomialSet = new HashSet<String>();
+		Pattern htmlPattern = Pattern.compile(htmlRegexS);
 		for (File file : htmlFiles) {
 			Element html = null;
 			try {
@@ -137,7 +150,7 @@ public class PDFAnalyzer implements Annotatable {
 				Nodes nodes = html.query(xpath);
 				for (int i = 0; i < nodes.size(); i++) {
 					String value = nodes.get(i).getValue();
-					if (BINOM_REGEX.matcher(value).matches()) {	
+					if (htmlPattern.matcher(value).matches()) {	
 						if (!binomialSet.contains(value)) {
 							LOG.trace(value);
 							HtmlLi li = new HtmlLi();

@@ -94,6 +94,7 @@ public class TextLine implements Iterable<SVGText> {
 	private Suscript suscript;
 	private Set<String> fontFamilySet;
 	private Multiset<String> fontFamilyMultiset;
+	private boolean isPrimary;
 
 	private void resetWhenLineContentChanged() {
 		characterList = null;
@@ -236,6 +237,8 @@ public class TextLine implements Iterable<SVGText> {
 		if (fontFamilySet != null) {
 			if (fontFamilySet.size() == 1) {
 				family = fontFamilySet.iterator().next();
+			} else {
+				System.out.println("FF"+fontFamilySet);
 			}
 		}
 		return family;
@@ -820,8 +823,8 @@ public class TextLine implements Iterable<SVGText> {
 	private Double getWidth(SVGText text) {
 		String widthS = PDF2SVGUtil.getSVGXAttribute(text, PDF2SVGUtil.CHARACTER_WIDTH);
 		Double fontSize = text.getFontSize();
-		Double width = new Double(widthS) * SCALE;
-		return width * fontSize;
+		Double width = widthS == null ? null : new Double(widthS) * SCALE;
+		return width == null ? null : width * fontSize;
 	}
 
 	public Double getMeanWidthOfSpaceCharacters() {
@@ -989,6 +992,10 @@ public class TextLine implements Iterable<SVGText> {
 	
 	public HtmlElement createHtmlLine() {
 		List<TextLine> textLineList = createSuscriptTextLineList();
+		return createHtmlElement(textLineList);
+	}
+
+	public static HtmlElement createHtmlElement(List<TextLine> textLineList) {
 		HtmlP p = new HtmlP();
 		for (TextLine textLine : textLineList) {
 			HtmlElement pp = textLine.getHtmlElements();
@@ -1094,11 +1101,11 @@ public class TextLine implements Iterable<SVGText> {
 		return suscript;
 	}
 
-	private void setSuscript(Suscript suscript) {
+	void setSuscript(Suscript suscript) {
 		this.suscript = suscript;
 	}
 
-	private SVGText textWithLowestX(SVGText nextSup, SVGText nextThis, SVGText nextSub) {
+	public static SVGText textWithLowestX(SVGText nextSup, SVGText nextThis, SVGText nextSub) {
 		SVGText lowestText = null;
 		if (nextSup != null && (lowestText == null || (lowestText.getX() > nextSup.getX()))) {
 			lowestText = nextSup;
@@ -1112,7 +1119,7 @@ public class TextLine implements Iterable<SVGText> {
 		return lowestText;
 	}
 
-	private SVGText peekNext(List<SVGText> characterList, Integer index) {
+	public static SVGText peekNext(List<SVGText> characterList, Integer index) {
 		return (index >= characterList.size()) ? null : characterList.get(index);
 	}
 
@@ -1138,6 +1145,14 @@ public class TextLine implements Iterable<SVGText> {
 		getBoundingBox();
 		RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
 		return xRange == null ? null : xRange.getMax();
+	}
+
+	public void setPrimary(boolean b) {
+		isPrimary = b;
+	}
+
+	public boolean isPrimary() {
+		return isPrimary;
 	}
 
 }
