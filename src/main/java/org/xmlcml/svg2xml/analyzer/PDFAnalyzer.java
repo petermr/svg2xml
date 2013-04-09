@@ -53,7 +53,7 @@ public class PDFAnalyzer implements Annotatable {
 	private static final String HTML = ".html";
 	private static final String PDF = ".pdf";
 
-	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s*[a-z]+)*";
+	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s+[a-z]+)*";
 	private String htmlRegexS = BINOMIAL_REGEX_S;
 	private static final String ITALIC_XPATH_S = ".//*[local-name()='i']";
 	private String htmlXPath = ITALIC_XPATH_S;

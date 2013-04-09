@@ -252,11 +252,11 @@ public class TextLineContainer {
 				fontCountMap.put(fontSize, sum);
 			}
 		}
-		extracted(fontCountMap);
+		getCommonestFontSize(fontCountMap);
 		return commonestFontSize;
 	}
 
-	private void extracted(Map<Double, Integer> fontCountMap) {
+	private void getCommonestFontSize(Map<Double, Integer> fontCountMap) {
 		int frequency = -1;
 		for (Double fontSize : fontCountMap.keySet()) {
 			int count = fontCountMap.get(fontSize);
@@ -520,7 +520,8 @@ public class TextLineContainer {
 			Double commonestFontSize = getCommonestFontSize().getDouble();
 			primaryTextLineList = new ArrayList<TextLine>();
 			for (TextLine textLine : textLineList) {
-				if (Real.isEqual(textLine.getFontSize(), commonestFontSize, 0.01) 
+				Double fontSize = textLine.getFontSize();
+				if (fontSize != null && Real.isEqual(fontSize, commonestFontSize, 0.01) 
 						// omit as fontFamily can change within line :-( e.g. Times-Roman and TimesNR
 						// && commonestFontFamily.equals(textLine.getFontFamily()) 
 						) {
@@ -550,7 +551,7 @@ public class TextLineContainer {
 				i++;
 			}
 		}
-		LOG.debug("separated "+separatedTextLineGroupList.size());
+		LOG.trace("separated "+separatedTextLineGroupList.size());
 		return separatedTextLineGroupList;
 	}
 
@@ -747,7 +748,7 @@ public class TextLineContainer {
 					HtmlP pNext = i < htmlLines.size() ? (HtmlP) HtmlElement.create(htmlLines.get(i)) : null;
 					// indent, create new para
 					if (pNext == null) {
-						LOG.error("Skipping HTML");
+						LOG.error("Skipping HTML "+pCurrent+" // "+textLine);
 					} else if (textLine.getFirstXCoordinate() > indentBoundary) {
 						pCurrent = createAndAddNewPara(div, pNext);
 					} else {

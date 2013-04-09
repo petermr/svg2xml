@@ -1120,7 +1120,11 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	public static SVGText peekNext(List<SVGText> characterList, Integer index) {
-		return (index >= characterList.size()) ? null : characterList.get(index);
+		SVGText text = null;
+		if (characterList != null) {
+			text = (index >= characterList.size()) ? null : characterList.get(index);
+		}
+		return text;
 	}
 
 	public String getSpacedLineString() {

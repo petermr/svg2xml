@@ -172,7 +172,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 			}
 		} else if (this.textLineList.size() == 3) {
 			if (!textLineList.get(0).isPrimary() &&
-				textLineList.get(1).isPrimary() && 
+//				textLineList.get(1).isPrimary() && 
 				!textLineList.get(2).isPrimary()) {
 				superscript = textLineList.get(0);
 				middleLine = textLineList.get(1);
@@ -181,7 +181,10 @@ public class TextLineGroup implements Iterable<TextLine> {
 				throw new RuntimeException("Only one primary allowed for 3 line textLineGroup");
 			}
 		} else {
-			throw new RuntimeException("Cannot parse >3 line textLineGroup");
+			LOG.error("Maths or table? ");
+			for (TextLine textLine : textLineList) {
+				LOG.error("text "+textLine);
+			}
 		}
 		outputTextLineList = createSuscriptTextLineList(superscript, middleLine, subscript);
 		return outputTextLineList;
@@ -193,7 +196,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 	 */
 	public static List<TextLine> createSuscriptTextLineList(TextLine superscript, TextLine middleLine, TextLine subscript) {
 		List<TextLine> textLineList = new ArrayList<TextLine>();
-		List<SVGText> characterList = middleLine.getCharacterList();
+		List<SVGText> middleChars = middleLine == null ? null : middleLine.getCharacterList();
 		Integer thisIndex = 0;
 		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.getCharacterList();
 		Integer superIndex = 0;
@@ -202,7 +205,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 		TextLine textLine = null;
 		while (true) {
 			SVGText nextSup = TextLine.peekNext(superChars, superIndex);
-			SVGText nextThis = TextLine.peekNext(characterList, thisIndex);
+			SVGText nextThis = TextLine.peekNext(middleChars, thisIndex);
 			SVGText nextSub = TextLine.peekNext(subChars, subIndex);
 			SVGText nextText = TextLine.textWithLowestX(nextSup, nextThis, nextSub);
 			if (nextText == null) {
