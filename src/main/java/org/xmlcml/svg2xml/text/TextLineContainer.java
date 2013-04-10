@@ -707,7 +707,20 @@ public class TextLineContainer {
 
 	public HtmlElement createHtmlDivWithParas() {
 		List<TextLineGroup> textLineGroupList = this.getSeparatedTextLineGroupList();
+		boolean bb = false;
+		for (TextLineGroup tlg : textLineGroupList) {
+//			System.out.println("@@@ "+tlg);
+			if ((""+tlg).contains("thandidwild")) {
+				System.out.println("@@@ "+tlg);
+				bb = true;
+			}
+		}
+//		System.out.println("==============");
 		HtmlElement htmlElement = createHtmlDivWithParas(textLineGroupList);
+		if (bb) {
+			htmlElement.debug("HHH");
+		}
+		
 		return htmlElement;
 	}
 
@@ -731,6 +744,9 @@ public class TextLineContainer {
 		HtmlElement div = null;
 		Double leftIndent = TextLineContainer.getMaximumLeftIndent(textLineList);
 		Real2Range leftBB = TextLineContainer.getBoundingBox(textLineList);
+		Elements htmlLines = rawDiv.getChildElements();
+		LOG.debug("textLine "+textLineList.size()+"; html: "+ htmlLines.size());
+		
 		if (leftBB != null) {
 			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - leftBB.getXRange().getMin());
 			Real2Range largestFontBB = TextLineContainer.getBoundingBox(textLineList);
@@ -739,17 +755,17 @@ public class TextLineContainer {
 				Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
 				LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
 				div = new HtmlDiv();
-				Elements htmlLines = rawDiv.getChildElements();
 				// always start with para
 				HtmlP pCurrent = TextLineContainer.createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
-				for (int i = 1; i < textLineList.size(); i++) {
-					TextLine textLine = textLineList.get(i);
-					LOG.trace(">> "+textLine);
+				int size = htmlLines.size();
+				for (int i = 1; i < size/*textLineList.size()*/; i++) {
+					TextLine textLine = (textLineList.size() <= i) ? null : textLineList.get(i);
+					LOG.trace(">"+i+"> "+textLine);
 					HtmlP pNext = i < htmlLines.size() ? (HtmlP) HtmlElement.create(htmlLines.get(i)) : null;
 					// indent, create new para
 					if (pNext == null) {
 						LOG.error("Skipping HTML "+pCurrent+" // "+textLine);
-					} else if (textLine.getFirstXCoordinate() > indentBoundary) {
+					} else if (textLine != null && textLine.getFirstXCoordinate() > indentBoundary) {
 						pCurrent = createAndAddNewPara(div, pNext);
 					} else {
 						mergeParas(pCurrent, pNext);
