@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextLineContainer;
 
@@ -20,7 +21,6 @@ import com.google.common.collect.Multiset;
 public class TextLineContainerTest {
 
 	private final static Logger LOG = Logger.getLogger(TextLineContainerTest.class);
-	private static final String SVG = ".svg";
 	private static final String GEOTABLE_7 = "geotable-7.";
 	private List<File> geoFileList;
 	
@@ -33,7 +33,8 @@ public class TextLineContainerTest {
 		geoFileList = new ArrayList<File>();
 		for (File file : files) {
 			String name = file.getName();
-			if (name.startsWith(GEOTABLE_7) && name.endsWith(SVG) && !name.equals(GEOTABLE_7+"svg")) {
+			if (name.startsWith(GEOTABLE_7) && name.endsWith(SVGPlusConstantsX.SVG) &&
+					!name.equals(GEOTABLE_7+"svg")) {
 				geoFileList.add(file);
 			}
 		}

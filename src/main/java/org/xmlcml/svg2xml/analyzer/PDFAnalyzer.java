@@ -32,6 +32,7 @@ import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -49,9 +50,9 @@ public class PDFAnalyzer implements Annotatable {
 	public static final String PATH = "path";
 	public static final String PAGE = "page";
 
-	private static final String SVG = ".svg";
-	private static final String HTML = ".html";
-	private static final String PDF = ".pdf";
+	private static final String SVG = SVGPlusConstantsX.SVG;
+	private static final String HTML = SVGPlusConstantsX.HTML;
+	private static final String PDF = SVGPlusConstantsX.PDF;
 
 	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s+[a-z]+)*";
 	private String htmlRegexS = BINOMIAL_REGEX_S;
@@ -177,7 +178,7 @@ public class PDFAnalyzer implements Annotatable {
 	}
 
 	public  void analyzePDF() {
-		createSVG();
+		createSVGfromPDF();
 		File[] files = svgDocumentDir.listFiles();
 		LOG.debug("listing Files in: "+svgDocumentDir);
 		if (files == null) {
@@ -203,8 +204,8 @@ public class PDFAnalyzer implements Annotatable {
 		}
 	}
 
-	public void createSVG() {
-		LOG.debug("createSVG");
+	public void createSVGfromPDF() {
+		LOG.trace("createSVG");
 		PDF2SVGConverter converter = new PDF2SVGConverter();
 		if (!inFile.exists()) {
 			throw new RuntimeException("no input file: "+inFile);
@@ -240,9 +241,13 @@ public class PDFAnalyzer implements Annotatable {
 		SVGSVG svgOut = new SVGSVG();
 		svgOut.setWidth(600.0);
 		svgOut.setHeight(800.0);
+		String pageId = "p."+pageNumber;
+		svgOut.setId(pageId);
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
+			String chunkId = "g."+pageNumber+"."+ichunk;
 			chunkFileRoot = PAGE+pageNumber+"-"+ichunk;
 			SVGG gOut = analyzeChunkInSVGPage(gList.get(ichunk));
+			gOut.setId(chunkId);
 			addToindexes(gOut);
 			svgOut.appendChild(gOut);
 		}
@@ -294,12 +299,12 @@ public class PDFAnalyzer implements Annotatable {
 
 	private void printDuplicates(String title, List<List<SVGElement>> elementListList) {
 		if (elementListList.size() > 0 ) {
-			LOG.debug("duplicate "+title);
+			LOG.trace("duplicate "+title);
 			for (List<SVGElement> elementList : elementListList) {
 				SVGElement firstElement = elementList.get(0);
 				if (title.equals(CONTENT)) {
 					String content = firstElement.getValue();
-					LOG.debug(elementList.size()+": "+content.substring(0, Math.min(100, content.length())));
+					LOG.trace(elementList.size()+": "+content.substring(0, Math.min(100, content.length())));
 				} else if (title.equals(IMAGE)) {
 					output(firstElement, duplicateImageCount, title);
 					duplicateImageCount++;
@@ -313,7 +318,7 @@ public class PDFAnalyzer implements Annotatable {
 
 	public static void output(SVGElement element, int serial, String title) {
 		try {
-			String filename = "target/"+title+"/duplicate"+serial+SVG;
+			String filename = "target/"+title+"/duplicate"+serial+SVGPlusConstantsX.SVG;
 			CMLUtil.debug(element, new FileOutputStream(filename), 1);
 			LOG.debug("wrote: "+filename);
 		} catch (Exception e) {
@@ -328,7 +333,7 @@ public class PDFAnalyzer implements Annotatable {
 			Collection<SVGElement> svgElements = map.get(key);
 			List<SVGElement> svgElementList = (Arrays.asList(svgElements.toArray(new SVGElement[0])));		
 			if (svgElementList.size() > 1) {
-				System.out.println("DUPLICATE: "+title);
+				LOG.trace("DUPLICATE: "+title);
 				duplicateList.add(svgElementList);
 			}
 		}

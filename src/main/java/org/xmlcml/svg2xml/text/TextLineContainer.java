@@ -708,18 +708,7 @@ public class TextLineContainer {
 	public HtmlElement createHtmlDivWithParas() {
 		List<TextLineGroup> textLineGroupList = this.getSeparatedTextLineGroupList();
 		boolean bb = false;
-		for (TextLineGroup tlg : textLineGroupList) {
-//			System.out.println("@@@ "+tlg);
-			if ((""+tlg).contains("thandidwild")) {
-				System.out.println("@@@ "+tlg);
-				bb = true;
-			}
-		}
-//		System.out.println("==============");
 		HtmlElement htmlElement = createHtmlDivWithParas(textLineGroupList);
-		if (bb) {
-			htmlElement.debug("HHH");
-		}
 		
 		return htmlElement;
 	}
@@ -745,7 +734,7 @@ public class TextLineContainer {
 		Double leftIndent = TextLineContainer.getMaximumLeftIndent(textLineList);
 		Real2Range leftBB = TextLineContainer.getBoundingBox(textLineList);
 		Elements htmlLines = rawDiv.getChildElements();
-		LOG.debug("textLine "+textLineList.size()+"; html: "+ htmlLines.size());
+		LOG.trace("textLine "+textLineList.size()+"; html: "+ htmlLines.size());
 		
 		if (leftBB != null) {
 			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - leftBB.getXRange().getMin());
@@ -787,8 +776,8 @@ public class TextLineContainer {
 		HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
 		HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
 		Elements nextChildren = pNext.getChildElements();
-		HtmlElement firstNext = (HtmlElement) nextChildren.get(0);
-		HtmlSpan nextFirstSpan = (firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
+		HtmlElement firstNext = nextChildren.size() == 0 ? null : (HtmlElement) nextChildren.get(0);
+		HtmlSpan nextFirstSpan = (firstNext != null && firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
 		int nextCounter = 0;
 		// merge texts
 		if (currentLastSpan != null && nextFirstSpan != null) {

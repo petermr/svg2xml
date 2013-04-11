@@ -8,6 +8,7 @@ public class SVGPlusConstantsX {
 	public static final String NEXML = ".nexml";
 	public static final String PDF = ".pdf";
 	public static final String SVG = ".svg";
+	public static final String HTML = ".html";
 	public static final String XML = ".xml";
 
 	// directories
