@@ -745,7 +745,8 @@ public class TextLineContainer {
 				LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
 				div = new HtmlDiv();
 				// always start with para
-				HtmlP pCurrent = TextLineContainer.createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
+				HtmlP pCurrent = (htmlLines.size() == 0) ? null : 
+					TextLineContainer.createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
 				int size = htmlLines.size();
 				for (int i = 1; i < size/*textLineList.size()*/; i++) {
 					TextLine textLine = (textLineList.size() <= i) ? null : textLineList.get(i);
@@ -773,22 +774,24 @@ public class TextLineContainer {
 
 	public static void mergeParas(HtmlP pCurrent, HtmlP pNext) {
 		Elements currentChildren = pCurrent.getChildElements();
-		HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
-		HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
-		Elements nextChildren = pNext.getChildElements();
-		HtmlElement firstNext = nextChildren.size() == 0 ? null : (HtmlElement) nextChildren.get(0);
-		HtmlSpan nextFirstSpan = (firstNext != null && firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
-		int nextCounter = 0;
-		// merge texts
-		if (currentLastSpan != null && nextFirstSpan != null) {
-			String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
-			LOG.trace("Merged "+mergedText);
-			lastCurrent.setValue(mergedText);
-			nextCounter = 1;
-		}
-		//merge next line's children
-		for (int i = nextCounter; i < nextChildren.size(); i++) {
-			pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
+		if (currentChildren.size() > 0) {
+			HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
+			HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
+			Elements nextChildren = pNext.getChildElements();
+			HtmlElement firstNext = nextChildren.size() == 0 ? null : (HtmlElement) nextChildren.get(0);
+			HtmlSpan nextFirstSpan = (firstNext != null && firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
+			int nextCounter = 0;
+			// merge texts
+			if (currentLastSpan != null && nextFirstSpan != null) {
+				String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
+				LOG.trace("Merged "+mergedText);
+				lastCurrent.setValue(mergedText);
+				nextCounter = 1;
+			}
+			//merge next line's children
+			for (int i = nextCounter; i < nextChildren.size(); i++) {
+				pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
+			}
 		}
 	}
 

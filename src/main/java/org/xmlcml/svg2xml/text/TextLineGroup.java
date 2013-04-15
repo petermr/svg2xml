@@ -66,7 +66,9 @@ public class TextLineGroup implements Iterable<TextLine> {
 						} else if (delta == 2) {
 							TextLine midLine = this.textLineList.get(serial - 1);
 							Double midY = midLine.getYCoord();
-							if (midY - lastY > currentY - midY) {
+							if (midY == null || lastY == null || currentY == null) {
+								LOG.error("null "+midY+" / "+currentY + " / "+lastY);
+							} else if (midY - lastY > currentY - midY) {
 								packageAsGroup(groupStart, serial - 1, splitArray);
 								groupStart = serial;
 							} else {
@@ -78,11 +80,13 @@ public class TextLineGroup implements Iterable<TextLine> {
 							packageAsGroup(groupStart, serial - 2, splitArray);
 							groupStart = serial-1;
 						} else {
-							reportProblem("too many lines between Primary "+lastPrimary+" / "+serial);
+							reportErrorOrMaths();
+//							reportProblem("too many lines between Primary "+lastPrimary+" / "+serial);
 						}
 					} else {
 						if (serial >= 2) {
-							reportProblem("too many lines before before Primary " + serial);
+							reportErrorOrMaths();
+//							reportProblem("too many lines before before Primary " + serial);
 						}
 						// continue processing
 					}
@@ -178,16 +182,20 @@ public class TextLineGroup implements Iterable<TextLine> {
 				middleLine = textLineList.get(1);
 				subscript = textLineList.get(2);
 			} else {
-				throw new RuntimeException("Only one primary allowed for 3 line textLineGroup");
+				reportErrorOrMaths();
 			}
 		} else {
-			LOG.error("Maths or table? ");
-			for (TextLine textLine : textLineList) {
-				LOG.error("text "+textLine);
-			}
+			reportErrorOrMaths();
 		}
 		outputTextLineList = createSuscriptTextLineList(superscript, middleLine, subscript);
 		return outputTextLineList;
+	}
+
+	private void reportErrorOrMaths() {
+		LOG.error("Maths or table? ");
+		for (TextLine textLine : textLineList) {
+			LOG.error("text "+textLine);
+		}
 	}
 	
 	/** preparation for HTML

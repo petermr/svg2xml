@@ -28,6 +28,7 @@ public class DocumentListAnalyzer {
 	private Multimap<String, SVGElement> contentMap;
 	private Multimap<String, SVGElement> imageMap;
 	private Multimap<String, SVGElement> pathMap;
+	
 	private int duplicateImageCount;
 	private int duplicatePathCount;
 
@@ -58,7 +59,7 @@ public class DocumentListAnalyzer {
 		if (fileList != null && fileList.size() > 0) {
 			for (File file: fileList) {
 				if (file.toString().endsWith(PDF)) {
-					PDFAnalyzer analyzer = new PDFAnalyzer();
+					PDFAnalyzer analyzer = new PDFAnalyzer(this);
 					setDirectoriesMapsAndCounts(analyzer);
 					analyzer.analyzePDFFile(file);
 				}
@@ -69,6 +70,10 @@ public class DocumentListAnalyzer {
 	private void setDirectoriesMapsAndCounts(PDFAnalyzer analyzer) {
 		analyzer.setOutputTopDir(outputTopDir);
 		analyzer.setSVGTopDir(svgTopDir);
+		setMaps(analyzer);
+	}
+
+	private void setMaps(PDFAnalyzer analyzer) {
 		analyzer.setContentMap(contentMap);
 		analyzer.setImageMap(imageMap);
 		analyzer.setDuplicateImageCount(duplicateImageCount);
@@ -98,7 +103,8 @@ public class DocumentListAnalyzer {
 
 	
 	public void findDuplicatesInIndexes() {
-		List<List<SVGElement>> elementListList = PDFAnalyzer.findDuplicates(PDFAnalyzer.CONTENT, contentMap);
+		List<List<SVGElement>> elementListList;
+		elementListList = PDFAnalyzer.findDuplicates(PDFAnalyzer.CONTENT, contentMap);
 		printDuplicates(PDFAnalyzer.CONTENT, elementListList);
 		elementListList = PDFAnalyzer.findDuplicates(PDFAnalyzer.IMAGE, imageMap);
 		printDuplicates(PDFAnalyzer.IMAGE, elementListList);
