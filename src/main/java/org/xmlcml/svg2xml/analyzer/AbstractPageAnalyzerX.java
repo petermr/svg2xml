@@ -163,7 +163,8 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 			if (text == null) {
 				throw new RuntimeException("Null text: "+bbox);
 			}
-			g.appendChild(text);
+//			g.appendChild(text);
+			g.setTitle(text.getValue());
 		}
 		return g;
 	}

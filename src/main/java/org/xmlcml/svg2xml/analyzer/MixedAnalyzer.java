@@ -73,8 +73,10 @@ public class MixedAnalyzer extends AbstractPageAnalyzerX {
 			SVGG gg = analyzer.annotate();
 			g.appendChild(gg.copy());
 		}
-		SVGText text = createTextInBox(0.2, g.getBoundingBox(), "MIXED: "+this, 6.0);
-		g.appendChild(text);
+		String title = "MIXED: "+this;
+//		SVGText text = createTextInBox(0.2, g.getBoundingBox(), title, 6.0);
+//		g.appendChild(text);
+		g.setTitle(title);
 		return g;
 	}
 

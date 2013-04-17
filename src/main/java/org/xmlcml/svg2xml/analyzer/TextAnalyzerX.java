@@ -767,7 +767,9 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			annotateElement(text, "green", "blue", 0.5, 0.2);
 			g.appendChild(text.copy());
 		}
-		outputAnnotatedBox(g, 0.2, 0.7, "TEXT "+textCharacters.size(), 5.0, "pink");
+		String title = "TEXT "+textCharacters.size();
+//		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "pink");
+		g.setTitle(title);
 		return g;
 	}
 

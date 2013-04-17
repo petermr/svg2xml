@@ -7,8 +7,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -19,14 +21,9 @@ import nu.xom.Nodes;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.euclid.Int2Range;
-import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGImage;
-import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
@@ -39,28 +36,26 @@ import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.tools.Chunk;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 
 public class PDFAnalyzer implements Annotatable {
 
+
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
 
-	private static final String BBOX = "bbox";
-	public static final String IMAGE = "image";
-	public static final String CONTENT = "content";
-	public static final String PATH = "path";
-	public static final String PAGE = "page";
-
 	private static final String SVG = SVGPlusConstantsX.SVG;
-	private static final String HTML = SVGPlusConstantsX.HTML;
 	private static final String PDF = SVGPlusConstantsX.PDF;
+
+	public static final String PAGE = "page";
 
 	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s+[a-z]+)*";
 	private String htmlRegexS = BINOMIAL_REGEX_S;
 	private static final String ITALIC_XPATH_S = ".//*[local-name()='i']";
 	private String htmlXPath = ITALIC_XPATH_S;
-	
+
+	private static final String HTML = SVGPlusConstantsX.HTML;
+
 	private File inputTopDir;
 	private File inFile;
 	private String inputName;
@@ -75,20 +70,13 @@ public class PDFAnalyzer implements Annotatable {
 
 	private String chunkFileRoot;
 
-	private Set<String> canonicalXMLSet;
-
-	private Multimap<String, SVGElement> contentMap;
-	private Multimap<String, SVGElement> imageMap;
-	private Multimap<String, SVGElement> pathMap;
-//	private Multimap<Real2Range, String> bboxMap;
-	private Multimap<Int2Range, String> bboxMap;
-	
-	private int duplicateImageCount;
-	private int duplicatePathCount;
-	private int duplicateBboxCount;
-	
 	private DocumentListAnalyzer documentListAnalyzer;
-	
+
+
+	private PDFIndex pdfIndex;
+
+
+
 	public PDFAnalyzer() {
 	}
 
@@ -196,25 +184,15 @@ public class PDFAnalyzer implements Annotatable {
 			throw new RuntimeException("No files in "+svgDocumentDir);
 		}
 
-		ensureElementMultimaps();
+		ensurePDFIndex();
+		pdfIndex.ensureElementMultimaps();
 		for (int page = 0; page < files.length; page++) {
-			System.out.print(page+"=");
+			System.out.print(page+"~");
 			createAndAnalyzeSVGChunks(page+1);
 		}
 		System.out.println();
-		findDuplicatesInIndexes();
-	}
-
-	private void ensureElementMultimaps() {
-		if (contentMap == null) {
-			contentMap = HashMultimap.create(); 
-			imageMap = HashMultimap.create();
-			duplicateImageCount = 0;
-			pathMap = HashMultimap.create(); 
-			duplicatePathCount = 0;
-			bboxMap = HashMultimap.create(); 
-			duplicateBboxCount = 0;
-		}
+		pdfIndex.findDuplicatesInIndexes();
+		pdfIndex.AnalyzeDuplicates();
 	}
 
 	public void createSVGfromPDF() {
@@ -236,6 +214,7 @@ public class PDFAnalyzer implements Annotatable {
 	}
 
 	private void createAndAnalyzeSVGChunks(int pageNumber) {
+		ensurePDFIndex();
 		this.pageNumber = pageNumber;
 		String pageRoot = PAGE+(pageNumber);
 		String pageSvg = fileRoot+"-"+pageRoot+SVG;
@@ -260,9 +239,15 @@ public class PDFAnalyzer implements Annotatable {
 			SVGG gOrig = (SVGG) gList.get(ichunk);
 			SVGG gOut = copyChunkAnalyzeMakeId(pageNumber, gOrig, ichunk);
 			svgOut.appendChild(gOut);
-			addToindexes(gOut);
+			pdfIndex.addToindexes(gOut);
 		}
 		writeSVGPage(pageRoot, svgOut);
+	}
+
+	private void ensurePDFIndex() {
+		if (pdfIndex == null) {
+			pdfIndex = new PDFIndex(this);
+		}
 	}
 
 	private void writeSVGPage(String pageRoot, SVGSVG svgOut) {
@@ -277,135 +262,33 @@ public class PDFAnalyzer implements Annotatable {
 	private SVGG copyChunkAnalyzeMakeId(int pageNumber, SVGG gOrig, int ichunk) {
 		String chunkId = "g."+pageNumber+"."+ichunk;
 		chunkFileRoot = PAGE+pageNumber+"-"+ichunk;
-		SVGG gOut = analyzeChunkInSVGPage(gOrig);
+		SVGG gOut = analyzeChunkInSVGPage(gOrig, chunkId);
 		CMLUtil.copyAttributes(gOrig, gOut);
-		gOut.setId(chunkId);
 		return gOut;
 	}
 
-	/** these are messy but canonicalising is far too slow
-	 * 
-	 * @param gOut
-	 */
-	private void addToindexes(SVGG gOut) {
-		String content = gOut.getValue();
-		Real2Range bbox = gOut.getBoundingBox();
-		Int2Range i2r = new Int2Range(bbox);
-		String id = gOut.getId();
-		if (id != null) {
-			boolean added = bboxMap.put(i2r, id);
-		} else {
-			System.out.println("missing ID");
-		}
-		if (content.trim().length() > 0) {
-			contentMap.put(content, gOut);
-		} else {
-			List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(gOut, ".//svg:image"));
-			if (imageList.size() > 0) {
-				StringBuilder sb = new StringBuilder();
-				for (SVGImage image : imageList) {
-					sb.append(image.getImageValue());
-				}
-				imageMap.put(sb.toString(), gOut);
-			} else {
-				List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(gOut, ".//svg:path"));
-				if (pathList.size() > 0) {
-					StringBuilder sb = new StringBuilder();
-					for (SVGPath path : pathList) {
-						sb.append(path.getDString());
-					}
-					pathMap.put(sb.toString(), gOut);
-				}
-			}
-		}
-	}
-	
-	public void findDuplicatesInIndexes() {
-		List<List<SVGElement>> elementListList = findDuplicates(CONTENT, contentMap);
-		printDuplicates(CONTENT, elementListList);
-		elementListList = findDuplicates(IMAGE, imageMap);
-		printDuplicates(IMAGE, elementListList);
-		elementListList = findDuplicates(PATH, pathMap);
-		printDuplicates(PATH, elementListList);
-		List<List<String>> idListList = findDuplicates1(BBOX, bboxMap);
-		printDuplicates1(BBOX, idListList);
-		System.out.println(bboxMap);
-	}
-
-	private void printDuplicates(String title, List<List<SVGElement>> elementListList) {
-		if (elementListList.size() > 0 ) {
-			LOG.trace("duplicate "+title);
-			for (List<SVGElement> elementList : elementListList) {
-				SVGElement firstElement = elementList.get(0);
-				if (title.equals(CONTENT)) {
-					String content = firstElement.getValue();
-					LOG.trace(elementList.size()+": "+content.substring(0, Math.min(100, content.length())));
-				} else if (title.equals(IMAGE)) {
-					output(firstElement, duplicateImageCount, title);
-					duplicateImageCount++;
-				} else if (title.equals(PATH)) {
-					output(firstElement, duplicatePathCount, title);
-					duplicatePathCount++;
-				}
-			}
-		}
-	}
-
-	private void printDuplicates1(String title, List<List<String>> idListList) {
-		if (idListList.size() > 0 ) {
-			LOG.debug("duplicate "+title);
-			for (List<String> idList : idListList) {
-				if (title.equals(BBOX)) {
-					LOG.debug(idList.size()+": "+idList);
-				}
-			}
-		}
-	}
-
-	public static void output(SVGElement element, int serial, String title) {
-		try {
-			String filename = "target/"+title+"/duplicate"+serial+SVGPlusConstantsX.SVG;
-			CMLUtil.debug(element, new FileOutputStream(filename), 1);
-			LOG.debug("wrote: "+filename);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static List<List<SVGElement>> findDuplicates(String title, Multimap<String, SVGElement> map) {
-		Set<String> keySet = map.keySet();
-		List<List<SVGElement>> duplicateList = new ArrayList<List<SVGElement>>();
-		for (String key : keySet) {
-			Collection<SVGElement> svgElements = map.get(key);
-			List<SVGElement> svgElementList = (Arrays.asList(svgElements.toArray(new SVGElement[0])));		
-			if (svgElementList.size() > 1) {
-				LOG.trace("DUPLICATE: "+title);
-				duplicateList.add(svgElementList);
-			}
-		}
-		return duplicateList;
-	}
-
-	public static List<List<String>> findDuplicates1(String title, Multimap<Int2Range, String> map) {
-		Set<Int2Range> keySet = map.keySet();
+	public static List<List<String>> findDuplicates(String title, Multimap<? extends Object, String> map) {
 		List<List<String>> duplicateList = new ArrayList<List<String>>();
-		for (Int2Range key : keySet) {
-			Collection<String> ids = map.get(key);
-			List<String> idList = (Arrays.asList(ids.toArray(new String[0])));		
+		for (Map.Entry<? extends Object, Collection<String>> mapEntry : map.asMap().entrySet()) {
+			Object key = mapEntry.getKey();
+			Collection<String> ids = mapEntry.getValue();
+			List<String> idList = (Arrays.asList(ids.toArray(new String[0])));
+			Collections.sort(idList);
 			if (idList.size() > 1) {
-				LOG.trace("DUPLICATE: "+title);
+				LOG.debug("DUPLICATE: "+title+" >"+key+"< "+idList);
 				duplicateList.add(idList);
 			}
 		}
 		return duplicateList;
 	}
+		
 
 	public SVGG annotate() {
 		// might iterate through pages
 		throw new RuntimeException("NYI");
 	}
 	
-	public SVGG analyzeChunkInSVGPage(SVGElement chunkSvg) {
+	public SVGG analyzeChunkInSVGPage(SVGElement chunkSvg, String chunkId) {
 		SVGG gOut = null;
 		AbstractPageAnalyzerX analyzerX = AbstractPageAnalyzerX.getAnalyzer(chunkSvg);
 		TextAnalyzerX textAnalyzer = null;
@@ -425,14 +308,21 @@ public class PDFAnalyzer implements Annotatable {
 		} else {
 			throw new RuntimeException("Unknown analyzer "+analyzerX);
 		}
-		Element element = null;
-		if (textAnalyzer != null) {
-			element = this.createHTMLParasAndDivs(inputName, textAnalyzer);
-		} else {
-			element = createHTMLMessage(gOut);
-		}
-		outputElementAsHTML(element);
+		gOut.setId(chunkId);
+		HtmlElement htmlElement = createHtml(gOut, textAnalyzer);
+		outputElementAsHTML(htmlElement);
+		pdfIndex.indexHtmlBySvgId(htmlElement, chunkId);
 		return gOut;
+	}
+
+	private HtmlElement createHtml(SVGG gOut, TextAnalyzerX textAnalyzer) {
+		HtmlElement htmlElement = null;
+		if (textAnalyzer != null) {
+			htmlElement = this.createHTMLParasAndDivs(inputName, textAnalyzer);
+		} else {
+			htmlElement = createHTMLMessage(gOut);
+		}
+		return htmlElement;
 	}
 
 
@@ -440,7 +330,7 @@ public class PDFAnalyzer implements Annotatable {
 //		return AbstractPageAnalyzerX.createAnnotationDetails("brown", 0.2, bbox, message, 10.0);
 //	}
 
-	private Element createHTMLMessage(SVGG gOut) {
+	private HtmlElement createHTMLMessage(SVGG gOut) {
 		String message = gOut.getValue(); // crude
 		HtmlDiv div = new HtmlDiv();
 		HtmlP p = new HtmlP();
@@ -463,14 +353,14 @@ public class PDFAnalyzer implements Annotatable {
 		}
 	}
 
-	private Element createHTMLParasAndDivs(String name, TextAnalyzerX textAnalyzer) {
+	private HtmlElement createHTMLParasAndDivs(String name, TextAnalyzerX textAnalyzer) {
 		LOG.trace("createHTMLParasAndDivs");
 		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
 		LOG.trace("lines "+textLines.size());
 		for (TextLine textLine : textLines){
 			LOG.trace(">> "+textLine);
 		}
-		Element element = textAnalyzer.createHtmlDivWithParas();
+		HtmlElement element = textAnalyzer.createHtmlDivWithParas();
 		if (element != null) {
 			AbstractPageAnalyzerX.tidyStyles(element);
 		}
@@ -490,61 +380,27 @@ public class PDFAnalyzer implements Annotatable {
 		}
 	}
 
-	/** preload a bboxMap which can be used for several PDFAnalyzers
-	 * @param bboxMap
-	 */
-	public void setBoundingBoxMap(Multimap<Int2Range, String> bboxMap) {
-		this.bboxMap = bboxMap;
-	}
-
-	/** preload a contentMap which can be used for several PDFAnalyzers
-	 * Warning - may require a lot of memory
-	 * @param contentMap
-	 */
-	public void setContentMap(Multimap<String, SVGElement> contentMap) {
-		this.contentMap = contentMap;
-	}
-
-	/** preload a imageMap which can be used for several PDFAnalyzers
-	 * Warning - may require a lot of memory
-	 * @param imageMap
-	 */
-	public void setImageMap(Multimap<String, SVGElement> imageMap) {
-		this.imageMap = imageMap;
-	}
-
-	/** preload a pathMap which can be used for several PDFAnalyzers
-	 * Warning - may require a lot of memory
-	 * @param pathMap
-	 */
-	public void setPathMap(Multimap<String, SVGElement> pathMap) {
-		this.pathMap = pathMap;
-	}
-
-	public void setDuplicateImageCount(int duplicateImageCount) {
-		this.duplicateImageCount = duplicateImageCount;
-	}
-
-	public void setDuplicatePathCount(int duplicatePathCount) {
-		this.duplicatePathCount = duplicatePathCount;
+	public PDFIndex getIndex() {
+		ensurePDFIndex();
+		return pdfIndex;
 	}
 
 	/**
-mvn exec:java -Dexec.mainClass="org.xmlcml.svg2xml.analyzer.PDFAnalyzer" 
-    -Dexec.args="src/test/resources/pdfs/bmc"
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		if (args.length == 0) {
-			System.out.println("PDFAnalyzer <directory>");
-			System.out.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
-					" -Dexec.args=\"src/test/resources/pdfs/bmc/1471-2180-11-174.pdf\"");
-			System.out.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
-			System.exit(0);
-		} else {
-			PDFAnalyzer analyzer = new PDFAnalyzer();
-			analyzer.analyzePDFFile(new File(args[0]));
+	mvn exec:java -Dexec.mainClass="org.xmlcml.svg2xml.analyzer.PDFAnalyzer" 
+	    -Dexec.args="src/test/resources/pdfs/bmc"
+		 * @param args
+		 */
+		public static void main(String[] args) {
+			if (args.length == 0) {
+				System.out.println("PDFAnalyzer <directory>");
+				System.out.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
+						" -Dexec.args=\"src/test/resources/pdfs/bmc/1471-2180-11-174.pdf\"");
+				System.out.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
+				System.exit(0);
+			} else {
+				PDFAnalyzer analyzer = new PDFAnalyzer();
+				analyzer.analyzePDFFile(new File(args[0]));
+			}
 		}
-	}
 
 }

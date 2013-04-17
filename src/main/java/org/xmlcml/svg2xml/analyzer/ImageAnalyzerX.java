@@ -49,7 +49,9 @@ public class ImageAnalyzerX extends AbstractPageAnalyzerX {
 			annotateElement(image, "green", "blue", 0.5, 0.2);
 			g.appendChild(image.copy());
 		}
-		outputAnnotatedBox(g, 0.2, 0.7, "IMAGE "+imageList.size(), 5.0, "cyan");
+		String title = "IMAGE "+imageList.size();
+//		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
+		g.setTitle(title);
 		return g;
 	}
 

@@ -152,7 +152,9 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 			annotateElement(path, "purple", "blue", 0.5, 0.2);
 			g.appendChild(path.copy());
 		}
-		outputAnnotatedBox(g, 0.2, 0.7, "PATH "+pathList.size(), 5.0, "cyan");
+		String title = "PATH "+pathList.size();
+//		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
+		g.setTitle(title);
 		return g;
 	}
 	

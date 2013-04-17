@@ -25,9 +25,9 @@ public class DocumentListAnalyzer {
 	private File svgTopDir = getDefaultSVGDir();
 	private File outputTopDir = getDefaultOutputDir();
 	
-	private Multimap<String, SVGElement> contentMap;
-	private Multimap<String, SVGElement> imageMap;
-	private Multimap<String, SVGElement> pathMap;
+	private Multimap<String, String> contentMap;
+	private Multimap<String, String> imageMap;
+	private Multimap<String, String> pathMap;
 	
 	private int duplicateImageCount;
 	private int duplicatePathCount;
@@ -74,11 +74,11 @@ public class DocumentListAnalyzer {
 	}
 
 	private void setMaps(PDFAnalyzer analyzer) {
-		analyzer.setContentMap(contentMap);
-		analyzer.setImageMap(imageMap);
-		analyzer.setDuplicateImageCount(duplicateImageCount);
-		analyzer.setPathMap(pathMap);
-		analyzer.setDuplicatePathCount(duplicatePathCount);
+		analyzer.getIndex().setContentMap(contentMap);
+		analyzer.getIndex().setImageMap(imageMap);
+		analyzer.getIndex().setDuplicateImageCount(duplicateImageCount);
+		analyzer.getIndex().setPathMap(pathMap);
+		analyzer.getIndex().setDuplicatePathCount(duplicatePathCount);
 	}
 	
 	public void analyzeDirectory(File inputDir) {
@@ -103,32 +103,37 @@ public class DocumentListAnalyzer {
 
 	
 	public void findDuplicatesInIndexes() {
-		List<List<SVGElement>> elementListList;
-		elementListList = PDFAnalyzer.findDuplicates(PDFAnalyzer.CONTENT, contentMap);
-		printDuplicates(PDFAnalyzer.CONTENT, elementListList);
-		elementListList = PDFAnalyzer.findDuplicates(PDFAnalyzer.IMAGE, imageMap);
-		printDuplicates(PDFAnalyzer.IMAGE, elementListList);
-		elementListList = PDFAnalyzer.findDuplicates(PDFAnalyzer.PATH, pathMap);
-		printDuplicates(PDFAnalyzer.PATH, elementListList);
+		List<List<String>> idListList;
+		idListList = PDFIndex.findDuplicates(PDFIndex.CONTENT, contentMap);
+		printDuplicates(PDFIndex.CONTENT, idListList);
+		idListList = PDFIndex.findDuplicates(PDFIndex.IMAGE, imageMap);
+		printDuplicates(PDFIndex.IMAGE, idListList);
+		idListList = PDFIndex.findDuplicates(PDFIndex.PATH, pathMap);
+		printDuplicates(PDFIndex.PATH, idListList);
 	}
 
-	private void printDuplicates(String title, List<List<SVGElement>> elementListList) {
-		if (elementListList.size() > 0 ) {
-			LOG.debug("duplicate "+title);
-			for (List<SVGElement> elementList : elementListList) {
-				SVGElement firstElement = elementList.get(0);
-				if (title.equals(PDFAnalyzer.CONTENT)) {
-					String content = firstElement.getValue();
-					LOG.debug(elementList.size()+": "+content.substring(0, Math.min(100, content.length())));
-				} else if (title.equals(PDFAnalyzer.IMAGE)) {
-					PDFAnalyzer.output(firstElement, duplicateImageCount, title);
-					duplicateImageCount++;
-				} else if (title.equals(PDFAnalyzer.PATH)) {
-					PDFAnalyzer.output(firstElement, duplicatePathCount, title);
-					duplicatePathCount++;
-				}
-			}
-		}
+	/** this doesn't work yet
+	 * 
+	 * @param title
+	 * @param elementListList
+	 */
+	private void printDuplicates(String title, List<List<String>> elementListList) {
+//		if (elementListList.size() > 0 ) {
+//			LOG.debug("duplicate "+title);
+//			for (List<String> elementList : elementListList) {
+//				SVGElement firstElement = elementList.get(0);
+//				if (title.equals(PDFAnalyzer.CONTENT)) {
+//					String content = firstElement.getValue();
+//					LOG.debug(elementList.size()+": "+content.substring(0, Math.min(100, content.length())));
+//				} else if (title.equals(PDFAnalyzer.IMAGE)) {
+//					PDFAnalyzer.output(firstElement, duplicateImageCount, title);
+//					duplicateImageCount++;
+//				} else if (title.equals(PDFAnalyzer.PATH)) {
+//					PDFAnalyzer.output(firstElement, duplicatePathCount, title);
+//					duplicatePathCount++;
+//				}
+//			}
+//		}
 	}
 
 	private String getRandomName() {
