@@ -25,9 +25,9 @@ public class DocumentListAnalyzer {
 	private File svgTopDir = getDefaultSVGDir();
 	private File outputTopDir = getDefaultOutputDir();
 	
-	private Multimap<String, String> contentMap;
-	private Multimap<String, String> imageMap;
-	private Multimap<String, String> pathMap;
+	private Multimap<String, ChunkId> contentMap;
+	private Multimap<String, ChunkId> imageMap;
+	private Multimap<String, ChunkId> pathMap;
 	
 	private int duplicateImageCount;
 	private int duplicatePathCount;
@@ -103,13 +103,14 @@ public class DocumentListAnalyzer {
 
 	
 	public void findDuplicatesInIndexes() {
-		List<List<String>> idListList;
-		idListList = PDFIndex.findDuplicates(PDFIndex.CONTENT, contentMap);
-		printDuplicates(PDFIndex.CONTENT, idListList);
-		idListList = PDFIndex.findDuplicates(PDFIndex.IMAGE, imageMap);
-		printDuplicates(PDFIndex.IMAGE, idListList);
-		idListList = PDFIndex.findDuplicates(PDFIndex.PATH, pathMap);
-		printDuplicates(PDFIndex.PATH, idListList);
+		List<List<ChunkId>> idListList;
+		throw new RuntimeException("NYI");
+//		idListList = PDFIndex.findDuplicates(PDFIndex.CONTENT, contentMap);
+//		printDuplicates(PDFIndex.CONTENT, idListList);
+//		idListList = PDFIndex.findDuplicates(PDFIndex.IMAGE, imageMap);
+//		printDuplicates(PDFIndex.IMAGE, idListList);
+//		idListList = PDFIndex.findDuplicates(PDFIndex.PATH, pathMap);
+//		printDuplicates(PDFIndex.PATH, idListList);
 	}
 
 	/** this doesn't work yet
@@ -117,7 +118,8 @@ public class DocumentListAnalyzer {
 	 * @param title
 	 * @param elementListList
 	 */
-	private void printDuplicates(String title, List<List<String>> elementListList) {
+	private void printDuplicates(String title, List<List<ChunkId>> elementListList) {
+		throw new RuntimeException("NYI");
 //		if (elementListList.size() > 0 ) {
 //			LOG.debug("duplicate "+title);
 //			for (List<String> elementList : elementListList) {

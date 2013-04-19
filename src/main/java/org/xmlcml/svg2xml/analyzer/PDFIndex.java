@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Int2Range;
+import org.xmlcml.euclid.IntArray;
+import org.xmlcml.euclid.IntMatrix;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -50,51 +52,64 @@ public class PDFIndex {
 	private int duplicateImageCount;
 	private int duplicatePathCount;
 	
-	private Map<String, SVGElement> svgElementByIdMap;
-	private Multimap<String, String> svgIdByContentMap;
-	private Multimap<String, String> svgIdByFlattenedMap;
-	private Multimap<String, String> svgIdByImageContentMap;
-	private Multimap<String, String> svgIdByPathIdMap;
-	private Map<String, HtmlElement> htmlElementByIdMap;
+	private Map<ChunkId, SVGElement> svgElementByIdMap;
+	private Multimap<String, ChunkId> svgIdByContentMap;
+	private Multimap<String, ChunkId> svgIdByFlattenedMap;
+	private Multimap<String, ChunkId> svgIdByImageContentMap;
+	private Multimap<String, ChunkId> svgIdByPathIdMap;
+	private Map<ChunkId, HtmlElement> htmlElementByIdMap;
 
-	private Multimap<Int2Range, String> bboxMap;
+	private Multimap<Int2Range, ChunkId> bboxMap;
 
 	private PDFAnalyzer pdfAnalyzer;
 
-	private List<List<String>> contentIdListList;
-	private List<List<String>> flattenedIdListList;
-	private List<List<String>> imageIdListList;
-	private List<List<String>> pathIdListList;
-	private List<List<String>> bboxIdListList;
+	private List<List<ChunkId>> contentIdListList;
+	private List<List<ChunkId>> flattenedIdListList;
+	private List<List<ChunkId>> imageIdListList;
+	private List<List<ChunkId>> pathIdListList;
+	private List<List<ChunkId>> bboxIdListList;
 
-	private List<Set<String>> duplicateContentSet;
-	private List<Set<String>> duplicateFlattenedSet;
-	private List<Set<String>> duplicateImageSet;
-	private List<Set<String>> duplicatePathSet;
-	private List<Set<String>> duplicateBboxSet;
+//	private List<Set<ChunkId>> duplicateContentListSet;
+//	private List<Set<ChunkId>> duplicateFlattenedListSet;
+//	private List<Set<ChunkId>> duplicateImageListSet;
+//	private List<Set<ChunkId>> duplicatePathListSet;
+//	private List<Set<ChunkId>> duplicateBboxListSet;
+
+	private Set<ChunkId> usedIdSet;
 	
 	public PDFIndex(PDFAnalyzer analyzer) {
 		this.pdfAnalyzer = analyzer;
 	}
 
-	public static <T extends Object> List<List<String>> findDuplicates(String title, Multimap<T, String> map) {
-		List<List<String>> duplicateList = new ArrayList<List<String>>();
+	public <T extends Object> List<List<ChunkId>> findDuplicates(String title, Multimap<T, ChunkId> map) {
+		List<List<ChunkId>> duplicateList = new ArrayList<List<ChunkId>>();
 		for (T key : map.keySet()) {
-			Collection<String> ids = map.get(key);
-			List<String> idList = (Arrays.asList(ids.toArray(new String[0])));
+			Collection<ChunkId> ids = map.get(key);
+			List<ChunkId> idList = new ArrayList<ChunkId>(Arrays.asList(ids.toArray(new ChunkId[0])));
+			removeUsedIds(idList);
 			Collections.sort(idList);
 			if (idList.size() > 1) {
-				LOG.debug("DUPLICATE: "+title+" >"+key+"< "+idList);
+				String keyS = key.toString();
+				LOG.debug("DUPLICATES: "+title+" >"+ keyS.substring(0, Math.min(50, keyS.length()))+" ... "+"< "+idList);
 				duplicateList.add(idList);
 			}
 		}
 		return duplicateList;
 	}
 
+	private void removeUsedIds(List<ChunkId> idList) {
+		int size = idList.size();
+		for (int i = size - 1; i >= 0; i--) {
+			if (usedIdSet.contains(idList.get(i))) {
+				idList.remove(i);
+			}
+		}
+	}
+
 	void ensureElementMultimaps() {
 		if (svgIdByContentMap == null) {
-			htmlElementByIdMap = new HashMap<String, HtmlElement>(); 
-			svgElementByIdMap = new HashMap<String, SVGElement>(); 
+			htmlElementByIdMap = new HashMap<ChunkId, HtmlElement>(); 
+			svgElementByIdMap = new HashMap<ChunkId, SVGElement>(); 
 			svgIdByContentMap = HashMultimap.create(); 
 			svgIdByFlattenedMap = HashMultimap.create(); 
 			svgIdByImageContentMap = HashMultimap.create();
@@ -107,61 +122,129 @@ public class PDFIndex {
 	}
 
 	public void findDuplicatesInIndexes() {
-			contentIdListList = findDuplicates(CONTENT, svgIdByContentMap);
-			duplicateContentSet = makeSet(contentIdListList);
-			printDuplicates(CONTENT, contentIdListList);
-			flattenedIdListList = findDuplicates(FLATTENED, svgIdByFlattenedMap);
-			duplicateFlattenedSet = makeSet(flattenedIdListList);
-			printDuplicates(CONTENT, flattenedIdListList);
-			imageIdListList = findDuplicates(IMAGE, svgIdByImageContentMap);
-			duplicateImageSet = makeSet(imageIdListList);
-			printDuplicates(IMAGE, imageIdListList);
-			pathIdListList = findDuplicates(PATH, svgIdByPathIdMap);
-			duplicatePathSet = makeSet(pathIdListList);
-			printDuplicates(PATH, pathIdListList);
-			bboxIdListList = findDuplicates(BBOX, bboxMap);
-			duplicateBboxSet = makeSet(bboxIdListList);
-			printDuplicates(BBOX, bboxIdListList);
-		}
-
-	private List<Set<String>> makeSet(List<List<String>> idListList) {
-		List<Set<String>> setList = new ArrayList<Set<String>>();
-		for (List<String> idList : idListList) {
-			Set<String> set = new HashSet<String>(idList);
-			LOG.debug("set "+set.size());
-			setList.add(set);
-		}
-		return setList;
+		usedIdSet = new HashSet<ChunkId>();
+		contentIdListList = findDuplicates(CONTENT, svgIdByContentMap);
+		markChunksAndNoteUsed(contentIdListList, CONTENT);
+		printDuplicates(CONTENT, contentIdListList);
+		
+		flattenedIdListList = findDuplicates(FLATTENED, svgIdByFlattenedMap);
+		markChunksAndNoteUsed(flattenedIdListList, FLATTENED);
+		analyzePageSpecificInfo(flattenedIdListList);
+		printDuplicates(FLATTENED, flattenedIdListList);
+		
+		imageIdListList = findDuplicates(IMAGE, svgIdByImageContentMap);
+		markChunksAndNoteUsed(imageIdListList, IMAGE);
+		printDuplicates(IMAGE, imageIdListList);
+		
+		pathIdListList = findDuplicates(PATH, svgIdByPathIdMap);
+		markChunksAndNoteUsed(pathIdListList, PATH);
+		printDuplicates(PATH, pathIdListList);
+		
+		bboxIdListList = findDuplicates(BBOX, bboxMap);
+		markChunksAndNoteUsed(bboxIdListList, BBOX);
+		printDuplicates(BBOX, bboxIdListList);
 	}
 
-	void indexHtmlBySvgId(HtmlElement htmlElement, String chunkId) {
+	private void analyzePageSpecificInfo(List<List<ChunkId>> idListList) {
+		for (List<ChunkId> idList : idListList) { 
+			if (idList.size() > 0) {
+				TextFlattener textFlattener = createTextFlattener(idList.get(0));
+				List<List<Integer>> intListList = new ArrayList<List<Integer>>();
+				for (ChunkId id : idList) {
+					String htmlValue = getValueFromHtml(id);
+					List<Integer> ints = textFlattener.captureIntegers(htmlValue);
+					intListList.add(ints);
+				}
+				try {
+					IntMatrix intMatrix = IntMatrix.createByRows(intListList);
+					LOG.debug("IM "+intMatrix);
+					for (int j = 0; j  < intMatrix.getCols(); j++) {
+						IntArray column = intMatrix.extractColumnData(j);
+						if (column.isArithmeticProgression(1)) {
+							System.out.println("PROG "+column);
+						} else if (column.getConstant() != null) {
+							System.out.println("CONS "+column);
+						}
+					}
+				} catch (Exception e) {
+					LOG.error("IntMatrix bug"+intListList, e);
+				}
+			}
+		}
+	}
+
+	private TextFlattener createTextFlattener(ChunkId id0) {
+		TextFlattener textFlattener = new TextFlattener();
+		String htmlValue0 = getValueFromHtml(id0);
+		Pattern pattern = textFlattener.createIntegerPattern(htmlValue0);
+		LOG.debug("P "+pattern);
+		return textFlattener;
+	}
+
+	private String getValueFromHtml(ChunkId id) {
+		HtmlElement htmlElement = htmlElementByIdMap.get(id);
+		if (htmlElement == null) {
+			throw new RuntimeException("no HTML for id: "+id);
+		}
+		String htmlValue = htmlElement.getValue();
+		return htmlValue;
+	}
+
+	private void markChunksAndNoteUsed(List<List<ChunkId>> idListList, String title) {
+		for (int i = 0; i < idListList.size(); i++) {
+			List<ChunkId> idList = idListList.get(i);
+			for (ChunkId id : idList) {
+				if (usedIdSet.contains(id)) continue;
+				HtmlElement element = htmlElementByIdMap.get(id);
+				if (element != null) {
+					element.setClass(title+"."+i);
+					usedIdSet.add(id);
+				}
+			}
+		}
+	}
+
+//	private List<Set<ChunkId>> makeSet(List<List<ChunkId>> idListList) {
+//		List<Set<ChunkId>> setList = new ArrayList<Set<ChunkId>>();
+//		for (List<ChunkId> idList : idListList) {
+//			Set<ChunkId> set = new HashSet<ChunkId>(idList);
+//			LOG.trace("set "+set.size());
+//			setList.add(set);
+//		}
+//		return setList;
+//	}
+
+	void indexHtmlBySvgId(HtmlElement htmlElement, ChunkId chunkId) {
 		ensureElementMultimaps();
 		htmlElementByIdMap.put(chunkId, htmlElement);
 	}
 
-	private void printDuplicates(String title, List<List<String>> idListList) {
+	private void printDuplicates(String title, List<List<ChunkId>> idListList) {
 			if (idListList.size() > 0 ) {
 				LOG.trace("duplicate "+title);
-				for (List<String> idList : idListList) {
+				for (List<ChunkId> idList : idListList) {
 					if (title.equals(CONTENT)) {
 	//				    output(idList, title);
 						duplicateContentCount++;
 					} else if (title.equals(FLATTENED)) {
-						LOG.debug("flattened"+idList);
+						LOG.trace("flattened"+idList);
 						output(idList, title);
 						duplicateFlattenedCount++;
 					} else if (title.equals(BBOX)) {
 	//					output(idList,  title);
 						Set<String> set = new HashSet<String>();
-						for (String id : idList) {
-							String s = htmlElementByIdMap.get(id).toXML();
-							LOG.trace(s);
-							set.add(s);
+						for (ChunkId id : idList) {
+							HtmlElement element = htmlElementByIdMap.get(id);
+							// not all chunks are HTML
+							if (element != null) {
+								String s = element.toXML();
+								LOG.trace(s);
+								set.add(s);
+							}
 						}
 						if (set.size() == 1) {
 							LOG.debug("bbox "+set.toString());
 						}
-	//					LOG.debug("=====");
 						duplicateBboxCount++;
 					} else if (title.equals(IMAGE)) {
 						output(idList, title);
@@ -178,7 +261,7 @@ public class PDFIndex {
 	 * Warning - may require a lot of memory
 	 * @param contentMap
 	 */
-	public void setContentMap(Multimap<String, String> contentMap) {
+	public void setContentMap(Multimap<String, ChunkId> contentMap) {
 		this.svgIdByContentMap = contentMap;
 	}
 
@@ -194,7 +277,7 @@ public class PDFIndex {
 	 * Warning - may require a lot of memory
 	 * @param imageMap
 	 */
-	public void setImageMap(Multimap<String, String> imageMap) {
+	public void setImageMap(Multimap<String, ChunkId> imageMap) {
 		this.svgIdByImageContentMap = imageMap;
 	}
 
@@ -202,7 +285,7 @@ public class PDFIndex {
 	 * Warning - may require a lot of memory
 	 * @param pathMap
 	 */
-	public void setPathMap(Multimap<String, String> pathMap) {
+	public void setPathMap(Multimap<String, ChunkId> pathMap) {
 		this.svgIdByPathIdMap = pathMap;
 	}
 
@@ -212,11 +295,7 @@ public class PDFIndex {
 	 */
 	void addToindexes(SVGG gOut) {
 		String content = gOut.getValue();
-		String id = gOut.getId();
-		if (id == null) {
-			System.out.println("missing ID");
-			return;
-		}
+		ChunkId id = new ChunkId(gOut.getId());
 		svgElementByIdMap.put(id, gOut);
 		Real2Range bbox = gOut.getBoundingBox();
 		Int2Range i2r = new Int2Range(bbox);
@@ -232,9 +311,12 @@ public class PDFIndex {
 			if (imageList.size() > 0) {
 				StringBuilder sb = new StringBuilder();
 				for (SVGImage image : imageList) {
-					sb.append(image.getImageValue());
+					String imageValue = image.getImageValue();
+					LOG.trace(imageValue.substring(0, Math.min(50, imageValue.length()))+" ... ");
+					sb.append(imageValue);
 				}
-				svgIdByImageContentMap.put(sb.toString(), id);
+				String imageContent = sb.toString();
+				svgIdByImageContentMap.put(imageContent, id);
 			} else {
 				List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(gOut, ".//svg:path"));
 				if (pathList.size() > 0) {
@@ -254,16 +336,16 @@ public class PDFIndex {
 	 * @param serial
 	 * @param title
 	 */
-	public void output(List<String> idList, String title) {
+	public void output(List<ChunkId> idList, String title) {
 		
 		try {
-			for (String id : idList) {
+			for (ChunkId id : idList) {
 				File dir = new File("target/"+title+"/duplicate/");
 				dir.mkdirs();
 				File file = new File(dir, id+SVGPlusConstantsX.SVG);
 				SVGElement element = svgElementByIdMap.get(id);
 				CMLUtil.debug(element, new FileOutputStream(file), 1);
-				LOG.debug("wrote: "+file.getAbsolutePath());
+				LOG.trace("wrote: "+file.getAbsolutePath());
 			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -273,18 +355,21 @@ public class PDFIndex {
 	/** preload a bboxMap which can be used for several PDFAnalyzers
 	 * @param bboxMap
 	 */
-	public void setBoundingBoxMap(Multimap<Int2Range, String> bboxMap) {
+	public void setBoundingBoxMap(Multimap<Int2Range, ChunkId> bboxMap) {
 		this.bboxMap = bboxMap;
 	}
 
 	public void AnalyzeDuplicates() {
 		List<IntListPattern> extractedIntegerList = new ArrayList<IntListPattern>();
-		for (List<String> idList : flattenedIdListList) {
+		for (List<ChunkId> idList : flattenedIdListList) {
 			List<String> valueList = new ArrayList<String>();
-			for (String id : idList) {
+			for (ChunkId id : idList) {
 				HtmlElement html = htmlElementByIdMap.get(id);
-				String value = html.getValue();
-				valueList.add(value);
+				// not all chunks are HTML
+				if (html != null) {
+					String value = html.getValue();
+					valueList.add(value);
+				}
 			}
 			Set<String> patternStringSet = new HashSet<String>();
 			Pattern pattern = null;
@@ -295,18 +380,34 @@ public class PDFIndex {
 			if (patternStringSet.size() == 1 && valueList.size() > 0) {
 				TextFlattener textFlattener = new TextFlattener();
 				textFlattener.createIntegerPattern(valueList.get(0));
-				System.out.println("T "+textFlattener.getIntegerPattern().toString());
+				LOG.trace("T "+textFlattener.getIntegerPattern().toString());
 				for (String value : valueList) { 
 					List<Integer> integerList = textFlattener.captureIntegers(value);
-					System.out.println("V "+value+" "+ integerList);
+					LOG.trace("V "+value+" "+ integerList);
 					IntListPattern extractedInteger = new IntListPattern(pattern, integerList);
 					extractedIntegerList.add(extractedInteger);
 				}
 			}
 		}
 		for (IntListPattern extractedI : extractedIntegerList) {
-			LOG.debug("Pattern: "+extractedI.toString());
+			LOG.trace("Pattern: "+extractedI.toString());
 		}
+	}
+
+	public void addHtmlElement(HtmlElement htmlElement, ChunkId chunkId) {
+		ensureElementMultimaps();
+		htmlElementByIdMap.put(chunkId, htmlElement);
+	}
+
+	public void outputHtmlElements() {
+		Set<Map.Entry<ChunkId, HtmlElement>> entries= htmlElementByIdMap.entrySet();
+		for (Map.Entry<ChunkId, HtmlElement> entry : entries) {
+			HtmlElement htmlElement = entry.getValue();
+			ChunkId chunkId = entry.getKey();
+			pdfAnalyzer.outputElementAsHTML(htmlElement, chunkId);
+		}
+		// TODO Auto-generated method stub
+		
 	}
 
 }

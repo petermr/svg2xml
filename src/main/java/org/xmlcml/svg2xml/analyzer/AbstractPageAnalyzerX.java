@@ -17,6 +17,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlB;
+import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
 import org.xmlcml.svg2xml.action.PageEditorX;
@@ -105,23 +106,50 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		if (textList.size() != 0 && (pathList.size() == 0 && imageList.size() == 0)) {
 			analyzer = TextLineContainer.createTextAnalyzerWithSortedLines(textList);
 		} else if (pathList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {
-			analyzer = new PathAnalyzerX();
-			((PathAnalyzerX)analyzer).readPathList(pathList);
+			analyzer = createPathAnalyzer(pathList);
 		} else if (imageList.size() != 0 && (textList.size() == 0 && pathList.size() == 0)) {
-			analyzer = new ImageAnalyzerX();
-			((ImageAnalyzerX)analyzer).readImageList(imageList);
+			analyzer = createImageAnalyzer(imageList);
 		} else {
 			analyzer = new MixedAnalyzer();
-			((MixedAnalyzer)analyzer).readImageList(imageList);
-			((MixedAnalyzer)analyzer).readPathList(pathList);
-			((MixedAnalyzer)analyzer).readTextList(textList);
-//			throw new RuntimeException("MIXEDAA: "+analyzer);
+			AbstractPageAnalyzerX childAnalyzer = null;
+			if (textList.size() != 0) {
+				childAnalyzer = TextLineContainer.createTextAnalyzerWithSortedLines(textList);
+				((MixedAnalyzer) analyzer).add(childAnalyzer);
+			}
+			if (pathList.size() != 0) {
+				childAnalyzer = createPathAnalyzer(pathList);
+				((MixedAnalyzer) analyzer).add(childAnalyzer);
+			}
+			if (imageList.size() != 0) {
+				childAnalyzer = createImageAnalyzer(imageList);
+				((MixedAnalyzer) analyzer).add(childAnalyzer);
+			}
 		}
 
 		return analyzer;
 	}
 
+	private static AbstractPageAnalyzerX createImageAnalyzer(List<SVGImage> imageList) {
+		AbstractPageAnalyzerX analyzer;
+		analyzer = new ImageAnalyzerX();
+		((ImageAnalyzerX)analyzer).readImageList(imageList);
+		return analyzer;
+	}
+
+	private static AbstractPageAnalyzerX createPathAnalyzer(List<SVGPath> pathList) {
+		AbstractPageAnalyzerX analyzer;
+		analyzer = new PathAnalyzerX();
+		((PathAnalyzerX)analyzer).readPathList(pathList);
+		return analyzer;
+	}
+
 	public abstract SVGG annotate();
+
+	protected HtmlElement createHTML() {
+		HtmlElement htmlElement = new HtmlDiv();
+		htmlElement.appendChild("no content yet");
+		return htmlElement;
+	}
 
 	protected void getBoundingBoxAndParent(SVGElement element) {
 		parentElement = (SVGElement) element.getParent();
@@ -139,8 +167,9 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 	protected void outputAnnotatedBox(SVGG g, double rectOpacity, double textOpacity,
 			String message, double fontSize, String rectFill) {
 				Real2Range bbox = g.getBoundingBox();
-				g.appendChild(AbstractPageAnalyzerX.createTextInBox(textOpacity, bbox, message, fontSize));
+//				g.appendChild(AbstractPageAnalyzerX.createTextInBox(textOpacity, bbox, message, fontSize));
 				SVGRect rect = SVGRect.createFromReal2Range(bbox);
+				rect.setTitle(message);
 				rect.setFill(rectFill);
 				rect.setOpacity(rectOpacity);
 				g.appendChild(rect);

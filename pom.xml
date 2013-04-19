@@ -167,7 +167,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.xmlcml.pdf2svg.PDF2SVGConverter</mainClass>
+                            <mainClass>org.xmlcml.svg2xml.analyzer.PDFAnalyzer</mainClass>
                         </manifest>
                     </archive>
                     <excludes>

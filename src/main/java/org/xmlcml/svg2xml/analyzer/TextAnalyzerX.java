@@ -768,7 +768,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			g.appendChild(text.copy());
 		}
 		String title = "TEXT "+textCharacters.size();
-//		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "pink");
+		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "pink");
 		g.setTitle(title);
 		return g;
 	}
@@ -864,6 +864,20 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	public void setTextLineContainer(TextLineContainer textLineContainer) {
 		this.textLineContainer = textLineContainer;
+	}
+
+	protected HtmlElement createHTML() {
+		LOG.trace("createHTMLParasAndDivs");
+		List<TextLine> textLines = this.getLinesInIncreasingY();
+		LOG.trace("lines "+textLines.size());
+		for (TextLine textLine : textLines){
+			LOG.trace(">> "+textLine);
+		}
+		HtmlElement element = this.createHtmlDivWithParas();
+		if (element != null) {
+			AbstractPageAnalyzerX.tidyStyles(element);
+		}
+		return element;
 	}
 	
 	// ==========================================

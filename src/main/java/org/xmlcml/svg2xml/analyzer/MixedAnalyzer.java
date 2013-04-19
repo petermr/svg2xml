@@ -8,6 +8,10 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlImg;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 
 public class MixedAnalyzer extends AbstractPageAnalyzerX {
@@ -74,19 +78,34 @@ public class MixedAnalyzer extends AbstractPageAnalyzerX {
 			g.appendChild(gg.copy());
 		}
 		String title = "MIXED: "+this;
-//		SVGText text = createTextInBox(0.2, g.getBoundingBox(), title, 6.0);
-//		g.appendChild(text);
 		g.setTitle(title);
 		return g;
+	}
+	
+	@Override
+	protected HtmlElement createHTML() {
+		HtmlDiv element = new HtmlDiv();
+		for (AbstractPageAnalyzerX analyzer : analyzerList) {
+			HtmlDiv div = new HtmlDiv();
+			element.appendChild(div);
+			HtmlElement childElement = analyzer.createHTML();
+			div.appendChild(childElement);
+		}
+		return element;
+	}
+
+	public void add(AbstractPageAnalyzerX analyzer) {
+		ensureAnalyzerList();
+		LOG.debug("Added "+analyzer);
+		analyzerList.add(analyzer);
 	}
 
 	private void ensureAnalyzerList() {
 		if (analyzerList == null) {
 			analyzerList = new ArrayList<AbstractPageAnalyzerX>();
-			if (imageAnalyzer != null) analyzerList.add(imageAnalyzer);
-			if (pathAnalyzer != null)  analyzerList.add(pathAnalyzer);
-			if (textAnalyzer != null)  analyzerList.add(textAnalyzer);
 		}
 	}
+	
+
 
 }

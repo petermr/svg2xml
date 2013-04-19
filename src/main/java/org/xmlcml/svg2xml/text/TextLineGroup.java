@@ -151,7 +151,17 @@ public class TextLineGroup implements Iterable<TextLine> {
 			TextLine text0 = textLineList.get(0);
 			TextLine text1 = textLineList.get(1);
 			if (!text0.isPrimary() && !text1.isPrimary()) {
-				if (text0.getFontSize() > text1.getFontSize()) {
+				Double fontSize0 = text0.getFontSize();
+				Double fontSize1 = text1.getFontSize();
+				if (fontSize1 == null) {
+					superscript = null;
+					middleLine = text0;
+					subscript = text1;
+				} else if(fontSize0 == null) {
+					superscript = text0;
+					middleLine = text1;
+					subscript = null;
+			    } else if(fontSize0 > fontSize1) {
 					superscript = null;
 					middleLine = text0;
 					subscript = text1;

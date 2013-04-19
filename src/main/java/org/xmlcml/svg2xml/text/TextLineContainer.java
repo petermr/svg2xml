@@ -713,7 +713,12 @@ public class TextLineContainer {
 		return htmlElement;
 	}
 
-	public HtmlElement createHtmlDivWithParas(List<TextLineGroup> textLineGroupList) {
+	/** only used in tests?
+	 * 
+	 * @param textLineGroupList
+	 * @return
+	 */
+	 public HtmlElement createHtmlDivWithParas(List<TextLineGroup> textLineGroupList) {
 		List<TextLine> primaryTextLineList = this.getPrimaryTextLineList();
 		HtmlElement div = null;
 		if (primaryTextLineList.size() == 0){

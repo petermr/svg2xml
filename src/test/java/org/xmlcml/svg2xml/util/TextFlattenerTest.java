@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.util;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -84,4 +85,40 @@ public class TextFlattenerTest {
 		Assert.assertEquals("float", "0.0 0.0", TextFlattener.flattenFloats(s));
 	}
 	
+	@Test
+	public void testSplitAtIntegers() {
+		List<Object> objectList = TextFlattener.splitAtIntegers("a2b3");
+		Assert.assertEquals(4, objectList.size());
+		assertEquals(objectList, new Object[]{"a", 2, "b", 3});
+	}
+
+	@Test
+	public void testSplitAtIntegers1() {
+		List<Object> objectList = TextFlattener.splitAtIntegers("a2b3c");
+		Assert.assertEquals(5, objectList.size());
+		assertEquals(objectList, new Object[]{"a", 2, "b", 3, "c"});
+	}
+
+	@Test
+	public void testSplitAtIntegers2() {
+		List<Object> objectList = TextFlattener.splitAtIntegers("2");
+		Assert.assertEquals(1, objectList.size());
+		assertEquals(objectList, new Object[]{2});
+	}
+
+	@Test
+	public void testSplitAtIntegersA() {
+		List<Object> objectList = TextFlattener.splitAtIntegers("A");
+		Assert.assertEquals(1, objectList.size());
+		assertEquals(objectList, new Object[]{"A"});
+	}
+
+	//====================================================
+	
+	private void assertEquals(List<Object> objectList, Object[] objects) {
+		Assert.assertEquals("unequal lists", objectList.size(), objects.length);
+		for (int i = 0; i < objectList.size(); i++) {
+			Assert.assertEquals("obj "+i, objectList.get(i), objects[i]);
+		}
+	}
 }

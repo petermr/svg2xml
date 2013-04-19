@@ -2,3 +2,8 @@
 
 Label textLine as in/outdent, and bold for para matching
 
+
+=PeerJ=
+"PeerJ" logo on each page has transformation matrix but current (unscaled) bounding box eats some
+of the other SVG primitives (e.g. text). SOLUTION. remove logo, but also need to fix image transformations
+

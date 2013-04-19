@@ -1,14 +1,12 @@
 package org.xmlcml.svg2xml.util;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import junit.framework.Assert;
-
 import org.apache.log4j.Logger;
-import org.junit.Test;
 
 /** "flattens" numbers and dates in text to canonical forms.
  * Used for comparing strings which differ only be nunbers ands dates
@@ -23,25 +21,19 @@ public class TextFlattener {
 	public final static String META = "\\(){}[]?-+*|&^.$\"\'#";
 	
 	private Pattern integerPattern;
-
 	private Matcher matcher;
 	
 	public TextFlattener() {
-		
 	}
-
-//	public static List<Integer> extractIntegerList(Pattern pattern, String value) {
-//		
-//	}
-
-	public Pattern createIntegerPattern(String s) {
-		this.integerPattern = TextFlattener.createDigitStringMatchingPatternCapture(s);
+	
+	public Pattern createIntegerPattern(String template) {
+		this.integerPattern = TextFlattener.createDigitStringMatchingPatternCapture(template);
 		return integerPattern;
 	}
 
 	public List<Integer> captureIntegers(String s) {
 		List<Integer> integerList = new ArrayList<Integer>();
-		matcher = (s == null) ? null : integerPattern.matcher(s);
+		matcher = (s == null || integerPattern == null) ? null : integerPattern.matcher(s);
 		if (matcher != null && matcher.matches()) {
 			for (int i = 0; i < matcher.groupCount(); i++) {
 				String g = matcher.group(i+1);
@@ -50,22 +42,6 @@ public class TextFlattener {
 			}
 		}
 		return integerList;
-	}
-
-
-	@Test
-	public void testCreateDigitStringMatchingPatternCapture() {
-		String s = "3 - 45";
-		Pattern pattern = TextFlattener.createDigitStringMatchingPatternCapture(s);
-		Matcher matcher = pattern.matcher(s);
-		Assert.assertEquals("pattern", "\\Q\\E(\\d+)\\Q - \\E(\\d+)\\Q\\E", pattern.toString());
-		Assert.assertTrue("orig", matcher.matches());
-		Assert.assertEquals("orig", 2, matcher.groupCount());
-		Assert.assertEquals("group1", "3", matcher.group(1));
-		Assert.assertEquals("group1", "45", matcher.group(2));
-		matcher = pattern.matcher("34 - 67");
-		Assert.assertTrue(matcher.matches());
-		Assert.assertEquals("new", "67", matcher.group(2));
 	}
 
 
@@ -171,6 +147,37 @@ public class TextFlattener {
 
 	public Pattern getIntegerPattern() {
 		return integerPattern;
+	}
+
+	/** splits string into integers where possible
+	 * splits Abc12def34g into "Abc", 12, "def", 34, "g"
+	 * ignores minus and plus 
+	 * @param filename0
+	 * @return list of Strings and Integers
+	 */
+	public static List<Object> splitAtIntegers(String s) {
+//		Pattern SPLIT = Pattern.compile("((\\D*\\d+)*)(\\D*)");
+		Pattern EXTRACT = Pattern.compile("(\\D*)(\\d+)");
+		Matcher extractMatcher = EXTRACT.matcher(s);
+		List<Object> objectList = new ArrayList<Object>();
+		int start = 0;
+		while (extractMatcher.find(start)) {
+			String ss = extractMatcher.group(0);
+			while (extractMatcher.find(start)) {
+				String nonDigit = extractMatcher.group(1);
+				String digits = extractMatcher.group(2);
+				if (nonDigit.length() > 0) {
+					objectList.add(nonDigit);
+				}
+				objectList.add(new Integer(digits));
+				start = extractMatcher.end();
+			}
+		}
+		String last = s.substring(start);
+		if (last.length() > 0) {
+			objectList.add(last);
+		}
+		return objectList;
 	}
 
 

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import nu.xom.Attribute;
+import nu.xom.Nodes;
 import nu.xom.ParentNode;
 
 import org.apache.log4j.Logger;
@@ -16,20 +17,22 @@ import org.xmlcml.euclid.Real2Array;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.MovePrimitive;
 import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGPathPrimitive;
 import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
+import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -52,6 +55,8 @@ import org.xmlcml.svg2xml.tools.Chunk;
  */
 public class PathAnalyzerX extends AbstractPageAnalyzerX {
 
+	private static final int SVG_BOX_Y = 800;
+	private static final int SVG_BOX_X = 1000;
 	private static final String NONE = "none";
 	private static final String DEFAULT_STROKE = "gray";
 
@@ -153,10 +158,39 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 			g.appendChild(path.copy());
 		}
 		String title = "PATH "+pathList.size();
-//		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
+		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
 		g.setTitle(title);
 		return g;
 	}
+	
+	@Override
+	protected HtmlElement createHTML() {
+		LOG.debug("path html"+pathList.size()); 
+		HtmlElement element = new HtmlDiv();
+		SVGSVG svg = new SVGSVG();
+		svg.setWidth(SVG_BOX_X);
+		svg.setHeight(SVG_BOX_Y);
+		SVGG g = new SVGG();
+		svg.appendChild(g);
+		Transform2 transform = new Transform2();
+		transform.applyScalesToThis(0.5, 0.5);
+		g.setTransform(transform);
+		element.appendChild(svg);
+		for (int i = 0; i < pathList.size(); i++) {
+			SVGPath path = (SVGPath) pathList.get(i).copy();
+			Double strokeWidth = path.getStrokeWidth();
+			if (strokeWidth == null || strokeWidth < 1.0) {
+				path.setStrokeWidth(1.0);
+			}
+			Nodes nodes = path.query("./@clip-path");
+			for (int j = 0; j < nodes.size(); j++) {
+				nodes.get(j).detach();
+			}
+			g.appendChild(path);
+		}
+		return element;
+	}
+	
 	
 	/** with help from
 http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circle-using-multiple-points
