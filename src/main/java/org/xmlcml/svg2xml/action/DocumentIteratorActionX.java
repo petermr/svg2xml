@@ -143,7 +143,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private List<File> getFiles(File indir) {
 		File[] files = indir.listFiles(new FilenameFilter() {
 			public boolean accept(File dir, String path) {
-				return path.endsWith(SVGPlusConstantsX.PDF); // for test
+				return path.endsWith(SVGPlusConstantsX.DOT_PDF); // for test
 			}
 		});
 		return files == null ? new ArrayList<File>() : Arrays.asList(files);
@@ -213,7 +213,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private File[] listSVGFiles(File rawDir) {
 		File[] svgFiles = rawDir.listFiles(new FilenameFilter() {
 			public boolean accept(File rawDir, String name) {
-				return name.endsWith(SVGPlusConstantsX.SVG);
+				return name.endsWith(SVGPlusConstantsX.DOT_SVG);
 			}
 		});
 		return svgFiles;
@@ -223,7 +223,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	private void outputSVGsToRawDir(File rawDir, List<SVGSVG> pageList) {
 		int page = 0;
 		for (SVGSVG svgPage :pageList) {
-			CMLUtil.outputQuietly(svgPage, new File(rawDir, SVGPlusConstantsX.PAGE+(++page)+SVGPlusConstantsX.SVG), 1);
+			CMLUtil.outputQuietly(svgPage, new File(rawDir, SVGPlusConstantsX.PAGE+(++page)+SVGPlusConstantsX.DOT_SVG), 1);
 		}
 	}
 
@@ -246,7 +246,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 
 	private File generateRawFileDirectory(File pdfFile) {
 		String name = pdfFile.getName();
-		String root = name.substring(0, name.length()-SVGPlusConstantsX.PDF.length());
+		String root = name.substring(0, name.length()-SVGPlusConstantsX.DOT_PDF.length());
 		File subRootDir = new File(pdfFile.getParentFile(), root);
 		subRootDir.mkdir();
 		File rawDir = new File(subRootDir, SVGPlusConstantsX.RAW);
@@ -258,7 +258,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 		File[] pdfFiles = file.listFiles(
 			new FilenameFilter() {
 				public boolean accept(File file, String name) {
-					return name.endsWith(SVGPlusConstantsX.PDF);
+					return name.endsWith(SVGPlusConstantsX.DOT_PDF);
 				}
 			});
 		return pdfFiles;

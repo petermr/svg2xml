@@ -33,7 +33,7 @@ public class TextLineContainerTest {
 		geoFileList = new ArrayList<File>();
 		for (File file : files) {
 			String name = file.getName();
-			if (name.startsWith(GEOTABLE_7) && name.endsWith(SVGPlusConstantsX.SVG) &&
+			if (name.startsWith(GEOTABLE_7) && name.endsWith(SVGPlusConstantsX.DOT_SVG) &&
 					!name.equals(GEOTABLE_7+"svg")) {
 				geoFileList.add(file);
 			}

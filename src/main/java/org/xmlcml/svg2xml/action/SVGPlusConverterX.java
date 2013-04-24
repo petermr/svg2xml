@@ -40,7 +40,7 @@ public class SVGPlusConverterX {
 
 	private FilenameFilter pdfFilter = new FilenameFilter() {
 		public boolean accept(File dir, String name) {
-			return name.endsWith(SVGPlusConstantsX.PDF);
+			return name.endsWith(SVGPlusConstantsX.DOT_PDF);
 		}
 	};
 

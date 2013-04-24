@@ -76,9 +76,9 @@ public class DocumentListAnalyzer {
 	private void setMaps(PDFAnalyzer analyzer) {
 		analyzer.getIndex().setContentMap(contentMap);
 		analyzer.getIndex().setImageMap(imageMap);
-		analyzer.getIndex().setDuplicateImageCount(duplicateImageCount);
+//		analyzer.getIndex().setDuplicateImageCount(duplicateImageCount);
 		analyzer.getIndex().setPathMap(pathMap);
-		analyzer.getIndex().setDuplicatePathCount(duplicatePathCount);
+//		analyzer.getIndex().setDuplicatePathCount(duplicatePathCount);
 	}
 	
 	public void analyzeDirectory(File inputDir) {

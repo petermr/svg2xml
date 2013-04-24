@@ -102,11 +102,11 @@ public class FigureAnalyzerActionX extends PageActionX {
 			figureAnalyzer.createFragmentsInsidePanelsForAllFigures();
 			analyzeFigures(figureList);
 			for (Figure figure : figureList) {
-				CMLUtil.outputQuietly(figure.getFigureAnalysis(), new File(filename+"."+figure.getId()+SVGPlusConstantsX.XML), 1);
+				CMLUtil.outputQuietly(figure.getFigureAnalysis(), new File(filename+"."+figure.getId()+SVGPlusConstantsX.DOT_XML), 1);
 			}
 		}
 		for (Chunk figure : figureList) {
-			GraphUtil.writeFileAsSVGSVGWithMouse(filename+"."+figure.getId()+SVGPlusConstantsX.SVG, figure);
+			GraphUtil.writeFileAsSVGSVGWithMouse(filename+"."+figure.getId()+SVGPlusConstantsX.DOT_SVG, figure);
 		}
 	}
 

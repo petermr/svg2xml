@@ -5,11 +5,11 @@ package org.xmlcml.svg2xml.action;
 public class SVGPlusConstantsX {
 	
 	// suffixes
-	public static final String NEXML = ".nexml";
-	public static final String PDF = ".pdf";
-	public static final String SVG = ".svg";
-	public static final String HTML = ".html";
-	public static final String XML = ".xml";
+	public static final String DOT_NEXML = ".nexml";
+	public static final String DOT_PDF = ".pdf";
+	public static final String DOT_SVG = ".svg";
+	public static final String DOT_HTML = ".html";
+	public static final String DOT_XML = ".xml";
 
 	// directories
 	public static final String OUT = "out";

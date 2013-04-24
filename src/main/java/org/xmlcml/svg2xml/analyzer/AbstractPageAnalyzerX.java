@@ -39,6 +39,13 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 	protected PageEditorX pageEditorX;
 	protected Real2Range bbox;
 	protected SVGElement parentElement;
+	
+	static List<String> titleList = new ArrayList<String>();
+	static {
+		titleList.add(new FigureAnalyzerX((PDFIndex)null).getTitle());
+		titleList.add(new TableAnalyzerX((PDFIndex)null).getTitle());
+//		titleList.add(new SnippetAnalyzer((PDFIndex)null).getTitle());
+	}
 
 	List<ChunkId> idList;
 	List<Integer> serialList;
@@ -129,16 +136,16 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		} else {
 			analyzer = new MixedAnalyzer();
 			AbstractPageAnalyzerX childAnalyzer = null;
+			if (imageList.size() != 0) {
+				childAnalyzer = createImageAnalyzer(imageList);
+				((MixedAnalyzer) analyzer).add(childAnalyzer);
+			}
 			if (textList.size() != 0) {
 				childAnalyzer = TextLineContainer.createTextAnalyzerWithSortedLines(textList);
 				((MixedAnalyzer) analyzer).add(childAnalyzer);
 			}
 			if (pathList.size() != 0) {
 				childAnalyzer = createPathAnalyzer(pathList);
-				((MixedAnalyzer) analyzer).add(childAnalyzer);
-			}
-			if (imageList.size() != 0) {
-				childAnalyzer = createImageAnalyzer(imageList);
 				((MixedAnalyzer) analyzer).add(childAnalyzer);
 			}
 		}
@@ -207,12 +214,20 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		return serial;
 	}
 
+	/** label HtmlElement
+	 * 
+	 * @param id
+	 * @param title
+	 * @param serial
+	 */
 	private void labelChunk(ChunkId id, String title, Integer serial) {
 		getHtmlElement(id);
 		HtmlElement htmlElement = getHtmlElement(id);
 		if (htmlElement != null) {
 			String classX = htmlElement.getClassAttribute();
-			htmlElement.setClassAttribute(title);
+			if (classX == null) {
+				htmlElement.setClassAttribute(title+" "+serial);
+			}
 		}
 	}
 
@@ -280,12 +295,27 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		if (content != null) {
 			Matcher matcher = pattern.matcher(content);
 			if (matcher.matches()) {
-				String s = matcher.group(1);
-				serial = (s.trim().length() == 0) ? 
-						-1 : new Integer(matcher.group(1));
+				if (matcher.groupCount() == 0) {
+					serial = -1;
+				} else {
+					String s = matcher.group(1);
+					if (s != null) {
+						s = s.trim();
+						serial= -1;
+						try {
+							serial = new Integer(s);
+						} catch (Exception e) {
+							// not a number
+						}
+					}
+				}
 			}
 		}
 		return serial;
+	}
+
+	public boolean isChunk(String classAttribute) {
+		return classAttribute != null && classAttribute.startsWith(getTitle());
 	}
 
 	/** Pattern for the content for this analyzer

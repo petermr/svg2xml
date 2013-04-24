@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import nu.xom.Nodes;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.figure.FigurePanel;
@@ -232,4 +235,12 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 		return TITLE;
 	}
 
+	public static boolean containsDivImage(HtmlElement element) {
+		boolean contains = false;
+		if (element != null) {
+			Nodes nodes = element.query(".//*[local-name()='img']");
+			contains = nodes.size() > 0;
+		}
+		return contains;
+	}
 }

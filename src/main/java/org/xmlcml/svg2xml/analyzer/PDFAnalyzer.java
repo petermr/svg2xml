@@ -8,28 +8,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
 
-import nu.xom.Builder;
-import nu.xom.Element;
+import nu.xom.Attribute;
 import nu.xom.Nodes;
 import nu.xom.Text;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
@@ -44,19 +42,15 @@ import com.google.common.collect.Multimap;
 public class PDFAnalyzer implements Annotatable {
 
 
+	private static final String Z_CHUNK = "z_";
+
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
 
-	private static final String SVG = SVGPlusConstantsX.SVG;
-	private static final String PDF = SVGPlusConstantsX.PDF;
+	private static final String SVG = SVGPlusConstantsX.DOT_SVG;
+	private static final String PDF = SVGPlusConstantsX.DOT_PDF;
 
 	public static final String PAGE = "page";
 
-	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s+[a-z]+)*";
-	private String htmlRegexS = BINOMIAL_REGEX_S;
-	private static final String ITALIC_XPATH_S = ".//*[local-name()='i']";
-	private String htmlXPath = ITALIC_XPATH_S;
-
-	private static final String HTML = SVGPlusConstantsX.HTML;
 
 	private File inputTopDir;
 	private File inFile;
@@ -65,13 +59,16 @@ public class PDFAnalyzer implements Annotatable {
 	private File svgTopDir = new File("target/svg");
 	private File svgDocumentDir;
 	private File svgPageFile;
-	private File outputTopDir = new File("target/output");;
+	private File outputTopDir = new File("target/output");
 	private File outputDocumentDir;
 	private int pageNumber;
 	private boolean skipFile;
 
 	private DocumentListAnalyzer documentListAnalyzer;
 	private PDFIndex pdfIndex;
+
+	private List<SVGSVG> svgOutList;
+	private List<SVGG> gOutList;
 
 	public PDFAnalyzer() {
 	}
@@ -100,14 +97,6 @@ public class PDFAnalyzer implements Annotatable {
 		this.skipFile = skipFile;
 	}
 	
-	public void setHtmlRegex(String htmlRegexS) {
-		this.htmlRegexS = htmlRegexS;
-	}
-	
-	public void setHtmlXPath(String htmlXPath) {
-		this.htmlXPath = htmlXPath;
-	}
-	
 	public void analyzePDFFile(File inFile) {
 		this.inFile = inFile;
 		inputName = inFile.getName();
@@ -116,56 +105,36 @@ public class PDFAnalyzer implements Annotatable {
 		outputDocumentDir = new File(outputTopDir, fileRoot);
 		analyzePDF();
 		File htmlDir = (new File(outputTopDir, fileRoot));
+		copyOriginalPDF(inFile, htmlDir);
+		
+		extractEntities(htmlDir);
+		createHtmlMenuSystem(htmlDir);
+	}
+
+	private void extractEntities(File htmlDir) {
+		List<File> htmlFiles = analyzeHtml(htmlDir);
+		SpeciesAnalyzer speciesAnalyzer = new SpeciesAnalyzer(pdfIndex);
+		HtmlUl speciesList = speciesAnalyzer.extractEntities(htmlFiles);
+		try {
+			CMLUtil.debug(speciesList, new FileOutputStream(new File(outputDocumentDir, speciesAnalyzer.getFileName())), 1);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void copyOriginalPDF(File inFile, File htmlDir) {
 		try {
 			IOUtils.copy(new FileInputStream(inFile), new FileOutputStream(new File(htmlDir, "00_"+inputName)));
 		} catch (Exception e1) {
 			throw new RuntimeException(e1);
 		}
-		List<File> htmlFiles = analyzeHtml(htmlDir);
-		HtmlElement speciesList = searchHtml(htmlFiles, htmlXPath, htmlRegexS);
-		try {
-			CMLUtil.debug(speciesList, new FileOutputStream(new File(outputDocumentDir, "species.html")), 1);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		createHtmlMenuSystem(htmlDir);
-	}
-
-	private HtmlElement searchHtml(List<File> htmlFiles, String xpath, String regex) {
-		HtmlUl ul = new HtmlUl();
-		Set<String> binomialSet = new HashSet<String>();
-		Pattern htmlPattern = Pattern.compile(htmlRegexS);
-		for (File file : htmlFiles) {
-			Element html = null;
-			try {
-				html = new Builder().build(file).getRootElement();
-			} catch (Exception e) {
-				LOG.error("Failed on html File: "+file);
-			}
-			if (html != null) {
-				Nodes nodes = html.query(xpath);
-				for (int i = 0; i < nodes.size(); i++) {
-					String value = nodes.get(i).getValue();
-					if (htmlPattern.matcher(value).matches()) {	
-						if (!binomialSet.contains(value)) {
-							LOG.trace(value);
-							HtmlLi li = new HtmlLi();
-							ul.appendChild(li);
-							li.setValue(value);
-							binomialSet.add(value);
-						}
-					}
-				}
-			}
-		}
-		return ul;
 	}
 
 	private List<File> analyzeHtml(File htmlDir) {
 		List<File> htmlFileList = new ArrayList<File>();
 		File[] files = htmlDir.listFiles();
 		for (File file : files) {
-			if (file.toString().endsWith(".html")) {
+			if (file.toString().endsWith(SVGPlusConstantsX.DOT_HTML)) {
 				htmlFileList.add(file);
 			}
 		}
@@ -184,13 +153,48 @@ public class PDFAnalyzer implements Annotatable {
 		pdfIndex.ensureElementMultimaps();
 		for (int page = 0; page < files.length; page++) {
 			System.out.print(page+"~");
-			createAndAnalyzeSVGChunks(page+1);
+			createAndAnalyzeSVGChunks(page);
 		}
 		System.out.println();
+		LOG.debug("IDS: "+pdfIndex.getUsedIdSet());
 		pdfIndex.createIndexes();
 		pdfIndex.AnalyzeDuplicates();
+		writeSvgPages(files);
+		pdfIndex.getHtmlElementsSortedByChunkId();
+		pdfIndex.RemoveDuplicates();
+		pdfIndex.createLinkedElementList();
+		pdfIndex.mergeCaptions();
+		pdfIndex.mergeHtml();
 		pdfIndex.outputHtmlElements();
+		// TODO Auto-generated method stub
+		
 
+	}
+
+	private void writeSvgPages(File[] files) {
+		for (int page = 0; page < files.length; page++) {
+			SVGSVG svgPage = svgOutList.get(page);
+			annotatePage(svgPage);
+			writeSVGPage(page, svgPage);
+		}
+	}
+
+	private void annotatePage(SVGSVG svgPage) {
+		List<SVGG> gList = SVGG.extractGs(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id]"));
+		for (SVGG g : gList) {
+			ChunkId chunkId = new ChunkId(g.getId());
+			boolean indexed = pdfIndex.getUsedIdSet().contains(chunkId);
+			LOG.trace("ID written "+chunkId+" "+indexed);
+			if (indexed) {
+				Real2Range bbox = g.getBoundingBox();
+				Real2[] corners = bbox.getCorners();
+				SVGLine line = new SVGLine(corners[0], corners[1]);
+				line.setOpacity(0.3);
+				line.setWidth(5.0);
+				line.setFill("green");
+				g.appendChild(line);
+			}
+		}
 	}
 
 	public void createSVGfromPDF() {
@@ -214,7 +218,7 @@ public class PDFAnalyzer implements Annotatable {
 	private void createAndAnalyzeSVGChunks(int pageNumber) {
 		ensurePDFIndex();
 		this.pageNumber = pageNumber;
-		String pageRoot = PAGE+(pageNumber);
+		String pageRoot = createPageRoot(pageNumber);
 		String pageSvg = fileRoot+"-"+pageRoot+SVG;
 		svgPageFile = new File(svgDocumentDir, pageSvg);
 		if (svgPageFile.exists() && skipFile) {
@@ -230,18 +234,43 @@ public class PDFAnalyzer implements Annotatable {
 				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);
 		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+		
+		SVGSVG svgOut = createSVGOut(pageNumber);
+		svgOutList.add(svgOut);
+		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
+			SVGG gOrig = (SVGG) gList.get(ichunk);
+			SVGG gOut = copyChunkAnalyzeMakeId(pageNumber, gOrig, ichunk);
+			ensureGOutList();
+			svgOut.appendChild(gOut);
+			pdfIndex.addToindexes(gOut);
+		}
+	}
+
+	private void ensureGOutList() {
+		if (gOutList == null) {
+			gOutList = new ArrayList<SVGG>();
+		}
+	}
+
+	private String createPageRoot(int pageNumber) {
+		String pageRoot = PAGE+(pageNumber+1);
+		return pageRoot;
+	}
+
+	private SVGSVG createSVGOut(int pageNumber) {
+		ensureSVGOutList();
 		SVGSVG svgOut = new SVGSVG();
 		svgOut.setWidth(600.0);
 		svgOut.setHeight(800.0);
 		String pageId = "p."+pageNumber;
 		svgOut.setId(pageId);
-		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
-			SVGG gOrig = (SVGG) gList.get(ichunk);
-			SVGG gOut = copyChunkAnalyzeMakeId(pageNumber, gOrig, ichunk);
-			svgOut.appendChild(gOut);
-			pdfIndex.addToindexes(gOut);
+		return svgOut;
+	}
+
+	private void ensureSVGOutList() {
+		if (svgOutList == null) {
+			svgOutList = new ArrayList<SVGSVG>();
 		}
-		writeSVGPage(pageRoot, svgOut);
 	}
 
 	/**
@@ -259,7 +288,6 @@ public class PDFAnalyzer implements Annotatable {
 				String[] sss = chunk.split(":");
 				if (sss[0].equals("char") && !sss[1].equals("null")) {
 					ss = new Integer(sss[1].trim());
-//					System.out.println("TEXT: "+ss);
 					break;
 				}
 				if (sss[0].equals("name") && !sss[1].equals("null")) {
@@ -274,7 +302,7 @@ public class PDFAnalyzer implements Annotatable {
 				text.getChild(0).detach();
 			}
 			char c =  (char)(int)ss;
-			System.out.println("> "+c);
+			LOG.trace("> "+c);
 			text.appendChild(""+c);
 //			text.debug("XX");
 		}
@@ -298,9 +326,15 @@ public class PDFAnalyzer implements Annotatable {
 		}
 	}
 
-	private void writeSVGPage(String pageRoot, SVGSVG svgOut) {
+	private void writeSVGPage(int pageNumber, SVGSVG svgOut) {
 		try {
+			String pageRoot = createPageRoot(pageNumber);
 			outputDocumentDir.mkdirs();
+			String id = svgOut.getId();
+			LOG.trace("ID "+id);
+			if (pdfIndex.getUsedIdSet().contains(id)) {
+				LOG.debug("ANNOTATED: "+id);
+			}
 			CMLUtil.debug(
 				svgOut, new FileOutputStream(new File(outputDocumentDir, pageRoot+SVG)), 1);
 		} catch (Exception e) {
@@ -309,7 +343,7 @@ public class PDFAnalyzer implements Annotatable {
 	}
 
 	private SVGG copyChunkAnalyzeMakeId(int pageNumber, SVGG gOrig, int ichunk) {
-		ChunkId chunkId = new ChunkId(pageNumber, ichunk);
+		ChunkId chunkId = new ChunkId(pageNumber+1, ichunk);
 		SVGG gOut = analyzeChunkInSVGPage(gOrig, chunkId);
 		CMLUtil.copyAttributes(gOrig, gOut);
 		return gOut;
@@ -372,17 +406,22 @@ public class PDFAnalyzer implements Annotatable {
 		}
 	}
 
-	void outputElementAsHTML(Element element, ChunkId chunkId) {
-		String chunkFileRoot = PAGE+chunkId.getPageNumber()+"-"+chunkId.getChunkNumber();
+	void outputElementAsHTML(HtmlElement htmlElement) {
+		ChunkId chunkId = new ChunkId(htmlElement.getId());
 		try {
 			outputDocumentDir.mkdirs();
-			File outfile = new File(outputDocumentDir, chunkFileRoot+HTML);
+			String chunkType = htmlElement.getAttributeValue(PDFIndex.CHUNK_TYPE);
+			if (chunkType == null) {
+				chunkType = Z_CHUNK;
+			}
+			String chunkFileRoot = chunkType+chunkId.getPageNumber()+"-"+chunkId.getChunkNumber();
+			File outfile = new File(outputDocumentDir, chunkFileRoot+SVGPlusConstantsX.DOT_HTML);
 			LOG.trace("writing "+outfile);
 			OutputStream os = new FileOutputStream(outfile);
-			CMLUtil.debug(element, os, 1);
+			CMLUtil.debug(htmlElement, os, 1);
 			os.close();
 		} catch (Exception e) {
-			throw new RuntimeException("cannot write HTML: "+e);
+			throw new RuntimeException("cannot write HTML: ",e);
 		}
 	}
 
