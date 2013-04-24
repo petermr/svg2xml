@@ -31,7 +31,6 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 	private static final Object USE_CAPTIONS = "useCaptions";
 
 	public static final Pattern PATTERN = Pattern.compile("[Ff][Ii][Gg][Uu]?[Rr]?[Ee]?\\s*\\.?\\s*(\\d*).*", Pattern.DOTALL);
-//	public static final Pattern PATTERN = Pattern.compile("^[Ff][Ii][Gg].*");
 	public static final String TITLE = "FIGURE";
 	
 	private List<Figure> figureList;

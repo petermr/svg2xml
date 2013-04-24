@@ -93,7 +93,7 @@
         -->
         <dependency>
             <groupId>org.xml-cml</groupId>
-            <artifactId>html</artifactId>
+            <artifactId>html-dev</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
 

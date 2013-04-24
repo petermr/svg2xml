@@ -312,7 +312,7 @@ public class PDFIndex {
 				if (usedIdSet.contains(id)) continue;
 				HtmlElement element = getHtmlElementByIdMap().get(id);
 				if (element != null) {
-					element.setClass(title+"."+i);
+					element.setClassAttribute(title+"."+i);
 					usedIdSet.add(id);
 				}
 			}

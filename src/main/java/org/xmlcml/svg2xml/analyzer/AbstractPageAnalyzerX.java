@@ -211,7 +211,8 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		getHtmlElement(id);
 		HtmlElement htmlElement = getHtmlElement(id);
 		if (htmlElement != null) {
-			htmlElement.setClass(title);
+			String classX = htmlElement.getClassAttribute();
+			htmlElement.setClassAttribute(title);
 		}
 	}
 
