@@ -150,7 +150,7 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		SVGG g = new SVGG();
 		for (int i = 0; i < pathList.size(); i++) {
 			SVGPath path = pathList.get(i);
@@ -165,7 +165,7 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 	
 	@Override
 	protected HtmlElement createHTML() {
-		LOG.debug("path html"+pathList.size()); 
+		LOG.trace("path html"+pathList.size()); 
 		HtmlElement element = new HtmlDiv();
 		SVGSVG svg = new SVGSVG();
 		svg.setWidth(SVG_BOX_X);

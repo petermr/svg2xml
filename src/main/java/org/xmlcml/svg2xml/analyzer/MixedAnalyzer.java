@@ -70,11 +70,11 @@ public class MixedAnalyzer extends AbstractPageAnalyzerX {
 	public TextAnalyzerX getTextAnalyzer() {return textAnalyzer;}
 
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		ensureAnalyzerList();
 		SVGG g = new SVGG();
 		for (AbstractPageAnalyzerX analyzer : analyzerList) {
-			SVGG gg = analyzer.annotate();
+			SVGG gg = analyzer.labelChunk();
 			g.appendChild(gg.copy());
 		}
 		String title = "MIXED: "+this;
@@ -89,14 +89,16 @@ public class MixedAnalyzer extends AbstractPageAnalyzerX {
 			HtmlDiv div = new HtmlDiv();
 			element.appendChild(div);
 			HtmlElement childElement = analyzer.createHTML();
-			div.appendChild(childElement);
+			if (childElement != null) {
+				div.appendChild(childElement);
+			}
 		}
 		return element;
 	}
 
 	public void add(AbstractPageAnalyzerX analyzer) {
 		ensureAnalyzerList();
-		LOG.debug("Added "+analyzer);
+		LOG.trace("Added "+analyzer);
 		analyzerList.add(analyzer);
 	}
 

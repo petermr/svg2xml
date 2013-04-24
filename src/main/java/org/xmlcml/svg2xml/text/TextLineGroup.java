@@ -80,12 +80,12 @@ public class TextLineGroup implements Iterable<TextLine> {
 							packageAsGroup(groupStart, serial - 2, splitArray);
 							groupStart = serial-1;
 						} else {
-							reportErrorOrMaths();
+							reportErrorOrMaths(splitArray);
 //							reportProblem("too many lines between Primary "+lastPrimary+" / "+serial);
 						}
 					} else {
 						if (serial >= 2) {
-							reportErrorOrMaths();
+							reportErrorOrMaths(splitArray);
 //							reportProblem("too many lines before before Primary " + serial);
 						}
 						// continue processing
@@ -192,20 +192,43 @@ public class TextLineGroup implements Iterable<TextLine> {
 				middleLine = textLineList.get(1);
 				subscript = textLineList.get(2);
 			} else {
-				reportErrorOrMaths();
+				reportErrorOrMathsSuscript();
+				middleLine = new TextLine();
+				subscript = null;
+				superscript = null;
 			}
 		} else {
-			reportErrorOrMaths();
+			reportErrorOrMathsSuscript();
+			middleLine = new TextLine();
+			subscript = null;
+			superscript = null;
 		}
 		outputTextLineList = createSuscriptTextLineList(superscript, middleLine, subscript);
 		return outputTextLineList;
 	}
 
-	private void reportErrorOrMaths() {
-		LOG.error("Maths or table? ");
+	private TextLineGroup reportErrorOrMathsSuscript() {
+		LOG.debug("Suscript problem: Maths or table? "+textLineList.size());
+		TextLineGroup group = new TextLineGroup();
+//	    splitArray.add(group);
+
 		for (TextLine textLine : textLineList) {
-			LOG.error("text "+textLine);
+			LOG.trace("text "+textLine);
 		}
+		return group;
+	}
+	
+	private TextLineGroup reportErrorOrMaths(List<TextLineGroup> splitArray) {
+		LOG.debug("Maths or table? "+textLineList.size());
+//		TextLineGroup group = new TextLineGroup();
+		TextLineGroup group = null;
+	    splitArray.add(group);
+	    splitArray.add(null);
+
+		for (TextLine textLine : textLineList) {
+			LOG.trace("text "+textLine);
+		}
+		return group;
 	}
 	
 	/** preparation for HTML
@@ -214,6 +237,10 @@ public class TextLineGroup implements Iterable<TextLine> {
 	 */
 	public static List<TextLine> createSuscriptTextLineList(TextLine superscript, TextLine middleLine, TextLine subscript) {
 		List<TextLine> textLineList = new ArrayList<TextLine>();
+		if (subscript == null && middleLine == null && superscript == null) {
+			textLineList.add(null);
+			return textLineList;
+		}
 		List<SVGText> middleChars = middleLine == null ? null : middleLine.getCharacterList();
 		Integer thisIndex = 0;
 		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.getCharacterList();

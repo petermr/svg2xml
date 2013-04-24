@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import nu.xom.Builder;
 import nu.xom.Element;
 import nu.xom.Nodes;
+import nu.xom.Text;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -24,11 +25,12 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGTitle;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlMenuSystem;
-import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
@@ -185,7 +187,7 @@ public class PDFAnalyzer implements Annotatable {
 			createAndAnalyzeSVGChunks(page+1);
 		}
 		System.out.println();
-		pdfIndex.findDuplicatesInIndexes();
+		pdfIndex.createIndexes();
 		pdfIndex.AnalyzeDuplicates();
 		pdfIndex.outputHtmlElements();
 
@@ -220,6 +222,8 @@ public class PDFAnalyzer implements Annotatable {
 			return;
 		}
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(svgPageFile);
+//		stripNewlines(svg);
+		processNonUnicodeCharacters(svg);
 		SemanticDocumentActionX semanticDocumentAction = 
 				SemanticDocumentActionX.createSemanticDocumentActionWithSVGPage(svg);
 		List<Chunk> chunkList = 
@@ -238,6 +242,54 @@ public class PDFAnalyzer implements Annotatable {
 			pdfIndex.addToindexes(gOut);
 		}
 		writeSVGPage(pageRoot, svgOut);
+	}
+
+	/**
+	 * <title stroke="black" stroke-width="1.0">char: 981; name: null; f: Symbol; fn: PHHOAK+Symbol; e: Dictionary</title>
+	 * @param svg
+	 */
+	private void processNonUnicodeCharacters(SVGSVG svg) {
+		List<SVGElement> textTitles = SVGUtil.getQuerySVGElements(svg, ".//svg:title");
+		for (SVGElement t : textTitles) {
+			SVGTitle title = (SVGTitle) t;
+			String s = title.getValue();
+			String[] chunks =s.split(";");
+			Integer ss = null;
+			for (String chunk : chunks) {
+				String[] sss = chunk.split(":");
+				if (sss[0].equals("char") && !sss[1].equals("null")) {
+					ss = new Integer(sss[1].trim());
+//					System.out.println("TEXT: "+ss);
+					break;
+				}
+				if (sss[0].equals("name") && !sss[1].equals("null")) {
+//					ss = sss[1];
+					ss = 127;
+					break;
+				}
+			}
+			SVGElement text = ((SVGElement)title.getParent());
+			int cc =text.getChildCount();
+			for (int i = 0; i < cc; i++) {
+				text.getChild(0).detach();
+			}
+			char c =  (char)(int)ss;
+			System.out.println("> "+c);
+			text.appendChild(""+c);
+//			text.debug("XX");
+		}
+	}
+
+	private void stripNewlines(SVGSVG svg) {
+		Nodes texts = svg.query("//text()");
+		for (int i = 0; i < texts.size(); i++) {
+			Text text = (Text) texts.get(i);
+			String value = text.getValue();
+			if (value.contains("\n")) {
+				value = value.replaceAll("\n", "");
+				text.setValue(value);
+			}
+		}
 	}
 
 	private void ensurePDFIndex() {
@@ -279,7 +331,7 @@ public class PDFAnalyzer implements Annotatable {
 	}
 		
 
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		// might iterate through pages
 		throw new RuntimeException("NYI");
 	}
@@ -290,14 +342,17 @@ public class PDFAnalyzer implements Annotatable {
 		TextAnalyzerX textAnalyzer = null;
 		String message = null;
 		HtmlElement htmlElement = new HtmlDiv();
-		gOut = analyzerX.annotate();
+		gOut = analyzerX.labelChunk();
 		gOut.setId(chunkId.toString());
 		htmlElement = analyzerX.createHTML();
 		if (htmlElement != null) {
 			pdfIndex.addHtmlElement(htmlElement, chunkId);
 			pdfIndex.indexHtmlBySvgId(htmlElement, chunkId);
 		} else {
-			throw new RuntimeException("no html");
+			LOG.warn("no html from: "+analyzerX);
+			if (analyzerX instanceof TextAnalyzerX) {
+				((TextAnalyzerX)analyzerX).debug();
+			}
 		}
 		return gOut;
 	}

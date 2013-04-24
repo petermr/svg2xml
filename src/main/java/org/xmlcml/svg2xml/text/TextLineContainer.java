@@ -266,7 +266,7 @@ public class TextLineContainer {
 			    frequency = count;
 			}
 		}
-		LOG.trace("commonest "+commonestFontSize.getDouble());
+		if (commonestFontSize != null) LOG.trace("commonest "+commonestFontSize.getDouble());
 	}
 	
 	public SvgPlusCoordinate getLargestFontSize() {
@@ -517,11 +517,13 @@ public class TextLineContainer {
 	public List<TextLine> getPrimaryTextLineList() {
 		if (primaryTextLineList == null) {
 			String commonestFontFamily = getCommonestFontFamily();
-			Double commonestFontSize = getCommonestFontSize().getDouble();
+			SvgPlusCoordinate commonestFontSize = getCommonestFontSize();
+			Double commonestFontSizeValue = (commonestFontSize == null) ?
+					null : commonestFontSize.getDouble();
 			primaryTextLineList = new ArrayList<TextLine>();
 			for (TextLine textLine : textLineList) {
 				Double fontSize = textLine.getFontSize();
-				if (fontSize != null && Real.isEqual(fontSize, commonestFontSize, 0.01) 
+				if (fontSize != null && Real.isEqual(fontSize, commonestFontSizeValue, 0.01) 
 						// omit as fontFamily can change within line :-( e.g. Times-Roman and TimesNR
 						// && commonestFontFamily.equals(textLine.getFontFamily()) 
 						) {
@@ -699,8 +701,16 @@ public class TextLineContainer {
 	public static HtmlElement createHtmlDiv(List<TextLineGroup> textLineGroupList) {
 		HtmlDiv div = new HtmlDiv();
 		for (TextLineGroup group : textLineGroupList) {
-			HtmlElement el = group.createHtml();
-			div.appendChild(el);
+			HtmlElement el = null;
+			if (group == null) {
+				el = new HtmlP();
+				el.appendChild("PROBLEM");
+				div.appendChild(el);
+				div.debug("XXXXXXXXXXXXXXXXXX");
+			} else {
+				el = group.createHtml();
+				div.appendChild(el);
+			}
 		}
 		return div;
 	}

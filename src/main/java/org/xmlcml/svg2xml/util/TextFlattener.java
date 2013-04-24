@@ -169,7 +169,13 @@ public class TextFlattener {
 				if (nonDigit.length() > 0) {
 					objectList.add(nonDigit);
 				}
-				objectList.add(new Integer(digits));
+				try {
+				Integer ii = new Integer(digits);
+					objectList.add(ii);
+				} catch (Exception e) {
+					objectList.add(0);
+					LOG.error(e.getMessage());
+				}
 				start = extractMatcher.end();
 			}
 		}
@@ -178,6 +184,15 @@ public class TextFlattener {
 			objectList.add(last);
 		}
 		return objectList;
+	}
+
+	public static Pattern createFirstIntegerPattern(String htmlValue0) {
+		List<Object> tokens = TextFlattener.splitAtIntegers(htmlValue0);
+		Pattern pattern = null;
+		if (tokens.size()>= 2) {
+			pattern = Pattern.compile("(\\Q"+tokens.get(0)+"\\E)(\\d+).*");
+		}
+		return pattern;
 	}
 
 

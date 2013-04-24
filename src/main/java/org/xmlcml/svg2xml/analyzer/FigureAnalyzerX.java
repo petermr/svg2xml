@@ -2,6 +2,8 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
@@ -28,6 +30,9 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 	public static final String OUTLINE_BOX = "outlineBox";
 	private static final Object USE_CAPTIONS = "useCaptions";
 
+	public static final Pattern PATTERN = Pattern.compile("[Ff][Ii][Gg][Uu]?[Rr]?[Ee]?\\s*\\.?\\s*(\\d*).*", Pattern.DOTALL);
+//	public static final Pattern PATTERN = Pattern.compile("^[Ff][Ii][Gg].*");
+	public static final String TITLE = "FIGURE";
 	
 	private List<Figure> figureList;
 	private List<FigurePanel> panelList;
@@ -39,6 +44,10 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 
 	public FigureAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
+	}
+	
+	public FigureAnalyzerX(PDFIndex pdfIndex) {
+		super(pdfIndex);
 	}
 	
 	public List<FigurePanel> createPanelsUsingWhitespace() {
@@ -196,8 +205,32 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	
+	public Integer indexAndLabelChunk(String content, ChunkId id, Set<ChunkId> usedChunkSet) {
+		Integer serial = super.indexAndLabelChunk(content, id);
+		// index...
+		return serial;
+	}
+	
+	/** Pattern for the content for this analyzer
+	 * 
+	 * @return pattern (default null)
+	 */
+	@Override
+	protected Pattern getPattern() {
+		return PATTERN;
+	}
+
+	/** (constant) title for this analyzer
+	 * 
+	 * @return title (default null)
+	 */
+	@Override
+	public String getTitle() {
+		return TITLE;
+	}
+
 }

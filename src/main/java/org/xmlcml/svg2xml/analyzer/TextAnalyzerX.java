@@ -760,7 +760,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		SVGG g = new SVGG();
 		for (int i = 0; i < textCharacters.size(); i++) {
 			SVGText text = textCharacters.get(i);
@@ -780,16 +780,20 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	// =======================================
 	
 	private void debug(String string, Map<Integer, TextLine> textByCoordMap) {
-		Set<Integer> keys = textByCoordMap.keySet();
-		Integer[] ii = keys.toArray(new Integer[keys.size()]);
-		Arrays.sort(ii);
-		for (int iz : ii) {
-			TextLine textList = textByCoordMap.get(iz);
-			for (SVGText text : textList) {
-				LOG.trace(">> "+text.getXY()+" "+text.getText()+ " ");
+		if (textByCoordMap == null) {
+			LOG.debug("No textCoordMap "+textLineContainer.getTextLineByYCoordMap());
+		} else {
+			Set<Integer> keys = textByCoordMap.keySet();
+			Integer[] ii = keys.toArray(new Integer[keys.size()]);
+			Arrays.sort(ii);
+			for (int iz : ii) {
+				TextLine textList = textByCoordMap.get(iz);
+				for (SVGText text : textList) {
+					LOG.debug(">> "+text.getXY()+" "+text.getText()+ " ");
+				}
 			}
+			System.out.println();
 		}
-		System.out.println();
 	}
 
 

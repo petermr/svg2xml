@@ -297,7 +297,7 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 		return sortedYCoords;
 	}
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

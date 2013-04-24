@@ -1,6 +1,11 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import nu.xom.Element;
 import nu.xom.Node;
@@ -34,7 +39,14 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 	protected PageEditorX pageEditorX;
 	protected Real2Range bbox;
 	protected SVGElement parentElement;
-	
+
+	List<ChunkId> idList;
+	List<Integer> serialList;
+
+	protected PDFIndex pdfIndex;
+
+	private Map<ChunkId, HtmlElement> htmlElementByIdMap;
+
 	protected AbstractPageAnalyzerX() {
 	}
 
@@ -44,12 +56,17 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		this.pageEditorX = getPageEditor();
 	}
 	
+	public AbstractPageAnalyzerX(PDFIndex pdfIndex) {
+		this();
+		this.pdfIndex = pdfIndex;
+	}
+
 	public PageEditorX getPageEditor() {
-		return semanticDocumentActionX.getPageEditor();
+		return semanticDocumentActionX == null ? null : semanticDocumentActionX.getPageEditor();
 	}
 	
 	public SVGSVG getSVGPage() {
-		return getPageEditor().getSVGPage();
+		return getPageEditor() == null ? null : getPageEditor().getSVGPage();
 	}
 
 	private static void addBoldOrItalic(HtmlElement bi, Element parent) {
@@ -143,7 +160,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		return analyzer;
 	}
 
-	public abstract SVGG annotate();
+	public abstract SVGG labelChunk();
 
 	protected HtmlElement createHTML() {
 		HtmlElement htmlElement = new HtmlDiv();
@@ -174,6 +191,47 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 				rect.setOpacity(rectOpacity);
 				g.appendChild(rect);
 			}
+
+	public Integer indexAndLabelChunk(String content, ChunkId id) {
+		Pattern pattern = getPattern();
+		String title = getTitle();
+		Integer serial = getSerial(pattern, content);
+		if (serial != null) {
+			LOG.debug(title+serial);
+			ensureIdSerialList();
+			serialList.add(serial);
+			idList.add(id);
+			pdfIndex.addUsedId(id);
+			labelChunk(id, title, serial);
+		}
+		return serial;
+	}
+
+	private void labelChunk(ChunkId id, String title, Integer serial) {
+		getHtmlElement(id);
+		HtmlElement htmlElement = getHtmlElement(id);
+		if (htmlElement != null) {
+			htmlElement.setClass(title);
+		}
+	}
+
+	protected HtmlElement getHtmlElement(ChunkId id) {
+		ensureHtmlElementByIdMap();
+		return (htmlElementByIdMap == null) ? null : htmlElementByIdMap.get(id);
+	}
+
+	protected void ensureHtmlElementByIdMap() {
+		if (htmlElementByIdMap == null && pdfIndex != null) {
+			htmlElementByIdMap = pdfIndex.getHtmlElementByIdMap();
+		}
+	}
+
+	private void ensureIdSerialList() {
+		if (idList == null) {
+			idList = new ArrayList<ChunkId>();
+			serialList = new ArrayList<Integer>();
+		}
+	}
 
 	public static SVGG createAnnotationDetails(String fill, Double opacity, Real2Range bbox, String message, Double fontSize) {
 		if (bbox == null) {
@@ -210,4 +268,38 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		return text;
 	}
 
+	/** returns null if no match, -1 if serial not found, else serial
+	 * 
+	 * @param pattern
+	 * @param content
+	 * @return
+	 */
+	public static Integer getSerial(Pattern pattern, String content) {
+		Integer serial = null;
+		if (content != null) {
+			Matcher matcher = pattern.matcher(content);
+			if (matcher.matches()) {
+				String s = matcher.group(1);
+				serial = (s.trim().length() == 0) ? 
+						-1 : new Integer(matcher.group(1));
+			}
+		}
+		return serial;
+	}
+
+	/** Pattern for the content for this analyzer
+	 * 
+	 * @return pattern (default null)
+	 */
+	protected Pattern getPattern() {
+		return null;
+	}
+
+	/** (constant) title for this analyzer
+	 * 
+	 * @return title (default null)
+	 */
+	public String getTitle() {
+		return null;
+	}
 }

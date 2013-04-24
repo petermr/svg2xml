@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -38,26 +39,45 @@ import com.google.common.collect.Multimap;
  */
 public class PDFIndex {
 
+
 	private final static Logger LOG = Logger.getLogger(PDFIndex.class);
 
 	private static final String BBOX = "bbox";
 	public static final String CONTENT = "content";
+	private static final String FIRST_INTEGER = "firstInteger";
 	private static final String FLATTENED = "flattened";
 	public static final String IMAGE = "image";
 	public static final String PATH = "path";
 	
+	public static final String APPENDIX = "appendix";
+	public static final String BIBREF = "bibRef";
+	public static final String CHAPTER = "chapter";
+	public static final String FIGURE = "figure";
+	public static final String SCHEME = "scheme";
+	public static final String TABLE = "table";
+	
 	private int duplicateBboxCount;
 	private int duplicateContentCount;
 	private int duplicateFlattenedCount;
+	private int duplicateFirstIntegerCount;
 	private int duplicateImageCount;
 	private int duplicatePathCount;
 	
 	private Map<ChunkId, SVGElement> svgElementByIdMap;
 	private Multimap<String, ChunkId> svgIdByContentMap;
 	private Multimap<String, ChunkId> svgIdByFlattenedMap;
+	private Multimap<String, ChunkId> svgIdByFirstIntegerMap;
 	private Multimap<String, ChunkId> svgIdByImageContentMap;
 	private Multimap<String, ChunkId> svgIdByPathIdMap;
 	private Map<ChunkId, HtmlElement> htmlElementByIdMap;
+
+	private Multimap<String, ChunkId> svgIdByAppendixMap;
+	private Multimap<String, ChunkId> svgIdByBibRefMap;
+	private Multimap<String, ChunkId> svgIdByChapterMap;
+	private Multimap<String, ChunkId> svgIdByFigureMap;
+	private Multimap<String, ChunkId> svgIdBySchemeMap;
+	private Multimap<String, ChunkId> svgIdByTableMap;
+
 
 	private Multimap<Int2Range, ChunkId> bboxMap;
 
@@ -65,17 +85,29 @@ public class PDFIndex {
 
 	private List<List<ChunkId>> contentIdListList;
 	private List<List<ChunkId>> flattenedIdListList;
+	private List<List<ChunkId>> firstIntegerIdListList;
 	private List<List<ChunkId>> imageIdListList;
 	private List<List<ChunkId>> pathIdListList;
 	private List<List<ChunkId>> bboxIdListList;
 
-//	private List<Set<ChunkId>> duplicateContentListSet;
-//	private List<Set<ChunkId>> duplicateFlattenedListSet;
-//	private List<Set<ChunkId>> duplicateImageListSet;
-//	private List<Set<ChunkId>> duplicatePathListSet;
-//	private List<Set<ChunkId>> duplicateBboxListSet;
+//	private List<List<ChunkId>> appendixIdListList;
+//	private List<List<ChunkId>> bibRefIdListList;
+//	private List<List<ChunkId>> chapterIdListList;
+//	private List<List<ChunkId>> figureIdListList;
+//	private List<List<ChunkId>> schemeIdListList;
+//	private List<List<ChunkId>> tableIdListList;
+
 
 	private Set<ChunkId> usedIdSet;
+
+	private AppendixAnalyzer appendixAnalyzer;
+	private BibRefAnalyzer bibRefAnalyzer;
+	private ChapterAnalyzer chapterAnalyzer;
+	private FigureAnalyzerX figureAnalyzer;
+	private SchemeAnalyzer schemeAnalyzer;
+	private TableAnalyzerX tableAnalyzer;
+
+	private Set<ChunkId> usedSet;
 	
 	public PDFIndex(PDFAnalyzer analyzer) {
 		this.pdfAnalyzer = analyzer;
@@ -90,7 +122,7 @@ public class PDFIndex {
 			Collections.sort(idList);
 			if (idList.size() > 1) {
 				String keyS = key.toString();
-				LOG.debug("DUPLICATES: "+title+" >"+ keyS.substring(0, Math.min(50, keyS.length()))+" ... "+"< "+idList);
+				LOG.debug("DUPLICATES: "+title+" >"+ keyS.substring(0, Math.min(15, keyS.length()))+" ... "+"< "+idList);
 				duplicateList.add(idList);
 			}
 		}
@@ -108,10 +140,11 @@ public class PDFIndex {
 
 	void ensureElementMultimaps() {
 		if (svgIdByContentMap == null) {
-			htmlElementByIdMap = new HashMap<ChunkId, HtmlElement>(); 
+			setHtmlElementByIdMap(new HashMap<ChunkId, HtmlElement>()); 
 			svgElementByIdMap = new HashMap<ChunkId, SVGElement>(); 
 			svgIdByContentMap = HashMultimap.create(); 
 			svgIdByFlattenedMap = HashMultimap.create(); 
+			svgIdByFirstIntegerMap = HashMultimap.create(); 
 			svgIdByImageContentMap = HashMultimap.create();
 			duplicateImageCount = 0;
 			svgIdByPathIdMap = HashMultimap.create(); 
@@ -121,16 +154,30 @@ public class PDFIndex {
 		}
 	}
 
-	public void findDuplicatesInIndexes() {
+	public void createIndexes() {
+		
 		usedIdSet = new HashSet<ChunkId>();
+		
+		makeAppendixIndex();
+		makeBibRefIndex();
+		makeChapterIndex();
+		makeFigureIndex();
+		makeSchemeIndex();
+		makeTableIndex();
+
 		contentIdListList = findDuplicates(CONTENT, svgIdByContentMap);
 		markChunksAndNoteUsed(contentIdListList, CONTENT);
 		printDuplicates(CONTENT, contentIdListList);
-		
+
 		flattenedIdListList = findDuplicates(FLATTENED, svgIdByFlattenedMap);
 		markChunksAndNoteUsed(flattenedIdListList, FLATTENED);
-		analyzePageSpecificInfo(flattenedIdListList);
+		analyzeIntegers(flattenedIdListList);
 		printDuplicates(FLATTENED, flattenedIdListList);
+		
+		firstIntegerIdListList = findDuplicates(FIRST_INTEGER, svgIdByFirstIntegerMap);
+		markChunksAndNoteUsed(firstIntegerIdListList, FIRST_INTEGER);
+		analyzeFirstIntegers(firstIntegerIdListList);
+		printDuplicates(FIRST_INTEGER, firstIntegerIdListList);
 		
 		imageIdListList = findDuplicates(IMAGE, svgIdByImageContentMap);
 		markChunksAndNoteUsed(imageIdListList, IMAGE);
@@ -145,7 +192,38 @@ public class PDFIndex {
 		printDuplicates(BBOX, bboxIdListList);
 	}
 
-	private void analyzePageSpecificInfo(List<List<ChunkId>> idListList) {
+	private List<List<ChunkId>> makeTableIndex() {
+		List<List<ChunkId>> chunkList = new ArrayList<List<ChunkId>>();
+		return chunkList;
+	}
+
+	private List<List<ChunkId>> makeSchemeIndex() {
+		List<List<ChunkId>> chunkList = new ArrayList<List<ChunkId>>();
+		return chunkList;
+	}
+
+	private List<List<ChunkId>> makeFigureIndex() {
+		List<List<ChunkId>> chunkList = new ArrayList<List<ChunkId>>();
+		Pattern pattern = Pattern.compile("^(Figu?r?e?)\\s*\\.?\\s*(\\d+)");
+		return chunkList;
+	}
+
+	private List<List<ChunkId>> makeChapterIndex() {
+		List<List<ChunkId>> chunkList = new ArrayList<List<ChunkId>>();
+		return chunkList;
+	}
+
+	private List<List<ChunkId>> makeBibRefIndex() {
+		List<List<ChunkId>> chunkList = new ArrayList<List<ChunkId>>();
+		return chunkList;
+	}
+
+	private List<List<ChunkId>> makeAppendixIndex() {
+		List<List<ChunkId>> chunkList = new ArrayList<List<ChunkId>>();
+		return chunkList;
+	}
+
+	private void analyzeIntegers(List<List<ChunkId>> idListList) {
 		for (List<ChunkId> idList : idListList) { 
 			if (idList.size() > 0) {
 				TextFlattener textFlattener = createTextFlattener(idList.get(0));
@@ -173,6 +251,43 @@ public class PDFIndex {
 		}
 	}
 
+	private void analyzeFirstIntegers(List<List<ChunkId>> idListList) {
+		for (List<ChunkId> idList : idListList) { 
+			if (idList.size() > 0) {
+				Pattern pattern = createFirstIntegerPattern(idList.get(0));
+				IntArray intArray = new IntArray();
+				for (ChunkId id : idList) {
+					String htmlValue = getValueFromHtml(id);
+					Integer integer = captureFirstInteger(pattern, htmlValue);
+					if (integer != null) {
+						intArray.addElement(integer);
+					}
+				}
+				if (intArray.isArithmeticProgression(1)) {
+					System.out.println("PROG "+intArray);
+				}
+			}
+		}
+	}
+
+	private Integer captureFirstInteger(Pattern pattern, String htmlValue) {
+		Integer integer = null;
+		if (htmlValue != null && pattern != null) {
+			Matcher matcher = pattern.matcher(htmlValue);
+			if (matcher.matches()) {
+				String ii = matcher.group(2);
+				integer = new Integer(ii);
+			}
+		}
+		return integer;
+	}
+
+	private Pattern createFirstIntegerPattern(ChunkId id0) {
+		String htmlValue0 = getValueFromHtml(id0);
+		Pattern pattern = TextFlattener.createFirstIntegerPattern(htmlValue0);
+		return pattern;
+	}
+
 	private TextFlattener createTextFlattener(ChunkId id0) {
 		TextFlattener textFlattener = new TextFlattener();
 		String htmlValue0 = getValueFromHtml(id0);
@@ -182,7 +297,7 @@ public class PDFIndex {
 	}
 
 	private String getValueFromHtml(ChunkId id) {
-		HtmlElement htmlElement = htmlElementByIdMap.get(id);
+		HtmlElement htmlElement = getHtmlElementByIdMap().get(id);
 		if (htmlElement == null) {
 			throw new RuntimeException("no HTML for id: "+id);
 		}
@@ -195,7 +310,7 @@ public class PDFIndex {
 			List<ChunkId> idList = idListList.get(i);
 			for (ChunkId id : idList) {
 				if (usedIdSet.contains(id)) continue;
-				HtmlElement element = htmlElementByIdMap.get(id);
+				HtmlElement element = getHtmlElementByIdMap().get(id);
 				if (element != null) {
 					element.setClass(title+"."+i);
 					usedIdSet.add(id);
@@ -204,19 +319,9 @@ public class PDFIndex {
 		}
 	}
 
-//	private List<Set<ChunkId>> makeSet(List<List<ChunkId>> idListList) {
-//		List<Set<ChunkId>> setList = new ArrayList<Set<ChunkId>>();
-//		for (List<ChunkId> idList : idListList) {
-//			Set<ChunkId> set = new HashSet<ChunkId>(idList);
-//			LOG.trace("set "+set.size());
-//			setList.add(set);
-//		}
-//		return setList;
-//	}
-
 	void indexHtmlBySvgId(HtmlElement htmlElement, ChunkId chunkId) {
 		ensureElementMultimaps();
-		htmlElementByIdMap.put(chunkId, htmlElement);
+		getHtmlElementByIdMap().put(chunkId, htmlElement);
 	}
 
 	private void printDuplicates(String title, List<List<ChunkId>> idListList) {
@@ -230,11 +335,15 @@ public class PDFIndex {
 						LOG.trace("flattened"+idList);
 						output(idList, title);
 						duplicateFlattenedCount++;
+					} else if (title.equals(FIRST_INTEGER)) {
+						LOG.trace(FIRST_INTEGER+idList);
+						output(idList, title);
+						duplicateFirstIntegerCount++;
 					} else if (title.equals(BBOX)) {
 	//					output(idList,  title);
 						Set<String> set = new HashSet<String>();
 						for (ChunkId id : idList) {
-							HtmlElement element = htmlElementByIdMap.get(id);
+							HtmlElement element = getHtmlElementByIdMap().get(id);
 							// not all chunks are HTML
 							if (element != null) {
 								String s = element.toXML();
@@ -295,39 +404,96 @@ public class PDFIndex {
 	 */
 	void addToindexes(SVGG gOut) {
 		String content = gOut.getValue();
+		content.replaceAll("[\n\r\u0085\u2028\u2029]", " ");
 		ChunkId id = new ChunkId(gOut.getId());
 		svgElementByIdMap.put(id, gOut);
+		indexByBoundingBox(gOut, id);
+		indexByTextContent(content, id);
+		indexByImageContent(gOut, id);
+		indexByPathContent(gOut, id);
+	}
+
+	private void indexByTextContent(String content, ChunkId id) {
+		if (content.trim().length() > 0) {
+			svgIdByContentMap.put(content, id);
+			indexByFlattenedIntegerContent(content, id);
+			indexByFirstIntegerContent(content, id);
+			indexByContentAnalyzers(content, id);
+		}
+	}
+
+	private void indexByContentAnalyzers(String content, ChunkId id) {
+		ensureContentAnalyzers();
+		ensureUsedIdSet();
+		if (figureAnalyzer.indexAndLabelChunk(content, id) != null) return;
+		if (tableAnalyzer.indexAndLabelChunk(content, id) != null) return;
+		if (bibRefAnalyzer.indexAndLabelChunk(content, id) != null) return;
+		if (appendixAnalyzer.indexAndLabelChunk(content, id) != null) return;
+		if (chapterAnalyzer.indexAndLabelChunk(content, id) != null) return;
+		if (schemeAnalyzer.indexAndLabelChunk(content, id) != null) return;
+	}
+
+	private void ensureContentAnalyzers() {
+		if (figureAnalyzer == null) {
+			appendixAnalyzer = new AppendixAnalyzer(this);
+			bibRefAnalyzer = new BibRefAnalyzer(this);
+			chapterAnalyzer = new ChapterAnalyzer(this);
+			figureAnalyzer = new FigureAnalyzerX(this);
+			schemeAnalyzer = new SchemeAnalyzer(this);
+			tableAnalyzer = new TableAnalyzerX(this);
+		}
+	}
+
+	private void indexByBoundingBox(SVGG gOut, ChunkId id) {
 		Real2Range bbox = gOut.getBoundingBox();
 		Int2Range i2r = new Int2Range(bbox);
 		boolean added = bboxMap.put(i2r, id);
-		if (content.trim().length() > 0) {
-			svgIdByContentMap.put(content, id);
-			String flattened = TextFlattener.flattenDigitStrings(content);
-			LOG.trace(id+"> "+flattened);
-			svgIdByFlattenedMap.put(flattened, id);
-			LOG.trace(">> "+svgIdByFlattenedMap);
-		} else {
-			List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(gOut, ".//svg:image"));
-			if (imageList.size() > 0) {
-				StringBuilder sb = new StringBuilder();
-				for (SVGImage image : imageList) {
-					String imageValue = image.getImageValue();
-					LOG.trace(imageValue.substring(0, Math.min(50, imageValue.length()))+" ... ");
-					sb.append(imageValue);
-				}
-				String imageContent = sb.toString();
-				svgIdByImageContentMap.put(imageContent, id);
-			} else {
-				List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(gOut, ".//svg:path"));
-				if (pathList.size() > 0) {
-					StringBuilder sb = new StringBuilder();
-					for (SVGPath path : pathList) {
-						sb.append(path.getDString());
-					}
-					svgIdByPathIdMap.put(sb.toString(), id);
-				}
+	}
+
+	private void indexByPathContent(SVGG gOut, ChunkId id) {
+		List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(gOut, ".//svg:path"));
+		if (pathList.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			for (SVGPath path : pathList) {
+				sb.append(path.getDString());
 			}
+			svgIdByPathIdMap.put(sb.toString(), id);
 		}
+	}
+
+	private void indexByImageContent(SVGG gOut, ChunkId id) {
+		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(gOut, ".//svg:image"));
+		if (imageList.size() > 0) {
+			StringBuilder sb = new StringBuilder();
+			for (SVGImage image : imageList) {
+				String imageValue = image.getImageValue();
+				LOG.trace(imageValue.substring(0, Math.min(50, imageValue.length()))+" ... ");
+				sb.append(imageValue);
+			}
+			String imageContent = sb.toString();
+			svgIdByImageContentMap.put(imageContent, id);
+		}
+	}
+
+	private String indexByFlattenedIntegerContent(String content, ChunkId id) {
+		String flattened = TextFlattener.flattenDigitStrings(content);
+		LOG.trace(id+"> "+flattened);
+		svgIdByFlattenedMap.put(flattened, id);
+		LOG.trace(">> "+svgIdByFlattenedMap);
+		return flattened;
+	}
+
+	private String indexByFirstIntegerContent(String content, ChunkId id) {
+		List<Object> tokens = TextFlattener.splitAtIntegers(content);
+		String firstInteger = null;
+		if (tokens.size() >= 2 
+				&& tokens.get(0) instanceof String
+				&& tokens.get(1) instanceof Number
+				) {
+			firstInteger = tokens.get(0)+"0";
+			svgIdByFirstIntegerMap.put(firstInteger, id);
+		}
+		return firstInteger;
 	}
 
 	/** may be obsolete
@@ -364,7 +530,7 @@ public class PDFIndex {
 		for (List<ChunkId> idList : flattenedIdListList) {
 			List<String> valueList = new ArrayList<String>();
 			for (ChunkId id : idList) {
-				HtmlElement html = htmlElementByIdMap.get(id);
+				HtmlElement html = getHtmlElementByIdMap().get(id);
 				// not all chunks are HTML
 				if (html != null) {
 					String value = html.getValue();
@@ -396,11 +562,11 @@ public class PDFIndex {
 
 	public void addHtmlElement(HtmlElement htmlElement, ChunkId chunkId) {
 		ensureElementMultimaps();
-		htmlElementByIdMap.put(chunkId, htmlElement);
+		getHtmlElementByIdMap().put(chunkId, htmlElement);
 	}
 
 	public void outputHtmlElements() {
-		Set<Map.Entry<ChunkId, HtmlElement>> entries= htmlElementByIdMap.entrySet();
+		Set<Map.Entry<ChunkId, HtmlElement>> entries= getHtmlElementByIdMap().entrySet();
 		for (Map.Entry<ChunkId, HtmlElement> entry : entries) {
 			HtmlElement htmlElement = entry.getValue();
 			ChunkId chunkId = entry.getKey();
@@ -408,6 +574,25 @@ public class PDFIndex {
 		}
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Map<ChunkId, HtmlElement> getHtmlElementByIdMap() {
+		return htmlElementByIdMap;
+	}
+
+	public void setHtmlElementByIdMap(Map<ChunkId, HtmlElement> htmlElementByIdMap) {
+		this.htmlElementByIdMap = htmlElementByIdMap;
+	}
+
+	public void addUsedId(ChunkId id) {
+		ensureUsedIdSet();
+		usedSet.add(id);
+	}
+
+	private void ensureUsedIdSet() {
+		if (usedSet == null) {
+			usedSet = new HashSet<ChunkId>();
+		}
 	}
 
 }

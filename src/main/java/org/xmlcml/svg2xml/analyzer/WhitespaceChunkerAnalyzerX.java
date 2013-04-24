@@ -202,7 +202,7 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

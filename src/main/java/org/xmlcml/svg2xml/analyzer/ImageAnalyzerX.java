@@ -47,7 +47,7 @@ public class ImageAnalyzerX extends AbstractPageAnalyzerX {
 	public List<SVGImage> getImageList() { return imageList;}
 
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		SVGG g = new SVGG();
 		for (int i = 0; i < imageList.size(); i++) {
 			SVGImage image = imageList.get(i);
@@ -62,7 +62,7 @@ public class ImageAnalyzerX extends AbstractPageAnalyzerX {
 
 	@Override
 	protected HtmlElement createHTML() {
-		LOG.debug("image html"+imageList.size());
+		LOG.trace("image html"+imageList.size());
 		HtmlElement element = new HtmlDiv();
 		for (int i = 0; i < imageList.size(); i++) {
 			SVGImage image = imageList.get(i);

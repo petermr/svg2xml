@@ -2,6 +2,8 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
@@ -15,35 +17,47 @@ import org.xmlcml.svg2xml.table.Table;
 public class TableAnalyzerX extends AbstractPageAnalyzerX {
 	private static final Logger LOG = Logger.getLogger(TableAnalyzerX.class);
 	
-	private List<Table> tableList;
-
+	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
+	public static final String TITLE = "TABLE";
+	
 	public TableAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
+	}
+
+	public TableAnalyzerX(PDFIndex pdfIndex) {
+		super(pdfIndex);
 	}
 	
 	public void analyze() {
 	}
 
-	public List<Table> findTables() {
-		tableList = new ArrayList<Table>();
-		// NYI
-//		caption = (Caption) Chunk.createFromAndReplace((SVGG)captions.get(0), new Caption(pgeAnalyzer, "bar"));
-//
-//		List<SVGElement> tables = SVGUtil.getQuerySVGElements(
-//				svgPage, "//svg:g[svg:g/svg:g[@name='para']/svg:text[starts-with(., 'Table ')]]");
-//		for (SVGElement elem : tables) {
-//			createCaptionAndReplace(elem, "svg:g/svg:g[@name='para' and svg:text[starts-with(., 'Table ')]]", Table.TABLE);
-//			Table table = Table.createFromAndReplace((SVGG) elem);
-//			table.removeOriginalText();
-//			tableList.add(table);
-//		}
-		return tableList;
-	}
-	
 	@Override
-	public SVGG annotate() {
+	public SVGG labelChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	
+	public Integer indexAndLabelChunk(String content, ChunkId id) {
+		Integer serial = super.indexAndLabelChunk(content, id);
+		// index...
+		return serial;
+	}
 	
+	/** Pattern for the content for this analyzer
+	 * 
+	 * @return pattern (default null)
+	 */
+	@Override
+	protected Pattern getPattern() {
+		return PATTERN;
+	}
+
+	/** (constant) title for this analyzer
+	 * 
+	 * @return title (default null)
+	 */
+	@Override
+	public String getTitle() {
+		return TITLE;
+	}
+
 }

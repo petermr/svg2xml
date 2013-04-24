@@ -134,6 +134,12 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	/**
+	 * 
+	 */
+	public TextLine() {
+	}
+
+	/**
 	 * split the list into smaller lists whenever there is a change
 	 * in fontSize, physicalStyle or yCoord. This is heuristic and may need finer tuning
 	 * 
