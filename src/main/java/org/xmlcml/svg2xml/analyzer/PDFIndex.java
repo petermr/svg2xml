@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import nu.xom.Attribute;
 import nu.xom.Builder;
 import nu.xom.Element;
+import nu.xom.Elements;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
@@ -29,10 +30,12 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlLi;
+import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.util.TextFlattener;
@@ -47,6 +50,7 @@ import com.google.common.collect.Multimap;
  */
 public class PDFIndex {
 
+	private static final String REMOVED_SVG = "REMOVED_SVG";
 	private static final String OMIT = "omit";
 	private static final String DUPLICATE = "duplicate";
 	private static final String NEXT = "next";
@@ -744,31 +748,68 @@ public class PDFIndex {
 		}
 	}
 
-	public void mergeHtml() {
+	public List<HtmlElement> mergeHtml() {
 		HtmlElement div = null;
+		List<HtmlElement> elementList = new ArrayList<HtmlElement>();
 		for (HtmlElement htmlElement : sortedHtmlElementList) {
 			String classAttribute = htmlElement.getClassAttribute();
 			boolean includeHtml = false;
-			if (OMIT.equals(classAttribute) || 
+			if (OMIT.equals(classAttribute)) {
+				
+			} else if (
 					FIGURE.equals(classAttribute) ||
 					TABLE.equals(classAttribute) ||
 					ABSTRACT.equals(classAttribute) ||
 					LICENCE.equals(classAttribute) ||
 					SNIPPET.equals(classAttribute) ||
 					false) {
+				elementList.add(htmlElement);
 			} else if (classAttribute == null) { 
 				includeHtml = true;
 			} else {
 				LOG.debug("CLASS "+classAttribute);
 			}
+			
 			if (includeHtml) {
+				removeSVGNodes(htmlElement);
+				String id = htmlElement.getId();
 				if (div == null) {
 					div = htmlElement;
+					div.setClassAttribute("concatenated");
 				} else {
-					div.appendChild(htmlElement.copy());
+					div.appendChild(htmlElement);
 					htmlElement.setClassAttribute(OMIT);
 				}
+//				mergeSentences();
+				addIdSeparator(htmlElement, id);
 			}
 		}
+		return elementList;
+	}
+
+	private void removeSVGNodes(HtmlElement htmlElement) {
+		Nodes nodes = htmlElement.query(".//*[local-name()='svg']");
+		for (int i = 0; i < nodes.size(); i++) {
+			Element svg = (Element) nodes.get(0);
+			Element svgParent = (Element) svg.getParent();
+			HtmlP p = new HtmlP();
+			p.appendChild(REMOVED_SVG);
+			svgParent.replaceChild(svg, p);
+		}
+	}
+
+	private void addIdSeparator(HtmlElement htmlElement, String id) {
+		HtmlSpan span = new HtmlSpan();
+		HtmlB b = new HtmlB();
+		b.appendChild(" ["+id+"] ");
+		span.appendChild(b);
+		Elements childElements = htmlElement.getChildElements();
+		int nchild = childElements.size();
+		Element parentElement = htmlElement;
+		if (nchild > 0) {
+			parentElement = childElements.get(nchild - 1);
+		}
+		parentElement.appendChild(span);
+		LOG.trace(">> "+id);
 	}
 }

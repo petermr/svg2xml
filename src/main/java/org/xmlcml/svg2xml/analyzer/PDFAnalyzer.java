@@ -1,9 +1,13 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.OutputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import nu.xom.Attribute;
 import nu.xom.Nodes;
 import nu.xom.Text;
 
@@ -42,12 +45,13 @@ import com.google.common.collect.Multimap;
 public class PDFAnalyzer implements Annotatable {
 
 
+	private static final String HTTP = "http";
+
 	private static final String Z_CHUNK = "z_";
 
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
 
 	private static final String SVG = SVGPlusConstantsX.DOT_SVG;
-	private static final String PDF = SVGPlusConstantsX.DOT_PDF;
 
 	public static final String PAGE = "page";
 
@@ -97,10 +101,60 @@ public class PDFAnalyzer implements Annotatable {
 		this.skipFile = skipFile;
 	}
 	
+	private void analyzePDFs(String name) {
+		if (name == null) {
+			throw new RuntimeException("file/s must not be null");
+		} else if (name.endsWith(SVGPlusConstantsX.DOT_PDF)) {
+			if (name.startsWith(HTTP)) {
+				this.analyzePDFURL(name);
+			} else {
+				this.analyzePDFFile(new File(name));
+			}
+		} else {
+			this.analyzePDFs(new File(name));
+		}
+	}
+
+	private void analyzePDFs(File file) {
+		if (file.exists() && ! file.isDirectory()) {
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				while (true) {
+					String line = br.readLine();
+					if (line == null) {
+						break;
+					}
+					if (line.startsWith("#")) {
+						
+					} else if (line.endsWith(SVGPlusConstantsX.DOT_PDF)) {
+						File inFile = new File(line);
+						if (!inFile.exists()) {
+							LOG.error("PDF file does not exist: "+inFile);
+						} else {
+							try {
+								PDFAnalyzer analyzer = new PDFAnalyzer();
+								analyzer.analyzePDFFile(inFile);
+							} catch (Exception e) {
+								LOG.error("Cannot read file: "+inFile+" ("+e+")");
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				throw new RuntimeException("Cannot read listing file: "+file, e);
+			}
+		}
+	}
+
+	private void analyzePDFURL(String name) {
+//		new URL(name);
+		throw new RuntimeException("URL not yet implemented");
+	}
+
 	public void analyzePDFFile(File inFile) {
 		this.inFile = inFile;
 		inputName = inFile.getName();
-		fileRoot = inputName.substring(0, inputName.length() - PDF.length());
+		fileRoot = inputName.substring(0, inputName.length() - SVGPlusConstantsX.DOT_PDF.length());
 		svgDocumentDir = new File(svgTopDir, fileRoot);
 		outputDocumentDir = new File(outputTopDir, fileRoot);
 		analyzePDF();
@@ -200,18 +254,17 @@ public class PDFAnalyzer implements Annotatable {
 	public void createSVGfromPDF() {
 		LOG.trace("createSVG");
 		PDF2SVGConverter converter = new PDF2SVGConverter();
-		if (!inFile.exists()) {
-			throw new RuntimeException("no input file: "+inFile);
-		}
-//		File svgDocumentDir = new File(svgTopDir, fileRoot);
-		boolean exists = svgDocumentDir.exists();
-		File[] files = (svgDocumentDir == null) ? null : svgDocumentDir.listFiles();
-		if (!exists || files == null || files.length == 0) {
-			svgDocumentDir.mkdirs();
-			LOG.debug("running "+inFile.toString()+" to "+svgDocumentDir.toString());
-			converter.run("-outdir", svgDocumentDir.toString(), inFile.toString() );
+		if (inFile.exists()) {
+			File[] files = (svgDocumentDir == null) ? null : svgDocumentDir.listFiles();
+			if (!svgDocumentDir.exists() || files == null || files.length == 0) {
+				svgDocumentDir.mkdirs();
+				LOG.debug("running "+inFile.toString()+" to "+svgDocumentDir.toString());
+				converter.run("-outdir", svgDocumentDir.toString(), inFile.toString() );
+			} else {
+				LOG.debug("Skipping SVG");
+			}
 		} else {
-			LOG.debug("Skipping SVG");
+			throw new RuntimeException("no input file: "+inFile);
 		}
 	}
 
@@ -437,15 +490,22 @@ public class PDFAnalyzer implements Annotatable {
 		 */
 		public static void main(String[] args) {
 			if (args.length == 0) {
-				System.out.println("PDFAnalyzer <directory>");
+				System.out.println("PDFAnalyzer <inputFile(s)>");
 				System.out.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
 						" -Dexec.args=\"src/test/resources/pdfs/bmc/1471-2180-11-174.pdf\"");
 				System.out.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
+				System.out.println("");
+				System.out.println("input can be:");
+				System.out.println("    (a) single PDF file as above (must end with \".pdf\")");
+				System.out.println("    (b) directory containing one or more *.pdf");
+				System.out.println("    (c) list of *.pdf files (relative to '.' or absolute)");
+				System.out.println("    (d) URL (must start with http:// or https://)");
 				System.exit(0);
 			} else {
 				PDFAnalyzer analyzer = new PDFAnalyzer();
-				analyzer.analyzePDFFile(new File(args[0]));
+				analyzer.analyzePDFs(args[0]);
 			}
 		}
+
 
 }

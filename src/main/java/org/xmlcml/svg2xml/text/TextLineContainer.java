@@ -703,10 +703,10 @@ public class TextLineContainer {
 		for (TextLineGroup group : textLineGroupList) {
 			HtmlElement el = null;
 			if (group == null) {
-				el = new HtmlP();
-				el.appendChild("PROBLEM");
-				div.appendChild(el);
-				div.debug("XXXXXXXXXXXXXXXXXX");
+//				el = new HtmlP();
+//				el.appendChild("PROBLEM");
+//				div.appendChild(el);
+//				div.debug("XXXXXXXXXXXXXXXXXX");
 			} else {
 				el = group.createHtml();
 				div.appendChild(el);

@@ -180,7 +180,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 				subscript = null;
 			} else {
 				for (TextLine tLine : textLineList) {
-					LOG.debug(">>>> "+tLine);
+					LOG.trace(">>>> "+tLine);
 				}
 				LOG.error("Only one primary allowed for 2 line textLineGroup");
 			}
