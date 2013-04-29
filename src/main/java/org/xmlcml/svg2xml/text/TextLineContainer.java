@@ -76,6 +76,8 @@ public class TextLineContainer {
 	private List<TextLineGroup> textLineGroupList;
 
 	private List<TextLineGroup> separatedTextLineGroupList;
+
+	private HtmlElement createdHtmlElement;
 	
 	public TextLineContainer(TextAnalyzerX textAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
@@ -718,9 +720,8 @@ public class TextLineContainer {
 	public HtmlElement createHtmlDivWithParas() {
 		List<TextLineGroup> textLineGroupList = this.getSeparatedTextLineGroupList();
 		boolean bb = false;
-		HtmlElement htmlElement = createHtmlDivWithParas(textLineGroupList);
-		
-		return htmlElement;
+		createHtmlElementWithParas(textLineGroupList);
+		return createdHtmlElement;
 	}
 
 	/** only used in tests?
@@ -728,24 +729,22 @@ public class TextLineContainer {
 	 * @param textLineGroupList
 	 * @return
 	 */
-	 public HtmlElement createHtmlDivWithParas(List<TextLineGroup> textLineGroupList) {
+	 public HtmlElement createHtmlElementWithParas(List<TextLineGroup> textLineGroupList) {
 		List<TextLine> primaryTextLineList = this.getPrimaryTextLineList();
-		HtmlElement div = null;
+		createdHtmlElement = null;
 		if (primaryTextLineList.size() == 0){
-			 div = null;
+			 createdHtmlElement = null;
 		} else if (primaryTextLineList.size() == 1){
-			 div = primaryTextLineList.get(0).createHtmlLine();
+			 createdHtmlElement = primaryTextLineList.get(0).createHtmlLine();
 		} else {
 			HtmlElement rawDiv = createHtmlDiv(textLineGroupList);
-//			rawDiv.debug("RAW");
-			div = createDivWithParas(primaryTextLineList, rawDiv);
-//			div.debug("DIV");
+			createdHtmlElement = createDivWithParas(primaryTextLineList, rawDiv);
 		}
-		return div;
+		return createdHtmlElement;
 	}
 
-	private HtmlElement createDivWithParas(List<TextLine> textLineList, HtmlElement rawDiv) {
-		HtmlElement div = null;
+	private HtmlDiv createDivWithParas(List<TextLine> textLineList, HtmlElement rawDiv) {
+		HtmlDiv div = null;
 		Double leftIndent = TextLineContainer.getMaximumLeftIndent(textLineList);
 		Real2Range leftBB = TextLineContainer.getBoundingBox(textLineList);
 		Elements htmlLines = rawDiv.getChildElements();
@@ -817,6 +816,22 @@ public class TextLineContainer {
 		} else {
 			return last + " " + next;
 		}
+	}
+
+	public boolean endsWithRaggedLine() {
+		return createdHtmlElement != null &&
+				!createdHtmlElement.getValue().endsWith(".");
+	}
+
+	public boolean startsWithRaggedLine() {
+		boolean starts = false;
+		if (createdHtmlElement != null && createdHtmlElement.getValue().length() > 0) {
+			Character c = createdHtmlElement.getValue().charAt(0);
+			if (c != null) {
+				starts = !Character.isUpperCase(c);
+			}
+		}
+		return starts;
 	}
 
 }

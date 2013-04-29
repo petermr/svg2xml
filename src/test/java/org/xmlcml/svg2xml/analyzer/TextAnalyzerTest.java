@@ -639,7 +639,7 @@ public class TextAnalyzerTest {
 	public void testCreateHTMLDivWithParasNew() throws Exception {
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<TextLineGroup> textGroupList = textLineContainer.getSeparatedTextLineGroupList();
-		HtmlElement div = textLineContainer.createHtmlDivWithParas(textGroupList);
+		HtmlElement div = textLineContainer.createHtmlElementWithParas(textGroupList);
 		CMLUtil.debug(div, new FileOutputStream("target/divParasNew.html"), 0);
 	}
 	
@@ -650,7 +650,7 @@ public class TextAnalyzerTest {
 	public void testCreateHTMLDivWithParasBold() throws Exception {
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PAGE3RESULTS_SVG);
 		List<TextLineGroup> textGroupList = textLineContainer.getSeparatedTextLineGroupList();
-		HtmlElement div = textLineContainer.createHtmlDivWithParas(textGroupList);
+		HtmlElement div = textLineContainer.createHtmlElementWithParas(textGroupList);
 		CMLUtil.debug(div, new FileOutputStream("target/divBold.html"), 0);
 	}
 	

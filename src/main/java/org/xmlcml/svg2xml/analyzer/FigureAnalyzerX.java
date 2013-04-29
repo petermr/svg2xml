@@ -235,12 +235,4 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 		return TITLE;
 	}
 
-	public static boolean containsDivImage(HtmlElement element) {
-		boolean contains = false;
-		if (element != null) {
-			Nodes nodes = element.query(".//*[local-name()='img']");
-			contains = nodes.size() > 0;
-		}
-		return contains;
-	}
 }

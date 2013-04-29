@@ -61,7 +61,7 @@ public class ImageAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	protected HtmlElement createHTML() {
+	protected HtmlElement createHtml() {
 		LOG.trace("image html"+imageList.size());
 		HtmlElement element = new HtmlDiv();
 		for (int i = 0; i < imageList.size(); i++) {

@@ -15,7 +15,7 @@ import org.xmlcml.html.HtmlUl;
  * @author pm286
  *
  */
-public class SpeciesAnalyzer extends AbstractPageAnalyzerX {
+public class SpeciesAnalyzer extends HtmlVisitor {
 	private static final Logger LOG = Logger.getLogger(SpeciesAnalyzer.class);
 	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s+[a-z]+)*";
 	private final static Pattern PATTERN = Pattern.compile(BINOMIAL_REGEX_S);
@@ -24,29 +24,18 @@ public class SpeciesAnalyzer extends AbstractPageAnalyzerX {
 	
 	private final static String TITLE = "species";
 		
-	public SpeciesAnalyzer(PDFIndex pdfIndex) {
-		super(pdfIndex);
-	}
-	
-	public void analyze() {
+	public SpeciesAnalyzer() {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
-		throw new RuntimeException("annotate NYI");
+	public void visit(HtmlEditor htmlEditor) {
+		HtmlUl speciesList = htmlEditor.searchHtml(ITALIC_XPATH_S, PATTERN);
 	}
-	
-	public Integer indexAndLabelChunk(String content, ChunkId id) {
-		Integer serial = super.indexAndLabelChunk(content, id);
-		// index...
-		return serial;
-	}
-	
+
 	/** Pattern for the content for this analyzer
 	 * 
 	 * @return pattern (default null)
 	 */
-	@Override
 	protected Pattern getPattern() {
 		return PATTERN;
 	}
@@ -55,14 +44,8 @@ public class SpeciesAnalyzer extends AbstractPageAnalyzerX {
 	 * 
 	 * @return title (default null)
 	 */
-	@Override
 	public String getTitle() {
 		return TITLE;
-	}
-
-	public HtmlUl extractEntities(List<File> htmlFiles) {
-		HtmlUl speciesList = pdfIndex.searchHtml(htmlFiles, ITALIC_XPATH_S, PATTERN);
-		return speciesList;
 	}
 
 	public String getFileName() {

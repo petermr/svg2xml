@@ -164,7 +164,7 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	protected HtmlElement createHTML() {
+	protected HtmlElement createHtml() {
 		LOG.trace("path html"+pathList.size()); 
 		HtmlElement element = new HtmlDiv();
 		SVGSVG svg = new SVGSVG();

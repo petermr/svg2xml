@@ -2,7 +2,6 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,8 +51,6 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 
 	protected PDFIndex pdfIndex;
 
-	private Map<ChunkId, HtmlElement> htmlElementByIdMap;
-
 	protected AbstractPageAnalyzerX() {
 	}
 
@@ -87,7 +84,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 
 	public static void tidyStyles(Element element) {
 		if (element != null) {
-			convertFontWeightStyleToHTML(element);
+			convertFontWeightStyleToHtml(element);
 			mergeSpans(element);
 			SVG2XMLUtil.tidyTagWhiteTag(element, HtmlI.TAG);
 			SVG2XMLUtil.tidyTagWhiteTag(element, HtmlB.TAG);
@@ -106,7 +103,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		}
 	}
 
-	private static void convertFontWeightStyleToHTML(Element element) {
+	private static void convertFontWeightStyleToHtml(Element element) {
 		Nodes styleAtts = element.query("//@style");
 		for (int i = 0; i < styleAtts.size(); i++) {
 			Node styleAtt = styleAtts.get(i);
@@ -169,7 +166,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 
 	public abstract SVGG labelChunk();
 
-	protected HtmlElement createHTML() {
+	protected HtmlElement createHtml() {
 		HtmlElement htmlElement = new HtmlDiv();
 		htmlElement.appendChild("no content yet");
 		return htmlElement;
@@ -204,42 +201,14 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		String title = getTitle();
 		Integer serial = getSerial(pattern, content);
 		if (serial != null) {
-			LOG.debug(title+serial);
+			LOG.debug(title+"-"+serial);
 			ensureIdSerialList();
 			serialList.add(serial);
 			idList.add(id);
 			pdfIndex.addUsedId(id);
-			labelChunk(id, title, serial);
+			pdfIndex.pdfAnalyzer.htmlEditor.labelChunk(id, title, serial);
 		}
 		return serial;
-	}
-
-	/** label HtmlElement
-	 * 
-	 * @param id
-	 * @param title
-	 * @param serial
-	 */
-	private void labelChunk(ChunkId id, String title, Integer serial) {
-		getHtmlElement(id);
-		HtmlElement htmlElement = getHtmlElement(id);
-		if (htmlElement != null) {
-			String classX = htmlElement.getClassAttribute();
-			if (classX == null) {
-				htmlElement.setClassAttribute(title+" "+serial);
-			}
-		}
-	}
-
-	protected HtmlElement getHtmlElement(ChunkId id) {
-		ensureHtmlElementByIdMap();
-		return (htmlElementByIdMap == null) ? null : htmlElementByIdMap.get(id);
-	}
-
-	protected void ensureHtmlElementByIdMap() {
-		if (htmlElementByIdMap == null && pdfIndex != null) {
-			htmlElementByIdMap = pdfIndex.getHtmlElementByIdMap();
-		}
 	}
 
 	private void ensureIdSerialList() {

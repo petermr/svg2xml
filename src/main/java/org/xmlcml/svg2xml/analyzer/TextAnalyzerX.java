@@ -103,6 +103,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	/** refactored container */
 	private TextLineContainer textLineContainer;
 //	private List<TextLine> textLineListX;
+	private HtmlElement createdHtmlElement;
 	
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
@@ -586,7 +587,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			List<SVGElement> paraList = SVGUtil.getQuerySVGElements(textChunk, "./*/svg:g[@"+Paragraph.NAME+"='"+Paragraph.PARA+"']");
 			for (SVGElement paraElement : paraList) {
 				Paragraph paragraph = Paragraph.createElement(paraElement);
-				paragraph.createAndAddHTML();
+				paragraph.createAndAddHtml();
 			}
 		}
 	}
@@ -870,18 +871,18 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		this.textLineContainer = textLineContainer;
 	}
 
-	protected HtmlElement createHTML() {
+	protected HtmlElement createHtml() {
 		LOG.trace("createHTMLParasAndDivs");
 		List<TextLine> textLines = this.getLinesInIncreasingY();
 		LOG.trace("lines "+textLines.size());
 		for (TextLine textLine : textLines){
 			LOG.trace(">> "+textLine);
 		}
-		HtmlElement element = this.createHtmlDivWithParas();
-		if (element != null) {
-			AbstractPageAnalyzerX.tidyStyles(element);
+		createdHtmlElement = this.createHtmlDivWithParas();
+		if (createdHtmlElement != null) {
+			AbstractPageAnalyzerX.tidyStyles(createdHtmlElement);
 		}
-		return element;
+		return createdHtmlElement;
 	}
 	
 	// ==========================================

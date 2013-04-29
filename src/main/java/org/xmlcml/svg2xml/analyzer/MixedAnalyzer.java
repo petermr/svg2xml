@@ -83,12 +83,12 @@ public class MixedAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	protected HtmlElement createHTML() {
+	protected HtmlElement createHtml() {
 		HtmlDiv element = new HtmlDiv();
 		for (AbstractPageAnalyzerX analyzer : analyzerList) {
 			HtmlDiv div = new HtmlDiv();
 			element.appendChild(div);
-			HtmlElement childElement = analyzer.createHTML();
+			HtmlElement childElement = analyzer.createHtml();
 			if (childElement != null) {
 				div.appendChild(childElement);
 			}

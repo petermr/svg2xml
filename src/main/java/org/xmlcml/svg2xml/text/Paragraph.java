@@ -137,7 +137,7 @@ public class Paragraph extends SVGG {
 		svgText.setFontSize(DEFAULT_FONT_SIZE);
 	}
 	
-	public HtmlP createAndAddHTML() {
+	public HtmlP createAndAddHtml() {
 		this.debug("PPP");
 		HtmlP p = null;
 		List<SVGElement> svgTexts = SVGUtil.getQuerySVGElements(this, "./svg:text");

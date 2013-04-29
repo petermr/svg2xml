@@ -7,3 +7,6 @@ Label textLine as in/outdent, and bold for para matching
 "PeerJ" logo on each page has transformation matrix but current (unscaled) bounding box eats some
 of the other SVG primitives (e.g. text). SOLUTION. remove logo, but also need to fix image transformations
 
+==Figures==
+http://stackoverflow.com/questions/12068726/mouse-pointer-detection-over-a-path2d/12069644#12069644
+creates outline of shape.
