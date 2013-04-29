@@ -29,6 +29,7 @@ public class TableAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	public void analyze() {
+		LOG.error("Table NYI");
 	}
 
 	@Override

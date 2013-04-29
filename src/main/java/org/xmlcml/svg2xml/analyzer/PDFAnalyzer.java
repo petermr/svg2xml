@@ -211,6 +211,8 @@ public class PDFAnalyzer /*implements Annotatable */{
 		htmlEditor.createLinkedElementList();
 		htmlEditor.mergeCaptions();
 		htmlEditor.categorizeHtml();
+		htmlEditor.analyzeTables();
+		htmlEditor.analyzeFigures();
 		htmlEditor.outputHtmlElements();
 		// TODO Auto-generated method stub
 		

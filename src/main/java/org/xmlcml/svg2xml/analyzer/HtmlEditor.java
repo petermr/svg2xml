@@ -32,7 +32,8 @@ public class HtmlEditor {
 	private List<HtmlAnalyzer> htmlAnalyzerListSortedByChunkId;
 	private PDFAnalyzer pdfAnalyzer;
 	private Map<ChunkId, HtmlAnalyzer> htmlAnalyzerByIdMap;
-	private List<HtmlAnalyzer> nonMergedHtmlAnalyzerList;
+	private List<HtmlAnalyzer> figureHtmlAnalyzerList;
+	private List<HtmlAnalyzer> tableHtmlAnalyzerList;
 	private List<HtmlAnalyzer> mergedHtmlAnalyzerList;
 	private HtmlAnalyzer textDivAnalyzer;
 	
@@ -49,7 +50,8 @@ public class HtmlEditor {
 		HtmlDiv textDiv = new HtmlDiv();
 		createTextDivAnalyzer(textDiv);
 		HtmlAnalyzer lastAnalyzer = null;
-		nonMergedHtmlAnalyzerList = new ArrayList<HtmlAnalyzer>();
+		figureHtmlAnalyzerList = new ArrayList<HtmlAnalyzer>();
+		tableHtmlAnalyzerList = new ArrayList<HtmlAnalyzer>();
 		mergedHtmlAnalyzerList = new ArrayList<HtmlAnalyzer>();
 		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
 			String id = htmlAnalyzer.getId();
@@ -64,13 +66,13 @@ public class HtmlEditor {
 			} else if (HtmlAnalyzer.OMIT.equals(classAttribute)) {
 				// already designated as OMIT
 				LOG.debug("OMITTED "+id);
-			} else if (
-					// OMITtable classes
-					FigureAnalyzerX.TITLE.equals(classAttribute0) ||
-					TableAnalyzerX.TITLE.equalsIgnoreCase(classAttribute0) ||
-					false) {
+			} else if (FigureAnalyzerX.TITLE.equals(classAttribute0)) {
 				htmlAnalyzer.setChunkType(classAttribute0);
-				nonMergedHtmlAnalyzerList.add(htmlAnalyzer);
+				figureHtmlAnalyzerList.add(htmlAnalyzer);
+				LOG.debug(classAttribute+" = "+id);
+			} else if (TableAnalyzerX.TITLE.equals(classAttribute0)) {
+				htmlAnalyzer.setChunkType(classAttribute0);
+				tableHtmlAnalyzerList.add(htmlAnalyzer);
 				LOG.debug(classAttribute+" = "+id);
 			} else {
 				LOG.debug("untreated CLASS "+classAttribute);
@@ -113,16 +115,6 @@ public class HtmlEditor {
 //		htmlAnalyzer.removeSVGNodes();
 	}
 
-//	private void getTextLineContainer(AbstractPageAnalyzerX analyzer) {
-//		TextLineContainer textLineContainer = (analyzer instanceof TextAnalyzerX) ? 
-//				((TextAnalyzerX) analyzer).getTextLineContainer() : null;
-//	}
-//
-//	private void mergeSentences() {
-//		// TODO Auto-generated method stub
-//		
-//	}
-
 	public void removeDuplicates() {
 		getHtmlAnalyzerListSortedByChunkId();
 		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
@@ -139,8 +131,12 @@ public class HtmlEditor {
 	}
 
 	public void outputHtmlElements() {
-		LOG.debug("nonMerged HTML");
-		for (HtmlAnalyzer htmlAnalyzer : nonMergedHtmlAnalyzerList) {
+		LOG.debug("figures HTML");
+		for (HtmlAnalyzer htmlAnalyzer : figureHtmlAnalyzerList) {
+			htmlAnalyzer.outputElementAsHtml(pdfAnalyzer.outputDocumentDir);
+		}
+		LOG.debug("tables HTML");
+		for (HtmlAnalyzer htmlAnalyzer : tableHtmlAnalyzerList) {
 			htmlAnalyzer.outputElementAsHtml(pdfAnalyzer.outputDocumentDir);
 		}
 		LOG.debug("merged HTML");
@@ -288,6 +284,18 @@ public class HtmlEditor {
 	public void addHtmlElement(HtmlElement htmlElement, ChunkId chunkId) {
 		HtmlAnalyzer htmlAnalyzer = new HtmlAnalyzer(htmlElement, this);
 		getHtmlAnalyzerByIdMap().put(chunkId, htmlAnalyzer);
+	}
+
+	public void analyzeFigures() {
+		for (HtmlAnalyzer figureHtmlAnalyzer : figureHtmlAnalyzerList) {
+			((TableAnalyzerX)figureHtmlAnalyzer.getAnalyzer()).analyze();
+		}
+	}
+
+	public void analyzeTables() {
+		for (HtmlAnalyzer tableHtmlAnalyzer : tableHtmlAnalyzerList) {
+			((TableAnalyzerX)tableHtmlAnalyzer.getAnalyzer()).analyze();
+		}
 	}
 
 
