@@ -1,5 +1,14 @@
 =SVG2XML=
 
+==Dev version==
+The development version relies on:
+http://bitbucket.org/petermr/euclid-dev
+http://bitbucket.org/petermr/html-dev
+http://bitbucket.org/petermr/svg-dev
+http://bitbucket.org/petermr/pdf2svg-dev
+
+You may need to update and mvn install these if they are not in WWMM maven.
+
 ==Introduction== 
 SVG2XML is the second of (probably) three modules in the AMI2 system, the first being PDF2SVG.
 Its role is to convert PDF-free SVG (from PDF2SVG) into enhanced SVG which creates structure out 
