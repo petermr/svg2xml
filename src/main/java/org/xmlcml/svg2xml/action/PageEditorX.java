@@ -20,7 +20,7 @@ import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.TableAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.figure.Figure;
-import org.xmlcml.svg2xml.table.Table;
+import org.xmlcml.svg2xml.table.TableOld;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -77,7 +77,7 @@ public class PageEditorX {
 	private Integer pageNumberInteger;
 	private List<SVGText> textChunkList;
 	private List<Figure> figureList;
-	private List<Table> tableList;
+	private List<TableOld> tableList;
 
 	private PathAnalyzerX pathAnalyzerX;
 //	private PageClipPathAnalyzer clipPathAnalyzer;
@@ -257,14 +257,14 @@ public class PageEditorX {
 		return pageChunkSplitterX;
 	}
 
-	public List<Table> getTableList() {
+	public List<TableOld> getTableList() {
 		ensureTableList();
 		return tableList;
 	}
 
 	private void ensureTableList() {
 		if (tableList == null) {
-			tableList = new ArrayList<Table>();
+			tableList = new ArrayList<TableOld>();
 		}
 	}
 

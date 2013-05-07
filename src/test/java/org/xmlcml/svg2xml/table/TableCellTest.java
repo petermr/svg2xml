@@ -1,0 +1,68 @@
+package org.xmlcml.svg2xml.table;
+
+import java.util.List;
+
+import junit.framework.Assert;
+
+import nu.xom.Element;
+
+import org.apache.log4j.Logger;
+import org.junit.Test;
+import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGUtil;
+
+/** 
+ * test for CellChunk
+ * @author pm286
+ *
+ */
+public class TableCellTest {
+
+	private final static Logger LOG = Logger.getLogger(TableCellTest.class);
+	
+	@Test
+	public void dummy() {
+		LOG.debug("CellChunkTest NYI");
+	}
+
+	@Test
+	public void testTDCellValue() {
+		AbstractTableChunk cellChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.CELL00FILE);
+		String value = cellChunk.getValue();
+		Assert.assertEquals("value", "IN61", value);
+	}
+
+	@Test
+	public void testTDCellValue00() {
+		RealRangeArray horizontal0Mask = new RealRangeArray();
+		horizontal0Mask.add(new RealRange(75., 93.));
+		RealRangeArray vertical0Mask = new RealRangeArray();
+		vertical0Mask.add(new RealRange(120., 130.));
+		AbstractTableChunk cellChunk = TableFixtures.createCellFromMaskedElements(TableFixtures.TDBLOCKFILE, horizontal0Mask, vertical0Mask);
+		String value = cellChunk.getValue();
+		Assert.assertEquals("value", "IN61", value);
+	}
+
+	@Test
+	public void testTH2ChunkValue() {
+		AbstractTableChunk cellChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.HROW2FILE);
+		String value = cellChunk.getValue();
+		Assert.assertEquals("value", "MLT(min)", value);
+	}
+
+	@Test
+	public void testTH0ChunkValue() {
+		AbstractTableChunk cellChunk = new GenericChunk();
+		Element element = CMLUtil.parseQuietlyToDocument(TableFixtures.HROW0FILE).getRootElement();
+		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
+		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_PATH);
+		cellChunk.setElementList(elementList);
+		String value = cellChunk.getValue();
+		Assert.assertEquals("value", "Strain", value);
+	}
+	
+	
+}

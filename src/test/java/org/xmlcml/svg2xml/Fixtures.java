@@ -98,6 +98,9 @@ public class Fixtures {
 	private static final File LINE1_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "singleLine.svg");
 
 	public static File PAGE3RESULTS_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "page3results.svg");
+// table stuff	
+	
+
 
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;

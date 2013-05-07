@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.table.Table;
+import org.xmlcml.svg2xml.table.TableOld;
 
 /**
  * @author pm286

@@ -284,19 +284,19 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 		HtmlP lastTopP = getLastPara(topDiv);
 		boolean merged = false;
 		HtmlElement lastElement = lastAnalyzer.getHtmlElement();
-		LOG.debug("LAST "+lastElement.toXML());
+		LOG.trace("LAST "+lastElement.toXML());
 		HtmlP lastP = getLastPara(lastElement);
 		String lastS = lastP.getValue();
 		int l = lastS.length();
 		lastS = lastS.substring(Math.max(0, l-20));
-		LOG.debug("THIS "+htmlElement.toXML());
+		LOG.trace("THIS "+htmlElement.toXML());
 		HtmlP thisP = getFirstPara(htmlElement);
 		int idx = htmlElement.indexOf(thisP);
-		LOG.debug("THIS PARA "+thisP.toXML());
+		LOG.trace("THIS PARA "+thisP.toXML());
 		
 		String thisS = thisP.getValue();
 		thisS = thisS.substring(0, Math.min(20, thisS.length()));
-		LOG.debug("merging ["+lastAnalyzer.getId()+"... "+lastS+" ... "+thisS+" ..."+this.getId()+"]");
+		LOG.trace("merging ["+lastAnalyzer.getId()+"... "+lastS+" ... "+thisS+" ..."+this.getId()+"]");
 		if (lastTopP!= null && thisP != null) {
 			addIdSeparator(lastTopP);
 			copyToFrom(lastTopP, thisP, 0);

@@ -370,10 +370,21 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	/** its seems many paths are drawn twice
 	 * if their paths are equal, remove the later one(s)
 	 */
+	public void forceRemoveDuplicatePaths() {
+		boolean saveDuplicatePaths = this.removeDuplicatePaths;
+		this.removeDuplicatePaths = true;
+		removeDuplicatePaths();
+		this.removeDuplicatePaths = saveDuplicatePaths;
+	}
+
+	/** its seems many paths are drawn twice
+	 * if their paths are equal, remove the later one(s)
+	 */
 	public void removeDuplicatePaths() {
 		if (this.removeDuplicatePaths && pathList != null) {
 			Set<String> dStringSet = new HashSet<String>();
 			int count = 0;
+			List<SVGPath> newPathList = new ArrayList<SVGPath>();
 			for (SVGPath path : pathList) {
 				String dString = path.getDString();
 				if (dStringSet.contains(dString)) {
@@ -382,14 +393,16 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 					count++;
 				} else {
 					dStringSet.add(dString);
+					newPathList.add(path);
 				}
 			}
 			if (count > 0) {
 				LOG.trace("detached "+count+" duplicate paths");
+				pathList = newPathList;
 			}
 		}
 	}
-
+	
 	public List<SVGLine> splitPolylinesToLines(Integer minLinesInPolyline) {
 		LOG.trace("minLines: "+minLinesInPolyline);
 		List<SVGLine> lineList = new ArrayList<SVGLine>();

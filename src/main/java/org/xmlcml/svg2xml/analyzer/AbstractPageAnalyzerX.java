@@ -48,7 +48,6 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 
 	List<ChunkId> idList;
 	List<Integer> serialList;
-
 	protected PDFIndex pdfIndex;
 
 	protected AbstractPageAnalyzerX() {
@@ -145,6 +144,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 				childAnalyzer = createPathAnalyzer(pathList);
 				((MixedAnalyzer) analyzer).add(childAnalyzer);
 			}
+			LOG.debug("MIXED: "+analyzer);
 		}
 
 		return analyzer;

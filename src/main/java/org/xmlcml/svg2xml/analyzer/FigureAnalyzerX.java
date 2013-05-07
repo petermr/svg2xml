@@ -44,14 +44,29 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 	private Real2 clusterWhitespaceBoxMargins = new Real2(5.0, 5.0);
 	private Double panelSeparation = 3.0;
 
+	private TextAnalyzerX textAnalyzer;
+	private PathAnalyzerX pathAnalyzer;
+	private ImageAnalyzerX imageAnalyzer;
+
 	public FigureAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
 	}
 	
+	public void analyze() {
+		LOG.error("Figure NYI");
+	}
+
 	public FigureAnalyzerX(PDFIndex pdfIndex) {
 		super(pdfIndex);
 	}
 	
+	public FigureAnalyzerX(TextAnalyzerX textAnalyzer,
+			PathAnalyzerX pathAnalyzer, ImageAnalyzerX imageAnalyzer) {
+		this.textAnalyzer = textAnalyzer;
+		this.pathAnalyzer = pathAnalyzer;
+		this.imageAnalyzer = imageAnalyzer;
+	}
+
 	public List<FigurePanel> createPanelsUsingWhitespace() {
 		if (panelList == null) {
 			panelList = new ArrayList<FigurePanel>();

@@ -2,13 +2,21 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.table.Table;
+import org.xmlcml.svg2xml.table.GenericTableChunk;
+import org.xmlcml.svg2xml.table.TableTable;
+import org.xmlcml.svg2xml.text.TextLineContainer;
 
 /**
  * @author pm286
@@ -19,6 +27,13 @@ public class TableAnalyzerX extends AbstractPageAnalyzerX {
 	
 	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
 	public static final String TITLE = "TABLE";
+
+	private TextAnalyzerX textAnalyzer;
+	private PathAnalyzerX pathAnalyzer;
+	private TextLineContainer textLineContainer;
+
+	private Real2Range pathBox;
+	private Real2Range textBox;
 	
 	public TableAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
@@ -28,8 +43,36 @@ public class TableAnalyzerX extends AbstractPageAnalyzerX {
 		super(pdfIndex);
 	}
 	
+	public TableAnalyzerX(TextAnalyzerX textAnalyzer, PathAnalyzerX pathAnalyzer) {
+		this.textAnalyzer = textAnalyzer;
+		this.pathAnalyzer = pathAnalyzer;
+		this.textLineContainer = textAnalyzer.getTextLineContainer();
+	}
+
 	public void analyze() {
-		LOG.error("Table NYI");
+		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+		pathAnalyzer.forceRemoveDuplicatePaths();
+		List<SVGPath> pathList = pathAnalyzer.getPathList();
+		List<SVGText> textList = textAnalyzer.getTextCharacters();
+		pathBox = SVGUtil.createBoundingBox(pathList);
+		RealRange pathBoxXRange = pathBox.getXRange();
+		Real2Range textBox = SVGUtil.createBoundingBox(textList);
+		RealRange textBoxYRange = textBox.getYRange();
+		List<Real2Range> boxList = SVGUtil.createNonOverlappingBoundingBoxList(pathList);
+		RealRangeArray verticalBoxes = new RealRangeArray(boxList, RealRange.Direction.VERTICAL);
+		verticalBoxes.addTerminatingCaps(textBoxYRange.getMin(), textBoxYRange.getMax());
+		RealRangeArray yGaps = verticalBoxes.inverse();
+		yGaps.debug();
+		System.out.println("--------------------------------");
+		
+		TableTable tableChunkList = new TableTable();
+		for (RealRange yGap : yGaps) {
+			GenericTableChunk tableChunk = new GenericTableChunk();
+			tableChunkList.add(tableChunk);
+			tableChunk.populateChunk(textList, pathBoxXRange, yGap);
+//			System.out.println("HHHHHHHHHHHHHHHHhh"+tableChunk.getHorizontalMask());
+		}
+		tableChunkList.analyze();
 	}
 
 	@Override

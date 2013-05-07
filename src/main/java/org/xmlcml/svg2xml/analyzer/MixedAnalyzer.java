@@ -98,8 +98,19 @@ public class MixedAnalyzer extends AbstractPageAnalyzerX {
 
 	public void add(AbstractPageAnalyzerX analyzer) {
 		ensureAnalyzerList();
-		LOG.trace("Added "+analyzer);
+		LOG.debug("Added "+analyzer);
+		setTypedAnalyzer(analyzer);
 		analyzerList.add(analyzer);
+	}
+
+	private void setTypedAnalyzer(AbstractPageAnalyzerX analyzer) {
+		if (analyzer instanceof ImageAnalyzerX) {
+			imageAnalyzer = (ImageAnalyzerX) analyzer;
+		} else if (analyzer instanceof PathAnalyzerX) {
+			pathAnalyzer = (PathAnalyzerX) analyzer;
+		} else if (analyzer instanceof TextAnalyzerX) {
+			textAnalyzer = (TextAnalyzerX) analyzer;
+		}
 	}
 
 	private void ensureAnalyzerList() {
