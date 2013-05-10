@@ -63,21 +63,24 @@ public class TableTableTest {
 	@Test
 	public void testAnalyzeChunkHorizontalMasks() {
 		String[] masks = {
-			"Direction: HORIZONTAL; size: 1\n"+
-			"((54.693,252.88496))",
+				"null",
 			"Direction: HORIZONTAL; size: 4\n"+
-			"((73.855,98.3147)(134.516,143.3777)(177.036,216.4081)(245.118,279.3331))",
+			"((-26.144999999999996,116.41534999999999)(116.41534999999999,160.20685)(160.20685,230.76305)(230.76305,379.3331))",
 			"Direction: HORIZONTAL; size: 4\n"+
-			"((68.243,104.0201)(132.531,148.6292)(188.147,205.5682)(253.686,271.10720000000003))",
-			"Direction: HORIZONTAL; size: 1\n"+
-			"((54.693,281.02114))"
+			"((-31.757000000000005,118.27555000000001)(118.27555000000001,168.3881)(168.3881,229.62709999999998)(229.62709999999998,371.10720000000003))",
+				"null"
 		};
 		TableTable table = createTable(TableFixtures.TABLEFILE);
 		List<GenericChunk> chunkList = table.analyzeVerticalTextChunks();
 		Assert.assertEquals("vertical chunks ", 4, chunkList.size());
 		for (int i = 0; i < chunkList.size(); i++) {
 			GenericChunk genericChunk = chunkList.get(i);
-			Assert.assertEquals("row"+i, masks[i], genericChunk.getHorizontalMask().toString());
+			RealRangeArray rra = genericChunk.getHorizontalMask();
+			if (masks[i].equals("null")) {
+				Assert.assertNull("row"+i, rra);
+			} else {
+				Assert.assertEquals("row"+i, masks[i], rra.toString());
+			}
 		}
 	}
 

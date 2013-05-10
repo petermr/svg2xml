@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,6 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.table.TableFixtures;
 import org.xmlcml.svg2xml.tools.Chunk;
 
 /**
