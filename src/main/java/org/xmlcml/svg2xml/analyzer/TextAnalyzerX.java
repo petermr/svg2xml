@@ -53,6 +53,7 @@ import com.google.common.collect.Multiset;
  */
 public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
+	private static final String ID_PREFIX = "textChunk";
 	private final static Logger LOG = Logger.getLogger(TextAnalyzerX.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -442,7 +443,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		int id = 0;
 		for (Chunk chunk : chunks) {
 			if (chunk.isTextChunk()) {
-				chunk.setId("textChunk"+id);
+				chunk.setId(ID_PREFIX+id);
 				if (SVGUtil.getQuerySVGElements(chunk, "svg:g").size() == 0) {
 					TextAnalyzerX textAnalyzer = new TextAnalyzerX(semanticDocumentActionX);
 					textChunk = textAnalyzer.analyzeRawText(chunk);
@@ -778,7 +779,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	
 	
 
-	// =======================================
+	// ===========utils============================
 	
 	private void debug(String string, Map<Integer, TextLine> textByCoordMap) {
 		if (textByCoordMap == null) {
@@ -885,7 +886,4 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return createdHtmlElement;
 	}
 	
-	// ==========================================
-
-
 }

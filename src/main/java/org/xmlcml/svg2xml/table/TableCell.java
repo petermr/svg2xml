@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTd;
 
-public class TableCell extends AbstractTableChunk {
+public class TableCell extends GenericChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableCell.class);
 	

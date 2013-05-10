@@ -103,12 +103,17 @@ public class PDFAnalyzer /*implements Annotatable */{
 				this.analyzePDFFile(new File(name));
 			}
 		} else {
-			this.analyzePDFs(new File(name));
+			this.readFilenamesAndAnalyzePDFs(new File(name));
 		}
 	}
 
-	private void analyzePDFs(File file) {
+	/** read filenames from file
+	 * 
+	 * @param file
+	 */
+	private void readFilenamesAndAnalyzePDFs(File file) {
 		if (file.exists() && ! file.isDirectory()) {
+			File parentFile = file.getParentFile();
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file));
 				while (true) {
@@ -117,23 +122,27 @@ public class PDFAnalyzer /*implements Annotatable */{
 						break;
 					}
 					if (line.startsWith("#")) {
-						
+						// comment
 					} else if (line.endsWith(SVGPlusConstantsX.DOT_PDF)) {
-						File inFile = new File(line);
-						if (!inFile.exists()) {
-							LOG.error("PDF file does not exist: "+inFile);
-						} else {
-							try {
-								PDFAnalyzer analyzer = new PDFAnalyzer();
-								analyzer.analyzePDFFile(inFile);
-							} catch (Exception e) {
-								LOG.error("Cannot read file: "+inFile+" ("+e+")");
-							}
-						}
+						readAndAnalyzeFile(parentFile, line);
 					}
 				}
 			} catch (Exception e) {
 				throw new RuntimeException("Cannot read listing file: "+file, e);
+			}
+		}
+	}
+
+	private void readAndAnalyzeFile(File parentDir, String filename) {
+		File inFile = new File(parentDir, filename);
+		if (!inFile.exists()) {
+			LOG.error("PDF file does not exist: "+inFile);
+		} else {
+			try {
+				PDFAnalyzer analyzer = new PDFAnalyzer();
+				analyzer.analyzePDFFile(inFile);
+			} catch (Exception e) {
+				LOG.error("Cannot read file: "+inFile+" ("+e+")");
 			}
 		}
 	}
@@ -273,15 +282,22 @@ public class PDFAnalyzer /*implements Annotatable */{
 			LOG.debug("Skipping: "+svgPageFile);
 			return;
 		}
+		LOG.debug("reading SVG "+svgPageFile);
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(svgPageFile);
+		LOG.trace("read and created SVG "+svgPageFile);
 //		stripNewlines(svg);
-		processNonUnicodeCharacters(svg);
+		processNonUnicodeCharactersInTitles(svg);
+		LOG.trace("processed nonUnicode");
 		SemanticDocumentActionX semanticDocumentAction = 
 				SemanticDocumentActionX.createSemanticDocumentActionWithSVGPage(svg);
+		LOG.trace("created documentAction");
 		List<Chunk> chunkList = 
 				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);
+		LOG.debug("made chunks - takes time");
 		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
+		LOG.trace("draw Boxes");
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+		LOG.debug("read gList");
 		
 		SVGSVG svgOut = createSVGOut(pageNumber);
 		svgOutList.add(svgOut);
@@ -293,6 +309,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 			svgOut.appendChild(gOut);
 			pdfIndex.addToindexes(gOut);
 		}
+		LOG.debug("read SVG "+svgPageFile);
 	}
 
 	HtmlEditor ensureHtmlEditor() {
@@ -333,7 +350,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 	 * <title stroke="black" stroke-width="1.0">char: 981; name: null; f: Symbol; fn: PHHOAK+Symbol; e: Dictionary</title>
 	 * @param svg
 	 */
-	private void processNonUnicodeCharacters(SVGSVG svg) {
+	private void processNonUnicodeCharactersInTitles(SVGSVG svg) {
 		List<SVGElement> textTitles = SVGUtil.getQuerySVGElements(svg, ".//svg:title");
 		for (SVGElement t : textTitles) {
 			SVGTitle title = (SVGTitle) t;
@@ -359,7 +376,11 @@ public class PDFAnalyzer /*implements Annotatable */{
 			}
 			char c =  (char)(int)ss;
 			LOG.trace("> "+c);
-			text.appendChild(""+c);
+			try {
+				text.appendChild(""+c);
+			} catch (Exception e) {
+				LOG.trace("skipped problem character: "+(int)c);
+			}
 //			text.debug("XX");
 		}
 	}

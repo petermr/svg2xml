@@ -29,12 +29,14 @@ import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.table.TableFixtures;
 import org.xmlcml.svg2xml.tools.Chunk;
 
 /**
@@ -90,7 +92,9 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 		getBoundingBoxAndParent(pathList.get(0));
 	}
 
-	public List<SVGPath> getPathList() { return pathList;}
+	public List<SVGPath> getPathList() {
+		return pathList;
+	}
 	/** runs components having set true/false flags if required
 	 * 
 	 */
@@ -381,7 +385,13 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	 * if their paths are equal, remove the later one(s)
 	 */
 	public void removeDuplicatePaths() {
-		if (this.removeDuplicatePaths && pathList != null) {
+		if (this.removeDuplicatePaths) {
+			pathList = removeDuplicatePaths(pathList);
+		}
+	}
+
+	public static List<SVGPath> removeDuplicatePaths(List<SVGPath> pathList) {
+		if (pathList != null) {
 			Set<String> dStringSet = new HashSet<String>();
 			int count = 0;
 			List<SVGPath> newPathList = new ArrayList<SVGPath>();
@@ -401,6 +411,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 				pathList = newPathList;
 			}
 		}
+		return pathList;
 	}
 	
 	public List<SVGLine> splitPolylinesToLines(Integer minLinesInPolyline) {
@@ -555,7 +566,8 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		this.minLinesInPolyline = minLinesInPolyline;
 	}
 
-	//=========================
+	//============string=============
+	
 	public String toString() {
 		String s = "";
 		s += "paths: "+pathList.size();

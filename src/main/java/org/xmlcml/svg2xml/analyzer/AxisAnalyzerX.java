@@ -153,8 +153,6 @@ public class AxisAnalyzerX extends AbstractPageAnalyzerX {
 		throw new RuntimeException("annotate NYI");
 	}
 	
-// ================================================
-	
 	public double getMaxTickLength() {
 		return maxTickLength;
 	}

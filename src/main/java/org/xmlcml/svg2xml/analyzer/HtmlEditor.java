@@ -16,7 +16,10 @@ import nu.xom.Element;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
@@ -71,9 +74,10 @@ public class HtmlEditor {
 				figureHtmlAnalyzerList.add(htmlAnalyzer);
 				LOG.trace(classAttribute+" = "+id);
 			} else if (TableAnalyzerX.TITLE.equals(classAttribute0)) {
+				htmlAnalyzer.setId(id);
 				htmlAnalyzer.setChunkType(classAttribute0);
 				tableHtmlAnalyzerList.add(htmlAnalyzer);
-				LOG.trace(classAttribute+" = "+id);
+				LOG.debug(classAttribute+" = "+id);
 			} else {
 				LOG.debug("untreated CLASS "+classAttribute);
 			}
@@ -310,7 +314,14 @@ public class HtmlEditor {
 	public void analyzeTables() {
 		for (HtmlAnalyzer tableHtmlAnalyzer : tableHtmlAnalyzerList) {
 			TableAnalyzerX tableAnalyzer = createTableAnalyzer(tableHtmlAnalyzer);
-			tableAnalyzer.analyze();
+//			tableAnalyzer.analyze();
+			HtmlElement htmlElement = tableAnalyzer.analyze1();
+			// transfer any existing id and class attribute
+			HtmlElement oldHtmlElement = tableHtmlAnalyzer.getHtmlElement();
+			if (oldHtmlElement != null) {
+				CMLUtil.copyAttributes(oldHtmlElement, htmlElement);
+			}
+			tableHtmlAnalyzer.setHtmlElement(htmlElement);
 		}
 	}
 

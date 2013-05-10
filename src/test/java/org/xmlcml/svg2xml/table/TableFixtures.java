@@ -25,19 +25,22 @@ public class TableFixtures {
 	public final static File HROW1FILE = new File(Fixtures.TEXT_ANALYZER_DIR, "bmc174.table1.hrow.1.svg");
 	public final static File HROW2FILE = new File(Fixtures.TEXT_ANALYZER_DIR, "bmc174.table1.hrow.2.svg");
 	
-	public static final String TEXT_PATH = "//svg:text|//svg:path";
+	public static final String TEXT_OR_PATH_XPATH = "//svg:text|//svg:path";
+	public static final String PATH_XPATH = "//svg:path";
+	public static final String TEXT_XPATH = "//svg:text";
+	
 	public static final Real2Range PAGE_BOX = new Real2Range(new RealRange(0., 600.), new RealRange(0., 800.));
 	
 	public static GenericChunk createGenericChunkFromElements(File file) {
 		GenericChunk genericChunk = new GenericChunk();
-		List<SVGElement> elementList = readFileAndXPathFilterToElementList(file, TEXT_PATH);
+		List<SVGElement> elementList = readFileAndXPathFilterToElementList(file, TEXT_OR_PATH_XPATH);
 		genericChunk.setElementList(elementList);
 		return genericChunk;
 	}
 	
 	public static GenericChunk createCellFromMaskedElements(
 			File file, RealRangeArray horizontalMask, RealRangeArray verticalMask) {
-		List<? extends SVGElement> elementList = readFileAndXPathFilterToElementList(file, TEXT_PATH);
+		List<? extends SVGElement> elementList = readFileAndXPathFilterToElementList(file, TEXT_OR_PATH_XPATH);
 		elementList = SVGElement.filterHorizontally(elementList, horizontalMask);
 		elementList = SVGElement.filterVertically(elementList, verticalMask);
 		GenericChunk genericChunk = createGenericChunkFromElements(TableFixtures.CELL00FILE);

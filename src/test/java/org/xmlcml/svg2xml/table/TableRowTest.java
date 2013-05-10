@@ -29,10 +29,10 @@ public class TableRowTest {
 
 	@Test
 	public void testTHChunkValue() {
-		AbstractTableChunk cellChunk = new GenericChunk();
+		GenericChunk cellChunk = new GenericChunk();
 		Element element = CMLUtil.parseQuietlyToDocument(TableFixtures.HROWFILE).getRootElement();
 		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
-		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_PATH);
+		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_OR_PATH_XPATH);
 		Assert.assertEquals("elements", 23, elementList.size());
 		cellChunk.setElementList(elementList);
 		String value = cellChunk.getValue();
@@ -41,11 +41,11 @@ public class TableRowTest {
 
 	@Test
 	public void testRowChunk() {
-		AbstractTableChunk cellChunk = new GenericChunk();
+		GenericChunk cellChunk = new GenericChunk();
 		Element element = CMLUtil.parseQuietlyToDocument(TableFixtures.TDBLOCKFILE).getRootElement();
 		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
 //		svgElement.debug("XXX");
-		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_PATH);
+		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_OR_PATH_XPATH);
 		cellChunk.setElementList(elementList);
 	}
 	

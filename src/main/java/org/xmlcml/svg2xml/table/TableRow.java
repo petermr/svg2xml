@@ -3,14 +3,19 @@ package org.xmlcml.svg2xml.table;
 import java.util.ArrayList;
 import java.util.List;
 
+import nu.xom.Element;
+import nu.xom.Nodes;
+
 import org.apache.log4j.Logger;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlTh;
 import org.xmlcml.html.HtmlTr;
 
-public class TableRow extends AbstractTableChunk {
+public class TableRow extends GenericChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableRow.class);
 	private List<TableCell> cellList;
@@ -66,5 +71,16 @@ public class TableRow extends AbstractTableChunk {
 		}
 		sb.append("}");
 		return sb.toString();
+	}
+
+	public static HtmlElement convertBodyHeader(HtmlElement bodyOneTr) {
+		Nodes nodes = bodyOneTr.query(".//*[local-name()='td']");
+		HtmlElement tr = new HtmlTr();
+		for (int i = 0; i < nodes.size();i++) {
+			HtmlTh th = new HtmlTh();
+			tr.appendChild(th);
+			CMLUtil.transferChildren((Element) nodes.get(i), th);
+		}
+		return tr;
 	}
 }

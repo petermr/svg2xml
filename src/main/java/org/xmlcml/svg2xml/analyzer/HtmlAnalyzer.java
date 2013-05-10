@@ -74,8 +74,8 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 		this.setHtmlElement(htmlElement);
 	}
 
-	private void setHtmlElement(HtmlElement htmlElement) {
-		this.htmlElement = htmlElement;
+	void setHtmlElement(HtmlElement htmlElem) {
+		this.htmlElement = htmlElem;
 	}
 
 	/** creates HTML using the analyzer
@@ -130,7 +130,14 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 	}
 
 	public String getId() {
-		return htmlElement == null ? null : htmlElement.getId();
+		String id = null;
+		if (htmlElement != null) {
+			id = htmlElement.getId();
+			if (id == null) {
+				System.out.println("null id");
+			}
+		}
+		return id;
 	}
 
 	public void setClassAttribute(String value) {
@@ -213,7 +220,11 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 	
 	void outputElementAsHtml(File outputDir) {
 		if (outputDir != null) {
-			ChunkId chunkId = new ChunkId(this.getId());
+			String id = this.getId();
+			if (id == null) {
+				throw new RuntimeException("No id");
+			}
+			ChunkId chunkId = new ChunkId(id);
 			try {
 				outputDir.mkdirs();
 				String chunkFileRoot = null;
@@ -286,17 +297,19 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 		HtmlElement lastElement = lastAnalyzer.getHtmlElement();
 		LOG.trace("LAST "+lastElement.toXML());
 		HtmlP lastP = getLastPara(lastElement);
-		String lastS = lastP.getValue();
-		int l = lastS.length();
-		lastS = lastS.substring(Math.max(0, l-20));
+
+		//this is a mess
+//		String lastS = lastP.getValue();
+//		int l = lastS.length();
+//		lastS = lastS.substring(Math.max(0, l-20));
 		LOG.trace("THIS "+htmlElement.toXML());
 		HtmlP thisP = getFirstPara(htmlElement);
-		int idx = htmlElement.indexOf(thisP);
-		LOG.trace("THIS PARA "+thisP.toXML());
+		int idx = (thisP == null) ? -1 : htmlElement.indexOf(thisP);
+//		LOG.trace("THIS PARA "+thisP.toXML());
 		
-		String thisS = thisP.getValue();
-		thisS = thisS.substring(0, Math.min(20, thisS.length()));
-		LOG.trace("merging ["+lastAnalyzer.getId()+"... "+lastS+" ... "+thisS+" ..."+this.getId()+"]");
+//		String thisS = thisP.getValue();
+//		thisS = thisS.substring(0, Math.min(20, thisS.length()));
+//		LOG.trace("merging ["+lastAnalyzer.getId()+"... "+lastS+" ... "+thisS+" ..."+this.getId()+"]");
 		if (lastTopP!= null && thisP != null) {
 			addIdSeparator(lastTopP);
 			copyToFrom(lastTopP, thisP, 0);

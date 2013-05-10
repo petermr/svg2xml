@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.bouncycastle.asn1.esf.SPuri;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
@@ -11,7 +12,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
 
-public class TableBody extends AbstractTableChunk {
+public class TableBody extends GenericChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableBody.class);
 	private List<TableRow> rowList;
@@ -22,6 +23,10 @@ public class TableBody extends AbstractTableChunk {
 	
 	public TableBody(List<? extends SVGElement> elementList) {
 		super(elementList);
+	}
+
+	public TableBody(GenericChunk chunk) {
+		this(chunk.getElementList());
 	}
 
 	/** 
@@ -86,11 +91,13 @@ public class TableBody extends AbstractTableChunk {
 
 	public List<TableRow> createStructuredRows() {
 		createUnstructuredRows();
-		createHorizontalMask();
+		createHorizontalMaskWithTolerance(TableTable.HALF_SPACE);
 		horizontalMask.extendRangesBy(100.);
-		for (int i = 0; i < rowList.size(); i++) {
-			TableRow row = rowList.get(i);
-			row.createAndAnalyzeCells(horizontalMask);
+		if (rowList != null) {
+			for (int i = 0; i < rowList.size(); i++) {
+				TableRow row = rowList.get(i);
+				row.createAndAnalyzeCells(horizontalMask);
+			}
 		}
 		return rowList;
 	}
@@ -98,8 +105,10 @@ public class TableBody extends AbstractTableChunk {
 	public HtmlElement getHtml() {
 		createStructuredRows();
 		HtmlTable table = new HtmlTable();
-		for (TableRow row : rowList) {
-			table.appendChild(row.getHtml());
+		if (rowList != null) {
+			for (TableRow row : rowList) {
+				table.appendChild(row.getHtml());
+			}
 		}
 		return table;
 	}
