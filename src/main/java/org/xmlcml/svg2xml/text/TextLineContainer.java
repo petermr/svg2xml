@@ -719,6 +719,11 @@ public class TextLineContainer {
 
 	public HtmlElement createHtmlDivWithParas() {
 		List<TextLineGroup> textLineGroupList = this.getSeparatedTextLineGroupList();
+		LOG.trace("TLG "+textLineGroupList);
+		if (textLineGroupList.size() == 0) {
+			LOG.debug("TextLineList: "+textLineList);
+			// debug
+		}
 		boolean bb = false;
 		createHtmlElementWithParas(textLineGroupList);
 		return createdHtmlElement;

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -103,7 +104,8 @@ public class PDFAnalyzer /*implements Annotatable */{
 				this.analyzePDFFile(new File(name));
 			}
 		} else {
-			this.readFilenamesAndAnalyzePDFs(new File(name));
+			File file = new File(name);
+			this.readFilenamesAndAnalyzePDFs(file);
 		}
 	}
 
@@ -112,23 +114,36 @@ public class PDFAnalyzer /*implements Annotatable */{
 	 * @param file
 	 */
 	private void readFilenamesAndAnalyzePDFs(File file) {
-		if (file.exists() && ! file.isDirectory()) {
-			File parentFile = file.getParentFile();
-			try {
-				BufferedReader br = new BufferedReader(new FileReader(file));
-				while (true) {
-					String line = br.readLine();
-					if (line == null) {
-						break;
+		if (file.exists()) {
+			if (!file.isDirectory()) {
+				File parentFile = file.getParentFile();
+				try {
+					BufferedReader br = new BufferedReader(new FileReader(file));
+					while (true) {
+						String line = br.readLine();
+						if (line == null) {
+							break;
+						}
+						if (line.startsWith("#")) {
+							// comment
+						} else if (line.endsWith(SVGPlusConstantsX.DOT_PDF)) {
+							readAndAnalyzeFile(parentFile, line);
+						}
 					}
-					if (line.startsWith("#")) {
-						// comment
-					} else if (line.endsWith(SVGPlusConstantsX.DOT_PDF)) {
-						readAndAnalyzeFile(parentFile, line);
+				} catch (Exception e) {
+					throw new RuntimeException("Cannot read listing file: "+file, e);
+				}
+			} else {
+				File[] files = file.listFiles(new FilenameFilter() {
+					public boolean accept(File dir, String name) {
+						return name.endsWith(SVGPlusConstantsX.DOT_PDF);
+					}
+				});
+				if (files != null && files.length > 0) {
+					for (File pdf : files) {
+						createAnalyzerAndAnalyzePDF(pdf);
 					}
 				}
-			} catch (Exception e) {
-				throw new RuntimeException("Cannot read listing file: "+file, e);
 			}
 		}
 	}
@@ -138,12 +153,16 @@ public class PDFAnalyzer /*implements Annotatable */{
 		if (!inFile.exists()) {
 			LOG.error("PDF file does not exist: "+inFile);
 		} else {
-			try {
-				PDFAnalyzer analyzer = new PDFAnalyzer();
-				analyzer.analyzePDFFile(inFile);
-			} catch (Exception e) {
-				LOG.error("Cannot read file: "+inFile+" ("+e+")");
-			}
+			createAnalyzerAndAnalyzePDF(inFile);
+		}
+	}
+
+	private void createAnalyzerAndAnalyzePDF(File inFile) {
+		try {
+			PDFAnalyzer analyzer = new PDFAnalyzer();
+			analyzer.analyzePDFFile(inFile);
+		} catch (Exception e) {
+			LOG.error("Cannot read file: "+inFile+" ("+e+")");
 		}
 	}
 

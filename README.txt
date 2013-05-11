@@ -1,5 +1,11 @@
 =SVG2XML=
 
+==IMPORTANT NOTE==
+This software is ALPHA. This means it doesn't get everything right. Even if it were BETA it wouldn't.
+That's because content-mining is an inexact process and beacuse PDFs have NO information other than the 
+position of the primitives on the page. We are delighted to have comments, but be aware that some 
+problems will not be and some cannot be fixed.
+
 ==Dev version==
 The development version relies on:
 http://bitbucket.org/petermr/euclid-dev
@@ -44,10 +50,14 @@ java SVG2XML -i inputfile.pdf and or
 java SVG2XML -c commandfile.xml
 or some combination
 
-use
 java SVG2XML for usage()
 
-almost all control is delegated to the commandfile
+CURRENT
+java <classname> <file> works where <file> is:
+   - anything.pdf
+   - a file with a list of pdf files
+   - a directory containing PDF files (*.pdf)
+    
 
 ==Output==
 *-pagennn.xml - one for each page

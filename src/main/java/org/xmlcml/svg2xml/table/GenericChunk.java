@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
@@ -14,6 +15,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.svg2xml.text.TextLineContainer;
 
 /** superclass of cells, rows, etc in table
  * 
@@ -53,10 +55,10 @@ public class GenericChunk {
 	 * this may redefine or overflow the current extent of the cell
 	 * @param elementList
 	 */
-	public void setElementList(List<? extends SVGElement> elementList) {
+	public void setElementList(List<? extends SVGElement> elemList) {
 		this.elementList = new ArrayList<SVGElement>();
-		for (SVGElement element : elementList) {
-			this.elementList.add(element);
+		for (SVGElement elem : elemList) {
+			this.elementList.add(elem);
 		}
 	}
 
@@ -218,5 +220,25 @@ public class GenericChunk {
 
 	public HtmlElement getHtml() {
 		throw new RuntimeException("Must overide getHtml()");
+	}
+
+	protected HtmlElement createHtmlThroughTextLineContainer() {
+		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
+		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(characters);
+		HtmlElement htmlElement = textLineContainer.createHtmlDivWithParas();
+		return htmlElement;
+	}
+	
+	/** crude tools to remove style attributes
+	 * 
+	 * @param element
+	 * @return
+	 */
+	public static HtmlElement removeStyles(HtmlElement element) {
+		Nodes styles = element.query("//@style");
+		for (int i = 0; i < styles.size(); i++) {
+			styles.get(i).detach();
+		}
+		return element;
 	}
 }

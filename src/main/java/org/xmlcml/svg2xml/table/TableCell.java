@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.table;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTd;
 
@@ -18,7 +19,11 @@ public class TableCell extends GenericChunk {
 	 */
 	public HtmlElement getHtml() {
 		HtmlTd td = new HtmlTd();
-		td.appendChild(getValue());
+		HtmlElement cellBody = createHtmlThroughTextLineContainer();
+		if (cellBody != null) {
+			td.appendChild(cellBody);
+			cellBody = GenericChunk.removeStyles(cellBody);
+		}
 		return td;
 	}
 	

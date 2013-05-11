@@ -1,8 +1,6 @@
 package org.xmlcml.svg2xml.table;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +16,7 @@ import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
@@ -263,19 +262,19 @@ public class TableTable extends GenericChunk {
 	public List<GenericChunk> analyzeVerticalTextChunks() {
 		createVerticalTextChunks();
 		int index = 0;
-		for (GenericChunk AbstractTableChunk : genericTextChunkList) {
+		for (GenericChunk abstractTableChunk : genericTextChunkList) {
 //			AbstractTableChunk.createHorizontalMask();
-			AbstractTableChunk.createHorizontalMaskWithTolerance(HALF_SPACE);
-			int cols = AbstractTableChunk.getHorizontalMask().size();
+			abstractTableChunk.createHorizontalMaskWithTolerance(HALF_SPACE);
+			int cols = abstractTableChunk.getHorizontalMask().size();
 			GenericChunk abstractChunk = null;
 			if (cols == 1) {
-				abstractChunk = new TableCaption(AbstractTableChunk);
+				abstractChunk = new TableCaption(abstractTableChunk);
 			} else {
-				TableBody tableBody = new TableBody(AbstractTableChunk);
+				TableBody tableBody = new TableBody(abstractTableChunk);
 				tableBody.createStructuredRows();
 				abstractChunk = tableBody;
 			}
-			LOG.trace(">> "+AbstractTableChunk.getHorizontalMask());
+			LOG.trace(">> "+abstractTableChunk.getHorizontalMask());
 			// replace with new class
 			genericTextChunkList.set(index, abstractChunk);
 			index++;
@@ -300,7 +299,7 @@ public class TableTable extends GenericChunk {
 				}
 				body.appendChild(htmlElement);
 			} else if (htmlElement instanceof HtmlCaption) {
-				head.appendChild(htmlElement);
+				TableCaption.addCaptionTo(table, (HtmlCaption)htmlElement);
 			} else {
 				LOG.debug("HTML: "+htmlElement);
 			}
