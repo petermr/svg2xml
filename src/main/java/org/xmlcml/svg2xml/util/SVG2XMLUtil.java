@@ -75,15 +75,6 @@ public class SVG2XMLUtil {
 		}
 	}
 
-//	private static void printElement(String x, Element element) {
-//		int nChild = element.getChildCount();
-//		System.out.print(x+"...");
-//		for (int i = 0; i < nChild; i++){
-//			Node child = element.getChild(i);
-//			System.out.print("{"+child.toXML()+"}"+((child instanceof Element)? ((Element)child).getChildCount() : ""));
-//		}
-//	}
-
 	private static void appendText(Element e, Text text) {
 		if (e.getChildCount() == 0) {
 			e.appendChild(text);

@@ -92,18 +92,6 @@ public class TableTable extends GenericChunk {
 		
 	}
 		
-		
-		
-//		System.out.println("--------------------------------");
-		
-//		for (RealRange yGap : yGaps) {
-//			AbstractTableChunk tableChunk = new AbstractTableChunk();
-//			this.add(tableChunk);
-//			tableChunk.populateChunk(textList, pathBox.getXRange(), yGap);
-//		}
-//		this.analyze();
-//	}
-	
 	private RealRangeArray createVerticalMaskFromPaths() {
 	
 		this.pathList = PathAnalyzerX.removeDuplicatePaths(pathList);
@@ -133,16 +121,16 @@ public class TableTable extends GenericChunk {
 		if (otherChunkList.size() > 0) {
 			System.out.println("OTHER");
 			for (GenericChunk chunk : otherChunkList) { 
-				System.out.println(">> "+chunk);
+				LOG.trace(">> "+chunk);
 			}
 		}
-		LOG.debug("maxCol "+maxColumnChunkList.size());
-		LOG.debug("noCol "+noColumnChunkList.size());
-		LOG.debug("otherCol "+otherChunkList.size());
-		LOG.debug("caption "+captionChunk);
-		LOG.debug("header "+headerChunk);
-		LOG.debug("body "+bodyChunk);
-		LOG.debug("footer "+footerChunk);
+		LOG.trace("maxCol "+maxColumnChunkList.size());
+		LOG.trace("noCol "+noColumnChunkList.size());
+		LOG.trace("otherCol "+otherChunkList.size());
+		LOG.trace("caption "+captionChunk);
+		LOG.trace("header "+headerChunk);
+		LOG.trace("body "+bodyChunk);
+		LOG.trace("footer "+footerChunk);
 	}
 	
 	public HtmlTable createTable() {
@@ -301,7 +289,7 @@ public class TableTable extends GenericChunk {
 			} else if (htmlElement instanceof HtmlCaption) {
 				TableCaption.addCaptionTo(table, (HtmlCaption)htmlElement);
 			} else {
-				LOG.debug("HTML: "+htmlElement);
+				LOG.trace("HTML: "+htmlElement);
 			}
 		}
 		removeEmptyTables(body);

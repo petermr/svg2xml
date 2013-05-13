@@ -3,11 +3,14 @@ package org.xmlcml.svg2xml.analyzer;
 import junit.framework.Assert;
 import nu.xom.Element;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 
 public class FigureAnalyzerTest {
 
+	private final static Logger LOG = Logger.getLogger(FigureAnalyzerTest.class);
+	
 	@Test
 	public void testMatchShort() {
 		String s = "Fig. 1. foo";
@@ -52,7 +55,7 @@ public class FigureAnalyzerTest {
 	@Test
 	public void testDingbat() {
 		String s = "Figure 2. foo"+(char)10110+"bar";
-		System.out.println(s);
+		LOG.trace(s);
 		AbstractPageAnalyzerX figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
 		Integer i = FigureAnalyzerX.getSerial(FigureAnalyzerX.PATTERN, s);
 		Assert.assertEquals("serial", new Integer(2), i);
@@ -72,7 +75,7 @@ public class FigureAnalyzerTest {
 		add("u", e);
 		add("r", e);
 		add("e", e);
-		System.out.println(e.getValue());
+		LOG.trace(e.getValue());
 	}
 
 	private Element add(String s, Element e) {

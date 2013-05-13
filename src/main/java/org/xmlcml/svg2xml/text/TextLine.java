@@ -31,6 +31,7 @@ import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.text.FontStyle.Style;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -94,7 +95,6 @@ public class TextLine implements Iterable<SVGText> {
 	private Suscript suscript;
 	private Set<String> fontFamilySet;
 	private Multiset<String> fontFamilyMultiset;
-	private boolean isPrimary;
 
 	private void resetWhenLineContentChanged() {
 		characterList = null;
@@ -244,7 +244,7 @@ public class TextLine implements Iterable<SVGText> {
 			if (fontFamilySet.size() == 1) {
 				family = fontFamilySet.iterator().next();
 			} else {
-				System.out.println("FF"+fontFamilySet);
+				LOG.trace("FF"+fontFamilySet);
 			}
 		}
 		return family;
@@ -593,6 +593,15 @@ public class TextLine implements Iterable<SVGText> {
 		}
 		return word;
 	}
+	
+	public boolean isBold() {
+		for (SVGText character : characterList) {
+			String fontWeight = character.getFontWeight();
+			LOG.trace("F "+fontWeight);
+			if (!Style.BOLD.toString().equalsIgnoreCase(fontWeight)) return false;
+		}
+		return true;
+	}
 
 	public String toString() {
 		String s;
@@ -841,8 +850,8 @@ public class TextLine implements Iterable<SVGText> {
 	public Double getModalExcessWidth() {
 		RealArray excessWidthArray = getExcessWidthArray();
 //		excessWidthArray.sortAscending();
-		System.out.println(this.getLineContent());
-		System.out.println(excessWidthArray);
+		LOG.trace(this.getLineContent());
+		LOG.trace(excessWidthArray);
 		return -99.9; // junk
 	}
 
@@ -1155,14 +1164,6 @@ public class TextLine implements Iterable<SVGText> {
 		getBoundingBox();
 		RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
 		return xRange == null ? null : xRange.getMax();
-	}
-
-	public void setPrimary(boolean b) {
-		isPrimary = b;
-	}
-
-	public boolean isPrimary() {
-		return isPrimary;
 	}
 
 }

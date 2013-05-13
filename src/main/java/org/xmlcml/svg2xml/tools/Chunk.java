@@ -190,15 +190,15 @@ public class Chunk extends SVGG {
 			}
 			if (!bbox.isValid()) {
 				if (lastElement instanceof SVGText) {
-					LOG.debug("text w/o bbox "+lastElement.toXML());
-					LOG.debug("lastR2R "+lastR2R);
+					LOG.trace("text w/o bbox "+lastElement.toXML());
+					LOG.trace("lastR2R "+lastR2R);
 					SVGText svgText = (SVGText) lastElement;
 					String textContent = svgText.getText();
 					if (textContent == null) {
 						throw new RuntimeException("Null text");
 					}
-					LOG.debug("text "+textContent.length());
-					LOG.debug("char "+(textContent.length() > 0 ? "NULL" : textContent.charAt(0)));
+					LOG.trace("text "+textContent.length());
+					LOG.trace("char "+(textContent.length() > 0 ? "NULL" : textContent.charAt(0)));
 				}
 				throw new RuntimeException("Invalid box: "+cc+" / "+bbox.getXRange()+" / "+bbox.getYRange()+" /"+lastElement.getClass());
 			}

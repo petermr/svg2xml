@@ -184,7 +184,7 @@ public class GenericChunk {
 			}
 		}
 		String s = sb.toString();
-		LOG.debug("["+s+"]");
+		LOG.trace("["+s+"]");
 		return s;
 	}
 

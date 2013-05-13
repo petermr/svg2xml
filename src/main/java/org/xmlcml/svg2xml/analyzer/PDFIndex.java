@@ -122,7 +122,7 @@ public class PDFIndex {
 			Collections.sort(idList);
 			if (idList.size() > 1) {
 				String keyS = key.toString();
-				LOG.debug("DUPLICATES: "+title+" >"+ keyS.substring(0, Math.min(15, keyS.length()))+" ... "+"< "+idList);
+				LOG.trace("DUPLICATES: "+title+" >"+ keyS.substring(0, Math.min(15, keyS.length()))+" ... "+"< "+idList);
 				duplicateList.add(idList);
 				addUsedIdList(idList);
 			}
@@ -198,9 +198,9 @@ public class PDFIndex {
 					for (int j = 0; j  < intMatrix.getCols(); j++) {
 						IntArray column = intMatrix.extractColumnData(j);
 						if (column.isArithmeticProgression(1)) {
-							System.out.println("PROG "+column);
+							LOG.trace("PROG "+column);
 						} else if (column.getConstant() != null) {
-							System.out.println("CONS "+column);
+							LOG.trace("CONS "+column);
 						}
 					}
 				} catch (Exception e) {
@@ -218,7 +218,7 @@ public class PDFIndex {
 		TextFlattener textFlattener = new TextFlattener();
 		String htmlValue0 = getValueFromHtml(id0);
 		Pattern pattern = textFlattener.createIntegerPattern(htmlValue0);
-		LOG.debug("Flattening pattern "+pattern);
+		LOG.trace("Flattening pattern "+pattern);
 		return textFlattener;
 	}
 
@@ -250,7 +250,7 @@ public class PDFIndex {
 							}
 						}
 						if (set.size() == 1) {
-							LOG.debug("bbox "+set.toString());
+							LOG.trace("bbox "+set.toString());
 						}
 						duplicateBboxCount++;
 					} else if (title.equals(IMAGE)) {

@@ -144,7 +144,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 				childAnalyzer = createPathAnalyzer(pathList);
 				((MixedAnalyzer) analyzer).add(childAnalyzer);
 			}
-			LOG.debug("MIXED: "+analyzer);
+			LOG.trace("MIXED: "+analyzer);
 		}
 
 		return analyzer;
@@ -201,7 +201,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		String title = getTitle();
 		Integer serial = getSerial(pattern, content);
 		if (serial != null) {
-			LOG.debug(title+"-"+serial);
+			LOG.trace(title+"-"+serial);
 			ensureIdSerialList();
 			serialList.add(serial);
 			idList.add(id);

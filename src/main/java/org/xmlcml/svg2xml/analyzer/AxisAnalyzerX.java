@@ -77,7 +77,7 @@ public class AxisAnalyzerX extends AbstractPageAnalyzerX {
 	private PlotBox createPlotBox() {
 		if (horizontalAxis != null && verticalAxis != null) {
 			plotBox = new PlotBox(horizontalAxis, verticalAxis);
-			LOG.debug("PLOT BOX "+plotBox);
+			LOG.trace("PLOT BOX "+plotBox);
 			drawBox();
 		}
 		return plotBox;

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.GraphicsElement.FontWeight;
@@ -17,6 +18,8 @@ import org.xmlcml.svg2xml.tools.Chunk;
 
 public class FontStyleTest {
 
+	private final static Logger LOG = Logger.getLogger(FontStyleTest.class);
+	
 	private static final Object NORMAL_STYLE = new FontStyle(Style.NORMAL);
 	private static final Object BOLD_STYLE = new FontStyle(Style.BOLD);
 	private static final Object BOLD_ITALIC_STYLE = new FontStyle(""+Style.BOLD+""+Style.ITALIC);
@@ -56,7 +59,7 @@ public class FontStyleTest {
 		Assert.assertEquals("font style count", 7, leafChunks.size());
 		for (Chunk chunk : leafChunks) {
 			TextLine textLine = getTextFirstLineFromChunk(chunk);
-			System.out.println("FS "+textLine.getFontStyleSet().size()+" "+textLine.getFontStyleSet());
+			LOG.trace("FS "+textLine.getFontStyleSet().size()+" "+textLine.getFontStyleSet());
 		}
 //		ChunkAnalyzerX chunkAnalyzer = new ChunkAnalyzerX();
 //		chunkAnalyzer.analyzeChunk(leafChunks.get(0));

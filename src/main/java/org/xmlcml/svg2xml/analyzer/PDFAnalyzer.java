@@ -230,7 +230,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 			createAndAnalyzeSVGChunks(page);
 		}
 		System.out.println();
-		LOG.debug("IDS: "+pdfIndex.getUsedIdSet());
+		LOG.trace("IDS: "+pdfIndex.getUsedIdSet());
 		pdfIndex.createIndexes();
 		pdfIndex.AnalyzeDuplicates();
 		writeSvgPages(files);
@@ -290,7 +290,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 		}
 	}
 
-	private void createAndAnalyzeSVGChunks(int pageNumber) {
+	private void createAndAnalyzeSVGChunksOld(int pageNumber) {
 		ensurePDFIndex();
 		ensureHtmlEditor();
 		this.pageNumber = pageNumber;
@@ -312,11 +312,51 @@ public class PDFAnalyzer /*implements Annotatable */{
 		LOG.trace("created documentAction");
 		List<Chunk> chunkList = 
 				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);
-		LOG.debug("made chunks - takes time");
+		LOG.trace("made chunks - takes time");
 		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
 		LOG.trace("draw Boxes");
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		LOG.debug("read gList");
+		LOG.trace("read gList");
+		
+		SVGSVG svgOut = createSVGOut(pageNumber);
+		svgOutList.add(svgOut);
+		
+		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
+			SVGG gOrig = (SVGG) gList.get(ichunk);
+			SVGG gOut = copyChunkAnalyzeMakeId(pageNumber, gOrig, ichunk);
+			ensureGOutList();
+			svgOut.appendChild(gOut);
+			pdfIndex.addToindexes(gOut);
+		}
+		LOG.debug("read SVG "+svgPageFile);
+	}
+
+	private List<SVGElement> createSVGGListX() {
+		ensurePDFIndex();
+		ensureHtmlEditor();
+		String pageRoot = createPageRoot(pageNumber);
+		String pageSvg = fileRoot+"-"+pageRoot+SVGPlusConstantsX.DOT_SVG;
+		svgPageFile = new File(svgDocumentDir, pageSvg);
+//		if (svgPageFile.exists() && skipFile) {
+//			LOG.debug("Skipping: "+svgPageFile);
+//			return null;
+//		}
+		LOG.debug("reading SVG "+svgPageFile);
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(svgPageFile); // moderately expensive
+		processNonUnicodeCharactersInTitles(svg);
+		SemanticDocumentActionX semanticDocumentAction = 
+				SemanticDocumentActionX.createSemanticDocumentActionWithSVGPage(svg);
+		List<Chunk> chunkList = 
+				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);
+		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
+		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+		
+		return gList;
+	}
+	
+	private void createAndAnalyzeSVGChunks(int pageNumber) {
+		this.pageNumber = pageNumber;
+		List<SVGElement> gList = createSVGGListX();
 		
 		SVGSVG svgOut = createSVGOut(pageNumber);
 		svgOutList.add(svgOut);
@@ -429,7 +469,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 			String id = svgOut.getId();
 			LOG.trace("ID "+id);
 			if (pdfIndex.getUsedIdSet().contains(id)) {
-				LOG.debug("ANNOTATED: "+id);
+				LOG.trace("ANNOTATED: "+id);
 			}
 			CMLUtil.debug(
 				svgOut, new FileOutputStream(new File(outputDocumentDir, pageRoot+SVGPlusConstantsX.DOT_SVG)), 1);
@@ -453,7 +493,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 			List<String> idList = (Arrays.asList(ids.toArray(new String[0])));
 			Collections.sort(idList);
 			if (idList.size() > 1) {
-				LOG.debug("DUPLICATES: "+title+" >"+key+"< "+idList);
+				LOG.trace("DUPLICATES: "+title+" >"+key+"< "+idList);
 				duplicateList.add(idList);
 			}
 		}

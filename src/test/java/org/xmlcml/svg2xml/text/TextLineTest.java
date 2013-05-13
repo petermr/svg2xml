@@ -7,6 +7,7 @@ import java.util.Set;
 
 import junit.framework.Assert;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.cml.testutil.JumboTestUtils;
 import org.xmlcml.html.HtmlElement;
@@ -17,7 +18,10 @@ import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 
+
 public class TextLineTest {
+
+	private final static Logger LOG = Logger.getLogger(TextLineTest.class);
 
 	@Test
 	/** note this uses high characters (MINUS &#8722) instead of HYPHEN-MINUS)
@@ -161,7 +165,7 @@ public class TextLineTest {
 		Assert.assertNotNull("fontFamilyMultiset", fontFamilyMultiset);
 		Assert.assertEquals("single", 45, fontFamilyMultiset.size());
 		Assert.assertEquals("single", 1, fontFamilyMultiset.entrySet().size());
-		System.out.println(textLine8);
+		LOG.trace(textLine8);
 	}
 	
 	@Test
@@ -178,9 +182,9 @@ public class TextLineTest {
 		Iterator<Entry<String>> iterator = entrySet.iterator();
 		while (iterator.hasNext()) {
 			Entry<String> entry = iterator.next();
-			System.out.println(entry.getElement()+" "+entry.getCount());
+			LOG.trace(entry.getElement()+" "+entry.getCount());
 		}
-		System.out.println(textLine0);
+		LOG.trace(textLine0);
 	}
 	
 
@@ -191,7 +195,7 @@ public class TextLineTest {
 	// FIXTURES
 	private static TextLine getTextLine(File file, int lineNumber) {
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(file);
-		textLineContainer.getLinesInIncreasingY();
+//		textLineContainer.getLinesInIncreasingY();
 		List<TextLine> textLines = textLineContainer.getLinesInIncreasingY();
 		TextLine textLine = textLines.get(lineNumber);
 		return textLine;

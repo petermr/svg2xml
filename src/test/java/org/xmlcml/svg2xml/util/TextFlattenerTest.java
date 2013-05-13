@@ -6,10 +6,14 @@ import java.util.regex.Pattern;
 
 import junit.framework.Assert;
 
+import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.svg2xml.text.FontStyleTest;
 
 public class TextFlattenerTest {
+
+	private final static Logger LOG = Logger.getLogger(TextFlattenerTest.class);
 
 	@Test
 	public void testFlattenDigitsNull() {
@@ -75,7 +79,7 @@ public class TextFlattenerTest {
 		TextFlattener textFlattener = new TextFlattener();
 		textFlattener.createIntegerPattern("3 - 45");
 		List<Integer> integerList = textFlattener.captureIntegers("27 - 45");
-		System.out.println(">> "+integerList);
+		LOG.trace(">> "+integerList);
 	}
 
 	@Test

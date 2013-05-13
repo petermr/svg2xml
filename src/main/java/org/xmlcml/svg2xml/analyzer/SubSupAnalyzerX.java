@@ -207,7 +207,7 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 
 	private void debugLineIndex() {
 		for (int coord : sortedYCoords) {
-			System.out.println("Coord "+coord+": "+getDebugString(textByYCoordAndXCoord.get(coord)));
+			LOG.trace("Coord "+coord+": "+getDebugString(textByYCoordAndXCoord.get(coord)));
 		}
 	}
 

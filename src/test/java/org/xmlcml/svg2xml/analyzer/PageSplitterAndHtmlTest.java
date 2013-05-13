@@ -586,12 +586,12 @@ public class PageSplitterAndHtmlTest {
 		SVGElement g = gList.get(chunk);
 //		g.debug("GGG");
 		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) AbstractPageAnalyzerX.getAnalyzer(g);
-		LOG.debug("MixedAnalyzer "+mixedAnalyzer);
+		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
 		TextAnalyzerX textAnalyzer = mixedAnalyzer.getTextAnalyzer();
-		LOG.debug("TextAnalyzer "+textAnalyzer);
+		LOG.trace("TextAnalyzer "+textAnalyzer);
 		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
 		for (TextLine textLine : textLines) {
-			LOG.debug(textLine);
+			LOG.trace(textLine);
 		}
 		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
 		Element element = textAnalyzer.createHtmlDivWithParas();

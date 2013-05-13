@@ -19,14 +19,17 @@ public class TextLineGroup implements Iterable<TextLine> {
 
 	private final static Logger LOG = Logger.getLogger(TextLineGroup.class);
 	private List<TextLine> textLineList = null;
+	private TextLineContainer textLineContainer;
+	private int largestLine;
 	
-	public TextLineGroup() {
+	public TextLineGroup(TextLineContainer textLineContainer) {
 		textLineList = new ArrayList<TextLine>();
+		this.textLineContainer = textLineContainer;
 	}
 	
-	public TextLineGroup(List<TextLine> textLineList) {
-		this.textLineList = textLineList;
-	}
+//	public TextLineGroup(List<TextLine> textLineList) {
+//		this.textLineList = textLineList;
+//	}
 
 	public Iterator<TextLine> iterator() {
 		return textLineList.iterator();
@@ -44,24 +47,29 @@ public class TextLineGroup implements Iterable<TextLine> {
 		return textLineList.get(i);
 	}
 
-	public List<TextLineGroup> splitIntoUniqueChunks() {
-		IntArray primaryArray = createSerialNumbersOfPrimaryLines();
+	/** splits into groups based around the commonest font size
+	 * 
+	 * @param textLineContainer
+	 * @return
+	 */
+	public List<TextLineGroup> splitIntoUniqueChunks(TextLineContainer textLineContainer) {
+		IntArray commonestFontSizeArray = createSerialNumbersOfCommonestFontSizeLines();
 		List<TextLineGroup> splitArray = new ArrayList<TextLineGroup>();
-		if (primaryArray.size() < 2) {
+		if (commonestFontSizeArray.size() < 2) {
 			splitArray.add(this);
 		} else {
-			Integer lastPrimary = null;
+			Integer lastCommonestFontSizeSerial = null;
 			Integer groupStart = 0;
 			Double lastY = null;
 			for (int serial = 0; serial < textLineList.size(); serial++) {
 				TextLine textLine = this.get(serial);
 				Double currentY = textLine.getYCoord();
-				if (textLine.isPrimary()) {
-					if (lastPrimary != null) {
-						int delta = serial - lastPrimary;
-						// two adjacent primary lines
+				if (textLineContainer.isCommonestFontSize(textLine)) {
+					if (lastCommonestFontSizeSerial != null) {
+						int delta = serial - lastCommonestFontSizeSerial;
+						// two adjacent commonestFont lines
 						if (delta == 1) {
-							packageAsGroup(groupStart, lastPrimary, splitArray);
+							packageAsGroup(groupStart, lastCommonestFontSizeSerial, splitArray);
 							groupStart = serial;
 						} else if (delta == 2) {
 							TextLine midLine = this.textLineList.get(serial - 1);
@@ -72,7 +80,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 								packageAsGroup(groupStart, serial - 1, splitArray);
 								groupStart = serial;
 							} else {
-								packageAsGroup(groupStart, lastPrimary, splitArray);
+								packageAsGroup(groupStart, lastCommonestFontSizeSerial, splitArray);
 								groupStart = serial - 1;
 							}
 						} else if (delta == 3) {
@@ -81,16 +89,14 @@ public class TextLineGroup implements Iterable<TextLine> {
 							groupStart = serial-1;
 						} else {
 							reportErrorOrMaths(splitArray);
-//							reportProblem("too many lines between Primary "+lastPrimary+" / "+serial);
 						}
 					} else {
 						if (serial >= 2) {
 							reportErrorOrMaths(splitArray);
-//							reportProblem("too many lines before before Primary " + serial);
 						}
 						// continue processing
 					}
-					lastPrimary = serial;
+					lastCommonestFontSizeSerial = serial;
 					lastY = textLineList.get(serial).getYCoord();
 					// last line of group?
 					if (serial == textLineList.size()-1) {
@@ -102,32 +108,42 @@ public class TextLineGroup implements Iterable<TextLine> {
 		return splitArray;
 	}
 
-	private void reportProblem(String msg) {
-		throw new RuntimeException(msg);
-	}
+//	private void reportProblem(String msg) {
+//		throw new RuntimeException(msg);
+//	}
 
 	private TextLineGroup packageAsGroup(int groupStart, int groupEnd, List<TextLineGroup> splitArray) {
-		TextLineGroup group = new TextLineGroup();
+		TextLineGroup group = new TextLineGroup(textLineContainer);
+		Double maxFontSize = 0.0;
+		largestLine = -1;
+		int lineNumber = 0;
 		for (int i = groupStart; i <= groupEnd; i++) {
-			group.add(textLineList.get(i));
+			TextLine textLine = textLineList.get(i);
+			Double fontSize = textLine.getFontSize();
+			if (fontSize > maxFontSize) {
+				largestLine = lineNumber;
+				maxFontSize = fontSize;
+			}
+			lineNumber++;
+			group.add(textLine);
 		}
 		splitArray.add(group);
 		return group;
 	}
 
-	private IntArray createSerialNumbersOfPrimaryLines() {
+	private IntArray createSerialNumbersOfCommonestFontSizeLines() {
 		int iline = 0;
-		IntArray primaryArray = new IntArray();
+		IntArray commonestFontSizeArray = new IntArray();
 		for (TextLine textLine : textLineList) {
-			if (textLine.isPrimary()) {
-				primaryArray.addElement(iline);
-				if (primaryArray.size() > 1) {
-					LOG.trace("PRIMARY "+primaryArray.size());
+			if (textLineContainer.isCommonestFontSize(textLine)) {
+				commonestFontSizeArray.addElement(iline);
+				if (commonestFontSizeArray.size() > 1) {
+					LOG.trace("COMMONEST FONT SIZE "+commonestFontSizeArray.size());
 				}
 			}
 			iline++;
 		}
-		return primaryArray;
+		return commonestFontSizeArray;
 	}
 	
 	public String toString() {
@@ -150,7 +166,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 		} else if (this.textLineList.size() == 2) {
 			TextLine text0 = textLineList.get(0);
 			TextLine text1 = textLineList.get(1);
-			if (!text0.isPrimary() && !text1.isPrimary()) {
+			if (!textLineContainer.isCommonestFontSize(text0) && !textLineContainer.isCommonestFontSize(text1)) {
 				Double fontSize0 = text0.getFontSize();
 				Double fontSize1 = text1.getFontSize();
 				if (fontSize1 == null) {
@@ -170,11 +186,11 @@ public class TextLineGroup implements Iterable<TextLine> {
 					middleLine = text1;
 					subscript = null;
 				}
-			} else if (text0.isPrimary() && !text1.isPrimary()) {
+			} else if (textLineContainer.isCommonestFontSize(text0) && !textLineContainer.isCommonestFontSize(text1)) {
 					superscript = null;
 					middleLine = text0;
 					subscript = text1;
-			} else if (!text0.isPrimary() && text1.isPrimary()) {
+			} else if (!textLineContainer.isCommonestFontSize(text0) && textLineContainer.isCommonestFontSize(text1)) {
 				superscript = textLineList.get(0);
 				middleLine = textLineList.get(1);
 				subscript = null;
@@ -182,12 +198,11 @@ public class TextLineGroup implements Iterable<TextLine> {
 				for (TextLine tLine : textLineList) {
 					LOG.trace(">>>> "+tLine);
 				}
-				LOG.error("Only one primary allowed for 2 line textLineGroup");
+				LOG.error("Only one commonestFontSize allowed for 2 line textLineGroup");
 			}
 		} else if (this.textLineList.size() == 3) {
-			if (!textLineList.get(0).isPrimary() &&
-//				textLineList.get(1).isPrimary() && 
-				!textLineList.get(2).isPrimary()) {
+			if (!textLineContainer.isCommonestFontSize(textLineList.get(0)) &&
+				!textLineContainer.isCommonestFontSize(textLineList.get(2))) {
 				superscript = textLineList.get(0);
 				middleLine = textLineList.get(1);
 				subscript = textLineList.get(2);
@@ -207,9 +222,10 @@ public class TextLineGroup implements Iterable<TextLine> {
 		return outputTextLineList;
 	}
 
+	/** NYI */
 	private TextLineGroup reportErrorOrMathsSuscript() {
 		LOG.debug("Suscript problem: Maths or table? "+textLineList.size());
-		TextLineGroup group = new TextLineGroup();
+		TextLineGroup group = new TextLineGroup(textLineContainer);
 //	    splitArray.add(group);
 
 		for (TextLine textLine : textLineList) {
@@ -285,6 +301,22 @@ public class TextLineGroup implements Iterable<TextLine> {
 		List<TextLine> lineList = this.createSuscriptTextLineList();
 		HtmlElement element = TextLine.createHtmlElement(lineList);
 		return element;
+	}
+	
+	public TextLine getLargestLine() {
+		return (textLineList.get(largestLine));
+	}
+
+	public boolean isBold() {
+		return (textLineList.get(largestLine)).isBold();
+	}
+
+	public Double getFontSize() {
+		return (textLineList.get(largestLine)).getFontSize();
+	}
+
+	public List<TextLine> getTextLineList() {
+		return textLineList;
 	}
 	
 }

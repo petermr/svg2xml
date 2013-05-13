@@ -153,7 +153,7 @@ public class PageNormalizerActionX extends PageActionX  {
 
 	private void removeUnitTransforms(SVGElement element) {
 		Nodes transformAttributes = element.query(".//@transform");
-		LOG.debug("TRANSFORM "+transformAttributes.size());
+		LOG.trace("TRANSFORM "+transformAttributes.size());
 		for (int i = 0; i < transformAttributes.size(); i++) {
 			Attribute transformAttribute = (Attribute) transformAttributes.get(i);
 			String transformAttributeValue = transformAttribute.getValue();
@@ -298,7 +298,7 @@ public class PageNormalizerActionX extends PageActionX  {
 			element.applyTransform(t2);
 		}
 		Real2Range bbox = getSVGPage().getBoundingBox();
-		LOG.debug("BB "+bbox);
+		LOG.trace("BB "+bbox);
 		Real2 origin = new Real2(bbox.getXRange().getMin()+X_OFFSET, bbox.getYRange().getMin()+Y_OFFSET);
 		t2 = new Transform2(new Vector2(origin.multiplyBy(-1.0)));
 		for (SVGElement element : elements) {

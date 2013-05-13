@@ -150,8 +150,8 @@ public class Word extends SVGG {
 	public void addToParentAndReplaceCharacters(SVGElement parent) {
 		svgText.detach();
 		parent.appendChild(svgText);
-		LOG.debug(parent.getId()+" "+parent.getLocalName());
-		LOG.debug("adding SVG "+svgText.getValue()+" "+characters);
+		LOG.trace(parent.getId()+" "+parent.getLocalName());
+		LOG.trace("adding SVG "+svgText.getValue()+" "+characters);
 		addCoordsAttributeToText();
 		detachCharacters();
 	}

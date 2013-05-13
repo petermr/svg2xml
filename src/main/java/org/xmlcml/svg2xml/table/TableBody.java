@@ -48,7 +48,7 @@ public class TableBody extends GenericChunk {
 						}
 					}
 					rowChunk.splitHorizontally();
-					LOG.debug("ROW "+rowChunk);
+					LOG.trace("ROW "+rowChunk);
 				}
 			}
 	//		debugRows(rowElementList);
@@ -57,7 +57,7 @@ public class TableBody extends GenericChunk {
 
 	private void debugRows(List<SVGElement> elementList) {
 		int nrows = elementList.size();
-		System.out.println("ROWS "+nrows);
+		LOG.trace("ROWS "+nrows);
 		for (SVGElement element : elementList) {
 			
 		}

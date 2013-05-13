@@ -228,11 +228,11 @@ public class TextChunk {
 	
 	public void debug() {
 		for (WordSequence wordSequence : wordSequenceList) {
-			System.out.println("WS> "+wordSequence.toXML()+" "+wordSequence.getStringValue());
+			LOG.trace("WS> "+wordSequence.toXML()+" "+wordSequence.getStringValue());
 		}
 		if (paragraphList != null) {
 			for (Paragraph paragraph : paragraphList) {
-				System.out.println("P> "+paragraph.toXML());
+				LOG.trace("P> "+paragraph.toXML());
 			}
 		}
 	}

@@ -131,7 +131,7 @@ public class DocumentIteratorActionX extends DocumentActionX {
 
 	private void processInputFileList() {
 		for (File infile : infileList) {
-			LOG.debug("file "+infile);
+			LOG.trace("file "+infile);
 			semanticDocumentActionX.setVariable(INPUT_FILE, infile);
 			outdir = outdir != null ? outdir : infile.getParentFile();
 			outdir.mkdirs();
@@ -200,13 +200,11 @@ public class DocumentIteratorActionX extends DocumentActionX {
 	}
 
 	private void createHtmlMenuDisplay() {
-//		LOG.debug("FILES "+rawDirList.size());
 		MenuSystem menuSystem = new MenuSystem(infile);
 		menuSystem.setRoot("/../"+SVGPlusConstantsX.OUT+CMLConstants.S_SLASH+SVGPlusConstantsX.INDEX_HTML);
 		menuSystem.setLabel("../../");
 		menuSystem.setRowWidth(100);
 		menuSystem.setAddPdf(false);
-//		menuSystem.writeDisplayFiles(rawDirList, "_dir");
 
 	}
 

@@ -119,7 +119,7 @@ public class ChunkXTest {
 		SemanticDocumentActionX semanticDocumentAction = SemanticDocumentActionX.createSemanticDocumentActionWithSVGPageFile(Fixtures.PAGE0_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
 		chunk.createElementListAndCalculateBoundingBoxes();
-		LOG.debug("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
+		LOG.trace("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
 		List<Chunk> chunkList = chunk.splitIntoChunks(10.0, BoxEdge.YMIN);
 		Assert.assertNotNull("split list not null", chunkList);
 		Assert.assertEquals("split list ", 15, chunkList.size());
@@ -150,7 +150,7 @@ public class ChunkXTest {
 		SemanticDocumentActionX semanticDocumentAction = SemanticDocumentActionX.createSemanticDocumentActionWithSVGPageFile(Fixtures.AJC6_SVG);
 		Chunk chunk = new Chunk(semanticDocumentAction.getPageEditor().getSVGPage());
 		chunk.createElementListAndCalculateBoundingBoxes();
-		LOG.debug("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
+		LOG.trace("BBOXES "+chunk.getBoundingBoxManager().getBBoxList().size());
 		List<Chunk> chunkList = chunk.splitIntoChunks(1.0, BoxEdge.YMIN);
 		Assert.assertNotNull("split list not null", chunkList);
 		Assert.assertEquals("split list ", 25, chunkList.size());

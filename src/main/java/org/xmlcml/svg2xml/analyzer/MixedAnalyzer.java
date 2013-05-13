@@ -98,7 +98,7 @@ public class MixedAnalyzer extends AbstractPageAnalyzerX {
 
 	public void add(AbstractPageAnalyzerX analyzer) {
 		ensureAnalyzerList();
-		LOG.debug("Added "+analyzer);
+		LOG.trace("Added "+analyzer);
 		setTypedAnalyzer(analyzer);
 		analyzerList.add(analyzer);
 	}

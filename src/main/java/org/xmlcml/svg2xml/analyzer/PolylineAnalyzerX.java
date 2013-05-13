@@ -99,11 +99,11 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public void printLists(String title, Map<Integer, List<SVGLine>> map) {
-		System.out.println(title);
+		LOG.trace(title);
 		List<Integer> ii = Arrays.asList(map.keySet().toArray(new Integer[0]));
 		Collections.sort(ii);
 		for (Integer i : ii) {
-			System.out.println(i+": "+((List<SVGLine>)map.get(i)).size());
+			LOG.trace(i+": "+((List<SVGLine>)map.get(i)).size());
 		}
 	}
 
@@ -192,10 +192,10 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
 		for (SVGPolyline polyline : polylines) {
 			SVGG parentG = (SVGG) polyline.getParent();
 			Real2Range polyBox = polyline.getBoundingBox();
-			LOG.debug("Polyline "+polyBox);
+			LOG.trace("Polyline "+polyBox);
 			if (boxRange.includes(polyBox)) {
 				Real2Array polylineCoords = polyline.getReal2Array();
-				LOG.debug("COORDS "+polylineCoords.size());
+				LOG.trace("COORDS "+polylineCoords.size());
 				Axis horizontalAxis = plotBox.getHorizontalAxis();
 				Axis verticalAxis = plotBox.getVerticalAxis();
 				CMLArray xArray = createCoordinateArray(polylineCoords, horizontalAxis, LineOrientation.HORIZONTAL);
@@ -320,7 +320,7 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
 
 
 	private void printPolylines(List<SVGPolyline> polylineList) {
-		System.out.println("polyline "+polylineList.size());
+		LOG.trace("polyline "+polylineList.size());
 		for (SVGPolyline polyline : polylineList) {
 			List<org.xmlcml.graphics.svg.SVGLine> lineList = polyline.createLineList();
 			int size = lineList.size();

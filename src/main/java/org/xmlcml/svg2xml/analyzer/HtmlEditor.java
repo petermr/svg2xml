@@ -63,12 +63,12 @@ public class HtmlEditor {
 			LOG.trace("Class "+classAttribute+" "+classAttribute0+" "+htmlAnalyzer.getAnalyzer());
 			if (classAttribute == null) { 
 				mergedHtmlAnalyzerList.add(htmlAnalyzer);
-				LOG.debug("merging "+id);
+				LOG.trace("merging "+id);
 				merge(lastAnalyzer, htmlAnalyzer, textDiv);
 				lastAnalyzer = htmlAnalyzer;
 			} else if (HtmlAnalyzer.OMIT.equals(classAttribute)) {
 				// already designated as OMIT
-				LOG.debug("OMITTED "+id);
+				LOG.trace("OMITTED "+id);
 			} else if (FigureAnalyzerX.TITLE.equals(classAttribute0)) {
 				htmlAnalyzer.setChunkType(classAttribute0);
 				figureHtmlAnalyzerList.add(htmlAnalyzer);
@@ -77,9 +77,9 @@ public class HtmlEditor {
 				htmlAnalyzer.setId(id);
 				htmlAnalyzer.setChunkType(classAttribute0);
 				tableHtmlAnalyzerList.add(htmlAnalyzer);
-				LOG.debug(classAttribute+" = "+id);
+				LOG.trace(classAttribute+" = "+id);
 			} else {
-				LOG.debug("untreated CLASS "+classAttribute);
+				LOG.trace("untreated CLASS "+classAttribute);
 			}
 			
 		}
@@ -156,9 +156,9 @@ public class HtmlEditor {
 		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
 			String chunkType = htmlAnalyzer.addTypeSerialAttributes();
 			if (FigureAnalyzerX.TITLE.equals(chunkType)) {
-				LOG.debug("FIG FIX");
+				LOG.trace("FIG FIX");
 				if (htmlAnalyzer.containsDivImage()) {
-					LOG.debug("***********IMG************");
+					LOG.trace("***********IMG************");
 				} else {
 					HtmlAnalyzer previousAnalyzer = htmlAnalyzer.getPreviousHtmlAnalyzer(htmlAnalyzerByIdMap);
 					htmlAnalyzer.addImageDivTo(previousAnalyzer);
@@ -331,7 +331,7 @@ public class HtmlEditor {
 		
 		if (analyzer instanceof MixedAnalyzer) {
 			MixedAnalyzer mixedAnalyzer = ((MixedAnalyzer)analyzer);
-			LOG.debug("M "+mixedAnalyzer);
+			LOG.trace("M "+mixedAnalyzer);
 			TextAnalyzerX textAnalyzer = mixedAnalyzer.getTextAnalyzer();
 			if (textAnalyzer == null) {
 				LOG.error("Table has no text so cannot process");

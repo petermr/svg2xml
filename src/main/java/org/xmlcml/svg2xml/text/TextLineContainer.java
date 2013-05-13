@@ -14,6 +14,7 @@ import java.util.Set;
 import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
@@ -46,6 +47,9 @@ public class TextLineContainer {
 
 	private static final Logger LOG = Logger.getLogger(TextLineContainer.class);
 
+	/** default ratio for "isLargerThan" */
+	public static final double LARGER_FONT_SIZE_RATIO = 1.02;
+
 	private TextAnalyzerX textAnalyzer;
 	
 	private List<TextLine> linesWithCommonestFont;
@@ -72,8 +76,8 @@ public class TextLineContainer {
 	private List<Real2Range> textLineChunkBoxes;
 
 	private List<TextLineGroup> initialTextLineGroupList;
-	private List<TextLine> primaryTextLineList;
-	private List<TextLineGroup> textLineGroupList;
+	private List<TextLine> commonestFontSizeTextLineList;
+//	private List<TextLineGroup> textLineGroupList;
 
 	private List<TextLineGroup> separatedTextLineGroupList;
 
@@ -154,6 +158,10 @@ public class TextLineContainer {
 		}
 		return textLineContentList;
 	}
+	
+	public List<TextLine> getTextLineList() {
+		return textLineList;
+	}
 
 	public void insertSpaces() {
 		if (textLineList != null) {
@@ -200,10 +208,21 @@ public class TextLineContainer {
 	public void setTextLines(List<TextLine> textLineList) {
 		this.textLineList = new ArrayList<TextLine>();
 		for (TextLine textLine : textLineList) {
-			this.textLineList.add(textLine);
+			add(textLine);
 		}
 	}
+
+	private void add(TextLine textLine) {
+		ensureTextLineList();
+		this.textLineList.add(textLine);
+	}
 	
+	private void ensureTextLineList() {
+		if (this.textLineList == null) {
+			this.textLineList = new ArrayList<TextLine>();
+		}
+	}
+
 	public List<TextLine> getLinesWithLargestFont() {
 		if (linesWithLargestFont == null) {
 			linesWithLargestFont = new ArrayList<TextLine>();
@@ -510,45 +529,36 @@ public class TextLineContainer {
 	}
 
 	/**
-	 * The PRIMARY lines are the commonest with the most common features. 
 	 * This is heuristic. At present it is font-size equality. Font families
 	 * are suspect as there are "synonyms", e.g. TimesRoman and TimesNR
 	 * 
 	 * @return
 	 */
-	public List<TextLine> getPrimaryTextLineList() {
-		if (primaryTextLineList == null) {
-			String commonestFontFamily = getCommonestFontFamily();
+	public List<TextLine> getCommonestFontSizeTextLineList() {
+		if (commonestFontSizeTextLineList == null) {
 			SvgPlusCoordinate commonestFontSize = getCommonestFontSize();
 			Double commonestFontSizeValue = (commonestFontSize == null) ?
 					null : commonestFontSize.getDouble();
-			primaryTextLineList = new ArrayList<TextLine>();
+			commonestFontSizeTextLineList = new ArrayList<TextLine>();
 			for (TextLine textLine : textLineList) {
 				Double fontSize = textLine.getFontSize();
-				if (fontSize != null && Real.isEqual(fontSize, commonestFontSizeValue, 0.01) 
-						// omit as fontFamily can change within line :-( e.g. Times-Roman and TimesNR
-						// && commonestFontFamily.equals(textLine.getFontFamily()) 
-						) {
-					primaryTextLineList.add(textLine);
-					LOG.trace("PRIMARY "+textLine);
-					textLine.setPrimary(true);
-				} else {
-					textLine.setPrimary(false);
+				if (fontSize != null && Real.isEqual(fontSize, commonestFontSizeValue, 0.01)) {
+					commonestFontSizeTextLineList.add(textLine);
+					LOG.trace("COMMONEST FONT SIZE "+textLine);
 				}
 			}
 		}
-		LOG.trace("primary "+primaryTextLineList.size());
-		return primaryTextLineList;
+		return commonestFontSizeTextLineList;
 	}
 
 	public List<TextLineGroup> getSeparatedTextLineGroupList() {
 		if (separatedTextLineGroupList == null) {
-			getPrimaryTextLineList();
+			getCommonestFontSizeTextLineList();
 			getInitialTextLineGroupList();
 			separatedTextLineGroupList = new ArrayList<TextLineGroup>();
 			int i = 0;
 			for (TextLineGroup textLineGroup : initialTextLineGroupList) {
-				List<TextLineGroup> splitChunks = textLineGroup.splitIntoUniqueChunks();
+				List<TextLineGroup> splitChunks = textLineGroup.splitIntoUniqueChunks(this);
 				for (TextLineGroup textLineChunk0 : splitChunks) {
 					separatedTextLineGroupList.add(textLineChunk0);
 				}
@@ -572,13 +582,13 @@ public class TextLineContainer {
 				LOG.trace(">> "+textLine.getLineString());
 				if (bbox == null) {
 					bbox = bbox0;
-					textLineGroup = new TextLineGroup();
+					textLineGroup = new TextLineGroup(this);
 					addBoxAndLines(bbox, textLineGroup);
 				} else {
 					Real2Range intersectionBox = bbox.intersectionWith(bbox0);
 					if (intersectionBox == null) {
 						bbox = bbox0;
-						textLineGroup = new TextLineGroup();
+						textLineGroup = new TextLineGroup(this);
 						addBoxAndLines(bbox, textLineGroup);
 					} else {
 						bbox = bbox.plusEquals(bbox0);
@@ -696,10 +706,6 @@ public class TextLineContainer {
 		return textLineContainer;
 	}
 
-	public List<TextLine> getTextlineList() {
-		return textLineList;
-	}
-
 	public static HtmlElement createHtmlDiv(List<TextLineGroup> textLineGroupList) {
 		HtmlDiv div = new HtmlDiv();
 		for (TextLineGroup group : textLineGroupList) {
@@ -721,7 +727,7 @@ public class TextLineContainer {
 		List<TextLineGroup> textLineGroupList = this.getSeparatedTextLineGroupList();
 		LOG.trace("TLG "+textLineGroupList);
 		if (textLineGroupList.size() == 0) {
-			LOG.debug("TextLineList: "+textLineList);
+			LOG.trace("TextLineList: "+textLineList);
 			// debug
 		}
 		boolean bb = false;
@@ -735,15 +741,15 @@ public class TextLineContainer {
 	 * @return
 	 */
 	 public HtmlElement createHtmlElementWithParas(List<TextLineGroup> textLineGroupList) {
-		List<TextLine> primaryTextLineList = this.getPrimaryTextLineList();
+		List<TextLine> commonestTextLineList = this.getCommonestFontSizeTextLineList();
 		createdHtmlElement = null;
-		if (primaryTextLineList.size() == 0){
+		if (commonestTextLineList.size() == 0){
 			 createdHtmlElement = null;
-		} else if (primaryTextLineList.size() == 1){
-			 createdHtmlElement = primaryTextLineList.get(0).createHtmlLine();
+		} else if (commonestTextLineList.size() == 1){
+			 createdHtmlElement = commonestTextLineList.get(0).createHtmlLine();
 		} else {
 			HtmlElement rawDiv = createHtmlDiv(textLineGroupList);
-			createdHtmlElement = createDivWithParas(primaryTextLineList, rawDiv);
+			createdHtmlElement = createDivWithParas(commonestTextLineList, rawDiv);
 		}
 		return createdHtmlElement;
 	}
@@ -839,4 +845,237 @@ public class TextLineContainer {
 		return starts;
 	}
 
+	public boolean lineIsLargerThanCommonestFontSize(int lineNumber) {
+		TextLine textLine = (lineNumber < 0 || lineNumber >= textLineList.size()) ?
+				null : textLineList.get(lineNumber);
+		return lineIsLargerThanCommonestFontSize(textLine);
+	}
+
+	public boolean lineIsLargerThanCommonestFontSize(TextLine textLine) {
+		boolean isLargerThan = false;
+		Double commonestFontSize = getCommonestFontSize().getDouble();
+		if (textLine != null && commonestFontSize != null) {
+			Double fontSize = textLine.getFontSize();
+			if (fontSize != null) {
+				isLargerThan = fontSize / commonestFontSize > LARGER_FONT_SIZE_RATIO;
+			}
+		}
+		return isLargerThan;
+	}
+
+	public boolean isCommonestFontSize(TextLine textLine) {
+		this.getCommonestFontSizeTextLineList();
+		return textLine != null && commonestFontSizeTextLineList.contains(textLine);
+	}
+
+//	public boolean isCommonestFontSize(int i) {
+//		TextLine textLine = (i < 0 || i >= textLineList.size()) ?
+//				null : textLineList.get(i);
+//		return isCommonestFontSize(textLine);
+//	}
+
+
+	public boolean isCommonestFontSize(TextLineGroup textLineGroup) {
+		this.getCommonestFontSizeTextLineList();
+		TextLine largestLine = textLineGroup.getLargestLine();
+		return textLineGroup != null && commonestFontSizeTextLineList.contains(largestLine);
+	}
+
+//	public boolean isCommonestFontSize(int i) {
+//		getSeparatedTextLineGroupList();
+//		TextLineGroup textLineGroup = (i < 0 || i >= separatedTextLineGroupList.size()) ?
+//				null : separatedTextLineGroupList.get(i);
+//		return isCommonestFontSize(textLineGroup);
+//	}
+
+	public boolean lineGroupIsLargerThanCommonestFontSize(int lineNumber) {
+		TextLine textLine = (lineNumber < 0 || lineNumber >= textLineList.size()) ?
+				null : textLineList.get(lineNumber);
+		return lineIsLargerThanCommonestFontSize(textLine);
+	}
+
+	public boolean lineGroupIsLargerThanCommonestFontSize(TextLineGroup textLineGroup) {
+		boolean isLargerThan = false;
+		Double commonestFontSize = getCommonestFontSize().getDouble();
+		if (textLineGroup != null && commonestFontSize != null) {
+			Double fontSize = textLineGroup.getFontSize();
+			if (fontSize != null) {
+				isLargerThan = fontSize / commonestFontSize > LARGER_FONT_SIZE_RATIO;
+			}
+		}
+		return isLargerThan;
+	}
+
+	
+	/** split after line where font size changes to/from bigger than commonest
+	 * dangerous if there are sub or superscripts (use splitGroupBiggerThanCommonest)
+	 * @return
+	 */
+	public IntArray splitBiggerThanCommonest() {
+		Double commonestFontSize = this.getCommonestFontSize().getDouble();
+		IntArray splitArray = new IntArray();
+		for (int i = 0; i < textLineList.size() - 1; i++) {
+			TextLine textLineA = textLineList.get(i);
+			Double fontSizeA = textLineA.getFontSize();
+			TextLine textLineB = textLineList.get(i+1);
+			Double fontSizeB = textLineB.getFontSize();
+			if (fontSizeA != null && fontSizeB != null) {
+				double ratioAB = fontSizeA / fontSizeB;
+				// line increases beyond commonest size?
+				if (Real.isEqual(fontSizeA, commonestFontSize, 0.01) 
+						&& ratioAB < 1./LARGER_FONT_SIZE_RATIO) {
+					splitArray.addElement(i);
+				} else if (Real.isEqual(fontSizeB, commonestFontSize, 0.01) 
+						&& ratioAB > LARGER_FONT_SIZE_RATIO) {
+					splitArray.addElement(i);
+				}
+			}
+		}
+		return splitArray;
+	}
+
+	
+	/** split after textLineGroup where font size changes to/from bigger than commonest
+	 * 
+	 * @return
+	 */
+	public IntArray splitGroupBiggerThanCommonest() {
+		getSeparatedTextLineGroupList();
+		Double commonestFontSize = this.getCommonestFontSize().getDouble();
+		IntArray splitArray = new IntArray();
+		for (int i = 0; i < separatedTextLineGroupList.size() - 1; i++) {
+			TextLineGroup textLineGroupA = separatedTextLineGroupList.get(i);
+			Double fontSizeA = textLineGroupA.getFontSize();
+			TextLineGroup textLineB = separatedTextLineGroupList.get(i+1);
+			Double fontSizeB = textLineB.getFontSize();
+			if (fontSizeA != null && fontSizeB != null) {
+				double ratioAB = fontSizeA / fontSizeB;
+				// line increases beyond commonest size?
+				if (Real.isEqual(fontSizeA, commonestFontSize, 0.01) 
+						&& ratioAB < 1./LARGER_FONT_SIZE_RATIO) {
+					splitArray.addElement(i);
+				} else if (Real.isEqual(fontSizeB, commonestFontSize, 0.01) 
+						&& ratioAB > LARGER_FONT_SIZE_RATIO) {
+					splitArray.addElement(i);
+				}
+			}
+		}
+		return splitArray;
+	}
+
+	/** split the textLineContainer after the lines in array.
+	 * if null or size() == 0, returns list with 'this'. so a returned list of size 0
+	 * effectively does nothing
+	 * @param afterLineGroups if null or size() == 0, returns list with 'this';
+	 * @return
+	 */
+	public List<TextLineContainer> splitLineGroupsAfter(IntArray afterLineGroups) {
+		getSeparatedTextLineGroupList();
+		List<TextLineContainer> textLineContainerList = new ArrayList<TextLineContainer>();
+		if (afterLineGroups == null || afterLineGroups.size() == 0) {
+			textLineContainerList.add(this);
+		} else {
+			int start = 0;
+			for (int i = 0; i < afterLineGroups.size();i++) {
+				int lineNumber = afterLineGroups.elementAt(i);
+				if (lineNumber > separatedTextLineGroupList.size() -1) {
+					throw new RuntimeException("bad index: "+lineNumber);
+				}
+				TextLineContainer newTextLineContainer = createTextLineContainer(start, lineNumber);
+				textLineContainerList.add(newTextLineContainer);
+				start = lineNumber + 1;
+			}
+			TextLineContainer newTextLineContainer = createTextLineContainer(start, separatedTextLineGroupList.size() - 1);
+			textLineContainerList.add(newTextLineContainer);
+		}
+		return textLineContainerList;
+	}
+
+	private TextLineContainer createTextLineContainer(int startLineGroup, int lineGroupNumber) {
+		getSeparatedTextLineGroupList();
+		TextLineContainer textLineContainer = new TextLineContainer(textAnalyzer);
+		for (int iGroup = startLineGroup; iGroup <= lineGroupNumber; iGroup++) {
+			TextLineGroup textLineGroup = separatedTextLineGroupList.get(iGroup);
+			List<TextLine> textLineList = textLineGroup.getTextLineList();
+			textLineContainer.add(textLineList);
+		}
+		return textLineContainer;
+	}
+
+	private void add(List<TextLine> textLineList) {
+		for (TextLine textLine : textLineList) {
+			this.add(textLine);
+		}
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		if (textLineList == null) {
+			sb.append("null");
+		} else {
+			sb.append("TextLineContainer: "+ textLineList.size());
+			for (TextLine textLine :textLineList) {
+				sb.append(textLine.toString()+"\n");
+			}
+		}
+		return sb.toString();
+	}
+
+	/** splits bold line(s) from succeeeding ones.
+	 * may trap smaller headers - must catch this later
+	 * @return
+	 */
+	public List<TextLineContainer> splitBoldHeader() {
+		getSeparatedTextLineGroupList();
+		List<TextLineContainer> splitList = null;
+		if (separatedTextLineGroupList.size() > 0) {
+			int after = -1;
+			for (int i = 0; i < separatedTextLineGroupList.size(); i++) {
+				if (!separatedTextLineGroupList.get(i).isBold()) {
+					break;
+				}
+				after = i;
+			}
+			if (after >= 0) {
+				IntArray splitter = new IntArray(new int[]{after});
+				splitList = this.splitLineGroupsAfter(splitter);
+			}
+		}
+		return splitList;
+	}
+	
+	/** splits line(s) on fontSize.
+	 * @return
+	 */
+	public IntArray getSplitArrayForFontSizeChange() {
+		double EPS = 0.01;
+		getSeparatedTextLineGroupList();
+		List<TextLineContainer> splitList = null;
+		Double currentFontSize = null;
+		IntArray splitArray = new IntArray();
+		if (separatedTextLineGroupList.size() > 0) {
+			for (int i = 0; i < separatedTextLineGroupList.size(); i++) {
+				Double fontSize = separatedTextLineGroupList.get(i).getFontSize();
+				if (currentFontSize == null) {
+					currentFontSize = fontSize;
+				} else if (!Real.isEqual(fontSize, currentFontSize, EPS)) {
+					splitArray.addElement(i - 1);
+				}
+			}
+		}
+		return splitArray;
+	}
+	
+	/** splits line(s) on fontSize.
+	 * @return
+	 */
+	public List<TextLineContainer> splitOnFontSizeChange() {
+		IntArray splitter = getSplitArrayForFontSizeChange();
+		List<TextLineContainer> splitList = null;
+		if (splitter != null) {
+			splitList = this.splitLineGroupsAfter(splitter);
+		}
+		return splitList;
+	}
+	
 }

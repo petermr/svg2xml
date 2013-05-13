@@ -47,11 +47,11 @@ public class PageFontSizeAnalyzerX extends AbstractPageAnalyzerX {
 	
 	public void analyze() {
 		elementsByFontSize = ArrayListMultimap.create();
-		LOG.debug("getting font sizes");
+		LOG.trace("getting font sizes");
 		textList = SVGUtil.getQuerySVGElements(pageEditorX.getSVGPage(), "//svg:text[@font-size]");
-		LOG.debug("creating maps");
+		LOG.trace("creating maps");
 		createMapsForElementsByFontSize();
-		LOG.debug("created maps");
+		LOG.trace("created maps");
 	}
 
 	public Multimap<Integer, SVGElement> createMapsForElementsByFontSize() {

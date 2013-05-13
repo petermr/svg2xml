@@ -128,7 +128,7 @@ public class WordSequence extends SVGG implements Iterable<Word> {
 		for (int i = 0 /** why 1 */; i < wordList.size(); i++) {
 			Word word = wordList.get(i);
 			ss[i] = word.getStringValue();
-			LOG.debug("WORD "+word.getId());
+			LOG.trace("WORD "+word.getId());
 		}
 		try {
 			IntArray intArray = new IntArray(ss);

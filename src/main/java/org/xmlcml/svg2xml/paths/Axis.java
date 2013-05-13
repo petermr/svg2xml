@@ -242,7 +242,7 @@ public class Axis {
 		for (SVGElement text : texts) {
 			tspanCount += ((SVGText)text).getChildTSpans().size();
 		}
-		LOG.debug(msg+" TSPANS****************"+tspanCount);
+		LOG.trace(msg+" TSPANS****************"+tspanCount);
 	}
 	
 	public void createAxisGroup() {
@@ -478,7 +478,7 @@ public class Axis {
 				List<SVGPolyline> polylines = SVGPolyline.extractPolylines(SVGUtil.getQuerySVGElements(null, "./svg:g/svg:polyline"));
 				transformArrayFromPixelsToScale(polylines);
 			} else {
-				LOG.debug("ARRAY: "+majorTickMarkValues.getSize()+ " != "+majorTickJointList.size());
+				LOG.trace("ARRAY: "+majorTickMarkValues.getSize()+ " != "+majorTickJointList.size());
 			}
 		}
 	}
@@ -525,7 +525,7 @@ public class Axis {
 			SVGText text = numericTexts.get(0);
 			String dataType = text.getAttributeValue(TypedNumber.DATA_TYPE);
 			String numbers = text.getAttributeValue(TypedNumber.NUMBERS);
-			LOG.debug("NUMBERS: "+numbers);
+			LOG.trace("NUMBERS: "+numbers);
 			if (CMLConstants.XSD_INTEGER.equals(dataType)) {
 				IntArray intArray = new IntArray(numbers);
 				array = new CMLArray(intArray.getArray());
@@ -580,7 +580,7 @@ public class Axis {
 					}
 				}
 			}
-			LOG.debug("NUMERIC "+numericTexts.size()+" NON-NUM "+nonNumericTexts.size());
+			LOG.trace("NUMERIC "+numericTexts.size()+" NON-NUM "+nonNumericTexts.size());
 		}
 	}
 
@@ -614,7 +614,7 @@ public class Axis {
 
 	private List<SVGText> getTextsInBox(Real2Range textBox, List<SVGElement> sortedTexts) {
 		// crude at present
-		LOG.debug("TEXTBOX "+textBox);
+		LOG.trace("TEXTBOX "+textBox);
 		List<SVGText> textList = new ArrayList<SVGText>();
 		for (int i = 0; i < sortedTexts.size(); i++) {
 			SVGText sortedText = (SVGText) sortedTexts.get(i);
@@ -695,7 +695,7 @@ public class Axis {
 				throw new RuntimeException("Cannot get integer tick mark ratio: "+ratio + "/" +majorTickSpacingPixelsToMinorTick);
 			}
 			LOG.trace("MAJOR/MINOR "+(majorTickSpacingPixelsToMinorTick)+" majorTicks: "+majorTickJointList.size()+" ");
-			LOG.debug(debug("NEW COMB"));
+			LOG.trace(debug("NEW COMB"));
 		}
 	}
 

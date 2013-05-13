@@ -90,15 +90,17 @@ public class Fixtures {
 	public final static File ANYOUTDIR = new File(TARGET, "any");
 	public final static File ANYSVGDIR = new File(SVGTOP, "any");
 
-	public static final File TEXT_ANALYZER_DIR = new File(RESOURCES_DIR+"org/xmlcml/svg2xml/analyzer/");
+	public static final File ANALYZER_DIR = new File(SVG2XML_DIR+"analyzer/");
 	/** a 4 line chunk (paragraph) with no suscripts */
-	public static final File PARA1_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "1parachunk.svg");
+	public static final File PARA1_SVG = new File(Fixtures.ANALYZER_DIR, "1parachunk.svg");
 	// 3 paragraphs
-	public static final File PARA_SUSCRIPT_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "parasWithSuscripts.svg");
-	private static final File LINE1_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "singleLine.svg");
+	public static final File PARA_SUSCRIPT_SVG = new File(Fixtures.ANALYZER_DIR, "parasWithSuscripts.svg");
+	private static final File LINE1_SVG = new File(Fixtures.ANALYZER_DIR, "singleLine.svg");
 
-	public static File PAGE3RESULTS_SVG = new File(Fixtures.TEXT_ANALYZER_DIR, "page3results.svg");
-// table stuff	
+	public static File PAGE3RESULTS_SVG = new File(Fixtures.ANALYZER_DIR, "page3results.svg");
+// text stuff	
+	public static final File TEXT_DIR = new File(SVG2XML_DIR+"text/");
+
 	
 
 

@@ -108,7 +108,7 @@ public class ChunkAnalyzerActionX extends PageActionX {
 //		String xpath = ".//svg:g[@*[local-name()='role' and .='chunk'] and not(svg:g)]'";
 		String xpath = ".//svg:g[@*[local-name()='role' and .='chunk'] ]'";
 		List<SVGElement> elements = SVGUtil.getQuerySVGElements(getSVGPage(), xpath);
-		LOG.debug("analysing leaf chunks: "+elements.size());
+		LOG.trace("analysing leaf chunks: "+elements.size());
 	}
 
 	private void analyzeChunk(Chunk chunk) {

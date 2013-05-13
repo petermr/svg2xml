@@ -90,7 +90,6 @@ public class BoxProcessorActionX extends PageActionX {
 			if (outerElements.size() != 0) {
 				Integer boxCount = this.getBoxCount();
 				if (false && outerElements.size() < boxCount) { // because title page has strange boxes
-//					chunk.debug("BAD BOX");
 					LOG.debug("elements at edge of box ("+outerElements.size()+") != boxCount: "+boxCount); 
 					throw new RuntimeException("box");
 				} else {

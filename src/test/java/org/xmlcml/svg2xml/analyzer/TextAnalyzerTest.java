@@ -497,7 +497,6 @@ public class TextAnalyzerTest {
 		List<TextLine> suscriptLines = largeLine.createSuscriptTextLineList();
 		for (TextLine textLine : suscriptLines) {
 			textLine.insertSpaces();
-//			System.out.println(textLine.getSpacedLineString());
 		}
 	}
 	
@@ -657,7 +656,7 @@ public class TextAnalyzerTest {
 
 	private void printTextLines(List<TextLine> suscriptLines) {
 		for (TextLine textLine : suscriptLines){
-			System.out.print(""+textLine.getSuscript()+" ");
+			LOG.trace(""+textLine.getSuscript()+" ");
 			printLine(textLine.getSVGTextCharacters());
 		}
 		System.out.println();
@@ -690,9 +689,10 @@ public class TextAnalyzerTest {
 	}
 
 	private void printLine(List<SVGText> largeLineSVG) {
-		for (SVGText large : largeLineSVG) {
-			System.out.print(" "+large.getValue());
-		}
+//		System.out.print("LINE: ");
+//		for (SVGText large : largeLineSVG) {
+//			System.out.print(" "+large.getValue());
+//		}
 	}
 
 
@@ -767,11 +767,11 @@ public class TextAnalyzerTest {
 		int i = 0;
 		for (TextLineGroup textLineChunk : textLineChunkList) {
 			Assert.assertEquals("box"+i, count[i], textLineChunk.size());
-			System.out.println(">>");
+			LOG.trace(">>");
 			for (TextLine textLine: textLineChunk) {
-				System.out.println(textLine);
+				LOG.trace(textLine);
 			}
-			System.out.println("<<");
+			LOG.trace("<<");
 			i++;
 		}
 	}
@@ -806,10 +806,10 @@ public class TextAnalyzerTest {
 	/**
 	 * 
 	 */
-	public void testGetPrimaryTextLineList() {
+	public void testGetCommonestFontSizeTextLineList() {
 		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<TextLine> primary = textLineContainer.getPrimaryTextLineList();
-		Assert.assertEquals("primary", 11, primary.size());
+		List<TextLine> isCommonestFontSize = textLineContainer.getCommonestFontSizeTextLineList();
+		Assert.assertEquals("commonestFontSize", 11, isCommonestFontSize.size());
 	}
 	
 	@Test
@@ -885,9 +885,9 @@ public class TextAnalyzerTest {
 	@Ignore
 	public void unicodeTestNotRelevant() {
 		Pattern pattern = Pattern.compile("\\p{Cn}");
-		System.out.println("\\u0020 "+pattern.matcher("\u0020").matches());
-		System.out.println("A "+pattern.matcher("A").matches());
-		System.out.println("\\uf8f8 "+pattern.matcher("\uf8f8").matches());
+		LOG.trace("\\u0020 "+pattern.matcher("\u0020").matches());
+		LOG.trace("A "+pattern.matcher("A").matches());
+		LOG.trace("\\uf8f8 "+pattern.matcher("\uf8f8").matches());
 	}
 	
 	

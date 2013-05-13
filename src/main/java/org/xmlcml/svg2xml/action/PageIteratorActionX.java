@@ -77,7 +77,7 @@ public class PageIteratorActionX extends PageActionX {
 		if (infile != null) {
 			svgPageList = svgPlusConverterX.createSVGPageList(infile);
 			semanticDocumentActionX.setVariable(PAGE_COUNT, svgPageList.size());
-			LOG.debug("pages "+svgPageList.size());
+			LOG.trace("pages "+svgPageList.size());
 			if (convertPages) {
 				for (int i = 0; i < svgPageList.size(); i++) {
 					semanticDocumentActionX.setVariable(PAGE_NUMBER, i+1);

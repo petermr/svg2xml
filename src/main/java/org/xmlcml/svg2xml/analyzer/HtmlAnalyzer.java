@@ -134,7 +134,7 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 		if (htmlElement != null) {
 			id = htmlElement.getId();
 			if (id == null) {
-				System.out.println("null id");
+				LOG.debug("null id");
 			}
 		}
 		return id;
@@ -180,7 +180,7 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 	void addImageDivTo(HtmlAnalyzer previousAnalyzer) {
 		if (previousAnalyzer != null && previousAnalyzer.containsDivImage()) {
 			HtmlImg img = (HtmlImg) previousAnalyzer.getChildElements().get(0);
-			LOG.debug("Merged image: "+previousAnalyzer.getId()+" -> "+this.getId());
+			LOG.trace("Merged image: "+previousAnalyzer.getId()+" -> "+this.getId());
 			previousAnalyzer.setClassAttribute(OMIT);
 //			img.detach();
 			this.insertChild((HtmlElement)img.copy(), 0);

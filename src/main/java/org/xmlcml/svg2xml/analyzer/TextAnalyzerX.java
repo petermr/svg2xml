@@ -264,7 +264,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			LOG.trace("created lines: "+horizontalCharacterList.size());
 			if (Level.TRACE.equals(LOG.getLevel())) {
 				for (TextLine cl : horizontalCharacterList) {
-					LOG.debug("sorted line "+cl.toString());
+					LOG.trace("sorted line "+cl.toString());
 				}
 			}
 		}
@@ -650,7 +650,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		} else {
 			Real2Array real2Array = (coords == null) ? null : Real2Array.createFromCoords(coords);
 			if (real2Array == null || s == null || real2Array.size() !=s.length()) {
-				LOG.debug("Cannot match array: "+coords);
+				LOG.trace("Cannot match array: "+coords);
 				real2Array = null;
 			} else {
 				processLeafSpanOrText(textOrSpan, s, id, real2Array);
@@ -715,7 +715,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public List<TextLine> getTextLines() {
-		return ensureTextLineContainer().getTextlineList();
+		return ensureTextLineContainer().getTextLineList();
 	}
 
 	/** creates one "para" per line
