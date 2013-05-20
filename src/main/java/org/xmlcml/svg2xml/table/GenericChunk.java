@@ -15,7 +15,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.text.TextLineContainer;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 /** superclass of cells, rows, etc in table
  * 
@@ -222,10 +222,10 @@ public class GenericChunk {
 		throw new RuntimeException("Must overide getHtml()");
 	}
 
-	protected HtmlElement createHtmlThroughTextLineContainer() {
+	protected HtmlElement createHtmlThroughTextContainer() {
 		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
-		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(characters);
-		HtmlElement htmlElement = textLineContainer.createHtmlDivWithParas();
+		TextStructurer textContainer = TextStructurer.createTextStructurerWithSortedLines(characters);
+		HtmlElement htmlElement = textContainer.createHtmlDivWithParas();
 		return htmlElement;
 	}
 	

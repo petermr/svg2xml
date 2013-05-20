@@ -51,7 +51,7 @@ public class PageSplitterAndHtmlTest {
 		};
 		for (int i = 0; i < gList.size(); i++) {
 			SVGElement g = gList.get(i);
-			AbstractPageAnalyzerX analyzer = AbstractPageAnalyzerX.getAnalyzer(g);
+			AbstractAnalyzer analyzer = AbstractAnalyzer.createSpecificAnalyzer(g);
 			CheckAnalyzer checkAnalyzer = CheckAnalyzer.createCheckAnalyzer(analyzer);
 			Assert.assertTrue("analyzer "+i+" "+analyzer+"; "+checkAnalyzers[i], checkAnalyzer.equals(checkAnalyzers[i]));
 		}
@@ -61,7 +61,7 @@ public class PageSplitterAndHtmlTest {
 	public void testTransformChunksToXMLAndAnalyzeText0() {
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractPageAnalyzerX.getAnalyzer(gList.get(0));
+		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(0));
 		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
 		Assert.assertEquals("lines0 ", 1, textLines.size());
 		TextLine textLine = textLines.get(0);
@@ -568,7 +568,7 @@ public class PageSplitterAndHtmlTest {
 		// note this has been split already
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractPageAnalyzerX.getAnalyzer(gList.get(chunk));
+		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(chunk));
 		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
 		Assert.assertEquals("line"+chunk, 1, textLines.size());
 		TextLine textLine = textLines.get(0);
@@ -585,7 +585,7 @@ public class PageSplitterAndHtmlTest {
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		SVGElement g = gList.get(chunk);
 //		g.debug("GGG");
-		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) AbstractPageAnalyzerX.getAnalyzer(g);
+		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) AbstractAnalyzer.createSpecificAnalyzer(g);
 		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
 		TextAnalyzerX textAnalyzer = mixedAnalyzer.getTextAnalyzer();
 		LOG.trace("TextAnalyzer "+textAnalyzer);

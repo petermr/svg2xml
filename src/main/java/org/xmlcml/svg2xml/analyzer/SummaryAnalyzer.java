@@ -10,7 +10,7 @@ import org.xmlcml.graphics.svg.SVGG;
  * @author pm286
  *
  */
-public class SummaryAnalyzer extends AbstractPageAnalyzerX {
+public class SummaryAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(SummaryAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile("[Aa][Bb][Ss][Tt][Rr][Aa][Cc][Tt].*", Pattern.DOTALL);
 	public final static String TITLE = "ABSTRACT";
@@ -23,7 +23,7 @@ public class SummaryAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

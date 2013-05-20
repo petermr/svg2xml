@@ -14,7 +14,7 @@ public class FigureAnalyzerTest {
 	@Test
 	public void testMatchShort() {
 		String s = "Fig. 1. foo";
-		AbstractPageAnalyzerX figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
+		AbstractAnalyzer figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
 		Integer i = FigureAnalyzerX.getSerial(FigureAnalyzerX.PATTERN, s);
 		Assert.assertEquals("serial", new Integer(1), i);
 	}
@@ -22,7 +22,7 @@ public class FigureAnalyzerTest {
 	@Test
 	public void testMatchLong() {
 		String s = "Figure 1. foo";
-		AbstractPageAnalyzerX figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
+		AbstractAnalyzer figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
 		Integer i = FigureAnalyzerX.getSerial(FigureAnalyzerX.PATTERN, s);
 		Assert.assertEquals("serial", new Integer(1), i);
 	}
@@ -30,7 +30,7 @@ public class FigureAnalyzerTest {
 	@Test
 	public void testMatchNoSerial() {
 		String s = "Figure foo";
-		AbstractPageAnalyzerX figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
+		AbstractAnalyzer figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
 		Integer i = FigureAnalyzerX.getSerial(FigureAnalyzerX.PATTERN, s);
 		Assert.assertEquals("serial", new Integer(-1), i);
 	}
@@ -38,7 +38,7 @@ public class FigureAnalyzerTest {
 	@Test
 	public void testNoMatchNoSerial() {
 		String s = "Fogure 2. foo";
-		AbstractPageAnalyzerX figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
+		AbstractAnalyzer figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
 		Integer i = FigureAnalyzerX.getSerial(FigureAnalyzerX.PATTERN, s);
 		Assert.assertNull("serial", i);
 	}
@@ -47,7 +47,7 @@ public class FigureAnalyzerTest {
 	@Test
 	public void testNoMatchNoSerialHigh() {
 		String s = "Figure 2. foo+(char)1643";
-		AbstractPageAnalyzerX figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
+		AbstractAnalyzer figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
 		Integer i = FigureAnalyzerX.getSerial(FigureAnalyzerX.PATTERN, s);
 		Assert.assertEquals("serial", new Integer(2), i);
 	}
@@ -56,7 +56,7 @@ public class FigureAnalyzerTest {
 	public void testDingbat() {
 		String s = "Figure 2. foo"+(char)10110+"bar";
 		LOG.trace(s);
-		AbstractPageAnalyzerX figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
+		AbstractAnalyzer figureAnalyzer = new FigureAnalyzerX((SemanticDocumentActionX)null);
 		Integer i = FigureAnalyzerX.getSerial(FigureAnalyzerX.PATTERN, s);
 		Assert.assertEquals("serial", new Integer(2), i);
 	}

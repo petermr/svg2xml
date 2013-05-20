@@ -37,7 +37,7 @@ import org.xmlcml.svg2xml.tools.PlotBox;
 import org.xmlcml.svg2xml.util.GraphUtil;
 
 
-public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
+public class PolylineAnalyzerX extends AbstractAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(PolylineAnalyzerX.class);
 
@@ -440,7 +440,7 @@ public class PolylineAnalyzerX extends AbstractPageAnalyzerX {
  	} 
 
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

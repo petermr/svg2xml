@@ -23,7 +23,7 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.analyzer.AxisAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
@@ -58,7 +58,7 @@ public class Axis {
 	private Double boxThickness;
 	private Double boxLengthExtension;
 	private AxisAnalyzerX axisAnalyzerX;
-	private AbstractPageAnalyzerX textAnalyzerX;
+	private AbstractAnalyzer textAnalyzerX;
 	private String id;
 
 	private double minTickLengthPixels;
@@ -584,7 +584,7 @@ public class Axis {
 		}
 	}
 
-	public AbstractPageAnalyzerX getTextAnalyzerX() {
+	public AbstractAnalyzer getTextAnalyzerX() {
 		return textAnalyzerX;
 	}
 

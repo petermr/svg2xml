@@ -24,7 +24,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.text.TextLineContainer;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class HtmlEditor {
 
@@ -95,12 +95,12 @@ public class HtmlEditor {
 	}
 
 	private void merge(HtmlAnalyzer lastAnalyzer, HtmlAnalyzer htmlAnalyzer, HtmlDiv topDiv) {
-		TextLineContainer lastTextLineContainer = (lastAnalyzer == null) ? 
-				null : lastAnalyzer.getTextLineContainer();
-		TextLineContainer textLineContainer = htmlAnalyzer.getTextLineContainer();
+		TextStructurer lastTextContainer = (lastAnalyzer == null) ? 
+				null : lastAnalyzer.getTextContainer();
+		TextStructurer textContainer = htmlAnalyzer.getTextContainer();
 		boolean merged = false;
-		if (lastTextLineContainer != null && textLineContainer != null) {
-			if (lastTextLineContainer.endsWithRaggedLine() && textLineContainer.startsWithRaggedLine()) {
+		if (lastTextContainer != null && textContainer != null) {
+			if (lastTextContainer.endsWithRaggedLine() && textContainer.startsWithRaggedLine()) {
 				merged = htmlAnalyzer.mergeLinesWithPrevious(lastAnalyzer, topDiv);
 			}
 		} 
@@ -299,7 +299,7 @@ public class HtmlEditor {
 
 	private FigureAnalyzerX createFigureAnalyzer(HtmlAnalyzer figureHtmlAnalyzer) {
 		FigureAnalyzerX figureAnalyzer = null;
-		AbstractPageAnalyzerX analyzer = figureHtmlAnalyzer.getAnalyzer();
+		AbstractAnalyzer analyzer = figureHtmlAnalyzer.getAnalyzer();
 		if (analyzer instanceof MixedAnalyzer) {
 			TextAnalyzerX textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
 			ImageAnalyzerX imageAnalyzer = ((MixedAnalyzer)analyzer).getImageAnalyzer();
@@ -327,7 +327,7 @@ public class HtmlEditor {
 
 	private TableAnalyzerX createTableAnalyzer(HtmlAnalyzer tableHtmlAnalyzer) {
 		TableAnalyzerX tableAnalyzer = null;
-		AbstractPageAnalyzerX analyzer = tableHtmlAnalyzer.getAnalyzer();
+		AbstractAnalyzer analyzer = tableHtmlAnalyzer.getAnalyzer();
 		
 		if (analyzer instanceof MixedAnalyzer) {
 			MixedAnalyzer mixedAnalyzer = ((MixedAnalyzer)analyzer);

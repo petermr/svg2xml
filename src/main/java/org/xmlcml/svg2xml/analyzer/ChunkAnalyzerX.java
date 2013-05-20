@@ -15,7 +15,7 @@ import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.tools.Chunk;
 import org.xmlcml.svg2xml.tools.PlotBox;
 
-public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
+public class ChunkAnalyzerX extends AbstractAnalyzer {
 
 	private static final Logger LOG = Logger.getLogger(ChunkAnalyzerX.class);
 
@@ -97,7 +97,7 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 		}
 	}
 	
-	private AbstractPageAnalyzerX ensureTextAnalyzer() {
+	private AbstractAnalyzer ensureTextAnalyzer() {
 		if (textAnalyzerX == null) {
 			textAnalyzerX = new TextAnalyzerX(semanticDocumentActionX);
 		}
@@ -143,7 +143,7 @@ public class ChunkAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import java.util.HashSet;
@@ -37,7 +38,9 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /**
  * Tries to interpret svg:path as
@@ -55,7 +58,7 @@ import org.xmlcml.svg2xml.tools.Chunk;
  * @author pm286
  *
  */
-public class PathAnalyzerX extends AbstractPageAnalyzerX {
+public class PathAnalyzerX extends AbstractAnalyzer {
 
 	private static final int SVG_BOX_Y = 800;
 	private static final int SVG_BOX_X = 1000;
@@ -77,6 +80,7 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 	private boolean splitAtMoveCommands = true;
 	private Integer minLinesInPolyline = 8;
 	private List<SVGPath> pathList;
+	
 	public PathAnalyzerX() {
 	}
 
@@ -154,16 +158,19 @@ public class PathAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG labelChunk() {
-		SVGG g = new SVGG();
-		for (int i = 0; i < pathList.size(); i++) {
-			SVGPath path = pathList.get(i);
-			annotateElement(path, "purple", "blue", 0.5, 0.2);
-			g.appendChild(path.copy());
+	public SVGG annotateChunk() {
+		SVGG g = null;
+		if (pathList != null && pathList.size() > 0) {
+			g = new SVGG();
+			for (int i = 0; i < pathList.size(); i++) {
+				SVGPath path = pathList.get(i);
+				annotateElement(path, "purple", "blue", 0.5, 0.2);
+				g.appendChild(path.copy());
+			}
+			String title = "PATH "+pathList.size();
+			outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
+			g.setTitle(title);
 		}
-		String title = "PATH "+pathList.size();
-		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
-		g.setTitle(title);
 		return g;
 	}
 	
@@ -565,6 +572,19 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	public void setMinLinesInPolyline(Integer minLinesInPolyline) {
 		this.minLinesInPolyline = minLinesInPolyline;
 	}
+	
+//	private SVGG createSVGAndOutput(int humanPageNumber, int counter, SVGG gOrig,
+//			AbstractAnalyzer analyzerX, String suffix, PathAnalyzerX pathAnalyzer) {
+//		ChunkId chunkId;
+//		PathContainer pathContainer = PathContainer.createPathContainer(this, pathAnalyzer);
+//		containerList.add(pathContainer);
+//		chunkId = new ChunkId(humanPageNumber, counter);
+//		SVGG gOut = annotateChunkAndAddIdAndAttributes(gOrig, chunkId, analyzerX);
+//		SVG2XMLUtil.writeToSVGFile(new File("target"), "chunk"+humanPageNumber+"."+(counter)+suffix, gOut);
+//		return gOut;
+//	}
+
+
 
 	//============string=============
 	

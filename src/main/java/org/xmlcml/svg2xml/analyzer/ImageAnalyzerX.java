@@ -20,7 +20,7 @@ import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
  * @author pm286
  *
  */
-public class ImageAnalyzerX extends AbstractPageAnalyzerX {
+public class ImageAnalyzerX extends AbstractAnalyzer {
 
 
 	static final Logger LOG = Logger.getLogger(ImageAnalyzerX.class);
@@ -47,7 +47,7 @@ public class ImageAnalyzerX extends AbstractPageAnalyzerX {
 	public List<SVGImage> getImageList() { return imageList;}
 
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		SVGG g = new SVGG();
 		for (int i = 0; i < imageList.size(); i++) {
 			SVGImage image = imageList.get(i);

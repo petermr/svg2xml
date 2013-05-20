@@ -14,7 +14,7 @@ import org.xmlcml.svg2xml.table.TableOld;
  * @author pm286
  *
  */
-public class BibRefAnalyzer extends AbstractPageAnalyzerX {
+public class BibRefAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(BibRefAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile("^[Rr][Ee][Ff][Ee][Rr][Ee][Nn][Cc][Ee][Ss].*", Pattern.DOTALL);
 	public static final String TITLE = "REFERENCES";
@@ -32,7 +32,7 @@ public class BibRefAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

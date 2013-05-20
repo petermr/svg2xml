@@ -49,7 +49,7 @@ public class TableCaption extends GenericChunk {
 	 */
 	public HtmlElement getHtml() {
 		caption = new HtmlCaption();
-		HtmlElement captionBody = createHtmlThroughTextLineContainer();
+		HtmlElement captionBody = createHtmlThroughTextContainer();
 		captionBody = GenericChunk.removeStyles(captionBody);
 		caption.appendChild(captionBody);
 		return caption;

@@ -23,7 +23,7 @@ import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
+public class SubSupAnalyzerX extends AbstractAnalyzer {
 
 	public static final String SCRIPT_TYPE = "scriptType";
 
@@ -45,7 +45,7 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 	private final static Logger LOG = Logger.getLogger(SubSupAnalyzerX.class);
 	private final static Double ANGLE_EPS = 0.1;
 	
-	private AbstractPageAnalyzerX textAnalyzerX;
+	private AbstractAnalyzer textAnalyzerX;
 	private List<Integer> sortedYCoords;
 	private Map<Integer, List<SVGText>> textByYCoordAndXCoord;
 	private int currentYCoordIndex;
@@ -60,7 +60,7 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 	private SubSup currentSubSupType;
 	private List<SVGText> texts;
 
-	public SubSupAnalyzerX(AbstractPageAnalyzerX textAnalyzerX) {
+	public SubSupAnalyzerX(AbstractAnalyzer textAnalyzerX) {
 		this.textAnalyzerX = textAnalyzerX;
 	}
 
@@ -297,7 +297,7 @@ public class SubSupAnalyzerX extends AbstractPageAnalyzerX {
 		return sortedYCoords;
 	}
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

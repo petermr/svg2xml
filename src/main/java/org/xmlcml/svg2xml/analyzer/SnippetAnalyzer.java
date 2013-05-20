@@ -11,7 +11,7 @@ import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
  * @author pm286
  *
  */
-public class SnippetAnalyzer extends AbstractPageAnalyzerX {
+public class SnippetAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(SnippetAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile("^(" +
 			"([Aa][Cc][Kk][Nn][Oo][Ww][Ll][Ee][Dd][Gg][Ee]?[Mm][Ee][Nn][Tt][Ss]?)|" +   // acknowledgments
@@ -37,7 +37,7 @@ public class SnippetAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

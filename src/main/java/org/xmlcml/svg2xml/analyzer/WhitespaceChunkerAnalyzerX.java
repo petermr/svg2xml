@@ -42,7 +42,7 @@ import org.xmlcml.svg2xml.tools.SplitterParams;
  * @author pm286
  *
  */
-public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
+public class WhitespaceChunkerAnalyzerX extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(WhitespaceChunkerAnalyzerX.class);
 
 	public static final String CLIP = "CLIP";
@@ -202,7 +202,7 @@ public class WhitespaceChunkerAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

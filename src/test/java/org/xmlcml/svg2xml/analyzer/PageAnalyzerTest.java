@@ -63,10 +63,9 @@ public class PageAnalyzerTest {
 				LOG.debug("path: "+path);
 				if (path.endsWith(".pdf")) {
 					PDFAnalyzer analyzer = new PDFAnalyzer();
-					analyzer.setInputTopDir(inDir);
 					analyzer.setSVGTopDir(svgDir);
 					analyzer.setOutputTopDir(outDir);
-					analyzer.setSkipFile(skipFile);
+//					analyzer.setSkipFile(skipFile);
 					analyzer.analyzePDFFile(file);
 				}
 			}

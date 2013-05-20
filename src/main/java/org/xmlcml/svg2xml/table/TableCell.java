@@ -19,7 +19,7 @@ public class TableCell extends GenericChunk {
 	 */
 	public HtmlElement getHtml() {
 		HtmlTd td = new HtmlTd();
-		HtmlElement cellBody = createHtmlThroughTextLineContainer();
+		HtmlElement cellBody = createHtmlThroughTextContainer();
 		if (cellBody != null) {
 			td.appendChild(cellBody);
 			cellBody = GenericChunk.removeStyles(cellBody);

@@ -27,6 +27,7 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.svg2xml.util.TextFlattener;
 
 import com.google.common.collect.HashMultimap;
@@ -39,6 +40,7 @@ import com.google.common.collect.Multimap;
  */
 public class PDFIndex {
 
+	private static final String WHITESPACE = "[\n\r\u0085\u2028\u2029]";
 	private static final String DUPLICATE = "duplicate";
 	private final static Logger LOG = Logger.getLogger(PDFIndex.class);
 
@@ -97,17 +99,17 @@ public class PDFIndex {
 	Set<ChunkId> usedIdSet;
 
 	private AppendixAnalyzer appendixAnalyzer;
-	private BibRefAnalyzer bibRefAnalyzer;
-	private ChapterAnalyzer chapterAnalyzer;
-	private DOIAnalyzer doiAnalyzer;
-	        FigureAnalyzerX figureAnalyzer;
-	private LicenceAnalyzer licenceAnalyzer;
-	private SchemeAnalyzer schemeAnalyzer;
-	private SnippetAnalyzer snippetAnalyzer;
-	private SummaryAnalyzer summaryAnalyzer;
-	private TableAnalyzerX tableAnalyzer;
+	private BibRefAnalyzer   bibRefAnalyzer;
+	private ChapterAnalyzer  chapterAnalyzer;
+	private DOIAnalyzer      doiAnalyzer;
+	        FigureAnalyzerX  figureAnalyzer;
+	private LicenceAnalyzer  licenceAnalyzer;
+	private SchemeAnalyzer   schemeAnalyzer;
+	private SnippetAnalyzer  snippetAnalyzer;
+	private SummaryAnalyzer  summaryAnalyzer;
+	private TableAnalyzerX   tableAnalyzer;
 
-	private List<AbstractPageAnalyzerX> analyzerList;
+	private List<AbstractAnalyzer> analyzerList;
 
 	public PDFIndex(PDFAnalyzer analyzer) {
 		this.pdfAnalyzer = analyzer;
@@ -122,7 +124,7 @@ public class PDFIndex {
 			Collections.sort(idList);
 			if (idList.size() > 1) {
 				String keyS = key.toString();
-				LOG.trace("DUPLICATES: "+title+" >"+ keyS.substring(0, Math.min(15, keyS.length()))+" ... "+"< "+idList);
+				LOG.trace("DUPLICATES: "+title+" >"+ SVG2XMLUtil.trim(keyS, 15)+" ... "+"< "+idList);
 				duplicateList.add(idList);
 				addUsedIdList(idList);
 			}
@@ -161,7 +163,6 @@ public class PDFIndex {
 
 
 	public void createIndexes() {
-
 		
 		contentIdListList = findDuplicates(CONTENT, svgIdByContentMap);
 		markChunksAndNoteUsed(contentIdListList, CONTENT);
@@ -188,9 +189,10 @@ public class PDFIndex {
 				TextFlattener textFlattener = createTextFlattener(idList.get(0));
 				List<List<Integer>> intListList = new ArrayList<List<Integer>>();
 				for (ChunkId id : idList) {
-					String htmlValue = getValueFromHtml(id);
-					List<Integer> ints = textFlattener.captureIntegers(htmlValue);
-					intListList.add(ints);
+					LOG.debug("NYI");
+//					String htmlValue = getValue(id);
+//					List<Integer> ints = textFlattener.captureIntegers(htmlValue);
+//					intListList.add(ints);
 				}
 				try {
 					IntMatrix intMatrix = IntMatrix.createByRows(intListList);
@@ -210,13 +212,10 @@ public class PDFIndex {
 		}
 	}
 
-	private String getValueFromHtml(ChunkId id) {
-		return pdfAnalyzer.htmlEditor.getValueFromHtml(id);
-	}
-
 	private TextFlattener createTextFlattener(ChunkId id0) {
 		TextFlattener textFlattener = new TextFlattener();
-		String htmlValue0 = getValueFromHtml(id0);
+//		String htmlValue0 = getValueFromHtml(id0);
+		String htmlValue0 = "NYI";
 		Pattern pattern = textFlattener.createIntegerPattern(htmlValue0);
 		LOG.trace("Flattening pattern "+pattern);
 		return textFlattener;
@@ -265,7 +264,8 @@ public class PDFIndex {
 		}
 
 	private HtmlAnalyzer getHtmlAnalyzerById(ChunkId id) {
-		return pdfAnalyzer.htmlEditor.getHtmlAnalyzerByIdMap().get(id);
+//		return pdfAnalyzer.htmlEditor.getHtmlAnalyzerByIdMap().get(id);
+		return null;
 	}
 
 	/** preload a contentMap which can be used for several PDFAnalyzers
@@ -306,7 +306,7 @@ public class PDFIndex {
 	 */
 	void addToindexes(SVGG gOut) {
 		String content = gOut.getValue();
-		content.replaceAll("[\n\r\u0085\u2028\u2029]", " ");
+		content.replaceAll(WHITESPACE, " ");
 		ChunkId id = new ChunkId(gOut.getId());
 		svgElementByIdMap.put(id, gOut);
 		indexByBoundingBox(gOut, id);
@@ -342,7 +342,7 @@ public class PDFIndex {
 
 	private void ensureContentAnalyzers() {
 		if (figureAnalyzer == null) {
-			analyzerList = new ArrayList<AbstractPageAnalyzerX>();
+			analyzerList = new ArrayList<AbstractAnalyzer>();
 			appendixAnalyzer = new AppendixAnalyzer(this);
 			analyzerList.add(appendixAnalyzer);
 			bibRefAnalyzer = new BibRefAnalyzer(this);
@@ -389,7 +389,7 @@ public class PDFIndex {
 			StringBuilder sb = new StringBuilder();
 			for (SVGImage image : imageList) {
 				String imageValue = image.getImageValue();
-				LOG.trace(imageValue.substring(0, Math.min(50, imageValue.length()))+" ... ");
+				LOG.trace(SVG2XMLUtil.trim(imageValue, 50));
 				sb.append(imageValue);
 			}
 			String imageContent = sb.toString();
@@ -511,7 +511,7 @@ public class PDFIndex {
 		return figureAnalyzer;
 	}
 
-	public List<AbstractPageAnalyzerX> getAnalyzerList() {
+	public List<AbstractAnalyzer> getAnalyzerList() {
 		ensureContentAnalyzers();
 		return analyzerList;
 	}
@@ -528,5 +528,9 @@ public class PDFIndex {
 				}
 			}
 		}
+	}
+
+	public void addToindexes(PageAnalyzer pageAnalyzer) {
+		LOG.debug("PageAnalyzer NYI");
 	}
 }

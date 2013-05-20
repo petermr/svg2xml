@@ -15,7 +15,7 @@ import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.tools.PlotBox;
 
-public class AxisAnalyzerX extends AbstractPageAnalyzerX {
+public class AxisAnalyzerX extends AbstractAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(AxisAnalyzerX.class);
 
@@ -149,7 +149,7 @@ public class AxisAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

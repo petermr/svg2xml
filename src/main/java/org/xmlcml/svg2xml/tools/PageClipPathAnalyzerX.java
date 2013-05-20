@@ -11,7 +11,7 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -32,7 +32,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageClipPathAnalyzerX  extends AbstractPageAnalyzerX {
+public class PageClipPathAnalyzerX  extends AbstractAnalyzer {
 
 	public static String[] fillColors = {
 		"red",
@@ -131,7 +131,7 @@ public class PageClipPathAnalyzerX  extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

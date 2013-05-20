@@ -11,7 +11,7 @@ import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
  * @author pm286
  *
  */
-public class LicenceAnalyzer extends AbstractPageAnalyzerX {
+public class LicenceAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(LicenceAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile(".*(" +
 			"([Ll][Ii][Cc][Ee][Nn][CcSs][Ee])|" +
@@ -30,7 +30,7 @@ public class LicenceAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

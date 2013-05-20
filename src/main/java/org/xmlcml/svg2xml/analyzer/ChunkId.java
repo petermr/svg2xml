@@ -3,6 +3,8 @@ package org.xmlcml.svg2xml.analyzer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.xmlcml.graphics.svg.SVGG;
+
 public class ChunkId implements Comparable<ChunkId> {
 
 	private static final String G = "g";
@@ -84,5 +86,9 @@ public class ChunkId implements Comparable<ChunkId> {
 
 	private String createId() {
 		return G+"."+pageNumber+"."+chunkNumber;
+	}
+
+	public static ChunkId createChunkId(SVGG gChunk) {
+		return null;
 	}
 }

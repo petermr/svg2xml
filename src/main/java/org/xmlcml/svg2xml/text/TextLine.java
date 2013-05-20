@@ -1166,4 +1166,17 @@ public class TextLine implements Iterable<SVGText> {
 		return xRange == null ? null : xRange.getMax();
 	}
 
+	public String getRawValue() {
+		StringBuilder sb = new StringBuilder();
+		for (SVGText text : characterList) {
+			sb.append(text.getValue());
+		}
+		return sb.toString();
+	}
+
+	public String getValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

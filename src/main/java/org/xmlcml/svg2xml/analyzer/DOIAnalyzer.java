@@ -11,7 +11,7 @@ import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
  * @author pm286
  *
  */
-public class DOIAnalyzer extends AbstractPageAnalyzerX {
+public class DOIAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(DOIAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile(".*[Dd][Oo][Ii][\\s\\d\\;\\/\\-]+.*", Pattern.DOTALL);
 	public final static String TITLE = "DOI";
@@ -24,7 +24,7 @@ public class DOIAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

@@ -17,7 +17,7 @@ import org.xmlcml.svg2xml.tools.PlotBox;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-public class LineAnalyzerX extends AbstractPageAnalyzerX {
+public class LineAnalyzerX extends AbstractAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(LineAnalyzerX.class);
 
@@ -86,7 +86,7 @@ public class LineAnalyzerX extends AbstractPageAnalyzerX {
 		}
 	}
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

@@ -24,7 +24,7 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.text.TextLineContainer;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 /** container for  HtmlElement
  * Used to manipulate HTML. 
@@ -36,7 +36,7 @@ import org.xmlcml.svg2xml.text.TextLineContainer;
  * @author pm286
  *
  */
-public class HtmlAnalyzer extends AbstractPageAnalyzerX {
+public class HtmlAnalyzer extends AbstractAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(HtmlAnalyzer.class);
 	private static final String REMOVED_SVG = "REMOVED_SVG";
@@ -46,7 +46,7 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 	private static final String NEXT = "next";
 	
 	private PDFAnalyzer pdfAnalyzer;
-	private AbstractPageAnalyzerX analyzer;
+	private AbstractAnalyzer analyzer;
 	private HtmlElement htmlElement;
 	private HtmlEditor htmlEditor;
 	private Integer serial;
@@ -60,7 +60,7 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 	 * @param htmlEditor
 	 * @param analyzer the analyzer used to create the HTML
 	 */
-	public HtmlAnalyzer(HtmlEditor htmlEditor, AbstractPageAnalyzerX analyzer) {
+	public HtmlAnalyzer(HtmlEditor htmlEditor, AbstractAnalyzer analyzer) {
 		this(htmlEditor);
 		this.analyzer = analyzer;
 	}
@@ -111,7 +111,7 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -198,7 +198,7 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 		Integer serial = null;
 		if (classAttribute != null) {
 			if (pdfAnalyzer != null) {
-				for (AbstractPageAnalyzerX analyzer : pdfAnalyzer.pdfIndex.getAnalyzerList()) {
+				for (AbstractAnalyzer analyzer : pdfAnalyzer.pdfIndex.getAnalyzerList()) {
 					if (analyzer.isChunk(classAttribute)) {
 						chunkType = analyzer.getTitle();
 						serial = new Integer(classAttribute.substring(chunkType.length()).trim());
@@ -275,7 +275,7 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 		this.serial = serial;
 	}
 
-	public AbstractPageAnalyzerX getAnalyzer() {
+	public AbstractAnalyzer getAnalyzer() {
 		return analyzer;
 	}
 
@@ -283,12 +283,12 @@ public class HtmlAnalyzer extends AbstractPageAnalyzerX {
 		this.serial =  serial;
 	}
 
-	public TextLineContainer getTextLineContainer() {
-		TextLineContainer textLineContainer = null;
+	public TextStructurer getTextContainer() {
+		TextStructurer textContainer = null;
 		if (analyzer != null && analyzer instanceof TextAnalyzerX) {
-			textLineContainer = ((TextAnalyzerX) analyzer).getTextLineContainer();
+			textContainer = ((TextAnalyzerX) analyzer).getTextContainer();
 		}
-		return textLineContainer;
+		return textContainer;
 	}
 
 	public boolean mergeLinesWithPrevious(HtmlAnalyzer lastAnalyzer, HtmlElement topDiv) {

@@ -7,7 +7,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -17,7 +17,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageFontSizeAnalyzerX extends AbstractPageAnalyzerX {
+public class PageFontSizeAnalyzerX extends AbstractAnalyzer {
 
 	private static final Logger LOG = Logger.getLogger(PageFontSizeAnalyzerX.class);
 
@@ -63,7 +63,7 @@ public class PageFontSizeAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

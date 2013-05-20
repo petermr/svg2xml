@@ -14,7 +14,7 @@ import org.xmlcml.svg2xml.table.TableOld;
  * @author pm286
  *
  */
-public class ChapterAnalyzer extends AbstractPageAnalyzerX {
+public class ChapterAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(ChapterAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile("^[Cc][Hh][Aa][Pp][Tt?][Ee?][Rr?]\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
 	public final static String TITLE = "CHAPTER";
@@ -31,7 +31,7 @@ public class ChapterAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

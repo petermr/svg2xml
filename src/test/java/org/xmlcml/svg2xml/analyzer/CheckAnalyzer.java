@@ -7,16 +7,16 @@ package org.xmlcml.svg2xml.analyzer;
  */
 public class CheckAnalyzer {
 
-	Class<? extends AbstractPageAnalyzerX> clazz;
+	Class<? extends AbstractAnalyzer> clazz;
 	private Integer count = null;
 	private Integer imageCount;
 	private Integer pathCount;
 	private Integer textCount;
-	private AbstractPageAnalyzerX imageAnalyzer;
-	private AbstractPageAnalyzerX pathAnalyzer;
-	private AbstractPageAnalyzerX textAnalyzer;
+	private AbstractAnalyzer imageAnalyzer;
+	private AbstractAnalyzer pathAnalyzer;
+	private AbstractAnalyzer textAnalyzer;
 	
-	public static CheckAnalyzer createCheckAnalyzer(AbstractPageAnalyzerX analyzer) {
+	public static CheckAnalyzer createCheckAnalyzer(AbstractAnalyzer analyzer) {
 		CheckAnalyzer  checkAnalyzer = null;
 		if (analyzer instanceof TextAnalyzerX) {
 			checkAnalyzer = new CheckAnalyzer((TextAnalyzerX) analyzer);
@@ -49,7 +49,7 @@ public class CheckAnalyzer {
 		this(TextAnalyzerX.class, textAnalyzer.getTextCharacters().size());
 	}
 	
-	public CheckAnalyzer(Class<? extends AbstractPageAnalyzerX> clazz, int count) {
+	public CheckAnalyzer(Class<? extends AbstractAnalyzer> clazz, int count) {
 		this.clazz = clazz;
 		this.count = count;
 	}

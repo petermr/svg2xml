@@ -11,7 +11,7 @@ import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
  * @author pm286
  *
  */
-public class AppendixAnalyzer extends AbstractPageAnalyzerX {
+public class AppendixAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(AppendixAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile("^[Aa][Pp][Pp][Ee][Nn][Dd][Ii][Xx]\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
 	public final static String TITLE = "APPENDIX";
@@ -24,7 +24,7 @@ public class AppendixAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

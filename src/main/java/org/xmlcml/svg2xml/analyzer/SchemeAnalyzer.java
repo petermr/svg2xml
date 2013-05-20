@@ -1,20 +1,16 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.table.TableOld;
 
 /**
  * @author pm286
  *
  */
-public class SchemeAnalyzer extends AbstractPageAnalyzerX {
+public class SchemeAnalyzer extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(SchemeAnalyzer.class);
 	public static final Pattern PATTERN = Pattern.compile("^[Ss][Cc][Hh][Ee][Mm][Ee]\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
 	public final static String TITLE = "SCHEME";
@@ -31,7 +27,7 @@ public class SchemeAnalyzer extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

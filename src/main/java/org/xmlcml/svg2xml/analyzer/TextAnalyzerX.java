@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 
 import nu.xom.Attribute;
-import nu.xom.Elements;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -20,7 +19,6 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Array;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
-import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -29,15 +27,16 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.text.Paragraph;
 import org.xmlcml.svg2xml.text.SimpleFont;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
-import org.xmlcml.svg2xml.text.TextChunk;
+import org.xmlcml.svg2xml.text.TextChunkRUN;
+import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.TextStructurer.Splitter;
 import org.xmlcml.svg2xml.text.TextLine;
-import org.xmlcml.svg2xml.text.TextLineContainer;
 import org.xmlcml.svg2xml.text.Word;
 import org.xmlcml.svg2xml.text.WordSequence;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -51,7 +50,7 @@ import com.google.common.collect.Multiset;
  * @author pm286
  *
  */
-public class TextAnalyzerX extends AbstractPageAnalyzerX {
+public class TextAnalyzerX extends AbstractAnalyzer {
 
 	private static final String ID_PREFIX = "textChunk";
 	private final static Logger LOG = Logger.getLogger(TextAnalyzerX.class);
@@ -90,7 +89,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	private Chunk chunk;
 	private SVGElement svgParent;
-	private TextChunk textChunk;
+	private TextChunkRUN textChunk;
 	private List<Paragraph> paragraphList;
 
 	private List<Chunk> textChunkList;
@@ -102,9 +101,9 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
     private List<SVGText> textCharacters;
 	
 	/** refactored container */
-	private TextLineContainer textLineContainer;
-//	private List<TextLine> textLineListX;
+	private TextStructurer textContainer;
 	private HtmlElement createdHtmlElement;
+	private List<ScriptContainer> scriptContainerList;
 	
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
@@ -112,6 +111,14 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	
 	public TextAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
 		super(semanticDocumentActionX);
+	}
+
+	public TextAnalyzerX(List<SVGText> characterList) {
+		this.setTextCharacters(characterList);
+	}
+
+	public TextAnalyzerX(SVGElement svgElement) {
+		this(SVGText.extractTexts(svgElement));
 	}
 
 	public String getTag() {
@@ -135,14 +142,13 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			throw new RuntimeException("null characters: ");
 		} else {
 			this.textCharacters = textCharacters;
-			ensureTextLineContainer().getSortedTextLines(textCharacters);
+			ensureTextContainerWithSortedLines().getSortedTextLines(textCharacters);
 		}
 	}
 
 
 	public List<TextLine> getLinesInIncreasingY() {
-		return ensureTextLineContainer().getLinesInIncreasingY();
-		
+		return ensureTextContainerWithSortedLines().getLinesInIncreasingY();
 	}
 
 	private void analyzeSpaces() {
@@ -151,7 +157,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		this.getSpaceSizes();
 	}
 
-	private TextChunk analyzeRawText(Chunk chunk) {
+	private TextChunkRUN analyzeRawText(Chunk chunk) {
 		this.chunk = chunk;
 		this.svgParent = (chunk != null) ? chunk : pageEditorX.getSVGPage();
 		
@@ -159,7 +165,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		this.createRawTextCharacterPositionMaps();
 		this.createHorizontalCharacterListAndCreateWords();
 		analyzeSpaces();
-		TextChunk textChunk = this.createTextChunkWithParagraphs();
+		TextChunkRUN textChunk = this.createTextChunkWithParagraphs();
 		return textChunk;
 	}
 	
@@ -346,7 +352,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	public RealArray getMeanFontSizeArray() {
-		return ensureTextLineContainer().getMeanFontSizeArray();
+		return ensureTextContainerWithSortedLines().getMeanFontSizeArray();
 	}
 
 	public void debug() {
@@ -368,9 +374,9 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	 * @param simpleFont
 	 * @return
 	 */
-	private TextChunk createTextChunkWithParagraphs() {
+	private TextChunkRUN createTextChunkWithParagraphs() {
 		createWordsAndAddToWordSequenceListRUN();
-		textChunk = new TextChunk(chunk, wordSequenceList);
+		textChunk = new TextChunkRUN(chunk, wordSequenceList);
 		paragraphList = textChunk.createParagraphs();
 		addParagraphsAsSVG();
 		return textChunk;
@@ -435,9 +441,9 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public void analyzeTextChunksCreateWordsLinesParasAndSubSupRUN(List<SVGElement> chunkElements) {
-		TextChunk lastMainTextChunk = null;
-		TextChunk lastScriptTextChunk = null;
-		TextChunk textChunk = null;
+		TextChunkRUN lastMainTextChunk = null;
+		TextChunkRUN lastScriptTextChunk = null;
+		TextChunkRUN textChunk = null;
 		List<Chunk> chunks = TextAnalyzerUtils.castToChunks(chunkElements);
 		ensureTextChunkList();
 		int id = 0;
@@ -556,7 +562,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return paragraphList;
 	}
 
-	private TextChunk analyzeBodyText(TextChunk lastScriptTextChunk, TextChunk textChunk) {
+	private TextChunkRUN analyzeBodyText(TextChunkRUN lastScriptTextChunk, TextChunkRUN textChunk) {
 		if (lastScriptTextChunk != null) {
 			if (textChunk.hasSuperscriptsIn(lastScriptTextChunk)) {
 				textChunk.addSuperscriptsFrom(lastScriptTextChunk);
@@ -567,8 +573,8 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		return lastScriptTextChunk;
 	}
 	
-	private TextChunk analyzeSubSup(
-			TextChunk lastMainTextChunk, TextChunk lastScriptTextChunk, TextChunk textChunk) {
+	private TextChunkRUN analyzeSubSup(
+			TextChunkRUN lastMainTextChunk, TextChunkRUN lastScriptTextChunk, TextChunkRUN textChunk) {
 		if (lastMainTextChunk != null) {
 			if (lastMainTextChunk.hasSubscriptsIn(textChunk)) {
 				lastMainTextChunk.addSubscriptsFrom(textChunk);
@@ -715,7 +721,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public List<TextLine> getTextLines() {
-		return ensureTextLineContainer().getTextLineList();
+		return ensureTextContainerWithSortedLines().getTextLineList();
 	}
 
 	/** creates one "para" per line
@@ -723,9 +729,9 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	 * @return
 	 */
 	public HtmlElement createHtmlRawDiv() {
-		ensureTextLineContainer();
-//		List<TextLine> textLineList = textLineContainer.getLinesWithLargestFont();
-		List<TextLine> textLineList = textLineContainer.getLinesWithCommonestFont();
+		ensureTextContainerWithSortedLines();
+//		List<TextLine> textLineList = textContainer.getLinesWithLargestFont();
+		List<TextLine> textLineList = textContainer.getLinesWithCommonestFont();
 		HtmlDiv div = new HtmlDiv();
 		for (TextLine textLine : textLineList) {
 			HtmlElement p = textLine.createHtmlLine();
@@ -748,21 +754,23 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	public HtmlElement createHtmlDivWithParas() {
-		ensureTextLineContainer();
-		HtmlElement div = textLineContainer.createHtmlDivWithParas();
+		ensureTextContainerWithSortedLines();
+		HtmlElement div = textContainer.createHtmlDivWithParas();
 		return div;
 	}
 
 	
-	private TextLineContainer ensureTextLineContainer() {
-		if (this.textLineContainer == null) {
-			this.textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(textCharacters, this);
+	private TextStructurer ensureTextContainerWithSortedLines() {
+		if (this.textContainer == null) {
+			this.textContainer = TextStructurer.createTextStructurerWithSortedLines(textCharacters, this);
+		} else {
+			this.textContainer.getSortedTextLines(textCharacters);
 		}
-		return this.textLineContainer;
+		return this.textContainer;
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		SVGG g = new SVGG();
 		for (int i = 0; i < textCharacters.size(); i++) {
 			SVGText text = textCharacters.get(i);
@@ -783,7 +791,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 	
 	private void debug(String string, Map<Integer, TextLine> textByCoordMap) {
 		if (textByCoordMap == null) {
-			LOG.debug("No textCoordMap "+textLineContainer.getTextLineByYCoordMap());
+			LOG.debug("No textCoordMap "+textContainer.getTextLineByYCoordMap());
 		} else {
 			Set<Integer> keys = textByCoordMap.keySet();
 			Integer[] ii = keys.toArray(new Integer[keys.size()]);
@@ -791,7 +799,7 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 			for (int iz : ii) {
 				TextLine textList = textByCoordMap.get(iz);
 				for (SVGText text : textList) {
-					LOG.debug(">> "+text.getXY()+" "+text.getText()+ " ");
+					LOG.trace(">> "+text.getXY()+" "+text.getText()+ " ");
 				}
 			}
 			System.out.println();
@@ -809,67 +817,67 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 
 	// =========== Delegates ============
 	public Double getMainInterTextLineSeparation(int decimalPlaces) {
-		return ensureTextLineContainer().getMainInterTextLineSeparation(decimalPlaces);
+		return ensureTextContainerWithSortedLines().getMainInterTextLineSeparation(decimalPlaces);
 	}
 
 	public RealArray getInterTextLineSeparationArray() {
-		return ensureTextLineContainer().getInterTextLineSeparationArray();
+		return ensureTextContainerWithSortedLines().getInterTextLineSeparationArray();
 	}
 
-	public TextLineContainer getTextLineContainer() {
-		return ensureTextLineContainer();
+	public TextStructurer getTextContainer() {
+		return ensureTextContainerWithSortedLines();
 	}
 
 	public List<TextLine> getLinesWithLargestFont() {
-		return ensureTextLineContainer().getLinesWithCommonestFont();
+		return ensureTextContainerWithSortedLines().getLinesWithCommonestFont();
 	}
 
 	public Real2Range getTextLinesLargestFontBoundingBox() {
-		return ensureTextLineContainer().getLargestFontBoundingBox();
+		return ensureTextContainerWithSortedLines().getLargestFontBoundingBox();
 	}
 
 	public Integer getSerialNumber(TextLine textLine) {
-		return ensureTextLineContainer().getSerialNumber(textLine);
+		return ensureTextContainerWithSortedLines().getSerialNumber(textLine);
 	}
 
 	public List<String> getTextLineContentList() {
-		return ensureTextLineContainer().getTextLineContentList();
+		return ensureTextContainerWithSortedLines().getTextLineContentList();
 	}
 
 	public void insertSpaces() {
-		ensureTextLineContainer().insertSpaces();
+		ensureTextContainerWithSortedLines().insertSpaces();
 	}
 
 	public RealArray getTextLineCoordinateArray() {
-		return ensureTextLineContainer().getTextLineCoordinateArray();
+		return ensureTextContainerWithSortedLines().getTextLineCoordinateArray();
 	}
 
 	public Multimap<SvgPlusCoordinate, TextLine> getTextLineListByFontSize() {
-		return ensureTextLineContainer().getTextLineListByFontSize();
+		return ensureTextContainerWithSortedLines().getTextLineListByFontSize();
 	}
 
 	public void insertSpaces(double d) {
-		ensureTextLineContainer().insertSpaces(d);
+		ensureTextContainerWithSortedLines().insertSpaces(d);
 	}
 
 	public void getTextLineByYCoordMap() {
-		ensureTextLineContainer().getTextLineByYCoordMap();
+		ensureTextContainerWithSortedLines().getTextLineByYCoordMap();
 	}
 
 	public RealArray getModalExcessWidthArray() {
-		return ensureTextLineContainer().getModalExcessWidthArray();
+		return ensureTextContainerWithSortedLines().getModalExcessWidthArray();
 	}
 
 	public Multiset<Double> createSeparationSet(int decimalPlaces) {
-		return ensureTextLineContainer().createSeparationSet(decimalPlaces);
+		return ensureTextContainerWithSortedLines().createSeparationSet(decimalPlaces);
 	}
 
 	public List<Double> getActualWidthsOfSpaceCharactersList() {
-		return ensureTextLineContainer().getActualWidthsOfSpaceCharactersList();
+		return ensureTextContainerWithSortedLines().getActualWidthsOfSpaceCharactersList();
 	}
 
-	public void setTextLineContainer(TextLineContainer textLineContainer) {
-		this.textLineContainer = textLineContainer;
+	public void setTextStructurer(TextStructurer textContainer) {
+		this.textContainer = textContainer;
 	}
 
 	protected HtmlElement createHtml() {
@@ -881,9 +889,89 @@ public class TextAnalyzerX extends AbstractPageAnalyzerX {
 		}
 		createdHtmlElement = this.createHtmlDivWithParas();
 		if (createdHtmlElement != null) {
-			AbstractPageAnalyzerX.tidyStyles(createdHtmlElement);
+			AbstractAnalyzer.tidyStyles(createdHtmlElement);
 		}
 		return createdHtmlElement;
 	}
+	
+	//FIXME to use Splitters customized for different dataTypes  and parameters
+	/** splits svgg into textContainers using a list of splitters
+	 * 
+	 * @param gOrig
+	 * @param chunkId
+	 * @param splitters
+	 * @return
+	 */
+	public List<TextStructurer> createSplitTextContainers(SVGG gOrig, ChunkId chunkId, Splitter ...splitters) {
+		TextStructurer textContainer = new TextStructurer(this);
+		textContainer.getScriptedLineList();
+		List<TextStructurer> splitTLCList = new ArrayList<TextStructurer>();
+		splitTLCList.add(textContainer);
+		for (Splitter splitter : splitters) {
+			List<TextStructurer> newSplitTLCList = new ArrayList<TextStructurer>();
+			for (TextStructurer tlc : splitTLCList) {
+				List<TextStructurer> splitList = textContainer.split(splitter);
+				LOG.debug("SPLIT: "+splitList);
+				newSplitTLCList.addAll(splitList);
+			}
+			splitTLCList = newSplitTLCList;
+		}
+		LOG.debug("SPLIT "+splitTLCList.size());
+		return splitTLCList;
+	}
+
+	/** counter is container counter
+	 * 
+	 * @param analyzerX
+	 * @param suffix
+	 * @param pageAnalyzer
+	 * @return
+	 */
+	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+		TextStructurer textContainer1 = this.getTextContainer();
+		textContainer1.getScriptedLineList();
+		List<TextStructurer> splitList = textContainer1.splitOnFontBoldChange(-1);
+		List<TextStructurer> textContainerList = splitList;
+		LOG.trace(" split LIST "+textContainerList.size());
+		if (textContainerList.size() > 1) {
+			splitBoldHeaderOnFontSize(textContainerList);
+		}
+		Character cc = 'a';
+		int textContainerCount = textContainerList.size();
+		ensureScriptContainerList();
+		for (TextStructurer textContainer : textContainerList) {
+//			textContainer.splitNumberedList();
+			ScriptContainer scriptContainer = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
+//			AbstractContainer container = pageAnalyzer.createContainerAndOutput(textContainer);
+			scriptContainerList.add(scriptContainer);
+		}
+		return scriptContainerList;
+	}
+
+	private void ensureScriptContainerList() {
+		if (scriptContainerList == null) {
+			scriptContainerList = new ArrayList<ScriptContainer>();
+		}
+	}
+
+	private void splitBoldHeaderOnFontSize(List<TextStructurer> textContainerList) {
+		TextStructurer textContainer0 = textContainerList.get(0);
+		if (textContainer0.getScriptedLineList().size() > 1) {
+			textContainer0.getScriptedLineList();
+			List<TextStructurer> splitList = textContainer0.splitOnFontSizeChange(999);
+			List<TextStructurer> fontSplitList =
+				splitList;
+			if (fontSplitList.size() > 1) {
+				int index = textContainerList.indexOf(textContainer0);
+				textContainerList.remove(index);
+				for (TextStructurer splitTC : fontSplitList) {
+					textContainerList.add(index++, splitTC);
+				}
+				LOG.trace("SPLIT FONT");
+			}
+		}
+	}
+
+
 	
 }

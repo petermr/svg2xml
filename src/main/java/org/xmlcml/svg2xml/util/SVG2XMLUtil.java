@@ -1,9 +1,17 @@
 package org.xmlcml.svg2xml.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import nu.xom.Element;
 import nu.xom.Node;
 import nu.xom.Nodes;
 import nu.xom.Text;
+
+import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 
 public class SVG2XMLUtil {
 
@@ -87,6 +95,36 @@ public class SVG2XMLUtil {
 				e.appendChild(text);
 			}
 		}
+	}
+
+	public static void writeToSVGFile(File dir, String filename,SVGElement svgElement) {
+		if (!(svgElement instanceof SVGSVG)) { 
+			SVGSVG svg = new SVGSVG();
+			svg.setWidth(600.);
+			svg.setHeight(800.);
+			svg.appendChild(SVGElement.readAndCreateSVG(svgElement));
+			svgElement = svg;
+		}
+		try {
+			if (!filename.endsWith(SVGPlusConstantsX.DOT_SVG)) {
+				filename += SVGPlusConstantsX.DOT_SVG;
+			}
+			CMLUtil.debug(svgElement, new FileOutputStream(new File(dir, filename)), 1);
+		} catch (Exception e) {
+			throw new RuntimeException("cannot write", e);
+		}
+	}
+
+	/** trims characters off RHS of string
+	 * adds actual length
+	 * 
+	 * @param string
+	 * @param maxlen
+	 * @return
+	 */
+	public static String trim(String string, int maxlen) {
+		int l = string.length();
+		return (l <= maxlen) ? string : string.substring(0, l)+"... ("+l+" chars)";
 	}
 
 

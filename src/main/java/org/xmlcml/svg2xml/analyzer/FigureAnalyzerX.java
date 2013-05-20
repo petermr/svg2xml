@@ -24,7 +24,7 @@ import org.xmlcml.svg2xml.tools.Chunk;
  * @author pm286
  *
  */
-public class FigureAnalyzerX extends AbstractPageAnalyzerX {
+public class FigureAnalyzerX extends AbstractAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(FigureAnalyzerX.class);
 
@@ -222,7 +222,7 @@ public class FigureAnalyzerX extends AbstractPageAnalyzerX {
 	}
 	
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

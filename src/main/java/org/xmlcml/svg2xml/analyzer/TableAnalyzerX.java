@@ -14,13 +14,13 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.table.TableTable;
-import org.xmlcml.svg2xml.text.TextLineContainer;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 /**
  * @author pm286
  *
  */
-public class TableAnalyzerX extends AbstractPageAnalyzerX {
+public class TableAnalyzerX extends AbstractAnalyzer {
 	private static final Logger LOG = Logger.getLogger(TableAnalyzerX.class);
 	
 	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
@@ -28,7 +28,7 @@ public class TableAnalyzerX extends AbstractPageAnalyzerX {
 
 	private TextAnalyzerX textAnalyzer;
 	private PathAnalyzerX pathAnalyzer;
-	private TextLineContainer textLineContainer;
+	private TextStructurer textContainer;
 
 	private Real2Range pathBox;
 	private Real2Range textBox;
@@ -48,7 +48,7 @@ public class TableAnalyzerX extends AbstractPageAnalyzerX {
 	public TableAnalyzerX(TextAnalyzerX textAnalyzer, PathAnalyzerX pathAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
 		this.pathAnalyzer = pathAnalyzer;
-		this.textLineContainer = textAnalyzer.getTextLineContainer();
+		this.textContainer = textAnalyzer.getTextContainer();
 	}
 
 	public void analyze() {
@@ -85,7 +85,7 @@ public class TableAnalyzerX extends AbstractPageAnalyzerX {
 	}
 
 	@Override
-	public SVGG labelChunk() {
+	public SVGG annotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	
