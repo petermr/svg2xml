@@ -301,12 +301,12 @@ public class HtmlEditor {
 		FigureAnalyzerX figureAnalyzer = null;
 		AbstractAnalyzer analyzer = figureHtmlAnalyzer.getAnalyzer();
 		if (analyzer instanceof MixedAnalyzer) {
-			TextAnalyzerX textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
+			AbstractAnalyzer textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
 			ImageAnalyzerX imageAnalyzer = ((MixedAnalyzer)analyzer).getImageAnalyzer();
 			PathAnalyzerX pathAnalyzer = ((MixedAnalyzer)analyzer).getPathAnalyzer();
 			figureAnalyzer = new FigureAnalyzerX(textAnalyzer, pathAnalyzer, imageAnalyzer);
 		} else if (analyzer instanceof TextAnalyzerX) {
-			figureAnalyzer = new FigureAnalyzerX((TextAnalyzerX)analyzer, (PathAnalyzerX)null, (ImageAnalyzerX)null);
+			figureAnalyzer = new FigureAnalyzerX((AbstractAnalyzer)analyzer, (PathAnalyzerX)null, (ImageAnalyzerX)null);
 		}
 		return figureAnalyzer;
 	}

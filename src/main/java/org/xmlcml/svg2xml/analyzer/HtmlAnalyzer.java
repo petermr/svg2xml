@@ -111,7 +111,7 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 	}
 
 	@Override
-	public SVGG annotateChunk() {
+	public SVGG oldAnnotateChunk() {
 		// TODO Auto-generated method stub
 		return null;
 	}

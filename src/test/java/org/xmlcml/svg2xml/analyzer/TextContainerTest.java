@@ -14,13 +14,13 @@ import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
-import org.xmlcml.svg2xml.text.TextLineContainer;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 import com.google.common.collect.Multiset;
 
-public class TextLineContainerTest {
+public class TextContainerTest {
 
-	private final static Logger LOG = Logger.getLogger(TextLineContainerTest.class);
+	private final static Logger LOG = Logger.getLogger(TextContainerTest.class);
 	private static final String GEOTABLE_7 = "geotable-7.";
 	private List<File> geoFileList;
 	
@@ -43,8 +43,8 @@ public class TextLineContainerTest {
 	
 	@Test
 	public void testMultilineFonts() {
-		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainer(Fixtures.PARA_SUSCRIPT_SVG);
-		Multiset<String> fontFamilyMultiset = textLineContainer.getFontFamilyMultiset();
+		TextStructurer textContainer = TextStructurer.createTextStructurer(Fixtures.PARA_SUSCRIPT_SVG);
+		Multiset<String> fontFamilyMultiset = textContainer.getFontFamilyMultiset();
 		Assert.assertEquals("font occurrences", 523, fontFamilyMultiset.size());
 		Set<String> entrySet = fontFamilyMultiset.elementSet();
 		Assert.assertEquals("different fonts", 3, entrySet.size());
@@ -55,8 +55,8 @@ public class TextLineContainerTest {
 	
 	@Test
 	public void testMultilineCommonestFontFamily() {
-		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainer(Fixtures.PARA_SUSCRIPT_SVG);
-		Assert.assertEquals("commonest fontfamily", "TimesNewRoman", textLineContainer.getCommonestFontFamily());
+		TextStructurer textContainer = TextStructurer.createTextStructurer(Fixtures.PARA_SUSCRIPT_SVG);
+		Assert.assertEquals("commonest fontfamily", "TimesNewRoman", textContainer.getCommonestFontFamily());
 	}
 	
 	
@@ -68,7 +68,7 @@ public class TextLineContainerTest {
 	@Test
 	public void testReadBMCGeotableContainers() {
 		for (File geoFile : geoFileList) {
-			TextLineContainer container = TextLineContainer.createTextLineContainer(geoFile);
+			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class TextLineContainerTest {
 		double[] sizes = {7.97, 7.97, 9.76, 10.26, 9.76, 10.26, 9.76};
 		int i = 0;
 		for (File geoFile : geoFileList) {
-			TextLineContainer container = TextLineContainer.createTextLineContainer(geoFile);
+			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
 			SvgPlusCoordinate size = container.getCommonestFontSize();
 			Assert.assertEquals("file"+i, sizes[i], size.getDouble(), 0.001);
 			i++;
@@ -93,7 +93,7 @@ public class TextLineContainerTest {
 				           "AdvOTa9103878", "AdvOTa9103878", "AdvOTa9103878"};
 		int i = 0;
 		for (File geoFile : geoFileList) {
-			TextLineContainer container = TextLineContainer.createTextLineContainer(geoFile);
+			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
 			String fontFamily = container.getCommonestFontFamily();
 			Assert.assertEquals("file"+i, family[i], fontFamily);
 			i++;
@@ -107,7 +107,7 @@ public class TextLineContainerTest {
 		int[] nfont = {3, 1, 3, 3, 1, 5, 3};
 		int i = 0;
 		for (File geoFile : geoFileList) {
-			TextLineContainer container = TextLineContainer.createTextLineContainer(geoFile);
+			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
 			Assert.assertEquals("file"+i, nfont[i], container.getFontFamilyCount());
 			i++;
 		}
@@ -116,7 +116,7 @@ public class TextLineContainerTest {
 	@Test
 	public void testBMCGeotableTextLines() {
 		File geoFile2 = geoFileList.get(2);
-		TextLineContainer container = TextLineContainer.createTextLineContainer(geoFile2);
+		TextStructurer container = TextStructurer.createTextStructurer(geoFile2);
 	}
 
 }

@@ -8,11 +8,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
-
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
@@ -20,13 +20,21 @@ import org.xmlcml.euclid.Int2Range;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntMatrix;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.ImageContainer;
+import org.xmlcml.svg2xml.container.PathContainer;
+import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.text.ScriptLine;
+import org.xmlcml.svg2xml.text.ScriptWord;
+import org.xmlcml.svg2xml.text.Suscript;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.svg2xml.util.TextFlattener;
 
@@ -42,7 +50,7 @@ public class PDFIndex {
 
 	private static final String WHITESPACE = "[\n\r\u0085\u2028\u2029]";
 	private static final String DUPLICATE = "duplicate";
-	private final static Logger LOG = Logger.getLogger(PDFIndex.class);
+	public final static Logger LOG = Logger.getLogger(PDFIndex.class);
 
 	private static final String BBOX = "bbox";
 	public static final String CONTENT = "content";
@@ -84,6 +92,9 @@ public class PDFIndex {
 	private Multimap<String, ChunkId> svgIdBySchemeMap;
 	private Multimap<String, ChunkId> svgIdByTableMap;
 
+	private Multimap<Double, AbstractContainer> scriptContainerByBoldFontSize;
+	private Multimap<Double, AbstractContainer> pathContainerByPathString;
+	private Multimap<Double, AbstractContainer> imageContainerByImageString;
 
 	private Multimap<Int2Range, ChunkId> bboxMap;
 
@@ -97,7 +108,7 @@ public class PDFIndex {
 	private List<List<ChunkId>> bboxIdListList;
 
 	Set<ChunkId> usedIdSet;
-
+	
 	private AppendixAnalyzer appendixAnalyzer;
 	private BibRefAnalyzer   bibRefAnalyzer;
 	private ChapterAnalyzer  chapterAnalyzer;
@@ -158,9 +169,17 @@ public class PDFIndex {
 			duplicatePathCount = 0;
 			bboxMap = HashMultimap.create(); 
 			duplicateBboxCount = 0;
+			scriptContainerByBoldFontSize = HashMultimap.create();
 		}
 	}
 
+	private void ensureContainerMaps() {
+		if (scriptContainerByBoldFontSize == null){
+			scriptContainerByBoldFontSize = HashMultimap.create();
+			pathContainerByPathString = HashMultimap.create();
+			imageContainerByImageString = HashMultimap.create();
+		}
+	}
 
 	public void createIndexes() {
 		
@@ -531,6 +550,70 @@ public class PDFIndex {
 	}
 
 	public void addToindexes(PageAnalyzer pageAnalyzer) {
+		for (AbstractContainer container : pageAnalyzer.getPageAnalyzerContainerList()) {
+			if (container instanceof ScriptContainer) {
+				((ScriptContainer)container).addToIndexes(this);
+			} else if (container instanceof PathContainer) {
+				((PathContainer)container).addToIndexes(this);
+			} else if (container instanceof ImageContainer) {
+				((ImageContainer)container).addToIndexes(this);
+			}
+		}
 		LOG.debug("PageAnalyzer NYI");
+	}
+
+	public void addToBoldIndex(Double fontSize, ScriptContainer scriptContainer) {
+		ensureContainerMaps();
+		LOG.debug("Adding: "+fontSize+" "+scriptContainer);
+		scriptContainerByBoldFontSize.put(fontSize, scriptContainer);
+	}
+
+	public void addToPathIndex(String pathString, PathContainer pathContainer) {
+		LOG.debug("Adding: "+pathString+" "+pathContainer);
+	}
+
+	public void addToImageIndex(String imageString, ImageContainer imageContainer) {
+		LOG.debug("Adding: "+imageString+" "+imageContainer);
+	}
+
+	public void analyzeContainers() {
+		analyzeScriptContainerIndexes();
+	}
+
+	private void analyzeScriptContainerIndexes() {
+		Double[] fontSizes = scriptContainerByBoldFontSize.keySet().toArray(new Double[0]);
+		Arrays.sort(fontSizes);
+		for (Double fontSize : fontSizes) {
+			System.out.println("************* "+fontSize);
+			List<AbstractContainer> containers = getListByKey(fontSize);
+			for (AbstractContainer container : containers) {
+				if (container instanceof ScriptContainer) {
+					ScriptContainer scriptContainer = (ScriptContainer) container;
+					for (ScriptLine script : scriptContainer) {
+						RealRangeArray wordArray = script.getWordRangeArray();
+						wordArray.sortAndRemoveOverlapping();
+						wordArray.format(pdfAnalyzer.getDecimalPlaces());
+						LOG.debug("wordArray >>>>>>>> "+wordArray);
+						for (SVGText character : script.getSVGTextCharacters()) {
+							System.out.print(character.getValue()+"_"+character.getX()+" ");
+						}
+						System.out.println();
+						List<ScriptWord> words = script.getWords();
+						for (ScriptWord word : words) {
+							System.out.print(" ~  "+word.getRawValue());
+						}
+						System.out.println();
+					}
+				}
+				LOG.trace("------"+container.getRawValue());
+			}
+		}
+	}
+
+	private List<AbstractContainer> getListByKey(Double fontSize) {
+		Collection<AbstractContainer> containers = scriptContainerByBoldFontSize.get(fontSize);
+		List<AbstractContainer> containerList = new ArrayList<AbstractContainer>();
+		for (Iterator<AbstractContainer> iter = containers.iterator() ; iter.hasNext(); ) {containerList.add(iter.next());}
+		return containerList;
 	}
 }

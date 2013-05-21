@@ -1,8 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import java.io.File;
 import java.util.ArrayList;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,16 +29,15 @@ import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.tools.Chunk;
-import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /**
  * Tries to interpret svg:path as
@@ -158,7 +155,7 @@ public class PathAnalyzerX extends AbstractAnalyzer {
 	}
 
 	@Override
-	public SVGG annotateChunk() {
+	public SVGG oldAnnotateChunk() {
 		SVGG g = null;
 		if (pathList != null && pathList.size() > 0) {
 			g = new SVGG();
@@ -173,6 +170,13 @@ public class PathAnalyzerX extends AbstractAnalyzer {
 		}
 		return g;
 	}
+	
+	@Override
+	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+		return annotateElements(svgElements, 0.2, 0.7, 5.0, "cyan");
+	}
+
+
 	
 	@Override
 	protected HtmlElement createHtml() {
@@ -573,18 +577,20 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 		this.minLinesInPolyline = minLinesInPolyline;
 	}
 	
-//	private SVGG createSVGAndOutput(int humanPageNumber, int counter, SVGG gOrig,
-//			AbstractAnalyzer analyzerX, String suffix, PathAnalyzerX pathAnalyzer) {
-//		ChunkId chunkId;
-//		PathContainer pathContainer = PathContainer.createPathContainer(this, pathAnalyzer);
-//		containerList.add(pathContainer);
-//		chunkId = new ChunkId(humanPageNumber, counter);
-//		SVGG gOut = annotateChunkAndAddIdAndAttributes(gOrig, chunkId, analyzerX);
-//		SVG2XMLUtil.writeToSVGFile(new File("target"), "chunk"+humanPageNumber+"."+(counter)+suffix, gOut);
-//		return gOut;
-//	}
-
-
+	/** 
+	 * 
+	 * @param analyzerX
+	 * @param suffix
+	 * @param pageAnalyzer
+	 * @return
+	 */
+	@Override
+	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+		PathContainer pathContainer = new PathContainer(this.getPathList(), pageAnalyzer);
+		ensureAbstractContainerList();
+		abstractContainerList.add(pathContainer);
+		return abstractContainerList;
+	}
 
 	//============string=============
 	

@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,11 +19,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
-import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.util.NameComparator;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
@@ -31,16 +32,22 @@ import com.google.common.collect.Multimap;
 public class PDFAnalyzer /*implements Annotatable */{
 
 
+	private static final File TARGET_DIR = new File("target");
+	private static final File OUTPUT_DIR = new File(TARGET_DIR, "output");
+	private static final File SVG_DIR = new File(TARGET_DIR, "svg");
+	
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
+	
 	private static final String HTTP = "http";
 	public static final String Z_CHUNK = "z_";
+	private static final String DOT_PDF = ".pdf";
 	
 	private File inFile;
 	private String inputName;
 	String fileRoot;
-	private File svgTopDir = new File("target/svg");
+	private File svgTopDir = SVG_DIR;
 	File svgDocumentDir;
-	private File outputTopDir = new File("target/output");
+	private File outputTopDir = OUTPUT_DIR;
 	File outputDocumentDir;
 
 	private DocumentListAnalyzer documentListAnalyzer;
@@ -142,8 +149,27 @@ public class PDFAnalyzer /*implements Annotatable */{
 	}
 
 	private void analyzePDFURL(String name) {
-//		new URL(name);
-		throw new RuntimeException("URL not yet implemented");
+		try {
+			inputName = name;
+			fileRoot = inputName.substring(0, inputName.length() - SVGPlusConstantsX.DOT_PDF.length());
+			if (fileRoot.startsWith(HTTP)) {
+				fileRoot = fileRoot.substring(fileRoot.indexOf("//")+2);
+				fileRoot = fileRoot.substring(fileRoot.indexOf("/")+1);
+				LOG.debug("fileroot "+fileRoot);
+			}
+			svgDocumentDir = new File(svgTopDir, fileRoot);
+			LOG.debug("svgDocument "+svgDocumentDir);
+			outputDocumentDir = new File(outputTopDir, fileRoot);
+			outputDocumentDir.mkdirs();
+			fileRoot = "";
+			LOG.debug("outputDocument "+outputDocumentDir);
+			mainAnalysis();
+			File htmlDir = (new File(outputTopDir, fileRoot));
+//			copyOriginalPDF(inFile, htmlDir);
+			createHtmlMenuSystem(htmlDir);
+		} catch (Exception e) {
+			throw new RuntimeException ("URL failed", e);
+		}
 	}
 
 	public void analyzePDFFile(File inFile) {
@@ -201,6 +227,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
 			pdfIndex.addToindexes(pageAnalyzer);
 		}
+		pdfIndex.analyzeContainers();
 		pdfIndex.createIndexes();
 		pdfIndex.AnalyzeDuplicates();
 		LOG.trace("IDS: "+pdfIndex.getUsedIdSet());
@@ -212,7 +239,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 			System.out.print(pageCounter+"~");
 			PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
 			SVGSVG svgPage = pageAnalyzer.splitChunksAnnotateAndCreatePage();
-			SVG2XMLUtil.writeToSVGFile(new File("target"), "page"+pageCounter, svgPage);
+			SVG2XMLUtil.writeToSVGFile(this.outputDocumentDir, "page"+pageCounter, svgPage, true);
 			pageAnalyzerList.add(pageAnalyzer);
 		}
 	}
@@ -249,17 +276,28 @@ public class PDFAnalyzer /*implements Annotatable */{
 	public void createSVGFilesfromPDF() {
 		LOG.trace("createSVG");
 		PDF2SVGConverter converter = new PDF2SVGConverter();
-		if (inFile.exists()) {
-			File[] files = (svgDocumentDir == null) ? null : svgDocumentDir.listFiles();
-			if (!svgDocumentDir.exists() || files == null || files.length == 0) {
-				svgDocumentDir.mkdirs();
-				LOG.debug("running "+inFile.toString()+" to "+svgDocumentDir.toString());
-				converter.run("-outdir", svgDocumentDir.toString(), inFile.toString() );
-			} else {
-				LOG.debug("Skipping SVG");
+		if (inFile != null && inFile.exists()) {
+			createSVGFilesfromPDF(converter, inFile.toString());
+		} else if (inputName != null && inputName.startsWith(HTTP)) {
+			String inputName1 = inputName.substring(inputName.lastIndexOf("/")+1);
+			if (inputName.toLowerCase().endsWith(DOT_PDF)) {
+				inputName1 = inputName1.substring(0, inputName1.length()-DOT_PDF.length());
 			}
+			LOG.debug("filename: "+inputName1);
+			createSVGFilesfromPDF(converter, inputName);
 		} else {
 			throw new RuntimeException("no input file: "+inFile);
+		}
+	}
+
+	private void createSVGFilesfromPDF(PDF2SVGConverter converter, String inputName) {
+		File[] files = (svgDocumentDir == null) ? null : svgDocumentDir.listFiles();
+		if (!svgDocumentDir.exists() || files == null || files.length == 0) {
+			svgDocumentDir.mkdirs();
+			LOG.debug("running "+inputName+" to "+svgDocumentDir.toString());
+			converter.run("-outdir", svgDocumentDir.toString(), inputName );
+		} else {
+			LOG.debug("Skipping SVG");
 		}
 	}
 
@@ -355,6 +393,15 @@ public class PDFAnalyzer /*implements Annotatable */{
 				analyzer.analyzePDFs(args[0]); 
 			}
 		}
+
+	public int getDecimalPlaces() {
+		return PageEditorX.DECIMAL_PLACES;
+	}
+
+	public File getExistingOutputDocumentDir() {
+		outputDocumentDir.mkdirs();
+		return outputDocumentDir;
+	}
 
 
 }

@@ -23,7 +23,7 @@ public class SummaryAnalyzer extends AbstractAnalyzer {
 	}
 	
 	@Override
-	public SVGG annotateChunk() {
+	public SVGG oldAnnotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

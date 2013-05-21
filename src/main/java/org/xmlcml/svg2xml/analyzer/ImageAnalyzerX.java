@@ -47,7 +47,7 @@ public class ImageAnalyzerX extends AbstractAnalyzer {
 	public List<SVGImage> getImageList() { return imageList;}
 
 	@Override
-	public SVGG annotateChunk() {
+	public SVGG oldAnnotateChunk() {
 		SVGG g = new SVGG();
 		for (int i = 0; i < imageList.size(); i++) {
 			SVGImage image = imageList.get(i);

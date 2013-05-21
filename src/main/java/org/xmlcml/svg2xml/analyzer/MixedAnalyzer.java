@@ -15,7 +15,9 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.DivContainer;
+import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class MixedAnalyzer extends AbstractAnalyzer {
@@ -100,11 +102,11 @@ public class MixedAnalyzer extends AbstractAnalyzer {
 	 * 
 	 */
 	@Override
-	public SVGG annotateChunk() {
+	public SVGG oldAnnotateChunk() {
 		ensureAnalyzerList();
 		SVGG g = new SVGG();
 		for (AbstractAnalyzer analyzer : analyzerList) {
-			SVGG gg = analyzer.annotateChunk();
+			SVGG gg = analyzer.oldAnnotateChunk();
 			if (gg != null) {
 				g.appendChild(gg.copy());
 			}
@@ -306,6 +308,33 @@ public class MixedAnalyzer extends AbstractAnalyzer {
 		return type;
 	}
 	
+	/** 
+	 * 
+	 * @param analyzerX
+	 * @param suffix
+	 * @param pageAnalyzer
+	 * @return
+	 */
+	@Override
+	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+		DivContainer divContainer = new DivContainer(pageAnalyzer);
+		if (this.removeFrameBoxFromPathList()) {
+			divContainer.setBox(true);
+		}
+		divContainer.addImageList(this.getImageList());
+		divContainer.addPathList(this.getPathList());
+		divContainer.addTextList(this.getTextList());
+		ensureAbstractContainerList();
+		abstractContainerList.add(divContainer);
+		return abstractContainerList;
+	}
+
+	@Override
+	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+		return annotateElements(svgElements, 0.2, 0.7, 5.0, "yellow");
+	}
+
+
 	private SVGG createSVGAndOutput(int humanPageNumber, int counter, SVGG gOrig,
 			AbstractAnalyzer analyzerX,  String suffix, MixedAnalyzer mixedAnalyzer) {
 		ChunkId chunkId;

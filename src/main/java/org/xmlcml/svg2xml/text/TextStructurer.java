@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import nu.xom.Elements;
 
@@ -20,6 +22,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -27,7 +30,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.svg2xml.analyzer.AbstractPageAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
@@ -43,10 +46,23 @@ import com.google.common.collect.Multiset.Entry;
  * @author pm286
  *
  */
-public class TextLineContainer {
+public class TextStructurer {
 
-	private static final Logger LOG = Logger.getLogger(TextLineContainer.class);
+	private static final Logger LOG = Logger.getLogger(TextStructurer.class);
 
+	/** used for splitting between lineGroups
+	 * 
+	 * @author pm286
+	 *
+	 */
+	public enum Splitter {
+		BOLD,
+		FONTSIZE,
+		FONTFAMILY,
+	};
+	
+	Pattern NUMBER_ITEM_PATTERN = Pattern.compile("^\\s*[\\[\\(]?\\s*(\\d+)\\s*\\.?[\\]\\)]?\\.?\\s*.*");
+	
 	/** default ratio for "isLargerThan" */
 	public static final double LARGER_FONT_SIZE_RATIO = 1.02;
 
@@ -75,25 +91,33 @@ public class TextLineContainer {
 
 	private List<Real2Range> textLineChunkBoxes;
 
-	private List<TextLineGroup> initialTextLineGroupList;
+	private List<ScriptLine> initialTextLineGroupList;
 	private List<TextLine> commonestFontSizeTextLineList;
-//	private List<TextLineGroup> textLineGroupList;
 
-	private List<TextLineGroup> separatedTextLineGroupList;
+	private List<ScriptLine> scriptedLineList;
 
 	private HtmlElement createdHtmlElement;
-	
-	public TextLineContainer(TextAnalyzerX textAnalyzer) {
+
+	/** this COPIES the lines in the textAnalyzer
+	 * this may not be a good idea
+	 * @param textAnalyzer to copy lines from
+	 */
+	public TextStructurer(TextAnalyzerX textAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
+		if (textAnalyzer != null) {
+			textAnalyzer.setTextStructurer(this);
+			List<SVGText> characters = textAnalyzer.getTextCharacters();
+			this.createSortedLines(characters, textAnalyzer);
+		}
 	}
 
-	public static TextLineContainer createTextLineContainer(File svgFile) {
-		return createTextLineContainer(svgFile, null);
+	public static TextStructurer createTextStructurer(File svgFile) {
+		return createTextStructurer(svgFile, null);
 	}
 
-	public static TextLineContainer createTextLineContainer(File svgFile, TextAnalyzerX textAnalyzer) {
-		TextLineContainer container = new TextLineContainer(textAnalyzer);
-		List<TextLine> textLineList = TextLineContainer.createTextLineList(svgFile);
+	public static TextStructurer createTextStructurer(File svgFile, TextAnalyzerX textAnalyzer) {
+		TextStructurer container = new TextStructurer(textAnalyzer);
+		List<TextLine> textLineList = TextStructurer.createTextLineList(svgFile);
 		if (textLineList != null) {
 			container.setTextLines(textLineList);
 		}
@@ -183,7 +207,7 @@ public class TextLineContainer {
 	
 	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
 		Set<SvgPlusCoordinate> fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
-		if (fontSizeContainerSet == null) {
+		if (fontSizeContainerSet != null) {
 			for (TextLine textLine : textLineList) {
 				fontSizeContainerSet.addAll(textLine.getFontSizeContainerSet());
 			}
@@ -206,9 +230,11 @@ public class TextLineContainer {
 	}
 
 	public void setTextLines(List<TextLine> textLineList) {
-		this.textLineList = new ArrayList<TextLine>();
-		for (TextLine textLine : textLineList) {
-			add(textLine);
+		if (textLineList != null) {
+			this.textLineList = new ArrayList<TextLine>();
+			for (TextLine textLine : textLineList) {
+				add(textLine);
+			}
 		}
 	}
 
@@ -523,7 +549,7 @@ public class TextLineContainer {
 		return new TextLineSet(textLines);
 	}
 
-	public List<TextLineGroup> getInitialTextLineGroupList() {
+	public List<ScriptLine> getInitialTextLineGroupList() {
 		getTextLineChunkBoxes();
 		return initialTextLineGroupList;
 	}
@@ -551,22 +577,22 @@ public class TextLineContainer {
 		return commonestFontSizeTextLineList;
 	}
 
-	public List<TextLineGroup> getSeparatedTextLineGroupList() {
-		if (separatedTextLineGroupList == null) {
+	public List<ScriptLine> getScriptedLineList() {
+		if (scriptedLineList == null) {
 			getCommonestFontSizeTextLineList();
 			getInitialTextLineGroupList();
-			separatedTextLineGroupList = new ArrayList<TextLineGroup>();
+			scriptedLineList = new ArrayList<ScriptLine>();
 			int i = 0;
-			for (TextLineGroup textLineGroup : initialTextLineGroupList) {
-				List<TextLineGroup> splitChunks = textLineGroup.splitIntoUniqueChunks(this);
-				for (TextLineGroup textLineChunk0 : splitChunks) {
-					separatedTextLineGroupList.add(textLineChunk0);
+			for (ScriptLine textLineGroup : initialTextLineGroupList) {
+				List<ScriptLine> splitChunks = textLineGroup.splitIntoUniqueChunks(this);
+				for (ScriptLine textLineChunk0 : splitChunks) {
+					scriptedLineList.add(textLineChunk0);
 				}
 				i++;
 			}
 		}
-		LOG.trace("separated "+separatedTextLineGroupList.size());
-		return separatedTextLineGroupList;
+		LOG.trace("separated "+scriptedLineList.size());
+		return scriptedLineList;
 	}
 
 	public List<Real2Range> getTextLineChunkBoxes() {
@@ -574,21 +600,21 @@ public class TextLineContainer {
 			List<TextLine> textLineList = getLinesInIncreasingY();
 			textLineChunkBoxes = new ArrayList<Real2Range>();
 			Real2Range bbox = null;
-			TextLineGroup textLineGroup = null;
+			ScriptLine textLineGroup = null;
 			int i = 0;
-			initialTextLineGroupList = new ArrayList<TextLineGroup>();
+			initialTextLineGroupList = new ArrayList<ScriptLine>();
 			for (TextLine textLine : textLineList) {
 				Real2Range bbox0 = textLine.getBoundingBox();
 				LOG.trace(">> "+textLine.getLineString());
 				if (bbox == null) {
 					bbox = bbox0;
-					textLineGroup = new TextLineGroup(this);
+					textLineGroup = new ScriptLine(this);
 					addBoxAndLines(bbox, textLineGroup);
 				} else {
 					Real2Range intersectionBox = bbox.intersectionWith(bbox0);
 					if (intersectionBox == null) {
 						bbox = bbox0;
-						textLineGroup = new TextLineGroup(this);
+						textLineGroup = new ScriptLine(this);
 						addBoxAndLines(bbox, textLineGroup);
 					} else {
 						bbox = bbox.plusEquals(bbox0);
@@ -600,33 +626,39 @@ public class TextLineContainer {
 		return textLineChunkBoxes;
 	}
 
-	private void addBoxAndLines(Real2Range bbox, TextLineGroup textLineGroup) {
+	private void addBoxAndLines(Real2Range bbox, ScriptLine textLineGroup) {
 		textLineChunkBoxes.add(bbox);
 		initialTextLineGroupList.add(textLineGroup);
 	}
 
-	public static TextLineContainer createTextLineContainerWithSortedLines(File svgFile) {
+	public static TextStructurer createTextStructurerWithSortedLines(File svgFile) {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgPage, ".//svg:text"));
-		return createTextLineContainerWithSortedLines(textCharacters);
+		return createTextStructurerWithSortedLines(textCharacters);
 	}
 
-	public static TextLineContainer createTextLineContainerWithSortedLines(List<SVGText> textCharacters, TextAnalyzerX textAnalyzer) {
-		TextLineContainer textLineContainer = new TextLineContainer(textAnalyzer);
-		textLineContainer.getSortedTextLines(textCharacters);
-		textLineContainer.getLinesInIncreasingY();
+	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, TextAnalyzerX textAnalyzer) {
+		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
+		textStructurer.createSortedLines(textCharacters, textAnalyzer);
+		return textStructurer;
+	}
+
+	private void createSortedLines(List<SVGText> textCharacters,
+			TextAnalyzerX textAnalyzer) {
+		this.getSortedTextLines(textCharacters);
+		this.getLinesInIncreasingY();
 		textAnalyzer.setTextCharacters(textCharacters);
-		textAnalyzer.setTextLineContainer(textLineContainer);
-		return textLineContainer;
+		textAnalyzer.setTextStructurer(this);
 	}
 	
-	public static TextLineContainer createTextLineContainerWithSortedLines(List<SVGText> textCharacters) {
+	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters) {
 		TextAnalyzerX textAnalyzer = new TextAnalyzerX();
-		TextLineContainer textLineContainer = new TextLineContainer(textAnalyzer);
-		textLineContainer.getSortedTextLines(textCharacters);
-		textLineContainer.getLinesInIncreasingY();
-		textAnalyzer.setTextLineContainer(textLineContainer);
-		return textLineContainer;
+		textAnalyzer.setTextCharacters(textCharacters);
+		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
+		textStructurer.getSortedTextLines(textCharacters);
+		textStructurer.getLinesInIncreasingY();
+		textAnalyzer.setTextStructurer(textStructurer);
+		return textStructurer;
 	}
 	
 	public TextAnalyzerX getTextAnalyzer() {
@@ -689,26 +721,21 @@ public class TextLineContainer {
 	}
 
 	public static List<TextLine> createTextLineList(File svgFile) {
-		TextLineContainer textLineContainer = createTextLineContainerWithSortedLines(svgFile);
-		List<TextLine> textLineList = textLineContainer.getLinesInIncreasingY();
+		TextStructurer textStructurer = createTextStructurerWithSortedLines(svgFile);
+		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY();
 		return textLineList;
 	}
 
-	public static AbstractPageAnalyzerX createTextAnalyzerWithSortedLines(List<SVGText> characters) {
+	public static AbstractAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters) {
 			TextAnalyzerX textAnalyzer = new TextAnalyzerX();
-			TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(characters, textAnalyzer);
+			/*TextStructurer textStructurer = */TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer);
 			return textAnalyzer;
 	}
 
-	private static TextLineContainer createTextLineContainer(List<SVGText> characters, TextAnalyzerX textAnalyzer) {
-//		TextLineContainer textLineContainer = new TextLineContainer(textAnalyzer);
-		TextLineContainer textLineContainer = TextLineContainer.createTextLineContainerWithSortedLines(characters, textAnalyzer);
-		return textLineContainer;
-	}
 
-	public static HtmlElement createHtmlDiv(List<TextLineGroup> textLineGroupList) {
+	public static HtmlElement createHtmlDiv(List<ScriptLine> textLineGroupList) {
 		HtmlDiv div = new HtmlDiv();
-		for (TextLineGroup group : textLineGroupList) {
+		for (ScriptLine group : textLineGroupList) {
 			HtmlElement el = null;
 			if (group == null) {
 //				el = new HtmlP();
@@ -724,8 +751,8 @@ public class TextLineContainer {
 	}
 
 	public HtmlElement createHtmlDivWithParas() {
-		List<TextLineGroup> textLineGroupList = this.getSeparatedTextLineGroupList();
-		LOG.trace("TLG "+textLineGroupList);
+		List<ScriptLine> textLineGroupList = this.getScriptedLineList();
+		LOG.trace("TEXTLINEGROUP splt heres "+textLineGroupList);
 		if (textLineGroupList.size() == 0) {
 			LOG.trace("TextLineList: "+textLineList);
 			// debug
@@ -740,7 +767,7 @@ public class TextLineContainer {
 	 * @param textLineGroupList
 	 * @return
 	 */
-	 public HtmlElement createHtmlElementWithParas(List<TextLineGroup> textLineGroupList) {
+	 public HtmlElement createHtmlElementWithParas(List<ScriptLine> textLineGroupList) {
 		List<TextLine> commonestTextLineList = this.getCommonestFontSizeTextLineList();
 		createdHtmlElement = null;
 		if (commonestTextLineList.size() == 0){
@@ -756,14 +783,14 @@ public class TextLineContainer {
 
 	private HtmlDiv createDivWithParas(List<TextLine> textLineList, HtmlElement rawDiv) {
 		HtmlDiv div = null;
-		Double leftIndent = TextLineContainer.getMaximumLeftIndent(textLineList);
-		Real2Range leftBB = TextLineContainer.getBoundingBox(textLineList);
+		Double leftIndent = TextStructurer.getMaximumLeftIndent(textLineList);
+		Real2Range leftBB = TextStructurer.getBoundingBox(textLineList);
 		Elements htmlLines = rawDiv.getChildElements();
 		LOG.trace("textLine "+textLineList.size()+"; html: "+ htmlLines.size());
 		
 		if (leftBB != null) {
 			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - leftBB.getXRange().getMin());
-			Real2Range largestFontBB = TextLineContainer.getBoundingBox(textLineList);
+			Real2Range largestFontBB = TextStructurer.getBoundingBox(textLineList);
 			if (largestFontBB != null) {
 				RealRange xRange = largestFontBB.getXRange();
 				Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
@@ -771,7 +798,7 @@ public class TextLineContainer {
 				div = new HtmlDiv();
 				// always start with para
 				HtmlP pCurrent = (htmlLines.size() == 0) ? null : 
-					TextLineContainer.createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
+					TextStructurer.createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
 				int size = htmlLines.size();
 				for (int i = 1; i < size/*textLineList.size()*/; i++) {
 					TextLine textLine = (textLineList.size() <= i) ? null : textLineList.get(i);
@@ -868,25 +895,11 @@ public class TextLineContainer {
 		return textLine != null && commonestFontSizeTextLineList.contains(textLine);
 	}
 
-//	public boolean isCommonestFontSize(int i) {
-//		TextLine textLine = (i < 0 || i >= textLineList.size()) ?
-//				null : textLineList.get(i);
-//		return isCommonestFontSize(textLine);
-//	}
-
-
-	public boolean isCommonestFontSize(TextLineGroup textLineGroup) {
+	public boolean isCommonestFontSize(ScriptLine textLineGroup) {
 		this.getCommonestFontSizeTextLineList();
 		TextLine largestLine = textLineGroup.getLargestLine();
 		return textLineGroup != null && commonestFontSizeTextLineList.contains(largestLine);
 	}
-
-//	public boolean isCommonestFontSize(int i) {
-//		getSeparatedTextLineGroupList();
-//		TextLineGroup textLineGroup = (i < 0 || i >= separatedTextLineGroupList.size()) ?
-//				null : separatedTextLineGroupList.get(i);
-//		return isCommonestFontSize(textLineGroup);
-//	}
 
 	public boolean lineGroupIsLargerThanCommonestFontSize(int lineNumber) {
 		TextLine textLine = (lineNumber < 0 || lineNumber >= textLineList.size()) ?
@@ -894,7 +907,7 @@ public class TextLineContainer {
 		return lineIsLargerThanCommonestFontSize(textLine);
 	}
 
-	public boolean lineGroupIsLargerThanCommonestFontSize(TextLineGroup textLineGroup) {
+	public boolean lineGroupIsLargerThanCommonestFontSize(ScriptLine textLineGroup) {
 		boolean isLargerThan = false;
 		Double commonestFontSize = getCommonestFontSize().getDouble();
 		if (textLineGroup != null && commonestFontSize != null) {
@@ -940,13 +953,13 @@ public class TextLineContainer {
 	 * @return
 	 */
 	public IntArray splitGroupBiggerThanCommonest() {
-		getSeparatedTextLineGroupList();
+		getScriptedLineList();
 		Double commonestFontSize = this.getCommonestFontSize().getDouble();
 		IntArray splitArray = new IntArray();
-		for (int i = 0; i < separatedTextLineGroupList.size() - 1; i++) {
-			TextLineGroup textLineGroupA = separatedTextLineGroupList.get(i);
+		for (int i = 0; i < scriptedLineList.size() - 1; i++) {
+			ScriptLine textLineGroupA = scriptedLineList.get(i);
 			Double fontSizeA = textLineGroupA.getFontSize();
-			TextLineGroup textLineB = separatedTextLineGroupList.get(i+1);
+			ScriptLine textLineB = scriptedLineList.get(i+1);
 			Double fontSizeB = textLineB.getFontSize();
 			if (fontSizeA != null && fontSizeB != null) {
 				double ratioAB = fontSizeA / fontSizeB;
@@ -963,43 +976,45 @@ public class TextLineContainer {
 		return splitArray;
 	}
 
-	/** split the textLineContainer after the lines in array.
+	/** split the textStructurer after the lines in array.
 	 * if null or size() == 0, returns list with 'this'. so a returned list of size 0
 	 * effectively does nothing
 	 * @param afterLineGroups if null or size() == 0, returns list with 'this';
 	 * @return
 	 */
-	public List<TextLineContainer> splitLineGroupsAfter(IntArray afterLineGroups) {
-		getSeparatedTextLineGroupList();
-		List<TextLineContainer> textLineContainerList = new ArrayList<TextLineContainer>();
+	public List<TextStructurer> splitLineGroupsAfter(IntArray afterLineGroups) {
+		getScriptedLineList();
+		List<TextStructurer> textStructurerList = new ArrayList<TextStructurer>();
 		if (afterLineGroups == null || afterLineGroups.size() == 0) {
-			textLineContainerList.add(this);
+			textStructurerList.add(this);
 		} else {
 			int start = 0;
 			for (int i = 0; i < afterLineGroups.size();i++) {
 				int lineNumber = afterLineGroups.elementAt(i);
-				if (lineNumber > separatedTextLineGroupList.size() -1) {
+				if (lineNumber > scriptedLineList.size() -1) {
 					throw new RuntimeException("bad index: "+lineNumber);
 				}
-				TextLineContainer newTextLineContainer = createTextLineContainer(start, lineNumber);
-				textLineContainerList.add(newTextLineContainer);
+				TextStructurer newTextStructurer = createTextStructurerFromTextLineGroups(start, lineNumber);
+				textStructurerList.add(newTextStructurer);
 				start = lineNumber + 1;
 			}
-			TextLineContainer newTextLineContainer = createTextLineContainer(start, separatedTextLineGroupList.size() - 1);
-			textLineContainerList.add(newTextLineContainer);
+			TextStructurer newTextStructurer = createTextStructurerFromTextLineGroups(start, scriptedLineList.size() - 1);
+			textStructurerList.add(newTextStructurer);
 		}
-		return textLineContainerList;
+		return textStructurerList;
 	}
 
-	private TextLineContainer createTextLineContainer(int startLineGroup, int lineGroupNumber) {
-		getSeparatedTextLineGroupList();
-		TextLineContainer textLineContainer = new TextLineContainer(textAnalyzer);
+	private TextStructurer createTextStructurerFromTextLineGroups(int startLineGroup, int lineGroupNumber) {
+		getScriptedLineList();
+		TextStructurer textStructurer = new TextStructurer(null);
+		textStructurer.textAnalyzer = this.textAnalyzer;
 		for (int iGroup = startLineGroup; iGroup <= lineGroupNumber; iGroup++) {
-			TextLineGroup textLineGroup = separatedTextLineGroupList.get(iGroup);
+			ScriptLine textLineGroup = scriptedLineList.get(iGroup);
+			
 			List<TextLine> textLineList = textLineGroup.getTextLineList();
-			textLineContainer.add(textLineList);
+			textStructurer.add(textLineList);
 		}
-		return textLineContainer;
+		return textStructurer;
 	}
 
 	private void add(List<TextLine> textLineList) {
@@ -1013,7 +1028,7 @@ public class TextLineContainer {
 		if (textLineList == null) {
 			sb.append("null");
 		} else {
-			sb.append("TextLineContainer: "+ textLineList.size());
+			sb.append("TextStructurer: "+ textLineList.size());
 			for (TextLine textLine :textLineList) {
 				sb.append(textLine.toString()+"\n");
 			}
@@ -1021,45 +1036,91 @@ public class TextLineContainer {
 		return sb.toString();
 	}
 
+	public List<TextStructurer> split(Splitter splitter) {
+		if (Splitter.BOLD.equals(splitter)) {
+			return splitOnFontBoldChange(0);
+		}
+		if (Splitter.FONTSIZE.equals(splitter)) {
+			return splitOnFontSizeChange(0);
+		}
+		if (Splitter.FONTFAMILY.equals(splitter)) {
+			return splitOnFontFamilyChange(0);
+		}
+		throw new RuntimeException("Unknown splitter: "+splitter);
+	}
+
 	/** splits bold line(s) from succeeeding ones.
 	 * may trap smaller headers - must catch this later
 	 * @return
 	 */
-	public List<TextLineContainer> splitBoldHeader() {
-		getSeparatedTextLineGroupList();
-		List<TextLineContainer> splitList = null;
-		if (separatedTextLineGroupList.size() > 0) {
-			int after = -1;
-			for (int i = 0; i < separatedTextLineGroupList.size(); i++) {
-				if (!separatedTextLineGroupList.get(i).isBold()) {
-					break;
-				}
-				after = i;
-			}
-			if (after >= 0) {
-				IntArray splitter = new IntArray(new int[]{after});
-				splitList = this.splitLineGroupsAfter(splitter);
-			}
-		}
-		return splitList;
+	public List<TextStructurer> splitOnFontBoldChange(int maxFlip) {
+		IntArray splitter = getSplitArrayForFontWeightChange(maxFlip);
+		LOG.trace("SPLIT "+splitter);
+		return splitIntoList(splitter);
 	}
 	
 	/** splits line(s) on fontSize.
 	 * @return
 	 */
-	public IntArray getSplitArrayForFontSizeChange() {
+	public List<TextStructurer> splitOnFontSizeChange(int maxFlip) {
+		IntArray splitter = getSplitArrayForFontSizeChange(maxFlip);
+		return splitIntoList(splitter);
+	}
+
+	/** splits line(s) on fontFamily.
+	 * @return
+	 */
+	public List<TextStructurer> splitOnFontFamilyChange(int maxFlip) {
+		IntArray splitter = getSplitArrayForFontFamilyChange(maxFlip);
+		return splitIntoList(splitter);
+	}
+
+	/** splits line(s) on fontSize.
+	 * @return
+	 */
+	public IntArray getSplitArrayForFontWeightChange(int maxFlip) {
+		getScriptedLineList();
+		Boolean currentBold = null;
+		IntArray splitArray = new IntArray();
+		if (scriptedLineList.size() > 0) {
+			int nFlip = 0;
+			for (int i = 0; i < scriptedLineList.size(); i++) {
+				boolean isBold = scriptedLineList.get(i).isBold();
+				if (currentBold == null) { 
+					currentBold = isBold;
+					// insist on leading bold
+					if (maxFlip < 0 && !isBold) {
+						return splitArray;
+					}
+				} else if (!currentBold.equals(isBold)) {
+					splitArray.addElement(i - 1);
+					currentBold = isBold;
+					if (nFlip++ >= maxFlip) break;
+				}
+			}
+		}
+		return splitArray;
+	}
+	
+	
+	/** splits line(s) on fontSize.
+	 * @return
+	 */
+	public IntArray getSplitArrayForFontSizeChange(int maxFlip) {
 		double EPS = 0.01;
-		getSeparatedTextLineGroupList();
-		List<TextLineContainer> splitList = null;
+		getScriptedLineList();
 		Double currentFontSize = null;
 		IntArray splitArray = new IntArray();
-		if (separatedTextLineGroupList.size() > 0) {
-			for (int i = 0; i < separatedTextLineGroupList.size(); i++) {
-				Double fontSize = separatedTextLineGroupList.get(i).getFontSize();
+		if (scriptedLineList.size() > 0) {
+			int nFlip = 0;
+			for (int i = 0; i < scriptedLineList.size(); i++) {
+				Double fontSize = scriptedLineList.get(i).getFontSize();
 				if (currentFontSize == null) {
 					currentFontSize = fontSize;
 				} else if (!Real.isEqual(fontSize, currentFontSize, EPS)) {
 					splitArray.addElement(i - 1);
+					currentFontSize = fontSize;
+					if (nFlip++ >= maxFlip) break;
 				}
 			}
 		}
@@ -1069,13 +1130,94 @@ public class TextLineContainer {
 	/** splits line(s) on fontSize.
 	 * @return
 	 */
-	public List<TextLineContainer> splitOnFontSizeChange() {
-		IntArray splitter = getSplitArrayForFontSizeChange();
-		List<TextLineContainer> splitList = null;
-		if (splitter != null) {
+	public IntArray getSplitArrayForFontFamilyChange(int maxFlip) {
+		getScriptedLineList();
+		String currentFontFamily = null;
+		IntArray splitArray = new IntArray();
+		if (scriptedLineList.size() > 0) {
+			int nFlip = 0;
+			for (int i = 0; i < scriptedLineList.size(); i++) {
+				String fontFamily = scriptedLineList.get(i).getFontFamily();
+				if (currentFontFamily == null) {
+					currentFontFamily = fontFamily;
+				} else if (!fontFamily.equals(currentFontFamily)) {
+					splitArray.addElement(i - 1);
+					currentFontFamily = fontFamily;
+					if (nFlip++ >= maxFlip) break;
+				}
+			}
+		}
+		return splitArray;
+	}
+
+	private List<TextStructurer> splitIntoList(IntArray splitter) {
+		List<TextStructurer> splitList = null;
+		if (splitter != null && splitter.size() != 0) {
 			splitList = this.splitLineGroupsAfter(splitter);
+		}  else {
+			splitList = new ArrayList<TextStructurer>();
+			splitList.add(this);
 		}
 		return splitList;
 	}
-	
+
+	public SVGG oldCreateSVGGChunk() {
+		SVGG g = new SVGG();
+		for (TextLine textLine : textLineList) {
+			for (SVGText text : textLine) {
+				g.appendChild(new SVGText(text));
+			}
+		}
+		return g;
+	}
+
+	/** attempts to split into numbered list by line starts.
+	 * 
+	 * @return
+	 */
+	public List<TextStructurer> splitNumberedList() {
+		getScriptedLineList();
+		List<TextStructurer> splitLineGroups = new ArrayList<TextStructurer>();
+		int last = 0;
+		for (int i = 0; i < scriptedLineList.size(); i++) {
+			ScriptLine tlg = scriptedLineList.get(i);
+			String value = tlg.getRawValue();
+			LOG.trace(value);
+			Matcher matcher = NUMBER_ITEM_PATTERN.matcher(value);
+			if (matcher.matches()) {
+				Integer serial = Integer.parseInt(matcher.group(1));
+				LOG.trace(">> "+serial);
+				addTextLineGroups(splitLineGroups, last, i);
+				last = i;
+				LOG.trace("split: "+i);
+			}
+		}
+		addTextLineGroups(splitLineGroups, last, scriptedLineList.size());
+		return splitLineGroups;
+	}
+
+	private void addTextLineGroups(List<TextStructurer> splitLineGroups, int last, int next) {
+		if (next > last) {
+			TextStructurer tc = new TextStructurer(null);
+			splitLineGroups.add(tc);
+			for (int j = last; j < next; j++) {
+				tc.add(scriptedLineList.get(j));
+			}
+		}
+	}
+
+	private void add(ScriptLine textLineGroup) {
+		ensureScriptedLineList();
+		scriptedLineList.add(textLineGroup);
+		for (TextLine textLine : textLineGroup) {
+			this.add(textLine);
+		}
+	}
+
+	private List<ScriptLine> ensureScriptedLineList() {
+		if (scriptedLineList == null) {
+			scriptedLineList = new ArrayList<ScriptLine>();
+		}
+		return scriptedLineList;
+	}
 }

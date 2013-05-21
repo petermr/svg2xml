@@ -44,7 +44,7 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 	private Real2 clusterWhitespaceBoxMargins = new Real2(5.0, 5.0);
 	private Double panelSeparation = 3.0;
 
-	private TextAnalyzerX textAnalyzer;
+	private AbstractAnalyzer textAnalyzer;
 	private PathAnalyzerX pathAnalyzer;
 	private ImageAnalyzerX imageAnalyzer;
 
@@ -60,7 +60,7 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 		super(pdfIndex);
 	}
 	
-	public FigureAnalyzerX(TextAnalyzerX textAnalyzer,
+	public FigureAnalyzerX(AbstractAnalyzer textAnalyzer,
 			PathAnalyzerX pathAnalyzer, ImageAnalyzerX imageAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
 		this.pathAnalyzer = pathAnalyzer;
@@ -222,7 +222,7 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 	}
 	
 	@Override
-	public SVGG annotateChunk() {
+	public SVGG oldAnnotateChunk() {
 		throw new RuntimeException("annotate NYI");
 	}
 	

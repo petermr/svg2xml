@@ -9,6 +9,6 @@ import org.xmlcml.graphics.svg.SVGG;
  */
 public interface Annotatable {
 	
-	SVGG annotateChunk();
+	SVGG oldAnnotateChunk();
 
 }

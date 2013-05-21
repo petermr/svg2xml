@@ -34,9 +34,9 @@ import org.xmlcml.svg2xml.text.Paragraph;
 import org.xmlcml.svg2xml.text.SimpleFont;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextChunkRUN;
+import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.TextStructurer.Splitter;
-import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.Word;
 import org.xmlcml.svg2xml.text.WordSequence;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -103,8 +103,6 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	/** refactored container */
 	private TextStructurer textContainer;
 	private HtmlElement createdHtmlElement;
-	private List<ScriptContainer> scriptContainerList;
-	
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
 	}
@@ -770,17 +768,8 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	}
 	
 	@Override
-	public SVGG annotateChunk() {
-		SVGG g = new SVGG();
-		for (int i = 0; i < textCharacters.size(); i++) {
-			SVGText text = textCharacters.get(i);
-			annotateElement(text, "green", "blue", 0.5, 0.2);
-			g.appendChild(text.copy());
-		}
-		String title = "TEXT "+textCharacters.size();
-		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "pink");
-		g.setTitle(title);
-		return g;
+	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+		return annotateElements(svgElements, 0.2, 0.7, 5.0, "pink");
 	}
 
 	
@@ -927,6 +916,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	 * @param pageAnalyzer
 	 * @return
 	 */
+	@Override
 	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
 		TextStructurer textContainer1 = this.getTextContainer();
 		textContainer1.getScriptedLineList();
@@ -936,22 +926,12 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		if (textContainerList.size() > 1) {
 			splitBoldHeaderOnFontSize(textContainerList);
 		}
-		Character cc = 'a';
-		int textContainerCount = textContainerList.size();
-		ensureScriptContainerList();
+		ensureAbstractContainerList();
 		for (TextStructurer textContainer : textContainerList) {
-//			textContainer.splitNumberedList();
 			ScriptContainer scriptContainer = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-//			AbstractContainer container = pageAnalyzer.createContainerAndOutput(textContainer);
-			scriptContainerList.add(scriptContainer);
+			abstractContainerList.add(scriptContainer);
 		}
-		return scriptContainerList;
-	}
-
-	private void ensureScriptContainerList() {
-		if (scriptContainerList == null) {
-			scriptContainerList = new ArrayList<ScriptContainer>();
-		}
+		return abstractContainerList;
 	}
 
 	private void splitBoldHeaderOnFontSize(List<TextStructurer> textContainerList) {

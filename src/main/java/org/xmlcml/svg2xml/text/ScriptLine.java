@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntArray;
+import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
@@ -15,22 +17,19 @@ import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
  * @author pm286
  *
  */
-public class TextLineGroup implements Iterable<TextLine> {
+public class ScriptLine implements Iterable<TextLine> {
 
-	private final static Logger LOG = Logger.getLogger(TextLineGroup.class);
-	private List<TextLine> textLineList = null;
-	private TextLineContainer textLineContainer;
+	private final static Logger LOG = Logger.getLogger(ScriptLine.class);
+	private static final double X_CHARACTER_TOL = 0.2;
+	protected List<TextLine> textLineList = null;
+	private TextStructurer textContainer;
 	private int largestLine;
 	
-	public TextLineGroup(TextLineContainer textLineContainer) {
+	public ScriptLine(TextStructurer textContainer) {
 		textLineList = new ArrayList<TextLine>();
-		this.textLineContainer = textLineContainer;
+		this.textContainer = textContainer;
 	}
 	
-//	public TextLineGroup(List<TextLine> textLineList) {
-//		this.textLineList = textLineList;
-//	}
-
 	public Iterator<TextLine> iterator() {
 		return textLineList.iterator();
 	}
@@ -47,14 +46,14 @@ public class TextLineGroup implements Iterable<TextLine> {
 		return textLineList.get(i);
 	}
 
-	/** splits into groups based around the commonest font size
+	/** generate ScriptLines by splitting into groups based around the commonest font size
 	 * 
-	 * @param textLineContainer
+	 * @param textContainer
 	 * @return
 	 */
-	public List<TextLineGroup> splitIntoUniqueChunks(TextLineContainer textLineContainer) {
+	public List<ScriptLine> splitIntoUniqueChunks(TextStructurer textContainer) {
 		IntArray commonestFontSizeArray = createSerialNumbersOfCommonestFontSizeLines();
-		List<TextLineGroup> splitArray = new ArrayList<TextLineGroup>();
+		List<ScriptLine> splitArray = new ArrayList<ScriptLine>();
 		if (commonestFontSizeArray.size() < 2) {
 			splitArray.add(this);
 		} else {
@@ -64,7 +63,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 			for (int serial = 0; serial < textLineList.size(); serial++) {
 				TextLine textLine = this.get(serial);
 				Double currentY = textLine.getYCoord();
-				if (textLineContainer.isCommonestFontSize(textLine)) {
+				if (textContainer.isCommonestFontSize(textLine)) {
 					if (lastCommonestFontSizeSerial != null) {
 						int delta = serial - lastCommonestFontSizeSerial;
 						// two adjacent commonestFont lines
@@ -108,19 +107,15 @@ public class TextLineGroup implements Iterable<TextLine> {
 		return splitArray;
 	}
 
-//	private void reportProblem(String msg) {
-//		throw new RuntimeException(msg);
-//	}
-
-	private TextLineGroup packageAsGroup(int groupStart, int groupEnd, List<TextLineGroup> splitArray) {
-		TextLineGroup group = new TextLineGroup(textLineContainer);
+	private ScriptLine packageAsGroup(int groupStart, int groupEnd, List<ScriptLine> splitArray) {
+		ScriptLine group = new ScriptLine(textContainer);
 		Double maxFontSize = 0.0;
 		largestLine = -1;
 		int lineNumber = 0;
 		for (int i = groupStart; i <= groupEnd; i++) {
 			TextLine textLine = textLineList.get(i);
 			Double fontSize = textLine.getFontSize();
-			if (fontSize > maxFontSize) {
+			if (fontSize != null && fontSize > maxFontSize) {
 				largestLine = lineNumber;
 				maxFontSize = fontSize;
 			}
@@ -135,7 +130,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 		int iline = 0;
 		IntArray commonestFontSizeArray = new IntArray();
 		for (TextLine textLine : textLineList) {
-			if (textLineContainer.isCommonestFontSize(textLine)) {
+			if (textContainer.isCommonestFontSize(textLine)) {
 				commonestFontSizeArray.addElement(iline);
 				if (commonestFontSizeArray.size() > 1) {
 					LOG.trace("COMMONEST FONT SIZE "+commonestFontSizeArray.size());
@@ -149,7 +144,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
 		for (TextLine textLine : textLineList) {
-			sb.append(textLine+"\n");
+			sb.append(textLine.getSpacedLineString()+"\n");
 		}
 		sb.append("----\n");
 		return sb.toString();
@@ -166,7 +161,7 @@ public class TextLineGroup implements Iterable<TextLine> {
 		} else if (this.textLineList.size() == 2) {
 			TextLine text0 = textLineList.get(0);
 			TextLine text1 = textLineList.get(1);
-			if (!textLineContainer.isCommonestFontSize(text0) && !textLineContainer.isCommonestFontSize(text1)) {
+			if (!textContainer.isCommonestFontSize(text0) && !textContainer.isCommonestFontSize(text1)) {
 				Double fontSize0 = text0.getFontSize();
 				Double fontSize1 = text1.getFontSize();
 				if (fontSize1 == null) {
@@ -186,11 +181,11 @@ public class TextLineGroup implements Iterable<TextLine> {
 					middleLine = text1;
 					subscript = null;
 				}
-			} else if (textLineContainer.isCommonestFontSize(text0) && !textLineContainer.isCommonestFontSize(text1)) {
+			} else if (textContainer.isCommonestFontSize(text0) && !textContainer.isCommonestFontSize(text1)) {
 					superscript = null;
 					middleLine = text0;
 					subscript = text1;
-			} else if (!textLineContainer.isCommonestFontSize(text0) && textLineContainer.isCommonestFontSize(text1)) {
+			} else if (!textContainer.isCommonestFontSize(text0) && textContainer.isCommonestFontSize(text1)) {
 				superscript = textLineList.get(0);
 				middleLine = textLineList.get(1);
 				subscript = null;
@@ -201,8 +196,8 @@ public class TextLineGroup implements Iterable<TextLine> {
 				LOG.error("Only one commonestFontSize allowed for 2 line textLineGroup");
 			}
 		} else if (this.textLineList.size() == 3) {
-			if (!textLineContainer.isCommonestFontSize(textLineList.get(0)) &&
-				!textLineContainer.isCommonestFontSize(textLineList.get(2))) {
+			if (!textContainer.isCommonestFontSize(textLineList.get(0)) &&
+				!textContainer.isCommonestFontSize(textLineList.get(2))) {
 				superscript = textLineList.get(0);
 				middleLine = textLineList.get(1);
 				subscript = textLineList.get(2);
@@ -223,9 +218,9 @@ public class TextLineGroup implements Iterable<TextLine> {
 	}
 
 	/** NYI */
-	private TextLineGroup reportErrorOrMathsSuscript() {
+	private ScriptLine reportErrorOrMathsSuscript() {
 		LOG.debug("Suscript problem: Maths or table? "+textLineList.size());
-		TextLineGroup group = new TextLineGroup(textLineContainer);
+		ScriptLine group = new ScriptLine(textContainer);
 //	    splitArray.add(group);
 
 		for (TextLine textLine : textLineList) {
@@ -234,10 +229,10 @@ public class TextLineGroup implements Iterable<TextLine> {
 		return group;
 	}
 	
-	private TextLineGroup reportErrorOrMaths(List<TextLineGroup> splitArray) {
+	private ScriptLine reportErrorOrMaths(List<ScriptLine> splitArray) {
 		LOG.debug("Maths or table? "+textLineList.size());
 //		TextLineGroup group = new TextLineGroup();
-		TextLineGroup group = null;
+		ScriptLine group = null;
 	    splitArray.add(group);
 	    splitArray.add(null);
 
@@ -311,12 +306,109 @@ public class TextLineGroup implements Iterable<TextLine> {
 		return (textLineList.get(largestLine)).isBold();
 	}
 
+	public String getFontFamily() {
+		return (textLineList.get(largestLine)).getFontFamily();
+	}
+
 	public Double getFontSize() {
 		return (textLineList.get(largestLine)).getFontSize();
+	}
+
+	public Double getMeanFontSize() {
+		return (textLineList.get(largestLine)).getMeanFontSize();
 	}
 
 	public List<TextLine> getTextLineList() {
 		return textLineList;
 	}
+	
+	public String getRawValue() {
+		return (textLineList.get(largestLine)).getRawValue();
+	}
+
+	public List<SVGText> getTextList() {
+		List<SVGText> textList = new ArrayList<SVGText>();
+		for (TextLine textLine : textLineList) {
+			textList.addAll(textLine.getSVGTextCharacters());
+		}
+		return textList;
+	}
+	
+	public String toShortString() {
+		String s = getLargestLine().toString();
+		return s.substring(0, Math.min(20, s.length()));
+	}
+
+	public List<ScriptWord> getWords() {
+		List<ScriptWord> wordList = new ArrayList<ScriptWord>();
+		RealRangeArray rangeArray = this.getWordRangeArray();
+		LOG.trace("WA "+rangeArray);
+		List<SVGText> characters = this.getSVGTextCharacters();
+		int rangeCounter = 0;
+		int nlines = textLineList.size();
+		IntArray lineCounterArray = new IntArray(nlines);
+		// assume characters are sorted
+		ScriptWord word = null;
+		while (true) {
+			SVGText character = null;
+			RealRange currentRange = (rangeCounter >= rangeArray.size()) ? null : rangeArray.get(rangeCounter);
+			Double lowestX = 9999999.;
+			Integer lowestLine = null;
+			SVGText lowestCharacter = null;
+			for (int iline = 0; iline < textLineList.size(); iline++) {
+				TextLine textLine = textLineList.get(iline);
+				int lineCounter = lineCounterArray.elementAt(iline);
+				character = (lineCounter >= textLine.size()) ? null : textLine.get(lineCounter);
+				if (character != null) {
+					double x = character.getX();
+					if (x < lowestX) {
+						lowestX = x;
+						lowestLine = iline;
+						lowestCharacter = character;
+					}
+				}
+			}
+			LOG.trace((lowestCharacter == null) ? "null" : "["+lowestCharacter.getValue()+"_"+lowestCharacter.getX()+"/"+lowestX+"/"+lowestLine);
+			if (currentRange == null || lowestX <= currentRange.getMax()) {
+				if (word == null) {
+					word = new ScriptWord(nlines);
+					wordList.add(word);
+				}
+				if (character == null) {
+					break;
+				}
+				word.add(character, lowestLine);
+				lineCounterArray.incrementElementAt(lowestLine);
+			} else {
+				word = null;
+				rangeCounter++;
+				currentRange = (rangeCounter >= rangeArray.size()) ? null : rangeArray.get(rangeCounter);
+			}
+			if (lowestLine == null && character == null) break;
+		}
+		return wordList;
+	}
+
+	public RealRangeArray getWordRangeArray() {
+		Double fontSize = this.getMeanFontSize();
+		if (fontSize == null) fontSize = 8.0; // just in case
+		RealRangeArray wordRangeArray = new RealRangeArray();
+		List<SVGText> characters = this.getSVGTextCharacters();
+		for (SVGText character : characters) {
+			wordRangeArray.add(character.getBoundingBox().getXRange());
+		}
+		wordRangeArray.extendRangesBy(X_CHARACTER_TOL);
+		wordRangeArray.sortAndRemoveOverlapping();
+		return wordRangeArray;
+	}
+
+	public List<SVGText> getSVGTextCharacters() {
+		List<SVGText> characters = new ArrayList<SVGText>();
+		for (TextLine textLine : textLineList) {
+			characters.addAll(textLine.getSVGTextCharacters());
+		}
+		return characters;
+	}
+	
 	
 }

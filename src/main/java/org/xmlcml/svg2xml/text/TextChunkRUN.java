@@ -17,9 +17,9 @@ import org.xmlcml.svg2xml.tools.Chunk;
  * @author pm286
  *
  */
-public class TextChunk {
+public class TextChunkRUN {
 
-	private final static Logger LOG = Logger.getLogger(TextChunk.class);
+	private final static Logger LOG = Logger.getLogger(TextChunkRUN.class);
 
 	private static final String SUB = "sub";
 	private static final String SUP = "sup";
@@ -37,7 +37,7 @@ public class TextChunk {
 		return chunk;
 	}
 
-	public TextChunk(Chunk chunk, List<WordSequence> wordSequenceList) {
+	public TextChunkRUN(Chunk chunk, List<WordSequence> wordSequenceList) {
 		this.wordSequenceList = wordSequenceList;
 		this.chunk = chunk;
 	}
@@ -71,11 +71,11 @@ public class TextChunk {
 		return paragraphList;
 	}
 
-	public void addSuperscriptsFrom(TextChunk scriptChunk) {
+	public void addSuperscriptsFrom(TextChunkRUN scriptChunk) {
 		this.mergeChunks(scriptChunk, SUP);
 	}
 
-	public boolean hasSuperscriptsIn(TextChunk scriptChunk) {
+	public boolean hasSuperscriptsIn(TextChunkRUN scriptChunk) {
 		WordSequence scriptWordSequence = scriptChunk.getLastWordSequence();
 		WordSequence thisWordSequence = this.getFirstWordSequence();
 		return thisWordSequence != null && scriptWordSequence != null && 
@@ -90,11 +90,11 @@ public class TextChunk {
 		throw new RuntimeException("NYI");
 	}
 
-	public void addSubscriptsFrom(TextChunk scriptChunk) {
+	public void addSubscriptsFrom(TextChunkRUN scriptChunk) {
 		this.mergeChunks(scriptChunk, SUB);
 	}
 
-	public boolean hasSubscriptsIn(TextChunk scriptChunk) {
+	public boolean hasSubscriptsIn(TextChunkRUN scriptChunk) {
 		WordSequence thisWordSequence = this.getLastWordSequence();
 		WordSequence scriptWordSequence = scriptChunk.getFirstWordSequence();
 		return liesInSubSupRange(thisWordSequence, scriptWordSequence, this.getSubscriptY(), SCRIPTFACTOR);
@@ -125,7 +125,7 @@ public class TextChunk {
 	 * 
 	 * @param otherChunk
 	 */
-	public void mergeChunks(TextChunk subSupChunk, String scriptType) {
+	public void mergeChunks(TextChunkRUN subSupChunk, String scriptType) {
 		List<WordSequence> subSupList = subSupChunk.getWordSequenceList();
 		Double subSupX = subSupChunk.getFirstWordSequence().getX();
 		Double thisX = this.getFirstWordSequence().getX();

@@ -365,11 +365,20 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	public void add(SVGText svgText) {
-		yCoord = (yCoord == null) ? svgText.getY() : yCoord;
-		characterList.add(svgText);
+		if (svgText != null) {
+			yCoord = (yCoord == null) ? svgText.getY() : yCoord;
+			ensureCharacterList();
+			characterList.add(svgText);
+		}
 	}
 
 	
+	private void ensureCharacterList() {
+		if (characterList == null) {
+			characterList = new ArrayList<SVGText>();
+		}
+	}
+
 	public WordSequence getWordSequence() {
 		return wordSequence;
 	}
@@ -1144,12 +1153,14 @@ public class TextLine implements Iterable<SVGText> {
 
 	public String getSpacedLineString() {
 		StringBuilder sb = new StringBuilder();
-		for (SVGText text : characterList) {
-			String s = text.getValue();
-			if (s.trim().length() == 0) {
-				s = " ";
+		if (characterList != null) {
+			for (SVGText text : characterList) {
+				String s = text.getValue();
+				if (s.trim().length() == 0) {
+					s = " ";
+				}
+				sb.append(s);
 			}
-			sb.append(s);
 		}
 		return sb.toString();
 	}
@@ -1168,8 +1179,10 @@ public class TextLine implements Iterable<SVGText> {
 
 	public String getRawValue() {
 		StringBuilder sb = new StringBuilder();
-		for (SVGText text : characterList) {
-			sb.append(text.getValue());
+		if (characterList != null) {
+			for (SVGText text : characterList) {
+				sb.append(text.getValue());
+			}
 		}
 		return sb.toString();
 	}

@@ -8,6 +8,7 @@ import nu.xom.Node;
 import nu.xom.Nodes;
 import nu.xom.Text;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -15,6 +16,8 @@ import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 
 public class SVG2XMLUtil {
 
+	private final static Logger LOG = Logger.getLogger(SVG2XMLUtil.class);
+	
 	public static void replaceNodeByChildren(Element node) {
 		Element spanParent = (Element) node.getParent();
 		int index = spanParent.indexOf(node);
@@ -97,7 +100,7 @@ public class SVG2XMLUtil {
 		}
 	}
 
-	public static void writeToSVGFile(File dir, String filename,SVGElement svgElement) {
+	public static void writeToSVGFile(File dir, String filename,SVGElement svgElement, boolean debug) {
 		if (!(svgElement instanceof SVGSVG)) { 
 			SVGSVG svg = new SVGSVG();
 			svg.setWidth(600.);
@@ -109,7 +112,9 @@ public class SVG2XMLUtil {
 			if (!filename.endsWith(SVGPlusConstantsX.DOT_SVG)) {
 				filename += SVGPlusConstantsX.DOT_SVG;
 			}
-			CMLUtil.debug(svgElement, new FileOutputStream(new File(dir, filename)), 1);
+			File outFile = new File(dir, filename);
+			if (debug) {LOG.debug("wrote: "+outFile);}
+			CMLUtil.debug(svgElement, new FileOutputStream(outFile), 1);
 		} catch (Exception e) {
 			throw new RuntimeException("cannot write", e);
 		}

@@ -26,40 +26,43 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
-import org.xmlcml.svg2xml.text.TextLineContainer;
+import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-public abstract class AbstractPageAnalyzerX implements Annotatable {
+public abstract class AbstractAnalyzer implements Annotatable {
 	
-	private final static Logger LOG = Logger.getLogger(AbstractPageAnalyzerX.class);
+	private final static Logger LOG = Logger.getLogger(AbstractAnalyzer.class);
 
 	protected SVGG svgg; // current svg:gelement
 	protected SemanticDocumentActionX semanticDocumentActionX;
 	protected PageEditorX pageEditorX;
 	protected Real2Range bbox;
 	protected SVGElement parentElement;
+	List<ChunkId> idList;
+	List<Integer> serialList;
+	protected PDFIndex pdfIndex;
+	private PageAnalyzer pageAnalyzer;
+
+	protected List<AbstractContainer> abstractContainerList;
+
 	
 	static List<String> titleList = new ArrayList<String>();
 	static {
 		titleList.add(new FigureAnalyzerX((PDFIndex)null).getTitle());
 		titleList.add(new TableAnalyzerX((PDFIndex)null).getTitle());
-//		titleList.add(new SnippetAnalyzer((PDFIndex)null).getTitle());
 	}
 
-	List<ChunkId> idList;
-	List<Integer> serialList;
-	protected PDFIndex pdfIndex;
-
-	protected AbstractPageAnalyzerX() {
+	protected AbstractAnalyzer() {
 	}
 
-	protected AbstractPageAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
+	protected AbstractAnalyzer(SemanticDocumentActionX semanticDocumentActionX) {
 		this();
 		this.semanticDocumentActionX = semanticDocumentActionX;
 		this.pageEditorX = getPageEditor();
 	}
 	
-	public AbstractPageAnalyzerX(PDFIndex pdfIndex) {
+	public AbstractAnalyzer(PDFIndex pdfIndex) {
 		this();
 		this.pdfIndex = pdfIndex;
 	}
@@ -118,26 +121,31 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		}
 	}
 
-	public static AbstractPageAnalyzerX getAnalyzer(SVGElement svgElement) {
-		AbstractPageAnalyzerX analyzer = null;
+	/** decides whether chunk is Text, Path, Image or Mixed
+	 * 
+	 * @param svgElement
+	 * @return analyzer suited to type (e.g. TextAnalyzer)
+	 */
+	public static AbstractAnalyzer createSpecificAnalyzer(SVGElement svgElement) {
+		AbstractAnalyzer analyzer = null;
 		List<SVGText> textList = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgElement, ".//svg:text"));
 		List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(svgElement, ".//svg:path"));
 		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(svgElement, ".//svg:image"));
 		if (textList.size() != 0 && (pathList.size() == 0 && imageList.size() == 0)) {
-			analyzer = TextLineContainer.createTextAnalyzerWithSortedLines(textList);
+			analyzer = new TextAnalyzerX(textList);
 		} else if (pathList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {
 			analyzer = createPathAnalyzer(pathList);
 		} else if (imageList.size() != 0 && (textList.size() == 0 && pathList.size() == 0)) {
 			analyzer = createImageAnalyzer(imageList);
 		} else {
 			analyzer = new MixedAnalyzer();
-			AbstractPageAnalyzerX childAnalyzer = null;
+			AbstractAnalyzer childAnalyzer = null;
 			if (imageList.size() != 0) {
 				childAnalyzer = createImageAnalyzer(imageList);
 				((MixedAnalyzer) analyzer).add(childAnalyzer);
 			}
 			if (textList.size() != 0) {
-				childAnalyzer = TextLineContainer.createTextAnalyzerWithSortedLines(textList);
+				childAnalyzer = new TextAnalyzerX(textList);
 				((MixedAnalyzer) analyzer).add(childAnalyzer);
 			}
 			if (pathList.size() != 0) {
@@ -150,21 +158,19 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 		return analyzer;
 	}
 
-	private static AbstractPageAnalyzerX createImageAnalyzer(List<SVGImage> imageList) {
-		AbstractPageAnalyzerX analyzer;
+	private static AbstractAnalyzer createImageAnalyzer(List<SVGImage> imageList) {
+		AbstractAnalyzer analyzer;
 		analyzer = new ImageAnalyzerX();
 		((ImageAnalyzerX)analyzer).readImageList(imageList);
 		return analyzer;
 	}
 
-	private static AbstractPageAnalyzerX createPathAnalyzer(List<SVGPath> pathList) {
-		AbstractPageAnalyzerX analyzer;
+	private static AbstractAnalyzer createPathAnalyzer(List<SVGPath> pathList) {
+		AbstractAnalyzer analyzer;
 		analyzer = new PathAnalyzerX();
 		((PathAnalyzerX)analyzer).readPathList(pathList);
 		return analyzer;
 	}
-
-	public abstract SVGG labelChunk();
 
 	protected HtmlElement createHtml() {
 		HtmlElement htmlElement = new HtmlDiv();
@@ -179,22 +185,24 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 
 	protected Real2Range annotateElement(SVGElement element, String fill, String stroke,
 			Double strokeWidth, Double opacity) {
-				Real2Range bbox = element.getBoundingBox();
-				SVGElement parent =  (SVGElement) element.getParent();
-				SVGElement.drawBox(bbox, parent, fill, stroke, strokeWidth, opacity);
-				return bbox;
-			}
+		Real2Range bbox = element.getBoundingBox();
+		SVGElement parent =  (SVGElement) element.getParent();
+		SVGElement.drawBox(bbox, parent, fill, stroke, strokeWidth, opacity);
+		return bbox;
+	}
 
 	protected void outputAnnotatedBox(SVGG g, double rectOpacity, double textOpacity,
 			String message, double fontSize, String rectFill) {
-				Real2Range bbox = g.getBoundingBox();
+		Real2Range bbox = g.getBoundingBox();
 //				g.appendChild(AbstractPageAnalyzerX.createTextInBox(textOpacity, bbox, message, fontSize));
-				SVGRect rect = SVGRect.createFromReal2Range(bbox);
-				rect.setTitle(message);
-				rect.setFill(rectFill);
-				rect.setOpacity(rectOpacity);
-				g.appendChild(rect);
-			}
+		if (bbox != null) {
+			SVGRect rect = SVGRect.createFromReal2Range(bbox);
+			rect.setTitle(message);
+			rect.setFill(rectFill);
+			rect.setOpacity(rectOpacity);
+			g.appendChild(rect);
+		}
+	}
 
 	public Integer indexAndLabelChunk(String content, ChunkId id) {
 		Pattern pattern = getPattern();
@@ -206,7 +214,7 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 			serialList.add(serial);
 			idList.add(id);
 			pdfIndex.addUsedId(id);
-			pdfIndex.pdfAnalyzer.htmlEditor.labelChunk(id, title, serial);
+//			pdfIndex.pdfAnalyzer.htmlEditor.labelChunk(id, title, serial);
 		}
 		return serial;
 	}
@@ -300,6 +308,47 @@ public abstract class AbstractPageAnalyzerX implements Annotatable {
 	 * @return title (default null)
 	 */
 	public String getTitle() {
-		return null;
+		String s = this.getClass().getSimpleName();
+		return s;
 	}
+
+	/** this is for specialized analyzers in PageAnalyzer
+	 * 
+	 * @param pageAnalyzer
+	 */
+	public void setPageAnalyzer(PageAnalyzer pageAnalyzer) {
+		this.pageAnalyzer = pageAnalyzer;
+	}
+
+	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+		throw new RuntimeException("Override for: "+this.getClass());
+	}
+
+	protected void ensureAbstractContainerList() {
+		if (abstractContainerList == null) {
+			abstractContainerList = new ArrayList<AbstractContainer>();
+		}
+	}
+
+	public SVGG oldAnnotateChunk() {
+		throw new RuntimeException("Get rid of annotateChunk in "+this.getClass());
+	}
+
+	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+		throw new RuntimeException("Override annotateChunk in "+this.getClass());
+	}
+
+	public SVGG annotateElements(List<? extends SVGElement> svgElements, double rectOpacity, double textOpacity,
+			double fontSize, String rectFill) {
+				SVGG g = new SVGG();
+				for (int i = 0; i < svgElements.size(); i++) {
+					SVGElement element = svgElements.get(i);
+					g.appendChild(element.copy());
+				}
+				String title = this.getTitle()+svgElements.size();
+				outputAnnotatedBox(g, rectOpacity, textOpacity, title, fontSize, rectFill);
+				g.setTitle(title);
+				return g;
+			}
+	
 }
