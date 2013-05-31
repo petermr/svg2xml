@@ -11,6 +11,7 @@ import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds one or more TextLines in a chunk
  * bounding boxes of textLines overlap
@@ -20,7 +21,7 @@ import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 public class ScriptLine implements Iterable<TextLine> {
 
 	private final static Logger LOG = Logger.getLogger(ScriptLine.class);
-	private static final double X_CHARACTER_TOL = 0.2;
+	private static final double X_CHARACTER_TOL = 0.45;  // heuristic
 	protected List<TextLine> textLineList = null;
 	private TextStructurer textContainer;
 	private int largestLine;
@@ -141,6 +142,21 @@ public class ScriptLine implements Iterable<TextLine> {
 		return commonestFontSizeArray;
 	}
 	
+	public String summaryString() {
+		StringBuilder sb = new StringBuilder("");
+		List<ScriptWord> wordList = this.getWords();
+		int i = 0;
+		for (ScriptWord word : wordList) {
+			if (i++ > 0 ) sb.append(" ");
+			sb.append(word.summaryString());
+		}
+//		for (TextLine textLine : textLineList) {
+//			sb.append(SVG2XMLUtil.trimText(30, textLine.getSpacedLineString())+"");
+//		}
+		sb.append("\n");
+		return sb.toString();
+	}
+		
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
 		for (TextLine textLine : textLineList) {
@@ -342,7 +358,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	public List<ScriptWord> getWords() {
 		List<ScriptWord> wordList = new ArrayList<ScriptWord>();
 		RealRangeArray rangeArray = this.getWordRangeArray();
-		LOG.trace("WA "+rangeArray);
+		LOG.debug("WA "+rangeArray);
 		List<SVGText> characters = this.getSVGTextCharacters();
 		int rangeCounter = 0;
 		int nlines = textLineList.size();
@@ -368,7 +384,7 @@ public class ScriptLine implements Iterable<TextLine> {
 					}
 				}
 			}
-			LOG.trace((lowestCharacter == null) ? "null" : "["+lowestCharacter.getValue()+"_"+lowestCharacter.getX()+"/"+lowestX+"/"+lowestLine);
+			LOG.debug((lowestCharacter == null) ? "null" : "["+lowestCharacter.getValue()+"_"+lowestCharacter.getX()+"/"+lowestX+"/"+lowestLine);
 			if (currentRange == null || lowestX <= currentRange.getMax()) {
 				if (word == null) {
 					word = new ScriptWord(nlines);
@@ -391,7 +407,9 @@ public class ScriptLine implements Iterable<TextLine> {
 
 	public RealRangeArray getWordRangeArray() {
 		Double fontSize = this.getMeanFontSize();
-		if (fontSize == null) fontSize = 8.0; // just in case
+		if (fontSize == null) {
+			fontSize = 8.0; // just in case
+		}
 		RealRangeArray wordRangeArray = new RealRangeArray();
 		List<SVGText> characters = this.getSVGTextCharacters();
 		for (SVGText character : characters) {

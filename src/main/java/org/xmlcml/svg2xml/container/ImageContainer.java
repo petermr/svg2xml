@@ -72,12 +72,20 @@ public class ImageContainer extends AbstractContainer  {
 	@Override
 	public SVGG createSVGGChunk() {
 		SVGG g = new SVGG();
+		ensureImageList();
 		for (SVGImage image : imageList) {
 			g.appendChild(image.copy());
 		}
 		return g;
 	}
 	
+	@Override
+	public String summaryString() {
+		StringBuilder sb = new StringBuilder(">>>ImageContainer>>>"+" images: "+imageList.size()+"\n");
+		sb.append("<<<ImageContainer<<<");
+		return sb.toString();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(super.toString()+"\n");

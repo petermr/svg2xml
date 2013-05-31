@@ -59,6 +59,17 @@ public class FigureContainer extends AbstractContainer  {
 	}
 
 	@Override
+	public String summaryString() {
+		StringBuilder sb = new StringBuilder(">>>FIG>>>"+this.getClass().getSimpleName()+"\n");
+		sb.append(super.toString()+"\n");
+		sb.append(outputList("Captions", captionList));
+		sb.append(outputList("Images", imageContainerList));
+		sb.append(outputList("Paths", pathContainerList));
+		sb.append("<<<FIG<<<");
+		return sb.toString();
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(this.getClass().getSimpleName()+"\n");
 		sb.append(super.toString()+"\n");

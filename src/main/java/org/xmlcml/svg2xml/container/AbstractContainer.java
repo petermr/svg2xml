@@ -47,6 +47,15 @@ public abstract class AbstractContainer {
 		return this.containerList;
 	}
 
+	public String summaryString() {
+		String clazz = this.getClass().getSimpleName();
+		StringBuilder sb = new StringBuilder(">>>"+clazz+">>> \n");
+		for (AbstractContainer container : containerList) {
+			sb.append("\n   "+container.summaryString()+"\n");
+		}
+		sb.append("<<<"+clazz+"<<<\n");
+		return sb.toString();
+	}
 
 	@Override
 	public String toString() {

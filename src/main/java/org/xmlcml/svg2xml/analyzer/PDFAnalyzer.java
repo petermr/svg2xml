@@ -201,7 +201,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 			throw new RuntimeException("No files in "+svgDocumentDir);
 		}
 		analyzePagesAndCreateChunkAndScriptLists(svgPageFiles);
-		debugContainers();
+		if (1 == 1) summaryContainers();
 		createIndexesAndRemoveDuplicates();
 		mergeTextContainers();
 		
@@ -209,6 +209,16 @@ public class PDFAnalyzer /*implements Annotatable */{
 		System.out.println();
 		writeSvgPages();
 //		analyzeAndCreateHTML();  // not yet written
+	}
+
+	private void summaryContainers() {
+		int page = 1;
+		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
+			System.out.println("***************************************************"+page+">>>>>> \n");
+			System.out.println(pageAnalyzer.summaryString());
+			System.out.println("***************************************************"+page+"<<<<<< \n");
+			page++;
+		}
 	}
 
 	private void debugContainers() {

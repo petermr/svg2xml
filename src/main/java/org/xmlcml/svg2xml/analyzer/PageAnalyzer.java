@@ -263,6 +263,15 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		}
 	}
 
+	public String summaryString() {
+		StringBuilder sb = new StringBuilder("Page: "+pageNumber+"\n");
+		sb.append("Containers: "+getPageAnalyzerContainerList().size()+"\n");
+		for (AbstractContainer container : getPageAnalyzerContainerList()) {
+			sb.append(container.summaryString()+"\n........................\n");
+		}
+		return sb.toString();
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("Page: "+pageNumber+"\n");

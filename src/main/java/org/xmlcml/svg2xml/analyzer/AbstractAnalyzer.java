@@ -197,10 +197,12 @@ public abstract class AbstractAnalyzer implements Annotatable {
 //				g.appendChild(AbstractPageAnalyzerX.createTextInBox(textOpacity, bbox, message, fontSize));
 		if (bbox != null) {
 			SVGRect rect = SVGRect.createFromReal2Range(bbox);
-			rect.setTitle(message);
-			rect.setFill(rectFill);
-			rect.setOpacity(rectOpacity);
-			g.appendChild(rect);
+			if (rect != null) {
+				rect.setTitle(message);
+				rect.setFill(rectFill);
+				rect.setOpacity(rectOpacity);
+				g.appendChild(rect);
+			}
 		}
 	}
 

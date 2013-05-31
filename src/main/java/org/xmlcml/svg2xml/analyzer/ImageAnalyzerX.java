@@ -6,12 +6,15 @@ import java.util.List;
 import nu.xom.Attribute;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
+import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.ImageContainer;
 
 /**
  * Analyzes images.
@@ -59,6 +62,19 @@ public class ImageAnalyzerX extends AbstractAnalyzer {
 		g.setTitle(title);
 		return g;
 	}
+
+	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+		ImageContainer imageContainer = new ImageContainer(pageAnalyzer);
+		ensureAbstractContainerList();
+		abstractContainerList.add(imageContainer);
+		return abstractContainerList;
+	}
+
+	@Override
+	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+		return annotateElements(svgElements, 0.2, 0.7, 5.0, "magenta");
+	}
+
 
 	@Override
 	protected HtmlElement createHtml() {

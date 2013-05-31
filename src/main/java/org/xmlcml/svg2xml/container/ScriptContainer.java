@@ -50,7 +50,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		return divElement;
 	}
 
-	public List<ScriptLine> getScriptList() {
+	public List<ScriptLine> getScriptLineList() {
 		return scriptList;
 	}
 
@@ -91,7 +91,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 			if (fontSize == null) {
 				fontSize = size;
 			} else {
-				if (!Real.isEqual(fontSize, size, FONT_EPS)) {
+				if (fontSize == null || size == null || !Real.isEqual(fontSize, size, FONT_EPS)) {
 					return null;
 				}
 			}
@@ -179,6 +179,19 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		return fontWeight;
 	}
 
+	@Override 
+	public String summaryString() {
+		StringBuilder sb = new StringBuilder(">>>Script>>>"+" lines: "+scriptList.size()+"\n");
+		for (ScriptLine script : scriptList) {
+			if (script != null) {
+				sb.append(script.summaryString()+"");
+			}
+		}
+		sb.append("<<<Script<<<");
+		String s = sb.toString();
+		return s;
+	}
+	
 	@Override 
 	public String toString() {
 		StringBuilder sb = new StringBuilder(this.getClass().getSimpleName()+" lines: "+scriptList.size()+"\n");

@@ -82,7 +82,8 @@ public class TextLine implements Iterable<SVGText> {
 	private Double SCALE = 0.001;
 	private Double SPACE_WIDTH1000 = /*274.0*/ 200.;
 	private Double SPACE_WIDTH = SPACE_WIDTH1000 * SCALE;
-	private Double DEFAULT_SPACE_FACTOR = 0.12;
+//	private Double DEFAULT_SPACE_FACTOR = 0.12;
+	private Double DEFAULT_SPACE_FACTOR = 0.05;
 	private Real2Range boundingBox = null;
 	private Double meanFontSize;
 	private RealArray fontSizeArray;

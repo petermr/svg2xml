@@ -1,0 +1,1951 @@
+
+
+----------------------------------------------------------------------------------------------PAGE: 1------------------------
+
+
+Number of Blocks=14
+--------------------TEXT BLOCK:1------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:2------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: RESEARCH ARTICLE
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:13pt
+Most popular word height 14
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:24pt
+Most popular word height 26
+Number of Lines 2
+Alignment MIDLINE
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: John J Dennehy1,2* and Ing-Nang Wang1
+Most popular font AdvOT07517017
+Most popular font size font-size:11pt
+Most popular word height 11
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Abstract
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 16
+Alignment MIDLINE
+--------------------TEXT BLOCK:7------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Background
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 5
+Alignment LEFT
+--------------------TEXT BLOCK:9------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Open Access
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:13pt
+Most popular word height 14
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:10------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: phage l [10-13], Escherichia coli [14-16], Bacillus sub-
+Most popular font AdvOTf0bf83d5.I
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:11------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 9
+Alignment LEFT
+--------------------TEXT BLOCK:12------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 20
+Alignment RIGHT
+--------------------TEXT BLOCK:13------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 4
+Alignment MIDLINE
+--------------------TEXT BLOCK:14------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 3
+Alignment MIDLINE
+
+----------------------------------------------------------------------------------------------PAGE: 2------------------------
+
+
+Number of Blocks=5
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 2 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 31
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 31
+Alignment RIGHT
+--------------------TEXT BLOCK:5------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 6
+Alignment MIDLINE
+
+----------------------------------------------------------------------------------------------PAGE: 3------------------------
+
+
+Number of Blocks=8
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 3 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 19
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:5------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Results
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:6------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 15
+Alignment RIGHT
+--------------------TEXT BLOCK:7------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Figure 2 Samples of a lysis recording and frequency distributions of various experimental treatments. A Sample recordings from strain
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment MIDLINE
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 3
+Alignment MIDLINE
+
+----------------------------------------------------------------------------------------------PAGE: 4------------------------
+
+
+Number of Blocks=9
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 4 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:9pt
+Most popular word height 9
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Strain na MLT min SD min
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 14
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 3
+Alignment LEFT
+--------------------TEXT BLOCK:7------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Effect of allelic variation in holin sequence
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 19
+Alignment RIGHT
+--------------------TEXT BLOCK:9------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 6
+Alignment MIDLINE
+
+----------------------------------------------------------------------------------------------PAGE: 5------------------------
+
+
+Number of Blocks=17
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 5 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 15
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Effect of late promoter pR’ activity
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 23
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Effect of Host Growth Rates
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:7------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 12
+Alignment LEFT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:9pt
+Most popular word height 9
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:9------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Treatment nc MLT min SD min
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:10------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 8
+Alignment RIGHT
+--------------------TEXT BLOCK:11------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 20% LB 233 59.5 3.86
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:12------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 10
+Alignment RIGHT
+--------------------TEXT BLOCK:13------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:14------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 5
+Alignment RIGHT
+--------------------TEXT BLOCK:15------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 14
+Alignment RIGHT
+--------------------TEXT BLOCK:16------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Effects of KCN Addition
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:17------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 9
+Alignment RIGHT
+
+----------------------------------------------------------------------------------------------PAGE: 6------------------------
+
+
+Number of Blocks=7
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 6 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 36
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 32
+Alignment RIGHT
+--------------------TEXT BLOCK:5------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Discussion
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:6------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:7------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 4
+Alignment MIDLINE
+
+----------------------------------------------------------------------------------------------PAGE: 7------------------------
+
+
+Number of Blocks=10
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 7 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 11
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Manipulation of holin production rate
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 41
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 4
+Alignment RIGHT
+--------------------TEXT BLOCK:7------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Manipulation of holin protein sequence
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 25
+Alignment RIGHT
+--------------------TEXT BLOCK:9------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Effect of energy poison KCN
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:10------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 21
+Alignment RIGHT
+
+----------------------------------------------------------------------------------------------PAGE: 8------------------------
+
+
+Number of Blocks=19
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 8 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 13
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Evolutionary implication of lysis time stochasticity
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 24
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Conclusions
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:7------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 13
+Alignment LEFT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 4
+Alignment RIGHT
+--------------------TEXT BLOCK:9------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Appendix A
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:10------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 11
+Alignment RIGHT
+--------------------TEXT BLOCK:11------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 4
+Alignment RIGHT
+--------------------TEXT BLOCK:12------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: VAR t3 + 2COV t1, t2 + 2COV t2, t3 + 2COV t1, t3 .
+Most popular font AdvOTf0bf83d5.I
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:13------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 4
+Alignment RIGHT
+--------------------TEXT BLOCK:14------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: t1 + t2, t3 COV t1, t3 + COV t2, t3 0. Although
+Most popular font AdvOTf0bf83d5.I
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:15------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 6
+Alignment RIGHT
+--------------------TEXT BLOCK:16------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: independent, i.e., COV t1, t3 COV t2, t3 0.
+Most popular font AdvOTf0bf83d5.I
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:17------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 16
+Alignment RIGHT
+--------------------TEXT BLOCK:18------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Appendix B
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:19------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 2
+Alignment RIGHT
+
+----------------------------------------------------------------------------------------------PAGE: 9------------------------
+
+
+Number of Blocks=17
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 9 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 32
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Methods
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Bacterial strains
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 3
+Alignment LEFT
+--------------------TEXT BLOCK:7------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Experimental instrumentation
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 14
+Alignment LEFT
+--------------------TEXT BLOCK:9------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Table 3 Bacterial strains used in this study
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:9pt
+Most popular word height 9
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:10------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Strain Relevant Genotypea Source
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:11------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 17
+Alignment RIGHT
+--------------------TEXT BLOCK:12------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: IN160 MC4100 l cI857 SA52G Cam unpublished
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:13------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 9
+Alignment RIGHT
+--------------------TEXT BLOCK:14------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 4
+Alignment RIGHT
+--------------------TEXT BLOCK:15------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 14
+Alignment RIGHT
+--------------------TEXT BLOCK:16------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Sample preparation and lysis time determination
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:17------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 6
+Alignment RIGHT
+
+----------------------------------------------------------------------------------------------PAGE: 10------------------------
+
+
+Number of Blocks=13
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 10 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 25
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Determination of lysogen growth rate
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 18
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Statistical analysis
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:9pt
+Most popular word height 10
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:7------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 7
+Alignment LEFT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOTa9103878
+Most popular font size font-size:10pt
+Most popular word height 10
+Number of Lines 38
+Alignment RIGHT
+--------------------TEXT BLOCK:9------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Additional material
+Most popular font AdvOT3b30f6db.B
+Most popular font size font-size:10pt
+Most popular word height 11
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:10------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Additional file 1 Sample sizes and standard deviations. More
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:11------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: detailed data sets for both Table 1 and Table 2.
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:12------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Acknowledgements
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:13------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 10
+Alignment RIGHT
+
+----------------------------------------------------------------------------------------------PAGE: 11------------------------
+
+
+Number of Blocks=95
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 11 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Author details
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 1 Department of Biological Sciences, University at Albany, 1400 Washington
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: USA.
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:7------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Authors’ contributions
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:8------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 4
+Alignment LEFT
+--------------------TEXT BLOCK:9------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Competing interests
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:10------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: The authors declare that they have no competing interests.
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:11------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:12------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: References
+Most popular font AdvOTce3d9a73
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:13------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 1. Avery SV Microbial cell individuality and the underlying sources of
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:14------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: heterogeneity. Nat Rev Microbiol 2006, 4 577-587.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:15------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 4
+Alignment LEFT
+--------------------TEXT BLOCK:16------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 3
+Alignment LEFT
+--------------------TEXT BLOCK:17------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:18------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 4
+Alignment LEFT
+--------------------TEXT BLOCK:19------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 9. Veening JW, Smits WK, Kuipers OP Bistability, epigenetics, and bet-
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:20------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: hedging in bacteria. Annu Rev Microbiol 2008, 62 193-210.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:21------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 10. Amir A, Kobiler O, Rokney A, Oppenheim AB, Stavans J Noise in timing
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:22------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: and precision of gene activities in a genetic cascade. Mol Syst Biol 2007,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:23------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:24------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: developmental pathway bifurcation in phage ?-infected Escherichia coli
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:25------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:26------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:27------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: lambda infection. Proc Natl Acad Sci USA 2008, 105 20705-20710.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:28------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 14. Cai L, Friedman N, Xie XS Stochastic protein expression in individual cells
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:29------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: at the single molecule level. Nature 2006, 440 358-362.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:30------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 15. Elowitz MB, Levine AJ, Siggia ED, Swain PS Stochastic gene expression in
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:31------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: a single cell. Science 2002, 297 1183-1186.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:32------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 16. Ito Y, Toyota H, Kaneko K, Yomo T How selection affects phenotypic
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:33------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: fluctuation. Mol Syst Biol 2009, 5 264.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:34------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 17. Ozbudak EM, Thattai M, Kurtser I, Grossman AD, van Oudenaarden A
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:35------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Regulation of noise in the expression of a single gene. Nat Genet 2002,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:36------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:37------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: fate in Bacillus subtilis. Science 2007, 317 526-529.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:38------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 19. Bar-Even A, Paulsson J, Maheshri N, Carmi M, O’Shea E, Pilpel Y, Barkai N
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:39------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Noise in protein expression scales with natural protein abundance. Nat
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:40------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 4
+Alignment LEFT
+--------------------TEXT BLOCK:41------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: eukaryotic gene expression. PLoS Biol 2004, 2 e137.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:42------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 22. Acar M, Mettetal JT, van Oudenaarden A Stochastic switching as a
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:43------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: survival strategy in fluctuating environments. Nat Genet 2008, 40 471-475.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:44------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 23. Ansel J, Bottin H, Rodriguez-Beltran C, Damon C, Nagarajan M, Fehrmann S,
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:45------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:46------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:47------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: transcriptional noise. Mol Cell 2006, 24 853-865.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:48------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 25. Bishop AL, Rab FA, Sumner ER, Avery SV Phenotypic heterogeneity can
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:49------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: enhance rare-cell survival in ‘stress-sensitive’ yeast populations. Mol
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:50------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:51------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Bacteriophage Infections. Annu Rev Microbiol 2000, 54 799-825.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:52------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 27. Young R, Wang IN, Roof WD Phages will out strategies of host cell lysis.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:53------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Trends Microbiol 2000, 8 120-128.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:54------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 28. Wang IN, Deaton J, Young R Sizing the holin lesion with an endolysin-?-
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:55------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: galactosidase fusion. J Bacteriol 2003, 185 779-787.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:56------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 29. Savva CG, Dewey JS, Deaton J, White RL, Struck DK, Holzenburg A,
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:57------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Young R The holin of bacteriophage lambda forms rings with large
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:58------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: diameter. Mol Microbiol 2008, 69 784-793.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:59------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 30. Park T, Struck DK, Dankenbring CA, Young R The pinholin of lambdoid
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:60------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: phage 21 control of lysis by membrane depolarization. J Bacteriol 2007,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:61------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:62------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: isomerization after membrane release of its SAR domain activates P1
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:63------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:64------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: sequence mediates export and control of the phage P1 endolysin. Proc
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:65------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Natl Acad Sci USA 2004, 101 6415-6420.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:66------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:67------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Gen Genet 1999, 262 659-667.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:68------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 34. Berry J, Summer EJ, Struck DK, Young R The final step in the phage
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:69------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: infection cycle the Rz and Rz1 lysis proteins link the inner and outer
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:70------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: membranes. Mol Microbiol 2008, 70 341-351.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:71------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 35. Young R, Way J, Way S, Yin J, Syvanen M Transposition mutagenesis of
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:72------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: bacteriophage lambda a new gene affecting cell lysis. J Mol Biol 1979,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:73------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 5
+Alignment RIGHT
+--------------------TEXT BLOCK:74------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: and oligomer interactions of the lambda S holin. J Bacteriol 2000,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:75------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:76------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: scale holes terminate the phage infection cycle. Proc Natl Acad Sci USA
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:77------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 2010, 107 2219-2223.
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:78------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 39. Ryan GL, Rutenberg AD Clocking out modeling phage-induced lysis of
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:79------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Escherichia coli. J Bacteriol 2007, 189 4749-4755.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:80------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 40. White R, Chiba S, Pang T, Dewey JS, Savva CG, Holzenburg A, Pogliano K,
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:81------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Young R Holin triggering in real time. Proc Natl Acad Sci USA 2010,
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:82------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 3
+Alignment RIGHT
+--------------------TEXT BLOCK:83------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 42. Delbrück M The growth of bacteriophage and lysis of the host. J Gen
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:84------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Physiol 1940, 23 643-660.
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:85------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 4
+Alignment RIGHT
+--------------------TEXT BLOCK:86------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:87------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Acad Sci USA 2001, 98 9348-9352.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:88------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 46. Wang IN Lysis timing and bacteriophage fitness. Genetics 2006, 172 17-26.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:89------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 47. Raab R, Neal G, Garrett J, Grimaila R, Fusselman R, Young R Mutational
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:90------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: analysis of bacteriophage lambda lysis gene S. J Bacteriol 1986,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:91------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:92------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: stochasticity in gene expression. Proc Natl Acad Sci USA 2002,
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:93------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:94------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:95------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: fitness. Genetics 2009, 181 1467-1475.
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+
+----------------------------------------------------------------------------------------------PAGE: 12------------------------
+
+
+Number of Blocks=33
+--------------------TEXT BLOCK:1------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Page 12 of 12
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:2------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:8pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:3------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 51. Gillespie DT Exact stochastic simulation of coupled chemical reactions. J
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:4------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Phys Chem 1977, 81 2340-2361.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:5------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 52. McAdams HH, Arkin A Stochastic mechanisms in gene expression. Proc
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:6------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Natl Acad Sci USA 1997, 94 814-819.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:7------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:8------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: typhimurium Cellular and Molecular Biology. Volume 2. Edited by Ingraham
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:9------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 3
+Alignment LEFT
+--------------------TEXT BLOCK:10------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: depends on the physiology of its host Escherichia coli. Microbiology 1997,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:11------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 143 179-185.
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:12------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:13------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:14------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:15------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 58. Abedon ST, Herschler TD, Stopar D Bacteriophage latent-period evolution
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:16------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: as a response to resource availability. Appl Environ Microbiol 2001,
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:17------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:18------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:19------------------------
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 2
+Alignment LEFT
+--------------------TEXT BLOCK:20------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: timing. Evol Ecol 1996, 10 545-558.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:21------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 4
+Alignment LEFT
+--------------------TEXT BLOCK:22------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: 64. Powell BS, Rivas MP, Court DL, Nakamura Y, Turnbough CL Jr Rapid
+Most popular font AdvOT07517017
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:23------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: confirmation of single copy lambda prophage integration by PCR.
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:24------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: Nucleic Acids Res 1994, 22 5765-5766.
+Most popular font AdvOT0d9ab1db.I
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 1
+Alignment LEFT
+--------------------TEXT BLOCK:25------------------------
+Most popular font AdvOT46dcae81
+Most popular font size font-size:7pt
+Most popular word height 8
+Number of Lines 3
+Alignment LEFT
+--------------------TEXT BLOCK:26------------------------
+Most popular font FrutigerLTStd-Bold
+Most popular font size font-size:9pt
+Most popular word height 9
+Number of Lines 2
+Alignment RIGHT
+--------------------TEXT BLOCK:27------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: • Convenient online submission
+Most popular font FrutigerLTStd-Bold
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:28------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: • Thorough peer review
+Most popular font FrutigerLTStd-Bold
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:29------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: • No space constraints or color figure charges
+Most popular font FrutigerLTStd-Bold
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:30------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: • Immediate publication on acceptance
+Most popular font FrutigerLTStd-Bold
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:31------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: • Inclusion in PubMed, CAS, Scopus and Google Scholar
+Most popular font FrutigerLTStd-Bold
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:32------------------------
+-POSSIBLE SECTION HEADING-
+
+Chunk text: • Research which is freely available for redistribution
+Most popular font FrutigerLTStd-Bold
+Most popular font size font-size:7pt
+Most popular word height 7
+Number of Lines 1
+Alignment RIGHT
+--------------------TEXT BLOCK:33------------------------
+Most popular font FrutigerLTStd-Roman
+Most popular font size font-size:6pt
+Most popular word height 7
+Number of Lines 2
+Alignment RIGHT

@@ -1,11 +1,14 @@
 package org.xmlcml.svg2xml.text;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
 public class ScriptWord extends ScriptLine {
+	
+	private List<String> characterList;
 
 	public ScriptWord(int nLines) {
 		super(new TextStructurer((TextAnalyzerX)null));
@@ -16,8 +19,26 @@ public class ScriptWord extends ScriptLine {
 	}
 	
 	public void add(SVGText character, int line) {
+		ensureCharacterList();
 		if (line >= 0 && line < textLineList.size()) {
 			textLineList.get(line).add(character);
 		}
+		characterList.add(character.getText());
+	}
+	
+	private void ensureCharacterList() {
+		if (characterList == null) {
+			characterList = new ArrayList<String>();
+		}
+	}
+
+	@Override
+	public String summaryString() {
+		StringBuilder sb = new StringBuilder();
+		ensureCharacterList();
+		for (String s : characterList) {
+			sb.append(s);
+		}
+		return sb.toString();
 	}
 }

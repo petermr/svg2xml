@@ -132,5 +132,10 @@ public class SVG2XMLUtil {
 		return (l <= maxlen) ? string : string.substring(0, l)+"... ("+l+" chars)";
 	}
 
+	public static String trimText(int max, String s) {
+		int l = s.length();
+		return (l < max) ? s : s.substring(0,  max)+" ("+l+")...";
+	}
+
 
 }

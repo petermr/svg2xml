@@ -12,6 +12,7 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class PathContainer extends AbstractContainer  {
 
@@ -84,6 +85,16 @@ public class PathContainer extends AbstractContainer  {
 		return g;
 	}
 	
+
+	@Override
+	public String summaryString() {
+		StringBuilder sb = new StringBuilder(">>>PathContainer>>>"+" paths: "+pathList.size()+"\n");
+		for (SVGPath path : pathList) {
+			sb.append(SVG2XMLUtil.trimText(20, path.getSignature())+"\n");
+		}
+		sb.append("<<<PathContainer<<<");
+		return sb.toString();
+	}
 
 	@Override
 	public String toString() {
