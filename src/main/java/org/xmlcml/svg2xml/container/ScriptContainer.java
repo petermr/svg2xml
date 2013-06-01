@@ -15,7 +15,7 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.svg2xml.text.StyleSpan;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 import com.google.common.collect.HashMultiset;
@@ -28,7 +28,6 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private static final double FONT_EPS = 0.01;
 
 	private Multiset<String> fontFamilySet;
-
 	private List<ScriptLine> scriptList;
 	
 	public ScriptContainer(PageAnalyzer pageAnalyzer) {
@@ -228,6 +227,15 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public Iterator<ScriptLine> iterator() {
 		return scriptList.iterator();
 	}
-	
+
+	public List<List<StyleSpan>> getStyleSpanListList() {
+		List<List<StyleSpan>> styleSpanListList = new ArrayList<List<StyleSpan>>();
+		for (ScriptLine script : scriptList) {
+			List<StyleSpan> styleSpanList = script.getStyleSpanList();
+			styleSpanListList.add(styleSpanList);
+		}
+		return styleSpanListList;
+	}
+
 
 }

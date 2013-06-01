@@ -606,9 +606,7 @@ public class TextLine implements Iterable<SVGText> {
 	
 	public boolean isBold() {
 		for (SVGText character : characterList) {
-			String fontWeight = character.getFontWeight();
-			LOG.trace("F "+fontWeight);
-			if (!Style.BOLD.toString().equalsIgnoreCase(fontWeight)) return false;
+			if (!character.isBold()) return false;
 		}
 		return true;
 	}

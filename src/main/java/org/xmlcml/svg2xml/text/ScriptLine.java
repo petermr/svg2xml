@@ -3,15 +3,17 @@ package org.xmlcml.svg2xml.text;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Stack;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntArray;
+import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
-import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds one or more TextLines in a chunk
  * bounding boxes of textLines overlap
@@ -20,8 +22,16 @@ import org.xmlcml.svg2xml.util.SVG2XMLUtil;
  */
 public class ScriptLine implements Iterable<TextLine> {
 
+
 	private final static Logger LOG = Logger.getLogger(ScriptLine.class);
+	
 	private static final double X_CHARACTER_TOL = 0.45;  // heuristic
+	private static final double FONT_SIZE_EPS = 0.02;  // heuristic
+	private static final double SUSCRIPT_EPS = 0.5;  // heuristic
+	public static final String SUB = "sub";
+	public static final String SUP = "sup";
+	public static final String SUSCRIPT = "suscript";
+	
 	protected List<TextLine> textLineList = null;
 	private TextStructurer textContainer;
 	private int largestLine;
@@ -358,7 +368,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	public List<ScriptWord> getWords() {
 		List<ScriptWord> wordList = new ArrayList<ScriptWord>();
 		RealRangeArray rangeArray = this.getWordRangeArray();
-		LOG.debug("WA "+rangeArray);
+		LOG.trace("WA "+rangeArray);
 		List<SVGText> characters = this.getSVGTextCharacters();
 		int rangeCounter = 0;
 		int nlines = textLineList.size();
@@ -384,7 +394,7 @@ public class ScriptLine implements Iterable<TextLine> {
 					}
 				}
 			}
-			LOG.debug((lowestCharacter == null) ? "null" : "["+lowestCharacter.getValue()+"_"+lowestCharacter.getX()+"/"+lowestX+"/"+lowestLine);
+			LOG.trace((lowestCharacter == null) ? "null" : "["+lowestCharacter.getValue()+"_"+lowestCharacter.getX()+"/"+lowestX+"/"+lowestLine);
 			if (currentRange == null || lowestX <= currentRange.getMax()) {
 				if (word == null) {
 					word = new ScriptWord(nlines);
@@ -427,6 +437,116 @@ public class ScriptLine implements Iterable<TextLine> {
 		}
 		return characters;
 	}
+
+	public List<SVGText> getSortedCharacters() {
+		List<SVGText> sortedCharacters = new ArrayList<SVGText>();
+		int nline = textLineList.size();
+		// make stacks of each textLine
+		List<Stack<SVGText>> characterStackList = new ArrayList<Stack<SVGText>>(); 
+		for (int i = 0; i < nline; i++) {
+			Stack<SVGText> characterStack = new Stack<SVGText>();
+			characterStackList.add(characterStack);
+			TextLine textLine = textLineList.get(i);
+			for (int j = textLine.size()-1; j >= 0; j--) {
+				SVGText character = textLine.get(j);
+				characterStack.push(character);
+			}
+		}
+		// find lowest character X
+		while (true) {
+			Double x = null;
+			int lowestLine = -1;
+			Double xmin = 99999.;
+			for (int i = 0; i < nline; i++) {
+				Stack<SVGText> characterStack = characterStackList.get(i);
+				if (!characterStack.isEmpty()) {
+					x = characterStack.peek().getX();
+					if (x < xmin) {
+						lowestLine = i;
+						xmin = x;
+					}
+				}
+			}
+			if (x == null) {
+				break;
+			}
+			Stack<SVGText> lowestXStack = characterStackList.get(lowestLine);
+			SVGText text = lowestXStack.pop();
+			sortedCharacters.add(text);
+		}
+		return sortedCharacters;
+	}
+
+	/** creates spans whenever any of the following change
+	 * bold
+	 * italic
+	 * fontSize
+	 * yCoord
+	 * fontName
+	 * stroke
+	 * fill
+	 * @return
+	 */
+	public List<StyleSpan> getStyleSpanList() {
+		List<StyleSpan> styleSpanList = new ArrayList<StyleSpan>();
+//		List<SVGText> characters = getSVGTextCharacters();
+		List<SVGText> characters = getSortedCharacters();
+		StyleSpan currentSpan = null;
+		boolean inBold = false;
+		boolean inItalic = false;
+		String currentFontName = null;
+		Double currentFontSize = null;
+		String currentFill = null;
+		String currentStroke = null;
+		Double currentY = null;
+		for (int i = 0; i < characters.size(); i++) {
+			SVGText character = characters.get(i);
+			boolean bold = character.isBold();
+			boolean italic = character.isItalic();
+			String fontName = character.getSVGXFontName();
+			String fill = character.getFill();
+			String stroke = character.getStroke();
+			Double fontSize = character.getFontSize();
+			Double y = character.getY();
+			if (i == 0  || bold != inBold || italic != inItalic || 
+					!areStringsEqual(currentFontName, fontName) ||
+					!areStringsEqual(currentFill, fill) ||
+					!areStringsEqual(currentStroke, stroke) ||
+					!areDoublesEqual(currentFontSize, fontSize, FONT_SIZE_EPS) ||
+					!areDoublesEqual(currentY, y, SUSCRIPT_EPS)
+					) { 
+				currentSpan = new StyleSpan(bold, italic);
+				styleSpanList.add(currentSpan);
+				if (currentFontSize != null && fontSize != null && fontSize < currentFontSize) {
+					if (currentY - y > 1.0  ) {
+						SVGUtil.setSVGXAttribute(character, SUSCRIPT, SUP);
+					} else if (y - currentY > 1.0  ) {
+						SVGUtil.setSVGXAttribute(character, SUSCRIPT, SUB);
+					}
+				}
+				inBold = bold;
+				inItalic = italic;
+				currentFontName = fontName;
+				currentFontSize = fontSize;
+				currentFill = fill;
+				currentStroke = stroke;
+				currentY = y;
+			}
+			currentSpan.addCharacter(character);
+		}
+		return styleSpanList;
+	}
+
+	private boolean areStringsEqual(String s0, String s1) {
+		return (s0 == null && s1 == null) || 
+			(s0 != null && s0.equals(s1)) ||
+			(s1 != null && s1.equals(s0));
+			   
+	}
 	
+	private boolean areDoublesEqual(Double d0, Double d1, Double eps) {
+		return d0 != null && d1 != null && Real.isEqual(d0, d1, eps);
+			   
+	}
 	
 }
