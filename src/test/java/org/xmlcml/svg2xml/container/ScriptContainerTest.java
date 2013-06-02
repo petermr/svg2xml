@@ -132,13 +132,13 @@ public class ScriptContainerTest {
 		List<List<StyleSpan>> styleSpanListList = sc.getStyleSpanListList();
 		Assert.assertEquals("lists", 1, styleSpanListList.size());
 		Assert.assertEquals("lists0", 7, styleSpanListList.get(0).size());
-		Assert.assertEquals("lists0.0", "Hiwatashi", styleSpanListList.get(0).get(0).toString());
+		Assert.assertEquals("lists0.0", "Hiwatashi ", styleSpanListList.get(0).get(0).toString());
 	}
 
 	@Test
 	public void testGetSpans() {
 		String[][] values ={
-				{"Hiwatashi", "<I>etal</I>", ".", "<I>BMCEvolutionaryBiology</I>", "2011,", "<B>11</B>", ":312"}, 
+				{"Hiwatashi ", "<I>et al</I>", ". ", "<I>BMC Evolutionary Biology </I>", "2011, ", "<B>11</B>", ":312"}, 
 				{"http://www.biomedcentral.com/1471-2148/11/312"}
 		};
 		testSpans(values, TextFixtures.BMC_312_6_0SA_SVG);
@@ -148,37 +148,37 @@ public class ScriptContainerTest {
 	// the apostrophes are created in a bold font!
 	public void testGetParaSpans() {
 		String[][] values ={
-				{"Bloodsampleswerecollectedfromatotalof157indivi-"},
-				{"dualsofthefollowingspecies:Agile(", "<I>Hylobatesagilis</I>", ";"},
-				{"N=37),Kloss", "<B>’</B>", "(", "<I>H.klossii</I>", ";N=2),White-handed(", "<I>H.lar</I>", ";"},
-				{"N=40),SilveryJavan(", "<I>H.moloch</I>", ";N=6),Mueller", "<B>’</B>", "sBor-"},
-				{"neangray(","<I>H.muelleri</I>",";N=6),Pileated(","<I>H.pileatus</I>",";N="},
-				{"19),ChineseWhite-cheeked(","<I>Nomascusleucogenys</I>",";N="},
-				{"16)andSiamang(","<I>Symphalangussyndactylus</I>",";N=31)."},
-				{"SamplingwasconductedattheRagunanZooandthe"},
-				{"PontianakZooinIndonesia,andtheChiangMaiZoo,"},
-				{"theBangkokZooandtheKhaoKheowOpenZooin"},
-				{"Thailand.Wealsosampledgibbonsrearedbylocalresi-"},
-				{"dentsinKalimantan,Indonesia.GenomicDNAwas"},
-				{"extractedfrombloodsamplesusingtheDNAMicroex-"},
-				{"tractionKit(Stratagene,SantaClara,CA)ortheQIAamp"},
-				{"DNABloodMiniKit(Qiagen,Duesseldorf,Germany)."},
-				{"Researchpermissionsweregrantedbyeachcountryand"},
-				{"samplingwasconductedaccordingtotheGuideforthe"},
-				{"CareandUseofLaboratoryAnimalsbytheNational"},
-				{"InstituteofHealth,U.S.A.(1985)andtheGuideforthe"},
-				{"CareandUseofLaboratoryPrimatesbythePrimate"},
-				{"ResearchInstitute,KyotoUniversity(1986,2002).All"},
-				{"procedureswereapprovedbytheanimalethicscommit-"},
-				{"teeofthePrimateResearchInstitute,KyotoUniversity."},
-				{"Amongthe157individuals,152weresubjectedtothe"},
-				{"genotypingoftheL/Mopsingenes(Additionalfile1,"},
-				{"TableS1).Theremaining5individuals(two", "<I>H.agilis</I>", ","},
-				{"one", "<I>H.lar</I>", ",andtwo", "<I>S.syndactylus</I>", ")wereincludedinthe"},
-				{"analysisoftheneutralreferencegenes.Amongthe152"},
-				{"individuals,94weresubjectedtoDNAsequencingofthe"},
-				{"entire3.6~3.9-kbregionencompassingexon3toexon5"},
-				{"(Table1)."},
+				{"Blood samples were collected from a total of 157 indivi-"},
+				{"duals of the following species: Agile (", "<I>Hylobates agilis</I>", ";"},
+				{"N = 37), Kloss", "<B>’</B>", "(", "<I>H. klossii</I>", "; N = 2), White-handed (", "<I>H. lar</I>", ";"},
+				{"N = 40), Silvery Javan (", "<I>H. moloch</I>", "; N = 6), Mueller", "<B>’</B>", "s Bor-"},
+				{"nean gray (","<I>H. muelleri</I>","; N = 6), Pileated (","<I>H. pileatus</I>","; N ="},
+				{"19), Chinese White-cheeked (","<I>Nomascusleucogenys</I>","; N ="},
+				{"16) and Siamang (","<I>Symphalangus syndactylus</I>","; N = 31)."},
+				{"Sampling was conducted at the Ragunan Zoo and the"},
+				{"Pontianak Zoo in Indonesia, and the Chiang M ai Zoo,"},  //error
+				{"the Bangkok Zoo and the Khao Kheow Open Zoo in"},
+				{"Thailand. We also sampled gibbons reared by local resi-"},
+				{"dents in Kalimantan, Indonesia. Genomic DNA was"},
+				{"extracted from blood samples using the DNA Microex-"}, 
+				{"traction Kit (Stratagene, Santa Clara, CA) or the QIAamp"},
+				{"DNA Blood M ini Kit (Qiagen, Duesseldorf, Germany)."},     // error
+				{"Research permissions were granted by each country and"},
+				{"sampling was conducted according to the Guide for the"},
+				{"Care and Use of Laboratory Animals by the National"},
+				{"Institute of Health, U.S.A. (1985) and the Guide for the"},
+				{"Care and Use of Laboratory Primates by the Primate"},
+				{"Research Institute, Kyoto University (1986, 2002). All"},
+				{"procedures were approved by the animal ethics commit-"},
+				{"tee of the Primate Research Institute, Kyoto University."},
+				{"Among the 157 individuals, 152 were subjected to the"},
+				{"genotyping of the L/ M opsin genes (Additional file 1,"},
+				{"Table S1). The remaining 5 individuals (two ", "<I>H. agilis</I>", ","},
+				{"one ", "<I>H. lar</I>", ", and two ", "<I>S. syndactylus</I>", ") were included in the"},
+				{"analysis of the neutral reference genes. Among the 152"},
+				{"individuals, 94 were subjected to DNA sequencing of the"},
+				{"entire 3.6~3.9-kb region encompassing exon 3 to exon 5"},
+				{"(Table 1)."},
 		};
 		File file = TextFixtures.BMC_312_2_4SC_SVG;
 		testSpans(values, file);
@@ -187,7 +187,7 @@ public class ScriptContainerTest {
 	@Test
 	public void testGetHeaders() {
 		String[][] values ={
-				{"<B>NucleotidediversityofLandMopsingeneswithin</B>"},
+				{"<B>Nucleotide diversity of L and M opsin genes within</B>"},
 				{"<B>species</B>"},
 		};
 		File file = TextFixtures.BMC_312_6_4SA_SVG;
@@ -198,26 +198,26 @@ public class ScriptContainerTest {
 	// note this has some "bold" quotation marks
 	public void testGetReferences() {
 		String[][] values ={
-	{"1.NathansJ,ThomasD,HognessDS:", "Moleculargeneticsofhumancolor"},
-	{"vision:thegenesencodingblue,green,andredpigments.", "<I>Science</I>", "1986,"},
+	{"1. NathansJ, ThomasD, Hogness DS: ", "Molecular genetics of human color"},
+	{"vision: the genes encoding blue, green, and red pigments. ", "<I>Science </I>", "1986,"},
 	{"232", ":193-202."},
-	{"2.JacobsGH:", "Primatephotopigmentsandprimatecolorvision.", "<I>ProcNatl</I>"},
-	{"<I>AcadSciUSA</I>", "1996,", "93", ":577-581."},
-	{"3.YokoyamaR,YokoyamaS:", "Convergentevolutionofthered-andgreen-"},
-	{"likevisualpigmentgenesinfish,", "<I>Astyanaxfasciatus</I>", ",andhuman.", "<I>Proc</I>"},
-	{"<I>NatlAcadSciUSA</I>", "1990,", "87", ":9315-9318."},
-	{"4.NeitzM,NeitzJ,JacobsGH:", "Spectraltuningofpigmentsunderlyingred-"},
-	{"greencolorvision.", "<I>Science</I>", "1991,", "252", ":971-974."},
-	{"5.AsenjoAB,RimJ,OprianDD:", "Moleculardeterminantsofhumanred/"},
-	{"greencolordiscrimination.", "<I>Neuron</I>", "1994,", "12", ":1131-1138."},
-	{"6.YokoyamaS,RadlwimmerFB:", "The", "<B>“</B>", "five-sites", "<B>”</B>", "ruleandtheevolutionof"},
-	{"redandgreencolorvisioninmammals.", "<I>MolBiolEvol</I>", "1998,", "15", ":560-567."},
-	{"7.YokoyamaS,RadlwimmerFB:", "Themoleculargeneticsofredandgreen"},
-	{"colorvisioninmammals.", "<I>Genetics</I>", "1999,", "153", ":919-932."},
-	{"8.YokoyamaS,RadlwimmerFB:", "Themoleculargeneticsandevolutionof"},
-	{"redandgreencolorvisioninvertebrates.", "<I>Genetics</I>", "2001,", "158", ":1697-1710."},
-	{"9.ChanT,LeeM,SakmarTP:", "Introductionofhydroxyl-bearingaminoacids"},
-	{"causesbathochromicspectralshiftsinrhodopsin.Aminoacid"},
+	{"2. JacobsGH: ", "Primate photopigments and primate color vision. ", "<I>Proc Natl</I>"},
+	{"<I>Acad Sci USA </I>", "1996, ", "93", ":577-581."},
+	{"3. Yokoyama R, Yokoyama S: ", "Convergent evolution of the red- and green-"},
+	{"like visual pigment genes in fish, ", "<I>Astyanax fasciatus</I>", ", and human. ", "<I>Proc</I>"},
+	{"<I>Natl Acad Sci USA </I>", "1990, ", "87", ":9315-9318."},
+	{"4. Neitz M, Neitz J, Jacobs GH: ", "Spectral tuning of pigments underlying red-"},
+	{"green color vision. ", "<I>Science </I>", "1991, ", "252", ":971-974."},
+	{"5. Asenjo AB, Rim J, Oprian DD: ", "Molecular determinants of human red/"},
+	{"green color discrimination. ", "<I>Neuron </I>", "1994, ", "12", ":1131-1138."},
+	{"6. Yokoyama S, Radlwimmer FB: ", "The ", "<B>“</B>", "five-sites", "<B>”</B>", "rule and the evolution of"},
+	{"red and green color vision in mammals. ", "<I>Mol Biol Evol </I>", "1998, ", "15", ":560-567."},
+	{"7. Yokoyama S, Radlwimmer FB: ", "The molecular genetics of red and green"},
+	{"color vision in mammals. ", "<I>Genetics</I>", "1999, ", "153", ":919-932."},
+	{"8. Yokoyama S, Radlwimmer FB: ", "The molecular genetics and evolution of"},
+	{"red and green color vision in vertebrates. ", "<I>Genetics</I>", "2001, ", "158", ":1697-1710."},
+	{"9. Chan T, Lee M, Sakmar TP: ", "Introduction of hydroxyl-bearing amino acids"},
+	{"causes bathochromic spectral shifts in rhodopsin. Amino acid"},
 		};
 		File file = TextFixtures.BMC_312_12_7SB_SVG;
 		testSpans(values, file);
@@ -226,9 +226,9 @@ public class ScriptContainerTest {
 	@Test
 	public void testGetSuScripts() {
 		String[][] values ={
-	{"TomohideHiwatashi", "1", ",AkichikaMikami", "2,8", ",TakafumiKatsumura", "1", ",BambangSuryobroto", "3", ","},
-	{"DyahPerwitasari-Farajallah", "3,4", ",SuchindaMalaivijitnond", "5", ",BoripatSiriaroonrat", "6", ",HirokiOota", "1,9", ",ShunjiGoto", "7,10", "and"},
-	{"ShojiKawamura", "1*"},
+	{"Tomohide Hiwatashi", "1", ", Akichika Mikami", "2,8", ", Takafumi Katsumura", "1", ", Bambang Suryobroto", "3", ","},
+	{"Dyah Perwitasari-Farajallah", "3,4", ", Suchinda Malaivijitnond", "5", ", Boripat Siriaroonrat", "6", ", Hiroki Oota", "1,9", ", Shunji Goto", "7,10 ", "and"},
+	{"Shoji Kawamura", "1*"},
 		};
 		File file = TextFixtures.BMC_312_1_4SA_SVG;
 		testSpans(values, file);
@@ -237,10 +237,10 @@ public class ScriptContainerTest {
 	@Test
 	public void testCorrespondence() {
 		String[][] values ={
-	{"*Correspondence:kawamura@k.u-tokyo.ac.jp",},
-	{"1", "DepartmentofIntegratedBiosciences,GraduateSchoolofFrontierSciences,"},
-	{"TheUniversityofTokyo,Kashiwa277-8562,Japan", },
-	{"Fulllistofauthorinformationisavailableattheendofthearticle"},
+	{"* Correspondence: kawamura@k.u-tokyo.ac.jp",},
+	{"1", "Department of Integrated Biosciences, Graduate School of Frontier Sciences,"},
+	{"The University of Tokyo, Kashiwa 277-8562, Japan", },
+	{"Full list of author information is available at the end of the article"},
 		};
 		File file = TextFixtures.BMC_312_1_7DA_SVG;
 		testSpans(values, file);
@@ -249,9 +249,9 @@ public class ScriptContainerTest {
 	@Test
 	public void testLicence() {
 		String[][] values ={
-	{"©2011Hiwatashietal;licenseeBioMedCentralLtd.ThisisanOpenAccessarticledistributedunderthetermsoftheCreative",},
-	{"CommonsAttributionLicense(http://creativecommons.org/licenses/by/2.0),whichpermitsunrestricteduse,distribution,and", },
-	{"reproductioninanymedium,providedtheoriginalworkisproperlycited.", },
+	{"© 2011 Hiwatashi et al; licensee BioMed Central Ltd. This is an Open Access article distributed under the terms of the Creative",},
+	{"Commons Attribution License (http://creativecommons.org/licenses/by/2.0), which permits unrestricted use, distribution, and", },
+	{"reproduction in any medium, provided the original work is properly cited.", },
 		};
 		File file = TextFixtures.BMC_312_1_10SA_SVG;
 		testSpans(values, file);
@@ -261,7 +261,7 @@ public class ScriptContainerTest {
 	@Test
 	public void testBoldWithSubscriptAndItalic() {
 		String[][] values ={
-	{"<B>Effectoflatepromoter</B>", "<B><I>p</I></B>", "<B><I>R</I></B>", "<B><I>’</I></B>", "<B>activity</B>"},
+	{"<B>Effect of late promoter </B>", "<B><I>p</I></B>", "<B><I>R</I></B>", "<B><I>’</I></B>", "<B>activity</B>"},
 		};
 		File file = TextFixtures.BMC_174_5_3SA_SVG;
 		testSpans(values, file);
@@ -270,38 +270,38 @@ public class ScriptContainerTest {
 	@Test
 	public void testLargePara() {
 		String[][] values ={
-	{"seeminglyconvexrelationshipbetween", "<I>t</I>", "L", "-", "<I>t</I>", "KCN", "and"},
-	{"<I>t</I>", "KCN", "[[39],theirfigurefive]."},
-	{"Theeffectsof", "<I>t</I>", "KCN", "onlysistimeSDsandCVsare"},
-	{"showninFigure4B.Again,wewitnessedtheexpected"}, 
-	{"patternofasignificantnegativerelationshipbetween"},
-	{"<I>t</I>", "KCN", "andtheSDs(aquadraticfit,", "<I>F</I>", "[2,4]", "=9.91,", "<I>p</I>", "="},
+	{"seemingly convex relationship between ", "<I>t</I>", "L ", "- ", "<I>t</I>", "KCN ", "and"},
+	{"<I>t</I>", "KCN ", "[[39], their figure five]."},
+	{"The effects of ", "<I>t</I>", "KCN ", "on lysis time SDs and CVs are"},
+	{"shown in Figure 4B. Again, we witnessed the expected"}, 
+	{"pattern of a significant negative relationship between"},
+	{"<I>t</I>", "KCN ", "and the SDs (a quadratic fit, ", "<I>F</I>", "[2,4] ", "= 9.91, ", "<I>p </I>", "="},
 	// MISSINGLINE in the source
-	{"CVs(aquadraticfit,", "<I>F</I>", "[2,4]", "=16.03,", "<I>p</I>", "=0.0282,adjusted", },
-	{"<I>R</I>", "2", "=0.834).Theseresultsshowedthatthelaterintime"}, 
-	{"KCNwasadded,thelessvariationtherewasinindivi-"}, 
-	{"duallysistimes.Infact,thelowestSD(1.45min)and"},
-	{"lowestCV(2.53%)wereobservedwhenKCNwasadded"},
-    {"55minafterinduction.Thiswasasignificanttwo-fold"},
-    {"reductionintheSDwhencomparednormallysiscondi-"}, 
-    {"tions(seeTable1forstrainIN56withtheSD=3.24"}, 
-    {"min;Student", "<B>’</B>", "s", "<I>t</I>", "=15.45,", "<I>p</I>", "<0.0001,usingthestandard"},
-	{"deviationfortheSDinBox7.1of[56]).Thisobserva-"}, 
-	{"tionindicatedthatindividualtriggeringforholeforma-"}, 
-	{"tionduringthenormalprogressionofcelllysiswas"}, 
-	{"relativelyasynchronouswhencomparedtotheartificial"}, 
-	{"methodofacutetriggeringbyKCNaddition."},
-	{"Similartotheeffectofgrowthrate,alinearregression"}, 
-	{"oftheSDs(", "<I>F</I>", "[1,5]", "=0.60,", "<I>p</I>", "=0.4726)orCVs(", "<I>F</I>", "[1,5]", "="}, 
-	{"0.328,", "<I>p</I>", "=0.5917)againsttheMLTsdidnotyieldsignif-"}, 
-	{"icantresult.Anotherinterestingaspectoftherelation-"}, 
-	{"shipbetween", "<I>t</I>", "KCN", "andthelysistimeSDsisthatthe"}, 
-	{"SDsdropprecipitouslywhenKCNisaddedabout35"}, 
-	{"minafterinduction.Thisobservationsuggeststhat,"}, 
-	{"approximately35minafterthermalinduction,the"}, 
-	{"majorityofthelysogeniccellshaveaccumulatedenough"}, 
-	{"holinproteinsinthecellmembranetoformholes"},
-	{"immediatelyiftriggered."}, 
+	{"CVs (a quadratic fit, ", "<I>F</I>", "[2,4] ", "= 16.03, ", "<I>p </I>", "= 0.0282, adjusted", },
+	{"<I>R</I>", "2 ", "= 0.834). These results showed that the later in time"}, 
+	{"KCN was added, the less variation there was in indivi-"}, 
+	{"dual lysis times. In fact, the lowest SD (1.45 min) and"},
+	{"lowest CV (2.53%) were observed when KCN was added"},
+    {"55 min after induction. This was a significant two-fold"},
+    {"reduction in the SD when compared normal lysis condi-"}, 
+    {"tions (see Table 1 for strain IN56 with the SD = 3.24"}, 
+    {"min; Student", "<B>’</B>", "s ", "<I>t </I>", "= 15.45, ", "<I>p </I>", "< 0.0001, using the standard"},
+	{"deviation for the SD in Box 7.1 of [56]). This observa-"}, 
+	{"tion indicated that individual triggering for hole forma-"}, 
+	{"tion during the normal progression of cell lysis was"}, 
+	{"relatively asynchronous when compared to the artificial"}, 
+	{"method of acute triggering by KCN addition."},
+	{"Similar to the effect of growth rate, a linear regression"}, 
+	{"of the SDs (", "<I>F</I>", "[1,5] ", "= 0.60, ", "<I>p </I>", "= 0.4726) or CVs (", "<I>F</I>", "[1,5] ", "="}, 
+	{"0.328, ", "<I>p </I>", "= 0.5917) against the MLTs did not yield signif-"}, 
+	{"icant result. Another interesting aspect of the relation-"}, 
+	{"ship between ", "<I>t</I>", "KCN ", "and the lysis time SDs is that the"}, 
+	{"SDs drop precipitously when KCN is added about 35"}, 
+	{"min after induction. This observation suggests that,"}, 
+	{"approximately 35 min after thermal induction, the"}, 
+	{"majority of the lysogenic cells have accumulated enough"}, 
+	{"holin proteins in the cell membrane to form holes"},
+	{"immediately if triggered."}, 
 	};
 		File file = TextFixtures.BMC_174_6_3SA_SVG;
 		testSpans(values, file);

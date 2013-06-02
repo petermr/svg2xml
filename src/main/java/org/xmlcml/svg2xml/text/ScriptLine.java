@@ -8,6 +8,7 @@ import java.util.Stack;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.Real;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGText;
@@ -31,6 +32,8 @@ public class ScriptLine implements Iterable<TextLine> {
 	public static final String SUB = "sub";
 	public static final String SUP = "sup";
 	public static final String SUSCRIPT = "suscript";
+
+	private static final Double SPACEFACTOR = 0.12;
 	
 	protected List<TextLine> textLineList = null;
 	private TextStructurer textContainer;
@@ -499,6 +502,7 @@ public class ScriptLine implements Iterable<TextLine> {
 		String currentFill = null;
 		String currentStroke = null;
 		Double currentY = null;
+		Double lastX = null;
 		for (int i = 0; i < characters.size(); i++) {
 			SVGText character = characters.get(i);
 			boolean bold = character.isBold();
@@ -507,7 +511,18 @@ public class ScriptLine implements Iterable<TextLine> {
 			String fill = character.getFill();
 			String stroke = character.getStroke();
 			Double fontSize = character.getFontSize();
+			Double x = character.getX();
 			Double y = character.getY();
+			if (lastX != null) {
+				double deltaX = x - lastX;
+				if (deltaX > SPACEFACTOR *fontSize) {
+					SVGText space = new SVGText();
+					space.setText(" ");
+					space.setXY(new Real2(lastX, y));
+					currentSpan.addCharacter(space);
+				}
+			}
+			// have any attributes changed?
 			if (i == 0  || bold != inBold || italic != inItalic || 
 					!areStringsEqual(currentFontName, fontName) ||
 					!areStringsEqual(currentFill, fill) ||
@@ -517,6 +532,7 @@ public class ScriptLine implements Iterable<TextLine> {
 					) { 
 				currentSpan = new StyleSpan(bold, italic);
 				styleSpanList.add(currentSpan);
+				// sub/superscript
 				if (currentFontSize != null && fontSize != null && fontSize < currentFontSize) {
 					if (currentY - y > 1.0  ) {
 						SVGUtil.setSVGXAttribute(character, SUSCRIPT, SUP);
@@ -533,6 +549,7 @@ public class ScriptLine implements Iterable<TextLine> {
 				currentY = y;
 			}
 			currentSpan.addCharacter(character);
+			lastX = character.getBoundingBox().getXRange().getMax();
 		}
 		return styleSpanList;
 	}
