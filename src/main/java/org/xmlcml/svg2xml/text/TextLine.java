@@ -1191,4 +1191,16 @@ public class TextLine implements Iterable<SVGText> {
 		return null;
 	}
 
+	/** merges two lines (at present only characters from second one)
+	 * Used when two lines have same Y-coord but have been split into two parts
+	 * 
+	 * mean and communal properties are probably rubbish (maybe should be null'ed?)
+	 * @param textLine
+	 */
+	public void merge(TextLine textLine) {
+		for (SVGText character : textLine.characterList) {
+			this.characterList.add(character);
+		}
+	}
+
 }

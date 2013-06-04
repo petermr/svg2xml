@@ -503,8 +503,10 @@ public class ScriptLine implements Iterable<TextLine> {
 		String currentStroke = null;
 		Double currentY = null;
 		Double lastX = null;
+		SVGText character = null;
+		String value = null;
 		for (int i = 0; i < characters.size(); i++) {
-			SVGText character = characters.get(i);
+			character = characters.get(i);
 			boolean bold = character.isBold();
 			boolean italic = character.isItalic();
 			String fontName = character.getSVGXFontName();
@@ -513,6 +515,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			Double fontSize = character.getFontSize();
 			Double x = character.getX();
 			Double y = character.getY();
+			value = character.getText();
 			if (lastX != null) {
 				double deltaX = x - lastX;
 				if (deltaX > SPACEFACTOR *fontSize) {

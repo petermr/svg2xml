@@ -27,5 +27,7 @@ public class TextFixtures {
 	public final static File BMC_312_6_4SB_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.4Sb.svg");
 	public final static File BMC_312_6_4SB3_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.4Sb3.svg");
 	public final static File BMC_312_12_7SB_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk12.7Sb.svg");
+	public final static File MDPI_27_4_1SA_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa.svg");
+	public final static File MDPI_27_4_1SA0_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa0.svg");
 	
 }

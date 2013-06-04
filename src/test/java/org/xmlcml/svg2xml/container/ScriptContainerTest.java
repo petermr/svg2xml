@@ -1,14 +1,19 @@
 package org.xmlcml.svg2xml.container;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
@@ -308,27 +313,61 @@ public class ScriptContainerTest {
 	}
 	
 	@Test
-	public void testGetHTML63() {
+	public void testGetHTML63() throws Exception {
 		File file = TextFixtures.BMC_174_6_3SA_SVG;
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
 		TextStructurer textContainer = 
 				TextStructurer.createTextStructurerWithSortedLines(file);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<List<StyleSpan>> styleSpanListList = sc.getStyleSpanListList();
-		HtmlElement divElement = new HtmlDiv();
-		for (int i = 0; i < styleSpanListList.size(); i++) {
-			List<StyleSpan> styleSpanList = styleSpanListList.get(i);
-			for (int j = 0; j < styleSpanList.size(); j++) {
-				StyleSpan styleSpan = styleSpanList.get(j);
-				HtmlElement htmlElement = styleSpan.getHtmlElement();
-				divElement.appendChild(htmlElement);
-			}
-		}
-		System.out.println(divElement.toXML());
+		HtmlElement divElement = sc.createHtmlElement();
+		CMLUtil.debug(divElement, new FileOutputStream("target/bmc174_6_3.html"), 0);
+	}
+
+
+	@Test
+	public void testReferencesHtml() throws Exception {
+		File file = TextFixtures.BMC_312_12_7SB_SVG;
+		String outfile = "target/bmc312_12_7sb.html";
+		createHtml(file, outfile);
+	}
+
+	@Test
+	public void testTitleHtml() throws Exception {
+		File file = TextFixtures.BMC_312_6_0SA_SVG;
+		String outfile = "target/bmc312_6_0sa.html";
+		createHtml(file, outfile);
+	}
+
+	@Test
+	// fails because one textLine is split at gap
+	public void testTitleChemical() throws Exception {
+		File file = TextFixtures.MDPI_27_4_1SA_SVG;
+		String outfile = "target/mdpi_27_4_1sa.html";
+		createHtml(file, outfile);
+	}
+
+	@Test
+	public void testTitleChemical1() throws Exception {
+		File file = TextFixtures.MDPI_27_4_1SA0_SVG;
+		String outfile = "target/mdpi_27_4_1sa0.html";
+		createHtml(file, outfile);
+	}
+
+
+	private void createHtml(File file, String outfile) throws IOException,
+			FileNotFoundException {
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
+		TextStructurer textContainer = 
+				TextStructurer.createTextStructurerWithSortedLines(file);
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage);
+		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
+		HtmlElement divElement = sc.createHtmlElement();
+		CMLUtil.debug(divElement, new FileOutputStream(outfile), 0);
 	}
 
 	// ==========================================================================================
+
 
 	private void testSpans(String[][] values, File file) {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);

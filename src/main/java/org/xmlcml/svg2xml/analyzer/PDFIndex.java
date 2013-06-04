@@ -582,30 +582,32 @@ public class PDFIndex {
 
 	private void analyzeScriptContainerIndexes() {
 		Double[] fontSizes = scriptContainerByBoldFontSize.keySet().toArray(new Double[0]);
-		Arrays.sort(fontSizes);
-		for (Double fontSize : fontSizes) {
-			System.out.println("************* "+fontSize);
-			List<AbstractContainer> containers = getListByKey(fontSize);
-			for (AbstractContainer container : containers) {
-				if (container instanceof ScriptContainer) {
-					ScriptContainer scriptContainer = (ScriptContainer) container;
-					for (ScriptLine script : scriptContainer) {
-						RealRangeArray wordArray = script.getWordRangeArray();
-						wordArray.sortAndRemoveOverlapping();
-						wordArray.format(pdfAnalyzer.getDecimalPlaces());
-						LOG.debug("wordArray >>>>>>>> "+wordArray);
-						for (SVGText character : script.getSVGTextCharacters()) {
-							System.out.print(character.getValue()+"_"+character.getX()+" ");
+		if (fontSizes != null) {
+			Arrays.sort(fontSizes);
+			for (Double fontSize : fontSizes) {
+				System.out.println("************* "+fontSize);
+				List<AbstractContainer> containers = getListByKey(fontSize);
+				for (AbstractContainer container : containers) {
+					if (container instanceof ScriptContainer) {
+						ScriptContainer scriptContainer = (ScriptContainer) container;
+						for (ScriptLine script : scriptContainer) {
+							RealRangeArray wordArray = script.getWordRangeArray();
+							wordArray.sortAndRemoveOverlapping();
+							wordArray.format(pdfAnalyzer.getDecimalPlaces());
+							LOG.debug("wordArray >>>>>>>> "+wordArray);
+							for (SVGText character : script.getSVGTextCharacters()) {
+								System.out.print(character.getValue()+"_"+character.getX()+" ");
+							}
+							System.out.println();
+							List<ScriptWord> words = script.getWords();
+							for (ScriptWord word : words) {
+								System.out.print(" ~  "+word.getRawValue());
+							}
+							System.out.println();
 						}
-						System.out.println();
-						List<ScriptWord> words = script.getWords();
-						for (ScriptWord word : words) {
-							System.out.print(" ~  "+word.getRawValue());
-						}
-						System.out.println();
 					}
+					LOG.trace("------"+container.getRawValue());
 				}
-				LOG.trace("------"+container.getRawValue());
 			}
 		}
 	}

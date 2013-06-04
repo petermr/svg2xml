@@ -748,7 +748,7 @@ public class TextAnalyzerTest {
 	 */
 	public void testgetDiscreteBoxes() {
 		TextStructurer textContainer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<Real2Range> discreteBoxes  = textContainer.getTextLineChunkBoxes();
+		List<Real2Range> discreteBoxes  = textContainer.getTextLineChunkBoxesAndInitialiScriptLineList();
 		Assert.assertNotNull(discreteBoxes);
 		// lines 7subscript and 8superscrip overlap 
 		Assert.assertEquals("boxes", 10, discreteBoxes.size());
@@ -761,7 +761,7 @@ public class TextAnalyzerTest {
 	public void testLinesInDiscreteBoxes() {
 		int[] count = {2, 1, 2, 1, 1, 3, 4, 1, 1, 1};
 		TextStructurer textContainer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<ScriptLine> textLineChunkList  = textContainer.getInitialTextLineGroupList();
+		List<ScriptLine> textLineChunkList  = textContainer.getInitialScriptLineList();
 		Assert.assertNotNull(textLineChunkList);
 		Assert.assertEquals("boxes", 10, textLineChunkList.size());
 		int i = 0;
@@ -783,7 +783,7 @@ public class TextAnalyzerTest {
 	public void testGetInitialTextLineChunkList() {
 		int[] count = {2, 1, 2, 1, 1, 3, 4, 1, 1, 1};
 		TextStructurer textContainer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<ScriptLine> textLineChunkList  = textContainer.getInitialTextLineGroupList();
+		List<ScriptLine> textLineChunkList  = textContainer.getInitialScriptLineList();
 		Assert.assertNotNull(textLineChunkList);
 		Assert.assertEquals("boxes", 10, textLineChunkList.size());
 	}
@@ -818,7 +818,7 @@ public class TextAnalyzerTest {
 	 */
 	public void testGetScriptedLineGroupList() {
 		TextStructurer textContainer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<ScriptLine> textLineChunkList  = textContainer.getInitialTextLineGroupList();
+		List<ScriptLine> textLineChunkList  = textContainer.getInitialScriptLineList();
 		Assert.assertEquals("TextLines ", 10, textLineChunkList.size());
 		List<ScriptLine> separated = textContainer.getScriptedLineList();
 		Assert.assertEquals("split", 11, separated.size());

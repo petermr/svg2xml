@@ -66,6 +66,8 @@ public class TextStructurer {
 	/** default ratio for "isLargerThan" */
 	public static final double LARGER_FONT_SIZE_RATIO = 1.02;
 
+	private static final double Y_EPS = 0.5; // line can wobble 
+
 	private TextAnalyzerX textAnalyzer;
 	
 	private List<TextLine> linesWithCommonestFont;
@@ -91,7 +93,7 @@ public class TextStructurer {
 
 	private List<Real2Range> textLineChunkBoxes;
 
-	private List<ScriptLine> initialTextLineGroupList;
+	private List<ScriptLine> initialScriptLineList;
 	private List<TextLine> commonestFontSizeTextLineList;
 
 	private List<ScriptLine> scriptedLineList;
@@ -549,9 +551,9 @@ public class TextStructurer {
 		return new TextLineSet(textLines);
 	}
 
-	public List<ScriptLine> getInitialTextLineGroupList() {
-		getTextLineChunkBoxes();
-		return initialTextLineGroupList;
+	public List<ScriptLine> getInitialScriptLineList() {
+		getTextLineChunkBoxesAndInitialiScriptLineList();
+		return initialScriptLineList;
 	}
 
 	/**
@@ -580,10 +582,10 @@ public class TextStructurer {
 	public List<ScriptLine> getScriptedLineList() {
 		if (scriptedLineList == null) {
 			getCommonestFontSizeTextLineList();
-			getInitialTextLineGroupList();
+			getInitialScriptLineList();
 			scriptedLineList = new ArrayList<ScriptLine>();
 			int i = 0;
-			for (ScriptLine textLineGroup : initialTextLineGroupList) {
+			for (ScriptLine textLineGroup : initialScriptLineList) {
 				List<ScriptLine> splitChunks = textLineGroup.splitIntoUniqueChunks(this);
 				for (ScriptLine textLineChunk0 : splitChunks) {
 					scriptedLineList.add(textLineChunk0);
@@ -595,40 +597,59 @@ public class TextStructurer {
 		return scriptedLineList;
 	}
 
-	public List<Real2Range> getTextLineChunkBoxes() {
+	public List<Real2Range> getTextLineChunkBoxesAndInitialiScriptLineList() {
 		if (textLineChunkBoxes == null) {
 			List<TextLine> textLineList = getLinesInIncreasingY();
+			textLineList = mergeLinesWithSameY(textLineList, Y_EPS);
 			textLineChunkBoxes = new ArrayList<Real2Range>();
 			Real2Range bbox = null;
-			ScriptLine textLineGroup = null;
+			ScriptLine scriptLine = null;
 			int i = 0;
-			initialTextLineGroupList = new ArrayList<ScriptLine>();
+			initialScriptLineList = new ArrayList<ScriptLine>();
 			for (TextLine textLine : textLineList) {
 				Real2Range bbox0 = textLine.getBoundingBox();
 				LOG.trace(">> "+textLine.getLineString());
 				if (bbox == null) {
 					bbox = bbox0;
-					textLineGroup = new ScriptLine(this);
-					addBoxAndLines(bbox, textLineGroup);
+					scriptLine = new ScriptLine(this);
+					addBoxAndScriptLines(bbox, scriptLine);
 				} else {
 					Real2Range intersectionBox = bbox.intersectionWith(bbox0);
 					if (intersectionBox == null) {
 						bbox = bbox0;
-						textLineGroup = new ScriptLine(this);
-						addBoxAndLines(bbox, textLineGroup);
+						scriptLine = new ScriptLine(this);
+						addBoxAndScriptLines(bbox, scriptLine);
 					} else {
 						bbox = bbox.plusEquals(bbox0);
 					}
 				}
-				textLineGroup.add(textLine);
+				scriptLine.add(textLine);
 			}
 		}
 		return textLineChunkBoxes;
 	}
 
-	private void addBoxAndLines(Real2Range bbox, ScriptLine textLineGroup) {
+	private List<TextLine> mergeLinesWithSameY(List<TextLine> textLineList, Double yEps) {
+		List<TextLine> newTextLineList = new ArrayList<TextLine>();
+		TextLine lastTextLine = null;
+		Double lastY = null;
+		for (TextLine textLine : textLineList) {
+			Double y = (textLine == null) ? null : textLine.getYCoord();
+			// lines with same Y?
+			if (lastTextLine != null && Real.isEqual(lastY, y, yEps)) {
+				lastTextLine.merge(textLine);
+			} else {
+				newTextLineList.add(textLine);
+				lastTextLine = textLine;
+				lastY = y;
+			}
+		}
+		return newTextLineList;
+	}
+
+	private void addBoxAndScriptLines(Real2Range bbox, ScriptLine scriptLine) {
 		textLineChunkBoxes.add(bbox);
-		initialTextLineGroupList.add(textLineGroup);
+		initialScriptLineList.add(scriptLine);
 	}
 
 	public static TextStructurer createTextStructurerWithSortedLines(File svgFile) {

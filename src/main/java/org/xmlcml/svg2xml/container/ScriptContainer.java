@@ -12,6 +12,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
@@ -43,11 +44,28 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	@Override
 	public HtmlElement createHtmlElement() {
 		HtmlDiv divElement = new HtmlDiv();
-		HtmlP p = new HtmlP();
-		p.appendChild("Script container NYI");
-		divElement.appendChild(p);
+		List<List<StyleSpan>> styleSpanListList = this.getStyleSpanListList();
+		for (int i = 0; i < styleSpanListList.size(); i++) {
+			List<StyleSpan> styleSpanList = styleSpanListList.get(i);
+			for (int j = 0; j < styleSpanList.size(); j++) {
+				StyleSpan styleSpan = styleSpanList.get(j);
+				HtmlElement htmlElement = styleSpan.getHtmlElement();
+				addJoiningSpace(htmlElement);
+				divElement.appendChild(htmlElement);
+			}
+		}
 		return divElement;
 	}
+	
+	private void addJoiningSpace(HtmlElement htmlElement) {
+		String value = htmlElement.getValue();
+		if (!(value.endsWith(".")) && !(value.endsWith("-"))) {
+			HtmlElement spaceElement = new HtmlSpan();
+			spaceElement.setValue(" ");
+			htmlElement.appendChild(spaceElement);
+		}
+	}
+
 
 	public List<ScriptLine> getScriptLineList() {
 		return scriptList;
