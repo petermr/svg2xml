@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
@@ -19,10 +20,13 @@ import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
 import org.xmlcml.svg2xml.text.StyleSpan;
 import org.xmlcml.svg2xml.text.TextFixtures;
+import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class ScriptContainerTest {
 
+	public final static Logger LOG = Logger.getLogger(ScriptContainerTest.class);
+	
 	@Test
 	public void test3WordContainer() {
 		TextStructurer textContainer = 
@@ -354,14 +358,25 @@ public class ScriptContainerTest {
 		createHtml(file, outfile);
 	}
 
+	@Test
+	public void testAJC() throws Exception {
+		File file = TextFixtures.AJC_01182_2_5SA_SVG;
+		String outfile = "target/ajc_01182_2_5Sa.html";
+		createHtml(file, outfile);
+	}
+
 
 	private void createHtml(File file, String outfile) throws IOException,
 			FileNotFoundException {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
-		TextStructurer textContainer = 
+		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(file);
+		List<TextLine> textLineList = textStructurer.getTextLineList();
+		for (TextLine textLine : textLineList) {
+			LOG.debug("L> "+String.valueOf(textLine));
+		}
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
+		ScriptContainer sc = ScriptContainer.createScriptContainer(textStructurer, pageAnalyzer);
 		HtmlElement divElement = sc.createHtmlElement();
 		CMLUtil.debug(divElement, new FileOutputStream(outfile), 0);
 	}

@@ -101,7 +101,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
     private List<SVGText> textCharacters;
 	
 	/** refactored container */
-	private TextStructurer textContainer;
+	private TextStructurer textStructurer;
 	private HtmlElement createdHtmlElement;
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
@@ -140,7 +140,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 			throw new RuntimeException("null characters: ");
 		} else {
 			this.textCharacters = textCharacters;
-			ensureTextContainerWithSortedLines().getSortedTextLines(textCharacters);
+			ensureTextContainerWithSortedLines().sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		}
 	}
 
@@ -729,7 +729,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	public HtmlElement createHtmlRawDiv() {
 		ensureTextContainerWithSortedLines();
 //		List<TextLine> textLineList = textContainer.getLinesWithLargestFont();
-		List<TextLine> textLineList = textContainer.getLinesWithCommonestFont();
+		List<TextLine> textLineList = textStructurer.getLinesWithCommonestFont();
 		HtmlDiv div = new HtmlDiv();
 		for (TextLine textLine : textLineList) {
 			HtmlElement p = textLine.createHtmlLine();
@@ -753,18 +753,18 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 
 	public HtmlElement createHtmlDivWithParas() {
 		ensureTextContainerWithSortedLines();
-		HtmlElement div = textContainer.createHtmlDivWithParas();
+		HtmlElement div = textStructurer.createHtmlDivWithParas();
 		return div;
 	}
 
 	
 	private TextStructurer ensureTextContainerWithSortedLines() {
-		if (this.textContainer == null) {
-			this.textContainer = TextStructurer.createTextStructurerWithSortedLines(textCharacters, this);
+		if (this.textStructurer == null) {
+			this.textStructurer = TextStructurer.createTextStructurerWithSortedLines(textCharacters, this);
 		} else {
-			this.textContainer.getSortedTextLines(textCharacters);
+			this.textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		}
-		return this.textContainer;
+		return this.textStructurer;
 	}
 	
 	@Override
@@ -780,7 +780,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	
 	private void debug(String string, Map<Integer, TextLine> textByCoordMap) {
 		if (textByCoordMap == null) {
-			LOG.debug("No textCoordMap "+textContainer.getTextLineByYCoordMap());
+			LOG.debug("No textCoordMap "+textStructurer.getTextLineByYCoordMap());
 		} else {
 			Set<Integer> keys = textByCoordMap.keySet();
 			Integer[] ii = keys.toArray(new Integer[keys.size()]);
@@ -791,7 +791,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 					LOG.trace(">> "+text.getXY()+" "+text.getText()+ " ");
 				}
 			}
-			System.out.println();
+//			System.out.println();
 		}
 	}
 
@@ -865,8 +865,8 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		return ensureTextContainerWithSortedLines().getActualWidthsOfSpaceCharactersList();
 	}
 
-	public void setTextStructurer(TextStructurer textContainer) {
-		this.textContainer = textContainer;
+	public void setTextStructurer(TextStructurer textStructurer) {
+		this.textStructurer = textStructurer;
 	}
 
 	protected HtmlElement createHtml() {

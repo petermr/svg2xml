@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
@@ -37,11 +36,10 @@ public class FigureContainer extends AbstractContainer  {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlDiv divElement = new HtmlDiv();
-		HtmlP p = new HtmlP();
-		p.appendChild("FIGURE NYI");
-		divElement.appendChild(p);
-		return divElement;
+		HtmlElement elem =  super.createHtmlElement();
+		HtmlP p = new HtmlP("FIGURE");
+		elem.appendChild(p);
+		return elem;
 	}
 
 	public SVGG createSVGGChunk() {

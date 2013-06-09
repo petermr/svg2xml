@@ -60,4 +60,9 @@ public class SvgPlusCoordinate {
 	private static double calculateEpsilon(int decimalPlaces) {
 		return 1/(Math.pow(10.0, (double) decimalPlaces));
 	} 
+	
+	@Override
+	public String toString() {
+		return String.valueOf(doubleCoordinate);
+	}
 }

@@ -109,7 +109,7 @@ public class TextStructurer {
 		if (textAnalyzer != null) {
 			textAnalyzer.setTextStructurer(this);
 			List<SVGText> characters = textAnalyzer.getTextCharacters();
-			this.createSortedLines(characters, textAnalyzer);
+			this.createLinesSortedInXThenY(characters, textAnalyzer);
 		}
 	}
 
@@ -493,7 +493,7 @@ public class TextStructurer {
 		return mainTextLineSeparation;
 	}
 
-	public void getSortedTextLines(List<SVGText> textCharacters) {
+	public void sortLineByXandMakeTextLineByYCoordMap(List<SVGText> textCharacters) {
 		if (textLineByYCoordMap == null) {
 			textLineByYCoordMap = new HashMap<Integer, TextLine>();
 			Multimap<Integer, SVGText> charactersByY = TextAnalyzerUtils.createCharactersByY(textCharacters);
@@ -569,7 +569,7 @@ public class TextStructurer {
 					null : commonestFontSize.getDouble();
 			commonestFontSizeTextLineList = new ArrayList<TextLine>();
 			for (TextLine textLine : textLineList) {
-				Double fontSize = textLine.getFontSize();
+				Double fontSize = textLine.getCommonestFontSize();
 				if (fontSize != null && Real.isEqual(fontSize, commonestFontSizeValue, 0.01)) {
 					commonestFontSizeTextLineList.add(textLine);
 					LOG.trace("COMMONEST FONT SIZE "+textLine);
@@ -581,8 +581,11 @@ public class TextStructurer {
 
 	public List<ScriptLine> getScriptedLineList() {
 		if (scriptedLineList == null) {
-			getCommonestFontSizeTextLineList();
-			getInitialScriptLineList();
+			commonestFontSizeTextLineList = getCommonestFontSizeTextLineList();
+			for (TextLine textLine : commonestFontSizeTextLineList) {
+				LOG.debug("COMMONTL "+textLine);
+			}
+			initialScriptLineList = getInitialScriptLineList();
 			scriptedLineList = new ArrayList<ScriptLine>();
 			int i = 0;
 			for (ScriptLine textLineGroup : initialScriptLineList) {
@@ -660,15 +663,20 @@ public class TextStructurer {
 
 	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, TextAnalyzerX textAnalyzer) {
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
-		textStructurer.createSortedLines(textCharacters, textAnalyzer);
+		textStructurer.createLinesSortedInXThenY(textCharacters, textAnalyzer);
 		return textStructurer;
 	}
 
-	private void createSortedLines(List<SVGText> textCharacters,
+	private void createLinesSortedInXThenY(List<SVGText> textCharacters,
 			TextAnalyzerX textAnalyzer) {
-		this.getSortedTextLines(textCharacters);
-		this.getLinesInIncreasingY();
-		textAnalyzer.setTextCharacters(textCharacters);
+		this.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
+		textLineList = this.getLinesInIncreasingY();
+		for (TextLine textLine : textLineList) {
+			LOG.trace("TL "+textLine);
+		}
+		if (false) {
+			textAnalyzer.setTextCharacters(textCharacters);
+		}
 		textAnalyzer.setTextStructurer(this);
 	}
 	
@@ -676,8 +684,12 @@ public class TextStructurer {
 		TextAnalyzerX textAnalyzer = new TextAnalyzerX();
 		textAnalyzer.setTextCharacters(textCharacters);
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
-		textStructurer.getSortedTextLines(textCharacters);
-		textStructurer.getLinesInIncreasingY();
+		// the next two lines may be unnecessary
+		textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
+		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY(); 
+		for (TextLine textLine : textLineList) {
+			LOG.debug("TLY "+textLine);
+		}
 		textAnalyzer.setTextStructurer(textStructurer);
 		return textStructurer;
 	}

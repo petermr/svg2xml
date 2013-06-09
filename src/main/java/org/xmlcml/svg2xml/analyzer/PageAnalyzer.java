@@ -6,6 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import nu.xom.Element;
+import nu.xom.Node;
+import nu.xom.Nodes;
+import nu.xom.ParentNode;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2;
@@ -16,6 +21,13 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlBody;
+import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlHtml;
+import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlStyle;
+import org.xmlcml.html.HtmlTitle;
 import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
@@ -271,6 +283,30 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		}
 		return sb.toString();
 	}
+	
+	protected HtmlElement createHtml() {
+		HtmlHtml html = new HtmlHtml();
+		addStyle(html);
+		HtmlTitle title = new HtmlTitle("Page: "+pageNumber);
+		html.appendChild(title);
+		HtmlBody body = new HtmlBody();
+		html.appendChild(body);
+		HtmlDiv div = new HtmlDiv();
+		body.appendChild(div);
+		HtmlP htmlP = new HtmlP();
+		htmlP.appendChild("Containers: "+getPageAnalyzerContainerList().size());
+		div.appendChild(htmlP);
+		for (AbstractContainer container : getPageAnalyzerContainerList()) {
+			div.appendChild(container.createHtmlElement());
+		}
+		return html;
+	}
+
+	private void addStyle(HtmlHtml html) {
+		HtmlStyle style = new HtmlStyle();
+		style.addCss("div {border : solid 1pt; margin: 2pt; padding : 2pt}");
+		html.insertChild(style, 0);
+	}
 
 	@Override
 	public String toString() {
@@ -289,5 +325,73 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	public void setPageAnalyzerContainerList(
 			List<AbstractContainer> pageAnalyzerContainerList) {
 		this.pageAnalyzerContainerList = pageAnalyzerContainerList;
+	}
+
+	/** removes empty/unnecessary spans etc.
+	 *  
+	 * @param div
+	 */
+	public static void cleanHtml(HtmlElement div) {
+		removeWhitespaceSpan(div);
+		removeSpanSubSupBI(div);
+		replaceSpansByTextChildren(div);
+	}
+
+	private static void replaceSpansByTextChildren(HtmlElement div) {
+//		String xpath = "//*[local-name()='span' and count(text()) = 1  and count(*) = 0]";
+//		replaceNodesWithChildren(div, xpath);
+		String xpath = "//*[local-name()='span' and count(text()) = 1  and count(*) = 0]/text()";
+		replaceParentsWithNodes(div, xpath);
+	}
+
+	private static void replaceNodesWithChildren(HtmlElement div, String xpath) {
+		Nodes nodes = div.query(xpath);
+		for (int i = 0; i < nodes.size(); i++) {
+			Node spanNode = nodes.get(i);
+			ParentNode parent = spanNode.getParent();
+			int index = parent.indexOf(spanNode);
+			int nchild = spanNode.getChildCount();
+			for (int j = nchild-1; j >=0; j--) {
+				Node child = spanNode.getChild(j);
+				child.detach();
+				parent.insertChild(child, index);
+			}
+			parent.detach();
+		}
+	}
+
+	private static void removeWhitespaceSpan(HtmlElement div) {
+		removeNodes(div, "//*[local-name()='span' and normalize-space(.)='']");
+	}
+
+	private static void removeNodes(HtmlElement div, String xpath) {
+		Nodes nodes = div.query(xpath);
+		for (int i = 0; i < nodes.size(); i++) {
+			nodes.get(i).detach();
+		}
+	}
+
+	private static void removeSpanSubSupBI(HtmlElement div) {
+		replaceParentsWithNodes(div, "//*[local-name()='span']/*[local-name()='sub' or local-name()='sup' or local-name()='b' or local-name()='i']");
+	}
+
+	/** not tested
+	 * 
+	 * @param div
+	 * @param xpath
+	 */
+	private static void replaceParentsWithNodes(HtmlElement div, String xpath) {
+		Nodes nodes = div.query(xpath);
+		for (int i = 0; i < nodes.size(); i++) {
+			Node node = nodes.get(i);
+			replaceParentWith(node);
+		}
+	}
+
+	private static void replaceParentWith(Node node) {
+		Element parent = (Element) node.getParent();
+		Element grandParent = (Element) parent.getParent();
+		node.detach();
+		grandParent.replaceChild(parent, node);
 	}
 }

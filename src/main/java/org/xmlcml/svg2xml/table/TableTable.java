@@ -119,7 +119,7 @@ public class TableTable extends GenericChunk {
 			footerChunk = maxColumnChunkList.get(1);
 		}
 		if (otherChunkList.size() > 0) {
-			System.out.println("OTHER");
+			LOG.trace("OTHER");
 			for (GenericChunk chunk : otherChunkList) { 
 				LOG.trace(">> "+chunk);
 			}

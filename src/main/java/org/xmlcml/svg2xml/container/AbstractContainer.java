@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
@@ -29,7 +30,14 @@ public abstract class AbstractContainer {
 		ensureContainerList();
 	}
 
-	public abstract HtmlElement createHtmlElement();
+	public HtmlElement createHtmlElement() {
+		HtmlElement div = new HtmlDiv();
+		for (AbstractContainer container : containerList) {
+			HtmlElement htmlElement = container.createHtmlElement();
+			div.appendChild(htmlElement);
+		}
+		return div;
+	}
 	public abstract SVGG createSVGGChunk();
 	
 	private void ensureContainerList() {

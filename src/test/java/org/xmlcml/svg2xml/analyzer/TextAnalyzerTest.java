@@ -659,7 +659,6 @@ public class TextAnalyzerTest {
 			LOG.trace(""+textLine.getSuscript()+" ");
 			printLine(textLine.getSVGTextCharacters());
 		}
-		System.out.println();
 	}
 
 	@Test
@@ -672,7 +671,6 @@ public class TextAnalyzerTest {
 		TextLine largeLine = largestLineList.get(4);
 		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
 		printLine(largeLineSVG);
-		System.out.println();
 	}
 
 	@Test

@@ -11,12 +11,12 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.StyleSpan;
+import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 import com.google.common.collect.HashMultiset;
@@ -35,9 +35,17 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		super(pageAnalyzer);
 	}
 	
-	public static ScriptContainer createScriptContainer(TextStructurer textContainer, PageAnalyzer pageAnalyzer) {
+	public static ScriptContainer createScriptContainer(TextStructurer textStructurer, PageAnalyzer pageAnalyzer) {
+		List<TextLine> textLineList = textStructurer.getTextLineList();
+		for (TextLine textLine : textLineList) {
+			LOG.debug("TLSC "+textLine);
+		}
 		ScriptContainer scriptContainer = new ScriptContainer(pageAnalyzer);
-		scriptContainer.add(textContainer.getScriptedLineList());
+		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineList();
+		for (ScriptLine scriptLine : scriptedLineList) {
+			LOG.debug("SCL "+scriptLine);
+		}
+		scriptContainer.add(scriptedLineList);
 		return scriptContainer;
 	}
 	
@@ -162,7 +170,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	}
 
 	/** gets commonest font
-	 *  
+	 *
 	 * @return
 	 */
 	public String getCommonestFontFamily() {
@@ -249,6 +257,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public List<List<StyleSpan>> getStyleSpanListList() {
 		List<List<StyleSpan>> styleSpanListList = new ArrayList<List<StyleSpan>>();
 		for (ScriptLine script : scriptList) {
+			if (script == null) continue;
 			List<StyleSpan> styleSpanList = script.getStyleSpanList();
 			styleSpanListList.add(styleSpanList);
 		}

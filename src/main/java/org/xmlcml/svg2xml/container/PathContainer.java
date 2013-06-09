@@ -55,11 +55,10 @@ public class PathContainer extends AbstractContainer  {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlDiv divElement = new HtmlDiv();
-		HtmlP p = new HtmlP();
-		p.appendChild("Path NYI probaly to SVG");
-		divElement.appendChild(p);
-		return divElement;
+		HtmlElement elem = super.createHtmlElement();
+		HtmlP p = new HtmlP("PATH");
+		elem.appendChild(p);
+		return elem;
 	}
 
 	public List<SVGPath> getPathList() {

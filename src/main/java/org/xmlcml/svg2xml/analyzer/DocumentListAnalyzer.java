@@ -1,11 +1,11 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -19,7 +19,8 @@ import com.google.common.collect.Multimap;
 public class DocumentListAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(DocumentListAnalyzer.class);
-	
+
+	private final static PrintStream SYSOUT = System.out;
 	private static final String PDF = ".pdf";
 	private File inputDir;
 	private File svgTopDir = getDefaultSVGDir();
@@ -155,10 +156,10 @@ mvn exec:java -Dexec.mainClass="org.xmlcml.svg2xml.analyzer.DocumentListAnalyzer
 	 */
 	public static void main(String[] args) {
 		if (args.length == 0) {
-			System.out.println("DocumentListAnalyzerTest <directory>");
-			System.out.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.DocumentListAnalyzer\" " +
+			SYSOUT.println("DocumentListAnalyzerTest <directory>");
+			SYSOUT.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.DocumentListAnalyzer\" " +
 					" -Dexec.args=\"src/test/resources/pdfs/bmc\"");
-			System.out.println("OR java org.xmlcml.svg2xml.analyzer.DocumentListAnalyzer src/test/resources/pdfs/bmc");
+			SYSOUT.println("OR java org.xmlcml.svg2xml.analyzer.DocumentListAnalyzer src/test/resources/pdfs/bmc");
 			System.exit(0);
 		} else {
 			DocumentListAnalyzer analyzer = new DocumentListAnalyzer();

@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.table;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import org.xmlcml.svg2xml.text.TextStructurer;
 public class GenericChunk {
 
 	private final static Logger LOG = Logger.getLogger(GenericChunk.class);
+	private final static PrintStream SYSOUT = System.out;
 
 	protected List<SVGElement> elementList;
 	protected RealRangeArray horizontalMask;
@@ -99,7 +101,7 @@ public class GenericChunk {
 	}
 
 	public void debug() {
-		System.out.println("AbTabChunk >>> "+toString());
+		SYSOUT.println("AbTabChunk >>> "+toString());
 	}
 
 	public String toString() {

@@ -174,7 +174,7 @@ public abstract class AbstractAnalyzer implements Annotatable {
 
 	protected HtmlElement createHtml() {
 		HtmlElement htmlElement = new HtmlDiv();
-		htmlElement.appendChild("no content yet");
+		htmlElement.appendChild("no content - subclass me?");
 		return htmlElement;
 	}
 

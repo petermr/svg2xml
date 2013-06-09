@@ -80,11 +80,12 @@ public class DivContainer extends AbstractContainer {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlDiv divElement = new HtmlDiv();
-		HtmlP p = new HtmlP();
-		p.appendChild("DIV NYI");
-		divElement.appendChild(p);
-		return divElement;
+		return super.createHtmlElement();
+//		HtmlDiv divElement = new HtmlDiv();
+//		HtmlP p = new HtmlP();
+//		p.appendChild("DIV NYI");
+//		divElement.appendChild(p);
+//		return divElement;
 	}
 	
 	@Override

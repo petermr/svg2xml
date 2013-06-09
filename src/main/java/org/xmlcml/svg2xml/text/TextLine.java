@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,10 +32,10 @@ import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
-import org.xmlcml.svg2xml.text.FontStyle.Style;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Multiset.Entry;
 
 /** holds a list of characters, normally in a horizontal line
  * 
@@ -47,6 +48,7 @@ public class TextLine implements Iterable<SVGText> {
 
 	private static final String SERIF = "Serif";
 	private final static Logger LOG = Logger.getLogger(TextLine.class);
+	private final static PrintStream SYSOUT = System.out;
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
@@ -96,6 +98,8 @@ public class TextLine implements Iterable<SVGText> {
 	private Suscript suscript;
 	private Set<String> fontFamilySet;
 	private Multiset<String> fontFamilyMultiset;
+	
+	private Multiset<Double> fontSizeMultiset;
 
 	private void resetWhenLineContentChanged() {
 		characterList = null;
@@ -225,7 +229,10 @@ public class TextLine implements Iterable<SVGText> {
 	 */
 	public Double getFontSize() {
 		Double fs = null;
-		getFontSizeContainerSet();
+		fontSizeContainerSet = getFontSizeContainerSet();
+		for (SvgPlusCoordinate fontSize : fontSizeContainerSet) {
+			LOG.debug("FS "+fontSize);
+		}
 		if (fontSizeContainerSet != null) {
 			if (fontSizeContainerSet.size() == 1) {
 				fs = fontSizeContainerSet.iterator().next().getDouble();
@@ -278,12 +285,16 @@ public class TextLine implements Iterable<SVGText> {
 	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
 		if (fontSizeContainerSet == null) {
 			fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
+			SYSOUT.println("FSSET ");
 			for (int i = 0; i < characterList.size(); i++) {
 				SVGText text = characterList.get(i);
 				SvgPlusCoordinate fontSize = new SvgPlusCoordinate(text.getFontSize());
+				SYSOUT.print(text.getText()+" ("+fontSize+") ");
 				fontSizeContainerSet.add(fontSize);
 			}
+			SYSOUT.println();
 		}
+		LOG.debug("FSSET "+fontSizeContainerSet);
 		return fontSizeContainerSet;
 	}
 	
@@ -1203,4 +1214,37 @@ public class TextLine implements Iterable<SVGText> {
 		}
 	}
 
+	public Double getCommonestFontSize() {
+		getFontSizeMultiset();
+		Set<Entry<Double>> entrySet = fontSizeMultiset.entrySet();
+		Double commonestSize = null;
+		Integer commonestCount = null;
+		for (Entry<Double> entry : entrySet) {
+			Double size = entry.getElement();
+			Integer count = entry.getCount();
+			if (commonestSize == null) {
+				commonestSize = size;
+				commonestCount = count;
+			} else {
+				if (count > commonestCount) {
+					commonestSize = size;
+					commonestCount = count;
+				}
+			}
+		}
+		return commonestSize;
+	}
+	
+	public Multiset<Double> getFontSizeMultiset() {
+		if (fontSizeMultiset == null) {
+			fontSizeMultiset = HashMultiset.create();
+			for (int i = 0; i < characterList.size(); i++) {
+				SVGText text = characterList.get(i);
+				Double size = text.getFontSize();
+				fontSizeMultiset.add(size);
+			}
+		}
+		return fontSizeMultiset;
+	}
+		
 }

@@ -3,11 +3,12 @@ package org.xmlcml.svg2xml.analyzer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
-import java.io.InputStream;
-import java.net.URL;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,8 +18,10 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.action.PageEditorX;
@@ -38,6 +41,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 	
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
 	
+	private final static PrintStream SYSOUT = System.out;
 	private static final String HTTP = "http";
 	public static final String Z_CHUNK = "z_";
 	private static final String DOT_PDF = ".pdf";
@@ -193,6 +197,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 	}
 
 	public  void mainAnalysis() {
+		boolean summarize = true;
 		ensurePDFIndex();
 		createSVGFilesfromPDF();
 		File[] svgPageFiles = svgDocumentDir.listFiles();
@@ -201,12 +206,12 @@ public class PDFAnalyzer /*implements Annotatable */{
 			throw new RuntimeException("No files in "+svgDocumentDir);
 		}
 		analyzePagesAndCreateChunkAndScriptLists(svgPageFiles);
-		if (1 == 1) summaryContainers();
+		if (summarize) summaryContainers();
 		createIndexesAndRemoveDuplicates();
 		mergeTextContainers();
 		
 		createHtml();
-		System.out.println();
+		SYSOUT.println();
 		writeSvgPages();
 //		analyzeAndCreateHTML();  // not yet written
 	}
@@ -214,9 +219,9 @@ public class PDFAnalyzer /*implements Annotatable */{
 	private void summaryContainers() {
 		int page = 1;
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			System.out.println("***************************************************"+page+">>>>>> \n");
-			System.out.println(pageAnalyzer.summaryString());
-			System.out.println("***************************************************"+page+"<<<<<< \n");
+			SYSOUT.println("***************************************************"+page+">>>>>> \n");
+			SYSOUT.println(pageAnalyzer.summaryString());
+			SYSOUT.println("***************************************************"+page+"<<<<<< \n");
 			page++;
 		}
 	}
@@ -246,7 +251,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 	private void analyzePagesAndCreateChunkAndScriptLists(File[] svgPageFiles) {
 		ensurePageAnalyzerList();
 		for (int pageCounter = 0; pageCounter < svgPageFiles.length; pageCounter++) {
-			System.out.print(pageCounter+"~");
+			SYSOUT.print(pageCounter+"~");
 			PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
 			SVGSVG svgPage = pageAnalyzer.splitChunksAnnotateAndCreatePage();
 			SVG2XMLUtil.writeToSVGFile(this.outputDocumentDir, "page"+pageCounter, svgPage, true);
@@ -312,6 +317,22 @@ public class PDFAnalyzer /*implements Annotatable */{
 	}
 
 	private void createHtml() {
+		int page = 1;
+		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
+			SYSOUT.println("***************************************************"+page+">>>>>> \n");
+			HtmlElement div = pageAnalyzer.createHtml();
+			SYSOUT.println("***************************************************"+page+"<<<<<< \n");
+			PageAnalyzer.cleanHtml(div);
+			try {
+				CMLUtil.debug(div, new FileOutputStream("target/page"+page+".html"), 0);
+			} catch (Exception e) {
+				throw new RuntimeException("cannot write html", e);
+			}
+			page++;
+		}
+	}
+
+	private void createHtmlOld() {
 //		ensureHtmlEditor();
 		LOG.error("HTMLEditor NYI");
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
@@ -387,16 +408,16 @@ public class PDFAnalyzer /*implements Annotatable */{
 		 */
 		public static void main(String[] args) {
 			if (args.length == 0) {
-				System.out.println("PDFAnalyzer <inputFile(s)>");
-				System.out.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
+				SYSOUT.println("PDFAnalyzer <inputFile(s)>");
+				SYSOUT.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
 						" -Dexec.args=\"src/test/resources/pdfs/bmc/1471-2180-11-174.pdf\"");
-				System.out.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
-				System.out.println("");
-				System.out.println("input can be:");
-				System.out.println("    (a) single PDF file as above (must end with \".pdf\")");
-				System.out.println("    (b) directory containing one or more *.pdf");
-				System.out.println("    (c) list of *.pdf files (relative to '.' or absolute)");
-				System.out.println("    (d) URL (must start with http:// or https://) - NYI");
+				SYSOUT.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
+				SYSOUT.println("");
+				SYSOUT.println("input can be:");
+				SYSOUT.println("    (a) single PDF file as above (must end with \".pdf\")");
+				SYSOUT.println("    (b) directory containing one or more *.pdf");
+				SYSOUT.println("    (c) list of *.pdf files (relative to '.' or absolute)");
+				SYSOUT.println("    (d) URL (must start with http:// or https://) - NYI");
 				System.exit(0);
 			} else {
 				PDFAnalyzer analyzer = new PDFAnalyzer();

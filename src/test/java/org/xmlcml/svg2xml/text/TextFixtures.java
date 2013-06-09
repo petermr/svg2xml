@@ -6,6 +6,7 @@ import org.xmlcml.svg2xml.Fixtures;
 
 public class TextFixtures {
 
+	public final static File AJC_01182_2_5SA_SVG = new File(Fixtures.TEXT_DIR, "ajc01182.chunk2.5Sa.svg");
 	public final static File BMC_174_1_6_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page1.6.svg");
 	public final static File BMC_174_1_8_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page1.8.svg");
 	public final static File BMC_174_4_3_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page4.3.svg");

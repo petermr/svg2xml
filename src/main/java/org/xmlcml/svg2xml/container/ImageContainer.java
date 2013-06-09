@@ -6,8 +6,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
+import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
+import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.analyzer.ImageAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
@@ -49,11 +51,15 @@ public class ImageContainer extends AbstractContainer  {
 
 	@Override
 	public HtmlElement createHtmlElement() {
+		HtmlDiv div = new HtmlDiv();
 		HtmlImg imgElement = new HtmlImg();
 		imgElement.setAlt("Image NYI");
-		return imgElement;
+		div.appendChild(imgElement);
+		HtmlP p = new HtmlP("PATH");
+		div.appendChild(p);
+		return div;
 	}
-
+	
 	public List<SVGImage> getImageList() {
 		return imageList;
 	}

@@ -1,8 +1,8 @@
 package org.xmlcml.svg2xml.action;
 
 import java.io.File;
-
 import java.io.FilenameFilter;
+import java.io.PrintStream;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -29,6 +29,8 @@ public class SVGPlusConverterX {
 	private static final String PAGES = "-p";
 	private static final String PAGE_PREFIX = "-p.";
 	private static final String PDF = "pdf";
+	
+	private final static PrintStream SYSOUT = System.out;
 
 	private String inputFilename;
 	private String outputFilename;
@@ -79,25 +81,25 @@ public class SVGPlusConverterX {
 	}
 
 	private void usage() {
-		System.out.println("usage: org.xmlcml.svg2xml.PDF2XMLConverter [args]");
-		System.out.println("      -c                             // read and process commandfile (Mandatory)");
-		System.out.println("      -i <input.dir or input.pdf or rawDir>    // foo.pdf, or foo directory");
-		System.out.println("      -informat <input format>    // PDF or SVG (currently NYI)");
-		System.out.println("      -o <output.dir >               // overrides default output dir");
-		System.out.println("      -p <firstPage> <lastPage>      // lastPage can be 9999");
-		System.out.println("      -<x>.<name>  <value>    // x is s,d,p for sem/doc/page, name alphanum]");
-		System.out.println("         [e.g. -s.foo bar            // set $s.foo to value");
-		System.out.println("  ");
-		System.out.println("  the normal use is to have a number of PDFs in a directory .../foo (alpha.pdf, blob.pdf)");
-		System.out.println("  the first phase creates a directory for each (.../foo/alpha/, .../foo/blob/ ...");
-		System.out.println("  then raw svg is created by PDF2SVG. This is not normally written except for debug");
-		System.out.println("  created by writePage or writeDocument");
-		System.out.println("      -i foo.pdf processes a single file as above");
-		System.out.println("  ");
-		System.out.println("  typical usage is:");
-		System.out.println("      PDF2XMLConverter -c <commandfile> -i <pdfDir> ");
-		System.out.println("      or");
-		System.out.println("      PDF2XMLConverter -c <commandfile> -i <rawDir> // generally only for developers");
+		SYSOUT.println("usage: org.xmlcml.svg2xml.PDF2XMLConverter [args]");
+		SYSOUT.println("      -c                             // read and process commandfile (Mandatory)");
+		SYSOUT.println("      -i <input.dir or input.pdf or rawDir>    // foo.pdf, or foo directory");
+		SYSOUT.println("      -informat <input format>    // PDF or SVG (currently NYI)");
+		SYSOUT.println("      -o <output.dir >               // overrides default output dir");
+		SYSOUT.println("      -p <firstPage> <lastPage>      // lastPage can be 9999");
+		SYSOUT.println("      -<x>.<name>  <value>    // x is s,d,p for sem/doc/page, name alphanum]");
+		SYSOUT.println("         [e.g. -s.foo bar            // set $s.foo to value");
+		SYSOUT.println("  ");
+		SYSOUT.println("  the normal use is to have a number of PDFs in a directory .../foo (alpha.pdf, blob.pdf)");
+		SYSOUT.println("  the first phase creates a directory for each (.../foo/alpha/, .../foo/blob/ ...");
+		SYSOUT.println("  then raw svg is created by PDF2SVG. This is not normally written except for debug");
+		SYSOUT.println("  created by writePage or writeDocument");
+		SYSOUT.println("      -i foo.pdf processes a single file as above");
+		SYSOUT.println("  ");
+		SYSOUT.println("  typical usage is:");
+		SYSOUT.println("      PDF2XMLConverter -c <commandfile> -i <pdfDir> ");
+		SYSOUT.println("      or");
+		SYSOUT.println("      PDF2XMLConverter -c <commandfile> -i <rawDir> // generally only for developers");
 	}
 
 	public void run(String argString) {

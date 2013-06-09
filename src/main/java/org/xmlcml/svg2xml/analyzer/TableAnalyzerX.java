@@ -65,14 +65,6 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 		RealRangeArray yGaps = verticalBoxes.inverse();
 		yGaps.debug();
 		
-//		TableTable tableTable = new TableTable();
-//		for (RealRange yGap : yGaps) {
-//			GenericChunk tableChunk = new GenericChunk();
-//			tableTable.add(tableChunk);
-//			tableChunk.populateChunk(textList, pathBoxXRange, yGap);
-//			System.out.println("HHHHHHHHHHHHHHHHhh"+tableChunk.getHorizontalMask());
-//		}
-//		tableTable.analyze();
 	}
 	
 	public HtmlElement analyze1() {

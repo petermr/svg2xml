@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,6 +59,7 @@ public class PDFIndex {
 	private static final String FLATTENED = "flattened";
 	public static final String IMAGE = "image";
 	public static final String PATH = "path";
+	private final static PrintStream SYSOUT = System.out;
 
 	static final String CHUNK_TYPE = "chunkType";
 
@@ -581,11 +583,13 @@ public class PDFIndex {
 	}
 
 	private void analyzeScriptContainerIndexes() {
-		Double[] fontSizes = scriptContainerByBoldFontSize.keySet().toArray(new Double[0]);
+		Set<Double> fontSet = scriptContainerByBoldFontSize.keySet();
+		fontSet.remove((Double) null);
+		Double[] fontSizes = fontSet.toArray(new Double[0]);
 		if (fontSizes != null) {
 			Arrays.sort(fontSizes);
 			for (Double fontSize : fontSizes) {
-				System.out.println("************* "+fontSize);
+				LOG.debug("************* "+fontSize);
 				List<AbstractContainer> containers = getListByKey(fontSize);
 				for (AbstractContainer container : containers) {
 					if (container instanceof ScriptContainer) {
@@ -596,14 +600,14 @@ public class PDFIndex {
 							wordArray.format(pdfAnalyzer.getDecimalPlaces());
 							LOG.debug("wordArray >>>>>>>> "+wordArray);
 							for (SVGText character : script.getSVGTextCharacters()) {
-								System.out.print(character.getValue()+"_"+character.getX()+" ");
+								LOG.debug(character.getValue()+"_"+character.getX()+" ");
 							}
-							System.out.println();
+//							SYSOUT.println();
 							List<ScriptWord> words = script.getWords();
 							for (ScriptWord word : words) {
-								System.out.print(" ~  "+word.getRawValue());
+								LOG.debug(" ~  "+word.getRawValue());
 							}
-							System.out.println();
+//							System.out.println();
 						}
 					}
 					LOG.trace("------"+container.getRawValue());
