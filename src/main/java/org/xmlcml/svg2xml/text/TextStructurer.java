@@ -583,7 +583,7 @@ public class TextStructurer {
 		if (scriptedLineList == null) {
 			commonestFontSizeTextLineList = getCommonestFontSizeTextLineList();
 			for (TextLine textLine : commonestFontSizeTextLineList) {
-				LOG.debug("COMMONTL "+textLine);
+				LOG.trace("COMMONTL "+textLine);
 			}
 			initialScriptLineList = getInitialScriptLineList();
 			scriptedLineList = new ArrayList<ScriptLine>();
@@ -688,7 +688,7 @@ public class TextStructurer {
 		textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY(); 
 		for (TextLine textLine : textLineList) {
-			LOG.debug("TLY "+textLine);
+			LOG.trace("TLY "+textLine);
 		}
 		textAnalyzer.setTextStructurer(textStructurer);
 		return textStructurer;
@@ -1043,9 +1043,10 @@ public class TextStructurer {
 		textStructurer.textAnalyzer = this.textAnalyzer;
 		for (int iGroup = startLineGroup; iGroup <= lineGroupNumber; iGroup++) {
 			ScriptLine textLineGroup = scriptedLineList.get(iGroup);
-			
-			List<TextLine> textLineList = textLineGroup.getTextLineList();
-			textStructurer.add(textLineList);
+			if (textLineGroup != null) {
+				List<TextLine> textLineList = textLineGroup.getTextLineList();
+				textStructurer.add(textLineList);
+			}
 		}
 		return textStructurer;
 	}
@@ -1118,7 +1119,8 @@ public class TextStructurer {
 		if (scriptedLineList.size() > 0) {
 			int nFlip = 0;
 			for (int i = 0; i < scriptedLineList.size(); i++) {
-				boolean isBold = scriptedLineList.get(i).isBold();
+				ScriptLine scriptLine = scriptedLineList.get(i);
+				Boolean isBold = (scriptLine == null) ? null : scriptLine.isBold();
 				if (currentBold == null) { 
 					currentBold = isBold;
 					// insist on leading bold

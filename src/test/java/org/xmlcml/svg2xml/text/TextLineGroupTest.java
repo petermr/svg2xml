@@ -10,6 +10,7 @@ import org.xmlcml.euclid.IntArray;
 
 public class TextLineGroupTest {
 
+	private static final String TERM = ScriptLine.TERM;
 	private final static Logger LOG = Logger.getLogger(TextLineGroupTest.class);
 	
 	@Test
@@ -240,7 +241,7 @@ public class TextLineGroupTest {
 		List<ScriptLine> split1GroupList = split1.getScriptedLineList();
 		Assert.assertEquals("split1", 15, split1GroupList.size());
 		Assert.assertEquals("split1.0", 
-				"Somephenotypicvariationarisesfromrandomnessin\n----\n", 
+				"Somephenotypicvariationarisesfromrandomnessin  %%%%\n", 
 				split1GroupList.get(0).toString());
 	}
 
@@ -255,25 +256,22 @@ public class TextLineGroupTest {
 		Assert.assertEquals("split", 2, splitList.size());
 		List<ScriptLine> split0GroupList = splitList.get(0).getScriptedLineList();
 		Assert.assertEquals("split0.0", 
-				"Methods\n----\n", 
+				"Methods  %%%%\n", 
 				split0GroupList.get(0).toString());
 		Assert.assertEquals("split0.1", 
-				"Bacterialstrains\n----\n", 
+				"Bacterialstrains  %%%%\n", 
 				split0GroupList.get(1).toString());
 		TextStructurer split1 = splitList.get(1);
 		List<ScriptLine> split1GroupList = split1.getScriptedLineList();
 		Assert.assertEquals("split1", 3, split1GroupList.size());
 		Assert.assertEquals("split1.0", 
-				"Allbacteriaandphagestrainsusedinthisstudyarelisted\n" +
-				"----\n",
+				"Allbacteriaandphagestrainsusedinthisstudyarelisted  %%%%\n",
 				split1GroupList.get(0).toString());
 		Assert.assertEquals("split1.1", 
-				"inTable3.Thecopynumberofλgenomewaschecked\n" +
-				"----\n",
+				"inTable3.Thecopynumberofλgenomewaschecked  %%%%\n",
 				split1GroupList.get(1).toString());
 		Assert.assertEquals("split1.2", 
-				"byPCRfollowingthemethodofPowelletal.[64].\n" +
-				"----\n",
+				"byPCRfollowingthemethodofPowelletal.[64].  %%%%\n",
 				split1GroupList.get(2).toString());
 	}
 
@@ -304,11 +302,11 @@ public class TextLineGroupTest {
 		Assert.assertEquals("headers", 2, headers.size());
 		List<ScriptLine> header0 = headers.get(0).getScriptedLineList();
 		Assert.assertEquals("header0", 
-				"[Methods\n----\n]", 
+				"[Methods"+TERM+"]", 
 				header0.toString());
 		List<ScriptLine> header1 = headers.get(1).getScriptedLineList();
 		Assert.assertEquals("header1", 
-				"[Bacterialstrains\n----\n]", 
+				"[Bacterialstrains  %%%%\n]", 
 				header1.toString());
 	}
 

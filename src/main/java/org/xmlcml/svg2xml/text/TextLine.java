@@ -231,7 +231,7 @@ public class TextLine implements Iterable<SVGText> {
 		Double fs = null;
 		fontSizeContainerSet = getFontSizeContainerSet();
 		for (SvgPlusCoordinate fontSize : fontSizeContainerSet) {
-			LOG.debug("FS "+fontSize);
+			LOG.trace("FSZ "+fontSize);
 		}
 		if (fontSizeContainerSet != null) {
 			if (fontSizeContainerSet.size() == 1) {
@@ -285,16 +285,16 @@ public class TextLine implements Iterable<SVGText> {
 	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
 		if (fontSizeContainerSet == null) {
 			fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
-			SYSOUT.println("FSSET ");
+//			SYSOUT.println("FSSET ");
 			for (int i = 0; i < characterList.size(); i++) {
 				SVGText text = characterList.get(i);
 				SvgPlusCoordinate fontSize = new SvgPlusCoordinate(text.getFontSize());
-				SYSOUT.print(text.getText()+" ("+fontSize+") ");
+//				SYSOUT.print(text.getText()+" ("+fontSize+") ");
 				fontSizeContainerSet.add(fontSize);
 			}
-			SYSOUT.println();
+//			SYSOUT.println();
 		}
-		LOG.debug("FSSET "+fontSizeContainerSet);
+		LOG.trace("FSSET "+fontSizeContainerSet);
 		return fontSizeContainerSet;
 	}
 	

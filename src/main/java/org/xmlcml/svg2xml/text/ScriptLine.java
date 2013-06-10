@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGText;
@@ -34,6 +35,8 @@ public class ScriptLine implements Iterable<TextLine> {
 	public static final String SUSCRIPT = "suscript";
 
 	private static final Double SPACEFACTOR = 0.12;
+
+	public static final String TERM = "  %%%%\n";
 	
 	protected List<TextLine> textLineList = null;
 	private TextStructurer textContainer;
@@ -172,10 +175,12 @@ public class ScriptLine implements Iterable<TextLine> {
 		
 	public String toString() {
 		StringBuilder sb = new StringBuilder("");
+		int i = 0;
 		for (TextLine textLine : textLineList) {
-			sb.append(textLine.getSpacedLineString()+"\n");
+			if (i++ > 0) sb.append("\n");
+			sb.append(textLine.getSpacedLineString());
 		}
-		sb.append("----\n");
+		sb.append(TERM);
 		return sb.toString();
 	}
 	
@@ -567,6 +572,20 @@ public class ScriptLine implements Iterable<TextLine> {
 	private boolean areDoublesEqual(Double d0, Double d1, Double eps) {
 		return d0 != null && d1 != null && Real.isEqual(d0, d1, eps);
 			   
+	}
+
+	public Real2Range getBoundingBox() {
+		Real2Range boundingBox = null;
+		for (TextLine textLine : textLineList) {
+			Real2Range r2r = textLine.getBoundingBox();
+			boundingBox = (boundingBox == null) ? r2r : boundingBox.plus(r2r);
+		}
+		return boundingBox;
+	}
+
+	public Double getLeftMargin() {
+		Real2Range bbox = getBoundingBox();
+		return bbox == null ? null : bbox.getXRange().getMin();
 	}
 	
 }

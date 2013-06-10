@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
@@ -21,8 +22,14 @@ import org.xmlcml.svg2xml.text.TextStructurer;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+import com.google.common.collect.Multiset.Entry;
 
 public class ScriptContainer extends AbstractContainer implements Iterable<ScriptLine> {
+
+	public enum Side {
+		LEFT,
+		RIGHT,
+	};
 
 	public final static Logger LOG = Logger.getLogger(ScriptContainer.class);
 
@@ -30,6 +37,11 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	private Multiset<String> fontFamilySet;
 	private List<ScriptLine> scriptList;
+	Multiset<Double> leftIndentSet;
+
+	private Double leftIndent0;
+
+	private Double leftIndent1;
 	
 	public ScriptContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -38,12 +50,12 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public static ScriptContainer createScriptContainer(TextStructurer textStructurer, PageAnalyzer pageAnalyzer) {
 		List<TextLine> textLineList = textStructurer.getTextLineList();
 		for (TextLine textLine : textLineList) {
-			LOG.debug("TLSC "+textLine);
+			LOG.trace("TLSC "+textLine);
 		}
 		ScriptContainer scriptContainer = new ScriptContainer(pageAnalyzer);
 		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineList();
 		for (ScriptLine scriptLine : scriptedLineList) {
-			LOG.debug("SCL "+scriptLine);
+			LOG.trace("SCL "+scriptLine);
 		}
 		scriptContainer.add(scriptedLineList);
 		return scriptContainer;
@@ -262,6 +274,57 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 			styleSpanListList.add(styleSpanList);
 		}
 		return styleSpanListList;
+	}
+	
+	void createLeftIndent01() {
+		setLeftIndent0(null);
+		setLeftIndent1(null);
+		for (Double d : leftIndentSet.elementSet()) {
+			if (getLeftIndent0() == null) {
+				setLeftIndent0(d);
+			} else {
+				if (d < getLeftIndent0()) {
+					setLeftIndent1(getLeftIndent0());
+					setLeftIndent0(d);
+				} else {
+					setLeftIndent1(d);
+				}
+			}
+		}
+	}
+
+
+	Multiset<Double> createLeftIndentSet(int decimalPlaces) {
+		if (leftIndentSet == null) {
+			leftIndentSet = HashMultiset.create();
+			for (ScriptLine scriptLine : this) {
+				Real2Range boundingBox = scriptLine.getBoundingBox();
+				boundingBox.format(decimalPlaces);
+				Double leftIndent = boundingBox.getXRange().getMin();
+				leftIndentSet.add(leftIndent);
+			}
+		}
+		return leftIndentSet;
+	}
+
+	public Multiset<Double> getLeftIndentSet() {
+		return leftIndentSet;
+	}
+
+	public Double getLeftIndent0() {
+		return leftIndent0;
+	}
+
+	public void setLeftIndent0(Double leftIndent0) {
+		this.leftIndent0 = leftIndent0;
+	}
+
+	public Double getLeftIndent1() {
+		return leftIndent1;
+	}
+
+	public void setLeftIndent1(Double leftIndent1) {
+		this.leftIndent1 = leftIndent1;
 	}
 
 

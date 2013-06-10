@@ -6,6 +6,8 @@ import org.xmlcml.svg2xml.Fixtures;
 
 public class TextFixtures {
 
+	public final static File ACS_072516_6_4SB_SVG = new File(Fixtures.TEXT_DIR, "acs072516.chunk6.4Sb.svg");
+	public final static File ACS_072516_6_5SA_SVG = new File(Fixtures.TEXT_DIR, "acs072516.chunk6.5Sa.svg");
 	public final static File AJC_01182_2_5SA_SVG = new File(Fixtures.TEXT_DIR, "ajc01182.chunk2.5Sa.svg");
 	public final static File BMC_174_1_6_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page1.6.svg");
 	public final static File BMC_174_1_8_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page1.8.svg");
@@ -30,5 +32,8 @@ public class TextFixtures {
 	public final static File BMC_312_12_7SB_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk12.7Sb.svg");
 	public final static File MDPI_27_4_1SA_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa.svg");
 	public final static File MDPI_27_4_1SA0_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa0.svg");
+	public final static File MDPI_27_18_7SA_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk18.7Sa.svg");
+	public final static File PEERJ_50_12_6SB_SVG = new File(Fixtures.TEXT_DIR, "peerj50.chunk12.6Sb.svg");
+	public final static File RSC_B306241d_6_8SA_SVG = new File(Fixtures.TEXT_DIR, "rscb306241d.chunk6.8Sa.svg");
 	
 }
