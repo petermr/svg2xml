@@ -18,6 +18,7 @@ import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
 import org.xmlcml.svg2xml.text.StyleSpan;
+import org.xmlcml.svg2xml.text.StyleSpans;
 import org.xmlcml.svg2xml.text.TextFixtures;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -137,10 +138,10 @@ public class ScriptContainerTest {
 				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_0SA0_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<List<StyleSpan>> styleSpanListList = sc.getStyleSpanListList();
-		Assert.assertEquals("lists", 1, styleSpanListList.size());
-		Assert.assertEquals("lists0", 7, styleSpanListList.get(0).size());
-		Assert.assertEquals("lists0.0", "Hiwatashi ", styleSpanListList.get(0).get(0).toString());
+		List<StyleSpans> styleSpansList = sc.getStyleSpansList();
+		Assert.assertEquals("lists", 1, styleSpansList.size());
+		Assert.assertEquals("lists0", 7, styleSpansList.get(0).size());
+		Assert.assertEquals("lists0.0", "Hiwatashi ", styleSpansList.get(0).get(0).toString());
 	}
 
 	@Test
@@ -406,8 +407,29 @@ public class ScriptContainerTest {
 		String outfile = "target/rscb306241d.chunk6.8Sa.html";
 		createList(file, outfile);
 	}
-	
-	//rscb306241d.chunk6.8Sa.svg
+
+	@Test
+	// don't understand why this doesn't work. Perhaps on double boundary?
+	public void testNPGList() throws Exception {
+		File file = TextFixtures.NPG_00788_5_3SA_SVG;
+		String outfile = "target/npg00778.chunk5.3Sa.html";
+		createList(file, outfile);
+	}
+
+	@Test
+	// PROBLEM WITH SEPARATE ACCENTS on slightly different line
+	// also wobbly x coords for start of indent (up to 0.6 pixel)
+	@Ignore // superscripts not sorted out
+	public void testNPGList54() throws Exception {
+		File file = TextFixtures.NPG_00778_5_4SA_SVG;
+		String outfile = "target/npg00778.chunk5.4Sa.html";
+		createList(file, outfile);
+	}
+
+	/** =======================================================
+	npg00778.chunk5.3Sa
+	 * ========================================================
+	 */
 	
 	private void createList(File file, String outfile) {
 		ScriptContainer sc = createScriptContainer(file);
@@ -442,27 +464,33 @@ public class ScriptContainerTest {
 
 
 	private void testSpans(String[][] values, File file) {
+		List<StyleSpans> styleSpansList = ScriptContainerTest.getStyleSpansList(file);
+		Assert.assertEquals("lists", values.length, styleSpansList.size());
+		for (int i = 0; i < values.length; i++) {
+			StyleSpans styleSpans = styleSpansList.get(i);
+			if (values[i].length > 0) {
+				if (values[i].length != styleSpans.size()) {
+					for (int j = 0; j < styleSpans.size(); j++) {
+						System.out.println(styleSpans.get(j).toString());
+					}
+				}
+				Assert.assertEquals("line"+i, values[i].length, styleSpans.size());
+				for (int j = 0; j < values[i].length; j++) {
+					Assert.assertEquals("line"+i+","+j, values[i][j], styleSpans.get(j).toString());
+				}
+			}
+		}
+	}
+
+
+	public static List<StyleSpans> getStyleSpansList(File file) {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
 		TextStructurer textContainer = 
 				TextStructurer.createTextStructurerWithSortedLines(file);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<List<StyleSpan>> styleSpanListList = sc.getStyleSpanListList();
-		Assert.assertEquals("lists", values.length, styleSpanListList.size());
-		for (int i = 0; i < values.length; i++) {
-			List<StyleSpan> styleSpanList = styleSpanListList.get(i);
-			if (values[i].length > 0) {
-				if (values[i].length != styleSpanList.size()) {
-					for (int j = 0; j < styleSpanList.size(); j++) {
-						System.out.println(styleSpanList.get(j).toString());
-					}
-				}
-				Assert.assertEquals("line"+i, values[i].length, styleSpanList.size());
-				for (int j = 0; j < values[i].length; j++) {
-					Assert.assertEquals("line"+i+","+j, values[i][j], styleSpanList.get(j).toString());
-				}
-			}
-		}
+		List<StyleSpans> styleSpansList = sc.getStyleSpansList();
+		return styleSpansList;
 	}
 
 	

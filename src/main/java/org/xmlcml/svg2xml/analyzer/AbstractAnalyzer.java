@@ -40,10 +40,10 @@ public abstract class AbstractAnalyzer implements Annotatable {
 	protected Real2Range bbox;
 	protected SVGElement parentElement;
 	List<ChunkId> idList;
+	private ChunkId chunkId;
 	List<Integer> serialList;
 	protected PDFIndex pdfIndex;
 	private PageAnalyzer pageAnalyzer;
-
 	protected List<AbstractContainer> abstractContainerList;
 
 	
@@ -342,15 +342,22 @@ public abstract class AbstractAnalyzer implements Annotatable {
 
 	public SVGG annotateElements(List<? extends SVGElement> svgElements, double rectOpacity, double textOpacity,
 			double fontSize, String rectFill) {
-				SVGG g = new SVGG();
-				for (int i = 0; i < svgElements.size(); i++) {
-					SVGElement element = svgElements.get(i);
-					g.appendChild(element.copy());
-				}
-				String title = this.getTitle()+svgElements.size();
-				outputAnnotatedBox(g, rectOpacity, textOpacity, title, fontSize, rectFill);
-				g.setTitle(title);
-				return g;
-			}
+		SVGG g = new SVGG();
+		for (int i = 0; i < svgElements.size(); i++) {
+			SVGElement element = svgElements.get(i);
+			g.appendChild(element.copy());
+		}
+		String title = this.getTitle()+svgElements.size();
+		outputAnnotatedBox(g, rectOpacity, textOpacity, title, fontSize, rectFill);
+		g.setTitle(title);
+		return g;
+	}
 	
+	public ChunkId getChunkId() {
+		if (chunkId == null) {
+			String id = (svgg == null) ? null : svgg.getId();
+			chunkId = (id == null) ? null : new ChunkId(id);
+		}
+		return chunkId;
+	}
 }

@@ -33,6 +33,10 @@ public class TextFixtures {
 	public final static File MDPI_27_4_1SA_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa.svg");
 	public final static File MDPI_27_4_1SA0_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa0.svg");
 	public final static File MDPI_27_18_7SA_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk18.7Sa.svg");
+	
+	public final static File NPG_00788_5_3SA_SVG = new File(Fixtures.TEXT_DIR, "npg00778.chunk5.3Sa.svg");
+	public final static File NPG_00778_5_4SA_SVG = new File(Fixtures.TEXT_DIR, "npg00778.chunk5.4Sa.svg");
+
 	public final static File PEERJ_50_12_6SB_SVG = new File(Fixtures.TEXT_DIR, "peerj50.chunk12.6Sb.svg");
 	public final static File RSC_B306241d_6_8SA_SVG = new File(Fixtures.TEXT_DIR, "rscb306241d.chunk6.8Sa.svg");
 	

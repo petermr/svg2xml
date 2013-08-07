@@ -41,6 +41,10 @@ public class ScriptLine implements Iterable<TextLine> {
 	protected List<TextLine> textLineList = null;
 	private TextStructurer textContainer;
 	private int largestLine;
+
+	private StyleSpans styleSpans;
+
+	private String textContentWithSpaces;
 	
 	public ScriptLine(TextStructurer textContainer) {
 		textLineList = new ArrayList<TextLine>();
@@ -485,6 +489,7 @@ public class ScriptLine implements Iterable<TextLine> {
 		return sortedCharacters;
 	}
 
+	// FIXME move to StyleSpanContainer
 	/** creates spans whenever any of the following change
 	 * bold
 	 * italic
@@ -495,71 +500,73 @@ public class ScriptLine implements Iterable<TextLine> {
 	 * fill
 	 * @return
 	 */
-	public List<StyleSpan> getStyleSpanList() {
-		List<StyleSpan> styleSpanList = new ArrayList<StyleSpan>();
-//		List<SVGText> characters = getSVGTextCharacters();
-		List<SVGText> characters = getSortedCharacters();
-		StyleSpan currentSpan = null;
-		boolean inBold = false;
-		boolean inItalic = false;
-		String currentFontName = null;
-		Double currentFontSize = null;
-		String currentFill = null;
-		String currentStroke = null;
-		Double currentY = null;
-		Double lastX = null;
-		SVGText character = null;
-		String value = null;
-		for (int i = 0; i < characters.size(); i++) {
-			character = characters.get(i);
-			boolean bold = character.isBold();
-			boolean italic = character.isItalic();
-			String fontName = character.getSVGXFontName();
-			String fill = character.getFill();
-			String stroke = character.getStroke();
-			Double fontSize = character.getFontSize();
-			Double x = character.getX();
-			Double y = character.getY();
-			value = character.getText();
-			if (lastX != null) {
-				double deltaX = x - lastX;
-				if (deltaX > SPACEFACTOR *fontSize) {
-					SVGText space = new SVGText();
-					space.setText(" ");
-					space.setXY(new Real2(lastX, y));
-					currentSpan.addCharacter(space);
-				}
-			}
-			// have any attributes changed?
-			if (i == 0  || bold != inBold || italic != inItalic || 
-					!areStringsEqual(currentFontName, fontName) ||
-					!areStringsEqual(currentFill, fill) ||
-					!areStringsEqual(currentStroke, stroke) ||
-					!areDoublesEqual(currentFontSize, fontSize, FONT_SIZE_EPS) ||
-					!areDoublesEqual(currentY, y, SUSCRIPT_EPS)
-					) { 
-				currentSpan = new StyleSpan(bold, italic);
-				styleSpanList.add(currentSpan);
-				// sub/superscript
-				if (currentFontSize != null && fontSize != null && fontSize < currentFontSize) {
-					if (currentY - y > 1.0  ) {
-						SVGUtil.setSVGXAttribute(character, SUSCRIPT, SUP);
-					} else if (y - currentY > 1.0  ) {
-						SVGUtil.setSVGXAttribute(character, SUSCRIPT, SUB);
+	public StyleSpans getStyleSpans() {
+		if (styleSpans == null) {
+			styleSpans = new StyleSpans();
+	//		List<SVGText> characters = getSVGTextCharacters();
+			List<SVGText> characters = getSortedCharacters();
+			StyleSpan currentSpan = null;
+			boolean inBold = false;
+			boolean inItalic = false;
+			String currentFontName = null;
+			Double currentFontSize = null;
+			String currentFill = null;
+			String currentStroke = null;
+			Double currentY = null;
+			Double lastX = null;
+			SVGText character = null;
+			String value = null;
+			for (int i = 0; i < characters.size(); i++) {
+				character = characters.get(i);
+				boolean bold = character.isBold();
+				boolean italic = character.isItalic();
+				String fontName = character.getSVGXFontName();
+				String fill = character.getFill();
+				String stroke = character.getStroke();
+				Double fontSize = character.getFontSize();
+				Double x = character.getX();
+				Double y = character.getY();
+				value = character.getText();
+				if (lastX != null) {
+					double deltaX = x - lastX;
+					if (deltaX > SPACEFACTOR *fontSize) {
+						SVGText space = new SVGText();
+						space.setText(" ");
+						space.setXY(new Real2(lastX, y));
+						currentSpan.addCharacter(space);
 					}
 				}
-				inBold = bold;
-				inItalic = italic;
-				currentFontName = fontName;
-				currentFontSize = fontSize;
-				currentFill = fill;
-				currentStroke = stroke;
-				currentY = y;
+				// have any attributes changed?
+				if (i == 0  || bold != inBold || italic != inItalic || 
+						!areStringsEqual(currentFontName, fontName) ||
+						!areStringsEqual(currentFill, fill) ||
+						!areStringsEqual(currentStroke, stroke) ||
+						!areDoublesEqual(currentFontSize, fontSize, FONT_SIZE_EPS) ||
+						!areDoublesEqual(currentY, y, SUSCRIPT_EPS)
+						) { 
+					currentSpan = new StyleSpan(bold, italic);
+					styleSpans.add(currentSpan);
+					// sub/superscript
+					if (currentFontSize != null && fontSize != null && fontSize < currentFontSize) {
+						if (currentY - y > 1.0  ) {
+							SVGUtil.setSVGXAttribute(character, SUSCRIPT, SUP);
+						} else if (y - currentY > 1.0  ) {
+							SVGUtil.setSVGXAttribute(character, SUSCRIPT, SUB);
+						}
+					}
+					inBold = bold;
+					inItalic = italic;
+					currentFontName = fontName;
+					currentFontSize = fontSize;
+					currentFill = fill;
+					currentStroke = stroke;
+					currentY = y;
+				}
+				currentSpan.addCharacter(character);
+				lastX = character.getBoundingBox().getXRange().getMax();
 			}
-			currentSpan.addCharacter(character);
-			lastX = character.getBoundingBox().getXRange().getMax();
 		}
-		return styleSpanList;
+		return styleSpans;
 	}
 
 	private boolean areStringsEqual(String s0, String s1) {
@@ -587,5 +594,24 @@ public class ScriptLine implements Iterable<TextLine> {
 		Real2Range bbox = getBoundingBox();
 		return bbox == null ? null : bbox.getXRange().getMin();
 	}
+
+	public String getTextContentWithSpaces() {
+		if (textContentWithSpaces == null) {
+			ensureStyleSpans();
+			textContentWithSpaces = styleSpans.getTextContentWithSpaces();
+			StringBuilder sb = new StringBuilder();
+			
+			textContentWithSpaces = sb.toString();
+		}
+		return textContentWithSpaces;
+	}
+
+	private StyleSpans ensureStyleSpans() {
+		if (styleSpans == null) {
+			styleSpans = new StyleSpans();
+		}
+		return styleSpans;
+	}
+
 	
 }

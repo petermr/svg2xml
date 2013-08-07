@@ -929,6 +929,8 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		ensureAbstractContainerList();
 		for (TextStructurer textContainer : textContainerList) {
 			ScriptContainer scriptContainer = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
+//			scriptContainer.setChunkId(textContainer.getChunkId());
+			scriptContainer.setChunkId(this.getChunkId());
 			abstractContainerList.add(scriptContainer);
 		}
 		return abstractContainerList;

@@ -13,16 +13,17 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlSpan;
+import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.StyleSpan;
+import org.xmlcml.svg2xml.text.StyleSpans;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import com.google.common.collect.Multiset.Entry;
 
 public class ScriptContainer extends AbstractContainer implements Iterable<ScriptLine> {
 
@@ -36,12 +37,14 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private static final double FONT_EPS = 0.01;
 
 	private Multiset<String> fontFamilySet;
-	private List<ScriptLine> scriptList;
+	private List<ScriptLine> scriptLineList;
 	Multiset<Double> leftIndentSet;
 
 	private Double leftIndent0;
-
 	private Double leftIndent1;
+
+	private TextStructurer textStructurer;
+	private ChunkId chunkId;
 	
 	public ScriptContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -57,18 +60,23 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		for (ScriptLine scriptLine : scriptedLineList) {
 			LOG.trace("SCL "+scriptLine);
 		}
+		scriptContainer.setTextStructurer(textStructurer);
 		scriptContainer.add(scriptedLineList);
 		return scriptContainer;
 	}
 	
+	private void setTextStructurer(TextStructurer textStructurer) {
+		this.textStructurer = textStructurer;
+	}
+
 	@Override
 	public HtmlElement createHtmlElement() {
 		HtmlDiv divElement = new HtmlDiv();
-		List<List<StyleSpan>> styleSpanListList = this.getStyleSpanListList();
-		for (int i = 0; i < styleSpanListList.size(); i++) {
-			List<StyleSpan> styleSpanList = styleSpanListList.get(i);
-			for (int j = 0; j < styleSpanList.size(); j++) {
-				StyleSpan styleSpan = styleSpanList.get(j);
+		List<StyleSpans> styleSpansList = this.getStyleSpansList();
+		for (int i = 0; i < styleSpansList.size(); i++) {
+			StyleSpans styleSpans = styleSpansList.get(i);
+			for (int j = 0; j < styleSpans.size(); j++) {
+				StyleSpan styleSpan = styleSpans.get(j);
 				HtmlElement htmlElement = styleSpan.getHtmlElement();
 				addJoiningSpace(htmlElement);
 				divElement.appendChild(htmlElement);
@@ -88,23 +96,23 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 
 	public List<ScriptLine> getScriptLineList() {
-		return scriptList;
+		return scriptLineList;
 	}
 
 	public void add(ScriptLine scriptLine) {
 		ensureScriptList();
-		scriptList.add(scriptLine);
+		scriptLineList.add(scriptLine);
 	}
 
 	private void ensureScriptList() {
-		if (scriptList == null) {
-			this.scriptList = new ArrayList<ScriptLine>();
+		if (scriptLineList == null) {
+			this.scriptLineList = new ArrayList<ScriptLine>();
 		}
 	}
 
 	public SVGG createSVGGChunk() {
 		SVGG g = new SVGG();
-		for (ScriptLine scriptLine : scriptList) {
+		for (ScriptLine scriptLine : scriptLineList) {
 			if (scriptLine != null) {
 				List<SVGText> textList = scriptLine.getTextList();
 				for (SVGText text : textList) {
@@ -117,12 +125,12 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	public void add(List<ScriptLine> scriptList) {
 		ensureScriptList();
-		this.scriptList.addAll(scriptList);
+		this.scriptLineList.addAll(scriptList);
 	}
 
 	public Double getSingleFontSize() {
 		Double fontSize = null;
-		for (ScriptLine script : scriptList) {
+		for (ScriptLine script : scriptLineList) {
 			if (script == null) continue;
 			Double size = script.getFontSize();
 			if (fontSize == null) {
@@ -138,7 +146,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	public Double getLargestFontSize() {
 		Double fontSize = null;
-		for (ScriptLine script : scriptList) {
+		for (ScriptLine script : scriptLineList) {
 			Double size = script.getFontSize();
 			if (fontSize == null) {
 				fontSize = size;
@@ -153,7 +161,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	public String getSingleFontFamily() {
 		String fontFamily = null;
-		for (ScriptLine script : scriptList) {
+		for (ScriptLine script : scriptLineList) {
 			String family = script.getFontFamily();
 			if (fontFamily == null) {
 				fontFamily = family;
@@ -173,7 +181,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public Multiset<String> getFontFamilyMultiset() {
 		if (fontFamilySet == null) {
 			fontFamilySet = HashMultiset.create();
-			for (ScriptLine script : scriptList) {
+			for (ScriptLine script : scriptLineList) {
 				String family = script.getFontFamily();
 				fontFamilySet.add(family);
 			}
@@ -202,7 +210,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	public Boolean isBold() {
 		Boolean fontWeight = null;
-		for (ScriptLine script : scriptList) {
+		for (ScriptLine script : scriptLineList) {
 			if (script == null) continue;
 			boolean weight = script.isBold();
 			if (fontWeight == null) {
@@ -218,8 +226,8 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	@Override 
 	public String summaryString() {
-		StringBuilder sb = new StringBuilder(">>>Script>>>"+" lines: "+scriptList.size()+"\n");
-		for (ScriptLine script : scriptList) {
+		StringBuilder sb = new StringBuilder(">>>Script>>>"+" lines: "+scriptLineList.size()+"\n");
+		for (ScriptLine script : scriptLineList) {
 			if (script != null) {
 				sb.append(script.summaryString()+"");
 			}
@@ -231,8 +239,8 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	
 	@Override 
 	public String toString() {
-		StringBuilder sb = new StringBuilder(this.getClass().getSimpleName()+" lines: "+scriptList.size()+"\n");
-		for (ScriptLine script : scriptList) {
+		StringBuilder sb = new StringBuilder(this.getClass().getSimpleName()+" lines: "+scriptLineList.size()+"\n");
+		for (ScriptLine script : scriptLineList) {
 			if (script != null) {
 				sb.append(script.toString());
 			}
@@ -246,6 +254,34 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	}
 
 	public void addToIndexes(PDFIndex pdfIndex) {
+		indexBoldTextByFontSize(pdfIndex);
+		indexByTextContent(pdfIndex);
+	}
+
+	private void indexByTextContent(PDFIndex pdfIndex) {
+		String content = getTextContentWithSpaces();
+		pdfIndex.indexByTextContent(content, this.getChunkId());
+	}
+
+	public ChunkId getChunkId() {
+		if (this.chunkId == null) {
+			this.chunkId = textStructurer == null ? null : textStructurer.getChunkId();
+		} 
+		return this.chunkId;
+	}
+
+	public String getTextContentWithSpaces() {
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		for (ScriptLine scriptLine : scriptLineList) {
+			String s = scriptLine.getTextContentWithSpaces();
+			if (i++ > 0) sb.append(" ");
+			sb.append(s);
+		}
+		return sb.toString();
+	}
+
+	private void indexBoldTextByFontSize(PDFIndex pdfIndex) {
 		Double fontSize = getSingleFontSize();
 		Boolean isBold = isBold();
 		if (isBold != null && isBold) {
@@ -256,24 +292,24 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	@Override
 	public String getRawValue() {
 		StringBuilder sb = new StringBuilder();
-		for (ScriptLine script : scriptList) {
+		for (ScriptLine script : scriptLineList) {
 			sb.append(script.getRawValue());
 		}
 		return sb.toString();
 	}
 
 	public Iterator<ScriptLine> iterator() {
-		return scriptList.iterator();
+		return scriptLineList.iterator();
 	}
 
-	public List<List<StyleSpan>> getStyleSpanListList() {
-		List<List<StyleSpan>> styleSpanListList = new ArrayList<List<StyleSpan>>();
-		for (ScriptLine script : scriptList) {
+	public List<StyleSpans> getStyleSpansList() {
+		List<StyleSpans> styleSpansList = new ArrayList<StyleSpans>();
+		for (ScriptLine script : scriptLineList) {
 			if (script == null) continue;
-			List<StyleSpan> styleSpanList = script.getStyleSpanList();
-			styleSpanListList.add(styleSpanList);
+			StyleSpans styleSpans = script.getStyleSpans();
+			styleSpansList.add(styleSpans);
 		}
-		return styleSpanListList;
+		return styleSpansList;
 	}
 	
 	void createLeftIndent01() {
@@ -301,6 +337,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 				Real2Range boundingBox = scriptLine.getBoundingBox();
 				boundingBox.format(decimalPlaces);
 				Double leftIndent = boundingBox.getXRange().getMin();
+				LOG.debug("BB "+boundingBox+" / "+leftIndent+" / "+((int)scriptLine.toString().charAt(0))+" / "+scriptLine);
 				leftIndentSet.add(leftIndent);
 			}
 		}

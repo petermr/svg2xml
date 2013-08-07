@@ -205,7 +205,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 		if (svgPageFiles == null) {
 			throw new RuntimeException("No files in "+svgDocumentDir);
 		}
-		analyzePagesAndCreateChunkAndScriptLists(svgPageFiles);
+		pageAnalyzerList = iteratePagesAndCreateChunkAndScriptLists(svgPageFiles);
 		if (summarize) summaryContainers();
 		createIndexesAndRemoveDuplicates();
 		mergeTextContainers();
@@ -248,7 +248,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 		LOG.trace("IDS: "+pdfIndex.getUsedIdSet());
 	}
 
-	private void analyzePagesAndCreateChunkAndScriptLists(File[] svgPageFiles) {
+	private List<PageAnalyzer> iteratePagesAndCreateChunkAndScriptLists(File[] svgPageFiles) {
 		ensurePageAnalyzerList();
 		for (int pageCounter = 0; pageCounter < svgPageFiles.length; pageCounter++) {
 			SYSOUT.print(pageCounter+"~");
@@ -257,6 +257,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 			SVG2XMLUtil.writeToSVGFile(this.outputDocumentDir, "page"+pageCounter, svgPage, true);
 			pageAnalyzerList.add(pageAnalyzer);
 		}
+		return pageAnalyzerList;
 	}
 
 	private void ensurePageAnalyzerList() {

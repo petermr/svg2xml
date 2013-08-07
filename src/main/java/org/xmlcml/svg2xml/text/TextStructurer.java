@@ -31,6 +31,7 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
+import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
@@ -1254,5 +1255,9 @@ public class TextStructurer {
 			scriptedLineList = new ArrayList<ScriptLine>();
 		}
 		return scriptedLineList;
+	}
+
+	public ChunkId getChunkId() {
+		return (textAnalyzer == null) ? null : textAnalyzer.getChunkId(); 
 	}
 }

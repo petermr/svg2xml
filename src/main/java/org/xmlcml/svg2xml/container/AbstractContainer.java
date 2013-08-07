@@ -8,6 +8,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
@@ -24,6 +25,7 @@ public abstract class AbstractContainer {
 	
 	protected List<AbstractContainer> containerList;
 	protected PageAnalyzer pageAnalyzer;
+	protected ChunkId chunkId;
 
 	public AbstractContainer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
@@ -111,4 +113,11 @@ public abstract class AbstractContainer {
 		return "StringValue: "+this.getClass().getName();
 	}
 
+	public void setChunkId(ChunkId chunkId) {
+		this.chunkId = chunkId;
+	}
+
+	public ChunkId getChunkId() {
+		return chunkId;
+	}
 }

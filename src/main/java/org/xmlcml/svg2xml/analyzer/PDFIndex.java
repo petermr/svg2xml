@@ -336,7 +336,7 @@ public class PDFIndex {
 		indexByPathContent(gOut, id);
 	}
 
-	private void indexByTextContent(String content, ChunkId id) {
+	public void indexByTextContent(String content, ChunkId id) {
 		if (content.trim().length() > 0) {
 			svgIdByContentMap.put(content, id);
 			indexByFlattenedIntegerContent(content, id);
@@ -559,9 +559,11 @@ public class PDFIndex {
 				((PathContainer)container).addToIndexes(this);
 			} else if (container instanceof ImageContainer) {
 				((ImageContainer)container).addToIndexes(this);
+			} else {
+				LOG.debug("Cannot index " + container.getClass());
 			}
 		}
-		LOG.debug("PageAnalyzer NYI");
+//		LOG.debug("PageAnalyzer NYI");
 	}
 
 	public void addToBoldIndex(Double fontSize, ScriptContainer scriptContainer) {

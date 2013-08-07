@@ -107,6 +107,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		Character cc = 'a';
 		for (AbstractContainer newContainer : newContainerList) {
 			ChunkId chunkId = new ChunkId(humanPageNumber, aggregatedContainerCount);
+			newContainer.setChunkId(chunkId);
 			getPageAnalyzerContainerList().add(newContainer);
 			SVGG gOut = newContainer.createSVGGChunk();
 			gOut = annotateChunkAndAddIdAndAttributes(gOut, chunkId, analyzer, PageEditorX.DECIMAL_PLACES);
