@@ -24,7 +24,6 @@ import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
-import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -43,7 +42,7 @@ public abstract class AbstractAnalyzer implements Annotatable {
 	private ChunkId chunkId;
 	List<Integer> serialList;
 	protected PDFIndex pdfIndex;
-	private PageAnalyzer pageAnalyzer;
+//	private PageAnalyzer pageAnalyzer;
 	protected List<AbstractContainer> abstractContainerList;
 
 	
@@ -314,15 +313,15 @@ public abstract class AbstractAnalyzer implements Annotatable {
 		return s;
 	}
 
-	/** this is for specialized analyzers in PageAnalyzer
-	 * 
-	 * @param pageAnalyzer
-	 */
-	public void setPageAnalyzer(PageAnalyzer pageAnalyzer) {
-		this.pageAnalyzer = pageAnalyzer;
-	}
+//	/** this is for specialized analyzers in PageAnalyzer
+//	 * 
+//	 * @param pageAnalyzer
+//	 */
+//	public void setPageAnalyzer(PageAnalyzer pageAnalyzer) {
+//		this.pageAnalyzer = pageAnalyzer;
+//	}
 
-	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
 		throw new RuntimeException("Override for: "+this.getClass());
 	}
 

@@ -32,6 +32,8 @@ import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.textextra.Word;
+import org.xmlcml.svg2xml.textextra.WordSequence;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;

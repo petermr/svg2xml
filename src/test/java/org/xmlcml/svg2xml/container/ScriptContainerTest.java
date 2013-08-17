@@ -25,6 +25,7 @@ import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class ScriptContainerTest {
 
+	private static final String[] STRINGS = {}; 
 	public final static Logger LOG = Logger.getLogger(ScriptContainerTest.class);
 	
 	@Test
@@ -112,13 +113,13 @@ public class ScriptContainerTest {
 				{"Figure", "2", "summarizes", "the", "nucleotide", "diversity", "of", "the", "L"},
 				{"and", "M", "opsin", "exons", "and", "introns", "and", "of", "the", "neutral", "refer-"},
 				{"ences", "(see", "Additional", "file", "1,", "Tables", "S4", "and", "S5", "for", "the"},
-				{},				{},				{},
-				{},				{},				{},				{},				{},
-				{},				{},				{},				{},				{},
-				{},				{},				{},				{},				{},
-				{},				{},				{},				{},				{},
-				{},				{},				{},				{},				{},
-				{},				{},				{},				{},				{},
+				STRINGS,				STRINGS,				STRINGS,
+				STRINGS,				STRINGS,				STRINGS,				STRINGS,				STRINGS,
+				STRINGS,				STRINGS,				STRINGS,				STRINGS,				STRINGS,
+				STRINGS,				STRINGS,				STRINGS,				STRINGS,				STRINGS,
+				STRINGS,				STRINGS,				STRINGS,				STRINGS,				STRINGS,
+				STRINGS,				STRINGS,				STRINGS,				STRINGS,				STRINGS,
+				STRINGS,				STRINGS,				STRINGS,				STRINGS,				STRINGS,
 		}
 		);
 	}
@@ -146,11 +147,8 @@ public class ScriptContainerTest {
 
 	@Test
 	public void testGetSpans() {
-		String[][] values ={
-				{"Hiwatashi ", "<I>et al</I>", ". ", "<I>BMC Evolutionary Biology </I>", "2011, ", "<B>11</B>", ":312"}, 
-				{"http://www.biomedcentral.com/1471-2148/11/312"}
-		};
-		testSpans(values, TextFixtures.BMC_312_6_0SA_SVG);
+		String[][] values = TextFixtures.BMC_312MULT_1_0_HTML;
+		TextFixtures.testSpans(values, TextFixtures.BMC_312_6_0SA_SVG);
 	}
 
 	@Test
@@ -190,7 +188,7 @@ public class ScriptContainerTest {
 				{"(Table 1)."},
 		};
 		File file = TextFixtures.BMC_312_2_4SC_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 
 	@Test
@@ -200,7 +198,7 @@ public class ScriptContainerTest {
 				{"<B>species</B>"},
 		};
 		File file = TextFixtures.BMC_312_6_4SA_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -229,7 +227,7 @@ public class ScriptContainerTest {
 	{"causes bathochromic spectral shifts in rhodopsin. Amino acid"},
 		};
 		File file = TextFixtures.BMC_312_12_7SB_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 
 	@Test
@@ -240,7 +238,7 @@ public class ScriptContainerTest {
 	{"Shoji Kawamura", "1*"},
 		};
 		File file = TextFixtures.BMC_312_1_4SA_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -252,7 +250,7 @@ public class ScriptContainerTest {
 	{"Full list of author information is available at the end of the article"},
 		};
 		File file = TextFixtures.BMC_312_1_7DA_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -263,7 +261,7 @@ public class ScriptContainerTest {
 	{"reproduction in any medium, provided the original work is properly cited.", },
 		};
 		File file = TextFixtures.BMC_312_1_10SA_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 	
 	
@@ -273,7 +271,7 @@ public class ScriptContainerTest {
 	{"<B>Effect of late promoter </B>", "<B><I>p</I></B>", "<B><I>R</I></B>", "<B><I>’</I></B>", "<B>activity</B>"},
 		};
 		File file = TextFixtures.BMC_174_5_3SA_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -313,7 +311,7 @@ public class ScriptContainerTest {
 	{"immediately if triggered."}, 
 	};
 		File file = TextFixtures.BMC_174_6_3SA_SVG;
-		testSpans(values, file);
+		TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -425,7 +423,40 @@ public class ScriptContainerTest {
 		String outfile = "target/npg00778.chunk5.4Sa.html";
 		createList(file, outfile);
 	}
+	
+	/** ======================= Preparatory for pages =====================*/
+	@Test
+	public void test312MULT_1_0Sa() {
+		TextFixtures.testSpans(TextFixtures.BMC_312MULT_1_0_HTML, TextFixtures.BMC_312MULT_1_0SA_SVG);
+	}
 
+	@Test
+	public void test312MULT_1_1Pa() {
+		TextFixtures.testSpans(TextFixtures.BMC_312MULT_1_1_HTML, TextFixtures.BMC_312MULT_1_1PA_SVG);
+	}
+
+	@Test
+	public void test312MULT_1_2Da() {
+		TextFixtures.testSpans(TextFixtures.BMC_312MULT_1_2_HTML, TextFixtures.BMC_312MULT_1_2DA_SVG);
+	}
+
+
+	@Test
+	public void test312MULT_1() {
+		String[][][] values ={
+				TextFixtures.BMC_312MULT_1_0_HTML,
+				TextFixtures.BMC_312MULT_1_1_HTML,
+				TextFixtures.BMC_312MULT_1_2_HTML,
+		};
+		File[] files = {
+						TextFixtures.BMC_312MULT_1_0SA_SVG,
+						TextFixtures.BMC_312MULT_1_1PA_SVG,
+						TextFixtures.BMC_312MULT_1_2DA_SVG
+		};
+		TextFixtures.testSpans(values, files);
+	}
+
+	
 	/** =======================================================
 	npg00778.chunk5.3Sa
 	 * ========================================================
@@ -461,26 +492,6 @@ public class ScriptContainerTest {
 	}
 
 	// ==========================================================================================
-
-
-	private void testSpans(String[][] values, File file) {
-		List<StyleSpans> styleSpansList = ScriptContainerTest.getStyleSpansList(file);
-		Assert.assertEquals("lists", values.length, styleSpansList.size());
-		for (int i = 0; i < values.length; i++) {
-			StyleSpans styleSpans = styleSpansList.get(i);
-			if (values[i].length > 0) {
-				if (values[i].length != styleSpans.size()) {
-					for (int j = 0; j < styleSpans.size(); j++) {
-						System.out.println(styleSpans.get(j).toString());
-					}
-				}
-				Assert.assertEquals("line"+i, values[i].length, styleSpans.size());
-				for (int j = 0; j < values[i].length; j++) {
-					Assert.assertEquals("line"+i+","+j, values[i][j], styleSpans.get(j).toString());
-				}
-			}
-		}
-	}
 
 
 	public static List<StyleSpans> getStyleSpansList(File file) {

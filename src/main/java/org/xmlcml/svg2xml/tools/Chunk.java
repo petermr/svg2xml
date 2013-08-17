@@ -21,7 +21,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svg2xml.action.PageEditorX;
+import org.xmlcml.svg2xml.analyzer.PageEditorX;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
 /**

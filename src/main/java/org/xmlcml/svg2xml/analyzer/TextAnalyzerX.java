@@ -30,15 +30,15 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
-import org.xmlcml.svg2xml.text.Paragraph;
 import org.xmlcml.svg2xml.text.SimpleFont;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
-import org.xmlcml.svg2xml.text.TextChunkRUN;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.TextStructurer.Splitter;
-import org.xmlcml.svg2xml.text.Word;
-import org.xmlcml.svg2xml.text.WordSequence;
+import org.xmlcml.svg2xml.textextra.Paragraph;
+import org.xmlcml.svg2xml.textextra.TextChunkRUN;
+import org.xmlcml.svg2xml.textextra.Word;
+import org.xmlcml.svg2xml.textextra.WordSequence;
 import org.xmlcml.svg2xml.tools.Chunk;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -103,6 +103,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	/** refactored container */
 	private TextStructurer textStructurer;
 	private HtmlElement createdHtmlElement;
+	
 	public TextAnalyzerX() {
 		this(new SemanticDocumentActionX());
 	}
@@ -917,7 +918,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	 * @return
 	 */
 	@Override
-	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
 		TextStructurer textContainer1 = this.getTextContainer();
 		textContainer1.getScriptedLineList();
 		List<TextStructurer> splitList = textContainer1.splitOnFontBoldChange(-1);

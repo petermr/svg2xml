@@ -316,7 +316,7 @@ public class MixedAnalyzer extends AbstractAnalyzer {
 	 * @return
 	 */
 	@Override
-	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
 		DivContainer divContainer = new DivContainer(pageAnalyzer);
 		if (this.removeFrameBoxFromPathList()) {
 			divContainer.setBox(true);

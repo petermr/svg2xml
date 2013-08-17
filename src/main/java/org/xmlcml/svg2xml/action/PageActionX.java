@@ -8,6 +8,7 @@ import java.util.List;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.svg2xml.analyzer.PageEditorX;
 import org.xmlcml.svg2xml.tools.PageSelector;
 import org.xmlcml.svg2xml.util.GraphUtil;
 

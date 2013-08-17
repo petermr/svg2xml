@@ -17,8 +17,14 @@ import nu.xom.Nodes;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svg2xml.analyzer.PageEditorX;
 import org.xmlcml.svg2xml.text.SimpleFont;
 
+/** original design, probably not needed now
+ * 
+ * @author pm286
+ *
+ */
 public class SemanticDocumentActionX extends DocumentActionX {
 
 	private final static Logger LOG = Logger.getLogger(SemanticDocumentActionX.class);

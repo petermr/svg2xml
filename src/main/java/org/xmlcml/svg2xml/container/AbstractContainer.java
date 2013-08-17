@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.container;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,10 +23,14 @@ import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 public abstract class AbstractContainer {
 
 	public final static Logger LOG = Logger.getLogger(AbstractContainer.class);
-	
+
+	private static final String CHUNK = "chunk";
+
 	protected List<AbstractContainer> containerList;
 	protected PageAnalyzer pageAnalyzer;
 	protected ChunkId chunkId;
+
+	private SVGG svgChunk;
 
 	public AbstractContainer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
@@ -119,5 +124,20 @@ public abstract class AbstractContainer {
 
 	public ChunkId getChunkId() {
 		return chunkId;
+	}
+
+	public void setSVGChunk(SVGG svgChunk) {
+		this.svgChunk = svgChunk;
+	}
+	
+	public SVGG getSVGChunk() {
+		return svgChunk;
+	}
+
+	public void writeFinalSVGChunk(File outputDocumentDir, Character cc, int humanPageNumber,
+			int aggregatedContainerCount) {
+		String filename = CHUNK+humanPageNumber+"."+  
+			    (aggregatedContainerCount)+this.getSuffix()+String.valueOf(cc);
+		SVG2XMLUtil.writeToSVGFile(outputDocumentDir, filename, svgChunk, false);
 	}
 }

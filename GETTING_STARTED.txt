@@ -1,0 +1,21 @@
+
+2013-08
+=======
+(Notes for PMR)
+
+running over directory
+org.xmlcml.svg2xml.analyzer.PDFAnalyzer <directory or file>
+e.g.
+org.xmlcml.svg2xml.analyzer.PDFAnalyzer \svg2xml-dev\src\test\resources\pdfs\bmc\multiple-1471-2148-11-312.pdf
+This creates 
+target\output\multiple-1471-2148-11-312\page0.svg (etc)
+and
+target\output\multiple-1471-2148-11-312\
+    chunk1.0Sa.svg
+    chunk1.1Pa.svg
+    ...
+
+These are transferred to 
+\svg2xml-dev\src\test\resources\pdfs\bmc\multiple-1471-2148-11-312
+
+These are used for input to tests

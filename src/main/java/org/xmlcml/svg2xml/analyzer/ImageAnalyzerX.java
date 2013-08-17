@@ -63,7 +63,7 @@ public class ImageAnalyzerX extends AbstractAnalyzer {
 		return g;
 	}
 
-	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
 		ImageContainer imageContainer = new ImageContainer(pageAnalyzer);
 		ensureAbstractContainerList();
 		abstractContainerList.add(imageContainer);

@@ -23,10 +23,12 @@ public class Fixtures {
 	
 	public static final String RESOURCES_DIR = "src/test/resources/";
 	public static final String SVG2XML_DIR = RESOURCES_DIR+"org/xmlcml/svg2xml/";
+	public static final String PDFS_DIR = RESOURCES_DIR+"pdfs/";
 	public static final String COMMAND_DIR= SVG2XML_DIR+"command/";
 	public static final String CORE_DIR = SVG2XML_DIR+"core/";
 	public static final String ACTION_DIR = SVG2XML_DIR+"action/";
 	public static final String SVG_DIR = SVG2XML_DIR+"svg/";
+	public static final String SVG1_DIR = RESOURCES_DIR+"svg/";
 	public static final String BMC_DIR = SVG_DIR+"bmc/";
 	public static final File ACTION_SVG_DIR = new File(Fixtures.ACTION_DIR, "svg");
 	public static final File ACTION_PDF_DIR = new File(Fixtures.ACTION_DIR, "pdf");
@@ -100,9 +102,70 @@ public class Fixtures {
 	public static File PAGE3RESULTS_SVG = new File(Fixtures.ANALYZER_DIR, "page3results.svg");
 // text stuff	
 	public static final File TEXT_DIR = new File(SVG2XML_DIR+"text/");
-
+// whole paper	
+	public static final File PDFS_BMC_DIR = new File(PDFS_DIR, "bmc/");
+	public static final File SVG_BMC_DIR = new File(SVG1_DIR, "bmc/");
+	public static final File MULTIPLE312_DIR = new File(PDFS_BMC_DIR, "multiple-1471-2148-11-312/");
+	public static final File MULTIPLE312_PDF = new File(PDFS_BMC_DIR, "multiple-1471-2148-11-312.pdf");
+	public static final File SVG_MULTIPLE312_DIR = new File(SVG_BMC_DIR, "multiple-1471-2148-11-312/");
+	public static final File HTML_MULTIPLE312_DIR = new File(MULTIPLE312_DIR, "html/");
 	
+	public static final File RAW_MULTIPLE312_SVG_PAGE1 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page1.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE2 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page2.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE3 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page3.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE4 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page4.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE5 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page5.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE6 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page6.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE7 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page7.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE8 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page8.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE9 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page9.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE10 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page10.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE11 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page11.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE12 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page12.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE13 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page13.svg");
+	public static final File RAW_MULTIPLE312_SVG_PAGE14 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page14.svg");
 
+	public final static String MATH_ROOT = "maths-1471-2148-11-311";
+	public static final File MATH311_DIR = new File(PDFS_BMC_DIR, MATH_ROOT+"/");
+	public static final File MATH311_PDF = new File(PDFS_BMC_DIR, MATH_ROOT+".pdf");
+	public static final File SVG_MATH311_DIR = new File(SVG_BMC_DIR, MATH_ROOT+"/");
+	public static final File HTML_MATH311_DIR = new File(MATH311_DIR, "html/");
+	
+	public static final File RAW_MATH311_SVG_PAGE1 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page1.svg");
+	public static final File RAW_MATH311_SVG_PAGE2 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page2.svg");
+	public static final File RAW_MATH311_SVG_PAGE3 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page3.svg");
+	public static final File RAW_MATH311_SVG_PAGE4 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page4.svg");
+	public static final File RAW_MATH311_SVG_PAGE5 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page5.svg");
+	public static final File RAW_MATH311_SVG_PAGE6 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page6.svg");
+	public static final File RAW_MATH311_SVG_PAGE7 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page7.svg");
+	public static final File RAW_MATH311_SVG_PAGE8 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page8.svg");
+	public static final File RAW_MATH311_SVG_PAGE9 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page9.svg");
+	public static final File RAW_MATH311_SVG_PAGE10 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page10.svg");
+	public static final File RAW_MATH311_SVG_PAGE11 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page11.svg");
+	public static final File RAW_MATH311_SVG_PAGE12 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page12.svg");
+	public static final File RAW_MATH311_SVG_PAGE13 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page13.svg");
+	public static final File RAW_MATH311_SVG_PAGE14 = new File(SVG_MATH311_DIR, MATH_ROOT+"-page14.svg");
+
+	public final static String GEO_ROOT = "geotable-1471-2148-11-310";
+	public static final File GEO310_DIR = new File(PDFS_BMC_DIR, GEO_ROOT+"/");
+	public static final File GEO310_PDF = new File(PDFS_BMC_DIR, GEO_ROOT+".pdf");
+	public static final File SVG_GEO310_DIR = new File(SVG_BMC_DIR, GEO_ROOT+"/");
+	public static final File HTML_GEO310_DIR = new File(GEO310_DIR, "html/");
+	
+	public static final File RAW_GEO310_SVG_PAGE1 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page1.svg");
+	public static final File RAW_GEO310_SVG_PAGE2 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page2.svg");
+	public static final File RAW_GEO310_SVG_PAGE3 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page3.svg");
+	public static final File RAW_GEO310_SVG_PAGE4 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page4.svg");
+	public static final File RAW_GEO310_SVG_PAGE5 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page5.svg");
+	public static final File RAW_GEO310_SVG_PAGE6 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page6.svg");
+	public static final File RAW_GEO310_SVG_PAGE7 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page7.svg");
+	public static final File RAW_GEO310_SVG_PAGE8 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page8.svg");
+	public static final File RAW_GEO310_SVG_PAGE9 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page9.svg");
+	public static final File RAW_GEO310_SVG_PAGE10 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page10.svg");
+	public static final File RAW_GEO310_SVG_PAGE11 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page11.svg");
+	public static final File RAW_GEO310_SVG_PAGE12 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page12.svg");
+	public static final File RAW_GEO310_SVG_PAGE13 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page13.svg");
+	public static final File RAW_GEO310_SVG_PAGE14 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page14.svg");
 
 	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
 		AbstractActionX semanticDocumentAction = null;
@@ -157,9 +220,6 @@ public class Fixtures {
 		}
 		return svgPage;
 	}
-
-	
-	
 
 	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
 		SVGSVG svgPage = Fixtures.getSVGPageFromPDF(pdfFile, pageNum);

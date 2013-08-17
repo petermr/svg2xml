@@ -29,9 +29,9 @@ import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svg2xml.text.TypedNumber;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.words.TypedNumber;
 
 public class Axis {
 

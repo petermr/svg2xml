@@ -33,7 +33,6 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
@@ -585,7 +584,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	 * @return
 	 */
 	@Override
-	public List<? extends AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
 		PathContainer pathContainer = new PathContainer(this.getPathList(), pageAnalyzer);
 		ensureAbstractContainerList();
 		abstractContainerList.add(pathContainer);

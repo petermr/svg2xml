@@ -1,8 +1,11 @@
 package org.xmlcml.svg2xml.text;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlB;
@@ -14,6 +17,9 @@ import org.xmlcml.html.HtmlSup;
 
 public class StyleSpan {
 
+	private final static Logger LOG = Logger.getLogger(StyleSpan.class);
+	private static final double EPS = 0.01;
+	
 	private boolean bold;
 	private boolean italic;
 	private List<SVGText> characterList;
@@ -143,6 +149,23 @@ public class StyleSpan {
 			 }
 		}
 		return spaces;
+	}
+	
+	public Double getFontSize() {
+		Double fontSize = null;
+		for (SVGText character : characterList) {
+			Double fontSize0 = character.getFontSize();
+			// skip inserted spaces
+			if (!Real.isEqual(1.0, fontSize0, EPS) && character.getValue().trim().length() != 0) {
+				LOG.trace("["+character.toXML()+"] "+fontSize0);
+				if (fontSize == null) {
+					fontSize = fontSize0;
+				} else if (!Real.isEqual(fontSize, fontSize0, EPS)) {
+					throw new RuntimeException("fontsize changed in span: "+fontSize+" => "+fontSize0);
+				}
+			}
+		}
+		return fontSize;
 	}
 	
 	@Override

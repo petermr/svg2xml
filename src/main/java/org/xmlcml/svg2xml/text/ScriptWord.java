@@ -6,6 +6,11 @@ import java.util.List;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 
+/** a word in a ScriptLine
+ * 
+ * @author pm286
+ *
+ */
 public class ScriptWord extends ScriptLine {
 	
 	private List<String> characterList;

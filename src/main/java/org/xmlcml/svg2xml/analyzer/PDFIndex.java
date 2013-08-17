@@ -552,7 +552,7 @@ public class PDFIndex {
 	}
 
 	public void addToindexes(PageAnalyzer pageAnalyzer) {
-		for (AbstractContainer container : pageAnalyzer.getPageAnalyzerContainerList()) {
+		for (AbstractContainer container : pageAnalyzer.getAbstractContainerList()) {
 			if (container instanceof ScriptContainer) {
 				((ScriptContainer)container).addToIndexes(this);
 			} else if (container instanceof PathContainer) {

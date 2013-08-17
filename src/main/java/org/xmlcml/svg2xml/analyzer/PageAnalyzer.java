@@ -1,7 +1,10 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -28,7 +31,6 @@ import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlStyle;
 import org.xmlcml.html.HtmlTitle;
-import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
@@ -46,26 +48,27 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	
 	public final static Pattern PATTERN = null;
 	public final static String TITLE = "PAGE";
+	final static PrintStream SYSOUT = System.out;
 	
-	private int pageNumber;
-	private SVGSVG svgPage;
-	private PDFAnalyzer pdfAnalyzer; 
-	private List<AbstractContainer> pageAnalyzerContainerList;
-
-	private static final String CHUNK = "chunk";
-	public static final String PAGE = "page";
-
-	private List<SVGG> gOutList;
-	private int humanPageNumber;
+//	private List<AbstractContainer> pageAnalyzerContainerList;
 	private int aggregatedContainerCount;
+	private PageIO pageIo;
+
+	private List<AbstractContainer> abstractContainerList;
 	
-	public PageAnalyzer(PDFAnalyzer pdfAnalyzer, int pageCounter) {
-		this.pdfAnalyzer = pdfAnalyzer;
-		this.pageNumber = pageCounter;
-	}
+	private PageAnalyzer() {
+		pageIo = new PageIO();
+	}	
 
 	public PageAnalyzer(SVGSVG svgPage) {
-		this.svgPage = svgPage;
+		this();
+		pageIo.setSvgInPage(svgPage);
+	}
+
+	public PageAnalyzer(File svgPageFile) {
+		this();
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(svgPageFile);
+		pageIo.setSvgInPage(svgPage);
 	}
 
 	public void analyze() {
@@ -82,47 +85,53 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		return serial;
 	}
 	
-	SVGSVG splitChunksAnnotateAndCreatePage() {
- 		List<SVGElement> gList = createSVGGList();
-		
-		humanPageNumber = pageNumber+1;
-		svgPage = createBlankSVGPageWithNumberAndSize(humanPageNumber);
-		gOutList = new ArrayList<SVGG>();
+	void splitChunksAnnotateAndCreatePage() {
+ 		List<SVGElement> gList = createWhitespaceChunkList();
+		pageIo.setSvgOutPage(pageIo.createBlankSVGOutPageWithNumberAndSize());
+		pageIo.ensureWhitespaceSVGChunkList();
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
-			List<? extends AbstractContainer> newContainerList = new ArrayList<AbstractContainer>();
 			SVGG gOrig = (SVGG) gList.get(ichunk);
 			AbstractAnalyzer analyzerX = AbstractAnalyzer.createSpecificAnalyzer(gOrig);
-			analyzerX.setPageAnalyzer(this);
-			newContainerList = 	analyzerX.createContainers(this);
+			List<AbstractContainer> newContainerList = analyzerX.createContainers(this);
 			annotateAndOutput(newContainerList, analyzerX);
 		}
-		for (SVGG g : gOutList) {
-			svgPage.appendChild(g);
-		}
-		return svgPage;
+		pageIo.createFinalSVGPageFromChunks();
 	}
 
-	private void annotateAndOutput (List<? extends AbstractContainer> newContainerList, AbstractAnalyzer analyzer) {
+	private void annotateAndOutput (
+			List<? extends AbstractContainer> newContainerList, AbstractAnalyzer analyzer) {
 		ensureAggregatedContainerList();
-		Character cc = 'a';
 		for (AbstractContainer newContainer : newContainerList) {
-			ChunkId chunkId = new ChunkId(humanPageNumber, aggregatedContainerCount);
-			newContainer.setChunkId(chunkId);
-			getPageAnalyzerContainerList().add(newContainer);
+			ChunkId chunkId = new ChunkId(pageIo.getHumanPageNumber(), aggregatedContainerCount);
+			newContainer.setChunkId(chunkId); 
+			abstractContainerList.add(newContainer);
 			SVGG gOut = newContainer.createSVGGChunk();
 			gOut = annotateChunkAndAddIdAndAttributes(gOut, chunkId, analyzer, PageEditorX.DECIMAL_PLACES);
-			String filename = CHUNK+humanPageNumber+"."+  
-				    (aggregatedContainerCount)+newContainer.getSuffix()+String.valueOf(cc);
-			SVG2XMLUtil.writeToSVGFile(pdfAnalyzer.getExistingOutputDocumentDir(), filename, gOut, false);
-			cc++;
-			gOutList.add(gOut);
+			newContainer.setSVGChunk(gOut);
+			pageIo.add(gOut);
 		}
 		aggregatedContainerCount++;
 	}
 
+
+	void writeFinalSVGChunks(List<? extends AbstractContainer> containerList, AbstractAnalyzer analyzer, File outputDocumentDir) {
+		Character cc = 'a';
+		for (AbstractContainer container : containerList) {
+			container.writeFinalSVGChunk(outputDocumentDir, cc++, getHumanPageNumber(), getAggregatedCount());
+		}
+	}
+	
+	private int getAggregatedCount() {
+		return pageIo.getAggregatedCount();
+	}
+
+	private int getHumanPageNumber() {
+		return pageIo.getHumanPageNumber();
+	}
+
 	private void ensureAggregatedContainerList() {
-		if (getPageAnalyzerContainerList() == null) {
-			setPageAnalyzerContainerList(new ArrayList<AbstractContainer>());
+		if (abstractContainerList == null) {
+			abstractContainerList = new ArrayList<AbstractContainer>();
 		}
 	}
 
@@ -156,39 +165,12 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		return gOut;
 	}
 
-	private String createPageRoot(int pageNumber) {
-		String pageRoot = PAGE+(pageNumber+1);
-		return pageRoot;
-	}
-
-	private SVGSVG createBlankSVGPageWithNumberAndSize(int pageNumber) {
-		SVGSVG svgOut = new SVGSVG();
-		svgOut.setWidth(600.0);
-		svgOut.setHeight(800.0);
-		String pageId = "p."+pageNumber;
-		svgOut.setId(pageId);
-		return svgOut;
-	}
-
-	void writeSVGPage(File outputDocumentDir) {
-		try {
-			String pageRoot = createPageRoot(pageNumber);
-			outputDocumentDir.mkdirs();
-			String id = svgPage.getId();
-			LOG.trace("ID "+id);
-			CMLUtil.debug(
-				svgPage, new FileOutputStream(new File(outputDocumentDir, pageRoot+SVGPlusConstantsX.DOT_SVG)), 1);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	/**
 	 * <title stroke="black" stroke-width="1.0">char: 981; name: null; f: Symbol; fn: PHHOAK+Symbol; e: Dictionary</title>
 	 * @param svg
 	 */
-	private void processNonUnicodeCharactersInTitles(SVGSVG svg) {
-		List<SVGElement> textTitles = SVGUtil.getQuerySVGElements(svg, ".//svg:title");
+	private void processNonUnicodeCharactersInTitles() {
+		List<SVGElement> textTitles = SVGUtil.getQuerySVGElements(pageIo.getRawSVGPage(), ".//svg:title");
 		for (SVGElement t : textTitles) {
 			SVGTitle title = (SVGTitle) t;
 			String s = title.getValue();
@@ -201,7 +183,6 @@ public class PageAnalyzer extends AbstractAnalyzer {
 					break;
 				}
 				if (sss[0].equals("name") && !sss[1].equals("null")) {
-//					ss = sss[1];
 					ss = 127;
 					break;
 				}
@@ -222,33 +203,26 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		}
 	}
 	
-	private List<SVGElement> createSVGGList() {
-		String pageRoot = createPageRoot(pageNumber);
-		// messy
-		String pageSvg = pageRoot+SVGPlusConstantsX.DOT_SVG;
-		if (!pdfAnalyzer.fileRoot.equals("")) {
-			pageSvg = pdfAnalyzer.fileRoot+"-"+pageSvg;
-		} else {
-			pageSvg = "target"+"-"+pageRoot+SVGPlusConstantsX.DOT_SVG;
-		}
-		LOG.trace(pageNumber+" "+pageRoot+" "+pageSvg);
-		File svgPageFile = new File(pdfAnalyzer.svgDocumentDir, pageSvg);
-		LOG.debug("reading SVG "+svgPageFile);
-		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(svgPageFile); // moderately expensive
-		processNonUnicodeCharactersInTitles(svg);
-		SemanticDocumentActionX semanticDocumentAction = 
-				SemanticDocumentActionX.createSemanticDocumentActionWithSVGPage(svg);
-		List<Chunk> chunkList = 
-				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);
+	private List<SVGElement> createWhitespaceChunkList() {
+//		pageIo.readRawSVGPageIfNecessary();
+		processNonUnicodeCharactersInTitles();
+		List<Chunk> chunkList = createWhitespaceSeparatedChunks();
 		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
-		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		
+		List<SVGElement> gList = SVGG.generateElementList(pageIo.getRawSVGPage(), "svg:g/svg:g/svg:g[@edge='YMIN']");
 		return gList;
 	}
-	
+
+	private List<Chunk> createWhitespaceSeparatedChunks() {
+		SemanticDocumentActionX semanticDocumentAction = 
+				SemanticDocumentActionX.createSemanticDocumentActionWithSVGPage(pageIo.getRawSVGPage());
+		List<Chunk> chunkList = 
+				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);
+		return chunkList;
+	}
+
 
 	void annotatePage() {
-		List<SVGG> gList = SVGG.extractGs(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@id]"));
+		List<SVGG> gList = SVGG.extractGs(SVGUtil.getQuerySVGElements(pageIo.getRawSVGPage(), ".//svg:g[@id]"));
 		for (SVGG g : gList) {
 			ChunkId chunkId = new ChunkId(g.getId());
 			boolean indexed = pdfIndex.getUsedIdSet().contains(chunkId);
@@ -267,19 +241,19 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	public void add(AbstractContainer container) {
 		ensureContainerList();
-		getPageAnalyzerContainerList().add(container);
+		abstractContainerList.add(container);
 	}
 
 	private void ensureContainerList() {
-		if (getPageAnalyzerContainerList() == null) {
-			setPageAnalyzerContainerList(new ArrayList<AbstractContainer>());
+		if (abstractContainerList == null) {
+			abstractContainerList = new ArrayList<AbstractContainer>();
 		}
 	}
 
 	public String summaryString() {
-		StringBuilder sb = new StringBuilder("Page: "+pageNumber+"\n");
-		sb.append("Containers: "+getPageAnalyzerContainerList().size()+"\n");
-		for (AbstractContainer container : getPageAnalyzerContainerList()) {
+		StringBuilder sb = new StringBuilder("Page: "+pageIo.getMachinePageNumber()+"\n");
+		sb.append("Containers: "+abstractContainerList.size()+"\n");
+		for (AbstractContainer container : abstractContainerList) {
 			sb.append(container.summaryString()+"\n........................\n");
 		}
 		return sb.toString();
@@ -288,16 +262,17 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	protected HtmlElement createHtml() {
 		HtmlHtml html = new HtmlHtml();
 		addStyle(html);
-		HtmlTitle title = new HtmlTitle("Page: "+pageNumber);
+		HtmlTitle title = new HtmlTitle("Page: "+pageIo.getHumanPageNumber());
 		html.appendChild(title);
 		HtmlBody body = new HtmlBody();
 		html.appendChild(body);
 		HtmlDiv div = new HtmlDiv();
 		body.appendChild(div);
 		HtmlP htmlP = new HtmlP();
-		htmlP.appendChild("Containers: "+getPageAnalyzerContainerList().size());
+		htmlP.appendChild("Containers: "+abstractContainerList.size());
 		div.appendChild(htmlP);
-		for (AbstractContainer container : getPageAnalyzerContainerList()) {
+		cleanHtml(div);
+		for (AbstractContainer container : abstractContainerList) {
 			div.appendChild(container.createHtmlElement());
 		}
 		return html;
@@ -311,21 +286,25 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder("Page: "+pageNumber+"\n");
-		sb.append("Containers: "+getPageAnalyzerContainerList().size()+"\n");
-		for (AbstractContainer container : getPageAnalyzerContainerList()) {
-			sb.append(container.toString()+"\n");
+		StringBuilder sb = new StringBuilder("Page: "+pageIo.getMachinePageNumber()+"\n");
+		if (abstractContainerList == null) {
+			sb.append("NULL containers"); 
+		} else {
+			sb.append("Containers: "+abstractContainerList.size()+"\n");
+			for (AbstractContainer container : abstractContainerList) {
+				sb.append(container.toString()+"\n");
+			}
 		}
 		return sb.toString();
 	}
 
-	public List<AbstractContainer> getPageAnalyzerContainerList() {
-		return pageAnalyzerContainerList;
+	public List<AbstractContainer> getAbstractContainerList() {
+		return abstractContainerList;
 	}
 
 	public void setPageAnalyzerContainerList(
-			List<AbstractContainer> pageAnalyzerContainerList) {
-		this.pageAnalyzerContainerList = pageAnalyzerContainerList;
+			List<AbstractContainer> abstractContainerList) {
+		this.abstractContainerList = abstractContainerList;
 	}
 
 	/** removes empty/unnecessary spans etc.
@@ -395,4 +374,78 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		node.detach();
 		grandParent.replaceChild(parent, node);
 	}
+
+
+	public PageIO getPageIO() {
+		return pageIo;
+	}
+
+	public void setMachinePageNumber(int pageNumber) {
+		pageIo.setMachinePageNumber(pageNumber);
+	}
+
+
+	public void setRawSVGDocumentDir(File rawSVGDocumentDir) {
+		pageIo.setRawSVGDocumentDir(rawSVGDocumentDir);
+	}
+
+
+	public void writeRawSVGPageToFinalDirectory() {
+		pageIo.writeRawSVGPageToFinalDirectory();
+	}
+
+	public int getMachinePageNumber() {
+		return pageIo.getMachinePageNumber();
+	}
+	
+	void summaryContainers() {
+		int page = this.getMachinePageNumber();
+		SYSOUT.println("************************PAGE***************************"+page+">>>>>> \n");
+		SYSOUT.println(this.summaryString());
+		SYSOUT.println("************************PAGE***************************"+page+"<<<<<< \n");
+	}
+
+	public void outputChunks() {
+		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
+		SYSOUT.println(".......................");
+		for (AbstractContainer abstractContainer : abstractContainerList) {
+			SVGG chunk = abstractContainer.getSVGChunk();
+			String chunkId = chunk.getId();
+			File file = pageIo.createChunkFile(chunkId);
+			PageIO.outputFile(chunk, file);
+			LOG.trace(abstractContainer.getClass() + " " + chunkId);
+		}
+	}
+
+	public void outputHtmlChunks() {
+		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
+		SYSOUT.println(".......................");
+		for (AbstractContainer abstractContainer : abstractContainerList) {
+			ChunkId chunkId = abstractContainer.getChunkId();
+			HtmlElement element = abstractContainer.createHtmlElement();
+			File file = pageIo.createHtmlChunkFile(chunkId.toString());
+			PageIO.outputFile(element, file);
+			LOG.trace(abstractContainer.getClass() + " " + chunkId);
+		}
+	}
+	
+	private void outputHtml() {
+		HtmlElement div = this.createHtml();
+		SYSOUT.println("*************************HTML**************************"+div.getId()+">>>>>> \n");
+		pageIo.outputHtmlChunk(div);
+	}
+	
+	public static PageAnalyzer createAndAnalyze(File rawSvgPageFile) {
+		return createAndAnalyze(rawSvgPageFile, (File) null, 1);
+	}
+
+	public static PageAnalyzer createAndAnalyze(File rawSvgPageFile, File rawSVGDirectory, Integer pageCounter) {
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(rawSvgPageFile);
+		pageAnalyzer.setRawSVGDocumentDir(rawSVGDirectory);
+		pageAnalyzer.setMachinePageNumber(pageCounter);
+		pageAnalyzer.splitChunksAnnotateAndCreatePage();
+		LOG.trace(pageAnalyzer.getPageIO().toString());
+		return pageAnalyzer;
+	}
+
 }

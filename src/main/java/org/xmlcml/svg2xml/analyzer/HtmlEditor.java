@@ -39,9 +39,12 @@ public class HtmlEditor {
 	private List<HtmlAnalyzer> tableHtmlAnalyzerList;
 	private List<HtmlAnalyzer> mergedHtmlAnalyzerList;
 	private HtmlAnalyzer textDivAnalyzer;
+
+	private PDFAnalyzerIO pdfIo;
 	
 	public HtmlEditor(PDFAnalyzer pdfAnalyzer) {
 		this.pdfAnalyzer = pdfAnalyzer;
+		this.pdfIo = pdfAnalyzer.getPDFIO();
 	}
 
     public void accept(HtmlVisitor visitor) {
@@ -137,18 +140,18 @@ public class HtmlEditor {
 	public void outputHtmlElements() {
 		LOG.debug("figures HTML");
 		for (HtmlAnalyzer htmlAnalyzer : figureHtmlAnalyzerList) {
-			htmlAnalyzer.outputElementAsHtml(pdfAnalyzer.outputDocumentDir);
+			htmlAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
 		}
 		LOG.debug("tables HTML");
 		for (HtmlAnalyzer htmlAnalyzer : tableHtmlAnalyzerList) {
-			htmlAnalyzer.outputElementAsHtml(pdfAnalyzer.outputDocumentDir);
+			htmlAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
 		}
 		LOG.debug("merged HTML");
 		for (HtmlAnalyzer htmlAnalyzer : mergedHtmlAnalyzerList) {
-			htmlAnalyzer.outputElementAsHtml(pdfAnalyzer.outputDocumentDir);
+			htmlAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
 		}
 		LOG.debug("merged TEXT");
-		textDivAnalyzer.outputElementAsHtml(pdfAnalyzer.outputDocumentDir);
+		textDivAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
 		
 	}
 

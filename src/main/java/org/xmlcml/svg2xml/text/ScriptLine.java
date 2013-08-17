@@ -41,9 +41,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	protected List<TextLine> textLineList = null;
 	private TextStructurer textContainer;
 	private int largestLine;
-
 	private StyleSpans styleSpans;
-
 	private String textContentWithSpaces;
 	
 	public ScriptLine(TextStructurer textContainer) {

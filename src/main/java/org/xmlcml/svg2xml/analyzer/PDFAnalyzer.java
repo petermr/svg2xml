@@ -24,7 +24,6 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svg2xml.action.PageEditorX;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.util.NameComparator;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
@@ -34,57 +33,45 @@ import com.google.common.collect.Multimap;
 
 public class PDFAnalyzer /*implements Annotatable */{
 
-
-	private static final File TARGET_DIR = new File("target");
-	private static final File OUTPUT_DIR = new File(TARGET_DIR, "output");
-	private static final File SVG_DIR = new File(TARGET_DIR, "svg");
-	
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
 	
-	private final static PrintStream SYSOUT = System.out;
-	private static final String HTTP = "http";
+	final static PrintStream SYSOUT = System.out;
 	public static final String Z_CHUNK = "z_";
-	private static final String DOT_PDF = ".pdf";
 	
-	private File inFile;
-	private String inputName;
-	String fileRoot;
-	private File svgTopDir = SVG_DIR;
-	File svgDocumentDir;
-	private File outputTopDir = OUTPUT_DIR;
-	File outputDocumentDir;
-
+	private PDFAnalyzerIO pdfIo;
 	private DocumentListAnalyzer documentListAnalyzer;
 	PDFIndex pdfIndex;
-
-//	HtmlEditor htmlEditor;
-	
+	// created by analyzing pages
 	private List<PageAnalyzer> pageAnalyzerList;
+	private PDFAnalyzerOptions pdfOptions;
 
 	public PDFAnalyzer() {
+		pdfIo = new PDFAnalyzerIO(this);
+		pdfOptions = new PDFAnalyzerOptions(this);
 	}
 
 	public PDFAnalyzer(DocumentListAnalyzer documentListAnalyzer) {
+		this();
 		this.documentListAnalyzer = documentListAnalyzer;
 	}
 	
 	public void setSVGTopDir(File svgDir) {
-		this.svgTopDir = svgDir;
+		pdfIo.setSvgTopDir(svgDir);
 	}
 	
 	public void setOutputTopDir(File outDir) {
-		this.outputTopDir = outDir;
+		pdfIo.setOutputTopDir(outDir);
 	}
 	
 	public void setFileRoot(String fileRoot) {
-		this.fileRoot = fileRoot;
+		pdfIo.setFileRoot(fileRoot);
 	}
 	
 	private void analyzePDFs(String name) {
 		if (name == null) {
 			throw new RuntimeException("file/s must not be null");
 		} else if (name.endsWith(SVGPlusConstantsX.DOT_PDF)) {
-			if (name.startsWith(HTTP)) {
+			if (name.startsWith(PDFAnalyzerIO.HTTP)) {
 				this.analyzePDFURL(name);
 			} else {
 				this.analyzePDFFile(new File(name));
@@ -153,77 +140,36 @@ public class PDFAnalyzer /*implements Annotatable */{
 	}
 
 	private void analyzePDFURL(String name) {
-		try {
-			inputName = name;
-			fileRoot = inputName.substring(0, inputName.length() - SVGPlusConstantsX.DOT_PDF.length());
-			if (fileRoot.startsWith(HTTP)) {
-				fileRoot = fileRoot.substring(fileRoot.indexOf("//")+2);
-				fileRoot = fileRoot.substring(fileRoot.indexOf("/")+1);
-				LOG.debug("fileroot "+fileRoot);
-			}
-			svgDocumentDir = new File(svgTopDir, fileRoot);
-			LOG.debug("svgDocument "+svgDocumentDir);
-			outputDocumentDir = new File(outputTopDir, fileRoot);
-			outputDocumentDir.mkdirs();
-			fileRoot = "";
-			LOG.debug("outputDocument "+outputDocumentDir);
-			mainAnalysis();
-			File htmlDir = (new File(outputTopDir, fileRoot));
-//			copyOriginalPDF(inFile, htmlDir);
-			createHtmlMenuSystem(htmlDir);
-		} catch (Exception e) {
-			throw new RuntimeException ("URL failed", e);
-		}
+		pdfIo.setPDFURL(name);
+		analyzePDF();
 	}
 
 	public void analyzePDFFile(File inFile) {
-		this.inFile = inFile;
-		inputName = inFile.getName();
-		fileRoot = inputName.substring(0, inputName.length() - SVGPlusConstantsX.DOT_PDF.length());
-		svgDocumentDir = new File(svgTopDir, fileRoot);
-		outputDocumentDir = new File(outputTopDir, fileRoot);
-		mainAnalysis();
-		File htmlDir = (new File(outputTopDir, fileRoot));
-		copyOriginalPDF(inFile, htmlDir);
-		createHtmlMenuSystem(htmlDir);
+		pdfIo.setUpPDF(inFile);
+		analyzePDF();
 	}
 
-	private void copyOriginalPDF(File inFile, File htmlDir) {
-		try {
-			IOUtils.copy(new FileInputStream(inFile), new FileOutputStream(new File(htmlDir, "00_"+inputName)));
-		} catch (Exception e1) {
-			throw new RuntimeException(e1);
-		}
-	}
-
-	public  void mainAnalysis() {
-		boolean summarize = true;
+	private void analyzePDF() {
 		ensurePDFIndex();
 		createSVGFilesfromPDF();
-		File[] svgPageFiles = svgDocumentDir.listFiles();
-		LOG.debug("listing Files in: "+svgDocumentDir);
-		if (svgPageFiles == null) {
-			throw new RuntimeException("No files in "+svgDocumentDir);
-		}
-		pageAnalyzerList = iteratePagesAndCreateChunkAndScriptLists(svgPageFiles);
-		if (summarize) summaryContainers();
+		analyzeRawSVGPagesWithPageAnalyzers();
+		pdfIo.outputFiles(pdfOptions);
+	}
+
+
+	public void analyzeRawSVGPagesWithPageAnalyzers() {
+		pageAnalyzerList = createAndFillPageAnalyzers();
+		pdfIo.outputFiles(pdfOptions);
 		createIndexesAndRemoveDuplicates();
 		mergeTextContainers();
-		
 		createHtml();
 		SYSOUT.println();
 		writeSvgPages();
 //		analyzeAndCreateHTML();  // not yet written
 	}
 
-	private void summaryContainers() {
-		int page = 1;
-		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			SYSOUT.println("***************************************************"+page+">>>>>> \n");
-			SYSOUT.println(pageAnalyzer.summaryString());
-			SYSOUT.println("***************************************************"+page+"<<<<<< \n");
-			page++;
-		}
+	private void createHtml() {
+		SYSOUT.println("createHtml not used...");
 	}
 
 	private void debugContainers() {
@@ -248,13 +194,14 @@ public class PDFAnalyzer /*implements Annotatable */{
 		LOG.trace("IDS: "+pdfIndex.getUsedIdSet());
 	}
 
-	private List<PageAnalyzer> iteratePagesAndCreateChunkAndScriptLists(File[] svgPageFiles) {
+	private List<PageAnalyzer> createAndFillPageAnalyzers() {
+		File rawSVGDirectory = pdfIo.getRawSVGPageDirectory();
+		File[] rawSvgPageFiles =pdfIo.collectRawSVGFiles();
 		ensurePageAnalyzerList();
-		for (int pageCounter = 0; pageCounter < svgPageFiles.length; pageCounter++) {
+		LOG.debug(rawSVGDirectory+" files: "+rawSvgPageFiles.length);
+		for (int pageCounter = 0; pageCounter < rawSvgPageFiles.length; pageCounter++) {
 			SYSOUT.print(pageCounter+"~");
-			PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
-			SVGSVG svgPage = pageAnalyzer.splitChunksAnnotateAndCreatePage();
-			SVG2XMLUtil.writeToSVGFile(this.outputDocumentDir, "page"+pageCounter, svgPage, true);
+			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(rawSvgPageFiles[pageCounter], rawSVGDirectory, pageCounter);
 			pageAnalyzerList.add(pageAnalyzer);
 		}
 		return pageAnalyzerList;
@@ -285,21 +232,19 @@ public class PDFAnalyzer /*implements Annotatable */{
 
 	private void writeSvgPages() {
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			pageAnalyzer.writeSVGPage(outputDocumentDir);
+			pageAnalyzer.writeRawSVGPageToFinalDirectory();
 		}
 	}
 
 	public void createSVGFilesfromPDF() {
 		LOG.trace("createSVG");
 		PDF2SVGConverter converter = new PDF2SVGConverter();
+		File inFile = pdfIo.getInFile();
+		String inputName = pdfIo.getInputName();
 		if (inFile != null && inFile.exists()) {
 			createSVGFilesfromPDF(converter, inFile.toString());
-		} else if (inputName != null && inputName.startsWith(HTTP)) {
-			String inputName1 = inputName.substring(inputName.lastIndexOf("/")+1);
-			if (inputName.toLowerCase().endsWith(DOT_PDF)) {
-				inputName1 = inputName1.substring(0, inputName1.length()-DOT_PDF.length());
-			}
-			LOG.debug("filename: "+inputName1);
+		} else if (inputName != null && inputName.startsWith(PDFAnalyzerIO.HTTP)) {
+			pdfIo.createHttpInputName(inputName);
 			createSVGFilesfromPDF(converter, inputName);
 		} else {
 			throw new RuntimeException("no input file: "+inFile);
@@ -307,6 +252,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 	}
 
 	private void createSVGFilesfromPDF(PDF2SVGConverter converter, String inputName) {
+		File svgDocumentDir = pdfIo.getRawSVGDirectory();
 		File[] files = (svgDocumentDir == null) ? null : svgDocumentDir.listFiles();
 		if (!svgDocumentDir.exists() || files == null || files.length == 0) {
 			svgDocumentDir.mkdirs();
@@ -317,21 +263,6 @@ public class PDFAnalyzer /*implements Annotatable */{
 		}
 	}
 
-	private void createHtml() {
-		int page = 1;
-		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			SYSOUT.println("***************************************************"+page+">>>>>> \n");
-			HtmlElement div = pageAnalyzer.createHtml();
-			SYSOUT.println("***************************************************"+page+"<<<<<< \n");
-			PageAnalyzer.cleanHtml(div);
-			try {
-				CMLUtil.debug(div, new FileOutputStream("target/page"+page+".html"), 0);
-			} catch (Exception e) {
-				throw new RuntimeException("cannot write html", e);
-			}
-			page++;
-		}
-	}
 
 	private void createHtmlOld() {
 //		ensureHtmlEditor();
@@ -382,21 +313,6 @@ public class PDFAnalyzer /*implements Annotatable */{
 		return duplicateList;
 	}
 		
-	private void createHtmlMenuSystem(File dir) {
-		HtmlMenuSystem menuSystem = new HtmlMenuSystem();
-		menuSystem.setOutdir(dir.toString());
-		File[] filesh = dir.listFiles();
-		Arrays.sort(filesh, new NameComparator());
-		for (File filex : filesh) {
-			menuSystem.addHRef(filex.toString());
-		}
-		try {
-			menuSystem.outputMenuAndBottomAndIndexFrame();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	public PDFIndex getIndex() {
 		ensurePDFIndex();
 		return pdfIndex;
@@ -429,11 +345,17 @@ public class PDFAnalyzer /*implements Annotatable */{
 	public int getDecimalPlaces() {
 		return PageEditorX.DECIMAL_PLACES;
 	}
-
-	public File getExistingOutputDocumentDir() {
-		outputDocumentDir.mkdirs();
-		return outputDocumentDir;
+	
+	PDFAnalyzerIO getPDFIO() {
+		return pdfIo;
 	}
 
+	public void setRawSvgDirectory(File rawSvgDirectory) {
+		pdfIo.setRawSvgDirectory(rawSvgDirectory);
+	}
 
+	public List<PageAnalyzer> getPageAnalyzerList() {
+		return pageAnalyzerList;
+	}
+	
 }
