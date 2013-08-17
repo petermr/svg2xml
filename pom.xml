@@ -154,6 +154,7 @@
                     <source>1.5</source>
                     <target>1.5</target>
                     <optimize>true</optimize>
+                    <argLine>-Xmx1024m</argLine>
                 </configuration>
             </plugin>
 <!-- uncomment this plugin to enable building of one humongous jar file with dependencies included ...

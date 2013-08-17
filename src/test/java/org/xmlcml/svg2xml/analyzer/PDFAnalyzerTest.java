@@ -11,7 +11,7 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-	// maven fails on memory
+	// maven fails on memory but Eclipse runs
 	@Ignore
 	public void testPDFAnalyzerPDF() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
