@@ -13,6 +13,7 @@ public class ChunkId implements Comparable<ChunkId> {
 	
 	private int pageNumber;
 	private int chunkNumber;
+	private Integer subChunkNumber;
 
 	private String id;
 	
@@ -28,6 +29,7 @@ public class ChunkId implements Comparable<ChunkId> {
 	public ChunkId(int pageNumber, int ichunk) {
 		this.pageNumber = pageNumber;
 		this.chunkNumber = ichunk;
+		this.subChunkNumber = null;
 	}
 
 	private void processId() {
@@ -59,7 +61,7 @@ public class ChunkId implements Comparable<ChunkId> {
 	
 	@Override
 	public int hashCode() {
-		return 17 * pageNumber + 31 * chunkNumber;
+		return 17 * pageNumber + 31 * chunkNumber + (subChunkNumber == null ? 0 : 127 * subChunkNumber);
 	}
 	
 	public int compareTo(ChunkId chunk2) {
@@ -79,13 +81,16 @@ public class ChunkId implements Comparable<ChunkId> {
 		return compare;
 	}
 
-
+	public void setSubChunkNumber(int subChunkNumber) {
+		this.subChunkNumber = subChunkNumber;
+	}
+	
 	public String toString() {
 		return createId();
 	}
 
 	private String createId() {
-		return G+"."+pageNumber+"."+chunkNumber;
+		return G+"."+pageNumber+"."+chunkNumber+(subChunkNumber == null ? "" : "."+subChunkNumber);
 	}
 
 	public static ChunkId createChunkId(SVGG gChunk) {

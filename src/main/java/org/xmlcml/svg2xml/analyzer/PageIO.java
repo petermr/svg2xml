@@ -16,6 +16,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
 
 public class PageIO {
 
@@ -24,6 +25,9 @@ public class PageIO {
 	private static final double HEIGHT = 800.0;
 	public static final String PAGE = "page";
 	public static final String CHUNK = "chunk";
+	public static final String FIGURE = "figure";
+	public static final String TABLE = "table";
+	public static final String TEXT = "text";
 	public static final String DOT_HTML = ".html";
 	public static final String DOT_SVG = ".svg";
 
@@ -36,6 +40,8 @@ public class PageIO {
 	private SVGSVG finalSVGPage;
 	private SVGSVG rawSVGPage;
 	private int aggregatedCount;
+	// to pick up processing options
+	private PDFAnalyzer pdfAnalyzer;
 	
 	public PageIO() {
 		
@@ -57,13 +63,17 @@ public class PageIO {
 		this.rawSVGDocumentDir = rawSVGDocumentDir;
 	}
 
-	private File createDefaultFinalDocumentDir() {
+	public File createDefaultFinalDocumentDir() {
 		if (rawSVGDocumentDir != null) {
-			String name = rawSVGDocumentDir.getName();
-			setFinalSVGDocumentDir(new File(PDFAnalyzerIO.OUTPUT_DIR, name));
+			finalSVGDocumentDir = createfinalSVGDocumentDirectory(rawSVGDocumentDir);
 			finalSVGDocumentDir.mkdirs();
 		}
 		return finalSVGDocumentDir;
+	}
+
+	public static File createfinalSVGDocumentDirectory(File dir) {
+		String name = dir.getName();
+		return new File(PDFAnalyzerIO.OUTPUT_DIR, name);
 	}
 
 	public File getFinalSVGDocumentDir() {
@@ -188,22 +198,59 @@ public class PageIO {
 		return file;
 	}
 
-	public File createHtmlChunkFile(String chunkId) {
-		File file = new File(finalSVGDocumentDir, CHUNK+"."+chunkId+DOT_HTML);
-		return file;
+	public static File createHtmlFile(File dir, ContainerType type, String chunkId) {
+		return new File(dir, type+"."+chunkId+DOT_HTML);
 	}
 
-	public void outputHtmlChunk(HtmlElement div) {
-		String id = div.getId();
-		File htmlFile = createHtmlChunkFile(id);
-		outputFile( div, htmlFile);
-	}
+//	public void outputHtmlChunk(HtmlElement div) {
+//		String id = div.getId();
+//		if (id == null) {
+//			System.out.println("ID "+div.toXML());
+//		}
+//		File htmlFile = createHtmlFile(ContainerType.CHUNK, id);
+//		outputFile( div, htmlFile);
+//	}
 
 	public static void outputFile(Element element, File file) {
 		try {
 			CMLUtil.debug(element, new FileOutputStream(file), 1);
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot write file: "+file, e);
+		}
+	}
+
+	public void setPDFAnalyzer(PDFAnalyzer pdfAnalyzer) {
+		this.pdfAnalyzer = pdfAnalyzer;
+	}
+
+	public boolean isOutputHtmlChunks() {
+		return pdfAnalyzer != null && pdfAnalyzer.pdfOptions != null &&
+				pdfAnalyzer.pdfOptions.outputHtmlChunks;
+	}
+
+	public boolean isOutputFigures() {
+		return pdfAnalyzer != null && pdfAnalyzer.pdfOptions != null &&
+				pdfAnalyzer.pdfOptions.outputFigures;
+	}
+
+	public boolean isOutputFooters() {
+		return pdfAnalyzer != null && pdfAnalyzer.pdfOptions != null &&
+				pdfAnalyzer.pdfOptions.outputFooters;
+	}
+
+	public boolean isOutputHeaders() {
+		return pdfAnalyzer != null && pdfAnalyzer.pdfOptions != null &&
+				pdfAnalyzer.pdfOptions.outputHeaders;
+	}
+
+	public boolean isOutputTables() {
+		return pdfAnalyzer != null && pdfAnalyzer.pdfOptions != null &&
+				pdfAnalyzer.pdfOptions.outputTables;
+	}
+
+	public static void copyChildElementsFromTo(HtmlElement fromElement, HtmlElement toElement) {
+		for (int i = 0; i < fromElement.getChildCount(); i++) {
+			toElement.appendChild(fromElement.getChild(i).copy());
 		}
 	}
 

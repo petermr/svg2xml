@@ -51,13 +51,15 @@ public class ImageContainer extends AbstractContainer  {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlDiv div = new HtmlDiv();
-		HtmlImg imgElement = new HtmlImg();
-		imgElement.setAlt("Image NYI");
-		div.appendChild(imgElement);
-		HtmlP p = new HtmlP("PATH");
-		div.appendChild(p);
-		return div;
+		if (htmlElement == null) {
+			htmlElement = new HtmlDiv();
+			HtmlImg imgElement = new HtmlImg();
+			imgElement.setAlt("Image NYI");
+			htmlElement.appendChild(imgElement);
+			HtmlP p = new HtmlP("PATH");
+			htmlElement.appendChild(p);
+		}
+		return htmlElement;
 	}
 	
 	public List<SVGImage> getImageList() {

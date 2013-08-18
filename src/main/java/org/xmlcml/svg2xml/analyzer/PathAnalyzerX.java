@@ -33,7 +33,6 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -78,10 +77,6 @@ public class PathAnalyzerX extends AbstractAnalyzer {
 	private List<SVGPath> pathList;
 	
 	public PathAnalyzerX() {
-	}
-
-	public PathAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
 	}
 
 	public void readPathList(List<SVGPath> pathList) {

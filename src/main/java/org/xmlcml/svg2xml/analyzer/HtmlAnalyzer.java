@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
+
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -23,7 +24,6 @@ import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 /** container for  HtmlElement
@@ -51,8 +51,8 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 	private HtmlEditor htmlEditor;
 	private Integer serial;
 	
-	public HtmlAnalyzer(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
+	public HtmlAnalyzer() {
+		super();
 	}
 	
 	/** 

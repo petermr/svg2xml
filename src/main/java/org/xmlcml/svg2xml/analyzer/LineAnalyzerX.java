@@ -9,8 +9,6 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Vector2;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.svg2xml.action.PathNormalizerActionX;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.paths.Axis;
 import org.xmlcml.svg2xml.tools.PlotBox;
 
@@ -21,6 +19,7 @@ public class LineAnalyzerX extends AbstractAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(LineAnalyzerX.class);
 
+	private final static Double EPS = 0.0001;
 	private final static Vector2 XAXIS = new Vector2(1.0, 0.0);
 	private List<SVGLine> lines;
 	private Multimap<Integer, SVGLine> lineAngleMap;
@@ -32,10 +31,6 @@ public class LineAnalyzerX extends AbstractAnalyzer {
 	protected LineAnalyzerX() {
 	}
 	
-	public LineAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
-	}
-
 	/** copy lines for analysis
 	 * 
 	 * @param lines
@@ -78,8 +73,8 @@ public class LineAnalyzerX extends AbstractAnalyzer {
 
 	private void findAxes() {
 		plotBoxList = new ArrayList<PlotBox>();
-		AxisAnalyzerX axisAnalyzerX = new AxisAnalyzerX(svgg, semanticDocumentActionX);
-		axisAnalyzerX.createVerticalHorizontalAxisList(lines, PathNormalizerActionX.EPS);
+		AxisAnalyzerX axisAnalyzerX = new AxisAnalyzerX(svgg);
+		axisAnalyzerX.createVerticalHorizontalAxisList(lines, EPS);
 		plotBox = axisAnalyzerX.getPlotBox();
 		if (plotBox != null) {
 			plotBoxList.add(plotBox);

@@ -12,7 +12,7 @@ public class PDFAnalyzerTest {
 
 	@Test
 	// maven fails on memory but Eclipse runs
-	@Ignore
+//	@Ignore
 	public void testPDFAnalyzerPDF() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(Fixtures.MULTIPLE312_PDF);
@@ -21,7 +21,7 @@ public class PDFAnalyzerTest {
 
 	@Test
 	// maven fails on memory
-	@Ignore
+//	@Ignore
 	public void testPDFAnalyzerSVG() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.setRawSvgDirectory(Fixtures.SVG_MULTIPLE312_DIR);

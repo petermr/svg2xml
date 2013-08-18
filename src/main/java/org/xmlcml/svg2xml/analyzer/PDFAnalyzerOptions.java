@@ -8,9 +8,15 @@ package org.xmlcml.svg2xml.analyzer;
 public class PDFAnalyzerOptions {
 
 	boolean summarize = false;
-	boolean outputChunks = true;
 	PDFAnalyzer pdfAnalyzer;
-	boolean outputHtmlChunks;
+	boolean outputChunks = true;
+	boolean outputHtmlChunks = true;
+	boolean outputFigures = true;
+	boolean outputFooters = false;
+	boolean outputHeaders = false;
+	boolean outputTables = true;
+	boolean outputRunningText = true;
+	public boolean outputHtml = true;
 
 	public PDFAnalyzerOptions(PDFAnalyzer pdfAnalyzer) {
 		this.pdfAnalyzer = pdfAnalyzer;

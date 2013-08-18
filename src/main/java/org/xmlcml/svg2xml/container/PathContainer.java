@@ -55,10 +55,10 @@ public class PathContainer extends AbstractContainer  {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlElement elem = super.createHtmlElement();
+		super.createHtmlElement();
 		HtmlP p = new HtmlP("PATH");
-		elem.appendChild(p);
-		return elem;
+		htmlElement.appendChild(p);
+		return htmlElement;
 	}
 
 	public List<SVGPath> getPathList() {

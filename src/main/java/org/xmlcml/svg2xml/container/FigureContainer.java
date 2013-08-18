@@ -36,10 +36,10 @@ public class FigureContainer extends AbstractContainer  {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlElement elem =  super.createHtmlElement();
+		super.createHtmlElement();
 		HtmlP p = new HtmlP("FIGURE");
-		elem.appendChild(p);
-		return elem;
+		htmlElement.appendChild(p);
+		return htmlElement;
 	}
 
 	public SVGG createSVGGChunk() {

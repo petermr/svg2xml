@@ -27,11 +27,11 @@ public class TableContainer extends AbstractContainer {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlTable tableElement = new HtmlTable();
+		htmlElement = new HtmlTable();
 		HtmlCaption caption = new HtmlCaption();
 		caption.appendChild("Table NYI");
-		tableElement.appendChild(caption);
-		return tableElement;
+		htmlElement.appendChild(caption);
+		return htmlElement;
 	}
 
 	

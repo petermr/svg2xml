@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.List;
 
 import nu.xom.Builder;
-import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
@@ -12,8 +11,6 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svg2xml.action.AbstractActionX;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.analyzer.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.tools.Chunk;
 
@@ -167,19 +164,7 @@ public class Fixtures {
 	public static final File RAW_GEO310_SVG_PAGE13 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page13.svg");
 	public static final File RAW_GEO310_SVG_PAGE14 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page14.svg");
 
-	public static AbstractActionX getSemanticDocumentAction(File commandFile) {
-		AbstractActionX semanticDocumentAction = null;
-		try {
-			Element element = new Builder().build(commandFile).getRootElement();
-			semanticDocumentAction = SemanticDocumentActionX.createSemanticDocument(element);
-		} catch (Exception e) {
-			throw new RuntimeException("Cannot create semanticDocumentAction ", e);
-		}
-		return semanticDocumentAction;
-	}
-	
-	public static void drawChunkBoxes(AbstractActionX semanticDocumentAction,
-			List<Chunk> finalChunkList) {
+	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
 			SVGRect bbox = chunk.createGraphicalBoundingBox();
 			if (bbox != null) {
@@ -224,7 +209,7 @@ public class Fixtures {
 	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
 		SVGSVG svgPage = Fixtures.getSVGPageFromPDF(pdfFile, pageNum);
 		LOG.debug("svgPage "+svgPage.query("//*").size());
-		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX(new SemanticDocumentActionX());
+		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgPage);
 		return svgPage;
 	}

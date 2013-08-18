@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -41,8 +40,8 @@ public class PageFontSizeAnalyzerX extends AbstractAnalyzer {
 		return elementsByFontSize;
 	}
 
-	public PageFontSizeAnalyzerX(SemanticDocumentActionX semanticDocumentAction) {
-		super(semanticDocumentAction);
+	public PageFontSizeAnalyzerX() {
+		super();
 	}
 	
 	public void analyze() {

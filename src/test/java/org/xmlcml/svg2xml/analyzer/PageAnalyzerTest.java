@@ -45,7 +45,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testPageAnalyzer8() {
-		PageAnalyzer pageAnalyzer = new PageAnalyzer(TextFixtures.createSVG(TextFixtures.BMC_312MULT_8_SVG));
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(TextFixtures.createSVG(TextFixtures.BMC_312MULT_8_SVG), null);
 //		PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
 		pageAnalyzer.splitChunksAnnotateAndCreatePage();
 //		pageAnalyzer.analyze();
@@ -202,7 +202,7 @@ public class PageAnalyzerTest {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
-		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\"><span>Hiwatashi <span> </span></span><span><i>et al</i><span> </span></span><span>. <span> </span></span><span><i>BMC Evolutionary Biology </i><span> </span></span><span>2011, <span> </span></span><span><b>11</b><span> </span></span><span>:312<span> </span></span><span>http://www.biomedcentral.com/1471-2148/11/312<span> </span></span></div>",
+		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\"><span>Hiwatashi <span> </span></span><span><i>et al</i><span> </span></span><span>. <span> </span></span><span><i>BMC Evolutionary Biology </i><span> </span></span><span>2011, <span> </span></span><span><b>11</b><span> </span></span><span>:312<span> </span></span><span>http://www.biomedcentral.com/1471-2148/11/312<span> </span></span></div>",
 				containerList.get(0).createHtmlElement().toXML());
 	}
 	
@@ -214,7 +214,7 @@ public class PageAnalyzerTest {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
-		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\"><span>L opsin gene of two African hominoids, humans[18] and<span> </span>" +
+		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\"><span>L opsin gene of two African hominoids, humans[18] and<span> </span>" +
 				"</span><span>chimpanzees (primarily <span> </span></span><span><i>P. t. verus</i><span> </span></span>" +
 				"<span>) [25]. In the present<span> </span></span><span>study, we focused on gibbons(Family Hylobatidae), com-</span>" +
 				"<span>monly known as the lesser apes, for which normal tri-</span>" +

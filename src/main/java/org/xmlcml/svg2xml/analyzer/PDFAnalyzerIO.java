@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
 import org.xmlcml.svg2xml.util.NameComparator;
 
 /** class to deal with IO from PDFAnalyzer
@@ -150,17 +153,24 @@ public class PDFAnalyzerIO {
 		return outputDocumentDir;
 	}
 
-	File[] collectRawSVGFiles() {
+	List<File> collectRawSVGFiles() {
 		File[] rawSvgPageFiles = rawSvgDirectory.listFiles();
+		List<File> files = new ArrayList<File>();
 		LOG.debug("analyzing Files in: "+rawSvgDirectory);
 		if (rawSvgPageFiles == null) {
 			throw new RuntimeException("No files in "+rawSvgDirectory);
 		} else {
-			for (File rawSvgPageFile : rawSvgPageFiles) {
-				LOG.debug(rawSvgPageFile);
+			// sort by integer page number "page12.svg"
+			for (int i = 0; i < rawSvgPageFiles.length; i++) {
+				for (int j = 0; j < rawSvgPageFiles.length; j++) {
+					File filej = rawSvgPageFiles[j];
+					if (filej.getName().contains("page"+(i+1)+".svg")) {
+						files.add(filej);
+					}
+				}
 			}
 		}
-		return rawSvgPageFiles;
+		return files;
 	}
 
 	public File getRawSVGPageDirectory() {
@@ -175,7 +185,19 @@ public class PDFAnalyzerIO {
 		for (PageAnalyzer pageAnalyzer : pdfAnalyzer.getPageAnalyzerList()) {
 			if (options.summarize) pageAnalyzer.summaryContainers();
 			if (options.outputChunks) pageAnalyzer.outputChunks();
-			if (options.outputHtmlChunks) pageAnalyzer.outputHtmlChunks();
+			if (options.outputHtmlChunks ||
+					options.outputFigures ||
+					options.outputTables) {
+				pageAnalyzer.outputHtmlComponents();
+			}
+			if (options.outputRunningText) {
+				pageAnalyzer.outputHtmlRunningText();
+			}
+		}
+		if (options.outputRunningText) {
+			pdfAnalyzer.createRunningHtml();
+			outputDocumentDir = PageIO.createfinalSVGDocumentDirectory(rawSvgDirectory);
+			PageIO.outputFile(pdfAnalyzer.getRunningTextHtml(), PageIO.createHtmlFile(outputDocumentDir, ContainerType.TEXT, "0"));
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -8,7 +9,6 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.paths.Axis;
 import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
@@ -45,8 +45,8 @@ public class AxisAnalyzerX extends AbstractAnalyzer {
 
 	private PlotBox plotBox;
 
-	public AxisAnalyzerX(SVGElement container, SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
+	public AxisAnalyzerX(SVGElement container) {
+		super();
 		this.container = container;
 	}
 	

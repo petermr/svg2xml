@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +28,6 @@ import org.xmlcml.graphics.svg.SVGMarker;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.paths.Axis;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager;
@@ -68,10 +68,6 @@ public class PolylineAnalyzerX extends AbstractAnalyzer {
 	public PolylineAnalyzerX() {
 	}
 
-	public PolylineAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
-	}
-	
 //	public void analyzePolylines() {
 //		polylines = new ArrayList<SVGPolyline>();
 //		List<SVGElement> svgElems = SVGUtil.getQuerySVGElements(

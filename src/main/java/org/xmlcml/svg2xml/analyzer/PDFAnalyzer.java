@@ -2,12 +2,8 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FilenameFilter;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,17 +12,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
+import nu.xom.Element;
+
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlMenuSystem;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
-import org.xmlcml.svg2xml.util.NameComparator;
-import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 import com.google.common.collect.Multimap;
 
@@ -43,7 +36,9 @@ public class PDFAnalyzer /*implements Annotatable */{
 	PDFIndex pdfIndex;
 	// created by analyzing pages
 	private List<PageAnalyzer> pageAnalyzerList;
-	private PDFAnalyzerOptions pdfOptions;
+	PDFAnalyzerOptions pdfOptions;
+
+	private HtmlElement runningTextElement;
 
 	public PDFAnalyzer() {
 		pdfIo = new PDFAnalyzerIO(this);
@@ -196,15 +191,22 @@ public class PDFAnalyzer /*implements Annotatable */{
 
 	private List<PageAnalyzer> createAndFillPageAnalyzers() {
 		File rawSVGDirectory = pdfIo.getRawSVGPageDirectory();
-		File[] rawSvgPageFiles =pdfIo.collectRawSVGFiles();
+		List<File> rawSvgPageFiles =pdfIo.collectRawSVGFiles();
 		ensurePageAnalyzerList();
-		LOG.debug(rawSVGDirectory+" files: "+rawSvgPageFiles.length);
-		for (int pageCounter = 0; pageCounter < rawSvgPageFiles.length; pageCounter++) {
+		LOG.debug(rawSVGDirectory+" files: "+rawSvgPageFiles.size());
+		for (int pageCounter = 0; pageCounter < rawSvgPageFiles.size(); pageCounter++) {
 			SYSOUT.print(pageCounter+"~");
-			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(rawSvgPageFiles[pageCounter], rawSVGDirectory, pageCounter);
+			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(rawSvgPageFiles.get(pageCounter), rawSVGDirectory, pageCounter);
 			pageAnalyzerList.add(pageAnalyzer);
 		}
 		return pageAnalyzerList;
+	}
+	
+	public void createRunningHtml() {
+		runningTextElement = new HtmlDiv();
+		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
+			PageIO.copyChildElementsFromTo(pageAnalyzer.getRunningHtmlElement(), runningTextElement);
+		}
 	}
 
 	private void ensurePageAnalyzerList() {
@@ -268,6 +270,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 //		ensureHtmlEditor();
 		LOG.error("HTMLEditor NYI");
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
+			pageAnalyzer.createHtml();
 //			ChunkId chunkId = ChunkId.createChunkId(gChunk);
 //			AbstractAnalyzer analyzerX = AbstractAnalyzer.createSpecificAnalyzer(gChunk);
 //			HtmlAnalyzer htmlAnalyzer = new HtmlAnalyzer(htmlEditor, analyzerX);
@@ -356,6 +359,10 @@ public class PDFAnalyzer /*implements Annotatable */{
 
 	public List<PageAnalyzer> getPageAnalyzerList() {
 		return pageAnalyzerList;
+	}
+
+	public Element getRunningTextHtml() {
+		return runningTextElement;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +15,6 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.tools.Chunk;
 import org.xmlcml.svg2xml.tools.SplitterParams;
@@ -67,8 +67,8 @@ public class WhitespaceChunkerAnalyzerX extends AbstractAnalyzer {
 
 	private Chunk topChunk;
 
-	public WhitespaceChunkerAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
+	public WhitespaceChunkerAnalyzerX() {
+		super();
 		init();
 	}
 	
@@ -82,9 +82,8 @@ public class WhitespaceChunkerAnalyzerX extends AbstractAnalyzer {
 		);
 	}
 
-	public static List<Chunk> chunkCreateWhitespaceChunkList(SemanticDocumentActionX semanticDocumentAction) {
-		SVGSVG svgPage = semanticDocumentAction.getSVGPage();
-		WhitespaceChunkerAnalyzerX pageChunkSplitterAnalyzer = new WhitespaceChunkerAnalyzerX(semanticDocumentAction);
+	public static List<Chunk> chunkCreateWhitespaceChunkList(SVGSVG svgPage) {
+		WhitespaceChunkerAnalyzerX pageChunkSplitterAnalyzer = new WhitespaceChunkerAnalyzerX();
 		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace(svgPage);
 		return finalChunkList;
 	}

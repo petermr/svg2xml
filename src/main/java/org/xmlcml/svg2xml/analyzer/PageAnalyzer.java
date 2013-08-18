@@ -1,12 +1,11 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import nu.xom.Element;
@@ -31,11 +30,9 @@ import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlStyle;
 import org.xmlcml.html.HtmlTitle;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
 import org.xmlcml.svg2xml.tools.Chunk;
-import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /**
  * @author pm286
@@ -50,19 +47,19 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	public final static String TITLE = "PAGE";
 	final static PrintStream SYSOUT = System.out;
 	
-//	private List<AbstractContainer> pageAnalyzerContainerList;
 	private int aggregatedContainerCount;
 	private PageIO pageIo;
-
 	private List<AbstractContainer> abstractContainerList;
+	private HtmlElement runningTextHtmlElement;
 	
 	private PageAnalyzer() {
 		pageIo = new PageIO();
 	}	
 
-	public PageAnalyzer(SVGSVG svgPage) {
+	public PageAnalyzer(SVGSVG svgPage, PDFAnalyzer pdfAnalyzer) {
 		this();
 		pageIo.setSvgInPage(svgPage);
+		pageIo.setPDFAnalyzer(pdfAnalyzer);
 	}
 
 	public PageAnalyzer(File svgPageFile) {
@@ -106,11 +103,14 @@ public class PageAnalyzer extends AbstractAnalyzer {
 			newContainer.setChunkId(chunkId); 
 			abstractContainerList.add(newContainer);
 			SVGG gOut = newContainer.createSVGGChunk();
+			gOut.setId(chunkId.toString());
 			gOut = annotateChunkAndAddIdAndAttributes(gOut, chunkId, analyzer, PageEditorX.DECIMAL_PLACES);
 			newContainer.setSVGChunk(gOut);
+			newContainer.setChunkId(chunkId);
+			LOG.debug("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
 			pageIo.add(gOut);
+			aggregatedContainerCount++;
 		}
-		aggregatedContainerCount++;
 	}
 
 
@@ -213,10 +213,8 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	}
 
 	private List<Chunk> createWhitespaceSeparatedChunks() {
-		SemanticDocumentActionX semanticDocumentAction = 
-				SemanticDocumentActionX.createSemanticDocumentActionWithSVGPage(pageIo.getRawSVGPage());
 		List<Chunk> chunkList = 
-				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(semanticDocumentAction);
+				WhitespaceChunkerAnalyzerX.chunkCreateWhitespaceChunkList(pageIo.getRawSVGPage());
 		return chunkList;
 	}
 
@@ -417,23 +415,52 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		}
 	}
 
-	public void outputHtmlChunks() {
+	public void outputHtmlComponents() {
 		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
-		SYSOUT.println(".......................");
+		LOG.debug(".......................");
+		Set<ChunkId> chunkIdSet = new HashSet<ChunkId>(); 
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			ChunkId chunkId = abstractContainer.getChunkId();
-			HtmlElement element = abstractContainer.createHtmlElement();
-			File file = pageIo.createHtmlChunkFile(chunkId.toString());
-			PageIO.outputFile(element, file);
-			LOG.trace(abstractContainer.getClass() + " " + chunkId);
+			if (chunkId == null) {
+				// probably a bug
+				throw new RuntimeException("Null chunkId in "+abstractContainer.getClass()+" "+abstractContainer.getChunkId());
+			}
+				normalizeDuplicateChunkId(chunkIdSet, abstractContainer, chunkId);
+				LOG.trace(abstractContainer.getClass()+" "+chunkId+" "+abstractContainer.getType());
+				HtmlElement element = abstractContainer.createHtmlElement();
+				ContainerType type = abstractContainer.getType();
+				if (pageIo.isOutputFigures() && ContainerType.FIGURE.equals(type)) {
+				} else if (pageIo.isOutputTables() && ContainerType.TABLE.equals(type)) {
+				} else if (pageIo.isOutputHtmlChunks() && ContainerType.CHUNK.equals(type)) {
+				} else if (pageIo.isOutputHeaders() && ContainerType.HEADER.equals(type)) {
+				} else if (pageIo.isOutputFooters() && ContainerType.FOOTER.equals(type)) {
+				}
+				if (type != null) {
+					File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), type, chunkId.toString());
+					PageIO.outputFile(element, file);
+				}
+				chunkIdSet.add(chunkId);
+		}
+	}
+
+	private void normalizeDuplicateChunkId(Set<ChunkId> chunkIdSet,
+			AbstractContainer abstractContainer, ChunkId chunkId) {
+		// sometimes some duplicates (this is a bug in parsing paragraphs and is crude and
+		// should be eliminated
+		if (chunkIdSet.contains(chunkId)) {
+			chunkId.setSubChunkNumber(new Integer(1));
+			if (chunkIdSet.contains(chunkId)) {
+				LOG.debug(abstractContainer.getClass()+" "+chunkId);
+			}
+			abstractContainer.setChunkId(chunkId);
 		}
 	}
 	
-	private void outputHtml() {
-		HtmlElement div = this.createHtml();
-		SYSOUT.println("*************************HTML**************************"+div.getId()+">>>>>> \n");
-		pageIo.outputHtmlChunk(div);
-	}
+//	void outputHtml() {
+//		HtmlElement div = this.createHtml();
+//		SYSOUT.println("*************************HTML**************************"+div.getId()+">>>>>> \n");
+//		pageIo.outputHtmlChunk(div);
+//	}
 	
 	public static PageAnalyzer createAndAnalyze(File rawSvgPageFile) {
 		return createAndAnalyze(rawSvgPageFile, (File) null, 1);
@@ -446,6 +473,42 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		pageAnalyzer.splitChunksAnnotateAndCreatePage();
 		LOG.trace(pageAnalyzer.getPageIO().toString());
 		return pageAnalyzer;
+	}
+
+	public void outputHtmlRunningText() {
+		HtmlElement div = this.createRunningHtml();
+		div.setId(String.valueOf(pageIo.getHumanPageNumber()));
+		SYSOUT.println("*************************HTML**************************"+div.getId()+">>>>>> \n");
+		File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), ContainerType.TEXT, div.getId());
+		PageIO.outputFile(div, file);
+	}
+
+	private HtmlElement createRunningHtml() {
+		runningTextHtmlElement = new HtmlDiv();
+		for (AbstractContainer abstractContainer : abstractContainerList) {
+			ContainerType type = abstractContainer.getType();
+			if (ContainerType.HEADER.equals(abstractContainer.getType())) {
+//				addSee(element, type);
+			} else if (ContainerType.FOOTER.equals(abstractContainer.getType())) {
+			} else if (ContainerType.FIGURE.equals(type)) {
+				addSee(runningTextHtmlElement, type);
+			} else if (ContainerType.TABLE.equals(type)) {
+				addSee(runningTextHtmlElement, type);
+			} else {
+				HtmlElement div = abstractContainer.createHtmlElement();
+				PageIO.copyChildElementsFromTo(div, runningTextHtmlElement);
+			}
+		}
+		return runningTextHtmlElement;
+	}
+
+	private void addSee(HtmlElement element, ContainerType type) {
+		HtmlElement p = new HtmlP("see "+type);
+		element.appendChild(p);
+	}
+
+	public HtmlElement getRunningHtmlElement() {
+		return runningTextHtmlElement;
 	}
 
 }

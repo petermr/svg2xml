@@ -10,7 +10,6 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -53,8 +52,8 @@ public class PageClipPathAnalyzerX  extends AbstractAnalyzer {
 	private Multimap<String, SVGPath> pathsByClip;
 	private Multimap<String, SVGText> textsByClip;
 
-	public PageClipPathAnalyzerX(SemanticDocumentActionX semanticDocumentAction) {
-		super(semanticDocumentAction);
+	public PageClipPathAnalyzerX() {
+		super();
 	}
 	
 	public void analyze() {

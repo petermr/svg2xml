@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.util.List;
 
+
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGG;
@@ -11,7 +12,6 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.tools.Chunk;
 import org.xmlcml.svg2xml.tools.PlotBox;
 
@@ -33,13 +33,8 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	private Chunk chunk;
 	private PlotBox plotBox;
 
-
-	public ChunkAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
-	}
-
 	public ChunkAnalyzerX() {
-		super(new SemanticDocumentActionX());
+		super();
 	}
 
 	public void analyzeChunk(Chunk chunk) {
@@ -99,7 +94,7 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	
 	private AbstractAnalyzer ensureTextAnalyzer() {
 		if (textAnalyzerX == null) {
-			textAnalyzerX = new TextAnalyzerX(semanticDocumentActionX);
+			textAnalyzerX = new TextAnalyzerX();
 		}
 		return textAnalyzerX;
 	}
@@ -107,7 +102,7 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	private void analyzePaths() {
 		ensurePaths();
 		if (paths.size() > 0) {
-			pathAnalyzerX = new PathAnalyzerX(semanticDocumentActionX);
+			pathAnalyzerX = new PathAnalyzerX();
 			pathAnalyzerX.interpretPathsAsRectCirclePolylineAndReplace();
 		}
 	}
@@ -115,7 +110,7 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	private void analyzeLines() {
 		lines = SVGLine.extractLines(SVGUtil.getQuerySVGElements(chunk, ".//svg:line"));
 		if (lines.size() > 0) {
-			lineAnalyzerX = new LineAnalyzerX(semanticDocumentActionX);
+			lineAnalyzerX = new LineAnalyzerX();
 			lineAnalyzerX.analyzeLinesAsAxesAndWhatever(chunk, lines);
 		}
 	}
@@ -128,7 +123,7 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	private void analyzePolylines() {
 		polylines = SVGPolyline.extractPolylines(SVGUtil.getQuerySVGElements(chunk, ".//svg:polyline"));
 		if (polylines.size() > 0) {
-			polylineAnalyzerX = new PolylineAnalyzerX(semanticDocumentActionX);
+			polylineAnalyzerX = new PolylineAnalyzerX();
 			polylineAnalyzerX.analyzePolylines(chunk, polylines);
 		}
 	}

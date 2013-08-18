@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import nu.xom.Attribute;
@@ -12,7 +13,6 @@ import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
 
@@ -34,10 +34,6 @@ public class ImageAnalyzerX extends AbstractAnalyzer {
 	
 	public ImageAnalyzerX() {
 		super();
-	}
-	
-	public ImageAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
 	}
 	
 	public void readImageList(List<SVGImage> imageList) {

@@ -1,6 +1,8 @@
 package org.xmlcml.svg2xml.analyzer;
 
+
 import java.util.ArrayList;
+
 import java.util.List;
 
 import nu.xom.Attribute;
@@ -12,7 +14,6 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.table.TableOld;
 
@@ -84,14 +85,7 @@ public class PageEditorX {
 
 	private Integer rotationAngle;
 
-	private SemanticDocumentActionX semanticDocumentActionX;
-
 	private PageEditorX() {
-	}
-
-	public PageEditorX(SemanticDocumentActionX semanticDocumentActionX) {
-		this();
-		this.semanticDocumentActionX = semanticDocumentActionX;
 	}
 
 	public static void removeUnwantedSVGAttributesAndAddIds(SVGSVG svgPage) {
@@ -125,7 +119,7 @@ public class PageEditorX {
 	
 	public PathAnalyzerX ensurePathAnalyzer() {
 		if (pathAnalyzerX == null) {
-			pathAnalyzerX = new PathAnalyzerX(semanticDocumentActionX);
+			pathAnalyzerX = new PathAnalyzerX();
 		}
 		return pathAnalyzerX;
 	}
@@ -184,28 +178,28 @@ public class PageEditorX {
 
 	public WhitespaceChunkerAnalyzerX ensureWhiteSpaceChunker() {
 		if (pageChunkSplitterX == null) {
-			pageChunkSplitterX = new WhitespaceChunkerAnalyzerX(semanticDocumentActionX);
+			pageChunkSplitterX = new WhitespaceChunkerAnalyzerX();
 		}
 		return pageChunkSplitterX;
 	}
 
 	public TextAnalyzerX ensureTextAnalyzer() {
 		if (textAnalyzerX == null) {
-			textAnalyzerX = new TextAnalyzerX(semanticDocumentActionX);
+			textAnalyzerX = new TextAnalyzerX();
 		}
 		return textAnalyzerX;
 	}
 
 	public FigureAnalyzerX ensureFigureAnalyzer() {
 		if (figureAnalyzerX == null) {
-			figureAnalyzerX = new FigureAnalyzerX(semanticDocumentActionX);
+			figureAnalyzerX = new FigureAnalyzerX();
 		}
 		return figureAnalyzerX;
 	}
 
 	public TableAnalyzerX ensureTableAnalyzer() {
 		if (tableAnalyzerX == null) {
-			tableAnalyzerX = new TableAnalyzerX(semanticDocumentActionX);
+			tableAnalyzerX = new TableAnalyzerX();
 		}
 		return tableAnalyzerX;
 	}
@@ -280,7 +274,9 @@ public class PageEditorX {
 	
 	public boolean islastPage(int pageNumber) {
 		boolean isLastPage = false;
-		Object lastPageS = /*documentAnalyzer*/semanticDocumentActionX.getVariable(DocumentAnalyzerX.REPORTED_PAGE_COUNT);
+//		Object lastPageS = /*documentAnalyzer*/semanticDocumentActionX.getVariable(DocumentAnalyzerX.REPORTED_PAGE_COUNT);
+		// FIXME
+		Object lastPageS = "-1"; // change this later
 		if (lastPageS != null && lastPageS instanceof String) {
 			try {
 				Integer lastPage = new Integer((String)lastPageS);
@@ -353,11 +349,4 @@ public class PageEditorX {
 		this.rotationAngle = angle;
 	}
 
-	public SemanticDocumentActionX getSemanticDocumentAction() {
-		return semanticDocumentActionX;
-	}
-
-	public void setSemanticDocumentAction(SemanticDocumentActionX semanticDocumentAction) {
-		this.semanticDocumentActionX = semanticDocumentAction;
-	}
 }

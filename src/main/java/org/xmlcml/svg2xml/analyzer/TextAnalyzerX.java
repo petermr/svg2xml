@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.analyzer;
 
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -27,7 +28,6 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.text.SimpleFont;
@@ -36,7 +36,6 @@ import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.TextStructurer.Splitter;
 import org.xmlcml.svg2xml.textextra.Paragraph;
-import org.xmlcml.svg2xml.textextra.TextChunkRUN;
 import org.xmlcml.svg2xml.textextra.Word;
 import org.xmlcml.svg2xml.textextra.WordSequence;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -89,7 +88,6 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 
 	private Chunk chunk;
 	private SVGElement svgParent;
-	private TextChunkRUN textChunk;
 	private List<Paragraph> paragraphList;
 
 	private List<Chunk> textChunkList;
@@ -105,13 +103,9 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	private HtmlElement createdHtmlElement;
 	
 	public TextAnalyzerX() {
-		this(new SemanticDocumentActionX());
+		super();
 	}
 	
-	public TextAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
-	}
-
 	public TextAnalyzerX(List<SVGText> characterList) {
 		this.setTextCharacters(characterList);
 	}
@@ -156,17 +150,17 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		this.getSpaceSizes();
 	}
 
-	private TextChunkRUN analyzeRawText(Chunk chunk) {
-		this.chunk = chunk;
-		this.svgParent = (chunk != null) ? chunk : pageEditorX.getSVGPage();
-		
-		this.getRawTextCharacterList();
-		this.createRawTextCharacterPositionMaps();
-		this.createHorizontalCharacterListAndCreateWords();
-		analyzeSpaces();
-		TextChunkRUN textChunk = this.createTextChunkWithParagraphs();
-		return textChunk;
-	}
+//	private TextChunkRUN analyzeRawText(Chunk chunk) {
+//		this.chunk = chunk;
+//		this.svgParent = (chunk != null) ? chunk : pageEditorX.getSVGPage();
+//		
+//		this.getRawTextCharacterList();
+//		this.createRawTextCharacterPositionMaps();
+//		this.createHorizontalCharacterListAndCreateWords();
+//		analyzeSpaces();
+//		TextChunkRUN textChunk = this.createTextChunkWithParagraphs();
+//		return textChunk;
+//	}
 	
 	private void getRawCharacterList(List<SVGElement> textElements) {
 		this.rawCharacterList = new TextLine(this);
@@ -368,18 +362,18 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		textList.add(rawCharacter);
 	}
 
-	/** creates a list of the listOfWordsInLine
-	 * 
-	 * @param simpleFont
-	 * @return
-	 */
-	private TextChunkRUN createTextChunkWithParagraphs() {
-		createWordsAndAddToWordSequenceListRUN();
-		textChunk = new TextChunkRUN(chunk, wordSequenceList);
-		paragraphList = textChunk.createParagraphs();
-		addParagraphsAsSVG();
-		return textChunk;
-	}
+//	/** creates a list of the listOfWordsInLine
+//	 * 
+//	 * @param simpleFont
+//	 * @return
+//	 */
+//	private TextChunkRUN createTextChunkWithParagraphs() {
+//		createWordsAndAddToWordSequenceListRUN();
+//		textChunk = new TextChunkRUN(chunk, wordSequenceList);
+//		paragraphList = textChunk.createParagraphs();
+//		addParagraphsAsSVG();
+//		return textChunk;
+//	}
 	
 	private void addParagraphsAsSVG() {
 		for (Paragraph paragraph : paragraphList) {
@@ -439,47 +433,47 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		wordSequenceList.add(paragraphMarkerSequence);
 	}
 
-	public void analyzeTextChunksCreateWordsLinesParasAndSubSupRUN(List<SVGElement> chunkElements) {
-		TextChunkRUN lastMainTextChunk = null;
-		TextChunkRUN lastScriptTextChunk = null;
-		TextChunkRUN textChunk = null;
-		List<Chunk> chunks = TextAnalyzerUtils.castToChunks(chunkElements);
-		ensureTextChunkList();
-		int id = 0;
-		for (Chunk chunk : chunks) {
-			if (chunk.isTextChunk()) {
-				chunk.setId(ID_PREFIX+id);
-				if (SVGUtil.getQuerySVGElements(chunk, "svg:g").size() == 0) {
-					TextAnalyzerX textAnalyzer = new TextAnalyzerX(semanticDocumentActionX);
-					textChunk = textAnalyzer.analyzeRawText(chunk);
-					// processing a probable sub/superscript
-					if (textChunk.isSuscript()) {
-						lastScriptTextChunk = analyzeSubSup(lastMainTextChunk, lastScriptTextChunk, textChunk);
-					} else {
-						analyzeBodyText(lastScriptTextChunk, textChunk);
-						lastMainTextChunk = textChunk;
-					}
-					ensureParagraphList();
-					List<Paragraph> paraList = textAnalyzer.getParagraphList();
-					paragraphList.addAll(paraList);
-				}
-				Chunk parentChunk = (Chunk)chunk.getParent();
-//				parentChunk.setChunkStyleValue(ChunkStyle.TEXT_CHUNK);
-//				removeIfSubSup(chunk);
-				TextAnalyzerUtils.cleanAndWordWrapText(chunk);
-				parentChunk.addAttribute(new Attribute(CHUNK, TEXT));
-				textChunkList.add(parentChunk);
-			}
-			id++;
-		}
-	}
+//	public void analyzeTextChunksCreateWordsLinesParasAndSubSupRUN(List<SVGElement> chunkElements) {
+//		TextChunkRUN lastMainTextChunk = null;
+//		TextChunkRUN lastScriptTextChunk = null;
+//		TextChunkRUN textChunk = null;
+//		List<Chunk> chunks = TextAnalyzerUtils.castToChunks(chunkElements);
+//		ensureTextChunkList();
+//		int id = 0;
+//		for (Chunk chunk : chunks) {
+//			if (chunk.isTextChunk()) {
+//				chunk.setId(ID_PREFIX+id);
+//				if (SVGUtil.getQuerySVGElements(chunk, "svg:g").size() == 0) {
+//					TextAnalyzerX textAnalyzer = new TextAnalyzerX();
+//					textChunk = textAnalyzer.analyzeRawText(chunk);
+//					// processing a probable sub/superscript
+//					if (textChunk.isSuscript()) {
+//						lastScriptTextChunk = analyzeSubSup(lastMainTextChunk, lastScriptTextChunk, textChunk);
+//					} else {
+//						analyzeBodyText(lastScriptTextChunk, textChunk);
+//						lastMainTextChunk = textChunk;
+//					}
+//					ensureParagraphList();
+//					List<Paragraph> paraList = textAnalyzer.getParagraphList();
+//					paragraphList.addAll(paraList);
+//				}
+//				Chunk parentChunk = (Chunk)chunk.getParent();
+////				parentChunk.setChunkStyleValue(ChunkStyle.TEXT_CHUNK);
+////				removeIfSubSup(chunk);
+//				TextAnalyzerUtils.cleanAndWordWrapText(chunk);
+//				parentChunk.addAttribute(new Attribute(CHUNK, TEXT));
+//				textChunkList.add(parentChunk);
+//			}
+//			id++;
+//		}
+//	}
 	
 	public void analyzeSingleWordsOrLinesRUN(List<SVGElement> elements) {
 		horizontalCharacterList = new ArrayList<TextLine>();
 		subLineByYCoord = ArrayListMultimap.create();
 		for (SVGElement element : elements) {
 			if (hasNoSVGGChildren()) {
-				TextAnalyzerX textAnalyzer = new TextAnalyzerX(semanticDocumentActionX);
+				TextAnalyzerX textAnalyzer = new TextAnalyzerX();
 				textAnalyzer.analyzeRawText(element);
 				horizontalCharacterList.addAll(textAnalyzer.horizontalCharacterList);
 				for (TextLine subline : horizontalCharacterList) {
@@ -561,49 +555,46 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		return paragraphList;
 	}
 
-	private TextChunkRUN analyzeBodyText(TextChunkRUN lastScriptTextChunk, TextChunkRUN textChunk) {
-		if (lastScriptTextChunk != null) {
-			if (textChunk.hasSuperscriptsIn(lastScriptTextChunk)) {
-				textChunk.addSuperscriptsFrom(lastScriptTextChunk);
-				textChunk.detachChunk();
-				lastScriptTextChunk = null;
-			}
-		}
-		return lastScriptTextChunk;
-	}
-	
-	private TextChunkRUN analyzeSubSup(
-			TextChunkRUN lastMainTextChunk, TextChunkRUN lastScriptTextChunk, TextChunkRUN textChunk) {
-		if (lastMainTextChunk != null) {
-			if (lastMainTextChunk.hasSubscriptsIn(textChunk)) {
-				lastMainTextChunk.addSubscriptsFrom(textChunk);
-				textChunk.detachChunk();
-				lastScriptTextChunk = null;
-			} else {
-				// save for superscript
-				lastScriptTextChunk = textChunk;
-			}
-		}
-		return lastScriptTextChunk;
-	}
-
-	public void mergeChunksRUN() {
-		List<SVGElement> textChunkList1 = SVGUtil.getQuerySVGElements(pageEditorX.getSVGPage(), ".//svg:g[@"+TEXT+"='"+CHUNK+"']");
-		for (SVGElement textChunk : textChunkList1) {
-			List<SVGElement> paraList = SVGUtil.getQuerySVGElements(textChunk, "./*/svg:g[@"+Paragraph.NAME+"='"+Paragraph.PARA+"']");
-			for (SVGElement paraElement : paraList) {
-				Paragraph paragraph = Paragraph.createElement(paraElement);
-				paragraph.createAndAddHtml();
-			}
-		}
-	}
+//	private TextChunkRUN analyzeBodyText(TextChunkRUN lastScriptTextChunk, TextChunkRUN textChunk) {
+//		if (lastScriptTextChunk != null) {
+//			if (textChunk.hasSuperscriptsIn(lastScriptTextChunk)) {
+//				textChunk.addSuperscriptsFrom(lastScriptTextChunk);
+//				textChunk.detachChunk();
+//				lastScriptTextChunk = null;
+//			}
+//		}
+//		return lastScriptTextChunk;
+//	}
+//	
+//	private TextChunkRUN analyzeSubSup(
+//			TextChunkRUN lastMainTextChunk, TextChunkRUN lastScriptTextChunk, TextChunkRUN textChunk) {
+//		if (lastMainTextChunk != null) {
+//			if (lastMainTextChunk.hasSubscriptsIn(textChunk)) {
+//				lastMainTextChunk.addSubscriptsFrom(textChunk);
+//				textChunk.detachChunk();
+//				lastScriptTextChunk = null;
+//			} else {
+//				// save for superscript
+//				lastScriptTextChunk = textChunk;
+//			}
+//		}
+//		return lastScriptTextChunk;
+//	}
+//
+//	public void mergeChunksRUN() {
+//		List<SVGElement> textChunkList1 = SVGUtil.getQuerySVGElements(pageEditorX.getSVGPage(), ".//svg:g[@"+TEXT+"='"+CHUNK+"']");
+//		for (SVGElement textChunk : textChunkList1) {
+//			List<SVGElement> paraList = SVGUtil.getQuerySVGElements(textChunk, "./*/svg:g[@"+Paragraph.NAME+"='"+Paragraph.PARA+"']");
+//			for (SVGElement paraElement : paraList) {
+//				Paragraph paragraph = Paragraph.createElement(paraElement);
+//				paragraph.createAndAddHtml();
+//			}
+//		}
+//	}
 
 	public SimpleFont ensureSimpleFont() {
 		if (this.simpleFont == null) {
-			simpleFont = pageEditorX.getSemanticDocumentAction().getSimpleFont();
-			if (this.simpleFont == null) {
-				simpleFont = SimpleFont.SIMPLE_FONT;
-			}
+			simpleFont = SimpleFont.SIMPLE_FONT;
 			if (this.simpleFont == null) {
 				//throw new RuntimeException("Cannot make simpleFont");
 				LOG.warn("Cannot make simpleFont");

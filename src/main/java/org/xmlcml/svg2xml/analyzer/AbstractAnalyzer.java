@@ -1,8 +1,8 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,9 +24,7 @@ import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
-import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public abstract class AbstractAnalyzer implements Annotatable {
@@ -34,15 +32,13 @@ public abstract class AbstractAnalyzer implements Annotatable {
 	private final static Logger LOG = Logger.getLogger(AbstractAnalyzer.class);
 
 	protected SVGG svgg; // current svg:gelement
-	protected SemanticDocumentActionX semanticDocumentActionX;
 	protected PageEditorX pageEditorX;
 	protected Real2Range bbox;
 	protected SVGElement parentElement;
 	List<ChunkId> idList;
-	private ChunkId chunkId;
+	protected ChunkId chunkId;
 	List<Integer> serialList;
 	protected PDFIndex pdfIndex;
-//	private PageAnalyzer pageAnalyzer;
 	protected List<AbstractContainer> abstractContainerList;
 
 	
@@ -54,24 +50,14 @@ public abstract class AbstractAnalyzer implements Annotatable {
 
 	protected AbstractAnalyzer() {
 	}
-
-	protected AbstractAnalyzer(SemanticDocumentActionX semanticDocumentActionX) {
-		this();
-		this.semanticDocumentActionX = semanticDocumentActionX;
-		this.pageEditorX = getPageEditor();
-	}
 	
 	public AbstractAnalyzer(PDFIndex pdfIndex) {
 		this();
 		this.pdfIndex = pdfIndex;
 	}
 
-	public PageEditorX getPageEditor() {
-		return semanticDocumentActionX == null ? null : semanticDocumentActionX.getPageEditor();
-	}
-	
 	public SVGSVG getSVGPage() {
-		return getPageEditor() == null ? null : getPageEditor().getSVGPage();
+		throw new RuntimeException("BUG");
 	}
 
 	private static void addBoldOrItalic(HtmlElement bi, Element parent) {

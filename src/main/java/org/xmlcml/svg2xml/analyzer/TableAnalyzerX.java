@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.List;
+
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -12,7 +13,6 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.table.TableTable;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
@@ -37,8 +37,8 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 
 	private List<SVGText> textList;
 	
-	public TableAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
+	public TableAnalyzerX() {
+		super();
 	}
 
 	public TableAnalyzerX(PDFIndex pdfIndex) {

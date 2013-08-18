@@ -44,7 +44,6 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private Double leftIndent1;
 
 	private TextStructurer textStructurer;
-	private ChunkId chunkId;
 	
 	public ScriptContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -71,18 +70,21 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		HtmlDiv divElement = new HtmlDiv();
-		List<StyleSpans> styleSpansList = this.getStyleSpansList();
-		for (int i = 0; i < styleSpansList.size(); i++) {
-			StyleSpans styleSpans = styleSpansList.get(i);
-			for (int j = 0; j < styleSpans.size(); j++) {
-				StyleSpan styleSpan = styleSpans.get(j);
-				HtmlElement htmlElement = styleSpan.getHtmlElement();
-				addJoiningSpace(htmlElement);
-				divElement.appendChild(htmlElement);
+		if (htmlElement == null) {
+			htmlElement = new HtmlDiv();
+			if (svgChunk != null) htmlElement.setId(svgChunk.getId());
+			List<StyleSpans> styleSpansList = this.getStyleSpansList();
+			for (int i = 0; i < styleSpansList.size(); i++) {
+				StyleSpans styleSpans = styleSpansList.get(i);
+				for (int j = 0; j < styleSpans.size(); j++) {
+					StyleSpan styleSpan = styleSpans.get(j);
+					HtmlElement htmlElement1 = styleSpan.getHtmlElement();
+					addJoiningSpace(htmlElement1);
+					htmlElement.appendChild(htmlElement1);
+				}
 			}
 		}
-		return divElement;
+		return htmlElement;
 	}
 	
 	private void addJoiningSpace(HtmlElement htmlElement) {
@@ -264,8 +266,12 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	}
 
 	public ChunkId getChunkId() {
+		super.getChunkId();
 		if (this.chunkId == null) {
 			this.chunkId = textStructurer == null ? null : textStructurer.getChunkId();
+			if (chunkId == null) {
+				chunkId = pageAnalyzer.getChunkId();
+			}
 		} 
 		return this.chunkId;
 	}

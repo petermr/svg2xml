@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -14,7 +15,6 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.action.SemanticDocumentActionX;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.figure.FigurePanel;
 import org.xmlcml.svg2xml.tools.Caption;
@@ -48,8 +48,8 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 	private PathAnalyzerX pathAnalyzer;
 	private ImageAnalyzerX imageAnalyzer;
 
-	public FigureAnalyzerX(SemanticDocumentActionX semanticDocumentActionX) {
-		super(semanticDocumentActionX);
+	public FigureAnalyzerX() {
+		super();
 	}
 	
 	public void analyze() {
