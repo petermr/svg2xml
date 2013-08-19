@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.DivContainer;
@@ -70,7 +71,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage1() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE1);
-		pageAnalyzer.analyze();
 //		LOG.debug(pageAnalyzer.toString());
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		Assert.assertNotNull("containers", containerList);
@@ -80,7 +80,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage1classes() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE1);
-		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{
@@ -102,7 +101,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage2classes() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{
@@ -120,7 +118,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage2Content() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkContainerRawContent(
 			new String[]{
@@ -187,7 +184,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2HtmlAll() throws Exception {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		int i = 0;
 		for (AbstractContainer container : containerList) {
@@ -200,7 +196,7 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2Html0() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
+//		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\"><span>Hiwatashi <span> </span></span><span><i>et al</i><span> </span></span><span>. <span> </span></span><span><i>BMC Evolutionary Biology </i><span> </span></span><span>2011, <span> </span></span><span><b>11</b><span> </span></span><span>:312<span> </span></span><span>http://www.biomedcentral.com/1471-2148/11/312<span> </span></span></div>",
 				containerList.get(0).createHtmlElement().toXML());
@@ -210,19 +206,34 @@ public class PageAnalyzerTest {
 	/** note this has wrongly elided 's'
 	 * 
 	 */
+	public void testPage2Html3_3() {
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.G2_3_3_SVG);
+		LOG.trace(SVGElement.readAndCreateSVG(Fixtures.G2_3_3_SVG).toXML());
+		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		// ids are computed so 2.0
+		Assert.assertEquals("html0", "" +
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\">" +
+				"<span>study, we focused on gibbons (Family Hylobatidae), com-</span>" +
+				"</div>",
+				containerList.get(0).createHtmlElement().toXML());
+	}
+
+	@Test
+	/** note this has wrongly elided 's'
+	 * 
+	 */
 	public void testPage2Html3() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
-		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\"><span>L opsin gene of two African hominoids, humans[18] and<span> </span>" +
+		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\"><span>L opsin gene of two African hominoids, humans [18] and<span> </span>" +
 				"</span><span>chimpanzees (primarily <span> </span></span><span><i>P. t. verus</i><span> </span></span>" +
-				"<span>) [25]. In the present<span> </span></span><span>study, we focused on gibbons(Family Hylobatidae), com-</span>" +
+				"<span>) [25]. In the present<span> </span></span><span>study, we focused on gibbons (Family Hylobatidae), com-</span>" +
 				"<span>monly known as the lesser apes, for which normal tri-</span>" +
-				"<span>chromacy isreported [30]. Gibbonsoccur in Asia and are<span> </span></span>" +
-				"<span>the most diverse and speciose of all living apes[31], mak-</span>" +
-				"<span>ing them an ideal group with which to assessthe range of<span> </span></span>" +
+				"<span>chromacy is reported [30]. Gibbons occur in Asia and are<span> </span></span>" +
+				"<span>the most diverse and speciose of all living apes [31], mak-</span>" +
+				"<span>ing them an ideal group with which to assess the range of<span> </span></span>" +
 				"<span>L/M opsin genetic variation. We examined the nucleotide<span> </span></span>" +
-				"<span>variation of both the L and M opsin genesby sequencing<span> </span></span>" +
+				"<span>variation of both the L and M opsin genes by sequencing<span> </span></span>" +
 				"<span>the 3.6~3.9-kb genomic region encompassing exon 3 to<span> </span></span>" +
 				"<span>exon 5 from individuals in five species and three genera<span> </span></span>" +
 				"<span>of gibbons.</span></div>",
@@ -232,7 +243,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2ScriptLineList0Content() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
 		ScriptContainer scriptContainer = (ScriptContainer) pageAnalyzer.getAbstractContainerList().get(0);
 		List<ScriptLine> scriptLineList = scriptContainer.getScriptLineList();
 		Assert.assertEquals("scriptLines", 2, scriptLineList.size());
@@ -273,7 +283,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage3classes() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE3);
-		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{

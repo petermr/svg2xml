@@ -68,8 +68,8 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		pageIo.setSvgInPage(svgPage);
 	}
 
-	public void analyze() {
-	}
+//	public void analyze() {
+//	}
 	
 	@Override
 	public SVGG oldAnnotateChunk() {

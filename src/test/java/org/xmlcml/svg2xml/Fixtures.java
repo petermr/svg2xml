@@ -122,6 +122,8 @@ public class Fixtures {
 	public static final File RAW_MULTIPLE312_SVG_PAGE13 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page13.svg");
 	public static final File RAW_MULTIPLE312_SVG_PAGE14 = new File(SVG_MULTIPLE312_DIR, "multiple-1471-2148-11-312-page14.svg");
 
+	public static final File G2_3_3_SVG = new File(SVG_MULTIPLE312_DIR, "chunk.g.2.3.3.svg");
+
 	public final static String MATH_ROOT = "maths-1471-2148-11-311";
 	public static final File MATH311_DIR = new File(PDFS_BMC_DIR, MATH_ROOT+"/");
 	public static final File MATH311_PDF = new File(PDFS_BMC_DIR, MATH_ROOT+".pdf");

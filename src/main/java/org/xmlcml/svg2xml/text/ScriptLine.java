@@ -34,8 +34,10 @@ public class ScriptLine implements Iterable<TextLine> {
 	public static final String SUP = "sup";
 	public static final String SUSCRIPT = "suscript";
 
-	private static final Double SPACEFACTOR = 0.12;
-
+//	private static final Double SPACEFACTOR = 0.12;// 
+	// FIXME
+//	private static final Double SPACEFACTOR = TextLine.DEFAULT_SPACE_FACTOR;
+	private static final Double SPACEFACTOR = 0.10; 
 	public static final String TERM = "  %%%%\n";
 	
 	protected List<TextLine> textLineList = null;
@@ -43,6 +45,8 @@ public class ScriptLine implements Iterable<TextLine> {
 	private int largestLine;
 	private StyleSpans styleSpans;
 	private String textContentWithSpaces;
+
+	private Double spaceFactor = SPACEFACTOR;
 	
 	public ScriptLine(TextStructurer textContainer) {
 		textLineList = new ArrayList<TextLine>();
@@ -375,6 +379,10 @@ public class ScriptLine implements Iterable<TextLine> {
 		return s.substring(0, Math.min(20, s.length()));
 	}
 
+	/** currently only used in PDFIndex - is it required?
+	 * 
+	 * @return
+	 */
 	public List<ScriptWord> getWords() {
 		List<ScriptWord> wordList = new ArrayList<ScriptWord>();
 		RealRangeArray rangeArray = this.getWordRangeArray();
@@ -516,6 +524,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			String value = null;
 			for (int i = 0; i < characters.size(); i++) {
 				character = characters.get(i);
+				LOG.trace("ch "+character.getValue());
 				boolean bold = character.isBold();
 				boolean italic = character.isItalic();
 				String fontName = character.getSVGXFontName();
@@ -527,11 +536,8 @@ public class ScriptLine implements Iterable<TextLine> {
 				value = character.getText();
 				if (lastX != null) {
 					double deltaX = x - lastX;
-					if (deltaX > SPACEFACTOR *fontSize) {
-						SVGText space = new SVGText();
-						space.setText(" ");
-						space.setXY(new Real2(lastX, y));
-						currentSpan.addCharacter(space);
+					if (deltaX > getSpaceFactor() *fontSize) {
+						insertComputedSpace(currentSpan, lastX, y);
 					}
 				}
 				// have any attributes changed?
@@ -565,6 +571,17 @@ public class ScriptLine implements Iterable<TextLine> {
 			}
 		}
 		return styleSpans;
+	}
+
+	private Double getSpaceFactor() {
+		return spaceFactor ;
+	}
+
+	private void insertComputedSpace(StyleSpan currentSpan, Double lastX, Double y) {
+		SVGText space = new SVGText();
+		space.setText(" ");
+		space.setXY(new Real2(lastX, y));
+		currentSpan.addCharacter(space);
 	}
 
 	private boolean areStringsEqual(String s0, String s1) {

@@ -14,7 +14,6 @@ public class StyleSpansTest {
 	@Test
 	public void testStyleSpans0() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
 		ScriptContainer scriptContainer = (ScriptContainer) pageAnalyzer.getAbstractContainerList().get(0);
 		List<ScriptLine> scriptLineList = scriptContainer.getScriptLineList();
 		ScriptLine scriptLine0 = scriptLineList.get(0);
@@ -31,7 +30,6 @@ public class StyleSpansTest {
 	@Test
 	public void testStyleSpans1() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		pageAnalyzer.analyze();
 		ScriptContainer scriptContainer = (ScriptContainer) pageAnalyzer.getAbstractContainerList().get(1);
 		List<ScriptLine> scriptLineList = scriptContainer.getScriptLineList();
 		ScriptLine scriptLine0 = scriptLineList.get(0);
@@ -78,7 +76,6 @@ public class StyleSpansTest {
 
 	public static StyleSpans getStyleSpans(File svgPage, int chunk, int line) {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(svgPage);
-		pageAnalyzer.analyze();
 		StyleSpans styleSpans = ((ScriptContainer) pageAnalyzer.getAbstractContainerList().get(chunk))
 				.getScriptLineList().
 				get(line).

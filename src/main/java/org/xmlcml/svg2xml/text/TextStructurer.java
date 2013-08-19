@@ -612,7 +612,7 @@ public class TextStructurer {
 			initialScriptLineList = new ArrayList<ScriptLine>();
 			for (TextLine textLine : textLineList) {
 				Real2Range bbox0 = textLine.getBoundingBox();
-				LOG.trace(">> "+textLine.getLineString());
+				LOG.trace("TL>> "+textLine.getLineString());
 				if (bbox == null) {
 					bbox = bbox0;
 					scriptLine = new ScriptLine(this);
@@ -627,7 +627,9 @@ public class TextStructurer {
 						bbox = bbox.plusEquals(bbox0);
 					}
 				}
+				
 				scriptLine.add(textLine);
+				LOG.trace("SL >>"+scriptLine);
 			}
 		}
 		return textLineChunkBoxes;
