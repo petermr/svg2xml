@@ -37,7 +37,8 @@ public class ScriptLine implements Iterable<TextLine> {
 //	private static final Double SPACEFACTOR = 0.12;// 
 	// FIXME
 //	private static final Double SPACEFACTOR = TextLine.DEFAULT_SPACE_FACTOR;
-	private static final Double SPACEFACTOR = 0.10; 
+	// space appears to be ca .29 * fontSize so take half this
+	private static final Double SPACEFACTOR = 0.15; 
 	public static final String TERM = "  %%%%\n";
 	
 	protected List<TextLine> textLineList = null;
@@ -524,7 +525,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			String value = null;
 			for (int i = 0; i < characters.size(); i++) {
 				character = characters.get(i);
-				LOG.trace("ch "+character.getValue());
+				LOG.trace(character.getValue()+" "+character.getX()+" "+character.getY()+" "+character.getFontSize());
 				boolean bold = character.isBold();
 				boolean italic = character.isItalic();
 				String fontName = character.getSVGXFontName();
@@ -536,7 +537,8 @@ public class ScriptLine implements Iterable<TextLine> {
 				value = character.getText();
 				if (lastX != null) {
 					double deltaX = x - lastX;
-					if (deltaX > getSpaceFactor() *fontSize) {
+					LOG.trace("   DX " +deltaX+" "+deltaX/fontSize);
+					if (deltaX > getSpaceFactor() * fontSize) {
 						insertComputedSpace(currentSpan, lastX, y);
 					}
 				}
@@ -567,7 +569,11 @@ public class ScriptLine implements Iterable<TextLine> {
 					currentY = y;
 				}
 				currentSpan.addCharacter(character);
-				lastX = character.getBoundingBox().getXRange().getMax();
+//				double width = character.getBoundingBox().getXRange().getRange();
+				double width = TextLine.getWidth(character);
+//				lastX = character.getBoundingBox().getXRange().getMax();
+				lastX = x + width;
+				LOG.trace("   W "+width+" "+lastX);
 			}
 		}
 		return styleSpans;

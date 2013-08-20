@@ -83,7 +83,7 @@ public class TextLine implements Iterable<SVGText> {
 	private Integer integerY;
 	private RealArray characterWidthArray;
 	private Set<FontStyle> fontStyleSet;
-	private Double SCALE = 0.001;
+	private final static Double SCALE = 0.001; // width multiplied by 1000
 	private Double SPACE_WIDTH1000 = /*274.0*/ 200.;
 	private Double SPACE_WIDTH = SPACE_WIDTH1000 * SCALE;
 //	private Double DEFAULT_SPACE_FACTOR = 0.12;
@@ -856,7 +856,7 @@ public class TextLine implements Iterable<SVGText> {
 		newCharacters.add(spaceText);
 	}
 
-	private Double getWidth(SVGText text) {
+	public static Double getWidth(SVGText text) {
 		String widthS = PDF2SVGUtil.getSVGXAttribute(text, PDF2SVGUtil.CHARACTER_WIDTH);
 		Double fontSize = text.getFontSize();
 		Double width = widthS == null ? null : new Double(widthS) * SCALE;

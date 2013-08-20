@@ -157,19 +157,19 @@ public class ScriptContainerTest {
 		String[][] values ={
 				{"Blood samples were collected from a total of 157 indivi-"},
 				{"duals of the following species: Agile (", "<I>Hylobates agilis</I>", ";"},
-				{"N = 37), Kloss", "<B>’</B>", "(", "<I>H. klossii</I>", "; N = 2), White-handed (", "<I>H. lar</I>", ";"},
-				{"N = 40), Silvery Javan (", "<I>H. moloch</I>", "; N = 6), Mueller", "<B>’</B>", "s Bor-"},
+				{"N = 37), Kloss", "<B>’ </B>", "(", "<I>H. klossii</I>", "; N = 2), White-handed (", "<I>H. lar</I>", ";"},
+				{"N = 40), Silvery Javan (", "<I>H. moloch</I>", "; N = 6), Mueller", "<B>’ </B>", "s Bor-"},
 				{"nean gray (","<I>H. muelleri</I>","; N = 6), Pileated (","<I>H. pileatus</I>","; N ="},
-				{"19), Chinese White-cheeked (","<I>Nomascusleucogenys</I>","; N ="},
+				{"19), Chinese White-cheeked (","<I>Nomascus leucogenys</I>","; N ="},
 				{"16) and Siamang (","<I>Symphalangus syndactylus</I>","; N = 31)."},
 				{"Sampling was conducted at the Ragunan Zoo and the"},
-				{"Pontianak Zoo in Indonesia, and the Chiang M ai Zoo,"},  //error
+				{"Pontianak Zoo in Indonesia, and the Chiang Mai Zoo,"},  //error
 				{"the Bangkok Zoo and the Khao Kheow Open Zoo in"},
 				{"Thailand. We also sampled gibbons reared by local resi-"},
 				{"dents in Kalimantan, Indonesia. Genomic DNA was"},
 				{"extracted from blood samples using the DNA Microex-"}, 
 				{"traction Kit (Stratagene, Santa Clara, CA) or the QIAamp"},
-				{"DNA Blood M ini Kit (Qiagen, Duesseldorf, Germany)."},     // error
+				{"DNA Blood Mini Kit (Qiagen, Duesseldorf, Germany)."},     // error
 				{"Research permissions were granted by each country and"},
 				{"sampling was conducted according to the Guide for the"},
 				{"Care and Use of Laboratory Animals by the National"},
@@ -179,7 +179,7 @@ public class ScriptContainerTest {
 				{"procedures were approved by the animal ethics commit-"},
 				{"tee of the Primate Research Institute, Kyoto University."},
 				{"Among the 157 individuals, 152 were subjected to the"},
-				{"genotyping of the L/ M opsin genes (Additional file 1,"},
+				{"genotyping of the L/M opsin genes (Additional file 1,"},
 				{"Table S1). The remaining 5 individuals (two ", "<I>H. agilis</I>", ","},
 				{"one ", "<I>H. lar</I>", ", and two ", "<I>S. syndactylus</I>", ") were included in the"},
 				{"analysis of the neutral reference genes. Among the 152"},
@@ -205,10 +205,10 @@ public class ScriptContainerTest {
 	// note this has some "bold" quotation marks
 	public void testGetReferences() {
 		String[][] values ={
-	{"1. NathansJ, ThomasD, Hogness DS: ", "Molecular genetics of human color"},
+	{"1. Nathans J, Thomas D, Hogness DS: ", "Molecular genetics of human color"},
 	{"vision: the genes encoding blue, green, and red pigments. ", "<I>Science </I>", "1986,"},
 	{"232", ":193-202."},
-	{"2. JacobsGH: ", "Primate photopigments and primate color vision. ", "<I>Proc Natl</I>"},
+	{"2. Jacobs GH: ", "Primate photopigments and primate color vision. ", "<I>Proc Natl</I>"},
 	{"<I>Acad Sci USA </I>", "1996, ", "93", ":577-581."},
 	{"3. Yokoyama R, Yokoyama S: ", "Convergent evolution of the red- and green-"},
 	{"like visual pigment genes in fish, ", "<I>Astyanax fasciatus</I>", ", and human. ", "<I>Proc</I>"},
@@ -217,12 +217,12 @@ public class ScriptContainerTest {
 	{"green color vision. ", "<I>Science </I>", "1991, ", "252", ":971-974."},
 	{"5. Asenjo AB, Rim J, Oprian DD: ", "Molecular determinants of human red/"},
 	{"green color discrimination. ", "<I>Neuron </I>", "1994, ", "12", ":1131-1138."},
-	{"6. Yokoyama S, Radlwimmer FB: ", "The ", "<B>“</B>", "five-sites", "<B>”</B>", "rule and the evolution of"},
+	{"6. Yokoyama S, Radlwimmer FB: ", "The ", "<B>“ </B>", "five-sites", "<B>” </B>", "rule and the evolution of"},
 	{"red and green color vision in mammals. ", "<I>Mol Biol Evol </I>", "1998, ", "15", ":560-567."},
 	{"7. Yokoyama S, Radlwimmer FB: ", "The molecular genetics of red and green"},
-	{"color vision in mammals. ", "<I>Genetics</I>", "1999, ", "153", ":919-932."},
+	{"color vision in mammals. ", "<I>Genetics </I>", "1999, ", "153", ":919-932."},
 	{"8. Yokoyama S, Radlwimmer FB: ", "The molecular genetics and evolution of"},
-	{"red and green color vision in vertebrates. ", "<I>Genetics</I>", "2001, ", "158", ":1697-1710."},
+	{"red and green color vision in vertebrates. ", "<I>Genetics </I>", "2001, ", "158", ":1697-1710."},
 	{"9. Chan T, Lee M, Sakmar TP: ", "Introduction of hydroxyl-bearing amino acids"},
 	{"causes bathochromic spectral shifts in rhodopsin. Amino acid"},
 		};
@@ -268,7 +268,7 @@ public class ScriptContainerTest {
 	@Test
 	public void testBoldWithSubscriptAndItalic() {
 		String[][] values ={
-	{"<B>Effect of late promoter </B>", "<B><I>p</I></B>", "<B><I>R</I></B>", "<B><I>’</I></B>", "<B>activity</B>"},
+	{"<B>Effect of late promoter </B>", "<B><I>p</I></B>", "<B><I>R</I></B>", "<B><I>’ </I></B>", "<B>activity</B>"},
 		};
 		File file = TextFixtures.BMC_174_5_3SA_SVG;
 		TextFixtures.testSpans(values, file);
@@ -292,7 +292,7 @@ public class ScriptContainerTest {
     {"55 min after induction. This was a significant two-fold"},
     {"reduction in the SD when compared normal lysis condi-"}, 
     {"tions (see Table 1 for strain IN56 with the SD = 3.24"}, 
-    {"min; Student", "<B>’</B>", "s ", "<I>t </I>", "= 15.45, ", "<I>p </I>", "< 0.0001, using the standard"},
+    {"min; Student", "<B>’ </B>", "s ", "<I>t </I>", "= 15.45, ", "<I>p </I>", "< 0.0001, using the standard"},
 	{"deviation for the SD in Box 7.1 of [56]). This observa-"}, 
 	{"tion indicated that individual triggering for hole forma-"}, 
 	{"tion during the normal progression of cell lysis was"}, 

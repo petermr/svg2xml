@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import org.junit.Ignore;
+import java.io.File;
+
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 
@@ -27,4 +28,11 @@ public class PDFAnalyzerTest {
 		analyzer.setRawSvgDirectory(Fixtures.SVG_MULTIPLE312_DIR);
 		analyzer.analyzeRawSVGPagesWithPageAnalyzers();
 	}
+	
+	@Test
+	public void testKevinACS() {
+		PDFAnalyzer analyzer = new PDFAnalyzer();
+		analyzer.analyzePDFFile(new File("../pdfs/acs/nn400656n.pdf"));
+	}
+	
 }

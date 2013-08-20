@@ -196,10 +196,12 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2Html0() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
-//		pageAnalyzer.analyze();
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
-		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\"><span>Hiwatashi <span> </span></span><span><i>et al</i><span> </span></span><span>. <span> </span></span><span><i>BMC Evolutionary Biology </i><span> </span></span><span>2011, <span> </span></span><span><b>11</b><span> </span></span><span>:312<span> </span></span><span>http://www.biomedcentral.com/1471-2148/11/312<span> </span></span></div>",
-				containerList.get(0).createHtmlElement().toXML());
+		String actual = containerList.get(0).createHtmlElement().toXML();
+		LOG.debug(".. "+actual);
+		Assert.assertEquals("html0", "" +
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\">Hiwatashi  <i>et al</i> .  <i>BMC Evolutionary Biology </i> 2011,  <b>11</b> :312 http://www.biomedcentral.com/1471-2148/11/312 </div>",
+				actual);
 	}
 	
 	@Test
@@ -210,12 +212,12 @@ public class PageAnalyzerTest {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.G2_3_3_SVG);
 		LOG.trace(SVGElement.readAndCreateSVG(Fixtures.G2_3_3_SVG).toXML());
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		String actual = containerList.get(0).createHtmlElement().toXML();
+		LOG.debug(".. "+actual);
 		// ids are computed so 2.0
 		Assert.assertEquals("html0", "" +
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\">" +
-				"<span>study, we focused on gibbons (Family Hylobatidae), com-</span>" +
-				"</div>",
-				containerList.get(0).createHtmlElement().toXML());
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\">study, we focused on gibbons (Family Hylobatidae), com-</div>",
+				actual);
 	}
 
 	@Test
@@ -225,19 +227,11 @@ public class PageAnalyzerTest {
 	public void testPage2Html3() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
-		Assert.assertEquals("html0", "<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\"><span>L opsin gene of two African hominoids, humans [18] and<span> </span>" +
-				"</span><span>chimpanzees (primarily <span> </span></span><span><i>P. t. verus</i><span> </span></span>" +
-				"<span>) [25]. In the present<span> </span></span><span>study, we focused on gibbons (Family Hylobatidae), com-</span>" +
-				"<span>monly known as the lesser apes, for which normal tri-</span>" +
-				"<span>chromacy is reported [30]. Gibbons occur in Asia and are<span> </span></span>" +
-				"<span>the most diverse and speciose of all living apes [31], mak-</span>" +
-				"<span>ing them an ideal group with which to assess the range of<span> </span></span>" +
-				"<span>L/M opsin genetic variation. We examined the nucleotide<span> </span></span>" +
-				"<span>variation of both the L and M opsin genes by sequencing<span> </span></span>" +
-				"<span>the 3.6~3.9-kb genomic region encompassing exon 3 to<span> </span></span>" +
-				"<span>exon 5 from individuals in five species and three genera<span> </span></span>" +
-				"<span>of gibbons.</span></div>",
-				containerList.get(3).createHtmlElement().toXML());
+		String actual = containerList.get(3).createHtmlElement().toXML();
+		LOG.debug(".. "+actual);
+		Assert.assertEquals("html3", 
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\">L opsin gene of two African hominoids, humans [18] and chimpanzees (primarily  <i>P. t. verus</i> ) [25]. In the present study, we focused on gibbons (Family Hylobatidae), com-monly known as the lesser apes, for which normal tri-chromacy is reported [30]. Gibbons occur in Asia and are the most diverse and speciose of all living apes [31], mak-ing them an ideal group with which to assess the range of L/M opsin genetic variation. We examined the nucleotide variation of both the L and M opsin genes by sequencing the 3.6~3.9-kb genomic region encompassing exon 3 to exon 5 from individuals in five species and three genera of gibbons. </div>",
+				actual);
 	}
 
 	@Test
@@ -267,7 +261,7 @@ public class PageAnalyzerTest {
 	public void testStyleSpans2_2_0() {
 		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(Fixtures.RAW_MULTIPLE312_SVG_PAGE2, 2, 0);
 		StyleSpansTest.checkStyleSpans("2 0", 
-				"<span xmlns=\"http://www.w3.org/1999/xhtml\">corresponding sequence of the other, thistype of recombi-</span>",
+				"<span xmlns=\"http://www.w3.org/1999/xhtml\">corresponding sequence of the other, this type of recombi-</span>",
 				9.763, styleSpans);
 	}
 	

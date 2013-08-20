@@ -5,6 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import nu.xom.Element;
+import nu.xom.Nodes;
+import nu.xom.ParentNode;
+import nu.xom.Text;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
@@ -16,6 +21,7 @@ import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
+import org.xmlcml.svg2xml.analyzer.PageIO;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.StyleSpan;
 import org.xmlcml.svg2xml.text.StyleSpans;
@@ -35,6 +41,8 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public final static Logger LOG = Logger.getLogger(ScriptContainer.class);
 
 	private static final double FONT_EPS = 0.01;
+
+	private static final String SOFT_HYPHEN = "~";
 
 	private Multiset<String> fontFamilySet;
 	private List<ScriptLine> scriptLineList;
@@ -80,19 +88,74 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 					StyleSpan styleSpan = styleSpans.get(j);
 					HtmlElement htmlElement1 = styleSpan.getHtmlElement();
 					addJoiningSpace(htmlElement1);
-					htmlElement.appendChild(htmlElement1);
+					PageIO.copyChildElementsFromTo(htmlElement1, htmlElement);
 				}
 			}
+			cleanSpaceSpans(htmlElement);
+			cleanEmptySpans(htmlElement);
+			cleanMultipleSpaces(htmlElement);
 		}
 		return htmlElement;
 	}
 	
+	/** remove any spans with just whitespace
+	 * 
+	 * @param htmlElement
+	 */
+	private void cleanSpaceSpans(HtmlElement htmlElement) {
+		Nodes spans = htmlElement.query("//*[local-name()='span' and count(*) = 0 and text()[normalize-space(.)='']]");
+		for (int i = 0; i < spans.size(); i++) {
+			Element span = (Element) spans.get(i);
+			String value = span.getValue();
+			ParentNode parent = span.getParent();
+			parent.replaceChild(span, new Text(value));
+		}
+	}
+
+	/** remove any spans with just whitespace
+	 * 
+	 * @param htmlElement
+	 */
+	private void cleanMultipleSpaces(HtmlElement htmlElement) {
+		Nodes spans = htmlElement.query("//text()[normalize-space(.)='' and string-length(.) > 1]");
+		for (int i = 0; i < spans.size(); i++) {
+			Text text = (Text) spans.get(i);
+			text.setValue(" ");
+		}
+	}
+
+	/** remove any spans with just whitespace
+	 * 
+	 * @param htmlElement
+	 */
+	private void cleanEmptySpans(HtmlElement htmlElement) {
+		Nodes spans = htmlElement.query("//*[local-name()='span' and count(node()) = 0]");
+		for (int i = 0; i < spans.size(); i++) {
+			Element span = (Element) spans.get(i);
+			span.detach();
+		}
+	}
+
 	private void addJoiningSpace(HtmlElement htmlElement) {
 		String value = htmlElement.getValue();
-		if (!(value.endsWith(".")) && !(value.endsWith("-"))) {
-			HtmlElement spaceElement = new HtmlSpan();
+		HtmlElement spaceElement = new HtmlSpan();
+		if (/*!(value.endsWith(".")) && */ !(value.endsWith("-"))) {
 			spaceElement.setValue(" ");
-			htmlElement.appendChild(spaceElement);
+		} else {
+			addSoftHyphen(spaceElement);
+			LOG.trace("no space: "+value);
+		}
+		htmlElement.appendChild(spaceElement);
+	}
+
+	private void addSoftHyphen(HtmlElement spaceElement) {
+		Nodes texts = spaceElement.query("//text()");
+		if (texts.size() > 0 ) {
+			Text lastText = (Text) texts.get(texts.size() - 1);
+			String textValue = lastText.getValue();
+			textValue += SOFT_HYPHEN;
+			lastText.setValue(textValue);
+			LOG.debug(".. "+lastText);
 		}
 	}
 

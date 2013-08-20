@@ -609,12 +609,12 @@ public class PDFIndex {
 							wordArray.format(pdfAnalyzer.getDecimalPlaces());
 							LOG.debug("wordArray >>>>>>>> "+wordArray);
 							for (SVGText character : script.getSVGTextCharacters()) {
-								LOG.debug(character.getValue()+"_"+character.getX()+" ");
+								LOG.trace(character.getValue()+"_"+character.getX()+" ");
 							}
 //							SYSOUT.println();
 							List<ScriptWord> words = script.getWords();
 							for (ScriptWord word : words) {
-								LOG.debug(" ~  "+word.getRawValue());
+								LOG.trace(" ~  "+word.getRawValue());
 							}
 //							System.out.println();
 						}
