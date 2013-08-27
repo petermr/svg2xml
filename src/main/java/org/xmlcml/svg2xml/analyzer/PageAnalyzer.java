@@ -26,12 +26,14 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlH1;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlStyle;
 import org.xmlcml.html.HtmlTitle;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
+import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.tools.Chunk;
 
 /**
@@ -107,7 +109,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 			gOut = annotateChunkAndAddIdAndAttributes(gOut, chunkId, analyzer, PageEditorX.DECIMAL_PLACES);
 			newContainer.setSVGChunk(gOut);
 			newContainer.setChunkId(chunkId);
-			LOG.debug("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
+			LOG.trace("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
 			pageIo.add(gOut);
 			aggregatedContainerCount++;
 		}
@@ -450,7 +452,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		if (chunkIdSet.contains(chunkId)) {
 			chunkId.setSubChunkNumber(new Integer(1));
 			if (chunkIdSet.contains(chunkId)) {
-				LOG.debug(abstractContainer.getClass()+" "+chunkId);
+				LOG.trace(abstractContainer.getClass()+" "+chunkId);
 			}
 			abstractContainer.setChunkId(chunkId);
 		}
@@ -486,17 +488,32 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	private HtmlElement createRunningHtml() {
 		runningTextHtmlElement = new HtmlDiv();
 		for (AbstractContainer abstractContainer : abstractContainerList) {
+			LOG.debug("Container: "+abstractContainer.getClass());
 			ContainerType type = abstractContainer.getType();
+			String content = abstractContainer.getRawValue();
 			if (ContainerType.HEADER.equals(abstractContainer.getType())) {
 //				addSee(element, type);
 			} else if (ContainerType.FOOTER.equals(abstractContainer.getType())) {
+			} else if (ContainerType.TITLE.equals(type)) {
+				HtmlH1 h1 = new HtmlH1();
+				h1.appendChild(((ScriptContainer)abstractContainer).createHtmlElement().copy());
+				runningTextHtmlElement.appendChild(h1);
+//				runningTextHtmlElement.appendChild(title);
 			} else if (ContainerType.FIGURE.equals(type)) {
-				addSee(runningTextHtmlElement, type);
+//				addSee(runningTextHtmlElement, type);
+				runningTextHtmlElement.appendChild(abstractContainer.getFigureElement().copy());
+//				LOG.debug(abstractContainer.getSVGChunk().toXML());
 			} else if (ContainerType.TABLE.equals(type)) {
-				addSee(runningTextHtmlElement, type);
-			} else {
+//				addSee(runningTextHtmlElement, type);
+				runningTextHtmlElement.appendChild(abstractContainer.getTableElement().copy());
+			} else if (ContainerType.TEXT.equals(type)) {
 				HtmlElement div = abstractContainer.createHtmlElement();
 				PageIO.copyChildElementsFromTo(div, runningTextHtmlElement);
+			} else if (ContainerType.CHUNK.equals(type)) {
+				HtmlElement div = abstractContainer.createHtmlElement();
+				PageIO.copyChildElementsFromTo(div, runningTextHtmlElement);
+			} else {
+				addSee(runningTextHtmlElement, type);
 			}
 		}
 		return runningTextHtmlElement;

@@ -41,6 +41,8 @@ public abstract class AbstractAnalyzer implements Annotatable {
 	protected PDFIndex pdfIndex;
 	protected List<AbstractContainer> abstractContainerList;
 
+	protected SVGElement svgElement;
+
 	
 	static List<String> titleList = new ArrayList<String>();
 	static {
@@ -139,8 +141,12 @@ public abstract class AbstractAnalyzer implements Annotatable {
 			}
 			LOG.trace("MIXED: "+analyzer);
 		}
-
+		analyzer.setSVGElement(svgElement);
 		return analyzer;
+	}
+
+	protected void setSVGElement(SVGElement svgElement) {
+		this.svgElement = svgElement;
 	}
 
 	private static AbstractAnalyzer createImageAnalyzer(List<SVGImage> imageList) {

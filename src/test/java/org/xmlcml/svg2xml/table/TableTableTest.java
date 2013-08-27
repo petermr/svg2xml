@@ -88,10 +88,8 @@ public class TableTableTest {
 	
 	private TableTable createTable(File file) {
 		Element element = CMLUtil.parseQuietlyToDocument(file).getRootElement();
-		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
-		List<SVGPath> pathList = SVGPath.extractPaths(svgElement);
-		List<SVGText> textList = SVGText.extractTexts(svgElement);
-		TableTable table = new TableTable(pathList, textList);
+		TableTable table = TableTable.createTableTable(element);
 		return table;
 	}
+
 }

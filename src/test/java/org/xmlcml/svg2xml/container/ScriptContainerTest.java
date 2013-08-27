@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,9 +12,11 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.analyzer.PDFAnalyzer;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
@@ -139,10 +142,10 @@ public class ScriptContainerTest {
 				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_0SA0_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<StyleSpans> styleSpansList = sc.getStyleSpansList();
-		Assert.assertEquals("lists", 1, styleSpansList.size());
-		Assert.assertEquals("lists0", 7, styleSpansList.get(0).size());
-		Assert.assertEquals("lists0.0", "Hiwatashi ", styleSpansList.get(0).get(0).toString());
+		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		Assert.assertEquals("lists", 1, scriptLineList.size());
+		Assert.assertEquals("lists0", 7, scriptLineList.get(0).getStyleSpans().size());
+		Assert.assertEquals("lists0.0", "Hiwatashi ", scriptLineList.get(0).getStyleSpans().get(0).toString());
 	}
 
 	@Test
@@ -424,6 +427,54 @@ public class ScriptContainerTest {
 		createList(file, outfile);
 	}
 	
+	@Test
+	public void testIndents() {
+		TextStructurer textContainer = 
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.SVG_MULTIPLE_2_2_SVG);
+		RealRange xRange = textContainer.getXRange();
+		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
+		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		ScriptLine scriptLine = scriptLineList.get(0);
+		Assert.assertEquals("L ", 0.0, scriptLine.getLeftIndent(xRange), 0.1);
+		Assert.assertEquals("R ", 2.2, scriptLine.getRightIndent(xRange), 0.1);
+		scriptLine = scriptLineList.get(1);
+		Assert.assertEquals("L ", 0.0, scriptLine.getLeftIndent(xRange), 0.1);
+		Assert.assertEquals("R ", 0.0, scriptLine.getRightIndent(xRange), 0.1);
+		scriptLine = scriptLineList.get(8);
+		Assert.assertEquals("L ", 0.0, scriptLine.getLeftIndent(xRange), 0.1);
+		Assert.assertEquals("R ", 49.2, scriptLine.getRightIndent(xRange), 0.1);
+		scriptLine = scriptLineList.get(9);
+		Assert.assertEquals("L ", 8.0, scriptLine.getLeftIndent(xRange), 0.1);
+		Assert.assertEquals("R ", 1.2, scriptLine.getRightIndent(xRange), 0.1);
+		scriptLine = scriptLineList.get(53);
+		Assert.assertEquals("L ", 0.0, scriptLine.getLeftIndent(xRange), 0.1);
+		Assert.assertEquals("R ", 0.7, scriptLine.getRightIndent(xRange), 0.1);
+	}
+	
+//	@Test
+//	public void testParagraphs1() {
+//		testParagraphMarkers(Fixtures.SVG_MULTIPLE_2_2_SVG);
+//	}
+	
+	@Test
+	public void testParagraphs() {
+		TextStructurer textContainer = 
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.SVG_MULTIPLE_2_2_SVG);
+		RealRange xRange = textContainer.getXRange();
+		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
+		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		Assert.assertFalse(scriptLineList.get(0).indentCouldStartParagraph(xRange));
+		Assert.assertFalse(scriptLineList.get(0).couldEndParagraph(xRange));
+		Assert.assertFalse(scriptLineList.get(1).indentCouldStartParagraph(xRange));
+		Assert.assertFalse(scriptLineList.get(1).couldEndParagraph(xRange));
+		Assert.assertFalse(scriptLineList.get(8).indentCouldStartParagraph(xRange));
+		Assert.assertTrue(scriptLineList.get(8).couldEndParagraph(xRange));
+		Assert.assertTrue(scriptLineList.get(9).indentCouldStartParagraph(xRange));
+		Assert.assertFalse(scriptLineList.get(9).couldEndParagraph(xRange));
+		Assert.assertFalse(scriptLineList.get(53).indentCouldStartParagraph(xRange));
+		Assert.assertFalse(scriptLineList.get(53).couldEndParagraph(xRange));
+	}
+	
 	/** ======================= Preparatory for pages =====================*/
 	@Test
 	public void test312MULT_1_0Sa() {
@@ -465,7 +516,9 @@ public class ScriptContainerTest {
 	private void createList(File file, String outfile) {
 		ScriptContainer sc = createScriptContainer(file);
 		ListContainer listContainer = ListContainer.createList(sc);
-		if (listContainer != null) listContainer.debug();
+		if (listContainer != null) {
+//			listContainer.debug();
+		}
 	}
 	
 
@@ -500,10 +553,32 @@ public class ScriptContainerTest {
 				TextStructurer.createTextStructurerWithSortedLines(file);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, (PDFAnalyzer) null);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<StyleSpans> styleSpansList = sc.getStyleSpansList();
+		List<StyleSpans> styleSpansList = new ArrayList<StyleSpans>();
+		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		for (ScriptLine scriptLine : scriptLineList) {
+			styleSpansList.add(scriptLine.getStyleSpans());
+		}
 		return styleSpansList;
 	}
 
+	private void testParagraphMarkers(File svgFile) {
+		TextStructurer textContainer = 
+				TextStructurer.createTextStructurerWithSortedLines(svgFile);
+		RealRange xRange = textContainer.getXRange();
+		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
+		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		for (ScriptLine scriptLine : scriptLineList) {
+			Double rightIndent = scriptLine.getRightIndent(xRange);
+			Double leftIndent = scriptLine.getLeftIndent(xRange);
+			LOG.trace(" L "+(int)(double)leftIndent+" R "+(int)(double)rightIndent+" "+scriptLine);
+			if (scriptLine.indentCouldStartParagraph(xRange)) {
+				LOG.debug(">> "+scriptLine);
+			}
+			if (scriptLine.couldEndParagraph(xRange)) {
+				LOG.debug("<< "+scriptLine);
+			}
+		}
+	}
 	
 	private void testScript(File svgFile, String[][] words) {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);

@@ -366,7 +366,7 @@ public class HorizontalCharacterListOld implements Iterable<SVGText> {
 				throw new RuntimeException("font size null/NaN");
 			}
 			if (lastFontSize != null && !Real.isEqual(lastFontSize, fontSize, 0.01)) {
-				System.err.println("fontsize changed "+lastFontSize+" -> "+fontSize);
+				LOG.trace("fontsize changed "+lastFontSize+" -> "+fontSize);
 				lastFontSize = fontSize;
 			}
 			Double x = SVGUtil.getTransformedXY(text).getX();

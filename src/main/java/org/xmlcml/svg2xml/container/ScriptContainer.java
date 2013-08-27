@@ -13,10 +13,12 @@ import nu.xom.Text;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
@@ -45,6 +47,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private static final String SOFT_HYPHEN = "~";
 
 	private Multiset<String> fontFamilySet;
+	private Multiset<Double> fontSizeSet;
 	private List<ScriptLine> scriptLineList;
 	Multiset<Double> leftIndentSet;
 
@@ -52,6 +55,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private Double leftIndent1;
 
 	private TextStructurer textStructurer;
+
 	
 	public ScriptContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -80,15 +84,20 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public HtmlElement createHtmlElement() {
 		if (htmlElement == null) {
 			htmlElement = new HtmlDiv();
-			if (svgChunk != null) htmlElement.setId(svgChunk.getId());
-			List<StyleSpans> styleSpansList = this.getStyleSpansList();
-			for (int i = 0; i < styleSpansList.size(); i++) {
-				StyleSpans styleSpans = styleSpansList.get(i);
-				for (int j = 0; j < styleSpans.size(); j++) {
-					StyleSpan styleSpan = styleSpans.get(j);
-					HtmlElement htmlElement1 = styleSpan.getHtmlElement();
-					addJoiningSpace(htmlElement1);
-					PageIO.copyChildElementsFromTo(htmlElement1, htmlElement);
+			Real2Range boundingBox = null;
+			if (svgChunk != null) {
+				htmlElement.setId(svgChunk.getId());
+				boundingBox = svgChunk.getBoundingBox();
+			}
+			RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
+			ScriptLine lastLine = null;
+			for (ScriptLine scriptLine : scriptLineList) {
+				if (scriptLine != null) {
+					possiblyAddParaBeforeLine(xRange, lastLine, scriptLine);
+					StyleSpans styleSpans = scriptLine.getStyleSpans();
+					addIndividualSpans(styleSpans);
+					possiblyAddParaAfterLine(xRange, scriptLine);
+					lastLine = scriptLine;
 				}
 			}
 			cleanSpaceSpans(htmlElement);
@@ -97,7 +106,39 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		}
 		return htmlElement;
 	}
+
+	private void possiblyAddParaBeforeLine(RealRange xRange, ScriptLine lastLine,
+			ScriptLine scriptLine) {
+		boolean addPara = false;
+		if (scriptLine.indentCouldStartParagraph(xRange)) {
+			addPara = true;
+		}
+		if (!addPara && scriptLine.startsWithBoldSpan()) {
+			LOG.trace("BOLD: "+scriptLine +" // "+lastLine);
+			if (lastLine == null || !lastLine.endsWithBoldSpan()) {
+				addPara = true;	
+			}
+		}
+		if (addPara) {
+			htmlElement.appendChild(new HtmlP());
+		}
+	}
 	
+	private void possiblyAddParaAfterLine(RealRange xRange, ScriptLine scriptLine) {
+		if (scriptLine.couldEndParagraph(xRange)) {
+			htmlElement.appendChild(new HtmlP());
+		}
+	}
+
+	private void addIndividualSpans(StyleSpans styleSpans) {
+		for (int j = 0; j < styleSpans.size(); j++) {
+			StyleSpan styleSpan = styleSpans.get(j);
+			HtmlElement htmlElement1 = styleSpan.getHtmlElement();
+			addJoiningSpace(htmlElement1);
+			PageIO.copyChildElementsFromTo(htmlElement1, htmlElement);
+		}
+	}
+
 	/** remove any spans with just whitespace
 	 * 
 	 * @param htmlElement
@@ -254,6 +295,23 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		return fontFamilySet;
 	}
 
+	/** 
+	 *  
+	 * @return
+	 */
+	public Multiset<Double> getFontSizeMultiset() {
+		if (fontSizeSet == null) {
+			fontSizeSet = HashMultiset.create();
+			for (ScriptLine script : scriptLineList) {
+				Double fontSize = script.getFontSize();
+				if (fontSize != null) {
+					fontSizeSet.add(fontSize);
+				}
+			}
+		}
+		return fontSizeSet;
+	}
+
 	/** gets commonest font
 	 *
 	 * @return
@@ -272,6 +330,26 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		}
 		return commonestFontFamily;
 	}
+
+	/** gets commonest font
+	 *
+	 * @return
+	 */
+	public Double getCommonestFontSize() {
+		getFontSizeMultiset();
+		Double commonestFontSize = null;
+		int highestCount = -1;
+		Set<Double> fontSizeElementSet = fontSizeSet.elementSet();
+		for (Double fontSize : fontSizeElementSet) {
+			int count = fontSizeSet.count(fontSize);
+			if (count > highestCount) {
+				highestCount = count;
+				commonestFontSize = fontSize;
+			}
+		}
+		return commonestFontSize;
+	}
+
 
 	public Boolean isBold() {
 		Boolean fontWeight = null;
@@ -371,15 +449,15 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		return scriptLineList.iterator();
 	}
 
-	public List<StyleSpans> getStyleSpansList() {
-		List<StyleSpans> styleSpansList = new ArrayList<StyleSpans>();
-		for (ScriptLine script : scriptLineList) {
-			if (script == null) continue;
-			StyleSpans styleSpans = script.getStyleSpans();
-			styleSpansList.add(styleSpans);
-		}
-		return styleSpansList;
-	}
+//	public List<StyleSpans> getStyleSpansList() {
+//		List<StyleSpans> styleSpansList = new ArrayList<StyleSpans>();
+//		for (ScriptLine script : scriptLineList) {
+//			if (script == null) continue;
+//			StyleSpans styleSpans = script.getStyleSpans();
+//			styleSpansList.add(styleSpans);
+//		}
+//		return styleSpansList;
+//	}
 	
 	void createLeftIndent01() {
 		setLeftIndent0(null);
@@ -406,7 +484,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 				Real2Range boundingBox = scriptLine.getBoundingBox();
 				boundingBox.format(decimalPlaces);
 				Double leftIndent = boundingBox.getXRange().getMin();
-				LOG.debug("BB "+boundingBox+" / "+leftIndent+" / "+((int)scriptLine.toString().charAt(0))+" / "+scriptLine);
+				LOG.trace("BB "+boundingBox+" / "+leftIndent+" / "+((int)scriptLine.toString().charAt(0))+" / "+scriptLine);
 				leftIndentSet.add(leftIndent);
 			}
 		}

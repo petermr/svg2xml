@@ -40,6 +40,10 @@ public class ScriptLine implements Iterable<TextLine> {
 	// space appears to be ca .29 * fontSize so take half this
 	private static final Double SPACEFACTOR = 0.15; 
 	public static final String TERM = "  %%%%\n";
+
+	// crude (later we shall scan indents for this)
+	private static final Double LEFT_INDENT_MIN = 5.;
+	private static final Double RIGHT_INDENT_MIN = 5.;
 	
 	protected List<TextLine> textLineList = null;
 	private TextStructurer textContainer;
@@ -569,9 +573,7 @@ public class ScriptLine implements Iterable<TextLine> {
 					currentY = y;
 				}
 				currentSpan.addCharacter(character);
-//				double width = character.getBoundingBox().getXRange().getRange();
 				double width = TextLine.getWidth(character);
-//				lastX = character.getBoundingBox().getXRange().getMax();
 				lastX = x + width;
 				LOG.trace("   W "+width+" "+lastX);
 			}
@@ -616,22 +618,98 @@ public class ScriptLine implements Iterable<TextLine> {
 		return bbox == null ? null : bbox.getXRange().getMin();
 	}
 
+	public Double getRightMargin() {
+		Real2Range bbox = getBoundingBox();
+		return bbox == null ? null : bbox.getXRange().getMax();
+	}
+
+	public boolean endsWithPeriod() {
+		int len = getTextContentWithSpaces().length();
+		return len > 0 && textContentWithSpaces.charAt(len - 1) == '.';
+	}
+
+	/** indent of lastCharacter in leftwards direction, so normally >= 0
+	 * 
+	 * @param xRange
+	 * @return
+	 */
+	public Double getRightIndent(RealRange xRange) {
+		Double rightMargin = getRightMargin();
+		return rightMargin == null || xRange == null ? null : xRange.getMax() - rightMargin; 
+	}
+	
+	/** indent of lastCharacter in rightwards direction, so normally >= 0
+	 * 
+	 * @param xRange
+	 * @return
+	 */
+	public Double getLeftIndent(RealRange xRange) {
+		Double leftMargin = getLeftMargin();
+		return leftMargin == null || xRange == null ? null : leftMargin - xRange.getMin(); 
+	}
+	
 	public String getTextContentWithSpaces() {
 		if (textContentWithSpaces == null) {
-			ensureStyleSpans();
+			getStyleSpans();
 			textContentWithSpaces = styleSpans.getTextContentWithSpaces();
-			StringBuilder sb = new StringBuilder();
-			
-			textContentWithSpaces = sb.toString();
+//			StringBuilder sb = new StringBuilder();
+//			textContentWithSpaces = sb.toString();
 		}
 		return textContentWithSpaces;
 	}
 
-	private StyleSpans ensureStyleSpans() {
-		if (styleSpans == null) {
-			styleSpans = new StyleSpans();
-		}
-		return styleSpans;
+//	private StyleSpans ensureStyleSpans() {
+//		if (styleSpans == null) {
+//			styleSpans = new StyleSpans();
+//		}
+//		return styleSpans;
+//	}
+
+	/** uses indent and/or chunk of bold as heuristics
+	 * 
+	 * @param xRange
+	 * @return
+	 */
+	public boolean indentCouldStartParagraph(RealRange xRange) {
+		boolean couldStart = false;
+		Double leftIndent = getLeftIndent(xRange);
+		couldStart = leftIndent != null && leftIndent > LEFT_INDENT_MIN;
+		return couldStart;
+	}
+
+	/** uses bold as heuristics
+	 * 
+	 * @param xRange
+	 * @return
+	 */
+	public boolean endsWithBoldSpan() {
+		StyleSpan lastStyleSpan = getLastStyleSpan();
+		return lastStyleSpan != null && lastStyleSpan.isBold();
+	}
+
+	/** uses bold as heuristics
+	 * 
+	 * @param xRange
+	 * @return
+	 */
+	public boolean startsWithBoldSpan() {
+		StyleSpan firstStyleSpan = getFirstStyleSpan();
+		return firstStyleSpan != null && firstStyleSpan.isBold();
+	}
+
+	public StyleSpan getFirstStyleSpan() {
+		getStyleSpans();
+		return (styleSpans == null || styleSpans.size() == 0) ? null : styleSpans.get(0);
+	}
+
+	public StyleSpan getLastStyleSpan() {
+		getStyleSpans();
+		return (styleSpans == null || styleSpans.size() == 0) ? null : styleSpans.get(styleSpans.size() - 1);
+	}
+
+	public boolean couldEndParagraph(RealRange xRange) {
+		Double rightIndent = getRightIndent(xRange);
+		return rightIndent != null && (rightIndent > RIGHT_INDENT_MIN) && endsWithPeriod();
 	}
 
 	

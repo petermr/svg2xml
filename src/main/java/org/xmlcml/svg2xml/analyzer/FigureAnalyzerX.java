@@ -1,22 +1,32 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.awt.Dimension;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import nu.xom.Nodes;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.Transform2;
+import org.xmlcml.euclid.Vector2;
+import org.xmlcml.graphics.svg.HiddenGraphics;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.figure.FigurePanel;
+import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.tools.Caption;
 import org.xmlcml.svg2xml.tools.Chunk;
 
@@ -35,6 +45,11 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 
 	public static final Pattern PATTERN = Pattern.compile("[Ff][Ii][Gg][Uu]?[Rr]?[Ee]?\\s*\\.?\\s*(\\d*).*", Pattern.DOTALL);
 	public static final String TITLE = "FIGURE";
+
+	private static final String ABOVE = "above";
+	private static final String BELOW = "below";
+
+	private static final Double YEPS = 2.0;
 	
 	private List<Figure> figureList;
 	private List<FigurePanel> panelList;
@@ -44,9 +59,12 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 	private Real2 clusterWhitespaceBoxMargins = new Real2(5.0, 5.0);
 	private Double panelSeparation = 3.0;
 
-	private AbstractAnalyzer textAnalyzer;
+	private TextAnalyzerX textAnalyzer;
 	private PathAnalyzerX pathAnalyzer;
 	private ImageAnalyzerX imageAnalyzer;
+
+	private SVGSVG top;
+	private SVGSVG above;
 
 	public FigureAnalyzerX() {
 		super();
@@ -60,11 +78,12 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 		super(pdfIndex);
 	}
 	
-	public FigureAnalyzerX(AbstractAnalyzer textAnalyzer,
-			PathAnalyzerX pathAnalyzer, ImageAnalyzerX imageAnalyzer) {
+	public FigureAnalyzerX(TextAnalyzerX textAnalyzer,
+			PathAnalyzerX pathAnalyzer, ImageAnalyzerX imageAnalyzer, SVGElement svgElement) {
 		this.textAnalyzer = textAnalyzer;
 		this.pathAnalyzer = pathAnalyzer;
 		this.imageAnalyzer = imageAnalyzer;
+		this.setSVGElement(svgElement);
 	}
 
 	public List<FigurePanel> createPanelsUsingWhitespace() {
@@ -248,6 +267,96 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 	@Override
 	public String getTitle() {
 		return TITLE;
+	}
+
+	public HtmlDiv createFigure() {
+		String id = svgElement.getId();
+		List<ScriptLine> scriptLineList = textAnalyzer.getTextContainer().getScriptedLineList(); 
+		LOG.debug("BB: "+textAnalyzer.getTextContainer().getBoundingBox());
+		Double ySplit = null;
+		for (ScriptLine scriptLine : scriptLineList) {	
+			String s = scriptLine.getTextContentWithSpaces();
+			LOG.trace("Y "+scriptLine.getBoundingBox()+" "+s);
+			if (PATTERN.matcher(s).matches()) {
+//				if (ySplit != null) {
+//					LOG.debug("Possible Duplicate Figure Caption: "+scriptLine.getTextContentWithSpaces());
+//				}
+				ySplit = scriptLine.getBoundingBox().getYRange().getMin();
+				LOG.debug("Figure Caption: "+scriptLine.getTextContentWithSpaces());
+				break;
+			}
+		}
+		if (ySplit != null) {
+			top = new SVGSVG();
+			addElements(top, ABOVE, ySplit - YEPS);
+			above = new SVGSVG();
+			addElements(above, BELOW, ySplit + YEPS);
+			try {
+				CMLUtil.debug(top, new FileOutputStream("caption"+id+".svg"), 1);
+				CMLUtil.debug(above, new FileOutputStream("above"+id+".svg"), 1);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		HtmlDiv div = new HtmlDiv();
+		div.appendChild(top);
+		HiddenGraphics hg = new HiddenGraphics();
+		hg.setDimension(new Dimension(600, 800));
+		hg.createImage(top);
+		try {
+			hg.write(new File("target/figureCaption"+id+".png"));
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot write image", e);
+		}
+
+		div.appendChild(new HtmlP("===================="));
+		div.appendChild(above);
+		Real2Range bb = above.getBoundingBox();
+		Real2 translateToOrigin = new Real2(-bb.getXRange().getMin() + 10, -bb.getYRange().getMin() + 10);
+		above.setTransform(new Transform2(new Vector2(translateToOrigin)));
+		hg = new HiddenGraphics();
+		hg.setDimension(new Dimension(600, 800));
+		hg.createImage(above);
+		try {
+			hg.write(new File("target/figureAbove"+id+".png"));
+		} catch (IOException e) {
+			throw new RuntimeException("Cannot write image", e);
+		}
+		return div;
+	}
+
+	private void addElements(SVGElement svgg, String where, Double ySplit) {
+		List<SVGElement> elementList = new ArrayList<SVGElement>();
+		if (textAnalyzer != null) {
+			for (SVGElement element : textAnalyzer.getTextCharacters()) {
+				if (isLocated(element, where, ySplit)) {
+					elementList.add(element);
+				}
+			}
+		}
+		if (pathAnalyzer != null) {
+			for (SVGElement element : pathAnalyzer.getPathList()) {
+				if (isLocated(element, where, ySplit)) {
+					elementList.add(element);
+				}
+			}
+		}
+		if (imageAnalyzer != null) {
+			for (SVGElement element : imageAnalyzer.getImageList()) {
+				if (isLocated(element, where, ySplit)) {
+					elementList.add(element);
+				}
+			}
+		}
+		for (SVGElement element : elementList) {
+			svgg.appendChild(element.copy());
+		}
+	}
+	
+	private boolean isLocated(SVGElement element, String where, Double ySplit) {
+		RealRange yRange = element.getBoundingBox().getYRange();
+		return (where.equals(ABOVE) && yRange.getMin() > ySplit ||
+			where.equals(BELOW) && yRange.getMax() < ySplit);
 	}
 
 }

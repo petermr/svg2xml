@@ -73,8 +73,8 @@ public class TableRowTest {
 			};
 		for (int i = 0; i < rowList.size(); i++) {
 			TableRow row = rowList.get(i);
-			HtmlElement tr = row.getHtml();
-			Assert.assertEquals("row"+i, rowHtml[i], row.getHtml().toXML());
+			HtmlElement tr = row.createHtmlTable();
+			Assert.assertEquals("row"+i, rowHtml[i], row.createHtmlTable().toXML());
 		}
 	}
 }

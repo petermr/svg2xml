@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.util.List;
-
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -13,6 +12,7 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.table.TableTable;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
@@ -67,13 +67,13 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 		
 	}
 	
-	public HtmlElement analyze1() {
+	public HtmlTable createTable() {
 		pathList = pathAnalyzer == null ? null : pathAnalyzer.getPathList();
 		textList = textAnalyzer == null ? null : textAnalyzer.getTextCharacters();
 		TableTable tableTable = new TableTable(pathList, textList);
 		tableTable.analyzeVerticalTextChunks();
-		HtmlElement htmlElement = tableTable.getHtml();
-		return htmlElement;
+		HtmlTable htmlTable = tableTable.createHtmlTable();
+		return htmlTable;
 	}
 
 	@Override

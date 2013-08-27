@@ -38,8 +38,10 @@ public class ImageAnalyzerX extends AbstractAnalyzer {
 	
 	public void readImageList(List<SVGImage> imageList) {
 		this.imageList = new ArrayList<SVGImage>();
-		for (SVGImage image : imageList) {
-			this.imageList.add(image); 
+		if (imageList != null) {
+			for (SVGImage image : imageList) {
+				this.imageList.add(image); 
+			}
 		}
 	}
 	

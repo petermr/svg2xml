@@ -16,7 +16,7 @@ import org.xmlcml.html.HtmlSpan;
  */
 public class StyleSpans {
 
-	private final static Logger LOG = Logger.getLogger(StyleSpan.class);
+	private final static Logger LOG = Logger.getLogger(StyleSpans.class);
 	public static final double EPS = 0.01;
 	
 	private List<StyleSpan> ssList;
@@ -86,7 +86,7 @@ public class StyleSpans {
 				fontSize = fontSize0;
 			} else if (!Real.isEqual(fontSize, fontSize0, EPS)) {
 				//may be subscripts
-				LOG.debug("fontsize changed in spans: "+fontSize+" => "+fontSize0);
+				LOG.trace("fontsize changed in spans: "+fontSize+" => "+fontSize0);
 			}
 		}
 		return fontSize;

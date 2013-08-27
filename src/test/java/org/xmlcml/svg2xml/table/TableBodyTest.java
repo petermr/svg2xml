@@ -92,7 +92,7 @@ public class TableBodyTest {
 	public void testCreateHtml() {
 		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		TableBody tableBody = new TableBody(genericChunk.getElementList());
-		HtmlElement rowBody = tableBody.getHtml();
+		HtmlElement rowBody = tableBody.createHtmlTable();
 		Assert.assertEquals("body",
 				"<table xmlns=\"http://www.w3.org/1999/xhtml\"><tr><td><p><span>IN61</span></p></td><td><p><span>274</span></p></td><td><p><span>45.7</span></p></td><td><p><span>2.92</span></p></td></tr><tr><td><p><span>IN56 (WT)</span></p></td><td><p><span>230</span></p></td><td><p><span>65.1</span></p></td><td><p><span>3.24</span></p></td></tr><tr><td><p><span>IN160</span></p></td><td><p><span>47</span></p></td><td><p><span>29.5</span></p></td><td><p><span>3.28</span></p></td></tr><tr><td><p><span>IN62</span></p></td><td><p><span>136</span></p></td><td><p><span>54.3</span></p></td><td><p><span>3.42</span></p></td></tr><tr><td><p><span>IN70</span></p></td><td><p><span>52</span></p></td><td><p><span>54.5</span></p></td><td><p><span>3.86</span></p></td></tr><tr><td><p><span>IN57</span></p></td><td><p><span>53</span></p></td><td><p><span>47.0</span></p></td><td><p><span>4.25</span></p></td></tr><tr><td><p><span>IN69</span></p></td><td><p><span>119</span></p></td><td><p><span>45.0</span></p></td><td><p><span>4.38</span></p></td></tr><tr><td><p><span>IN63</span></p></td><td><p><span>209</span></p></td><td><p><span>41.2</span></p></td><td><p><span>4.55</span></p></td></tr><tr><td><p><span>IN64</span></p></td><td><p><span>63</span></p></td><td><p><span>48.4</span></p></td><td><p><span>4.60</span></p></td></tr><tr><td><p><span>IN68</span></p></td><td><p><span>153</span></p></td><td><p><span>54.1</span></p></td><td><p><span>5.14</span></p></td></tr><tr><td><p><span>IN66</span></p></td><td><p><span>189</span></p></td><td><p><span>82.2</span></p></td><td><p><span>5.87</span></p></td></tr><tr><td><p><span>IN67</span></p></td><td><p><span>212</span></p></td><td><p><span>57.6</span></p></td><td><p><span>6.71</span></p></td></tr><tr><td><p><span>IN65</span></p></td><td><p><span>33</span></p></td><td><p><span>83.8</span></p></td><td><p><span>6.95</span></p></td></tr><tr><td><p><span>IN71</span></p></td><td><p><span>49</span></p></td><td><p><span>68.8</span></p></td><td><p><span>7.67</span></p></td></tr></table>",
 //		"<table xmlns=\"http://www.w3.org/1999/xhtml\">" +
@@ -113,7 +113,7 @@ public class TableBodyTest {
 //		"</table>",
 		rowBody.toXML());
 
-		HtmlTable table = (HtmlTable) tableBody.getHtml();
+		HtmlTable table = (HtmlTable) tableBody.createHtmlTable();
 		table.setBorder(1);
 		try {
 			FileOutputStream fos = new FileOutputStream("target/table.html");

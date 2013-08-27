@@ -17,7 +17,7 @@ public class TableCell extends GenericChunk {
 	 * 
 	 * @return
 	 */
-	public HtmlElement getHtml() {
+	public HtmlElement createHtmlTable() {
 		HtmlTd td = new HtmlTd();
 		HtmlElement cellBody = createHtmlThroughTextContainer();
 		if (cellBody != null) {

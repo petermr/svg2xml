@@ -13,6 +13,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -59,7 +60,19 @@ public class TableTable extends GenericChunk {
 	public TableTable() {
 		init();
 	}
-	
+
+	public static TableTable createTableTable(Element element) {
+		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
+		return createTableTable(svgElement);
+	}
+
+	private static TableTable createTableTable(SVGElement svgElement) {
+		List<SVGPath> pathList = SVGPath.extractPaths(svgElement);
+		List<SVGText> textList = SVGText.extractTexts(svgElement);
+		TableTable table = new TableTable(pathList, textList);
+		return table;
+	}
+
 	public TableTable(List<SVGPath> pathList, List<SVGText> textList) {
 		this();
 		this.pathList = pathList;
@@ -270,7 +283,7 @@ public class TableTable extends GenericChunk {
 		return genericTextChunkList;
 	}
 	
-	public HtmlElement getHtml() {
+	public HtmlTable createHtmlTable() {
 		HtmlTable table = new HtmlTable();
 		table.setBorder(1);
 		HtmlHead head = new HtmlHead();
@@ -278,7 +291,7 @@ public class TableTable extends GenericChunk {
 		HtmlBody body = new HtmlBody();
 		table.appendChild(body);
 		for (GenericChunk chunk : genericTextChunkList) {
-			HtmlElement htmlElement = chunk.getHtml();
+			HtmlElement htmlElement = chunk.createHtmlTable();
 			if (htmlElement instanceof HtmlTable) {
 				if (htmlElement.query("*[local-name()='tr']").size() == 1) {
 					htmlElement = TableRow.convertBodyHeader(htmlElement);

@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import nu.xom.Attribute;
+import nu.xom.Element;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
@@ -14,8 +16,10 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
+import org.xmlcml.svg2xml.semantic.LicenceAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** containers contain the outputs of PageAnalyzer
@@ -30,13 +34,19 @@ public abstract class AbstractContainer {
 	public final static Logger LOG = Logger.getLogger(AbstractContainer.class);
 
 	public enum ContainerType {
+		ACKNOWLEDGMENT,
+		AUTHORS,
 		CHUNK,
+		COPYRIGHT,
 		FIGURE,
 		HEADER,
 		FOOTER,
+		LICENSE,
 		PAGE,
+		SCHEME,
 		TABLE,
-		TEXT,
+		TITLE,
+		TEXT, 
 	}
 	
 	private static final String CHUNK = "chunk";
@@ -47,15 +57,18 @@ public abstract class AbstractContainer {
 	private static final double HEADER_MAX = 80;
 	private static final double FOOTER_MIN = 715; // not calibrated yet
 
+	private static final Double MIN_TITLE_SIZE = 15.0; // first guess
+
 	protected List<AbstractContainer> containerList;
 	protected PageAnalyzer pageAnalyzer;
 	protected ChunkId chunkId;
 	protected SVGG svgChunk;
 	protected HtmlElement htmlElement;
+	private HtmlTable tableElement;
+	
 	private ContainerType type;
 
 	private Integer tableNumber;
-
 	private Integer figureNumber;
 
 	public AbstractContainer(PageAnalyzer pageAnalyzer) {
@@ -138,6 +151,10 @@ public abstract class AbstractContainer {
 	}
 
 
+	public HtmlElement getHtmlElement() {
+		return htmlElement;
+	}
+
 	/** character value of Container
 	 * mainly for string-based containers
 	 * @return
@@ -195,10 +212,12 @@ public abstract class AbstractContainer {
 		if (tableNumber != null) {
 			type = ContainerType.TABLE;
 			LOG.trace("Table: "+tableNumber+" "+this.getClass());
+			tableElement = processTable();
 		}
 		if (figureNumber != null) {
 			type = ContainerType.FIGURE;
 			LOG.trace("Figure: "+figureNumber+" "+this.getClass());
+			figureElement = processFigure();
 		}
 		if (type == null) {
 			Real2Range r2r = this.svgChunk.getBoundingBox();
@@ -209,9 +228,74 @@ public abstract class AbstractContainer {
 			}
 		}
 		if (type == null) {
+			if (this instanceof ScriptContainer) {
+				ScriptContainer scriptContainer = (ScriptContainer) this;
+				Double fontSize = scriptContainer.getCommonestFontSize();
+				String value = scriptContainer.createHtmlElement().getValue();
+				if (isFirstPage()) {
+					if (fontSize != null && fontSize > MIN_TITLE_SIZE) {
+						type = ContainerType.TITLE;
+					}
+				}
+				if (type == null) {
+					type = getMetadataType(value);
+				}
+			}
+		}
+		if (type == null) {
 			type = ContainerType.CHUNK;
 		}
 		
+	}
+
+	private HtmlDiv processFigure() {
+		if (this instanceof DivContainer) {
+			DivContainer divContainer = (DivContainer) this;
+			figureElement = divContainer.createFigureElement();
+		} else {
+			throw new RuntimeException("Unprocessed figure: "+this.getClass());
+		}
+		return figureElement;
+	}
+
+	private HtmlTable processTable() {
+		if (this instanceof DivContainer) {
+			DivContainer divContainer = (DivContainer) this;
+			tableElement = divContainer.createTableHtmlElement();
+		}
+		return tableElement;
+	}
+
+	Pattern ACKNOWLEDGEMENT_P = Pattern.compile("([Aa]cknowledge?ments?)");
+	Pattern AUTHOR_INFO_P = Pattern.compile(".*[Aa]uthors?\\'?\\s+[Ii]nformation.*");
+	Pattern AUTHOR_DETAILS_P = Pattern.compile("[Aa]uthors?\\'?\\s+[Dd]etails");
+	Pattern AUTHOR_CONTRIBUTIONS_P = Pattern.compile("[Aa]uthors?\\'?\\s+[Cc]ontributions");
+	Pattern COPYRIGHT_P = Pattern.compile(".*"+String.valueOf((char)169)+".*");
+	Pattern LICENCE_P = Pattern.compile("([Ll]icensee)|(Creative\\s*Commons)");
+
+	private HtmlDiv figureElement;
+
+	private ContainerType getMetadataType(String value) {
+		ContainerType type = null;
+		if (type == null) type = getType(value, ContainerType.LICENSE, LicenceAnalyzer.PATTERN);
+		if (type == null) type = getType(value, ContainerType.ACKNOWLEDGMENT, ACKNOWLEDGEMENT_P);
+		if (type == null) type = getType(value, ContainerType.AUTHORS, AUTHOR_DETAILS_P);
+		if (type == null) type = getType(value, ContainerType.AUTHORS, AUTHOR_INFO_P);
+		if (type == null) type = getType(value, ContainerType.AUTHORS, AUTHOR_CONTRIBUTIONS_P);
+		if (type == null) type = getType(value, ContainerType.COPYRIGHT, COPYRIGHT_P);
+		return type;
+	}
+
+	private ContainerType getType(String value, ContainerType type, Pattern pattern) {
+		return (pattern.matcher(value).find()) ? type : null;
+	}
+
+	/** checks for chunkId with page = 1
+	 * 
+	 * @return
+	 */
+	private boolean isFirstPage() {
+		return chunkId == null ? null : chunkId.getPageNumber() == 1;
 	}
 
 	private Integer getCaptionNumber(Pattern captionPattern, Nodes nodes) {
@@ -228,5 +312,14 @@ public abstract class AbstractContainer {
 			}
 		}
 		return number;
+	}
+
+	public Element getFigureElement() {
+		figureElement.addAttribute(new Attribute("border", "3pt"));
+		return figureElement;
+	}
+
+	public Element getTableElement() {
+		return tableElement;
 	}
 }

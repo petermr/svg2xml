@@ -116,6 +116,7 @@ public class MixedAnalyzer extends AbstractAnalyzer {
 	protected HtmlElement createHtml() {
 		HtmlDiv element = new HtmlDiv();
 		for (AbstractAnalyzer analyzer : analyzerList) {
+			LOG.debug("MIXED "+analyzer);
 			HtmlDiv div = new HtmlDiv();
 			element.appendChild(div);
 			HtmlElement childElement = analyzer.createHtml();

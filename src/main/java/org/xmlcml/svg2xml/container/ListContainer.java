@@ -16,9 +16,7 @@ public class ListContainer extends AbstractContainer {
 	private static final double INDENT_EPS = 0.1;
 
 	private List<MultiScriptLine> multiScriptLineList = null;
-
 	private ScriptContainer scriptContainer;
-
 	private boolean hasList = true;;
 	
 	public ListContainer(PageAnalyzer pageAnalyzer, List<MultiScriptLine> multiScriptLineList) {
@@ -59,7 +57,7 @@ public class ListContainer extends AbstractContainer {
 	
 	public static ListContainer createList(ScriptContainer sc) {
 		sc.createLeftIndentSet(0);
-		LOG.debug("LEFTIND "+sc.getLeftIndentSet());
+		LOG.trace("LEFTIND "+sc.getLeftIndentSet());
 		int size = sc.leftIndentSet.entrySet().size();
 		ListContainer listContainer = new ListContainer(sc);
 		if (size == 1) {
@@ -121,7 +119,7 @@ public class ListContainer extends AbstractContainer {
 				null : new ListContainer(this.pageAnalyzer, multiScriptLineList);
 		if (listContainer != null) {
 			listContainer.hasList = true;
-			listContainer.debug();
+//			listContainer.debug();
 		}
 		return listContainer;
 	}

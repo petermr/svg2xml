@@ -102,12 +102,12 @@ public class TableBody extends GenericChunk {
 		return rowList;
 	}
 
-	public HtmlElement getHtml() {
+	public HtmlElement createHtmlTable() {
 		createStructuredRows();
 		HtmlTable table = new HtmlTable();
 		if (rowList != null) {
 			for (TableRow row : rowList) {
-				table.appendChild(row.getHtml());
+				table.appendChild(row.createHtmlTable());
 			}
 		}
 		return table;

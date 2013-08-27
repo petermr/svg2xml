@@ -304,12 +304,13 @@ public class HtmlEditor {
 		FigureAnalyzerX figureAnalyzer = null;
 		AbstractAnalyzer analyzer = figureHtmlAnalyzer.getAnalyzer();
 		if (analyzer instanceof MixedAnalyzer) {
-			AbstractAnalyzer textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
+			TextAnalyzerX textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
 			ImageAnalyzerX imageAnalyzer = ((MixedAnalyzer)analyzer).getImageAnalyzer();
 			PathAnalyzerX pathAnalyzer = ((MixedAnalyzer)analyzer).getPathAnalyzer();
-			figureAnalyzer = new FigureAnalyzerX(textAnalyzer, pathAnalyzer, imageAnalyzer);
+			figureAnalyzer = new FigureAnalyzerX(textAnalyzer, pathAnalyzer, imageAnalyzer, null);
 		} else if (analyzer instanceof TextAnalyzerX) {
-			figureAnalyzer = new FigureAnalyzerX((AbstractAnalyzer)analyzer, (PathAnalyzerX)null, (ImageAnalyzerX)null);
+			figureAnalyzer = new FigureAnalyzerX((TextAnalyzerX)analyzer, (PathAnalyzerX)null, (ImageAnalyzerX)null, null);
+			LOG.error("Figure has no path/image");
 		}
 		return figureAnalyzer;
 	}
@@ -318,7 +319,8 @@ public class HtmlEditor {
 		for (HtmlAnalyzer tableHtmlAnalyzer : tableHtmlAnalyzerList) {
 			TableAnalyzerX tableAnalyzer = createTableAnalyzer(tableHtmlAnalyzer);
 //			tableAnalyzer.analyze();
-			HtmlElement htmlElement = tableAnalyzer.analyze1();
+			HtmlElement htmlElement = tableAnalyzer.createTable();
+			LOG.debug("Table "+htmlElement.toXML());
 			// transfer any existing id and class attribute
 			HtmlElement oldHtmlElement = tableHtmlAnalyzer.getHtmlElement();
 			if (oldHtmlElement != null) {

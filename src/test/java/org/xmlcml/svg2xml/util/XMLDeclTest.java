@@ -21,7 +21,7 @@ public class XMLDeclTest {
 			Element e = new Builder().build(new FileInputStream("src/test/resources/declaration.xml")).getRootElement();
 			for (int i = 0; i < e.getChildCount(); i++) {
 				Node child = e.getChild(i);				
-				System.out.println(child+ " "+child.getValue());
+//				System.out.println(child+ " "+child.getValue());
 			}
 			
 		} catch (ValidityException e) {

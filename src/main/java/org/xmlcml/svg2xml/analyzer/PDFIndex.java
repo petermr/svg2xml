@@ -225,12 +225,14 @@ public class PDFIndex {
 				try {
 					IntMatrix intMatrix = IntMatrix.createByRows(intListList);
 					LOG.trace("IM "+intMatrix);
-					for (int j = 0; j  < intMatrix.getCols(); j++) {
-						IntArray column = intMatrix.extractColumnData(j);
-						if (column.isArithmeticProgression(1)) {
-							LOG.trace("PROG "+column);
-						} else if (column.getConstant() != null) {
-							LOG.trace("CONS "+column);
+					if (intMatrix != null) {
+						for (int j = 0; j  < intMatrix.getCols(); j++) {
+							IntArray column = intMatrix.extractColumnData(j);
+							if (column.isArithmeticProgression(1)) {
+								LOG.trace("PROG "+column);
+							} else if (column.getConstant() != null) {
+								LOG.trace("CONS "+column);
+							}
 						}
 					}
 				} catch (Exception e) {

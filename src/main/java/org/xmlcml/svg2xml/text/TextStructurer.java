@@ -96,10 +96,11 @@ public class TextStructurer {
 
 	private List<ScriptLine> initialScriptLineList;
 	private List<TextLine> commonestFontSizeTextLineList;
-
 	private List<ScriptLine> scriptedLineList;
-
 	private HtmlElement createdHtmlElement;
+	private SVGElement svgChunk;
+
+	private Real2Range boundingBox;
 
 	/** this COPIES the lines in the textAnalyzer
 	 * this may not be a good idea
@@ -659,9 +660,15 @@ public class TextStructurer {
 	}
 
 	public static TextStructurer createTextStructurerWithSortedLines(File svgFile) {
-		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
-		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgPage, ".//svg:text"));
-		return createTextStructurerWithSortedLines(textCharacters);
+		SVGElement svgChunk = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
+		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
+		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
+		textStructurer.setSvgChunk(svgChunk);
+		return textStructurer;
+	}
+
+	private void setSvgChunk(SVGElement svgChunk) {
+		this.svgChunk = svgChunk;
 	}
 
 	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, TextAnalyzerX textAnalyzer) {
@@ -1261,5 +1268,33 @@ public class TextStructurer {
 
 	public ChunkId getChunkId() {
 		return (textAnalyzer == null) ? null : textAnalyzer.getChunkId(); 
+	}
+
+	public SVGElement getSVGChunk() {
+		return svgChunk;
+	}
+	
+	public Real2Range ensureBoundingBox() {
+		if (boundingBox == null) {
+			if (svgChunk != null) {
+				boundingBox = svgChunk.getBoundingBox();
+			}
+		}
+		return boundingBox;
+	}
+	
+	public Real2Range getBoundingBox() {
+		ensureBoundingBox();
+		return boundingBox;
+	}
+	
+	public RealRange getXRange() {
+		ensureBoundingBox();
+		return boundingBox == null ? null : boundingBox.getXRange();
+	}
+	
+	public RealRange getYRange() {
+		ensureBoundingBox();
+		return boundingBox == null ? null : boundingBox.getYRange();
 	}
 }

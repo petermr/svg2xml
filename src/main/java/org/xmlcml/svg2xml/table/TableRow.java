@@ -55,10 +55,10 @@ public class TableRow extends GenericChunk {
 		this.cellList = cellList;
 	}
 
-	public HtmlElement getHtml() {
+	public HtmlElement createHtmlTable() {
 		HtmlTr tr = new HtmlTr();
 		for (TableCell cell : cellList) {
-			tr.appendChild(cell.getHtml());
+			tr.appendChild(cell.createHtmlTable());
 		}
 		return tr;
 	}

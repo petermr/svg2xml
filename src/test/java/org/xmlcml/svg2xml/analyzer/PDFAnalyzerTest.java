@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 
@@ -13,7 +14,7 @@ public class PDFAnalyzerTest {
 
 	@Test
 	// maven fails on memory but Eclipse runs
-//	@Ignore
+	@Ignore
 	public void testPDFAnalyzerPDF() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(Fixtures.MULTIPLE312_PDF);
@@ -22,7 +23,7 @@ public class PDFAnalyzerTest {
 
 	@Test
 	// maven fails on memory
-//	@Ignore
+	@Ignore
 	public void testPDFAnalyzerSVG() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.setRawSvgDirectory(Fixtures.SVG_MULTIPLE312_DIR);
@@ -30,6 +31,8 @@ public class PDFAnalyzerTest {
 	}
 	
 	@Test
+	// maven fails on memory
+	@Ignore 
 	public void testKevinACS() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(new File("../pdfs/acs/nn400656n.pdf"));

@@ -10,18 +10,29 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
+import org.xmlcml.html.HtmlTable;
+import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.ImageAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.MixedAnalyzer;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
+import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TableAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class DivContainer extends AbstractContainer {
 
 	public final static Logger LOG = Logger.getLogger(DivContainer.class);
 	private boolean box;
+	private PathContainer pathContainer;
+	private ImageContainer imageContainer;
+	private TextAnalyzerX textAnalyzerX;
+	private TextStructurer textContainer;
+	private ScriptContainer scriptContainer;
+	private HtmlTable tableElement;
+	private HtmlDiv figureElement;
 
 	public DivContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -50,7 +61,7 @@ public class DivContainer extends AbstractContainer {
 
 	public void addImageList(List<SVGImage> imageList) {
 		if (imageList != null && imageList.size() > 0) {
-			ImageContainer imageContainer = new ImageContainer(pageAnalyzer);
+			imageContainer = new ImageContainer(pageAnalyzer);
 			imageContainer.add(imageList);
 			this.add(imageContainer);
 		}
@@ -58,7 +69,7 @@ public class DivContainer extends AbstractContainer {
 
 	public void addPathList(List<SVGPath> pathList) {
 		if (pathList != null && pathList.size() > 0) {
-			PathContainer pathContainer = new PathContainer(pageAnalyzer);
+			pathContainer = new PathContainer(pageAnalyzer);
 			pathContainer.add(pathList);
 			this.add(pathContainer);
 		}
@@ -66,13 +77,13 @@ public class DivContainer extends AbstractContainer {
 
 	public void addTextList(List<SVGText> characterList) {
 		if (characterList != null && characterList.size() > 0) {
-			TextAnalyzerX textAnalyzerX = new TextAnalyzerX();
+			textAnalyzerX = new TextAnalyzerX();
 			textAnalyzerX.setTextCharacters(characterList);
-			List<TextLine> textLineList = textAnalyzerX.getTextLines();
-			TextStructurer textContainer = new TextStructurer(null);
+			List<TextLine> textLineList = getTextAnalyzer().getTextLines();
+			textContainer = new TextStructurer(null);
 			textContainer.setTextLines(textLineList);
 			List<ScriptLine> scriptList = textContainer.getScriptedLineList();
-			ScriptContainer scriptContainer = new ScriptContainer(pageAnalyzer);
+			scriptContainer = new ScriptContainer(pageAnalyzer);
 			scriptContainer.add(scriptList);
 			this.add(scriptContainer);
 		}
@@ -120,6 +131,58 @@ public class DivContainer extends AbstractContainer {
 			sb.append(container.getRawValue()+"\n");
 		}
 		return sb.toString();
+	}
+
+	public TextAnalyzerX getTextAnalyzer() {
+		return textAnalyzerX;
+	}
+
+	public void setTextAnalyzerX(TextAnalyzerX textAnalyzerX) {
+		this.textAnalyzerX = textAnalyzerX;
+	}
+
+	public PathContainer getPathContainer() {
+		return pathContainer;
+	}
+	
+	public List<SVGText> getTextCharacters() {
+		return textAnalyzerX == null ? null : textAnalyzerX.getTextCharacters();
+	}
+	
+	public List<SVGPath> getPathList() {
+		return pathContainer == null ? null : pathContainer.getPathList();
+	}
+
+	public List<SVGImage> getImageList() {
+		return imageContainer == null ? null : imageContainer.getImageList();
+	}
+
+	public PathAnalyzerX getPathAnalyzer() {
+		PathAnalyzerX pathAnalyzer = new PathAnalyzerX();
+		List<SVGPath> pathList = getPathList(); 
+		pathAnalyzer.readPathList(pathList);return pathAnalyzer;
+	}
+
+	public ImageAnalyzerX getImageAnalyzer() {
+		ImageAnalyzerX imageAnalyzer = new ImageAnalyzerX();
+		List<SVGImage> imageList = getImageList(); 
+		imageAnalyzer.readImageList(imageList);return imageAnalyzer;
+	}
+
+	public HtmlTable createTableHtmlElement() {
+		if (tableElement == null) {
+			TableAnalyzerX tableAnalyzer = new TableAnalyzerX(getTextAnalyzer(), getPathAnalyzer());
+			tableElement = tableAnalyzer.createTable();
+		}
+		return tableElement;
+	}
+
+	public HtmlDiv createFigureElement() {
+		if (figureElement == null) {
+			FigureAnalyzerX figureAnalyzer = new FigureAnalyzerX(getTextAnalyzer(), getPathAnalyzer(), getImageAnalyzer(), this.svgChunk);
+			figureElement = figureAnalyzer.createFigure();
+		}
+		return figureElement;
 	}
 
 }

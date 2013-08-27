@@ -198,10 +198,10 @@ public class PageAnalyzerTest {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(0).createHtmlElement().toXML();
-		LOG.debug(".. "+actual);
+		LOG.trace(".. "+actual);
 		Assert.assertEquals("html0", "" +
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\">Hiwatashi  <i>et al</i> .  <i>BMC Evolutionary Biology </i> 2011,  <b>11</b> :312 http://www.biomedcentral.com/1471-2148/11/312 </div>",
-				actual);
+					actual);
 	}
 	
 	@Test
@@ -209,11 +209,11 @@ public class PageAnalyzerTest {
 	 * 
 	 */
 	public void testPage2Html3_3() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.G2_3_3_SVG);
-		LOG.trace(SVGElement.readAndCreateSVG(Fixtures.G2_3_3_SVG).toXML());
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.SVG_MULTIPLE_2_3_3_SVG);
+		LOG.trace(SVGElement.readAndCreateSVG(Fixtures.SVG_MULTIPLE_2_3_3_SVG).toXML());
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(0).createHtmlElement().toXML();
-		LOG.debug(".. "+actual);
+		LOG.trace(".. "+actual);
 		// ids are computed so 2.0
 		Assert.assertEquals("html0", "" +
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.0\">study, we focused on gibbons (Family Hylobatidae), com-</div>",
@@ -228,9 +228,9 @@ public class PageAnalyzerTest {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(3).createHtmlElement().toXML();
-		LOG.debug(".. "+actual);
+		LOG.trace(".. "+actual);
 		Assert.assertEquals("html3", 
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\">L opsin gene of two African hominoids, humans [18] and chimpanzees (primarily  <i>P. t. verus</i> ) [25]. In the present study, we focused on gibbons (Family Hylobatidae), com-monly known as the lesser apes, for which normal tri-chromacy is reported [30]. Gibbons occur in Asia and are the most diverse and speciose of all living apes [31], mak-ing them an ideal group with which to assess the range of L/M opsin genetic variation. We examined the nucleotide variation of both the L and M opsin genes by sequencing the 3.6~3.9-kb genomic region encompassing exon 3 to exon 5 from individuals in five species and three genera of gibbons. </div>",
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\">L opsin gene of two African hominoids, humans [18] and chimpanzees (primarily  <i>P. t. verus</i> ) [25]. In the present study, we focused on gibbons (Family Hylobatidae), com-monly known as the lesser apes, for which normal tri-chromacy is reported [30]. Gibbons occur in Asia and are the most diverse and speciose of all living apes [31], mak-ing them an ideal group with which to assess the range of L/M opsin genetic variation. We examined the nucleotide variation of both the L and M opsin genes by sequencing the 3.6~3.9-kb genomic region encompassing exon 3 to exon 5 from individuals in five species and three genera of gibbons. <p /></div>",
 				actual);
 	}
 

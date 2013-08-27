@@ -47,7 +47,7 @@ public class TableCaption extends GenericChunk {
 	 * 
 	 * @return
 	 */
-	public HtmlElement getHtml() {
+	public HtmlElement createHtmlTable() {
 		caption = new HtmlCaption();
 		HtmlElement captionBody = createHtmlThroughTextContainer();
 		captionBody = GenericChunk.removeStyles(captionBody);

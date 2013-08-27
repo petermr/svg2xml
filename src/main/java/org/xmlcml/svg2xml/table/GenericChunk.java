@@ -220,7 +220,7 @@ public class GenericChunk {
 		return bbox;
 	}
 
-	public HtmlElement getHtml() {
+	public HtmlElement createHtmlTable() {
 		throw new RuntimeException("Must overide getHtml()");
 	}
 
