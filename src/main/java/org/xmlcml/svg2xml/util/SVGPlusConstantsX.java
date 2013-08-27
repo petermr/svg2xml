@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.action;
+package org.xmlcml.svg2xml.util;
 
 
 

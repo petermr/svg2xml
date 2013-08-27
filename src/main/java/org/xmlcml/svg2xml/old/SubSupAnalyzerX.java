@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.analyzer;
+package org.xmlcml.svg2xml.old;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +17,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 

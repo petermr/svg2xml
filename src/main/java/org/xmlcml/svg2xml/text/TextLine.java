@@ -32,8 +32,11 @@ import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
-import org.xmlcml.svg2xml.textextra.Word;
-import org.xmlcml.svg2xml.textextra.WordSequence;
+import org.xmlcml.svg2xml.old.FontStyleOld;
+import org.xmlcml.svg2xml.old.SimpleCharacterOld;
+import org.xmlcml.svg2xml.old.SimpleFontOld;
+import org.xmlcml.svg2xml.old.Word;
+import org.xmlcml.svg2xml.old.WordSequence;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -79,10 +82,10 @@ public class TextLine implements Iterable<SVGText> {
 	private List<TextLine> subLines;
 	private WordSequence wordSequence;
 	private TextAnalyzerX textAnalyzerX;
-	private SimpleFont simpleFont;
+	private SimpleFontOld simpleFont;
 	private Integer integerY;
 	private RealArray characterWidthArray;
-	private Set<FontStyle> fontStyleSet;
+	private Set<FontStyleOld> fontStyleSet;
 	private final static Double SCALE = 0.001; // width multiplied by 1000
 	private Double SPACE_WIDTH1000 = /*274.0*/ 200.;
 	private Double SPACE_WIDTH = SPACE_WIDTH1000 * SCALE;
@@ -457,15 +460,15 @@ public class TextLine implements Iterable<SVGText> {
 	public /* for test */String guessAndApplySpacingInLine() {
 		if (lineContentIncludingSpaces == null) {
 			StringBuilder sb = new StringBuilder();
-			ensureSimpleFont();
-			LOG.trace("SF "+simpleFont);
+//			ensureSimpleFont();
+//			LOG.trace("SF "+simpleFont);
 			RealArray realArray = getCharacterWidthArray();
 			if (realArray != null) {
 				for (int i = 0; i < characterList.size(); i++) {
 					SVGText text = characterList.get(i);
 					String ch = text.getText();
 					LOG.trace("CH "+ch+ " "+simpleFont);
-					SimpleCharacter simpleCharacter = simpleFont.getSimpleCharacter(ch);
+					SimpleCharacterOld simpleCharacter = simpleFont.getSimpleCharacter(ch);
 					if (simpleCharacter == null) {
 						simpleCharacter = simpleFont.getSimpleCharacter(DEFAULT_CHAR);
 					}
@@ -526,7 +529,7 @@ public class TextLine implements Iterable<SVGText> {
 	 */
 	public WordSequence createWords() {
 		if (wordSequence == null) {
-			ensureSimpleFont();
+//			ensureSimpleFont();
 			Real2 xy = (this.size() > 0) ? this.get(0).getXY() : null;
 			wordSequence = new WordSequence();
 //			TextAnalyzer.
@@ -594,12 +597,12 @@ public class TextLine implements Iterable<SVGText> {
 		return wordSequence;
 	}
 
-	private void ensureSimpleFont() {
-		if (simpleFont == null) {
-			simpleFont = textAnalyzerX.ensureSimpleFont();
-		}
-	}
-
+//	private void ensureSimpleFont() {
+//		if (simpleFont == null) {
+//			simpleFont = textAnalyzerX.ensureSimpleFont();
+//		}
+//	}
+//
 	private Word createWord(List<SVGText> chars, Double sumdeltax) {
 		Word word = null;
 		if (chars.size() > 0) {
@@ -654,11 +657,11 @@ public class TextLine implements Iterable<SVGText> {
 		return this.integerY;
 	}
 	
-	public Set<FontStyle> getFontStyleSet() {
+	public Set<FontStyleOld> getFontStyleSet() {
 		if (fontStyleSet == null) {
-			fontStyleSet = new HashSet<FontStyle>();
+			fontStyleSet = new HashSet<FontStyleOld>();
 			for (SVGText text : this) {
-				FontStyle fontStyle = FontStyle.getFontStyle(text);
+				FontStyleOld fontStyle = FontStyleOld.getFontStyle(text);
 				fontStyleSet.add(fontStyle);
 			}
 		}

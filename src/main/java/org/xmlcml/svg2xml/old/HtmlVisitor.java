@@ -1,4 +1,5 @@
-package org.xmlcml.svg2xml.analyzer;
+package org.xmlcml.svg2xml.old;
+
 
 public abstract class HtmlVisitor {
 

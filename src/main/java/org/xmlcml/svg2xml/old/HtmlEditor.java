@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.analyzer;
+package org.xmlcml.svg2xml.old;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,6 +24,16 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlUl;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
+import org.xmlcml.svg2xml.analyzer.ChunkId;
+import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.ImageAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.MixedAnalyzer;
+import org.xmlcml.svg2xml.analyzer.PDFAnalyzer;
+import org.xmlcml.svg2xml.analyzer.PDFAnalyzerIO;
+import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TableAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class HtmlEditor {
@@ -126,7 +136,7 @@ public class HtmlEditor {
 		getHtmlAnalyzerListSortedByChunkId();
 		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
 			ChunkId id = new ChunkId(htmlAnalyzer.getId());
-			if (pdfAnalyzer.pdfIndex.usedIdSet.contains(id)) {
+			if (pdfAnalyzer.getIndex().getUsedIdSet().contains(id)) {
 				String classAttribute = htmlAnalyzer.getClassAttribute();
 				LOG.trace(id+" "+classAttribute);
 				if (classAttribute == null) {
@@ -140,18 +150,18 @@ public class HtmlEditor {
 	public void outputHtmlElements() {
 		LOG.debug("figures HTML");
 		for (HtmlAnalyzer htmlAnalyzer : figureHtmlAnalyzerList) {
-			htmlAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
+			htmlAnalyzer.outputElementAsHtml(pdfIo.getExistingOutputDocumentDir());
 		}
 		LOG.debug("tables HTML");
 		for (HtmlAnalyzer htmlAnalyzer : tableHtmlAnalyzerList) {
-			htmlAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
+			htmlAnalyzer.outputElementAsHtml(pdfIo.getExistingOutputDocumentDir());
 		}
 		LOG.debug("merged HTML");
 		for (HtmlAnalyzer htmlAnalyzer : mergedHtmlAnalyzerList) {
-			htmlAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
+			htmlAnalyzer.outputElementAsHtml(pdfIo.getExistingOutputDocumentDir());
 		}
 		LOG.debug("merged TEXT");
-		textDivAnalyzer.outputElementAsHtml(pdfIo.outputDocumentDir);
+		textDivAnalyzer.outputElementAsHtml(pdfIo.getExistingOutputDocumentDir());
 		
 	}
 
@@ -212,7 +222,7 @@ public class HtmlEditor {
 		}
 	}
 
-	List<HtmlAnalyzer> getHtmlAnalyzerListSortedByChunkId() {
+	public List<HtmlAnalyzer> getHtmlAnalyzerListSortedByChunkId() {
 		if (htmlAnalyzerListSortedByChunkId == null) {
 			List<ChunkId> chunkIdList = Arrays.asList(htmlAnalyzerByIdMap.keySet().toArray(new ChunkId[0]));
 			Collections.sort(chunkIdList);

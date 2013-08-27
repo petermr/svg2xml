@@ -9,11 +9,11 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.tools.Caption;
 import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 /** a figure consists of (possibly optional) Caption and FigureBody
  * these are directly accessible but are also child elements of Figure

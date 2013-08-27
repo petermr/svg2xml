@@ -11,27 +11,28 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.GraphicsElement.FontWeight;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.analyzer.ChunkAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
-import org.xmlcml.svg2xml.text.FontStyle.Style;
+import org.xmlcml.svg2xml.old.ChunkAnalyzerX;
+import org.xmlcml.svg2xml.old.FontStyleOld;
+import org.xmlcml.svg2xml.old.FontStyleOld.Style;
 import org.xmlcml.svg2xml.tools.Chunk;
 
 public class FontStyleTest {
 
 	private final static Logger LOG = Logger.getLogger(FontStyleTest.class);
 	
-	private static final Object NORMAL_STYLE = new FontStyle(Style.NORMAL);
-	private static final Object BOLD_STYLE = new FontStyle(Style.BOLD);
-	private static final Object BOLD_ITALIC_STYLE = new FontStyle(""+Style.BOLD+""+Style.ITALIC);
-	private static final Object ITALIC_STYLE = new FontStyle(Style.ITALIC);
+	private static final Object NORMAL_STYLE = new FontStyleOld(Style.NORMAL);
+	private static final Object BOLD_STYLE = new FontStyleOld(Style.BOLD);
+	private static final Object BOLD_ITALIC_STYLE = new FontStyleOld(""+Style.BOLD+""+Style.ITALIC);
+	private static final Object ITALIC_STYLE = new FontStyleOld(Style.ITALIC);
 
 	@Test
 	public void testFontStyle() {
-		FontStyle bold = new FontStyle("bold");
-		FontStyle bold1 = new FontStyle("BOLD");
+		FontStyleOld bold = new FontStyleOld("bold");
+		FontStyleOld bold1 = new FontStyleOld("BOLD");
 		Assert.assertEquals("bold ", bold, bold1);
-		FontStyle normal = new FontStyle("");
-		FontStyle normal1 = new FontStyle("normal");
+		FontStyleOld normal = new FontStyleOld("");
+		FontStyleOld normal1 = new FontStyleOld("normal");
 		Assert.assertEquals("normal", normal, normal1);
 		Assert.assertTrue("normal", normal.equals(normal1));
 		Assert.assertFalse("bold", bold.equals(normal));
@@ -40,50 +41,50 @@ public class FontStyleTest {
 	@Test
 	public void testFontStyleInText() {
 		SVGText text = new SVGText();
-		FontStyle fontStyle = FontStyle.getFontStyle(text);
+		FontStyleOld fontStyle = FontStyleOld.getFontStyle(text);
 		Assert.assertEquals("normal", NORMAL_STYLE, fontStyle);
 		text.setFontWeight(FontWeight.BOLD);
-		fontStyle = FontStyle.getFontStyle(text);
+		fontStyle = FontStyleOld.getFontStyle(text);
 		Assert.assertEquals("bold", BOLD_STYLE, fontStyle);
 		text.setFontStyle(GraphicsElement.FontStyle.ITALIC);
-		fontStyle = FontStyle.getFontStyle(text);
+		fontStyle = FontStyleOld.getFontStyle(text);
 		Assert.assertEquals("bold italic", BOLD_ITALIC_STYLE, fontStyle);
 		text.setFontWeight(GraphicsElement.FontWeight.NORMAL);
-		fontStyle = FontStyle.getFontStyle(text);
+		fontStyle = FontStyleOld.getFontStyle(text);
 		Assert.assertEquals("italic", ITALIC_STYLE, fontStyle);
 	}
 
-	@Test
-	public void testFontStyleInChunks() {
-		List<Chunk> leafChunks = Fixtures.createLeafChunks(Fixtures.FONT_STYLES_PDF, 1);
-		Assert.assertEquals("font style count", 7, leafChunks.size());
-		for (Chunk chunk : leafChunks) {
-			TextLine textLine = getTextFirstLineFromChunk(chunk);
-			LOG.trace("FS "+textLine.getFontStyleSet().size()+" "+textLine.getFontStyleSet());
-		}
-//		ChunkAnalyzerX chunkAnalyzer = new ChunkAnalyzerX();
-//		chunkAnalyzer.analyzeChunk(leafChunks.get(0));
-//		TextAnalyzerX textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
-	}
+//	@Test
+//	public void testFontStyleInChunks() {
+//		List<Chunk> leafChunks = Fixtures.createLeafChunks(Fixtures.FONT_STYLES_PDF, 1);
+//		Assert.assertEquals("font style count", 7, leafChunks.size());
+//		for (Chunk chunk : leafChunks) {
+//			TextLine textLine = getTextFirstLineFromChunk(chunk);
+//			LOG.trace("FS "+textLine.getFontStyleSet().size()+" "+textLine.getFontStyleSet());
+//		}
+////		ChunkAnalyzerX chunkAnalyzer = new ChunkAnalyzerX();
+////		chunkAnalyzer.analyzeChunk(leafChunks.get(0));
+////		TextAnalyzerX textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
+//	}
 
-	@Test
-	public void testFontStyleInChunks0() {
-		List<Chunk> leafChunks = Fixtures.createLeafChunks(Fixtures.FONT_STYLES_PDF, 1);
-		TextLine textLine = getTextFirstLineFromChunk(leafChunks.get(3));
-		Set<FontStyle> fontStyleSet = textLine.getFontStyleSet();
-	}
-
-	private TextLine getTextFirstLineFromChunk(Chunk chunk) {
-		List<TextLine> textLines = getTextLines(chunk);
-		TextLine textLine = textLines.size() == 0 ? null : textLines.get(0);
-		return textLine;
-	}
-
-	private List<TextLine> getTextLines(Chunk chunk) {
-		ChunkAnalyzerX chunkAnalyzerX = new ChunkAnalyzerX();
-		chunkAnalyzerX.analyzeChunk(chunk);
-		TextAnalyzerX textAnalyzerX = chunkAnalyzerX.getTextAnalyzerX();
-		List<TextLine> textLines = textAnalyzerX.getLinesInIncreasingY();
-		return textLines;
-	}
+//	@Test
+//	public void testFontStyleInChunks0() {
+//		List<Chunk> leafChunks = Fixtures.createLeafChunks(Fixtures.FONT_STYLES_PDF, 1);
+//		TextLine textLine = getTextFirstLineFromChunk(leafChunks.get(3));
+//		Set<FontStyleOld> fontStyleSet = textLine.getFontStyleSet();
+//	}
+//
+//	private TextLine getTextFirstLineFromChunk(Chunk chunk) {
+//		List<TextLine> textLines = getTextLines(chunk);
+//		TextLine textLine = textLines.size() == 0 ? null : textLines.get(0);
+//		return textLine;
+//	}
+//
+//	private List<TextLine> getTextLines(Chunk chunk) {
+//		ChunkAnalyzerX chunkAnalyzerX = new ChunkAnalyzerX();
+//		chunkAnalyzerX.analyzeChunk(chunk);
+//		TextAnalyzerX textAnalyzerX = chunkAnalyzerX.getTextAnalyzerX();
+//		List<TextLine> textLines = textAnalyzerX.getLinesInIncreasingY();
+//		return textLines;
+//	}
 }

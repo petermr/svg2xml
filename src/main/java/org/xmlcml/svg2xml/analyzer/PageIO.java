@@ -15,8 +15,8 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 public class PageIO {
 

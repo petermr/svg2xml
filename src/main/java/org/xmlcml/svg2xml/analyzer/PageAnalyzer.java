@@ -259,7 +259,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		return sb.toString();
 	}
 	
-	protected HtmlElement createHtml() {
+	public HtmlElement createHtml() {
 		HtmlHtml html = new HtmlHtml();
 		addStyle(html);
 		HtmlTitle title = new HtmlTitle("Page: "+pageIo.getHumanPageNumber());
@@ -428,6 +428,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 				throw new RuntimeException("Null chunkId in "+abstractContainer.getClass()+" "+abstractContainer.getChunkId());
 			}
 				normalizeDuplicateChunkId(chunkIdSet, abstractContainer, chunkId);
+				long time = System.currentTimeMillis();
 				LOG.trace(abstractContainer.getClass()+" "+chunkId+" "+abstractContainer.getType());
 				HtmlElement element = abstractContainer.createHtmlElement();
 				ContainerType type = abstractContainer.getType();
@@ -438,11 +439,13 @@ public class PageAnalyzer extends AbstractAnalyzer {
 				} else if (pageIo.isOutputFooters() && ContainerType.FOOTER.equals(type)) {
 				}
 				if (type != null) {
+					LOG.debug("creating html chunk: "+type+": "+chunkId.toString()+" "+(System.currentTimeMillis()-time));
 					File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), type, chunkId.toString());
 					PageIO.outputFile(element, file);
 				}
 				chunkIdSet.add(chunkId);
 		}
+		LOG.debug("finished outputHtmlComponents");
 	}
 
 	private void normalizeDuplicateChunkId(Set<ChunkId> chunkIdSet,

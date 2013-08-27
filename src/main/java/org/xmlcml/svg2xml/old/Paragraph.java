@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.textextra;
+package org.xmlcml.svg2xml.old;
 
 import java.util.ArrayList;
 import java.util.List;

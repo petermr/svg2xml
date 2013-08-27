@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 
 public class SVG2XMLUtil {
 

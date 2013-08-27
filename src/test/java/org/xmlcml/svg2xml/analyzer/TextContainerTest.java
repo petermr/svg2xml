@@ -12,9 +12,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 import com.google.common.collect.Multiset;
 

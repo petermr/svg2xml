@@ -25,9 +25,10 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
 import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.old.Annotatable;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-public abstract class AbstractAnalyzer implements Annotatable {
+public abstract class AbstractAnalyzer /* implements Annotatable */ {
 	
 	private final static Logger LOG = Logger.getLogger(AbstractAnalyzer.class);
 
@@ -163,7 +164,7 @@ public abstract class AbstractAnalyzer implements Annotatable {
 		return analyzer;
 	}
 
-	protected HtmlElement createHtml() {
+	public HtmlElement createHtml() {
 		HtmlElement htmlElement = new HtmlDiv();
 		htmlElement.appendChild("no content - subclass me?");
 		return htmlElement;

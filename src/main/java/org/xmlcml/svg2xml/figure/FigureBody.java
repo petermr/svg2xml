@@ -11,9 +11,9 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
 import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 /** FigureBody consists of the non-caption part of the figure
  *  it will contain one or more SubFigures

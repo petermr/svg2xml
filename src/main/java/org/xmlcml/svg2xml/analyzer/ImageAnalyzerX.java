@@ -75,7 +75,7 @@ public class ImageAnalyzerX extends AbstractAnalyzer {
 
 
 	@Override
-	protected HtmlElement createHtml() {
+	public HtmlElement createHtml() {
 		LOG.trace("image html"+imageList.size());
 		HtmlElement element = new HtmlDiv();
 		for (int i = 0; i < imageList.size(); i++) {

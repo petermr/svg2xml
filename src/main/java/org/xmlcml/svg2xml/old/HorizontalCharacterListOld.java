@@ -17,10 +17,6 @@ import org.xmlcml.euclid.RealArray;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
-import org.xmlcml.svg2xml.text.SimpleCharacter;
-import org.xmlcml.svg2xml.text.SimpleFont;
-import org.xmlcml.svg2xml.textextra.Word;
-import org.xmlcml.svg2xml.textextra.WordSequence;
 
 /** holds a list of characters, normally in a horizontal line
  * 
@@ -57,7 +53,7 @@ public class HorizontalCharacterListOld implements Iterable<SVGText> {
 	private List<HorizontalCharacterListOld> subLines;
 	private WordSequence wordSequence;
 	private TextAnalyzerX textAnalyzerX;
-	private SimpleFont simpleFont;
+	private SimpleFontOld simpleFont;
 	private Integer y;
 	private RealArray characterWidthArray;
 
@@ -327,7 +323,7 @@ public class HorizontalCharacterListOld implements Iterable<SVGText> {
 					SVGText text = characterList.get(i);
 					String ch = text.getText();
 					LOG.trace("CH "+ch+ " "+simpleFont);
-					SimpleCharacter simpleCharacter = simpleFont.getSimpleCharacter(ch);
+					SimpleCharacterOld simpleCharacter = simpleFont.getSimpleCharacter(ch);
 					if (simpleCharacter == null) {
 						simpleCharacter = simpleFont.getSimpleCharacter(DEFAULT_CHAR);
 					}
@@ -458,7 +454,7 @@ public class HorizontalCharacterListOld implements Iterable<SVGText> {
 
 	private void ensureSimpleFont() {
 		if (simpleFont == null) {
-			simpleFont = textAnalyzerX.ensureSimpleFont();
+//			simpleFont = textAnalyzerX.ensureSimpleFont();
 		}
 	}
 

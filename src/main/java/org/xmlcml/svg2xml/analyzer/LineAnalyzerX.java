@@ -9,6 +9,7 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Vector2;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.svg2xml.figure.AxisAnalyzerX;
 import org.xmlcml.svg2xml.paths.Axis;
 import org.xmlcml.svg2xml.tools.PlotBox;
 
@@ -28,7 +29,7 @@ public class LineAnalyzerX extends AbstractAnalyzer {
 	private List<PlotBox> plotBoxList;
 	private PlotBox plotBox;
 
-	protected LineAnalyzerX() {
+	public LineAnalyzerX() {
 	}
 	
 	/** copy lines for analysis

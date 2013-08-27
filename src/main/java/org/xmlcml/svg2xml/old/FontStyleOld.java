@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.text;
+package org.xmlcml.svg2xml.old;
 
 import org.xmlcml.graphics.svg.SVGText;
 
@@ -7,7 +7,7 @@ import org.xmlcml.graphics.svg.SVGText;
  * @author pm286
  *
  */
-public class FontStyle {
+public class FontStyleOld {
 	
 	public enum Style {
 		BOLD,
@@ -18,7 +18,7 @@ public class FontStyle {
 
 	Style style;
 	
-	public FontStyle(String sty) {
+	public FontStyleOld(String sty) {
 		this.style = null;
 		if (sty.equalsIgnoreCase(Style.BOLD.toString())) {
 			style = Style.BOLD;
@@ -34,15 +34,15 @@ public class FontStyle {
 		}
 	}
 	
-	public FontStyle(Style style) {
+	public FontStyleOld(Style style) {
 		this.style = style;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		boolean equals =false;
-		if (obj != null && obj instanceof FontStyle) {
-			FontStyle fontStyle = (FontStyle)obj;
+		if (obj != null && obj instanceof FontStyleOld) {
+			FontStyleOld fontStyle = (FontStyleOld)obj;
 			equals = fontStyle.style.equals(style);
 		}
 		return equals;
@@ -53,7 +53,7 @@ public class FontStyle {
 		return style == null ? 37 : style.toString().hashCode();
 	}
 
-	public static FontStyle getFontStyle(SVGText text) {
+	public static FontStyleOld getFontStyle(SVGText text) {
 		Style style = null;
 		if (text != null) {
 			String fontWeight = text.getFontWeight();
@@ -66,7 +66,7 @@ public class FontStyle {
 				style = (italic) ? Style.ITALIC : Style.NORMAL;
 			}
 		}
-		return style == null ? null : new FontStyle(style);
+		return style == null ? null : new FontStyleOld(style);
 	}
 	
 	public String toString() {

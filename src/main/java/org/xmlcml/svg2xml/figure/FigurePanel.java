@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 /** FigurePanels are logical subunits of the FigureBody
  * They are usually determined heuristically by whitespace or explicit borders

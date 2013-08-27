@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.analyzer;
+package org.xmlcml.svg2xml.text;
 
 import java.util.List;
 import java.util.regex.Pattern;

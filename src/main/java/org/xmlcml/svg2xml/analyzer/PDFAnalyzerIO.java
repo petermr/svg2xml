@@ -11,9 +11,9 @@ import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.html.HtmlMenuSystem;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
 import org.xmlcml.svg2xml.util.NameComparator;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 /** class to deal with IO from PDFAnalyzer
  * 

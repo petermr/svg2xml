@@ -1,7 +1,6 @@
-package org.xmlcml.svg2xml.analyzer;
+package org.xmlcml.svg2xml.old;
 
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -23,8 +22,13 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
+import org.xmlcml.svg2xml.analyzer.ChunkId;
+import org.xmlcml.svg2xml.analyzer.PDFAnalyzer;
+import org.xmlcml.svg2xml.analyzer.PDFIndex;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 /** container for  HtmlElement
  * Used to manipulate HTML. 
@@ -198,7 +202,7 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 		Integer serial = null;
 		if (classAttribute != null) {
 			if (pdfAnalyzer != null) {
-				for (AbstractAnalyzer analyzer : pdfAnalyzer.pdfIndex.getAnalyzerList()) {
+				for (AbstractAnalyzer analyzer : pdfAnalyzer.getIndex().getAnalyzerList()) {
 					if (analyzer.isChunk(classAttribute)) {
 						chunkType = analyzer.getTitle();
 						serial = new Integer(classAttribute.substring(chunkType.length()).trim());

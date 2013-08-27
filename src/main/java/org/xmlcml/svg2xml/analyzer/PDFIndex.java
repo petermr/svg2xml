@@ -28,11 +28,11 @@ import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.old.HtmlAnalyzer;
 import org.xmlcml.svg2xml.semantic.AppendixAnalyzer;
 import org.xmlcml.svg2xml.semantic.BibRefAnalyzer;
 import org.xmlcml.svg2xml.semantic.ChapterAnalyzer;
@@ -40,10 +40,13 @@ import org.xmlcml.svg2xml.semantic.DOIAnalyzer;
 import org.xmlcml.svg2xml.semantic.LicenceAnalyzer;
 import org.xmlcml.svg2xml.semantic.SchemeAnalyzer;
 import org.xmlcml.svg2xml.semantic.SnippetAnalyzer;
+import org.xmlcml.svg2xml.semantic.SummaryAnalyzer;
+import org.xmlcml.svg2xml.text.IntListPattern;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
 import org.xmlcml.svg2xml.text.Suscript;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.util.TextFlattener;
 
 import com.google.common.collect.HashMultimap;
@@ -68,7 +71,7 @@ public class PDFIndex {
 	public static final String PATH = "path";
 	private final static PrintStream SYSOUT = System.out;
 
-	static final String CHUNK_TYPE = "chunkType";
+	public static final String CHUNK_TYPE = "chunkType";
 
 	public static final String ABSTRACT = "abstract";
 	public static final String APPENDIX = "appendix";

@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.analyzer.HtmlEditor;
-import org.xmlcml.svg2xml.analyzer.HtmlVisitor;
+import org.xmlcml.svg2xml.old.HtmlEditor;
+import org.xmlcml.svg2xml.old.HtmlVisitor;
 
 /**
  * Not really the same as the other analyzers, but helps to tidey code

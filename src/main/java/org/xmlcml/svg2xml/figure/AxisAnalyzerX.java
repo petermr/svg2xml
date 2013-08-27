@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.analyzer;
+package org.xmlcml.svg2xml.figure;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.paths.Axis;
 import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;

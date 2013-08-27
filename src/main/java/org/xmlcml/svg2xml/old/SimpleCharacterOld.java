@@ -1,6 +1,6 @@
-package org.xmlcml.svg2xml.text;
+package org.xmlcml.svg2xml.old;
 
-public class SimpleCharacter {
+public class SimpleCharacterOld {
 
 	public Double getWidth() {
 		// TODO Auto-generated method stub

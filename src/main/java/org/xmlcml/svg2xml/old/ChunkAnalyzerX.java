@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.analyzer;
+package org.xmlcml.svg2xml.old;
 
 import java.util.List;
 
@@ -12,6 +12,11 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
+import org.xmlcml.svg2xml.analyzer.LineAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.PolylineAnalyzerX;
+import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.tools.Chunk;
 import org.xmlcml.svg2xml.tools.PlotBox;
 

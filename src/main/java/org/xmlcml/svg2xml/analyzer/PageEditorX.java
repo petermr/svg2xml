@@ -13,9 +13,10 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.figure.Figure;
+import org.xmlcml.svg2xml.old.ChunkAnalyzerX;
 import org.xmlcml.svg2xml.table.TableOld;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

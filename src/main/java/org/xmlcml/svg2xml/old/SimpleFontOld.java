@@ -1,12 +1,12 @@
-package org.xmlcml.svg2xml.text;
+package org.xmlcml.svg2xml.old;
 
 import java.util.Map;
 
-public class SimpleFont {
+public class SimpleFontOld {
 
-	public static final SimpleFont SIMPLE_FONT = null;
+	public static final SimpleFontOld SIMPLE_FONT = null;
 
-	public SimpleCharacter getSimpleCharacter(String defaultChar) {
+	public SimpleCharacterOld getSimpleCharacter(String defaultChar) {
 		// TODO Auto-generated method stub
 		return null;
 	}

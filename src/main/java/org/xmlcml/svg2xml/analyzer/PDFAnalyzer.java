@@ -19,7 +19,8 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svg2xml.action.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.old.HtmlEditor;
+import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 import com.google.common.collect.Multimap;
 
@@ -349,7 +350,7 @@ public class PDFAnalyzer /*implements Annotatable */{
 		return PageEditorX.DECIMAL_PLACES;
 	}
 	
-	PDFAnalyzerIO getPDFIO() {
+	public PDFAnalyzerIO getPDFIO() {
 		return pdfIo;
 	}
 
