@@ -57,37 +57,37 @@ public class PageSplitterAndHtmlTest {
 		}
 	}
 	
-	@Test
-	public void testTransformChunksToXMLAndAnalyzeText0() {
-		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
-		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(0));
-		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-		Assert.assertEquals("lines0 ", 1, textLines.size());
-		TextLine textLine = textLines.get(0);
-		Element element = textLine.createHtmlLine();
-		Assert.assertEquals("lines0 ", "380", element.getValue());
-	}
+//	@Test
+//	public void testTransformChunksToXMLAndAnalyzeText0() {
+//		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+//		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+//		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(0));
+//		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+//		Assert.assertEquals("lines0 ", 1, textLines.size());
+//		TextLine textLine = textLines.get(0);
+//		Element element = textLine.createHtmlLine();
+//		Assert.assertEquals("lines0 ", "380", element.getValue());
+//	}
+//	
+//	@Test
+//	public void testTransformChunksToXMLAndAnalyzeText1() {
+//		testSingleLineInChunk(1, "G. Moad, E. Rizzardo and S. H. Thang");
+//	}
+//
+//	@Test
+//	public void testTransformChunksToXMLAndAnalyzeText4() {
+//		testSingleLineInChunk(4, "Scheme 1.");
+//	}
+//	
+//	@Test
+//	public void testTransformChunksToXMLAndAnalyzeText6() {
+//		testSingleLineInChunk(6, "Scheme 2. Reversible deactivation.");
+//	}
 	
-	@Test
-	public void testTransformChunksToXMLAndAnalyzeText1() {
-		testSingleLineInChunk(1, "G. Moad, E. Rizzardo and S. H. Thang");
-	}
-
-	@Test
-	public void testTransformChunksToXMLAndAnalyzeText4() {
-		testSingleLineInChunk(4, "Scheme 1.");
-	}
-	
-	@Test
-	public void testTransformChunksToXMLAndAnalyzeText6() {
-		testSingleLineInChunk(6, "Scheme 2. Reversible deactivation.");
-	}
-	
-	@Test
-	public void testTransformChunksToXMLAndAnalyzeText8() {
-		testSingleLineInChunk(8, "Scheme 3. Reversible chain transfer.");
-	}
+//	@Test
+//	public void testTransformChunksToXMLAndAnalyzeText8() {
+//		testSingleLineInChunk(8, "Scheme 3. Reversible chain transfer.");
+//	}
 	
 	@Test
 	@Ignore // needs revisiting
@@ -564,17 +564,17 @@ public class PageSplitterAndHtmlTest {
 
 // ====================================================================
 	
-	private void testSingleLineInChunk(int chunk, String expected) {
-		// note this has been split already
-		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
-		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(chunk));
-		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-		Assert.assertEquals("line"+chunk, 1, textLines.size());
-		TextLine textLine = textLines.get(0);
-		Element element = textLine.createHtmlLine();
-		Assert.assertEquals("line"+chunk, expected, element.getValue());
-	}
+//	private void testSingleLineInChunk(int chunk, String expected) {
+//		// note this has been split already
+//		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+//		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+//		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(chunk));
+//		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+//		Assert.assertEquals("line"+chunk, 1, textLines.size());
+//		TextLine textLine = textLines.get(0);
+//		Element element = textLine.createHtmlLine();
+//		Assert.assertEquals("line"+chunk, expected, element.getValue());
+//	}
 
 	private void testMultipleLineInMixedChunk(int chunk, int nlines, Element ref) {
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);

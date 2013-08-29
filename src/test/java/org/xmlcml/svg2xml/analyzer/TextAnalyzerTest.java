@@ -500,126 +500,116 @@ public class TextAnalyzerTest {
 		}
 	}
 	
-	@Test
-	/** 
-	 * superscripts
-	 */
-	public void testCreateHTML0() {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		TextLine largeLine = textStructurer.getLinesWithLargestFont().get(0);
-		HtmlElement p = largeLine.createHtmlLine();
-		Element ref = CMLUtil.parseXML(
-				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The rate constant is 0.61795 mg L</span>" +
-"<sup>" +
-"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
-"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
-"</sup>" +
-"<span style='font-size:9.465px;font-family:TimesNewRoman;'>h</span>" +
-"<sup>" +
-"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
-"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
-"</sup>" +
-"<span style='font-size:9.465px;font-family:TimesNewRoman;'>.</span>" +
-"</p>" +
-"");
-		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-	}
+//	@Test
+//	/** 
+//	 * superscripts
+//	 */
+//	public void testCreateHTML0() {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		TextLine largeLine = textStructurer.getLinesWithLargestFont().get(0);
+//		HtmlElement p = largeLine.createHtmlLine();
+//		Element ref = CMLUtil.parseXML(
+//				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
+//"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The rate constant is 0.61795 mg L</span>" +
+//"<sup>" +
+//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
+//"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
+//"</sup>" +
+//"<span style='font-size:9.465px;font-family:TimesNewRoman;'>h</span>" +
+//"<sup>" +
+//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
+//"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
+//"</sup>" +
+//"<span style='font-size:9.465px;font-family:TimesNewRoman;'>.</span>" +
+//"</p>" +
+//"");
+//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
+//	}
 	
 
-	@Test
-	/** 
-	 * superscripts
-	 */
-	public void testCreateHTML1() {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		HtmlElement p = textStructurer.getLinesWithLargestFont().get(1).createHtmlLine();
-		Element ref = CMLUtil.parseXML(
-				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The temperature dependence of the rate constants is described</span>"+
-			"</p>" +
-			"");
-		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-	}
-	
-	@Test
-	/** 
-	 * superscripts
-	 */
-	public void testCreateHTML2() {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		HtmlElement p = textStructurer.getLinesWithLargestFont().get(2).createHtmlLine();
-		Element ref = CMLUtil.parseXML(""+
-		"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>by the Arrhenius equation </span>" +
-		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
-		"<span style='font-size:9.465px;font-family:TimesNewRoman;' />" +
-		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>=</span>" +
-		"<span style='font-size:9.465px;font-family:TimesNewRoman;' />" +
-		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
-		"<sub>" +
-		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>0</span>" +
-		"</sub>" +
-		"<span style='font-size:9.465px;font-family:Times-Roman;'>exp</span>" +
-		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>(</span>" +
-		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>"+MINUS+"</span>" +
-		"<span style='font-size:9.465px;font-family:Times-Roman;' />" +
-		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
-		"<sub>" +
-		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
-		"</sub>" +
-		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>/</span>" +
-		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>RT</span>" +
-		"<span style='font-size:9.465px;font-family:TimesNewRoman;'> ), where </span>" +
-		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
-		"<sub>" +
-		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
-		"</sub>" +
-		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>is the</span>" +
-		"</p>" +
-		"");
-
-		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-	}
-	
-	@Test
-	/** 
-	 * superscripts
-	 */
-	public void testCreateHTML5() {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		HtmlElement p = textStructurer.getLinesWithLargestFont().get(5).createHtmlLine();
-		Element ref = CMLUtil.parseXML(
-				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>130 and 200</span>" +
-				"<sup>" +
-				"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>"+WHITE_BULLET+"</span>" +
-				"</sup>" +
-				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>C yields the results of </span>" +
-				"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
-				"<sub>" +
-				"<span style='font-size:7.074px;font-family:TimesNewRoman;'>0</span>" +
-				"</sub>" +
-				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>and </span>" +
-				"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
-				"<sub>" +
-				"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
-				"</sub>" +
-				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>at higher tem-</span>" +
-				"</p>" +
-"");
-		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-	}
-	
-	@Test
-	/** 
-	 * superscripts
-	 */
-	public void testCreateHTMLRawDiv() throws Exception {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		HtmlElement div = textStructurer.getTextAnalyzer().createHtmlRawDiv();
-		CMLUtil.debug(div, new FileOutputStream("target/div.html"), 0);
-	}
+//	@Test
+//	/** 
+//	 * superscripts
+//	 */
+//	public void testCreateHTML1() {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		HtmlElement p = textStructurer.getLinesWithLargestFont().get(1).createHtmlLine();
+//		Element ref = CMLUtil.parseXML(
+//				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
+//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The temperature dependence of the rate constants is described</span>"+
+//			"</p>" +
+//			"");
+//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
+//	}
+//	
+//	@Test
+//	/** 
+//	 * superscripts
+//	 */
+//	public void testCreateHTML2() {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		HtmlElement p = textStructurer.getLinesWithLargestFont().get(2).createHtmlLine();
+//		Element ref = CMLUtil.parseXML(""+
+//		"<p xmlns='http://www.w3.org/1999/xhtml'>" +
+//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>by the Arrhenius equation </span>" +
+//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
+//		"<span style='font-size:9.465px;font-family:TimesNewRoman;' />" +
+//		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>=</span>" +
+//		"<span style='font-size:9.465px;font-family:TimesNewRoman;' />" +
+//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
+//		"<sub>" +
+//		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>0</span>" +
+//		"</sub>" +
+//		"<span style='font-size:9.465px;font-family:Times-Roman;'>exp</span>" +
+//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>(</span>" +
+//		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>"+MINUS+"</span>" +
+//		"<span style='font-size:9.465px;font-family:Times-Roman;' />" +
+//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
+//		"<sub>" +
+//		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
+//		"</sub>" +
+//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>/</span>" +
+//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>RT</span>" +
+//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'> ), where </span>" +
+//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
+//		"<sub>" +
+//		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
+//		"</sub>" +
+//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>is the</span>" +
+//		"</p>" +
+//		"");
+//
+//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
+//	}
+//	
+//	@Test
+//	/** 
+//	 * superscripts
+//	 */
+//	public void testCreateHTML5() {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		HtmlElement p = textStructurer.getLinesWithLargestFont().get(5).createHtmlLine();
+//		Element ref = CMLUtil.parseXML(
+//				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
+//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>130 and 200</span>" +
+//				"<sup>" +
+//				"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>"+WHITE_BULLET+"</span>" +
+//				"</sup>" +
+//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>C yields the results of </span>" +
+//				"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
+//				"<sub>" +
+//				"<span style='font-size:7.074px;font-family:TimesNewRoman;'>0</span>" +
+//				"</sub>" +
+//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>and </span>" +
+//				"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
+//				"<sub>" +
+//				"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
+//				"</sub>" +
+//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>at higher tem-</span>" +
+//				"</p>" +
+//"");
+//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
+//	}
 	
 	@Test
 	/** 
@@ -627,7 +617,6 @@ public class TextAnalyzerTest {
 	 */
 	public void testCreateHTMLDivWithParas() throws Exception {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		HtmlElement div = textStructurer.getTextAnalyzer().createHtmlDivWithParas();
 		HtmlElement div = textStructurer.getTextAnalyzer().createHtmlElement();
 		CMLUtil.debug(div, new FileOutputStream("target/divParas0.html"), 0);
 	}

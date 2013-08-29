@@ -121,11 +121,11 @@ public class HtmlEditor {
 			htmlAnalyzer.addIdSeparator(topDiv);
 			Element copyElement = null;
 			try {
-				copyElement = HtmlElement.create((Element)htmlAnalyzer.getHtmlElement());
+				copyElement = HtmlElement.create((Element)htmlAnalyzer.createHtmlElement());
 			} catch (Exception e) {
 				LOG.debug("cannot create HTML: "+e);
 				// might be SVG
-				copyElement = (Element) htmlAnalyzer.getHtmlElement().copy();
+				copyElement = (Element) htmlAnalyzer.createHtmlElement().copy();
 			}
 			topDiv.appendChild(copyElement);
 		}
@@ -332,7 +332,7 @@ public class HtmlEditor {
 			HtmlElement htmlElement = tableAnalyzer.createTable();
 			LOG.debug("Table "+htmlElement.toXML());
 			// transfer any existing id and class attribute
-			HtmlElement oldHtmlElement = tableHtmlAnalyzer.getHtmlElement();
+			HtmlElement oldHtmlElement = tableHtmlAnalyzer.createHtmlElement();
 			if (oldHtmlElement != null) {
 				CMLUtil.copyAttributes(oldHtmlElement, htmlElement);
 			}

@@ -86,14 +86,12 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 	 * 
 	 */
 	public HtmlElement createHtmlElement() {
-		this.htmlElement = getAnalyzer().createHtmlElement();
+		if (htmlElement == null) {
+			this.htmlElement = getAnalyzer().createHtmlElement();
+		}
 		return htmlElement;
 	}
 	
-	public HtmlElement getHtmlElement() {
-		return htmlElement;
-	}
-
 	void removeSVGNodes() {
 		Nodes nodes = htmlElement.query(".//*[local-name()='svg']");
 		for (int i = 0; i < nodes.size(); i++) {
@@ -298,7 +296,7 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 	public boolean mergeLinesWithPrevious(HtmlAnalyzer lastAnalyzer, HtmlElement topDiv) {
 		HtmlP lastTopP = getLastPara(topDiv);
 		boolean merged = false;
-		HtmlElement lastElement = lastAnalyzer.getHtmlElement();
+		HtmlElement lastElement = lastAnalyzer.createHtmlElement();
 		LOG.trace("LAST "+lastElement.toXML());
 		HtmlP lastP = getLastPara(lastElement);
 

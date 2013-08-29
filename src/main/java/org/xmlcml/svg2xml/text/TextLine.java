@@ -32,7 +32,6 @@ import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.old.SimpleFontOld;
-import org.xmlcml.svg2xml.old.Word;
 import org.xmlcml.svg2xml.old.WordSequence;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
@@ -688,15 +687,15 @@ public class TextLine implements Iterable<SVGText> {
 		return textLineList;
 	}
 	
-	public HtmlElement createHtmlLine() {
-		List<TextLine> textLineList = createSuscriptTextLineList();
-		return createHtmlElement(textLineList);
-	}
-
+//	public HtmlElement createHtmlLine() {
+//		List<TextLine> textLineList = createSuscriptTextLineList();
+//		return createHtmlElement(textLineList);
+//	}
+//
 	public static HtmlElement createHtmlElement(List<TextLine> textLineList) {
 		HtmlP p = new HtmlP();
 		for (TextLine textLine : textLineList) {
-			HtmlElement pp = textLine.getHtmlElements();
+			HtmlElement pp = textLine.getHtmlElement();
 			if (pp instanceof HtmlSpan) {
 				SVG2XMLUtil.moveChildrenFromTo(pp, p);
 			} else {
@@ -705,9 +704,9 @@ public class TextLine implements Iterable<SVGText> {
 		}
 		return p;
 	}
+//
 
-
-	private HtmlElement getHtmlElements() {
+	private HtmlElement getHtmlElement() {
 		HtmlElement htmlElement = null;
 		Suscript suscript = this.getSuscript();
 		if (suscript == null || suscript.equals(Suscript.NONE)) {

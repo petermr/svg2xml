@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -15,14 +14,12 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
-import org.xmlcml.svg2xml.text.TextStructurer.Splitter;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
@@ -126,35 +123,6 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	public List<TextLine> getTextLines() {
 		return ensureTextContainerWithSortedLines().getTextLineList();
 	}
-
-	/** creates one "para" per line
-	 * usually needs tidying with createHtmlDivWithParas
-	 * @return
-	 */
-	public HtmlElement createHtmlRawDiv() {
-		ensureTextContainerWithSortedLines();
-		List<TextLine> textLineList = textStructurer.getLinesWithCommonestFont();
-		HtmlDiv div = new HtmlDiv();
-		for (TextLine textLine : textLineList) {
-			HtmlElement p = textLine.createHtmlLine();
-			div.appendChild(p);
-		}
-		return div;
-	}
-
-	/** creates one "para" per line
-	 * usually needs tidying with createHtmlDivWithParas
-	 * @return
-	 */
-	public static HtmlElement createHtmlRawDiv(List<TextLine> linesToBeAnalyzed) {
-		HtmlDiv div = new HtmlDiv();
-		for (TextLine textLine : linesToBeAnalyzed) {
-			HtmlElement p = textLine.createHtmlLine();
-			div.appendChild(p);
-		}
-		return div;
-	}
-
 	
 	private TextStructurer ensureTextContainerWithSortedLines() {
 		if (this.textStructurer == null) {
