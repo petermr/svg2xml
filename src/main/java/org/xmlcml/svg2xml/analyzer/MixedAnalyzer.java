@@ -113,13 +113,13 @@ public class MixedAnalyzer extends AbstractAnalyzer {
 	}
 	
 	@Override
-	public HtmlElement createHtml() {
+	public HtmlElement createHtmlElement() {
 		HtmlDiv element = new HtmlDiv();
 		for (AbstractAnalyzer analyzer : analyzerList) {
 			LOG.debug("MIXED "+analyzer);
 			HtmlDiv div = new HtmlDiv();
 			element.appendChild(div);
-			HtmlElement childElement = analyzer.createHtml();
+			HtmlElement childElement = analyzer.createHtmlElement();
 			if (childElement != null) {
 				div.appendChild(childElement);
 			}

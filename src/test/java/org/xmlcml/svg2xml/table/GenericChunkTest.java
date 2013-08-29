@@ -14,7 +14,7 @@ public class GenericChunkTest {
 
 	@Test
 	public void testTDBlockBBox() {
-		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
+		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		Real2Range bbox = genericChunk.getBoundingBox();
 		bbox.format(3);
 		Assert.assertEquals("bbox", "((70.243,269.107),(124.838,288.219))", bbox.toString());
@@ -22,7 +22,7 @@ public class GenericChunkTest {
 
 	@Test
 	public void testTDBlockHorizontalGaps() {
-		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
+		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		RealRangeArray horizontalMask = genericChunk.createHorizontalMask();
 		RealArray gaps = horizontalMask.getGaps();
 		gaps.format(3);
@@ -31,7 +31,7 @@ public class GenericChunkTest {
 
 	@Test
 	public void testTDBlockHorizontalInverseMask() {
-		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
+		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		RealRangeArray horizontalInverseMask = genericChunk.createHorizontalInverseMask(TableFixtures.PAGE_BOX);
 		horizontalInverseMask.format(3);
 		Assert.assertEquals("horizontalInverseMask", "Direction: HORIZONTAL; size: 5\n"+
@@ -40,7 +40,7 @@ public class GenericChunkTest {
 
 	@Test
 	public void testTDBlockHorizontalMask() {
-		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
+		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		RealRangeArray horizontalMask = genericChunk.createHorizontalMask();
 		horizontalMask.format(3);
 		Assert.assertEquals("horizontalMask", "Direction: HORIZONTAL; size: 4\n"+
@@ -49,7 +49,7 @@ public class GenericChunkTest {
 
 	@Test
 	public void testTDBlockVerticalGaps() {
-		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
+		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		RealRangeArray verticalMask = genericChunk.createVerticalMask();
 		RealArray gaps = verticalMask.getGaps();
 		gaps.format(3);
@@ -59,7 +59,7 @@ public class GenericChunkTest {
 
 	@Test
 	public void testTDBlockVerticalInverseMask() {
-		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
+		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		RealRangeArray verticalInverseMask = genericChunk.createVerticalInverseMask(TableFixtures.PAGE_BOX);
 		verticalInverseMask.format(3);
 		Assert.assertEquals("verticalInverseMask", "Direction: VERTICAL; size: 15\n"+
@@ -71,7 +71,7 @@ public class GenericChunkTest {
 
 	@Test
 	public void testTDBlockVerticalMask() {
-		GenericChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
+		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		RealRangeArray verticalMask = genericChunk.createVerticalMask();
 		verticalMask.format(3);
 		Assert.assertEquals("horizontalMask", "Direction: VERTICAL; size: 14\n"+

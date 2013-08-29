@@ -114,15 +114,15 @@ public class SubSupAnalyzerX extends AbstractAnalyzer {
 			SVGText text0 = getFirstNonNullText(lineTexts);
 			if (text0 != null) {
 				ParentNode parent = text0.getParent();
-				SVGText textContainer = new SVGText(text0);
-				textContainer.setText(null);
-				parent.appendChild(textContainer);
+				SVGText text1 = new SVGText(text0);
+				text1.setText(null);
+				parent.appendChild(text1);
 				for (SVGText text : lineTexts) {
 					text.detach();
 					SVGTSpan tSpan = new SVGTSpan();
 					CMLUtil.copyAttributes(text, tSpan);
 					tSpan.setText(text.getValue());
-					textContainer.appendChild(tSpan);
+					text1.appendChild(tSpan);
 				}
 			}
 		}

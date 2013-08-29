@@ -52,10 +52,10 @@ public class TableTableTest {
 				"aInsomecases,thesamplesizenisthepoolednumberofcellsobservedacrossseveraldays.DetailedinformationcanbefoundinTableS1ofadditionalfile1."
 		};
 		TableTable table = createTable(TableFixtures.TABLEFILE);
-		List<GenericChunk> chunkList = table.createVerticalTextChunks();
+		List<TableChunk> chunkList = table.createVerticalTextChunks();
 		Assert.assertEquals("vertical chunks ", 4, chunkList.size());
 		for (int i = 0; i < chunkList.size(); i++) {
-			GenericChunk genericChunk = chunkList.get(i);
+			TableChunk genericChunk = chunkList.get(i);
 			Assert.assertEquals("row"+i, values[i], genericChunk.getValue());
 		}
 	}
@@ -71,10 +71,10 @@ public class TableTableTest {
 				"null"
 		};
 		TableTable table = createTable(TableFixtures.TABLEFILE);
-		List<GenericChunk> chunkList = table.analyzeVerticalTextChunks();
+		List<TableChunk> chunkList = table.analyzeVerticalTextChunks();
 		Assert.assertEquals("vertical chunks ", 4, chunkList.size());
 		for (int i = 0; i < chunkList.size(); i++) {
-			GenericChunk genericChunk = chunkList.get(i);
+			TableChunk genericChunk = chunkList.get(i);
 			RealRangeArray rra = genericChunk.getHorizontalMask();
 			if (masks[i].equals("null")) {
 				Assert.assertNull("row"+i, rra);

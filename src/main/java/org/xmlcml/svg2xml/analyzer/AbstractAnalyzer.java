@@ -41,9 +41,7 @@ public abstract class AbstractAnalyzer /* implements Annotatable */ {
 	List<Integer> serialList;
 	protected PDFIndex pdfIndex;
 	protected List<AbstractContainer> abstractContainerList;
-
 	protected SVGElement svgElement;
-
 	
 	static List<String> titleList = new ArrayList<String>();
 	static {
@@ -164,7 +162,7 @@ public abstract class AbstractAnalyzer /* implements Annotatable */ {
 		return analyzer;
 	}
 
-	public HtmlElement createHtml() {
+	public HtmlElement createHtmlElement() {
 		HtmlElement htmlElement = new HtmlDiv();
 		htmlElement.appendChild("no content - subclass me?");
 		return htmlElement;

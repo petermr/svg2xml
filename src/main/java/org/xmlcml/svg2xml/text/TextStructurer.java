@@ -32,8 +32,10 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
+import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.container.ScriptContainer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
@@ -86,7 +88,7 @@ public class TextStructurer {
 
 	private RealArray interTextLineSeparationArray;
 	private RealArray meanFontSizeArray;
-	private RealArray modalExcessWidthArray;
+//	private RealArray modalExcessWidthArray;
 	private Multiset<Double> separationSet;
 	private Map<Integer, TextLine> textLineByYCoordMap;
 	private RealArray textLineCoordinateArray;
@@ -101,6 +103,10 @@ public class TextStructurer {
 	private SVGElement svgChunk;
 
 	private Real2Range boundingBox;
+
+	private ScriptContainer scriptContainer;
+
+	private HtmlElement htmlElement;
 
 	/** this COPIES the lines in the textAnalyzer
 	 * this may not be a good idea
@@ -145,25 +151,25 @@ public class TextStructurer {
 		return textLineList;
 	}
 	
-	/** some lines may not have spaces
-	 * 
-	 * @return
-	 */
-	public List<Double> getActualWidthsOfSpaceCharactersList() {
-		if (actualWidthsOfSpaceCharactersList == null) {
-			getLinesInIncreasingY();
-			if (textLineList != null && textLineList.size() > 0) {
-				actualWidthsOfSpaceCharactersList = new ArrayList<Double>();
-				for (int i = 0; i < textLineList.size(); i++) {
-					Double meanWidth = textLineList.get(i).getMeanWidthOfSpaceCharacters();
-					meanWidth = meanWidth == null ? null : Real.normalize(meanWidth, TextAnalyzerX.NDEC_FONTSIZE);
-					actualWidthsOfSpaceCharactersList.add(meanWidth);
-				}
-			}
-//			actualWidthsOfSpaceCharactersArray.format(NDEC_FONTSIZE);
-		}
-		return actualWidthsOfSpaceCharactersList;
-	}
+//	/** some lines may not have spaces
+//	 * 
+//	 * @return
+//	 */
+//	public List<Double> getActualWidthsOfSpaceCharactersList() {
+//		if (actualWidthsOfSpaceCharactersList == null) {
+//			getLinesInIncreasingY();
+//			if (textLineList != null && textLineList.size() > 0) {
+//				actualWidthsOfSpaceCharactersList = new ArrayList<Double>();
+//				for (int i = 0; i < textLineList.size(); i++) {
+//					Double meanWidth = textLineList.get(i).getMeanWidthOfSpaceCharacters();
+//					meanWidth = meanWidth == null ? null : Real.normalize(meanWidth, TextAnalyzerX.NDEC_FONTSIZE);
+//					actualWidthsOfSpaceCharactersList.add(meanWidth);
+//				}
+//			}
+////			actualWidthsOfSpaceCharactersArray.format(NDEC_FONTSIZE);
+//		}
+//		return actualWidthsOfSpaceCharactersList;
+//	}
 
 	private void ensureTextLineByYCoordMap() {
 		if (textLineByYCoordMap == null) {
@@ -450,21 +456,6 @@ public class TextStructurer {
 		return textLineByYCoordMap;
 	}
 
-	public RealArray getModalExcessWidthArray() {
-		if (modalExcessWidthArray == null) {
-			getLinesInIncreasingY();
-			if (textLineList != null && textLineList.size() > 0) {
-				modalExcessWidthArray = new RealArray(textLineList.size());
-				for (int i = 0; i < textLineList.size(); i++) {
-					Double modalExcessWidth = textLineList.get(i).getModalExcessWidth();
-					modalExcessWidthArray.setElementAt(i, modalExcessWidth);
-				}
-			}
-			modalExcessWidthArray.format(TextAnalyzerX.NDEC_FONTSIZE);
-		}
-		return modalExcessWidthArray;
-	}
-
 	public Multiset<Double> createSeparationSet(int decimalPlaces) {
 		getInterTextLineSeparationArray();
 		interTextLineSeparationArray.format(decimalPlaces);
@@ -598,7 +589,7 @@ public class TextStructurer {
 				i++;
 			}
 		}
-		LOG.trace("separated "+scriptedLineList.size());
+		LOG.trace("ScriptedLineList "+scriptedLineList.size());
 		return scriptedLineList;
 	}
 
@@ -684,9 +675,9 @@ public class TextStructurer {
 		for (TextLine textLine : textLineList) {
 			LOG.trace("TL "+textLine);
 		}
-		if (false) {
-			textAnalyzer.setTextCharacters(textCharacters);
-		}
+//		if (false) {
+//			textAnalyzer.setTextCharacters(textCharacters);
+//		}
 		textAnalyzer.setTextStructurer(this);
 	}
 	
@@ -771,133 +762,41 @@ public class TextStructurer {
 
 	public static AbstractAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters) {
 			TextAnalyzerX textAnalyzer = new TextAnalyzerX();
-			/*TextStructurer textStructurer = */TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer);
+			TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer);
 			return textAnalyzer;
 	}
 
+//	private static void mergeParas(HtmlP pCurrent, HtmlP pNext) {
+//		Elements currentChildren = pCurrent.getChildElements();
+//		if (currentChildren.size() > 0) {
+//			HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
+//			HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
+//			Elements nextChildren = pNext.getChildElements();
+//			HtmlElement firstNext = nextChildren.size() == 0 ? null : (HtmlElement) nextChildren.get(0);
+//			HtmlSpan nextFirstSpan = (firstNext != null && firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
+//			int nextCounter = 0;
+//			// merge texts
+//			if (currentLastSpan != null && nextFirstSpan != null) {
+//				String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
+//				LOG.trace("Merged "+mergedText);
+//				lastCurrent.setValue(mergedText);
+//				nextCounter = 1;
+//			}
+//			//merge next line's children
+//			for (int i = nextCounter; i < nextChildren.size(); i++) {
+//				pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
+//			}
+//		}
+//	}
 
-	public static HtmlElement createHtmlDiv(List<ScriptLine> textLineGroupList) {
-		HtmlDiv div = new HtmlDiv();
-		for (ScriptLine group : textLineGroupList) {
-			HtmlElement el = null;
-			if (group == null) {
-//				el = new HtmlP();
-//				el.appendChild("PROBLEM");
-//				div.appendChild(el);
-//				div.debug("XXXXXXXXXXXXXXXXXX");
-			} else {
-				el = group.createHtml();
-				div.appendChild(el);
-			}
-		}
-		return div;
-	}
-
-	public HtmlElement createHtmlDivWithParas() {
-		List<ScriptLine> textLineGroupList = this.getScriptedLineList();
-		LOG.trace("TEXTLINEGROUP splt heres "+textLineGroupList);
-		if (textLineGroupList.size() == 0) {
-			LOG.trace("TextLineList: "+textLineList);
-			// debug
-		}
-		boolean bb = false;
-		createHtmlElementWithParas(textLineGroupList);
-		return createdHtmlElement;
-	}
-
-	/** only used in tests?
-	 * 
-	 * @param textLineGroupList
-	 * @return
-	 */
-	 public HtmlElement createHtmlElementWithParas(List<ScriptLine> textLineGroupList) {
-		List<TextLine> commonestTextLineList = this.getCommonestFontSizeTextLineList();
-		createdHtmlElement = null;
-		if (commonestTextLineList.size() == 0){
-			 createdHtmlElement = null;
-		} else if (commonestTextLineList.size() == 1){
-			 createdHtmlElement = commonestTextLineList.get(0).createHtmlLine();
-		} else {
-			HtmlElement rawDiv = createHtmlDiv(textLineGroupList);
-			createdHtmlElement = createDivWithParas(commonestTextLineList, rawDiv);
-		}
-		return createdHtmlElement;
-	}
-
-	private HtmlDiv createDivWithParas(List<TextLine> textLineList, HtmlElement rawDiv) {
-		HtmlDiv div = null;
-		Double leftIndent = TextStructurer.getMaximumLeftIndent(textLineList);
-		Real2Range leftBB = TextStructurer.getBoundingBox(textLineList);
-		Elements htmlLines = rawDiv.getChildElements();
-		LOG.trace("textLine "+textLineList.size()+"; html: "+ htmlLines.size());
-		
-		if (leftBB != null) {
-			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - leftBB.getXRange().getMin());
-			Real2Range largestFontBB = TextStructurer.getBoundingBox(textLineList);
-			if (largestFontBB != null) {
-				RealRange xRange = largestFontBB.getXRange();
-				Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
-				LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
-				div = new HtmlDiv();
-				// always start with para
-				HtmlP pCurrent = (htmlLines.size() == 0) ? null : 
-					TextStructurer.createAndAddNewPara(div, (HtmlP) htmlLines.get(0));
-				int size = htmlLines.size();
-				for (int i = 1; i < size/*textLineList.size()*/; i++) {
-					TextLine textLine = (textLineList.size() <= i) ? null : textLineList.get(i);
-					LOG.trace(">"+i+"> "+textLine);
-					HtmlP pNext = i < htmlLines.size() ? (HtmlP) HtmlElement.create(htmlLines.get(i)) : null;
-					// indent, create new para
-					if (pNext == null) {
-						LOG.error("Skipping HTML "+pCurrent+" // "+textLine);
-					} else if (textLine != null && textLine.getFirstXCoordinate() > indentBoundary) {
-						pCurrent = createAndAddNewPara(div, pNext);
-					} else {
-						mergeParas(pCurrent, pNext);
-					}
-				}
-			}
-		}
-		return div;
-	}
-	
-	public static HtmlP createAndAddNewPara(HtmlElement div, HtmlP p) {
-		HtmlP pNew = (HtmlP) HtmlElement.create(p);
-		div.appendChild(pNew);
-		return pNew;
-	}
-
-	public static void mergeParas(HtmlP pCurrent, HtmlP pNext) {
-		Elements currentChildren = pCurrent.getChildElements();
-		if (currentChildren.size() > 0) {
-			HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
-			HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
-			Elements nextChildren = pNext.getChildElements();
-			HtmlElement firstNext = nextChildren.size() == 0 ? null : (HtmlElement) nextChildren.get(0);
-			HtmlSpan nextFirstSpan = (firstNext != null && firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
-			int nextCounter = 0;
-			// merge texts
-			if (currentLastSpan != null && nextFirstSpan != null) {
-				String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
-				LOG.trace("Merged "+mergedText);
-				lastCurrent.setValue(mergedText);
-				nextCounter = 1;
-			}
-			//merge next line's children
-			for (int i = nextCounter; i < nextChildren.size(); i++) {
-				pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
-			}
-		}
-	}
-
-	private static String mergeLineText(String last, String next) {
-		//merge hyphen minus
-		if (last.endsWith("-")) {
-			return last.substring(0, last.length()-1) + next;
-		} else {
-			return last + " " + next;
-		}
-	}
+//	private static String mergeLineText(String last, String next) {
+//		//merge hyphen minus
+//		if (last.endsWith("-")) {
+//			return last.substring(0, last.length()-1) + next;
+//		} else {
+//			return last + " " + next;
+//		}
+//	}
 
 	public boolean endsWithRaggedLine() {
 		return createdHtmlElement != null &&
@@ -1067,19 +966,6 @@ public class TextStructurer {
 		}
 	}
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		if (textLineList == null) {
-			sb.append("null");
-		} else {
-			sb.append("TextStructurer: "+ textLineList.size());
-			for (TextLine textLine :textLineList) {
-				sb.append(textLine.toString()+"\n");
-			}
-		}
-		return sb.toString();
-	}
-
 	public List<TextStructurer> split(Splitter splitter) {
 		if (Splitter.BOLD.equals(splitter)) {
 			return splitOnFontBoldChange(0);
@@ -1206,40 +1092,40 @@ public class TextStructurer {
 		return splitList;
 	}
 
-	public SVGG oldCreateSVGGChunk() {
-		SVGG g = new SVGG();
-		for (TextLine textLine : textLineList) {
-			for (SVGText text : textLine) {
-				g.appendChild(new SVGText(text));
-			}
-		}
-		return g;
-	}
+//	private SVGG oldCreateSVGGChunk() {
+//		SVGG g = new SVGG();
+//		for (TextLine textLine : textLineList) {
+//			for (SVGText text : textLine) {
+//				g.appendChild(new SVGText(text));
+//			}
+//		}
+//		return g;
+//	}
 
-	/** attempts to split into numbered list by line starts.
-	 * 
-	 * @return
-	 */
-	public List<TextStructurer> splitNumberedList() {
-		getScriptedLineList();
-		List<TextStructurer> splitLineGroups = new ArrayList<TextStructurer>();
-		int last = 0;
-		for (int i = 0; i < scriptedLineList.size(); i++) {
-			ScriptLine tlg = scriptedLineList.get(i);
-			String value = tlg.getRawValue();
-			LOG.trace(value);
-			Matcher matcher = NUMBER_ITEM_PATTERN.matcher(value);
-			if (matcher.matches()) {
-				Integer serial = Integer.parseInt(matcher.group(1));
-				LOG.trace(">> "+serial);
-				addTextLineGroups(splitLineGroups, last, i);
-				last = i;
-				LOG.trace("split: "+i);
-			}
-		}
-		addTextLineGroups(splitLineGroups, last, scriptedLineList.size());
-		return splitLineGroups;
-	}
+//	/** attempts to split into numbered list by line starts.
+//	 * 
+//	 * @return
+//	 */
+//	private List<TextStructurer> splitNumberedList() {
+//		getScriptedLineList();
+//		List<TextStructurer> splitLineGroups = new ArrayList<TextStructurer>();
+//		int last = 0;
+//		for (int i = 0; i < scriptedLineList.size(); i++) {
+//			ScriptLine tlg = scriptedLineList.get(i);
+//			String value = tlg.getRawValue();
+//			LOG.trace(value);
+//			Matcher matcher = NUMBER_ITEM_PATTERN.matcher(value);
+//			if (matcher.matches()) {
+//				Integer serial = Integer.parseInt(matcher.group(1));
+//				LOG.trace(">> "+serial);
+//				addTextLineGroups(splitLineGroups, last, i);
+//				last = i;
+//				LOG.trace("split: "+i);
+//			}
+//		}
+//		addTextLineGroups(splitLineGroups, last, scriptedLineList.size());
+//		return splitLineGroups;
+//	}
 
 	private void addTextLineGroups(List<TextStructurer> splitLineGroups, int last, int next) {
 		if (next > last) {
@@ -1297,4 +1183,34 @@ public class TextStructurer {
 		ensureBoundingBox();
 		return boundingBox == null ? null : boundingBox.getYRange();
 	}
+	
+	public ScriptContainer getScriptContainer() {
+		if (scriptContainer == null) {
+			scriptContainer = ScriptContainer.createScriptContainer(this, (PageAnalyzer) null);
+//			scriptContainer.
+		}
+		return scriptContainer;
+	}
+	
+	public HtmlElement createHtmlElement() {
+		if (htmlElement == null) {
+			getScriptContainer();
+			htmlElement = scriptContainer.createHtmlElement();
+		}
+		return htmlElement;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		if (textLineList == null) {
+			sb.append("null");
+		} else {
+			sb.append("TextStructurer: "+ textLineList.size());
+			for (TextLine textLine :textLineList) {
+				sb.append(textLine.toString()+"\n");
+			}
+		}
+		return sb.toString();
+	}
+
 }

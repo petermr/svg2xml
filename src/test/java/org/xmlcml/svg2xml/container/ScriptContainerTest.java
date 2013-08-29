@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.RealRange;
@@ -23,7 +22,6 @@ import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
 import org.xmlcml.svg2xml.text.StyleSpans;
 import org.xmlcml.svg2xml.text.TextFixtures;
-import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class ScriptContainerTest {
@@ -367,67 +365,6 @@ public class ScriptContainerTest {
 	}
 
 	@Test
-	public void testBMCList() throws Exception {
-		File file = TextFixtures.BMC_312_12_7SB_SVG;
-		String outfile = "target/bmc_312_12_7Sb.html";
-		createList(file, outfile);
-	}
-
-	@Test
-	@Ignore // fails RuntimeException // FIXME
-	public void testMaterialsList() throws Exception {
-		File file = TextFixtures.MDPI_27_18_7SA_SVG;
-		String outfile = "target/mdpi_27_18_7Sa.html";
-		createList(file, outfile);
-	}
-	
-	@Test
-	public void testAJCList() throws Exception {
-		File file = TextFixtures.ACS_072516_6_4SB_SVG;
-		String outfile = "target/acs072516_6_4Sa.html";
-		createList(file, outfile);
-	}
-	
-	@Test
-	public void testAJCList65() throws Exception {
-		File file = TextFixtures.ACS_072516_6_5SA_SVG;
-		String outfile = "target/acs072516_6_5Sa.html";
-		createList(file, outfile);
-	}
-	
-	@Test
-	public void testPeerJBullet() throws Exception {
-		File file = TextFixtures.PEERJ_50_12_6SB_SVG;
-		String outfile = "target/peerj50.chunk12.6Sb.html";
-		createList(file, outfile);
-	}
-	
-	@Test
-	public void testRSCList() throws Exception {
-		File file = TextFixtures.RSC_B306241d_6_8SA_SVG;
-		String outfile = "target/rscb306241d.chunk6.8Sa.html";
-		createList(file, outfile);
-	}
-
-	@Test
-	// don't understand why this doesn't work. Perhaps on double boundary?
-	public void testNPGList() throws Exception {
-		File file = TextFixtures.NPG_00788_5_3SA_SVG;
-		String outfile = "target/npg00778.chunk5.3Sa.html";
-		createList(file, outfile);
-	}
-
-	@Test
-	// PROBLEM WITH SEPARATE ACCENTS on slightly different line
-	// also wobbly x coords for start of indent (up to 0.6 pixel)
-	@Ignore // superscripts not sorted out
-	public void testNPGList54() throws Exception {
-		File file = TextFixtures.NPG_00778_5_4SA_SVG;
-		String outfile = "target/npg00778.chunk5.4Sa.html";
-		createList(file, outfile);
-	}
-	
-	@Test
 	public void testIndents() {
 		TextStructurer textContainer = 
 				TextStructurer.createTextStructurerWithSortedLines(Fixtures.SVG_MULTIPLE_2_2_SVG);
@@ -495,54 +432,28 @@ public class ScriptContainerTest {
 	@Test
 	public void test312MULT_1() {
 		String[][][] values ={
-				TextFixtures.BMC_312MULT_1_0_HTML,
-				TextFixtures.BMC_312MULT_1_1_HTML,
-				TextFixtures.BMC_312MULT_1_2_HTML,
+			TextFixtures.BMC_312MULT_1_0_HTML,
+			TextFixtures.BMC_312MULT_1_1_HTML,
+			TextFixtures.BMC_312MULT_1_2_HTML,
 		};
 		File[] files = {
-						TextFixtures.BMC_312MULT_1_0SA_SVG,
-						TextFixtures.BMC_312MULT_1_1PA_SVG,
-						TextFixtures.BMC_312MULT_1_2DA_SVG
+			TextFixtures.BMC_312MULT_1_0SA_SVG,
+			TextFixtures.BMC_312MULT_1_1PA_SVG,
+			TextFixtures.BMC_312MULT_1_2DA_SVG
 		};
 		TextFixtures.testSpans(values, files);
 	}
 
 	
-	/** =======================================================
-	npg00778.chunk5.3Sa
-	 * ========================================================
-	 */
-	
-	private void createList(File file, String outfile) {
-		ScriptContainer sc = createScriptContainer(file);
-		ListContainer listContainer = ListContainer.createList(sc);
-		if (listContainer != null) {
-//			listContainer.debug();
-		}
-	}
-	
-
-
 	private void createHtml(File file, String outfile) throws IOException,
 			FileNotFoundException {
-		ScriptContainer sc = createScriptContainer(file);
+		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
 		HtmlElement divElement = sc.createHtmlElement();
 		CMLUtil.debug(divElement, new FileOutputStream(outfile), 0);
 	}
 
 
-	private ScriptContainer createScriptContainer(File file) {
-		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(file);
-		List<TextLine> textLineList = textStructurer.getTextLineList();
-		for (TextLine textLine : textLineList) {
-			LOG.trace("L> "+String.valueOf(textLine));
-		}
-		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textStructurer, pageAnalyzer);
-		return sc;
-	}
+	
 
 	// ==========================================================================================
 

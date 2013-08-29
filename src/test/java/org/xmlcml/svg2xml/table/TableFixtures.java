@@ -31,19 +31,19 @@ public class TableFixtures {
 	
 	public static final Real2Range PAGE_BOX = new Real2Range(new RealRange(0., 600.), new RealRange(0., 800.));
 	
-	public static GenericChunk createGenericChunkFromElements(File file) {
-		GenericChunk genericChunk = new GenericChunk();
+	public static TableChunk createGenericChunkFromElements(File file) {
+		TableChunk genericChunk = new TableChunk();
 		List<SVGElement> elementList = readFileAndXPathFilterToElementList(file, TEXT_OR_PATH_XPATH);
 		genericChunk.setElementList(elementList);
 		return genericChunk;
 	}
 	
-	public static GenericChunk createCellFromMaskedElements(
+	public static TableChunk createCellFromMaskedElements(
 			File file, RealRangeArray horizontalMask, RealRangeArray verticalMask) {
 		List<? extends SVGElement> elementList = readFileAndXPathFilterToElementList(file, TEXT_OR_PATH_XPATH);
 		elementList = SVGElement.filterHorizontally(elementList, horizontalMask);
 		elementList = SVGElement.filterVertically(elementList, verticalMask);
-		GenericChunk genericChunk = createGenericChunkFromElements(TableFixtures.CELL00FILE);
+		TableChunk genericChunk = createGenericChunkFromElements(TableFixtures.CELL00FILE);
 		return genericChunk;
 	}
 

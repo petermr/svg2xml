@@ -29,6 +29,15 @@ public class SVG2XMLUtil {
 		node.detach();
 	}
 	
+	public static void moveChildrenFromTo(Element fromElement, Element toElement) {
+		int childCount = fromElement.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			Node childNode = fromElement.getChild(0);
+			childNode.detach();
+			toElement.appendChild(childNode);
+		}
+	}
+	
 	public static void tidyTagWhiteTag(Element element, String tag) {
 		String query = "descendant-or-self::*[count(*[local-name()='"+tag+"']) > 1]'";
 		Nodes nodes = element.query(query);

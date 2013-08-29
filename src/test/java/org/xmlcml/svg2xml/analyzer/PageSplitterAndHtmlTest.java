@@ -594,7 +594,8 @@ public class PageSplitterAndHtmlTest {
 			LOG.trace(textLine);
 		}
 		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
-		Element element = textAnalyzer.createHtmlDivWithParas();
+//		Element element = textAnalyzer.createHtmlDivWithParas();
+		Element element = textAnalyzer.createHtmlElement();
 		JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
 		try {
 			Nodes nodes = element.query("//@style");

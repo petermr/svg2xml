@@ -32,21 +32,21 @@ import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
  * @author pm286
  *
  */
-public class TableTable extends GenericChunk {
+public class TableTable extends TableChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableTable.class);
 
 	public static final double HALF_SPACE = 2.0;
 	
-	private List<GenericChunk> chunkList;
+	private List<TableChunk> chunkList;
 	private int maxHorizontalChunks;
-	private List<GenericChunk> noColumnChunkList;
-	private List<GenericChunk> maxColumnChunkList;
-	private List<GenericChunk> otherChunkList;
-	private GenericChunk headerChunk;
-	private GenericChunk bodyChunk;
-	private GenericChunk captionChunk;
-	private GenericChunk footerChunk;
+	private List<TableChunk> noColumnChunkList;
+	private List<TableChunk> maxColumnChunkList;
+	private List<TableChunk> otherChunkList;
+	private TableChunk headerChunk;
+	private TableChunk bodyChunk;
+	private TableChunk captionChunk;
+	private TableChunk footerChunk;
 	private HtmlTable htmlTable;
 
 	private List<SVGPath> pathList;
@@ -55,7 +55,7 @@ public class TableTable extends GenericChunk {
 	private Real2Range textBox;
 	private Real2Range totalBox;
 
-	private List<GenericChunk> genericTextChunkList;
+	private List<TableChunk> genericTextChunkList;
 
 	public TableTable() {
 		init();
@@ -80,10 +80,10 @@ public class TableTable extends GenericChunk {
 	}
 
 	private void init() {
-		chunkList = new ArrayList<GenericChunk>();
+		chunkList = new ArrayList<TableChunk>();
 	}
 	
-	public void add(GenericChunk tableChunk) {
+	public void add(TableChunk tableChunk) {
 		chunkList.add(tableChunk);
 	}
 
@@ -133,7 +133,7 @@ public class TableTable extends GenericChunk {
 		}
 		if (otherChunkList.size() > 0) {
 			LOG.trace("OTHER");
-			for (GenericChunk chunk : otherChunkList) { 
+			for (TableChunk chunk : otherChunkList) { 
 				LOG.trace(">> "+chunk);
 			}
 		}
@@ -201,7 +201,7 @@ public class TableTable extends GenericChunk {
 		}
 	}
 
-	private HtmlP makePara(GenericChunk chunk) {
+	private HtmlP makePara(TableChunk chunk) {
 		HtmlP p = new HtmlP();
 		for (Element element : chunk.getElementList()) {
 			p.appendChild(element.getValue());
@@ -210,10 +210,10 @@ public class TableTable extends GenericChunk {
 	}
 
 	private void createChunkLists() {
-		noColumnChunkList = new ArrayList<GenericChunk>();
-		maxColumnChunkList = new ArrayList<GenericChunk>();
-		otherChunkList = new ArrayList<GenericChunk>();
-		for (GenericChunk tableChunk : chunkList) {
+		noColumnChunkList = new ArrayList<TableChunk>();
+		maxColumnChunkList = new ArrayList<TableChunk>();
+		otherChunkList = new ArrayList<TableChunk>();
+		for (TableChunk tableChunk : chunkList) {
 			int horizontalChunkCount = tableChunk.getHorizontalGaps().size();
 			if (horizontalChunkCount == 1) {
 				noColumnChunkList.add(tableChunk);
@@ -227,7 +227,7 @@ public class TableTable extends GenericChunk {
 
 	public int getMaxHorizontalChunks() {
 		maxHorizontalChunks = 0;
-		for (GenericChunk tableChunk : chunkList) {
+		for (TableChunk tableChunk : chunkList) {
 			int horizontalChunkCount = tableChunk.getHorizontalGaps().size();
 			maxHorizontalChunks = Math.max(horizontalChunkCount, maxHorizontalChunks);
 		}
@@ -238,12 +238,12 @@ public class TableTable extends GenericChunk {
 		return pathList;
 	}
 
-	public List<GenericChunk> createVerticalTextChunks() {
+	public List<TableChunk> createVerticalTextChunks() {
 		this.createCoarseVerticalMask();
-		genericTextChunkList = new ArrayList<GenericChunk>();
+		genericTextChunkList = new ArrayList<TableChunk>();
 		if (verticalMask != null) {
 			for (RealRange realRange : verticalMask) {
-				GenericChunk AbstractTableChunk = new GenericChunk();
+				TableChunk AbstractTableChunk = new TableChunk();
 				genericTextChunkList.add(AbstractTableChunk);
 				for (SVGText text : textList) {
 					RealRange textRange = text.getRealRange(Direction.VERTICAL);
@@ -256,18 +256,18 @@ public class TableTable extends GenericChunk {
 		return genericTextChunkList;
 	}
 
-	public List<GenericChunk> getGenericTextChunkList() {
+	public List<TableChunk> getGenericTextChunkList() {
 		return genericTextChunkList;
 	}
 
-	public List<GenericChunk> analyzeVerticalTextChunks() {
+	public List<TableChunk> analyzeVerticalTextChunks() {
 		createVerticalTextChunks();
 		int index = 0;
-		for (GenericChunk abstractTableChunk : genericTextChunkList) {
+		for (TableChunk abstractTableChunk : genericTextChunkList) {
 //			AbstractTableChunk.createHorizontalMask();
 			abstractTableChunk.createHorizontalMaskWithTolerance(HALF_SPACE);
 			int cols = abstractTableChunk.getHorizontalMask().size();
-			GenericChunk abstractChunk = null;
+			TableChunk abstractChunk = null;
 			if (cols == 1) {
 				abstractChunk = new TableCaption(abstractTableChunk);
 			} else {
@@ -283,23 +283,26 @@ public class TableTable extends GenericChunk {
 		return genericTextChunkList;
 	}
 	
-	public HtmlTable createHtmlTable() {
+	public HtmlTable createHtmlElement() {
 		HtmlTable table = new HtmlTable();
 		table.setBorder(1);
 		HtmlHead head = new HtmlHead();
 		table.appendChild(head);
 		HtmlBody body = new HtmlBody();
 		table.appendChild(body);
-		for (GenericChunk chunk : genericTextChunkList) {
-			HtmlElement htmlElement = chunk.createHtmlTable();
+		// chunk can be caption or table
+		for (TableChunk chunk : genericTextChunkList) {
+			LOG.debug(chunk.getClass());
+			HtmlElement htmlElement = chunk.createHtmlElement();
 			if (htmlElement instanceof HtmlTable) {
-				if (htmlElement.query("*[local-name()='tr']").size() == 1) {
+				if (hasOnlyOneRow(htmlElement)) {
 					htmlElement = TableRow.convertBodyHeader(htmlElement);
 				} else {
 					CMLUtil.transferChildren(htmlElement, body);
 				}
 				body.appendChild(htmlElement);
 			} else if (htmlElement instanceof HtmlCaption) {
+				LOG.debug("Created caption: "+htmlElement.toXML());
 				TableCaption.addCaptionTo(table, (HtmlCaption)htmlElement);
 			} else {
 				LOG.trace("HTML: "+htmlElement);
@@ -313,6 +316,10 @@ public class TableTable extends GenericChunk {
 			throw new RuntimeException(e);
 		}
 		return table;
+	}
+
+	private boolean hasOnlyOneRow(HtmlElement htmlElement) {
+		return htmlElement.query("*[local-name()='tr']").size() == 1;
 	}
 
 	private void removeEmptyTables(HtmlBody body) {

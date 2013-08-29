@@ -85,8 +85,8 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 	/** creates HTML using the analyzer
 	 * 
 	 */
-	public HtmlElement createHtml() {
-		this.htmlElement = getAnalyzer().createHtml();
+	public HtmlElement createHtmlElement() {
+		this.htmlElement = getAnalyzer().createHtmlElement();
 		return htmlElement;
 	}
 	
@@ -287,12 +287,12 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 		this.serial =  serial;
 	}
 
-	public TextStructurer getTextContainer() {
-		TextStructurer textContainer = null;
+	public TextStructurer getTextStructurer() {
+		TextStructurer textStructurer = null;
 		if (analyzer != null && analyzer instanceof TextAnalyzerX) {
-			textContainer = ((TextAnalyzerX) analyzer).getTextContainer();
+			textStructurer = ((TextAnalyzerX) analyzer).getTextStructurer();
 		}
-		return textContainer;
+		return textStructurer;
 	}
 
 	public boolean mergeLinesWithPrevious(HtmlAnalyzer lastAnalyzer, HtmlElement topDiv) {

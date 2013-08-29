@@ -57,7 +57,7 @@ public class StyleSpan {
 		return sb.toString();
 	}
 
-	public HtmlElement getHtmlElement() {
+	public HtmlElement createHtmlElement() {
 		HtmlElement htmlElement = new HtmlSpan();
 		HtmlElement currentHtml = htmlElement;
 		SVGText character = (characterList.size() == 0) ? null : characterList.get(0);

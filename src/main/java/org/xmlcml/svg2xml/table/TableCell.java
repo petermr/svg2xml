@@ -5,7 +5,7 @@ import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTd;
 
-public class TableCell extends GenericChunk {
+public class TableCell extends TableChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableCell.class);
 	
@@ -17,12 +17,12 @@ public class TableCell extends GenericChunk {
 	 * 
 	 * @return
 	 */
-	public HtmlElement createHtmlTable() {
+	public HtmlElement createHtmlElement() {
 		HtmlTd td = new HtmlTd();
-		HtmlElement cellBody = createHtmlThroughTextContainer();
+		HtmlElement cellBody = createHtmlThroughTextStructurer();
 		if (cellBody != null) {
 			td.appendChild(cellBody);
-			cellBody = GenericChunk.removeStyles(cellBody);
+			cellBody = TableChunk.removeStyles(cellBody);
 		}
 		return td;
 	}

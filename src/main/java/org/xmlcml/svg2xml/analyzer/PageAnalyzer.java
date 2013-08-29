@@ -259,7 +259,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 		return sb.toString();
 	}
 	
-	public HtmlElement createHtml() {
+	public HtmlElement createHtmlElement() {
 		HtmlHtml html = new HtmlHtml();
 		addStyle(html);
 		HtmlTitle title = new HtmlTitle("Page: "+pageIo.getHumanPageNumber());

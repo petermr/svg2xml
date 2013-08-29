@@ -60,7 +60,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	
 	/** refactored container */
 	private TextStructurer textStructurer;
-	private HtmlElement createdHtmlElement;
+	private HtmlElement htmlElement;
 	
 	public TextAnalyzerX() {
 		super();
@@ -133,7 +133,6 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	 */
 	public HtmlElement createHtmlRawDiv() {
 		ensureTextContainerWithSortedLines();
-//		List<TextLine> textLineList = textContainer.getLinesWithLargestFont();
 		List<TextLine> textLineList = textStructurer.getLinesWithCommonestFont();
 		HtmlDiv div = new HtmlDiv();
 		for (TextLine textLine : textLineList) {
@@ -153,12 +152,6 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 			HtmlElement p = textLine.createHtmlLine();
 			div.appendChild(p);
 		}
-		return div;
-	}
-
-	public HtmlElement createHtmlDivWithParas() {
-		ensureTextContainerWithSortedLines();
-		HtmlElement div = textStructurer.createHtmlDivWithParas();
 		return div;
 	}
 
@@ -218,7 +211,7 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		return ensureTextContainerWithSortedLines().getInterTextLineSeparationArray();
 	}
 
-	public TextStructurer getTextContainer() {
+	public TextStructurer getTextStructurer() {
 		return ensureTextContainerWithSortedLines();
 	}
 
@@ -258,61 +251,62 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 		ensureTextContainerWithSortedLines().getTextLineByYCoordMap();
 	}
 
-	public RealArray getModalExcessWidthArray() {
-		return ensureTextContainerWithSortedLines().getModalExcessWidthArray();
-	}
+//	public RealArray getModalExcessWidthArray() {
+//		return ensureTextContainerWithSortedLines().getModalExcessWidthArray();
+//	}
 
 	public Multiset<Double> createSeparationSet(int decimalPlaces) {
 		return ensureTextContainerWithSortedLines().createSeparationSet(decimalPlaces);
 	}
 
-	public List<Double> getActualWidthsOfSpaceCharactersList() {
-		return ensureTextContainerWithSortedLines().getActualWidthsOfSpaceCharactersList();
-	}
+//	public List<Double> getActualWidthsOfSpaceCharactersList() {
+//		return ensureTextContainerWithSortedLines().getActualWidthsOfSpaceCharactersList();
+//	}
 
 	public void setTextStructurer(TextStructurer textStructurer) {
 		this.textStructurer = textStructurer;
 	}
 
-	public HtmlElement createHtml() {
+	public HtmlElement createHtmlElement() {
 		LOG.trace("createHTMLParasAndDivs");
 		List<TextLine> textLines = this.getLinesInIncreasingY();
 		LOG.trace("lines "+textLines.size());
 		for (TextLine textLine : textLines){
 			LOG.trace(">> "+textLine);
 		}
-		createdHtmlElement = this.createHtmlDivWithParas();
-		if (createdHtmlElement != null) {
-			AbstractAnalyzer.tidyStyles(createdHtmlElement);
+		ensureTextContainerWithSortedLines();
+		htmlElement = textStructurer.createHtmlElement();
+		if (htmlElement != null) {
+			AbstractAnalyzer.tidyStyles(htmlElement);
 		}
-		return createdHtmlElement;
+		return htmlElement;
 	}
 	
-	//FIXME to use Splitters customized for different dataTypes  and parameters
-	/** splits svgg into textContainers using a list of splitters
-	 * 
-	 * @param gOrig
-	 * @param chunkId
-	 * @param splitters
-	 * @return
-	 */
-	public List<TextStructurer> createSplitTextContainers(SVGG gOrig, ChunkId chunkId, Splitter ...splitters) {
-		TextStructurer textContainer = new TextStructurer(this);
-		textContainer.getScriptedLineList();
-		List<TextStructurer> splitTLCList = new ArrayList<TextStructurer>();
-		splitTLCList.add(textContainer);
-		for (Splitter splitter : splitters) {
-			List<TextStructurer> newSplitTLCList = new ArrayList<TextStructurer>();
-			for (TextStructurer tlc : splitTLCList) {
-				List<TextStructurer> splitList = textContainer.split(splitter);
-				LOG.debug("SPLIT: "+splitList);
-				newSplitTLCList.addAll(splitList);
-			}
-			splitTLCList = newSplitTLCList;
-		}
-		LOG.debug("SPLIT "+splitTLCList.size());
-		return splitTLCList;
-	}
+//	//FIXME to use Splitters customized for different dataTypes  and parameters
+//	/** splits svgg into textStructurers using a list of splitters
+//	 * 
+//	 * @param gOrig
+//	 * @param chunkId
+//	 * @param splitters
+//	 * @return
+//	 */
+//	public List<TextStructurer> createSplitTextContainers(SVGG gOrig, ChunkId chunkId, Splitter ...splitters) {
+//		TextStructurer textStructurer = new TextStructurer(this);
+//		textStructurer.getScriptedLineList();
+//		List<TextStructurer> splitTLCList = new ArrayList<TextStructurer>();
+//		splitTLCList.add(textStructurer);
+//		for (Splitter splitter : splitters) {
+//			List<TextStructurer> newSplitTLCList = new ArrayList<TextStructurer>();
+//			for (TextStructurer tlc : splitTLCList) {
+//				List<TextStructurer> splitList = textStructurer.split(splitter);
+//				LOG.debug("SPLIT: "+splitList);
+//				newSplitTLCList.addAll(splitList);
+//			}
+//			splitTLCList = newSplitTLCList;
+//		}
+//		LOG.debug("SPLIT "+splitTLCList.size());
+//		return splitTLCList;
+//	}
 
 	/** counter is container counter
 	 * 
@@ -323,36 +317,34 @@ public class TextAnalyzerX extends AbstractAnalyzer {
 	 */
 	@Override
 	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
-		TextStructurer textContainer1 = this.getTextContainer();
-		textContainer1.getScriptedLineList();
-		List<TextStructurer> splitList = textContainer1.splitOnFontBoldChange(-1);
-		List<TextStructurer> textContainerList = splitList;
-		LOG.trace(" split LIST "+textContainerList.size());
-		if (textContainerList.size() > 1) {
-			splitBoldHeaderOnFontSize(textContainerList);
+		TextStructurer textStructurer1 = this.getTextStructurer();
+		textStructurer1.getScriptedLineList();
+		List<TextStructurer> splitList = textStructurer1.splitOnFontBoldChange(-1);
+		List<TextStructurer> textStructurerList = splitList;
+		LOG.trace(" split LIST "+textStructurerList.size());
+		if (textStructurerList.size() > 1) {
+			splitBoldHeaderOnFontSize(textStructurerList);
 		}
 		ensureAbstractContainerList();
-		for (TextStructurer textContainer : textContainerList) {
-			ScriptContainer scriptContainer = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-//			scriptContainer.setChunkId(textContainer.getChunkId());
+		for (TextStructurer textStructurer : textStructurerList) {
+			ScriptContainer scriptContainer = ScriptContainer.createScriptContainer(textStructurer, pageAnalyzer);
 			scriptContainer.setChunkId(this.getChunkId());
 			abstractContainerList.add(scriptContainer);
 		}
 		return abstractContainerList;
 	}
 
-	private void splitBoldHeaderOnFontSize(List<TextStructurer> textContainerList) {
-		TextStructurer textContainer0 = textContainerList.get(0);
-		if (textContainer0.getScriptedLineList().size() > 1) {
-			textContainer0.getScriptedLineList();
-			List<TextStructurer> splitList = textContainer0.splitOnFontSizeChange(999);
-			List<TextStructurer> fontSplitList =
-				splitList;
+	private void splitBoldHeaderOnFontSize(List<TextStructurer> textStructurerList) {
+		TextStructurer textStructurer0 = textStructurerList.get(0);
+		if (textStructurer0.getScriptedLineList().size() > 1) {
+			textStructurer0.getScriptedLineList();
+			List<TextStructurer> splitList = textStructurer0.splitOnFontSizeChange(999);
+			List<TextStructurer> fontSplitList = splitList;
 			if (fontSplitList.size() > 1) {
-				int index = textContainerList.indexOf(textContainer0);
-				textContainerList.remove(index);
+				int index = textStructurerList.indexOf(textStructurer0);
+				textStructurerList.remove(index);
 				for (TextStructurer splitTC : fontSplitList) {
-					textContainerList.add(index++, splitTC);
+					textStructurerList.add(index++, splitTC);
 				}
 				LOG.trace("SPLIT FONT");
 			}

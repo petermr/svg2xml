@@ -151,10 +151,10 @@ public abstract class AbstractContainer {
 	}
 
 
-	public HtmlElement getHtmlElement() {
-		return htmlElement;
-	}
-
+//	public HtmlElement getHtmlElement() {
+//		return htmlElement;
+//	}
+//
 	/** character value of Container
 	 * mainly for string-based containers
 	 * @return

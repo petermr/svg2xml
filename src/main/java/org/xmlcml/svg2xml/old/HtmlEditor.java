@@ -109,11 +109,11 @@ public class HtmlEditor {
 
 	private void merge(HtmlAnalyzer lastAnalyzer, HtmlAnalyzer htmlAnalyzer, HtmlDiv topDiv) {
 		TextStructurer lastTextContainer = (lastAnalyzer == null) ? 
-				null : lastAnalyzer.getTextContainer();
-		TextStructurer textContainer = htmlAnalyzer.getTextContainer();
+				null : lastAnalyzer.getTextStructurer();
+		TextStructurer textStructurer = htmlAnalyzer.getTextStructurer();
 		boolean merged = false;
-		if (lastTextContainer != null && textContainer != null) {
-			if (lastTextContainer.endsWithRaggedLine() && textContainer.startsWithRaggedLine()) {
+		if (lastTextContainer != null && textStructurer != null) {
+			if (lastTextContainer.endsWithRaggedLine() && textStructurer.startsWithRaggedLine()) {
 				merged = htmlAnalyzer.mergeLinesWithPrevious(lastAnalyzer, topDiv);
 			}
 		} 

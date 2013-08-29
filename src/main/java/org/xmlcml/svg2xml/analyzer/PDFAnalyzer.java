@@ -267,35 +267,6 @@ public class PDFAnalyzer /*implements Annotatable */{
 	}
 
 
-	private void createHtmlOld() {
-//		ensureHtmlEditor();
-		LOG.error("HTMLEditor NYI");
-		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			pageAnalyzer.createHtml();
-//			ChunkId chunkId = ChunkId.createChunkId(gChunk);
-//			AbstractAnalyzer analyzerX = AbstractAnalyzer.createSpecificAnalyzer(gChunk);
-//			HtmlAnalyzer htmlAnalyzer = new HtmlAnalyzer(htmlEditor, analyzerX);
-//			HtmlElement htmlElement = htmlAnalyzer.createHtml();
-//			if (htmlElement != null) {
-//				htmlEditor.addHtmlElement(htmlElement, chunkId);
-//				htmlEditor.indexHtmlBySvgId(htmlAnalyzer, chunkId);
-//			} else {
-//				LOG.warn("no html from: "+analyzerX);
-//				if (analyzerX instanceof TextAnalyzerX) {
-//					((TextAnalyzerX)analyzerX).debug();
-//				}
-//			}
-		}
-		// split this into
-		// process textLine containers
-		// split them
-        // create new TextContainers
-        // List<TextContainer> splitTextContainerList = getResultOfSplit()...
-        // for (TextContainer splitTextContainer : splitTextContainerList) {
-        //     textContainerList.add(splitTextContainer);
-        // }
-	}
-	
 	private void ensurePDFIndex() {
 		if (pdfIndex == null) {
 			pdfIndex = new PDFIndex(this);

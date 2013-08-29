@@ -30,7 +30,7 @@ public class TableCellTest {
 
 	@Test
 	public void testTDCellValue() {
-		GenericChunk cellChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.CELL00FILE);
+		TableChunk cellChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.CELL00FILE);
 		String value = cellChunk.getValue();
 		Assert.assertEquals("value", "IN61", value);
 	}
@@ -41,21 +41,21 @@ public class TableCellTest {
 		horizontal0Mask.add(new RealRange(75., 93.));
 		RealRangeArray vertical0Mask = new RealRangeArray();
 		vertical0Mask.add(new RealRange(120., 130.));
-		GenericChunk cellChunk = TableFixtures.createCellFromMaskedElements(TableFixtures.TDBLOCKFILE, horizontal0Mask, vertical0Mask);
+		TableChunk cellChunk = TableFixtures.createCellFromMaskedElements(TableFixtures.TDBLOCKFILE, horizontal0Mask, vertical0Mask);
 		String value = cellChunk.getValue();
 		Assert.assertEquals("value", "IN61", value);
 	}
 
 	@Test
 	public void testTH2ChunkValue() {
-		GenericChunk cellChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.HROW2FILE);
+		TableChunk cellChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.HROW2FILE);
 		String value = cellChunk.getValue();
 		Assert.assertEquals("value", "MLT(min)", value);
 	}
 
 	@Test
 	public void testTH0ChunkValue() {
-		GenericChunk cellChunk = new GenericChunk();
+		TableChunk cellChunk = new TableChunk();
 		Element element = CMLUtil.parseQuietlyToDocument(TableFixtures.HROW0FILE).getRootElement();
 		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_OR_PATH_XPATH);

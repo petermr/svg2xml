@@ -14,7 +14,7 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 
-public class TableCaption extends GenericChunk {
+public class TableCaption extends TableChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableCaption.class);
 	private HtmlCaption caption;
@@ -23,7 +23,7 @@ public class TableCaption extends GenericChunk {
 		super(elementList);
 	}
 
-	public TableCaption(GenericChunk chunk) {		
+	public TableCaption(TableChunk chunk) {		
 		this(chunk.getElementList());
 	}
 
@@ -47,10 +47,13 @@ public class TableCaption extends GenericChunk {
 	 * 
 	 * @return
 	 */
-	public HtmlElement createHtmlTable() {
+	public HtmlElement createHtmlElement() {
 		caption = new HtmlCaption();
-		HtmlElement captionBody = createHtmlThroughTextContainer();
-		captionBody = GenericChunk.removeStyles(captionBody);
+		HtmlElement captionBody = createHtmlThroughTextStructurer();
+		if (captionBody == null) {
+			throw new RuntimeException("Null caption");
+		}
+		captionBody = TableChunk.removeStyles(captionBody);
 		caption.appendChild(captionBody);
 		return caption;
 	}

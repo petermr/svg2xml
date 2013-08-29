@@ -12,7 +12,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
 
-public class TableBody extends GenericChunk {
+public class TableBody extends TableChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableBody.class);
 	private List<TableRow> rowList;
@@ -25,7 +25,7 @@ public class TableBody extends GenericChunk {
 		super(elementList);
 	}
 
-	public TableBody(GenericChunk chunk) {
+	public TableBody(TableChunk chunk) {
 		this(chunk.getElementList());
 	}
 
@@ -102,12 +102,12 @@ public class TableBody extends GenericChunk {
 		return rowList;
 	}
 
-	public HtmlElement createHtmlTable() {
+	public HtmlElement createHtmlElement() {
 		createStructuredRows();
 		HtmlTable table = new HtmlTable();
 		if (rowList != null) {
 			for (TableRow row : rowList) {
-				table.appendChild(row.createHtmlTable());
+				table.appendChild(row.createHtmlElement());
 			}
 		}
 		return table;

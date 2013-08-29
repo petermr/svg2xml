@@ -1,5 +1,7 @@
 package org.xmlcml.svg2xml.container;
 
+import java.io.File;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +16,9 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
@@ -43,8 +47,8 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public final static Logger LOG = Logger.getLogger(ScriptContainer.class);
 
 	private static final double FONT_EPS = 0.01;
-
 	private static final String SOFT_HYPHEN = "~";
+	private static final PrintStream SYSOUT = System.out;
 
 	private Multiset<String> fontFamilySet;
 	private Multiset<Double> fontSizeSet;
@@ -55,7 +59,6 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private Double leftIndent1;
 
 	private TextStructurer textStructurer;
-
 	
 	public ScriptContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -133,7 +136,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private void addIndividualSpans(StyleSpans styleSpans) {
 		for (int j = 0; j < styleSpans.size(); j++) {
 			StyleSpan styleSpan = styleSpans.get(j);
-			HtmlElement htmlElement1 = styleSpan.getHtmlElement();
+			HtmlElement htmlElement1 = styleSpan.createHtmlElement();
 			addJoiningSpace(htmlElement1);
 			PageIO.copyChildElementsFromTo(htmlElement1, htmlElement);
 		}
@@ -229,16 +232,16 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		return g;
 	}
 
-	public void add(List<ScriptLine> scriptList) {
+	public void add(List<ScriptLine> scriptLineList) {
 		ensureScriptList();
-		this.scriptLineList.addAll(scriptList);
+		this.scriptLineList.addAll(scriptLineList);
 	}
 
 	public Double getSingleFontSize() {
 		Double fontSize = null;
-		for (ScriptLine script : scriptLineList) {
-			if (script == null) continue;
-			Double size = script.getFontSize();
+		for (ScriptLine scriptLine : scriptLineList) {
+			if (scriptLine == null) continue;
+			Double size = scriptLine.getFontSize();
 			if (fontSize == null) {
 				fontSize = size;
 			} else {
@@ -449,16 +452,6 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		return scriptLineList.iterator();
 	}
 
-//	public List<StyleSpans> getStyleSpansList() {
-//		List<StyleSpans> styleSpansList = new ArrayList<StyleSpans>();
-//		for (ScriptLine script : scriptLineList) {
-//			if (script == null) continue;
-//			StyleSpans styleSpans = script.getStyleSpans();
-//			styleSpansList.add(styleSpans);
-//		}
-//		return styleSpansList;
-//	}
-	
 	void createLeftIndent01() {
 		setLeftIndent0(null);
 		setLeftIndent1(null);
@@ -509,6 +502,32 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 
 	public void setLeftIndent1(Double leftIndent1) {
 		this.leftIndent1 = leftIndent1;
+	}
+
+	public void debug() {
+		SYSOUT.println("fontFamilySet "+fontFamilySet);
+		SYSOUT.println("fontSizeSet "+fontSizeSet);
+		SYSOUT.println("scriptLineList ");
+		for (ScriptLine scriptLine : scriptLineList) {
+			SYSOUT.println("> "+scriptLine.getTextContentWithSpaces());
+		}
+		SYSOUT.println("leftIndentSet "+leftIndentSet);
+		SYSOUT.println("leftIndent0 "+leftIndent0);
+		SYSOUT.println("leftIndent1 "+leftIndent1);
+
+	}
+
+	public static ScriptContainer createScriptContainer(File file) {
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(file);
+		List<TextLine> textLineList = textStructurer.getTextLineList();
+		for (TextLine textLine : textLineList) {
+			LOG.trace("L> "+String.valueOf(textLine));
+		}
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
+		ScriptContainer sc = ScriptContainer.createScriptContainer(textStructurer, pageAnalyzer);
+		return sc;
 	}
 
 

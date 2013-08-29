@@ -271,8 +271,8 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 
 	public HtmlDiv createFigure() {
 		String id = svgElement.getId();
-		List<ScriptLine> scriptLineList = textAnalyzer.getTextContainer().getScriptedLineList(); 
-		LOG.debug("BB: "+textAnalyzer.getTextContainer().getBoundingBox());
+		List<ScriptLine> scriptLineList = textAnalyzer.getTextStructurer().getScriptedLineList(); 
+		LOG.debug("BB: "+textAnalyzer.getTextStructurer().getBoundingBox());
 		Double ySplit = null;
 		for (ScriptLine scriptLine : scriptLineList) {	
 			String s = scriptLine.getTextContentWithSpaces();

@@ -28,7 +28,7 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 
 	private TextAnalyzerX textAnalyzer;
 	private PathAnalyzerX pathAnalyzer;
-	private TextStructurer textContainer;
+//	private TextStructurer textStructurer;
 
 	private Real2Range pathBox;
 	private Real2Range textBox;
@@ -48,7 +48,6 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 	public TableAnalyzerX(TextAnalyzerX textAnalyzer, PathAnalyzerX pathAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
 		this.pathAnalyzer = pathAnalyzer;
-		this.textContainer = textAnalyzer.getTextContainer();
 	}
 
 	public void analyze() {
@@ -72,7 +71,8 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 		textList = textAnalyzer == null ? null : textAnalyzer.getTextCharacters();
 		TableTable tableTable = new TableTable(pathList, textList);
 		tableTable.analyzeVerticalTextChunks();
-		HtmlTable htmlTable = tableTable.createHtmlTable();
+		HtmlTable htmlTable = tableTable.createHtmlElement();
+		LOG.debug("TABLE "+htmlTable.toXML());
 		return htmlTable;
 	}
 

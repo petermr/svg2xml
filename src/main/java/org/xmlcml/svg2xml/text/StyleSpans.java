@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
-import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlSpan;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds styleSpans within a ScriptLine or possibly later within a ScriptContainer
  * 
@@ -67,13 +67,11 @@ public class StyleSpans {
 		ssList.addAll(styleSpans.getStyleSpanList());
 	}
 	
-	public HtmlElement getHtmlElement() {
+	public HtmlElement createHtmlElement() {
 		HtmlElement htmlElement = new HtmlSpan();
 		for (StyleSpan styleSpan : ssList) {
-			HtmlElement spanElement = styleSpan.getHtmlElement();
-			for (int i = 0; i < spanElement.getChildCount(); i++) {
-				htmlElement.appendChild(spanElement.getChild(i).copy());
-			}
+			HtmlElement spanElement = styleSpan.createHtmlElement();
+			SVG2XMLUtil.moveChildrenFromTo(spanElement, htmlElement);
 		}
 		return htmlElement;
 	}

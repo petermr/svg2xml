@@ -46,16 +46,16 @@ public class ScriptLine implements Iterable<TextLine> {
 	private static final Double RIGHT_INDENT_MIN = 5.;
 	
 	protected List<TextLine> textLineList = null;
-	private TextStructurer textContainer;
+	private TextStructurer textStructurer;
 	private int largestLine;
 	private StyleSpans styleSpans;
 	private String textContentWithSpaces;
 
 	private Double spaceFactor = SPACEFACTOR;
 	
-	public ScriptLine(TextStructurer textContainer) {
+	public ScriptLine(TextStructurer textStructurer) {
 		textLineList = new ArrayList<TextLine>();
-		this.textContainer = textContainer;
+		this.textStructurer = textStructurer;
 	}
 	
 	public Iterator<TextLine> iterator() {
@@ -76,10 +76,10 @@ public class ScriptLine implements Iterable<TextLine> {
 
 	/** generate ScriptLines by splitting into groups based around the commonest font size
 	 * 
-	 * @param textContainer
+	 * @param textStructurer
 	 * @return
 	 */
-	public List<ScriptLine> splitIntoUniqueChunks(TextStructurer textContainer) {
+	public List<ScriptLine> splitIntoUniqueChunks(TextStructurer textStructurer) {
 		IntArray commonestFontSizeArray = createSerialNumbersOfCommonestFontSizeLines();
 		List<ScriptLine> splitArray = new ArrayList<ScriptLine>();
 		if (commonestFontSizeArray.size() < 2) {
@@ -91,7 +91,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			for (int serial = 0; serial < textLineList.size(); serial++) {
 				TextLine textLine = this.get(serial);
 				Double currentY = textLine.getYCoord();
-				if (textContainer.isCommonestFontSize(textLine)) {
+				if (textStructurer.isCommonestFontSize(textLine)) {
 					if (lastCommonestFontSizeSerial != null) {
 						int delta = serial - lastCommonestFontSizeSerial;
 						// two adjacent commonestFont lines
@@ -136,7 +136,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	}
 
 	private ScriptLine packageAsGroup(int groupStart, int groupEnd, List<ScriptLine> splitArray) {
-		ScriptLine group = new ScriptLine(textContainer);
+		ScriptLine group = new ScriptLine(textStructurer);
 		Double maxFontSize = 0.0;
 		largestLine = -1;
 		int lineNumber = 0;
@@ -158,7 +158,7 @@ public class ScriptLine implements Iterable<TextLine> {
 		int iline = 0;
 		IntArray commonestFontSizeArray = new IntArray();
 		for (TextLine textLine : textLineList) {
-			if (textContainer.isCommonestFontSize(textLine)) {
+			if (textStructurer.isCommonestFontSize(textLine)) {
 				commonestFontSizeArray.addElement(iline);
 				if (commonestFontSizeArray.size() > 1) {
 					LOG.trace("COMMONEST FONT SIZE "+commonestFontSizeArray.size());
@@ -206,7 +206,7 @@ public class ScriptLine implements Iterable<TextLine> {
 		} else if (this.textLineList.size() == 2) {
 			TextLine text0 = textLineList.get(0);
 			TextLine text1 = textLineList.get(1);
-			if (!textContainer.isCommonestFontSize(text0) && !textContainer.isCommonestFontSize(text1)) {
+			if (!textStructurer.isCommonestFontSize(text0) && !textStructurer.isCommonestFontSize(text1)) {
 				Double fontSize0 = text0.getFontSize();
 				Double fontSize1 = text1.getFontSize();
 				if (fontSize1 == null) {
@@ -226,11 +226,11 @@ public class ScriptLine implements Iterable<TextLine> {
 					middleLine = text1;
 					subscript = null;
 				}
-			} else if (textContainer.isCommonestFontSize(text0) && !textContainer.isCommonestFontSize(text1)) {
+			} else if (textStructurer.isCommonestFontSize(text0) && !textStructurer.isCommonestFontSize(text1)) {
 					superscript = null;
 					middleLine = text0;
 					subscript = text1;
-			} else if (!textContainer.isCommonestFontSize(text0) && textContainer.isCommonestFontSize(text1)) {
+			} else if (!textStructurer.isCommonestFontSize(text0) && textStructurer.isCommonestFontSize(text1)) {
 				superscript = textLineList.get(0);
 				middleLine = textLineList.get(1);
 				subscript = null;
@@ -241,8 +241,8 @@ public class ScriptLine implements Iterable<TextLine> {
 				LOG.error("Only one commonestFontSize allowed for 2 line textLineGroup");
 			}
 		} else if (this.textLineList.size() == 3) {
-			if (!textContainer.isCommonestFontSize(textLineList.get(0)) &&
-				!textContainer.isCommonestFontSize(textLineList.get(2))) {
+			if (!textStructurer.isCommonestFontSize(textLineList.get(0)) &&
+				!textStructurer.isCommonestFontSize(textLineList.get(2))) {
 				superscript = textLineList.get(0);
 				middleLine = textLineList.get(1);
 				subscript = textLineList.get(2);
@@ -265,7 +265,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	/** NYI */
 	private ScriptLine reportErrorOrMathsSuscript() {
 		LOG.debug("Suscript problem: Maths or table? "+textLineList.size());
-		ScriptLine group = new ScriptLine(textContainer);
+		ScriptLine group = new ScriptLine(textStructurer);
 //	    splitArray.add(group);
 
 		for (TextLine textLine : textLineList) {

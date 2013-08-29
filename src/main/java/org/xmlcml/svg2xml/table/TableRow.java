@@ -15,7 +15,7 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTh;
 import org.xmlcml.html.HtmlTr;
 
-public class TableRow extends GenericChunk {
+public class TableRow extends TableChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableRow.class);
 	private List<TableCell> cellList;
@@ -55,10 +55,10 @@ public class TableRow extends GenericChunk {
 		this.cellList = cellList;
 	}
 
-	public HtmlElement createHtmlTable() {
+	public HtmlElement createHtmlElement() {
 		HtmlTr tr = new HtmlTr();
 		for (TableCell cell : cellList) {
-			tr.appendChild(cell.createHtmlTable());
+			tr.appendChild(cell.createHtmlElement());
 		}
 		return tr;
 	}

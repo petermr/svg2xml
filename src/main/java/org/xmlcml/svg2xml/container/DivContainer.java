@@ -10,6 +10,7 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
 import org.xmlcml.svg2xml.analyzer.ImageAnalyzerX;
@@ -29,7 +30,7 @@ public class DivContainer extends AbstractContainer {
 	private PathContainer pathContainer;
 	private ImageContainer imageContainer;
 	private TextAnalyzerX textAnalyzerX;
-	private TextStructurer textContainer;
+	private TextStructurer textStructurer;
 	private ScriptContainer scriptContainer;
 	private HtmlTable tableElement;
 	private HtmlDiv figureElement;
@@ -80,9 +81,9 @@ public class DivContainer extends AbstractContainer {
 			textAnalyzerX = new TextAnalyzerX();
 			textAnalyzerX.setTextCharacters(characterList);
 			List<TextLine> textLineList = getTextAnalyzer().getTextLines();
-			textContainer = new TextStructurer(null);
-			textContainer.setTextLines(textLineList);
-			List<ScriptLine> scriptList = textContainer.getScriptedLineList();
+			textStructurer = new TextStructurer(null);
+			textStructurer.setTextLines(textLineList);
+			List<ScriptLine> scriptList = textStructurer.getScriptedLineList();
 			scriptContainer = new ScriptContainer(pageAnalyzer);
 			scriptContainer.add(scriptList);
 			this.add(scriptContainer);
@@ -170,9 +171,16 @@ public class DivContainer extends AbstractContainer {
 	}
 
 	public HtmlTable createTableHtmlElement() {
+		if (true && false) {
+			LOG.debug("FORCE SKIP TABLE");
+			HtmlTable table = new HtmlTable();
+			table.appendChild("NULL TABLE");
+			return table;
+		}
 		if (tableElement == null) {
 			TableAnalyzerX tableAnalyzer = new TableAnalyzerX(getTextAnalyzer(), getPathAnalyzer());
 			tableElement = tableAnalyzer.createTable();
+			LOG.debug(tableElement.toXML());
 		}
 		return tableElement;
 	}

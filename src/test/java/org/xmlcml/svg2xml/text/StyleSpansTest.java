@@ -22,7 +22,7 @@ public class StyleSpansTest {
 		Assert.assertEquals("line0spans", 7, styleSpans.size());
 		Assert.assertEquals("stylespans content", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">Hiwatashi <i>et al</i>. <i>BMC Evolutionary Biology </i>2011, <b>11</b>:312</span>",
-				styleSpans.getHtmlElement().toXML());
+				styleSpans.createHtmlElement().toXML());
 		Assert.assertEquals("stylespan size", 7.97, styleSpans.get(0).getFontSize(), StyleSpans.EPS);
 		Assert.assertEquals("stylespans size", 7.97, styleSpans.getFontSize(), StyleSpans.EPS);
 	}
@@ -38,7 +38,7 @@ public class StyleSpansTest {
 		Assert.assertEquals("line0spans", 1, styleSpans.size());
 		Assert.assertEquals("stylespans content", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">Page 2 of 14</span>",
-				styleSpans.getHtmlElement().toXML());
+				styleSpans.createHtmlElement().toXML());
 		Assert.assertEquals("stylespan size", 7.97, styleSpans.get(0).getFontSize(), StyleSpans.EPS);
 		Assert.assertEquals("stylespans size", 7.97, styleSpans.getFontSize(), StyleSpans.EPS);
 	}
@@ -71,7 +71,7 @@ public class StyleSpansTest {
 
 	public static void checkStyleSpans(String msg, String html, double fontSize, StyleSpans styleSpans) {
 		Assert.assertEquals(msg+" fontSize", fontSize, styleSpans.getFontSize(), StyleSpans.EPS);
-		Assert.assertEquals(msg+" html", html, styleSpans.getHtmlElement().toXML());
+		Assert.assertEquals(msg+" html", html, styleSpans.createHtmlElement().toXML());
 	}
 
 	public static StyleSpans getStyleSpans(File svgPage, int chunk, int line) {
