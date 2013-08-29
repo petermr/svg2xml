@@ -106,28 +106,11 @@ public class ListItem {
 	
 	public HtmlElement createHtmlElement() {
 		HtmlElement li = new HtmlLi();
-//	    for (ScriptLine scriptLine : scriptLineList) {
-//    	HtmlElement e = scriptLine.createHtmlElement();
-//    	System.out.println(e.toXML());
-//    	SVG2XMLUtil.moveChildrenFromTo(e, li);
-//    	System.out.println(li.toXML());
-//    }
-	    for (ScriptLine scriptLine : scriptLineList) {
-    	HtmlElement e = scriptLine.createHtmlElement();
-    	System.out.println(e.toXML());
+		ScriptContainer scriptContainer = new ScriptContainer(scriptLineList);
+		HtmlElement e = scriptContainer.createHtmlElement();
     	SVG2XMLUtil.moveChildrenFromTo(e, li);
-    	System.out.println(li.toXML());
-    }
 		return li;
 	}
-	
-//	protected HtmlElement createHtmlThroughTextStructurer() {
-//		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters);
-//		HtmlElement htmlElement = textStructurer.createHtmlElement();
-//		return htmlElement;
-//	}
-
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

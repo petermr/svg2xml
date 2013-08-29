@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,12 +22,15 @@ import org.xmlcml.graphics.svg.HiddenGraphics;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.figure.FigurePanel;
 import org.xmlcml.svg2xml.text.ScriptLine;
+import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.tools.Caption;
 import org.xmlcml.svg2xml.tools.Chunk;
 
@@ -63,8 +67,10 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 	private PathAnalyzerX pathAnalyzer;
 	private ImageAnalyzerX imageAnalyzer;
 
-	private SVGSVG top;
-	private SVGSVG above;
+	private SVGSVG caption;
+	private SVGSVG graphic;
+
+	private BufferedImage bufferedImage;
 
 	public FigureAnalyzerX() {
 		super();
@@ -272,7 +278,7 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 	public HtmlDiv createFigure() {
 		String id = svgElement.getId();
 		List<ScriptLine> scriptLineList = textAnalyzer.getTextStructurer().getScriptedLineList(); 
-		LOG.debug("BB: "+textAnalyzer.getTextStructurer().getBoundingBox());
+		LOG.trace("BB: "+textAnalyzer.getTextStructurer().getBoundingBox());
 		Double ySplit = null;
 		for (ScriptLine scriptLine : scriptLineList) {	
 			String s = scriptLine.getTextContentWithSpaces();
@@ -287,42 +293,45 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 			}
 		}
 		if (ySplit != null) {
-			top = new SVGSVG();
-			addElements(top, ABOVE, ySplit - YEPS);
-			above = new SVGSVG();
-			addElements(above, BELOW, ySplit + YEPS);
-			try {
-				CMLUtil.debug(top, new FileOutputStream("caption"+id+".svg"), 1);
-				CMLUtil.debug(above, new FileOutputStream("above"+id+".svg"), 1);
-			} catch (Exception e) {
-				throw new RuntimeException(e);
-			}
+			createCaptionAndGraphic(id, ySplit);
 		}
 		HtmlDiv div = new HtmlDiv();
-		div.appendChild(top);
-		HiddenGraphics hg = new HiddenGraphics();
-		hg.setDimension(new Dimension(600, 800));
-		hg.createImage(top);
-		try {
-			hg.write(new File("target/figureCaption"+id+".png"));
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot write image", e);
-		}
+		String pngName = "target/figureAbove"+id+".png";
+		HtmlImg img = new HtmlImg();
+		img.setSrc("../../../"+pngName);
+		div.appendChild(img);
+		List<SVGText> characters = SVGText.extractTexts(caption);
+		TextAnalyzerX textAnalyzer1 = new TextAnalyzerX(characters);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer1);
+		div.appendChild(textStructurer.createHtmlElement());
 
-		div.appendChild(new HtmlP("===================="));
-		div.appendChild(above);
-		Real2Range bb = above.getBoundingBox();
+
+		Real2Range bb = graphic.getBoundingBox();
 		Real2 translateToOrigin = new Real2(-bb.getXRange().getMin() + 10, -bb.getYRange().getMin() + 10);
-		above.setTransform(new Transform2(new Vector2(translateToOrigin)));
-		hg = new HiddenGraphics();
-		hg.setDimension(new Dimension(600, 800));
-		hg.createImage(above);
+		graphic.setTransform(new Transform2(new Vector2(translateToOrigin)));
+		
+		HiddenGraphics hg = new HiddenGraphics();
+		hg.setDimension(bb.getDimension());
+		bufferedImage = hg.createImage(graphic);
 		try {
-			hg.write(new File("target/figureAbove"+id+".png"));
+			hg.write(new File(pngName));
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot write image", e);
 		}
 		return div;
+	}
+
+	private void createCaptionAndGraphic(String id, Double ySplit) {
+		caption = new SVGSVG();
+		addElements(caption, ABOVE, ySplit - YEPS);
+		graphic = new SVGSVG();
+		addElements(graphic, BELOW, ySplit + YEPS);
+		try {
+			CMLUtil.debug(caption, new FileOutputStream("caption"+id+".svg"), 1);
+			CMLUtil.debug(graphic, new FileOutputStream("above"+id+".svg"), 1);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void addElements(SVGElement svgg, String where, Double ySplit) {

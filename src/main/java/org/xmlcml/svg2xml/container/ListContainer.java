@@ -72,7 +72,7 @@ public class ListContainer extends AbstractContainer {
 	
 	public static ListContainer createList(ScriptContainer sc) {
 		sc.createLeftIndentSet(0);
-		LOG.debug("LEFTIND "+sc.getLeftIndentSet());
+		LOG.trace("LEFTIND "+sc.getLeftIndentSet());
 		int size = sc.leftIndentSet.entrySet().size();
 		ListContainer listContainer = new ListContainer(sc);
 		if (size == 1) {
@@ -124,14 +124,14 @@ public class ListContainer extends AbstractContainer {
 					    if (delta == 1) {
 					    	numberedItemList.add(multiScriptLine);
 					    } else {
-					    	LOG.debug("List not in arithmetic progression"+leadingInteger+" (last was "+currentInteger+")");
+					    	LOG.trace("List not in arithmetic progression"+leadingInteger+" (last was "+currentInteger+")");
 					    	validList = false;
 					    	break;
 					    }
 					} else if (bullet != null && bullet.equals(currentBullet)) {
 						bulletedItemList.add(multiScriptLine);
 					} else if (currentBullet != null) {
-						LOG.error("bullets changed: "+bullet+" (last was "+currentBullet+")");
+						LOG.trace("bullets changed: "+bullet+" (last was "+currentBullet+")");
 						errorMultilineList.add(multiScriptLine);
 				    	validList = false;
 				    	break;

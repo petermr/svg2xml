@@ -151,26 +151,6 @@ public class TextStructurer {
 		return textLineList;
 	}
 	
-//	/** some lines may not have spaces
-//	 * 
-//	 * @return
-//	 */
-//	public List<Double> getActualWidthsOfSpaceCharactersList() {
-//		if (actualWidthsOfSpaceCharactersList == null) {
-//			getLinesInIncreasingY();
-//			if (textLineList != null && textLineList.size() > 0) {
-//				actualWidthsOfSpaceCharactersList = new ArrayList<Double>();
-//				for (int i = 0; i < textLineList.size(); i++) {
-//					Double meanWidth = textLineList.get(i).getMeanWidthOfSpaceCharacters();
-//					meanWidth = meanWidth == null ? null : Real.normalize(meanWidth, TextAnalyzerX.NDEC_FONTSIZE);
-//					actualWidthsOfSpaceCharactersList.add(meanWidth);
-//				}
-//			}
-////			actualWidthsOfSpaceCharactersArray.format(NDEC_FONTSIZE);
-//		}
-//		return actualWidthsOfSpaceCharactersList;
-//	}
-
 	private void ensureTextLineByYCoordMap() {
 		if (textLineByYCoordMap == null) {
 			textLineByYCoordMap = new HashMap<Integer, TextLine>();
@@ -1187,7 +1167,6 @@ public class TextStructurer {
 	public ScriptContainer getScriptContainer() {
 		if (scriptContainer == null) {
 			scriptContainer = ScriptContainer.createScriptContainer(this, (PageAnalyzer) null);
-//			scriptContainer.
 		}
 		return scriptContainer;
 	}

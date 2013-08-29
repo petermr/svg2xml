@@ -266,7 +266,6 @@ public class TableTable extends TableChunk {
 		createVerticalTextChunks();
 		int index = 0;
 		for (TableChunk abstractTableChunk : tableChunkList) {
-//			AbstractTableChunk.createHorizontalMask();
 			abstractTableChunk.createHorizontalMaskWithTolerance(HALF_SPACE);
 			int cols = abstractTableChunk.getHorizontalMask().size();
 			TableChunk abstractChunk = null;
@@ -294,7 +293,7 @@ public class TableTable extends TableChunk {
 		table.appendChild(body);
 		// chunk can be caption or table
 		for (TableChunk tableChunk : tableChunkList) {
-			LOG.debug(tableChunk.getClass());
+			LOG.trace(tableChunk.getClass());
 			HtmlElement htmlElement = tableChunk.createHtmlElement();
 			if (htmlElement instanceof HtmlTable) {
 				if (hasOnlyOneRow(htmlElement)) {
@@ -304,7 +303,7 @@ public class TableTable extends TableChunk {
 				}
 				body.appendChild(htmlElement);
 			} else if (htmlElement instanceof HtmlCaption) {
-				LOG.debug("Created caption: "+htmlElement.toXML());
+				LOG.trace("Created caption: "+htmlElement.toXML());
 				HtmlCaption caption = (HtmlCaption)htmlElement;
 				TableCaption.addCaptionTo(table, caption);
 				// might be more than one caption (e.g. subtables

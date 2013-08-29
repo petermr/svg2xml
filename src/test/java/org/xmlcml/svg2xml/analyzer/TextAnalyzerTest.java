@@ -844,15 +844,19 @@ public class TextAnalyzerTest {
 		ScriptLine group0 = textStructurer.getScriptedLineList().get(0);
 		HtmlElement textLineHtml = group0.createHtmlElement();
 		Assert.assertEquals("group0", 
-				"<p xmlns=\"http://www.w3.org/1999/xhtml\">" +
-				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">The rate constant is 0.61795 mg L</span>" +
-				"<sup><span style=\"font-size:7.074px;color:red;font-family:MTSYN;\">"+MINUS+" </span>" +
-				"<span style=\"font-size:7.074px;font-family:TimesNewRoman;\">1</span></sup>" +
-				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">h</span>" +
-				"<sup><span style=\"font-size:7.074px;color:red;font-family:MTSYN;\">"+MINUS+" </span><span style=\"font-size:7.074px;font-family:TimesNewRoman;\">1</span></sup>" +
-				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">.</span></p>",
+				"<p xmlns=\"http://www.w3.org/1999/xhtml\"><span>The rate constant is 0.61795 mg L</span><sup><span>− </span>" +
+				"<span>1</span></sup><span>h</span><sup><span>− </span><span>1</span></sup><span>.</span></p>",	
+
+//				"<p xmlns=\"http://www.w3.org/1999/xhtml\">" +
+//				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">The rate constant is 0.61795 mg L</span>" +
+//				"<sup><span style=\"font-size:7.074px;color:red;font-family:MTSYN;\">"+MINUS+" </span>" +
+//				"<span style=\"font-size:7.074px;font-family:TimesNewRoman;\">1</span></sup>" +
+//				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">h</span>" +
+//				"<sup><span style=\"font-size:7.074px;color:red;font-family:MTSYN;\">"+MINUS+" </span><span style=\"font-size:7.074px;font-family:TimesNewRoman;\">1</span></sup>" +
+//				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">.</span></p>",
 				textLineHtml.toXML());
 	}
+//	<p xmlns="http://www.w3.org/1999/xhtml"><span>The rate constant is 0.61795 mg L</span><sup><span>− </span><span>1</span></sup><span>h</span><sup><span>− </span><span>1</span></sup><span>.</span></p>	
 	
 //	@Test
 //	public void testCreateTextListHtmlDiv() {

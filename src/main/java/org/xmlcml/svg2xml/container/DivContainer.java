@@ -180,7 +180,7 @@ public class DivContainer extends AbstractContainer {
 		if (tableElement == null) {
 			TableAnalyzerX tableAnalyzer = new TableAnalyzerX(getTextAnalyzer(), getPathAnalyzer());
 			tableElement = tableAnalyzer.createTable();
-			LOG.debug(tableElement.toXML());
+			LOG.trace(tableElement.toXML());
 		}
 		return tableElement;
 	}

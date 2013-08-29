@@ -201,7 +201,6 @@ public class PageAnalyzer extends AbstractAnalyzer {
 			} catch (Exception e) {
 				LOG.trace("skipped problem character: "+(int)c);
 			}
-//			text.debug("XX");
 		}
 	}
 	
@@ -491,25 +490,20 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	private HtmlElement createRunningHtml() {
 		runningTextHtmlElement = new HtmlDiv();
 		for (AbstractContainer abstractContainer : abstractContainerList) {
-			LOG.debug("Container: "+abstractContainer.getClass());
+			LOG.trace("Container: "+abstractContainer.getClass());
 			ContainerType type = abstractContainer.getType();
 			String content = abstractContainer.getRawValue();
 			if (ContainerType.HEADER.equals(abstractContainer.getType())) {
-//				addSee(element, type);
 			} else if (ContainerType.FOOTER.equals(abstractContainer.getType())) {
 			} else if (ContainerType.TITLE.equals(type)) {
 				HtmlH1 h1 = new HtmlH1();
 				h1.appendChild(((ScriptContainer)abstractContainer).createHtmlElement().copy());
 				runningTextHtmlElement.appendChild(h1);
-//				runningTextHtmlElement.appendChild(title);
 			} else if (ContainerType.FIGURE.equals(type)) {
-//				addSee(runningTextHtmlElement, type);
 				runningTextHtmlElement.appendChild(abstractContainer.getFigureElement().copy());
-//				LOG.debug(abstractContainer.getSVGChunk().toXML());
 			} else if (ContainerType.LIST.equals(type)) {
 				runningTextHtmlElement.appendChild(abstractContainer.getListElement().copy());
 			} else if (ContainerType.TABLE.equals(type)) {
-//				addSee(runningTextHtmlElement, type);
 				runningTextHtmlElement.appendChild(abstractContainer.getTableElement().copy());
 			} else if (ContainerType.TEXT.equals(type)) {
 				HtmlElement div = abstractContainer.createHtmlElement();

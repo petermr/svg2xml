@@ -59,9 +59,17 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	private Double leftIndent1;
 
 	private TextStructurer textStructurer;
-	
+
+	public ScriptContainer() {
+		super((PageAnalyzer) null);
+	}
 	public ScriptContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
+	}
+
+	public ScriptContainer(List<ScriptLine> scriptedLineList) {
+		this();
+		this.add(scriptedLineList);
 	}
 	
 	public static ScriptContainer createScriptContainer(TextStructurer textStructurer, PageAnalyzer pageAnalyzer) {

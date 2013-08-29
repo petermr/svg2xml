@@ -49,7 +49,6 @@ public class ListContainerTest {
 		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
 		ListContainer listContainer = ListContainer.createList(sc);
 		HtmlElement elem = listContainer.createHtmlElement();
-//		SYSOUT.println(elem.toXML());
 		CMLUtil.debug(elem, new FileOutputStream(new File(outfile)), 1);
 	}
 
