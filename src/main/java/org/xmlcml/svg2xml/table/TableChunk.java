@@ -23,9 +23,9 @@ import org.xmlcml.svg2xml.text.TextStructurer;
  * @author pm286
  *
  */
-public class GenericChunk {
+public class TableChunk {
 
-	private final static Logger LOG = Logger.getLogger(GenericChunk.class);
+	private final static Logger LOG = Logger.getLogger(TableChunk.class);
 	private final static PrintStream SYSOUT = System.out;
 
 	protected List<SVGElement> elementList;
@@ -36,16 +36,16 @@ public class GenericChunk {
 
 	private Real2Range bbox;
 
-	protected GenericChunk() {
+	protected TableChunk() {
 		elementList = new ArrayList<SVGElement>();
 	}
 	
-	public GenericChunk(RealRangeArray horizontalMask, RealRangeArray verticallMask) {
+	public TableChunk(RealRangeArray horizontalMask, RealRangeArray verticallMask) {
 		this.horizontalMask = horizontalMask;
 		this.verticalMask = verticallMask;
 	}
 
-	public GenericChunk(List<? extends SVGElement> elementList) {
+	public TableChunk(List<? extends SVGElement> elementList) {
 		this.setElementList(elementList);
 	}
 
@@ -220,14 +220,14 @@ public class GenericChunk {
 		return bbox;
 	}
 
-	public HtmlElement createHtmlTable() {
+	public HtmlElement createHtmlElement() {
 		throw new RuntimeException("Must overide getHtml()");
 	}
 
-	protected HtmlElement createHtmlThroughTextContainer() {
+	protected HtmlElement createHtmlThroughTextStructurer() {
 		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
-		TextStructurer textContainer = TextStructurer.createTextStructurerWithSortedLines(characters);
-		HtmlElement htmlElement = textContainer.createHtmlDivWithParas();
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters);
+		HtmlElement htmlElement = textStructurer.createHtmlElement();
 		return htmlElement;
 	}
 	
@@ -237,6 +237,9 @@ public class GenericChunk {
 	 * @return
 	 */
 	public static HtmlElement removeStyles(HtmlElement element) {
+		if (element == null) {
+			LOG.error("NULL htmlElement");
+		}
 		Nodes styles = element.query("//@style");
 		for (int i = 0; i < styles.size(); i++) {
 			styles.get(i).detach();

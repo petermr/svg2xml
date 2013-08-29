@@ -5,17 +5,22 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import nu.xom.Node;
+
 import org.apache.log4j.Logger;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlLi;
 import org.xmlcml.svg2xml.text.ScriptLine;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds a chunk of scriptLines
  * examples are list elements
  * @author pm286
  *
  */
-public class MultiScriptLine {
+public class ListItem {
 
-	private final static Logger LOG = Logger.getLogger(MultiScriptLine.class);
+	private final static Logger LOG = Logger.getLogger(ListItem.class);
 	
 	/** leading number
 	 * e.g. 2.  [2]  {2}  (2)  2:  -2-
@@ -36,7 +41,7 @@ public class MultiScriptLine {
 	private List<ScriptLine> scriptLineList;
 	private boolean indented;
 	
-	public MultiScriptLine() {
+	public ListItem() {
 		
 	}
 
@@ -92,8 +97,24 @@ public class MultiScriptLine {
 		return bullet;
 	}
 
-
 	public void setIndented(boolean indented) {
 		this.indented = indented;
+	}
+	
+	public HtmlElement createHtmlElement() {
+		HtmlElement li = new HtmlLi();
+	    for (ScriptLine scriptLine : scriptLineList) {
+	    	HtmlElement e = scriptLine.createHtml();
+	    	SVG2XMLUtil.moveChildrenFromTo(e, li);
+	    }
+		return li;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (ScriptLine scriptLine : scriptLineList) {
+			sb.append(scriptLine.getTextContentWithSpaces()+"\n");
+		}
+		return sb.toString();
 	}
 }
