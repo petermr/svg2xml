@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.html.HtmlElement;
 
 public class SVG2XMLUtil {
 
@@ -143,6 +144,22 @@ public class SVG2XMLUtil {
 	public static String trimText(int max, String s) {
 		int l = s.length();
 		return (l < max) ? s : s.substring(0,  max)+" ("+l+")...";
+	}
+
+	/** crude tools to remove style attributes
+	 * 
+	 * @param element
+	 * @return
+	 */
+	public static HtmlElement removeStyles(HtmlElement element) {
+		if (element == null) {
+			LOG.error("NULL htmlElement");
+		}
+		Nodes styles = element.query("//@style");
+		for (int i = 0; i < styles.size(); i++) {
+			styles.get(i).detach();
+		}
+		return element;
 	}
 
 

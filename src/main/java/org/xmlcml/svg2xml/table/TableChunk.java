@@ -221,7 +221,7 @@ public class TableChunk {
 	}
 
 	public HtmlElement createHtmlElement() {
-		throw new RuntimeException("Must overide getHtml()");
+		throw new RuntimeException("Must overide createHtmlElement()");
 	}
 
 	protected HtmlElement createHtmlThroughTextStructurer() {
@@ -231,19 +231,4 @@ public class TableChunk {
 		return htmlElement;
 	}
 	
-	/** crude tools to remove style attributes
-	 * 
-	 * @param element
-	 * @return
-	 */
-	public static HtmlElement removeStyles(HtmlElement element) {
-		if (element == null) {
-			LOG.error("NULL htmlElement");
-		}
-		Nodes styles = element.query("//@style");
-		for (int i = 0; i < styles.size(); i++) {
-			styles.get(i).detach();
-		}
-		return element;
-	}
 }

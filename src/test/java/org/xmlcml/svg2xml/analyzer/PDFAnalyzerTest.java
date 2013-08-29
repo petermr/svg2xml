@@ -23,7 +23,7 @@ public class PDFAnalyzerTest {
 
 	@Test
 	// maven fails on memory
-	@Ignore
+//	@Ignore
 	public void testPDFAnalyzerSVG() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.setRawSvgDirectory(Fixtures.SVG_MULTIPLE312_DIR);

@@ -1,9 +1,9 @@
 package org.xmlcml.svg2xml.table;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTd;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class TableCell extends TableChunk {
 
@@ -22,7 +22,7 @@ public class TableCell extends TableChunk {
 		HtmlElement cellBody = createHtmlThroughTextStructurer();
 		if (cellBody != null) {
 			td.appendChild(cellBody);
-			cellBody = TableChunk.removeStyles(cellBody);
+			cellBody = SVG2XMLUtil.removeStyles(cellBody);
 		}
 		return td;
 	}

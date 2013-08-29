@@ -8,9 +8,12 @@ import java.util.regex.Pattern;
 import nu.xom.Node;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.svg2xml.text.ScriptLine;
+import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds a chunk of scriptLines
@@ -103,12 +106,28 @@ public class ListItem {
 	
 	public HtmlElement createHtmlElement() {
 		HtmlElement li = new HtmlLi();
+//	    for (ScriptLine scriptLine : scriptLineList) {
+//    	HtmlElement e = scriptLine.createHtmlElement();
+//    	System.out.println(e.toXML());
+//    	SVG2XMLUtil.moveChildrenFromTo(e, li);
+//    	System.out.println(li.toXML());
+//    }
 	    for (ScriptLine scriptLine : scriptLineList) {
-	    	HtmlElement e = scriptLine.createHtml();
-	    	SVG2XMLUtil.moveChildrenFromTo(e, li);
-	    }
+    	HtmlElement e = scriptLine.createHtmlElement();
+    	System.out.println(e.toXML());
+    	SVG2XMLUtil.moveChildrenFromTo(e, li);
+    	System.out.println(li.toXML());
+    }
 		return li;
 	}
+	
+//	protected HtmlElement createHtmlThroughTextStructurer() {
+//		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters);
+//		HtmlElement htmlElement = textStructurer.createHtmlElement();
+//		return htmlElement;
+//	}
+
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

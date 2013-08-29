@@ -7,11 +7,14 @@ import nu.xom.Node;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class ListContainer extends AbstractContainer {
 
@@ -27,7 +30,13 @@ public class ListContainer extends AbstractContainer {
 	private Integer lastInteger;
 	private List<ListItem> numberedItemList;
 	private List<ListItem> errorMultilineList;
-	private List<ListItem> bulletedItemList;;
+	private List<ListItem> bulletedItemList;
+
+	private String currentBullet;
+
+	private boolean validList;
+
+	private List<ListItem> currentList;;
 	
 	public ListContainer(PageAnalyzer pageAnalyzer, List<ListItem> multiScriptLineList) {
 		super(pageAnalyzer);
@@ -81,67 +90,95 @@ public class ListContainer extends AbstractContainer {
 		return listContainer;
 	}
 
-	private void createNumberedOrBulletedList() {
-		errorMultilineList = new ArrayList<ListItem>();
-		ListItem header = null;
-		ListItem footer = null;
-		if (multiScriptLineList != null) {
-			firstInteger = null;
-			Integer currentInteger = null;
-			String currentBullet = null;
-			int line = 0;
-			for (ListItem multiScriptLine : multiScriptLineList) {
-				Integer leadingInteger = multiScriptLine.getLeadingInteger();
-				String bullet = multiScriptLine.getBullet();
-				if (leadingInteger == null && bullet == null) {
-					if (header == null) {
-						header = multiScriptLine;
-					} else if (line == multiScriptLineList.size() - 1) {
-						footer = multiScriptLine;
-					} else {
-						LOG.error("cannot find leading integer or bullet: "+multiScriptLine.toString());
-						errorMultilineList.add(multiScriptLine);
+	private List<ListItem> createNumberedOrBulletedList() {
+		if (currentList == null) {
+			errorMultilineList = new ArrayList<ListItem>();
+			ListItem header = null;
+			ListItem footer = null;
+			if (multiScriptLineList != null) {
+				firstInteger = null;
+				Integer currentInteger = null;
+				currentBullet = null;
+				validList = true;
+				int line = 0;
+				for (ListItem multiScriptLine : multiScriptLineList) {
+					Integer leadingInteger = multiScriptLine.getLeadingInteger();
+					String bullet = multiScriptLine.getBullet();
+					if (leadingInteger == null && bullet == null) {
+						if (header == null) {
+							header = multiScriptLine;
+						} else if (line == multiScriptLineList.size() - 1) {
+							footer = multiScriptLine;
+						} else {
+							LOG.trace("cannot find leading integer or bullet: "+multiScriptLine.toString());
+							errorMultilineList.add(multiScriptLine);
+						}
+						continue;
 					}
-					continue;
-				}
-				if (firstInteger == null && leadingInteger != null) {
-					firstInteger = leadingInteger;
-					numberedItemList = new ArrayList<ListItem>();
-					numberedItemList.add(multiScriptLine);
-				} else if (currentBullet == null && bullet != null) {
+					if (firstInteger == null && leadingInteger != null) {
+						addFirstNumericItem(multiScriptLine, leadingInteger);
+					} else if (currentBullet == null && bullet != null) {
+						addFirstBulletedItem(multiScriptLine, bullet);
+					} else if (leadingInteger != null) {
+						int delta = leadingInteger - currentInteger;
+					    if (delta == 1) {
+					    	numberedItemList.add(multiScriptLine);
+					    } else {
+					    	LOG.debug("List not in arithmetic progression"+leadingInteger+" (last was "+currentInteger+")");
+					    	validList = false;
+					    	break;
+					    }
+					} else if (bullet != null && bullet.equals(currentBullet)) {
+						bulletedItemList.add(multiScriptLine);
+					} else if (currentBullet != null) {
+						LOG.error("bullets changed: "+bullet+" (last was "+currentBullet+")");
+						errorMultilineList.add(multiScriptLine);
+				    	validList = false;
+				    	break;
+					}
+					currentInteger = leadingInteger;
 					currentBullet = bullet;
-					bulletedItemList = new ArrayList<ListItem>();
-					bulletedItemList.add(multiScriptLine);
-				} else if (leadingInteger != null && leadingInteger - currentInteger == 1) {
-					numberedItemList.add(multiScriptLine);
-				} else if (currentBullet.equals(bullet)) {
-					bulletedItemList.add(multiScriptLine);
-				} else if (currentInteger != null){
-					LOG.error("integers not in ascending sequence: "+leadingInteger+" (last was "+currentInteger+")");
-					errorMultilineList.add(multiScriptLine);
-				} else if (currentBullet != null) {
-					LOG.error("bullets changed: "+bullet+" (last was "+currentBullet+")");
-					errorMultilineList.add(multiScriptLine);
+					line++;
 				}
-				currentInteger = leadingInteger;
-				currentBullet = bullet;
-				line++;
+				createCurrentList(header, footer, currentInteger);
 			}
+		}
+		return currentList;
+	}
+
+	private void createCurrentList(ListItem header, ListItem footer,
+			Integer currentInteger) {
+		if (!validList || errorMultilineList.size() > 0) {
+			bulletedItemList = null;
+			numberedItemList = null;
+		} else {
 			lastInteger = currentInteger;
 			if (header != null) {
 				LOG.debug("HEADER "+header.toString());
 			}
 			if (currentInteger != null) {
-				LOG.debug("********************************List from: "+firstInteger+" to "+lastInteger+
-						" errors "+errorMultilineList.size());
+				LOG.debug("********************************List from: "+firstInteger+" to "+lastInteger);
+				currentList = numberedItemList;
 			} else if (currentBullet  != null) {
-				LOG.debug("********************************List of ("+ bulletedItemList.size()+") bullets: "+currentBullet+
-						" errors "+errorMultilineList.size());
+				LOG.debug("********************************List of ("+ bulletedItemList.size()+") bullets: "+currentBullet);
+				currentList = bulletedItemList;
 			}
 			if (footer != null) {
 				LOG.debug("FOOTER "+footer.toString());
 			}
 		}
+	}
+
+	private void addFirstBulletedItem(ListItem multiScriptLine, String bullet) {
+		currentBullet = bullet;
+		bulletedItemList = new ArrayList<ListItem>();
+		bulletedItemList.add(multiScriptLine);
+	}
+
+	private void addFirstNumericItem(ListItem multiScriptLine, Integer leadingInteger) {
+		firstInteger = leadingInteger;
+		numberedItemList = new ArrayList<ListItem>();
+		numberedItemList.add(multiScriptLine);
 	}
 
 	private boolean hasList() {
@@ -192,9 +229,8 @@ public class ListContainer extends AbstractContainer {
 	}
 
 	@Override
-	public HtmlElement createHtmlElement() {
-		LOG.error("FIX the SPANS");
-		HtmlElement ul = null;
+	public HtmlUl createHtmlElement() {
+		HtmlUl ul = null;
 		List<ListItem> itemList = (numberedItemList != null) ? numberedItemList : null;
 		itemList = (itemList != null) ? itemList : bulletedItemList;
 		if (itemList != null) {
@@ -207,6 +243,7 @@ public class ListContainer extends AbstractContainer {
 		}
 		return ul;
 	}
+	
 
 	@Override
 	public SVGG createSVGGChunk() {

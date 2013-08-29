@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -30,6 +31,8 @@ import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public abstract class AbstractAnalyzer /* implements Annotatable */ {
 	
+	private static final PrintStream SYSOUT = System.out;
+
 	private final static Logger LOG = Logger.getLogger(AbstractAnalyzer.class);
 
 	protected SVGG svgg; // current svg:gelement
@@ -346,6 +349,16 @@ public abstract class AbstractAnalyzer /* implements Annotatable */ {
 	public ChunkId getChunkId() {
 		if (chunkId == null) {
 			String id = (svgg == null) ? null : svgg.getId();
+			if (id == null) {
+				if (svgElement != null) {
+					id = svgElement.getId();
+					if (id == null) {
+						Nodes idNodes = svgElement.query("ancestor::*/@id");
+						id = (idNodes.size() == 0) ? null : idNodes.get(0).getValue();
+//						SYSOUT.println(svgElement.toXML());
+					}
+				}
+			}
 			chunkId = (id == null) ? null : new ChunkId(id);
 		}
 		return chunkId;

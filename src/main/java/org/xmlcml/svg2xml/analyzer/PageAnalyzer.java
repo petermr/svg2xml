@@ -506,6 +506,8 @@ public class PageAnalyzer extends AbstractAnalyzer {
 //				addSee(runningTextHtmlElement, type);
 				runningTextHtmlElement.appendChild(abstractContainer.getFigureElement().copy());
 //				LOG.debug(abstractContainer.getSVGChunk().toXML());
+			} else if (ContainerType.LIST.equals(type)) {
+				runningTextHtmlElement.appendChild(abstractContainer.getListElement().copy());
 			} else if (ContainerType.TABLE.equals(type)) {
 //				addSee(runningTextHtmlElement, type);
 				runningTextHtmlElement.appendChild(abstractContainer.getTableElement().copy());

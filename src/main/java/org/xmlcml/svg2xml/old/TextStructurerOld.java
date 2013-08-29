@@ -789,7 +789,7 @@ public class TextStructurerOld {
 //				div.appendChild(el);
 //				div.debug("XXXXXXXXXXXXXXXXXX");
 			} else {
-				el = group.createHtml();
+				el = group.createHtmlElement();
 				div.appendChild(el);
 			}
 		}

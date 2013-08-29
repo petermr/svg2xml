@@ -1,9 +1,13 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
@@ -11,10 +15,8 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.table.TableTable;
-import org.xmlcml.svg2xml.text.TextStructurer;
 
 /**
  * @author pm286
@@ -28,10 +30,9 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 
 	private TextAnalyzerX textAnalyzer;
 	private PathAnalyzerX pathAnalyzer;
-//	private TextStructurer textStructurer;
 
 	private Real2Range pathBox;
-	private Real2Range textBox;
+//	private Real2Range textBox;
 
 	private List<SVGPath> pathList;
 
@@ -72,14 +73,21 @@ public class TableAnalyzerX extends AbstractAnalyzer {
 		TableTable tableTable = new TableTable(pathList, textList);
 		tableTable.analyzeVerticalTextChunks();
 		HtmlTable htmlTable = tableTable.createHtmlElement();
-		LOG.debug("TABLE "+htmlTable.toXML());
+		Integer tableNumber = tableTable.getTableNumber();
+		if (tableNumber != null) {
+			try {
+				CMLUtil.debug(htmlTable, new FileOutputStream("target/TABLEX"+tableNumber+".html"), 1);
+			} catch (IOException e) {
+				throw new RuntimeException("Cannot output file", e);
+			}
+		}
 		return htmlTable;
 	}
 
-	@Override
-	public SVGG oldAnnotateChunk() {
-		throw new RuntimeException("annotate NYI");
-	}
+//	@Override
+//	public SVGG oldAnnotateChunk() {
+//		throw new RuntimeException("annotate NYI");
+//	}
 	
 	public Integer indexAndLabelChunk(String content, ChunkId id) {
 		Integer serial = super.indexAndLabelChunk(content, id);

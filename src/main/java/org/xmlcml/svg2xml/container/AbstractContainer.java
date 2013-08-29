@@ -17,6 +17,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
+import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.semantic.LicenceAnalyzer;
@@ -47,6 +48,7 @@ public abstract class AbstractContainer {
 		TABLE,
 		TITLE,
 		TEXT, 
+		LIST, 
 	}
 	
 	private static final String CHUNK = "chunk";
@@ -59,11 +61,20 @@ public abstract class AbstractContainer {
 
 	private static final Double MIN_TITLE_SIZE = 15.0; // first guess
 
+	Pattern ACKNOWLEDGEMENT_P = Pattern.compile("([Aa]cknowledge?ments?)");
+	Pattern AUTHOR_INFO_P = Pattern.compile(".*[Aa]uthors?\\'?\\s+[Ii]nformation.*");
+	Pattern AUTHOR_DETAILS_P = Pattern.compile("[Aa]uthors?\\'?\\s+[Dd]etails");
+	Pattern AUTHOR_CONTRIBUTIONS_P = Pattern.compile("[Aa]uthors?\\'?\\s+[Cc]ontributions");
+	Pattern COPYRIGHT_P = Pattern.compile(".*"+String.valueOf((char)169)+".*");
+	Pattern LICENCE_P = Pattern.compile("([Ll]icensee)|(Creative\\s*Commons)");
+	
 	protected List<AbstractContainer> containerList;
 	protected PageAnalyzer pageAnalyzer;
 	protected ChunkId chunkId;
 	protected SVGG svgChunk;
 	protected HtmlElement htmlElement;
+	private HtmlDiv figureElement;
+	private HtmlUl listElement;
 	private HtmlTable tableElement;
 	
 	private ContainerType type;
@@ -151,10 +162,6 @@ public abstract class AbstractContainer {
 	}
 
 
-//	public HtmlElement getHtmlElement() {
-//		return htmlElement;
-//	}
-//
 	/** character value of Container
 	 * mainly for string-based containers
 	 * @return
@@ -238,6 +245,11 @@ public abstract class AbstractContainer {
 					}
 				}
 				if (type == null) {
+					if (createHtmlListElement() != null) {
+						type = ContainerType.LIST;
+					}
+				}
+				if (type == null) {
 					type = getMetadataType(value);
 				}
 			}
@@ -246,6 +258,12 @@ public abstract class AbstractContainer {
 			type = ContainerType.CHUNK;
 		}
 		
+	}
+
+	private HtmlUl createHtmlListElement() {
+		ListContainer listContainer = ListContainer.createList((ScriptContainer) this);
+		listElement = listContainer.createHtmlElement();
+		return listElement;
 	}
 
 	private HtmlDiv processFigure() {
@@ -265,15 +283,6 @@ public abstract class AbstractContainer {
 		}
 		return tableElement;
 	}
-
-	Pattern ACKNOWLEDGEMENT_P = Pattern.compile("([Aa]cknowledge?ments?)");
-	Pattern AUTHOR_INFO_P = Pattern.compile(".*[Aa]uthors?\\'?\\s+[Ii]nformation.*");
-	Pattern AUTHOR_DETAILS_P = Pattern.compile("[Aa]uthors?\\'?\\s+[Dd]etails");
-	Pattern AUTHOR_CONTRIBUTIONS_P = Pattern.compile("[Aa]uthors?\\'?\\s+[Cc]ontributions");
-	Pattern COPYRIGHT_P = Pattern.compile(".*"+String.valueOf((char)169)+".*");
-	Pattern LICENCE_P = Pattern.compile("([Ll]icensee)|(Creative\\s*Commons)");
-
-	private HtmlDiv figureElement;
 
 	private ContainerType getMetadataType(String value) {
 		ContainerType type = null;
@@ -317,6 +326,10 @@ public abstract class AbstractContainer {
 	public Element getFigureElement() {
 		figureElement.addAttribute(new Attribute("border", "3pt"));
 		return figureElement;
+	}
+
+	public Element getListElement() {
+		return listElement;
 	}
 
 	public Element getTableElement() {

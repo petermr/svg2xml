@@ -157,25 +157,14 @@ public class PDFAnalyzer /*implements Annotatable */{
 		pageAnalyzerList = createAndFillPageAnalyzers();
 		pdfIo.outputFiles(pdfOptions);
 		createIndexesAndRemoveDuplicates();
-		mergeTextContainers();
-		createHtml();
 		SYSOUT.println();
 		writeSvgPages();
-//		analyzeAndCreateHTML();  // not yet written
-	}
-
-	private void createHtml() {
-		SYSOUT.println("createHtml not used...");
 	}
 
 	private void debugContainers() {
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
 			LOG.debug("\n============== "+pageAnalyzer.toString());
 		}
-	}
-
-	private void mergeTextContainers() {
-		LOG.debug("mergeTextContainers NYI");
 	}
 
 	private void createIndexesAndRemoveDuplicates() {

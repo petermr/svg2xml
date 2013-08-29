@@ -55,7 +55,9 @@ public class TableTable extends TableChunk {
 	private Real2Range textBox;
 	private Real2Range totalBox;
 
-	private List<TableChunk> genericTextChunkList;
+	private List<TableChunk> tableChunkList;
+
+	private Integer tableNumber;
 
 	public TableTable() {
 		init();
@@ -240,11 +242,11 @@ public class TableTable extends TableChunk {
 
 	public List<TableChunk> createVerticalTextChunks() {
 		this.createCoarseVerticalMask();
-		genericTextChunkList = new ArrayList<TableChunk>();
+		tableChunkList = new ArrayList<TableChunk>();
 		if (verticalMask != null) {
 			for (RealRange realRange : verticalMask) {
 				TableChunk AbstractTableChunk = new TableChunk();
-				genericTextChunkList.add(AbstractTableChunk);
+				tableChunkList.add(AbstractTableChunk);
 				for (SVGText text : textList) {
 					RealRange textRange = text.getRealRange(Direction.VERTICAL);
 					if (realRange.includes(textRange)) {
@@ -253,17 +255,17 @@ public class TableTable extends TableChunk {
 				}
 			}
 		}
-		return genericTextChunkList;
+		return tableChunkList;
 	}
 
 	public List<TableChunk> getGenericTextChunkList() {
-		return genericTextChunkList;
+		return tableChunkList;
 	}
 
 	public List<TableChunk> analyzeVerticalTextChunks() {
 		createVerticalTextChunks();
 		int index = 0;
-		for (TableChunk abstractTableChunk : genericTextChunkList) {
+		for (TableChunk abstractTableChunk : tableChunkList) {
 //			AbstractTableChunk.createHorizontalMask();
 			abstractTableChunk.createHorizontalMaskWithTolerance(HALF_SPACE);
 			int cols = abstractTableChunk.getHorizontalMask().size();
@@ -277,10 +279,10 @@ public class TableTable extends TableChunk {
 			}
 			LOG.trace(">> "+abstractTableChunk.getHorizontalMask());
 			// replace with new class
-			genericTextChunkList.set(index, abstractChunk);
+			tableChunkList.set(index, abstractChunk);
 			index++;
 		}
-		return genericTextChunkList;
+		return tableChunkList;
 	}
 	
 	public HtmlTable createHtmlElement() {
@@ -291,9 +293,9 @@ public class TableTable extends TableChunk {
 		HtmlBody body = new HtmlBody();
 		table.appendChild(body);
 		// chunk can be caption or table
-		for (TableChunk chunk : genericTextChunkList) {
-			LOG.debug(chunk.getClass());
-			HtmlElement htmlElement = chunk.createHtmlElement();
+		for (TableChunk tableChunk : tableChunkList) {
+			LOG.debug(tableChunk.getClass());
+			HtmlElement htmlElement = tableChunk.createHtmlElement();
 			if (htmlElement instanceof HtmlTable) {
 				if (hasOnlyOneRow(htmlElement)) {
 					htmlElement = TableRow.convertBodyHeader(htmlElement);
@@ -303,12 +305,17 @@ public class TableTable extends TableChunk {
 				body.appendChild(htmlElement);
 			} else if (htmlElement instanceof HtmlCaption) {
 				LOG.debug("Created caption: "+htmlElement.toXML());
-				TableCaption.addCaptionTo(table, (HtmlCaption)htmlElement);
+				HtmlCaption caption = (HtmlCaption)htmlElement;
+				TableCaption.addCaptionTo(table, caption);
+				// might be more than one caption (e.g. subtables
+				this.tableNumber = tableNumber != null ? tableNumber : TableCaption.getNumber(caption);
+				LOG.debug("table number: "+tableNumber);
 			} else {
 				LOG.trace("HTML: "+htmlElement);
 			}
 		}
 		removeEmptyTables(body);
+		// size of growing table children
 		int nn = table.query("//*").size();
 		try {
 			CMLUtil.debug(table, new FileOutputStream("target/table"+nn+".html"), 1);
@@ -327,6 +334,10 @@ public class TableTable extends TableChunk {
 		for (int i = 0; i < tables.size(); i++) {
 			tables.get(i).detach();
 		}
+	}
+
+	public Integer getTableNumber() {
+		return tableNumber;
 	}
 
 }

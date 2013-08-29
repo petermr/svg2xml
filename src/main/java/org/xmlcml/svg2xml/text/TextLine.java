@@ -163,7 +163,7 @@ public class TextLine implements Iterable<SVGText> {
 			}
 			if (getSubLines().size() != 1) {
 				for (TextLine chList : getSubLines()) {
-					chList.normalizeAndCreateWords();
+					chList.normalize();
 				}
 			}
 			if (lastFontSize != null) {
@@ -173,17 +173,12 @@ public class TextLine implements Iterable<SVGText> {
 		return getSubLines();
 	}
 
-	private void normalizeAndCreateWords() {
-		normalize();
-	}
-	
 	private void normalize() {
 		this.getFontSize();
 		this.getYCoord();
 		this.getLineContent();
 		LOG.trace("words "+((wordSequence == null) ? "null" :  wordSequence.size()));
 	}
-
 	
 	/** returns the common value of fontSize or null
 	 * if there is any variation
@@ -687,11 +682,6 @@ public class TextLine implements Iterable<SVGText> {
 		return textLineList;
 	}
 	
-//	public HtmlElement createHtmlLine() {
-//		List<TextLine> textLineList = createSuscriptTextLineList();
-//		return createHtmlElement(textLineList);
-//	}
-//
 	public static HtmlElement createHtmlElement(List<TextLine> textLineList) {
 		HtmlP p = new HtmlP();
 		for (TextLine textLine : textLineList) {

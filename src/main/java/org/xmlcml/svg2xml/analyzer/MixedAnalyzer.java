@@ -94,23 +94,23 @@ public class MixedAnalyzer extends AbstractAnalyzer {
 	public PathAnalyzerX getPathAnalyzer() {return pathAnalyzer;}
 	public TextAnalyzerX getTextAnalyzer() {return textAnalyzer;}
 
-	/** annotates each section with its own analyzer.annotateChunk()
-	 * 
-	 */
-	@Override
-	public SVGG oldAnnotateChunk() {
-		ensureAnalyzerList();
-		SVGG g = new SVGG();
-		for (AbstractAnalyzer analyzer : analyzerList) {
-			SVGG gg = analyzer.oldAnnotateChunk();
-			if (gg != null) {
-				g.appendChild(gg.copy());
-			}
-		}
-		String title = "MIXED: "+this;
-		g.setTitle(title);
-		return g;
-	}
+//	/** annotates each section with its own analyzer.annotateChunk()
+//	 * 
+//	 */
+//	@Override
+//	public SVGG oldAnnotateChunk() {
+//		ensureAnalyzerList();
+//		SVGG g = new SVGG();
+//		for (AbstractAnalyzer analyzer : analyzerList) {
+//			SVGG gg = analyzer.oldAnnotateChunk();
+//			if (gg != null) {
+//				g.appendChild(gg.copy());
+//			}
+//		}
+//		String title = "MIXED: "+this;
+//		g.setTitle(title);
+//		return g;
+//	}
 	
 	@Override
 	public HtmlElement createHtmlElement() {

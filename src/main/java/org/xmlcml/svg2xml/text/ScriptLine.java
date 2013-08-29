@@ -16,6 +16,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds one or more TextLines in a chunk
  * bounding boxes of textLines overlap
@@ -52,6 +53,8 @@ public class ScriptLine implements Iterable<TextLine> {
 	private String textContentWithSpaces;
 
 	private Double spaceFactor = SPACEFACTOR;
+
+	private HtmlElement htmlElement;
 	
 	public ScriptLine(TextStructurer textStructurer) {
 		textLineList = new ArrayList<TextLine>();
@@ -337,10 +340,13 @@ public class ScriptLine implements Iterable<TextLine> {
 		return textLineList;
 	}
 
-	public HtmlElement createHtml() {
-		List<TextLine> lineList = this.createSuscriptTextLineList();
-		HtmlElement element = TextLine.createHtmlElement(lineList);
-		return element;
+	public HtmlElement createHtmlElement() {
+		if (htmlElement == null) {
+			List<TextLine> lineList = this.createSuscriptTextLineList();
+			htmlElement = TextLine.createHtmlElement(lineList);
+			SVG2XMLUtil.removeStyles(htmlElement);
+		}
+		return htmlElement;
 	}
 	
 	public TextLine getLargestLine() {

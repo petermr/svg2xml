@@ -842,7 +842,7 @@ public class TextAnalyzerTest {
 	public void testCreateTextListHtml0() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		ScriptLine group0 = textStructurer.getScriptedLineList().get(0);
-		HtmlElement textLineHtml = group0.createHtml();
+		HtmlElement textLineHtml = group0.createHtmlElement();
 		Assert.assertEquals("group0", 
 				"<p xmlns=\"http://www.w3.org/1999/xhtml\">" +
 				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">The rate constant is 0.61795 mg L</span>" +
