@@ -19,6 +19,7 @@ public class PDFAnalyzerTest {
 		analyzer.analyzePDFFile(Fixtures.MULTIPLE312_PDF);
 	}
 
+	/** commented out for maven
 	@Test
 	public void testPDFAnalyzerPDFGEO310() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
@@ -77,9 +78,9 @@ public class PDFAnalyzerTest {
 		analyzer.analyzeRawSVGPagesWithPageAnalyzers();
 	}
 
-
+*/
 	@Test
-	//@Ignore
+	@Ignore
 	public void testPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFs(Fixtures.PDFS_BMC_DIR.toString());
