@@ -700,7 +700,7 @@ public class TextLineOld implements Iterable<SVGText> {
 //			getBoundingBox();
 //			getMeanFontSize();
 //			if (boundingBox != null) {
-//				Double xmin = boundingBox.getXRange().getMin();
+//				Double xmin = boundingBox.getXMin();
 //				Double separation = xmin - leftMarginX;
 //				spaceCount = separation / getWidthOfSpaceCharacter(meanFontSize);
 //			}
@@ -719,7 +719,7 @@ public class TextLineOld implements Iterable<SVGText> {
 //			getBoundingBox();
 //			getMeanFontSize();
 //			if (boundingBox != null) {
-//				Double xmax = boundingBox.getXRange().getMax();
+//				Double xmax = boundingBox.getXMax();
 //				Double separation = rightMarginX - xmax;
 //				spaceCount = separation / getWidthOfSpaceCharacter(meanFontSize);
 //			}
@@ -748,11 +748,11 @@ public class TextLineOld implements Iterable<SVGText> {
 	public Real2Range getBoundingBox() {{
 		if (boundingBox == null) 
 			if (characterList != null && characterList.size() > 0) {
-				double xmin = characterList.get(0).getBoundingBox().getXRange().getMin();
-				double xmax = characterList.get(characterList.size()-1).getBoundingBox().getXRange().getMax();
+				double xmin = characterList.get(0).getBoundingBox().getXMin();
+				double xmax = characterList.get(characterList.size()-1).getBoundingBox().getXMax();
 				RealRange xRange = new RealRange(xmin, xmax); 
-				double ymin = characterList.get(0).getBoundingBox().getYRange().getMin();
-				double ymax = characterList.get(characterList.size()-1).getBoundingBox().getYRange().getMax();
+				double ymin = characterList.get(0).getBoundingBox().getYMin();
+				double ymax = characterList.get(characterList.size()-1).getBoundingBox().getYMax();
 				RealRange yRange = new RealRange(ymin, ymax); 
 				boundingBox = new Real2Range(xRange, yRange);
 			}

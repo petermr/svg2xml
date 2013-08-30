@@ -131,13 +131,13 @@ public class PolylineAnalyzerX extends AbstractAnalyzer {
 
 	private void addToVerticalMap(SVGLine line) {
 		ensureVerticalMap();
-		double x = line.getReal2Range().getXRange().getMin();
+		double x = line.getReal2Range().getXMin();
 		addLineToMap(line, x, verticalMap);
 	}
 
 	private void addToHorizontalMap(SVGLine line) {
 		ensureHorizontalMap();
-		double y = line.getReal2Range().getYRange().getMin();
+		double y = line.getReal2Range().getYMin();
 		addLineToMap(line, y, horizontalMap);
 	}
 

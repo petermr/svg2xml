@@ -352,7 +352,7 @@ public class TextAnalyzerXOld extends AbstractAnalyzer {
 			if (svgParent != null) {
 				Real2Range bbox = svgParent.getBoundingBox();
 				if (bbox != null) {
-					Double xLeft = bbox.getXRange().getMin();
+					Double xLeft = bbox.getXMin();
 					Double deltaY = null;
 					LOG.trace("XL "+xLeft);
 					createHorizontalCharacterListAndCreateWords();

@@ -97,7 +97,7 @@ public class TableTable extends TableChunk {
 		totalBox = textBox;
 		if (pathList != null && pathList.size() > 0) {
 			verticalMask = createVerticalMaskFromPaths();
-			verticalMask.addTerminatingCaps(totalBox.getYRange().getMin(), totalBox.getYRange().getMax());
+			verticalMask.addTerminatingCaps(totalBox.getYMin(), totalBox.getYMax());
 		} else {
 			verticalMask = new RealRangeArray(textBox, RealRange.Direction.VERTICAL);
 		}

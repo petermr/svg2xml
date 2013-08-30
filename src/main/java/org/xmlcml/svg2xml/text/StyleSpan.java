@@ -118,7 +118,7 @@ public class StyleSpan {
 	/** add spaces corresponding to distance between last text and text
 	 * 
 	 * uses fontSize and width of last Text
-	 * nspaces = (text.getX()-lastText.getBoundingBox().getXRange().getMax()) / lastText.getFontSize()*lastText.getFontWidth()
+	 * nspaces = (text.getX()-lastText.getBoundingBox().getXMax()) / lastText.getFontSize()*lastText.getFontWidth()
 	 * nspaces == null => no action else returns string with computed spaces
 	 * 
 	 * @param lastText if null no action
@@ -128,7 +128,7 @@ public class StyleSpan {
 	public static String computeInterveningSpaces(SVGText lastText, SVGText text) {
 		String spaces = null;
 		if (lastText != null && text != null) {
-			 Double x0 = lastText.getBoundingBox().getXRange().getMax();
+			 Double x0 = lastText.getBoundingBox().getXMax();
 			 Double x1 = text.getX();
 			 if (x0 != null && x1 != null) {
 				 double deltax = x1 - x0;

@@ -180,10 +180,10 @@ public class Chunk extends SVGG {
 			SVGElement lastElement = descendantSVGElementList.get(descendantSVGElementList.size()-1);
 			Real2Range lastR2R = lastElement.getBoundingBox();
 			if (BoxEdge.YMIN.equals(edge)) {
-				cc = lastR2R.getYRange().getMax();
+				cc = lastR2R.getYMax();
 				bbox = new Real2Range(lastR2R.getXRange(), new RealRange(cc, cc+chunkWidth));
 			} else if (BoxEdge.XMIN.equals(edge)) {
-				cc = lastR2R.getXRange().getMax();
+				cc = lastR2R.getXMax();
 				bbox = new Real2Range(new RealRange(cc, cc+chunkWidth), lastR2R.getYRange());
 			} else {
 				throw new RuntimeException("unsupported edge: "+edge);

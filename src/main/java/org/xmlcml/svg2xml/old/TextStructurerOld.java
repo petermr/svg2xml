@@ -835,11 +835,11 @@ public class TextStructurerOld {
 		LOG.trace("textLine "+textLineList.size()+"; html: "+ htmlLines.size());
 		
 		if (leftBB != null) {
-			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - leftBB.getXRange().getMin());
+			Double deltaLeftIndent = (leftIndent == null) ? 0 : (leftIndent - leftBB.getXMin());
 			Real2Range largestFontBB = TextStructurerOld.getBoundingBox(textLineList);
 			if (largestFontBB != null) {
 				RealRange xRange = largestFontBB.getXRange();
-				Double indentBoundary = largestFontBB.getXRange().getMin() + deltaLeftIndent/2.0;
+				Double indentBoundary = largestFontBB.getXMin() + deltaLeftIndent/2.0;
 				LOG.trace("left, delta, boundary "+leftIndent+"; "+deltaLeftIndent+"; "+indentBoundary);
 				div = new HtmlDiv();
 				// always start with para

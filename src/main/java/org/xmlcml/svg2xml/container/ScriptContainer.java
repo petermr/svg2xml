@@ -451,7 +451,9 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	public String getRawValue() {
 		StringBuilder sb = new StringBuilder();
 		for (ScriptLine script : scriptLineList) {
-			sb.append(script.getRawValue());
+			if (script != null) {
+				sb.append(script.getRawValue());
+			}
 		}
 		return sb.toString();
 	}

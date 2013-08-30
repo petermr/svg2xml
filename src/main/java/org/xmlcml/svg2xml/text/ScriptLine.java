@@ -645,7 +645,7 @@ public class ScriptLine implements Iterable<TextLine> {
 
 //	public Double getRightMargin() {
 //		Real2Range bbox = getBoundingBox();
-//		return bbox == null ? null : bbox.getXRange().getMax();
+//		return bbox == null ? null : bbox.getXMax();
 //	}
 
 	public boolean endsWithPeriod() {

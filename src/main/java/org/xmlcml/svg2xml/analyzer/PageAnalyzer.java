@@ -51,7 +51,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	
 	private int aggregatedContainerCount;
 	private PageIO pageIo;
-	private List<AbstractContainer> abstractContainerList;
+//	private List<AbstractContainer> abstractContainerList;
 	private HtmlElement runningTextHtmlElement;
 	
 	private PageAnalyzer() {
@@ -99,7 +99,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	private void annotateAndOutput (
 			List<? extends AbstractContainer> newContainerList, AbstractAnalyzer analyzer) {
-		ensureAggregatedContainerList();
+		ensureAbstractContainerList();
 		for (AbstractContainer newContainer : newContainerList) {
 			ChunkId chunkId = new ChunkId(pageIo.getHumanPageNumber(), aggregatedContainerCount);
 			newContainer.setChunkId(chunkId); 
@@ -129,12 +129,6 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	private int getHumanPageNumber() {
 		return pageIo.getHumanPageNumber();
-	}
-
-	private void ensureAggregatedContainerList() {
-		if (abstractContainerList == null) {
-			abstractContainerList = new ArrayList<AbstractContainer>();
-		}
 	}
 
 	/** Pattern for the content for this analyzer
@@ -239,18 +233,13 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	}
 
 	public void add(AbstractContainer container) {
-		ensureContainerList();
+		ensureAbstractContainerList();
 		abstractContainerList.add(container);
-	}
-
-	private void ensureContainerList() {
-		if (abstractContainerList == null) {
-			abstractContainerList = new ArrayList<AbstractContainer>();
-		}
 	}
 
 	public String summaryString() {
 		StringBuilder sb = new StringBuilder("Page: "+pageIo.getMachinePageNumber()+"\n");
+		ensureAbstractContainerList();
 		sb.append("Containers: "+abstractContainerList.size()+"\n");
 		for (AbstractContainer container : abstractContainerList) {
 			sb.append(container.summaryString()+"\n........................\n");
@@ -259,6 +248,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	}
 	
 	public HtmlElement createHtmlElement() {
+		ensureAbstractContainerList();
 		HtmlHtml html = new HtmlHtml();
 		addStyle(html);
 		HtmlTitle title = new HtmlTitle("Page: "+pageIo.getHumanPageNumber());
@@ -286,13 +276,10 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("Page: "+pageIo.getMachinePageNumber()+"\n");
-		if (abstractContainerList == null) {
-			sb.append("NULL containers"); 
-		} else {
-			sb.append("Containers: "+abstractContainerList.size()+"\n");
-			for (AbstractContainer container : abstractContainerList) {
-				sb.append(container.toString()+"\n");
-			}
+		ensureAbstractContainerList();
+		sb.append("Containers: "+abstractContainerList.size()+"\n");
+		for (AbstractContainer container : abstractContainerList) {
+			sb.append(container.toString()+"\n");
 		}
 		return sb.toString();
 	}
@@ -405,6 +392,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	}
 
 	public void outputChunks() {
+		ensureAbstractContainerList();
 		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
 		SYSOUT.println(".......................");
 		for (AbstractContainer abstractContainer : abstractContainerList) {
@@ -417,32 +405,33 @@ public class PageAnalyzer extends AbstractAnalyzer {
 	}
 
 	public void outputHtmlComponents() {
-		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
+//		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
 		LOG.debug(".......................");
 		Set<ChunkId> chunkIdSet = new HashSet<ChunkId>(); 
+		ensureAbstractContainerList();
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			ChunkId chunkId = abstractContainer.getChunkId();
 			if (chunkId == null) {
 				// probably a bug
 				throw new RuntimeException("Null chunkId in "+abstractContainer.getClass()+" "+abstractContainer.getChunkId());
 			}
-				normalizeDuplicateChunkId(chunkIdSet, abstractContainer, chunkId);
-				long time = System.currentTimeMillis();
-				LOG.trace(abstractContainer.getClass()+" "+chunkId+" "+abstractContainer.getType());
-				HtmlElement element = abstractContainer.createHtmlElement();
-				ContainerType type = abstractContainer.getType();
-				if (pageIo.isOutputFigures() && ContainerType.FIGURE.equals(type)) {
-				} else if (pageIo.isOutputTables() && ContainerType.TABLE.equals(type)) {
-				} else if (pageIo.isOutputHtmlChunks() && ContainerType.CHUNK.equals(type)) {
-				} else if (pageIo.isOutputHeaders() && ContainerType.HEADER.equals(type)) {
-				} else if (pageIo.isOutputFooters() && ContainerType.FOOTER.equals(type)) {
-				}
-				if (type != null) {
-					LOG.debug("creating html chunk: "+type+": "+chunkId.toString()+" "+(System.currentTimeMillis()-time));
-					File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), type, chunkId.toString());
-					PageIO.outputFile(element, file);
-				}
-				chunkIdSet.add(chunkId);
+			normalizeDuplicateChunkId(chunkIdSet, abstractContainer, chunkId);
+			long time = System.currentTimeMillis();
+			LOG.trace(abstractContainer.getClass()+" "+chunkId+" "+abstractContainer.getType());
+			HtmlElement element = abstractContainer.createHtmlElement();
+			ContainerType type = abstractContainer.getType();
+			if (pageIo.isOutputFigures() && ContainerType.FIGURE.equals(type)) {
+			} else if (pageIo.isOutputTables() && ContainerType.TABLE.equals(type)) {
+			} else if (pageIo.isOutputHtmlChunks() && ContainerType.CHUNK.equals(type)) {
+			} else if (pageIo.isOutputHeaders() && ContainerType.HEADER.equals(type)) {
+			} else if (pageIo.isOutputFooters() && ContainerType.FOOTER.equals(type)) {
+			}
+			if (type != null) {
+				LOG.debug("creating html chunk: "+type+": "+chunkId.toString()+" "+(System.currentTimeMillis()-time));
+				File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), type, chunkId.toString());
+				PageIO.outputFile(element, file);
+			}
+			chunkIdSet.add(chunkId);
 		}
 		LOG.debug("finished outputHtmlComponents");
 	}
@@ -459,12 +448,6 @@ public class PageAnalyzer extends AbstractAnalyzer {
 			abstractContainer.setChunkId(chunkId);
 		}
 	}
-	
-//	void outputHtml() {
-//		HtmlElement div = this.createHtml();
-//		SYSOUT.println("*************************HTML**************************"+div.getId()+">>>>>> \n");
-//		pageIo.outputHtmlChunk(div);
-//	}
 	
 	public static PageAnalyzer createAndAnalyze(File rawSvgPageFile) {
 		return createAndAnalyze(rawSvgPageFile, (File) null, 1);
@@ -489,6 +472,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 
 	private HtmlElement createRunningHtml() {
 		runningTextHtmlElement = new HtmlDiv();
+		ensureAbstractContainerList();
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			LOG.trace("Container: "+abstractContainer.getClass());
 			ContainerType type = abstractContainer.getType();
@@ -500,7 +484,9 @@ public class PageAnalyzer extends AbstractAnalyzer {
 				h1.appendChild(((ScriptContainer)abstractContainer).createHtmlElement().copy());
 				runningTextHtmlElement.appendChild(h1);
 			} else if (ContainerType.FIGURE.equals(type)) {
-				runningTextHtmlElement.appendChild(abstractContainer.getFigureElement().copy());
+				if (abstractContainer.getFigureElement() != null) {
+					runningTextHtmlElement.appendChild(abstractContainer.getFigureElement().copy());
+				}
 			} else if (ContainerType.LIST.equals(type)) {
 				runningTextHtmlElement.appendChild(abstractContainer.getListElement().copy());
 			} else if (ContainerType.TABLE.equals(type)) {

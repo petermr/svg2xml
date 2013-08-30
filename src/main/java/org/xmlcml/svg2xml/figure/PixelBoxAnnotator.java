@@ -63,10 +63,10 @@ public class PixelBoxAnnotator {
 	}
 
 	void createPixelBoxMap(Real2 deltaXY) {
-		xmin = parentChunk.getBoundingBox().getXRange().getMin();
-		xmax = parentChunk.getBoundingBox().getXRange().getMax();
-		ymin = parentChunk.getBoundingBox().getYRange().getMin();
-		ymax = parentChunk.getBoundingBox().getYRange().getMax();
+		xmin = parentChunk.getBoundingBox().getXMin();
+		xmax = parentChunk.getBoundingBox().getXMax();
+		ymin = parentChunk.getBoundingBox().getYMin();
+		ymax = parentChunk.getBoundingBox().getYMax();
 		deltax = deltaXY.getX();
 		deltay = deltaXY.getY();
 		Double x = xmin;

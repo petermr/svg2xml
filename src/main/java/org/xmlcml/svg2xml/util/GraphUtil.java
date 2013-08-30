@@ -38,7 +38,7 @@ public class GraphUtil {
 	public static boolean onSameLine(Real2Range thisBox, Real2Range lastBox, double lineToleranceFactor) {
 		Boolean onSameLine = false;
 		if (lastBox != null && thisBox != null) {
-			double deltaY = thisBox.getYRange().getMin() - lastBox.getYRange().getMin();
+			double deltaY = thisBox.getYMin() - lastBox.getYMin();
 			double height = thisBox.getYRange().getRange();
 			onSameLine = Math.abs(deltaY) < lineToleranceFactor*height;
 		}
@@ -48,9 +48,9 @@ public class GraphUtil {
 	public static Integer guessSpaces(Real2Range lastBox, Real2Range thisBox, double spaceFactor) {
 		Integer spaces = null;
 		if (lastBox != null) {
-			double lastMax = lastBox.getXRange().getMax();
-			double thisMin = thisBox.getXRange().getMin();
-			double distance = thisBox.getXRange().getMin() - lastBox.getXRange().getMax();
+			double lastMax = lastBox.getXMax();
+			double thisMin = thisBox.getXMin();
+			double distance = thisBox.getXMin() - lastBox.getXMax();
 			double averageWidth = 0.5 * (lastBox.getXRange().getRange() + thisBox.getXRange().getRange());
 			spaces = (int) Math.rint(spaceFactor * distance / averageWidth);
 			// really crude and depends on font
@@ -60,8 +60,8 @@ public class GraphUtil {
 	}
 
 	public static String getInteger(Real2Range boundingBox) {
-		double rx = boundingBox.getXRange().getMin();
-		double ry = boundingBox.getYRange().getMin();
+		double rx = boundingBox.getXMin();
+		double ry = boundingBox.getYMin();
 		return ""+(int)rx+"/"+(int)ry+" ";
 	}
 

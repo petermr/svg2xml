@@ -563,8 +563,10 @@ public class TextStructurer {
 			int i = 0;
 			for (ScriptLine textLineGroup : initialScriptLineList) {
 				List<ScriptLine> splitChunks = textLineGroup.splitIntoUniqueChunks(this);
-				for (ScriptLine textLineChunk0 : splitChunks) {
-					scriptedLineList.add(textLineChunk0);
+				for (ScriptLine splitLine : splitChunks) {
+					if (splitLine != null) {
+						scriptedLineList.add(splitLine);
+					}
 				}
 				i++;
 			}

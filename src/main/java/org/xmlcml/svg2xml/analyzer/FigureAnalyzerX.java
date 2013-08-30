@@ -33,6 +33,7 @@ import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.tools.Caption;
 import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /**
  * @author pm286
@@ -287,7 +288,7 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 //				if (ySplit != null) {
 //					LOG.debug("Possible Duplicate Figure Caption: "+scriptLine.getTextContentWithSpaces());
 //				}
-				ySplit = scriptLine.getBoundingBox().getYRange().getMin();
+				ySplit = scriptLine.getBoundingBox().getYMin();
 				LOG.debug("Figure Caption: "+scriptLine.getTextContentWithSpaces());
 				break;
 			}
@@ -296,7 +297,7 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 			createCaptionAndGraphic(id, ySplit);
 		}
 		HtmlDiv div = new HtmlDiv();
-		String pngName = "target/figureAbove"+id+".png";
+		String pngName = "target/figureGraphics"+id+".png";
 		HtmlImg img = new HtmlImg();
 		img.setSrc("../../../"+pngName);
 		div.appendChild(img);
@@ -305,18 +306,20 @@ public class FigureAnalyzerX extends AbstractAnalyzer {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer1);
 		div.appendChild(textStructurer.createHtmlElement());
 
-
-		Real2Range bb = graphic.getBoundingBox();
-		Real2 translateToOrigin = new Real2(-bb.getXRange().getMin() + 10, -bb.getYRange().getMin() + 10);
-		graphic.setTransform(new Transform2(new Vector2(translateToOrigin)));
-		
-		HiddenGraphics hg = new HiddenGraphics();
-		hg.setDimension(bb.getDimension());
-		bufferedImage = hg.createImage(graphic);
-		try {
-			hg.write(new File(pngName));
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot write image", e);
+		if (graphic != null) {
+			Real2Range bb = graphic.getBoundingBox();
+			Real2 translateToOrigin = new Real2(-bb.getXMin() + 10, -bb.getYMin() + 10);
+			graphic.setTransform(new Transform2(new Vector2(translateToOrigin)));
+			SVG2XMLUtil.tidy(graphic);
+			
+			HiddenGraphics hg = new HiddenGraphics();
+			hg.setDimension(bb.getDimension());
+			bufferedImage = hg.createImage(graphic);
+			try {
+				hg.write(new File(pngName));
+			} catch (IOException e) {
+				throw new RuntimeException("Cannot write image", e);
+			}
 		}
 		return div;
 	}

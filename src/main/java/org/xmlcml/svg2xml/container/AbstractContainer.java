@@ -12,6 +12,7 @@ import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlDiv;
@@ -228,10 +229,13 @@ public abstract class AbstractContainer {
 		}
 		if (type == null) {
 			Real2Range r2r = this.svgChunk.getBoundingBox();
-			if (r2r.getYRange().getMax() < HEADER_MAX) {
-				type = ContainerType.HEADER;
-			} else if (r2r.getYRange().getMin() > FOOTER_MIN) {
-				type = ContainerType.FOOTER;
+			RealRange yRange = r2r == null ? null : r2r.getYRange();
+			if (yRange != null) {
+				if (yRange.getMax() < HEADER_MAX) {
+					type = ContainerType.HEADER;
+				} else if (yRange.getMin() > FOOTER_MIN) {
+					type = ContainerType.FOOTER;
+				}
 			}
 		}
 		if (type == null) {
@@ -271,7 +275,7 @@ public abstract class AbstractContainer {
 			DivContainer divContainer = (DivContainer) this;
 			figureElement = divContainer.createFigureElement();
 		} else {
-			throw new RuntimeException("Unprocessed figure: "+this.getClass());
+			LOG.error("Unprocessed figure: "+this.getClass());
 		}
 		return figureElement;
 	}
@@ -324,7 +328,9 @@ public abstract class AbstractContainer {
 	}
 
 	public Element getFigureElement() {
-		figureElement.addAttribute(new Attribute("border", "3pt"));
+		if (figureElement != null) {
+			figureElement.addAttribute(new Attribute("border", "3pt"));
+		}
 		return figureElement;
 	}
 

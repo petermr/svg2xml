@@ -233,10 +233,10 @@ public class SubSupAnalyzerX extends AbstractAnalyzer {
 			} else {
 				SVGText thisText = thisTexts.get(thisXIndex);
 				Double thisStartX = thisText.getXY().getX();
-				Double thisEndX = thisText.getBoundingBox().getXRange().getMax();
+				Double thisEndX = thisText.getBoundingBox().getXMax();
 				SVGText otherText = otherTexts.get(otherXIndex);
 				Double otherStartX = otherText.getXY().getX();
-				Double otherEndX = otherText.getBoundingBox().getXRange().getMax();
+				Double otherEndX = otherText.getBoundingBox().getXMax();
 				if (thisStartX < otherStartX) {
 					mergedList.add(markSubSup(null, thisTexts.get(thisXIndex)));
 					thisXIndex = (thisXIndex < thisTexts.size()-1) ? thisXIndex+1 : null;

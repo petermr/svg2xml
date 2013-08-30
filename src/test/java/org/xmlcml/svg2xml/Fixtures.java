@@ -167,6 +167,27 @@ public class Fixtures {
 	public static final File RAW_GEO310_SVG_PAGE13 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page13.svg");
 	public static final File RAW_GEO310_SVG_PAGE14 = new File(SVG_GEO310_DIR, GEO_ROOT+"-page14.svg");
 
+	public final static String TREE_ROOT = "tree-1471-2148-11-313";
+	public static final File TREE313_DIR = new File(PDFS_BMC_DIR, TREE_ROOT+"/");
+	public static final File TREE313_PDF = new File(PDFS_BMC_DIR, TREE_ROOT+".pdf");
+	public static final File SVG_TREE313_DIR = new File(SVG_BMC_DIR, TREE_ROOT+"/");
+	public static final File HTML_TREE313_DIR = new File(TREE313_DIR, "html/");
+
+	public static final File ROBERTS_PDF = new File(PDFS_DIR, "roberts.pdf");
+
+	public static final File PDFS_NATURE_DIR = new File(PDFS_DIR, "nature/");
+	public static final File NATURE_12352_PDF = new File(PDFS_NATURE_DIR, "nature12352.pdf");
+
+	public static final File PDFS_PEERJ_DIR = new File(PDFS_DIR, "peerj/");
+	public static final File PEERJ_50_PDF = new File(PDFS_PEERJ_DIR, "50.pdf");
+
+	public static final File PDFS_PLOS_DIR = new File(PDFS_DIR, "plosone/");
+	public static final File PLOS_0049149_PDF = new File(PDFS_PLOS_DIR, "0049149.pdf");
+	
+	public static final File PDFS_ELS_DIR = new File(PDFS_DIR, "els/");
+	public static final File ELS_1917_PDF = new File(PDFS_ELS_DIR, "1-s2.0-S1055790313001917-main.pdf");
+	
+	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
 			SVGRect bbox = chunk.createGraphicalBoundingBox();

@@ -38,7 +38,7 @@ public class TextAnalyzerUtils {
 	public static Double getCommonRightXCoordinate(List<SVGText> texts, double eps) {
 		Double dubble = null;
 		for (SVGText text : texts) {
-			double d = text.getBoundingBox().getXRange().getMax();
+			double d = text.getBoundingBox().getXMax();
 			if (dubble == null) {
 				dubble = d;
 			} else if (!Real.isEqual(dubble, d, eps)) {
