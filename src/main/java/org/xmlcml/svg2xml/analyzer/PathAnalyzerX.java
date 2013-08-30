@@ -79,12 +79,14 @@ public class PathAnalyzerX extends AbstractAnalyzer {
 	public PathAnalyzerX() {
 	}
 
-	public void readPathList(List<SVGPath> pathList) {
+	public void readPathList(List<SVGPath> pathListIn) {
 		this.pathList = new ArrayList<SVGPath>();
-		for (SVGPath path : pathList) {
-			this.pathList.add(path); 
+		if (pathListIn != null) {
+			for (SVGPath path : pathListIn) {
+				this.pathList.add(path); 
+			}
+			getBoundingBoxAndParent(pathList.get(0));
 		}
-		getBoundingBoxAndParent(pathList.get(0));
 	}
 
 	public List<SVGPath> getPathList() {

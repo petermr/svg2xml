@@ -484,9 +484,12 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 			for (ScriptLine scriptLine : this) {
 				Real2Range boundingBox = scriptLine.getBoundingBox();
 				boundingBox.format(decimalPlaces);
-				Double leftIndent = boundingBox.getXRange().getMin();
-				LOG.trace("BB "+boundingBox+" / "+leftIndent+" / "+((int)scriptLine.toString().charAt(0))+" / "+scriptLine);
-				leftIndentSet.add(leftIndent);
+				RealRange range = boundingBox.getXRange();
+				Double leftIndent = (range == null) ? null : range.getMin();
+				if (leftIndent != null) {
+					LOG.trace("BB "+boundingBox+" / "+leftIndent+" / "+((int)scriptLine.toString().charAt(0))+" / "+scriptLine);
+					leftIndentSet.add(leftIndent);
+				}
 			}
 		}
 		return leftIndentSet;

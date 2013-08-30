@@ -219,9 +219,9 @@ public class ListContainer extends AbstractContainer {
 				multiScriptLine.setIndented(true);
 			} else if (Real.isEqual(leftMargin, leftIndent1, INDENT_EPS)) {
 				// OK
-			} else {
-				LOG.debug("Left margin: "+leftMargin);
-				throw new RuntimeException("bad indent: '"+scriptLine.getTextContentWithSpaces()+"'");
+			} else if (leftMargin == null) {
+				// should this ever happen?
+				LOG.error("Null Left margin: "+scriptLine.getTextContentWithSpaces()+"'");
 			}
 			multiScriptLine.add(scriptLine);
 		}

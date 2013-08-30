@@ -20,15 +20,32 @@ public class PDFAnalyzerTest {
 		analyzer.analyzePDFFile(Fixtures.MULTIPLE312_PDF);
 	}
 
+	@Test
+	// maven fails on memory but Eclipse runs
+	//@Ignore
+	public void testPDFAnalyzerPDFGEO310() {
+		PDFAnalyzer analyzer = new PDFAnalyzer();
+		analyzer.analyzePDFFile(Fixtures.GEO310_PDF);
+	}
+
 
 	@Test
 	// maven fails on memory
-	@Ignore
+	//@Ignore
 	public void testPDFAnalyzerSVG() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.setRawSvgDirectory(Fixtures.SVG_MULTIPLE312_DIR);
 		analyzer.analyzeRawSVGPagesWithPageAnalyzers();
 	}
+
+
+	@Test
+	// maven fails on memory
+	@Ignore
+	public void testPDFAnalyzerDIR() {
+		PDFAnalyzer analyzer = new PDFAnalyzer();
+		analyzer.analyzePDFs(Fixtures.PDFS_BMC_DIR.toString());
+	}	
 	
 	@Test
 	// maven fails on memory

@@ -63,7 +63,16 @@ public class PDFAnalyzer /*implements Annotatable */{
 		pdfIo.setFileRoot(fileRoot);
 	}
 	
-	private void analyzePDFs(String name) {
+	/** a main entry routine
+	 * 
+	 * if name ends with ".pdf" then treat as single file else directory
+	 * if name starts with "http://" treat as URL of single PDF file
+	 * 
+	 * first creates SVG, then analyzes them
+	 * 
+	 * @param name file or directory
+	 */
+	public void analyzePDFs(String name) {
 		if (name == null) {
 			throw new RuntimeException("file/s must not be null");
 		} else if (name.endsWith(SVGPlusConstantsX.DOT_PDF)) {

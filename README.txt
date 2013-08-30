@@ -89,6 +89,20 @@ target
 Use a modern PDF as test (there are some in
     src/test/resources/pdfs or use your own
     
+==Maven problems==
+Maven runs out of heap space
+See http://stackoverflow.com/questions/2819853/setting-java-heap-space-under-maven-2-on-windows ?
+
+The environment variable to set is MAVEN_OPTS, for example MAVEN_OPTS=-Xmx1024m. The maxmem configuration in the pom only applies when you set the compiler plugin to fork javac into a new JVM. Otherwise the plugin runs inside the same VM as Maven and thus within the memory passed on the command line via the MAVEN_OPTS.
+
+To set MAVEN_OPTS under Windows 7:
+
+    Right click on My Computer and select Properties
+    Click the Advanced System Settings link located in the left navigation of System Properties to display the Advanced System Properties
+    Go to the Advanced tab and click the Environment Variables button located at the bottom of the Advanced System Properties configuration window
+    Create a New user variable, set the Variable name to MAVEN_OPTS and set the Variable value to -Xmx1024m (or more)
+
+Open a new command window and run mvn.
 
  
 

@@ -199,6 +199,7 @@ public class PageIO {
 	}
 
 	public static File createHtmlFile(File dir, ContainerType type, String chunkId) {
+		dir.mkdirs();
 		return new File(dir, type+"."+chunkId+DOT_HTML);
 	}
 
@@ -213,6 +214,7 @@ public class PageIO {
 
 	public static void outputFile(Element element, File file) {
 		try {
+			file.getParentFile().mkdirs();
 			CMLUtil.debug(element, new FileOutputStream(file), 1);
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot write file: "+file, e);
