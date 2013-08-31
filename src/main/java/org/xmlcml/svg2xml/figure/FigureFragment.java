@@ -137,7 +137,7 @@ public class FigureFragment {
 		if (circleElements.size()> 0) {
 			circleElement = new Element(SVGCircle.TAG);
 			primitivesElement.appendChild(circleElement);
-			circleElement.addAttribute(new Attribute("count", ""+circleElements.size()));
+			circleElement.addAttribute(new Attribute("count", String.valueOf(circleElements.size())));
 		}
 	}
 
@@ -145,7 +145,7 @@ public class FigureFragment {
 		if (imageElements.size()> 0) {
 			imageElement = new Element(SVGImage.TAG);
 			primitivesElement.appendChild(imageElement);
-			imageElement.addAttribute(new Attribute("count", ""+imageElements.size()));
+			imageElement.addAttribute(new Attribute("count", String.valueOf(imageElements.size())));
 		}
 	}
 
@@ -155,22 +155,22 @@ public class FigureFragment {
 			primitivesElement.appendChild(lineElement);
 			List<SVGLine> copyLines = new ArrayList<SVGLine>();
 			copyLines.addAll(lineElements);
-			lineElement.addAttribute(new Attribute("count", ""+lineElements.size()));
+			lineElement.addAttribute(new Attribute("count", String.valueOf(lineElements.size())));
 			zeroLines = ComplexLine.createZeroLengthSubsetAndRemove(lineElements, EPS);
 			horizontalLines = ComplexLine.createSubsetAndRemove(lineElements, LineOrientation.HORIZONTAL, EPS);
 			verticalLines = ComplexLine.createSubsetAndRemove(lineElements, LineOrientation.VERTICAL, EPS);
 			otherLines = lineElements;
 			if (zeroLines.size()> 0) {
-				lineElement.addAttribute(new Attribute("zeroLines", ""+zeroLines.size()));
+				lineElement.addAttribute(new Attribute("zeroLines", String.valueOf(zeroLines.size())));
 			}
 			if (horizontalLines.size()> 0) {
-				lineElement.addAttribute(new Attribute("horizontalLines", ""+horizontalLines.size()));
+				lineElement.addAttribute(new Attribute("horizontalLines", String.valueOf(horizontalLines.size())));
 			}
 			if (verticalLines.size()> 0) {
-				lineElement.addAttribute(new Attribute("verticalLines", ""+verticalLines.size()));
+				lineElement.addAttribute(new Attribute("verticalLines", String.valueOf(verticalLines.size())));
 			}
 			if (otherLines.size()> 0) {
-				lineElement.addAttribute(new Attribute("otherLines", ""+otherLines.size()));
+				lineElement.addAttribute(new Attribute("otherLines", String.valueOf(otherLines.size())));
 			}
 			LineUnivariate lineUnivariate = new LineUnivariate(copyLines);
 			Double min = lineUnivariate.getMin();
@@ -179,19 +179,19 @@ public class FigureFragment {
 			Double mean = lineUnivariate.getMean();
 			Double sd = lineUnivariate.getStandardDeviation();
 			if (min != null) {
-				lineElement.addAttribute(new Attribute("min", ""+Util.format(min, 1)));
+				lineElement.addAttribute(new Attribute("min", String.valueOf(Util.format(min, 1))));
 			}
 			if (max != null) {
-				lineElement.addAttribute(new Attribute("max", ""+Util.format(max, 1)));
+				lineElement.addAttribute(new Attribute("max", String.valueOf(Util.format(max, 1))));
 			}
 			if (median != null) {
-				lineElement.addAttribute(new Attribute("median", ""+Util.format(median, 1)));
+				lineElement.addAttribute(new Attribute("median", String.valueOf(Util.format(median, 1))));
 			}
 			if (mean != null) {
-				lineElement.addAttribute(new Attribute("mean", ""+Util.format(mean, 1)));
+				lineElement.addAttribute(new Attribute("mean", String.valueOf(Util.format(mean, 1))));
 			}
 			if (sd != null) {
-				lineElement.addAttribute(new Attribute("sd", ""+Util.format(sd, 1)));
+				lineElement.addAttribute(new Attribute("sd", String.valueOf(Util.format(sd, 1))));
 			}
 		}
 	}
@@ -200,7 +200,7 @@ public class FigureFragment {
 		if (pathElements.size()> 0) {
 			pathElement = new Element(SVGPath.TAG);
 			primitivesElement.appendChild(pathElement);
-			pathElement.addAttribute(new Attribute("paths", ""+pathElements.size()));
+			pathElement.addAttribute(new Attribute("paths", String.valueOf(pathElements.size())));
 		}
 	}
 
@@ -208,7 +208,7 @@ public class FigureFragment {
 		if (polygonElements.size()> 0) {
 			polygonElement = new Element(SVGPolygon.TAG);
 			primitivesElement.appendChild(polygonElement);
-			polygonElement.addAttribute(new Attribute("polygons", ""+polygonElements.size()));
+			polygonElement.addAttribute(new Attribute("polygons", String.valueOf(polygonElements.size())));
 		}
 	}
 
@@ -216,7 +216,7 @@ public class FigureFragment {
 		if (polylineElements.size()> 0) {
 			polylineElement = new Element(SVGPolyline.TAG);
 			primitivesElement.appendChild(polylineElement);
-			polylineElement.addAttribute(new Attribute("polylines", ""+polylineElements.size()));
+			polylineElement.addAttribute(new Attribute("polylines", String.valueOf(polylineElements.size())));
 		}
 	}
 
@@ -224,7 +224,7 @@ public class FigureFragment {
 		if (rectElements.size()> 0) {
 			rectElement = new Element(SVGRect.TAG);
 			primitivesElement.appendChild(rectElement);
-			rectElement.addAttribute(new Attribute("rects", ""+rectElements.size()));
+			rectElement.addAttribute(new Attribute("rects", String.valueOf(rectElements.size())));
 		}
 	}
 
@@ -232,7 +232,7 @@ public class FigureFragment {
 		if (textElements.size()> 0) {
 			textElement = new Element(SVGText.TAG);
 			primitivesElement.appendChild(textElement);
-			textElement.addAttribute(new Attribute("texts", ""+textElements.size()));
+			textElement.addAttribute(new Attribute("texts", String.valueOf(textElements.size())));
 			spaceCount = 0;
 			lowerCount = 0;
 			upperCount = 0;
@@ -288,43 +288,43 @@ public class FigureFragment {
 				}
 			}
 			if (doubleList.size() >0) {
-				textElement.addAttribute(new Attribute("double", ""+doubleList.size()));
+				textElement.addAttribute(new Attribute("double", String.valueOf(doubleList.size())));
 			}
 			if (integerList.size() >0) {
-				textElement.addAttribute(new Attribute("integer", ""+integerList.size()));
+				textElement.addAttribute(new Attribute("integer", String.valueOf(integerList.size())));
 			}
 			if (singleCharList.size() >0) {
-				textElement.addAttribute(new Attribute("singleChar", ""+singleCharList.size()));
+				textElement.addAttribute(new Attribute("singleChar", String.valueOf(singleCharList.size())));
 			}
 			if (rnaCharList.size() >0) {
-				textElement.addAttribute(new Attribute("rnaChar", ""+rnaCharList.size()));
+				textElement.addAttribute(new Attribute("rnaChar", String.valueOf(rnaCharList.size())));
 			}
 			if (protein1CharList.size() >0) {
-				textElement.addAttribute(new Attribute("protein1Char", ""+protein1CharList.size()));
+				textElement.addAttribute(new Attribute("protein1Char", String.valueOf(protein1CharList.size())));
 			}
 			if (singleWordList.size() >0) {
-				textElement.addAttribute(new Attribute("singleWord", ""+singleWordList.size()));
+				textElement.addAttribute(new Attribute("singleWord", String.valueOf(singleWordList.size())));
 			}
 			if (word2List.size() >0) {
-				textElement.addAttribute(new Attribute("word2", ""+word2List.size()));
+				textElement.addAttribute(new Attribute("word2", String.valueOf(word2List.size())));
 			}
 			if (multiWordList.size() >0) {
-				textElement.addAttribute(new Attribute("multiWord", ""+multiWordList.size()));
+				textElement.addAttribute(new Attribute("multiWord", String.valueOf(multiWordList.size())));
 			}
 			if (spaceCount >0) {
-				textElement.addAttribute(new Attribute("space", ""+spaceCount));
+				textElement.addAttribute(new Attribute("space", String.valueOf(spaceCount)));
 			}
 			if (lowerCount >0) {
-				textElement.addAttribute(new Attribute("lower", ""+lowerCount));
+				textElement.addAttribute(new Attribute("lower", String.valueOf(lowerCount)));
 			}
 			if (upperCount >0) {
-				textElement.addAttribute(new Attribute("upper", ""+upperCount));
+				textElement.addAttribute(new Attribute("upper", String.valueOf(upperCount)));
 			}
 			if (digitCount >0) {
-				textElement.addAttribute(new Attribute("digit", ""+digitCount));
+				textElement.addAttribute(new Attribute("digit", String.valueOf(digitCount)));
 			}
 			if (otherCharCount >0) {
-				textElement.addAttribute(new Attribute("otherChar", ""+otherCharCount));
+				textElement.addAttribute(new Attribute("otherChar", String.valueOf(otherCharCount)));
 			}
 		}
 	}
@@ -335,7 +335,7 @@ public class FigureFragment {
 			for (SVGElement otherElement : otherElements) {
 				otherElementSet.add(otherElement.getClass().getSimpleName());
 			}
-			primitivesElement.addAttribute(new Attribute(OTHER, ""+otherElementSet.toString()+" "+otherElements.size()));
+			primitivesElement.addAttribute(new Attribute(OTHER, String.valueOf(otherElementSet.toString())+" "+otherElements.size()));
 		}
 	}
 

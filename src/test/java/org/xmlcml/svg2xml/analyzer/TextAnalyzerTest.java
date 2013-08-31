@@ -95,14 +95,14 @@ public class TextAnalyzerTest {
 		textStructurer.getLinesInIncreasingY();
 		List<String> textLineContentList = textStructurer.getTextLineContentList();
 		StringTestBase.assertEquals("unspaced strings", 
-		    new String[]{""+MINUS+"1"+MINUS+"1",
+		    new String[]{String.valueOf(MINUS)+"1"+MINUS+"1",
 			"Therateconstantis0.61795mgLh.",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
 			"bytheArrheniusequationk=kexp("+MINUS+"E/RT),whereEisthe",
 			"0aa",
 			"activationenergy.Takingthenaturallogarithmofthisequa-",
 			"tionandcombiningthekvaluesobtainedforthereactionat",
-			""+WHITE_BULLET,
+			String.valueOf(WHITE_BULLET),
 			"130and200CyieldstheresultsofkandEathighertem-",
 			"0a",
 			"peratures.Therefore,thecalculatedactivationenergy(E)is",
@@ -128,14 +128,14 @@ public class TextAnalyzerTest {
 		textStructurer.insertSpaces();
 		List<String> textLineContentList = textStructurer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
+		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795mgL h .",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
 			"by theArrhenius equation k =k exp(− E /RT), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+WHITE_BULLET,
+			String.valueOf(WHITE_BULLET),
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
@@ -161,14 +161,14 @@ public class TextAnalyzerTest {
 		textStructurer.insertSpaces();
 		List<String> textLineContentList = textStructurer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
+		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
 			"by theArrhenius equation k =k exp(− E /RT), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+WHITE_BULLET,
+			String.valueOf(WHITE_BULLET),
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
@@ -195,14 +195,14 @@ public class TextAnalyzerTest {
 //		textStructurer.insertSpaces(0.12); // this seems to be maximum
 		List<String> textLineContentList = textStructurer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
+		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"The temperature dependence of the rate constants is described",
 			"by the Arrhenius equation k = k exp(− E /RT ), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+WHITE_BULLET,
+			String.valueOf(WHITE_BULLET),
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
@@ -230,14 +230,14 @@ public class TextAnalyzerTest {
 		                              // but very critically balanced
 		List<String> textLineContentList = textStructurer.getTextLineContentList();
 		StringTestBase.assertEquals("spaced strings", 
-		    new String[]{""+MINUS+" "+"1"+" "+MINUS+" "+"1",
+		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"The temperature dependence of the rate constants is described",
 			"by the Arrhenius equation k = k exp(− E /RT ), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
-			""+WHITE_BULLET,
+			String.valueOf(WHITE_BULLET),
 			"130 and 200 C yields the results of k and E at higher tem-",
 			"0 a",
 			"peratures. Therefore, the calculated activation energy (E ) is",
@@ -418,7 +418,7 @@ public class TextAnalyzerTest {
 		Assert.assertNotNull(superscript);
 		String s = superscript.getLineString();
 		// this is a WHITE BULLET (should be a degree sign)
-		Assert.assertEquals("sup"+(int)s.charAt(0), ""+WHITE_BULLET, superscript.getLineString());
+		Assert.assertEquals("sup"+(int)s.charAt(0), String.valueOf(WHITE_BULLET), superscript.getLineString());
 		TextLine subscript = largeLine.getSubscript();
 		Assert.assertNotNull(subscript);
 		Assert.assertEquals("sub", "0a", subscript.getLineString());
@@ -646,7 +646,7 @@ public class TextAnalyzerTest {
 
 	private void printTextLines(List<TextLine> suscriptLines) {
 		for (TextLine textLine : suscriptLines){
-			LOG.trace(""+textLine.getSuscript()+" ");
+			LOG.trace(String.valueOf(textLine.getSuscript())+" ");
 			printLine(textLine.getSVGTextCharacters());
 		}
 	}

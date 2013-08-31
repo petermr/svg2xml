@@ -67,7 +67,7 @@ public class CodePointConverter {
 				try {
 					// is it an integer?
 					newCharValue = Integer.parseInt(newS);
-					newString = ""+((char) (int) newCharValue);
+					newString = String.valueOf((char) (int) newCharValue);
 				} catch (Exception e) {
 					// no it's a string
 					newString = newS;

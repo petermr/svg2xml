@@ -187,7 +187,7 @@ public class TypedNumber {
 		private static TypedNumber interpretTypedNumber(SVGText text, boolean removeNumericTSpans) {
 			TypedNumber typedNumber = TypedNumber.createNumber(text);
 			if (typedNumber != null) {
-				String number = ""+typedNumber.getNumber();
+				String number = String.valueOf(typedNumber.getNumber());
 				text.addAttribute(new Attribute(NUMBER, number));
 				text.addAttribute(new Attribute(DATA_TYPE, typedNumber.getDataType()));
 				if (removeNumericTSpans) {

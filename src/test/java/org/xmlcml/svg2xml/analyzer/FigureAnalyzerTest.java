@@ -68,7 +68,7 @@ public class FigureAnalyzerTest {
 		add("F", e);
 		add("i", e);
 		add("g", e);
-		Element a = add(""+(char)10110, e);
+		Element a = add(String.valueOf((char)10110), e);
 		Element t = new Element("title");
 		t.appendChild("foo");
 		a.appendChild(t);

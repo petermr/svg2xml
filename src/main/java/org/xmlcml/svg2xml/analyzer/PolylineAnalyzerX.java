@@ -389,7 +389,7 @@ public class PolylineAnalyzerX extends AbstractAnalyzer {
 		List<SVGElement> sortedPolylines = BoundingBoxManager.getElementsSortedByEdge(polylinesXIncreasing, boxEdge);
 		for (SVGElement pp : sortedPolylines) {
 			SVGPolyline p = (SVGPolyline) pp;
-			LOG.trace(""+p.getFirst()+" ==> "+p.getLast());
+			LOG.trace(String.valueOf(p.getFirst())+" ==> "+p.getLast());
 		}
 		SVGPolyline newPolyline = null;
 		Real2 lastXY = null;

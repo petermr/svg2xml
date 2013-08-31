@@ -62,7 +62,7 @@ public class GraphUtil {
 	public static String getInteger(Real2Range boundingBox) {
 		double rx = boundingBox.getXMin();
 		double ry = boundingBox.getYMin();
-		return ""+(int)rx+"/"+(int)ry+" ";
+		return String.valueOf((int)rx+"/"+(int)ry+" ");
 	}
 
 	private static boolean inVerticalLineSegment(Line2 line, Real2 nodeCoords) {

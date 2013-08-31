@@ -68,7 +68,7 @@ public class ScriptContainerTest {
 		Assert.assertEquals("line0", 4, scriptWords.size());
 		String[] value ={"Page", "6", "of", "14"};
 		for (int i = 0; i < scriptWords.size(); i++) {
-			Assert.assertEquals(""+i, value[i], scriptWords.get(i).getRawValue());
+			Assert.assertEquals(String.valueOf(i), value[i], scriptWords.get(i).getRawValue());
 		}
 	}
 
@@ -510,7 +510,7 @@ public class ScriptContainerTest {
 				}
 				Assert.assertEquals("line"+i, words[i].length, scriptWords.size());
 				for (int j = 0; j < scriptWords.size(); j++) {
-					Assert.assertEquals(""+j, words[i][j], scriptWords.get(j).getRawValue());
+					Assert.assertEquals(String.valueOf(j), words[i][j], scriptWords.get(j).getRawValue());
 				}
 			}
 		}

@@ -93,8 +93,8 @@ public class ImageAnalyzerX extends AbstractAnalyzer {
 				height = Math.min(500., height*IMAGE_MAG);
 				width = height * ratio;
 			}
-			img.addAttribute(new Attribute("width", ""+width));
-			img.addAttribute(new Attribute("height", ""+height));
+			img.addAttribute(new Attribute("width", String.valueOf(width)));
+			img.addAttribute(new Attribute("height", String.valueOf(height)));
 		}
 		return element;
 	}

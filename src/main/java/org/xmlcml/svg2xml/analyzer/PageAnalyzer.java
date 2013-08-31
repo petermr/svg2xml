@@ -191,7 +191,7 @@ public class PageAnalyzer extends AbstractAnalyzer {
 			char c =  (char)(int)ss;
 			LOG.trace("> "+c);
 			try {
-				text.appendChild(""+c);
+				text.appendChild(String.valueOf(c));
 			} catch (Exception e) {
 				LOG.trace("skipped problem character: "+(int)c);
 			}

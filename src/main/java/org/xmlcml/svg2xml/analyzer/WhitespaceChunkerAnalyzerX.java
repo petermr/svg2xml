@@ -144,7 +144,7 @@ public class WhitespaceChunkerAnalyzerX extends AbstractAnalyzer {
 		LOG.trace("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
 //		pageEditorX.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
-		LOG.trace(""+splitterParams.get(0).width+"; "+""+splitterParams.get(1).width+"; "+""+splitterParams.get(2).width+"; ");
+		LOG.trace(String.valueOf(splitterParams.get(0).width)+"; "+String.valueOf(splitterParams.get(1).width)+"; "+String.valueOf(splitterParams.get(2).width)+"; ");
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
 		List<Chunk> subSubSubChunkList = null;

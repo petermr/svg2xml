@@ -255,7 +255,7 @@ public class SubSupAnalyzerX extends AbstractAnalyzer {
 
 	public static SVGText markSubSup(SubSup subSup, SVGText svgText) {
 		if (subSup != null) {
-			svgText.addAttribute(new Attribute(SCRIPT_TYPE, ""+subSup));
+			svgText.addAttribute(new Attribute(SCRIPT_TYPE, String.valueOf(subSup)));
 		}
 		return svgText;
 	}

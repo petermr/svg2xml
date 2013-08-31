@@ -292,8 +292,8 @@ public class Chunk extends SVGG {
 		chunk = new Chunk();
 		chunk.setBoundingBoxCached(true);
 		chunk.setBoundingBoxAttribute(decimalPlaces);
-		chunk.addAttribute(new Attribute("edge", ""+edge));
-		chunk.addAttribute(new Attribute("width", ""+chunkWidth));
+		chunk.addAttribute(new Attribute("edge", String.valueOf(edge)));
+		chunk.addAttribute(new Attribute("width", String.valueOf(chunkWidth)));
 		chunk.setTitle("chunk"+count);
 		return chunk;
 	}

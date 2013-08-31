@@ -205,7 +205,7 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 						chunkType = analyzer.getTitle();
 						serial = new Integer(classAttribute.substring(chunkType.length()).trim());
 						htmlElement.addAttribute(new Attribute(PDFIndex.CHUNK_TYPE, chunkType));
-						htmlElement.addAttribute(new Attribute("serial", ""+serial));
+						htmlElement.addAttribute(new Attribute("serial", String.valueOf(serial)));
 						break;
 					}
 				}

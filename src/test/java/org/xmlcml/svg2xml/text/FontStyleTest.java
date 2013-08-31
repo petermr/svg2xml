@@ -23,7 +23,7 @@ public class FontStyleTest {
 	
 	private static final Object NORMAL_STYLE = new FontStyleOld(Style.NORMAL);
 	private static final Object BOLD_STYLE = new FontStyleOld(Style.BOLD);
-	private static final Object BOLD_ITALIC_STYLE = new FontStyleOld(""+Style.BOLD+""+Style.ITALIC);
+	private static final Object BOLD_ITALIC_STYLE = new FontStyleOld(String.valueOf(Style.BOLD)+String.valueOf(Style.ITALIC));
 	private static final Object ITALIC_STYLE = new FontStyleOld(Style.ITALIC);
 
 	@Test

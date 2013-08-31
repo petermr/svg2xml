@@ -32,19 +32,22 @@ public class PDFAnalyzerTest {
 		analyzer.analyzePDFFile(Fixtures.MATH311_PDF);
 	}
 
+*/
 	@Test
 	public void testPDFAnalyzerPDFTREE313() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(Fixtures.TREE313_PDF);
 	}
+/*	
 	
-	
-	
+	*/
 	@Test
+	@Ignore
 	public void testPDFAnalyzerROBERTS() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(Fixtures.ROBERTS_PDF);
 	}
+	/*
 
 	@Test
 	public void testPDFAnalyzerELS() {
@@ -57,12 +60,13 @@ public class PDFAnalyzerTest {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(Fixtures.NATURE_12352_PDF);
 	}
-
+*/
 	@Test
 	public void testPDFAnalyzerPEERJ() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(Fixtures.PEERJ_50_PDF);
 	}
+/*	
 
 	@Test
 	public void testPDFAnalyzerPLOS() {

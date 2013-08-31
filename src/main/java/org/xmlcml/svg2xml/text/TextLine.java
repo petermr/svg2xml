@@ -535,7 +535,7 @@ public class TextLine implements Iterable<SVGText> {
 		CMLUtil.copyAttributes(templateText, spaceText);
 		spaceText.setText(" ");
 		spaceText.setX(spaceX);
-		PDF2SVGUtil.setSVGXAttribute(spaceText, PDF2SVGUtil.CHARACTER_WIDTH, ""+SPACE_WIDTH1000);
+		PDF2SVGUtil.setSVGXAttribute(spaceText, PDF2SVGUtil.CHARACTER_WIDTH, String.valueOf(SPACE_WIDTH1000));
 		newCharacters.add(spaceText);
 	}
 
