@@ -175,6 +175,9 @@ public class Fixtures {
 
 	public static final File ROBERTS_PDF = new File(PDFS_DIR, "roberts.pdf");
 
+	public static final File PDFS_MDPI_DIR = new File(PDFS_DIR, "mdpi/");
+	public static final File MDPI_02982_PDF = new File(PDFS_MDPI_DIR, "11-02982.pdf");
+
 	public static final File PDFS_NATURE_DIR = new File(PDFS_DIR, "nature/");
 	public static final File NATURE_12352_PDF = new File(PDFS_NATURE_DIR, "nature12352.pdf");
 
