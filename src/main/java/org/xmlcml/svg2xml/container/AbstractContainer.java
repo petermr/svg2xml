@@ -20,8 +20,8 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
-import org.xmlcml.svg2xml.semantic.LicenceAnalyzer;
+import org.xmlcml.svg2xml.indexer.LicenceIndexer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** containers contain the outputs of PageAnalyzer
@@ -290,7 +290,7 @@ public abstract class AbstractContainer {
 
 	private ContainerType getMetadataType(String value) {
 		ContainerType type = null;
-		if (type == null) type = getType(value, ContainerType.LICENSE, LicenceAnalyzer.PATTERN);
+		if (type == null) type = getType(value, ContainerType.LICENSE, LicenceIndexer.PATTERN);
 		if (type == null) type = getType(value, ContainerType.ACKNOWLEDGMENT, ACKNOWLEDGEMENT_P);
 		if (type == null) type = getType(value, ContainerType.AUTHORS, AUTHOR_DETAILS_P);
 		if (type == null) type = getType(value, ContainerType.AUTHORS, AUTHOR_INFO_P);

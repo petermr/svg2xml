@@ -10,8 +10,8 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
-import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PathAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class PathContainer extends AbstractContainer  {
@@ -35,13 +35,13 @@ public class PathContainer extends AbstractContainer  {
 	 * @param pathAnalyzer
 	 * @return
 	 */
-	public static PathContainer createPathContainer(PageAnalyzer pageAnalyzer, PathAnalyzerX pathAnalyzer) {
+	public static PathContainer createPathContainer(PageAnalyzer pageAnalyzer, PathAnalyzer pathAnalyzer) {
 		PathContainer pathContainer = new PathContainer(pageAnalyzer);
 		addSVGElements(pathContainer, pathAnalyzer);
 		return pathContainer;
 	}
 	
-	private static void addSVGElements(PathContainer pathContainer, PathAnalyzerX pathAnalyzer) {
+	private static void addSVGElements(PathContainer pathContainer, PathAnalyzer pathAnalyzer) {
 		List<SVGPath> pathList = pathAnalyzer.getPathList();
 		if (pathList != null && pathList.size() > 0){
 			pathContainer.addPathList(pathList);

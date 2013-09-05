@@ -26,8 +26,8 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
-import org.xmlcml.svg2xml.analyzer.PageIO;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.StyleSpan;
 import org.xmlcml.svg2xml.text.StyleSpans;
@@ -421,9 +421,9 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		super.getChunkId();
 		if (this.chunkId == null) {
 			this.chunkId = textStructurer == null ? null : textStructurer.getChunkId();
-			if (chunkId == null) {
-				chunkId = pageAnalyzer.getChunkId();
-			}
+//			if (chunkId == null) {
+//				chunkId = pageAnalyzer.getChunkId();
+//			}
 		} 
 		return this.chunkId;
 	}

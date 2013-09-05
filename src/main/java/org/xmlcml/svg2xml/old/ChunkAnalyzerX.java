@@ -12,15 +12,15 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
-import org.xmlcml.svg2xml.analyzer.LineAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.PolylineAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.paths.LineAnalyzer;
+import org.xmlcml.svg2xml.paths.PolylineAnalyzer;
 import org.xmlcml.svg2xml.tools.Chunk;
 import org.xmlcml.svg2xml.tools.PlotBox;
 
-public class ChunkAnalyzerX extends AbstractAnalyzer {
+public class ChunkAnalyzerX extends PageChunkAnalyzer {
 
 	private static final Logger LOG = Logger.getLogger(ChunkAnalyzerX.class);
 
@@ -29,12 +29,12 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 
 	private List<SVGText> texts;
 	private List<SVGPath> paths;
-	private TextAnalyzerX textAnalyzerX;
-	private PathAnalyzerX pathAnalyzerX;
+	private TextAnalyzer textAnalyzerX;
+	private PathAnalyzer pathAnalyzerX;
 	private List<SVGLine> lines;
-	private LineAnalyzerX lineAnalyzerX;
+	private LineAnalyzer lineAnalyzerX;
 	private List<SVGPolyline> polylines;
-	private PolylineAnalyzerX polylineAnalyzerX;
+	private PolylineAnalyzer polylineAnalyzerX;
 	private Chunk chunk;
 	private PlotBox plotBox;
 
@@ -80,7 +80,7 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 		throw new RuntimeException("NYI");
 	}
 	
-	private TextAnalyzerX analyzeTexts() {
+	private TextAnalyzer analyzeTexts() {
 		ensureTextAnalyzer();
 		analyzeTexts(0);
 		analyzeTexts(90);
@@ -97,9 +97,9 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 		}
 	}
 	
-	private AbstractAnalyzer ensureTextAnalyzer() {
+	private PageChunkAnalyzer ensureTextAnalyzer() {
 		if (textAnalyzerX == null) {
-			textAnalyzerX = new TextAnalyzerX();
+			textAnalyzerX = new TextAnalyzer();
 		}
 		return textAnalyzerX;
 	}
@@ -107,7 +107,7 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	private void analyzePaths() {
 		ensurePaths();
 		if (paths.size() > 0) {
-			pathAnalyzerX = new PathAnalyzerX();
+			pathAnalyzerX = new PathAnalyzer();
 			pathAnalyzerX.interpretPathsAsRectCirclePolylineAndReplace();
 		}
 	}
@@ -115,12 +115,12 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	private void analyzeLines() {
 		lines = SVGLine.extractLines(SVGUtil.getQuerySVGElements(chunk, ".//svg:line"));
 		if (lines.size() > 0) {
-			lineAnalyzerX = new LineAnalyzerX();
+			lineAnalyzerX = new LineAnalyzer();
 			lineAnalyzerX.analyzeLinesAsAxesAndWhatever(chunk, lines);
 		}
 	}
 
-	public TextAnalyzerX getTextAnalyzerX() {
+	public TextAnalyzer getTextAnalyzerX() {
 		ensureTextAnalyzer();
 		return textAnalyzerX;
 	}
@@ -128,7 +128,7 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 	private void analyzePolylines() {
 		polylines = SVGPolyline.extractPolylines(SVGUtil.getQuerySVGElements(chunk, ".//svg:polyline"));
 		if (polylines.size() > 0) {
-			polylineAnalyzerX = new PolylineAnalyzerX();
+			polylineAnalyzerX = new PolylineAnalyzer();
 			polylineAnalyzerX.analyzePolylines(chunk, polylines);
 		}
 	}
@@ -142,9 +142,4 @@ public class ChunkAnalyzerX extends AbstractAnalyzer {
 		return plotBox;
 	}
 
-	@Override
-	public SVGG oldAnnotateChunk() {
-		throw new RuntimeException("annotate NYI");
-	}
-	
 }

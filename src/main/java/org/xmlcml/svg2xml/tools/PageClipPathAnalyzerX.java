@@ -10,7 +10,7 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -31,7 +31,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageClipPathAnalyzerX  extends AbstractAnalyzer {
+public class PageClipPathAnalyzerX  extends PageChunkAnalyzer {
 
 	public static String[] fillColors = {
 		"red",
@@ -127,11 +127,6 @@ public class PageClipPathAnalyzerX  extends AbstractAnalyzer {
 		bb.setFill(fill);
 		bb.setOpacity(0.5);
 		pageEditorX.getSVGPage().appendChild(bb);
-	}
-	
-	@Override
-	public SVGG oldAnnotateChunk() {
-		throw new RuntimeException("annotate NYI");
 	}
 	
 }

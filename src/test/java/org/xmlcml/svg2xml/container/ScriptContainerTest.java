@@ -17,7 +17,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.analyzer.PDFAnalyzer;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
 import org.xmlcml.svg2xml.text.StyleSpans;

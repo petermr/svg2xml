@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 
 /** a word in a ScriptLine
  * 
@@ -16,7 +16,7 @@ public class ScriptWord extends ScriptLine {
 	private List<String> characterList;
 
 	public ScriptWord(int nLines) {
-		super(new TextStructurer((TextAnalyzerX)null));
+		super(new TextStructurer((TextAnalyzer)null));
 		textLineList = new ArrayList<TextLine>();
 		for (int i = 0; i < nLines; i++) {
 			textLineList.add(new TextLine());

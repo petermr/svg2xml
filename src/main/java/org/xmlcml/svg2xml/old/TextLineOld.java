@@ -30,7 +30,7 @@ import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.Suscript;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
@@ -770,7 +770,7 @@ public class TextLineOld implements Iterable<SVGText> {
 				Double width = getWidth(characterList.get(i));
 				svgCharacterWidthArray.setElementAt(i,  width);
 			}
-			svgCharacterWidthArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			svgCharacterWidthArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return svgCharacterWidthArray;
 	}
@@ -790,7 +790,7 @@ public class TextLineOld implements Iterable<SVGText> {
 				characterSeparationArray.setElementAt(i, separation);
 				x = nextX;
 			}
-			characterSeparationArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			characterSeparationArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return characterSeparationArray;
 	}
@@ -861,7 +861,7 @@ public class TextLineOld implements Iterable<SVGText> {
 				double deltaX = characterSeparationArray.get(i) - svgCharacterWidthArray.get(i);
 				excessWidthArray.setElementAt(i,  deltaX);
 			}
-			excessWidthArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			excessWidthArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return excessWidthArray;
 	}

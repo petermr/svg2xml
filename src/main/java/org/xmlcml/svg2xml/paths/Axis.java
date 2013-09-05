@@ -23,10 +23,10 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.figure.AxisAnalyzerX;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager;
@@ -58,7 +58,7 @@ public class Axis {
 	private Double boxThickness;
 	private Double boxLengthExtension;
 	private AxisAnalyzerX axisAnalyzerX;
-	private AbstractAnalyzer textAnalyzerX;
+	private PageChunkAnalyzer textAnalyzerX;
 	private String id;
 
 	private double minTickLengthPixels;
@@ -508,8 +508,8 @@ public class Axis {
 		
 		createNumericAndNonNumericTexts(texts);
 		Integer y = null;
-		Double numericRightXCoord = TextAnalyzerUtils.getCommonRightXCoordinate(numericTexts, TextAnalyzerX.TEXT_EPS);
-		Double numericLeftXCoord = TextAnalyzerUtils.getCommonLeftXCoordinate(numericTexts, TextAnalyzerX.TEXT_EPS);
+		Double numericRightXCoord = TextAnalyzerUtils.getCommonRightXCoordinate(numericTexts, TextAnalyzer.TEXT_EPS);
+		Double numericLeftXCoord = TextAnalyzerUtils.getCommonLeftXCoordinate(numericTexts, TextAnalyzer.TEXT_EPS);
 		if (numericRightXCoord != null || numericLeftXCoord != null) {
 			majorTickMarkValues = createNumericValues(numericTexts);
 		}
@@ -584,7 +584,7 @@ public class Axis {
 		}
 	}
 
-	public AbstractAnalyzer getTextAnalyzerX() {
+	public PageChunkAnalyzer getTextAnalyzerX() {
 		return textAnalyzerX;
 	}
 

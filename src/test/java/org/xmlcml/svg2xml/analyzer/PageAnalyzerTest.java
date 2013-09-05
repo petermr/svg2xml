@@ -15,6 +15,7 @@ import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.DivContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.StyleSpans;
 import org.xmlcml.svg2xml.text.StyleSpansTest;

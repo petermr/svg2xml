@@ -10,7 +10,7 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.analyzer.WhitespaceChunkerAnalyzerX;
+import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.tools.Chunk;
 
 public class WhitespaceChunkerXTest {

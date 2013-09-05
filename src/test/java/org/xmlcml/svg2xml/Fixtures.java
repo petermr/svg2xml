@@ -11,7 +11,7 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svg2xml.analyzer.WhitespaceChunkerAnalyzerX;
+import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.tools.Chunk;
 
 public class Fixtures {
@@ -172,6 +172,8 @@ public class Fixtures {
 	public static final File TREE313_PDF = new File(PDFS_BMC_DIR, TREE_ROOT+".pdf");
 	public static final File SVG_TREE313_DIR = new File(SVG_BMC_DIR, TREE_ROOT+"/");
 	public static final File HTML_TREE313_DIR = new File(TREE313_DIR, "html/");
+	
+	public static final File BMC174_PDF = new File(PDFS_BMC_DIR, "174.pdf");
 
 	public static final File ROBERTS_PDF = new File(PDFS_DIR, "roberts.pdf");
 

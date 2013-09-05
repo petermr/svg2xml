@@ -22,11 +22,11 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.analyzer.PDFAnalyzer;
 import org.xmlcml.svg2xml.analyzer.PDFIndex;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
@@ -40,7 +40,7 @@ import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
  * @author pm286
  *
  */
-public class HtmlAnalyzer extends AbstractAnalyzer {
+public class HtmlAnalyzer extends PageChunkAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(HtmlAnalyzer.class);
 	private static final String REMOVED_SVG = "REMOVED_SVG";
@@ -50,7 +50,7 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 	private static final String NEXT = "next";
 	
 	private PDFAnalyzer pdfAnalyzer;
-	private AbstractAnalyzer analyzer;
+	private PageChunkAnalyzer analyzer;
 	private HtmlElement htmlElement;
 	private HtmlEditor htmlEditor;
 	private Integer serial;
@@ -64,7 +64,7 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 	 * @param htmlEditor
 	 * @param analyzer the analyzer used to create the HTML
 	 */
-	public HtmlAnalyzer(HtmlEditor htmlEditor, AbstractAnalyzer analyzer) {
+	public HtmlAnalyzer(HtmlEditor htmlEditor, PageChunkAnalyzer analyzer) {
 		this(htmlEditor);
 		this.analyzer = analyzer;
 	}
@@ -110,12 +110,6 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 		span.appendChild(b);
 		parentHtmlElement.appendChild(span);
 		LOG.trace(">> "+this.getId());
-	}
-
-	@Override
-	public SVGG oldAnnotateChunk() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public boolean containsDivImage() {
@@ -193,26 +187,26 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 		if (htmlElement != null) htmlElement.insertChild(child, position);
 	}
 
-	String  addTypeSerialAttributes() {
-		String classAttribute = this.getClassAttribute(); 
-		classAttribute = (classAttribute == null) ? null : classAttribute.trim(); 
-		String chunkType = null;
-		Integer serial = null;
-		if (classAttribute != null) {
-			if (pdfAnalyzer != null) {
-				for (AbstractAnalyzer analyzer : pdfAnalyzer.getIndex().getAnalyzerList()) {
-					if (analyzer.isChunk(classAttribute)) {
-						chunkType = analyzer.getTitle();
-						serial = new Integer(classAttribute.substring(chunkType.length()).trim());
-						htmlElement.addAttribute(new Attribute(PDFIndex.CHUNK_TYPE, chunkType));
-						htmlElement.addAttribute(new Attribute("serial", String.valueOf(serial)));
-						break;
-					}
-				}
-			}
-		}
-		return chunkType;
-	}
+//	String  addTypeSerialAttributes() {
+//		String classAttribute = this.getClassAttribute(); 
+//		classAttribute = (classAttribute == null) ? null : classAttribute.trim(); 
+//		String chunkType = null;
+//		Integer serial = null;
+//		if (classAttribute != null) {
+//			if (pdfAnalyzer != null) {
+//				for (AbstractAnalyzer analyzer : pdfAnalyzer.getIndex().getAnalyzerList()) {
+//					if (analyzer.isChunk(classAttribute)) {
+//						chunkType = analyzer.getClass().getName();
+//						serial = new Integer(classAttribute.substring(chunkType.length()).trim());
+//						htmlElement.addAttribute(new Attribute(PDFIndex.CHUNK_TYPE, chunkType));
+//						htmlElement.addAttribute(new Attribute("serial", String.valueOf(serial)));
+//						break;
+//					}
+//				}
+//			}
+//		}
+//		return chunkType;
+//	}
 
 	HtmlAnalyzer getPreviousHtmlAnalyzer(Map<ChunkId, HtmlAnalyzer>htmlAnalyzerByIdMap) {
 		String previous = this.getAttributeValue(LAST);
@@ -277,7 +271,7 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 		this.serial = serial;
 	}
 
-	public AbstractAnalyzer getAnalyzer() {
+	public PageChunkAnalyzer getAnalyzer() {
 		return analyzer;
 	}
 
@@ -287,8 +281,8 @@ public class HtmlAnalyzer extends AbstractAnalyzer {
 
 	public TextStructurer getTextStructurer() {
 		TextStructurer textStructurer = null;
-		if (analyzer != null && analyzer instanceof TextAnalyzerX) {
-			textStructurer = ((TextAnalyzerX) analyzer).getTextStructurer();
+		if (analyzer != null && analyzer instanceof TextAnalyzer) {
+			textStructurer = ((TextAnalyzer) analyzer).getTextStructurer();
 		}
 		return textStructurer;
 	}

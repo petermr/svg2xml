@@ -17,14 +17,14 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
-public class SubSupAnalyzerX extends AbstractAnalyzer {
+public class SubSupAnalyzerX extends PageChunkAnalyzer {
 
 	public static final String SCRIPT_TYPE = "scriptType";
 
@@ -46,7 +46,7 @@ public class SubSupAnalyzerX extends AbstractAnalyzer {
 	private final static Logger LOG = Logger.getLogger(SubSupAnalyzerX.class);
 	private final static Double ANGLE_EPS = 0.1;
 	
-	private AbstractAnalyzer textAnalyzerX;
+	private PageChunkAnalyzer textAnalyzerX;
 	private List<Integer> sortedYCoords;
 	private Map<Integer, List<SVGText>> textByYCoordAndXCoord;
 	private int currentYCoordIndex;
@@ -61,7 +61,7 @@ public class SubSupAnalyzerX extends AbstractAnalyzer {
 	private SubSup currentSubSupType;
 	private List<SVGText> texts;
 
-	public SubSupAnalyzerX(AbstractAnalyzer textAnalyzerX) {
+	public SubSupAnalyzerX(PageChunkAnalyzer textAnalyzerX) {
 		this.textAnalyzerX = textAnalyzerX;
 	}
 
@@ -297,13 +297,7 @@ public class SubSupAnalyzerX extends AbstractAnalyzer {
 		}
 		return sortedYCoords;
 	}
-	@Override
-	public SVGG oldAnnotateChunk() {
-		throw new RuntimeException("annotate NYI");
-	}
 	
-
-
 	private Integer getPreviousYCoord() {
 		return currentYCoordIndex <= 0 || currentYCoordIndex >= sortedYCoords.size()? null : sortedYCoords.get(currentYCoordIndex-1);
 	}

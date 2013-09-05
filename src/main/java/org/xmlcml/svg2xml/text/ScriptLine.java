@@ -15,7 +15,7 @@ import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds one or more TextLines in a chunk
@@ -327,7 +327,7 @@ public class ScriptLine implements Iterable<TextLine> {
 				suscript = Suscript.SUB;
 			}
 			if (textLine == null || !(suscript.equals(textLine.getSuscript()))) {
-				TextAnalyzerX textAnalyzerX = null;
+				TextAnalyzer textAnalyzerX = null;
 				textLine = new TextLine(textAnalyzerX);
 				textLine.setSuscript(suscript);
 				textLineList.add(textLine);

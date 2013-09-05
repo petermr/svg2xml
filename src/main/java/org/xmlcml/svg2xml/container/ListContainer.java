@@ -12,7 +12,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 

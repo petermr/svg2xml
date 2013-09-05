@@ -30,9 +30,9 @@ import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.old.SimpleFontOld;
 import org.xmlcml.svg2xml.old.WordSequence;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 import com.google.common.collect.HashMultiset;
@@ -74,7 +74,7 @@ public class TextLine implements Iterable<SVGText> {
 	private String lineContent = null;
 	private List<TextLine> subLines;
 	private WordSequence wordSequence;
-	private TextAnalyzerX textAnalyzerX;
+	private TextAnalyzer textAnalyzerX;
 	private SimpleFontOld simpleFont;
 	private RealArray characterWidthArray;
 	private final static Double SCALE = 0.001; // width multiplied by 1000
@@ -114,16 +114,16 @@ public class TextLine implements Iterable<SVGText> {
 		characterWidthArray = null;
 	}
 	
-	public TextLine(TextAnalyzerX textAnalyzerX, List<SVGText> characterList) {
+	public TextLine(TextAnalyzer textAnalyzerX, List<SVGText> characterList) {
 		this.characterList = characterList;
 		this.textAnalyzerX = textAnalyzerX;
 	}
 	
-	public TextLine(TextAnalyzerX textAnalyzerX) {
+	public TextLine(TextAnalyzer textAnalyzerX) {
 		this(textAnalyzerX, new ArrayList<SVGText>());
 	}
 	
-	public TextLine(Collection<SVGText> texts, TextAnalyzerX textAnalyzer) {
+	public TextLine(Collection<SVGText> texts, TextAnalyzer textAnalyzer) {
 		this.textAnalyzerX = textAnalyzer;
 		characterList = new ArrayList<SVGText>();
 		for (SVGText text : texts) {
@@ -477,7 +477,7 @@ public class TextLine implements Iterable<SVGText> {
 				Double width = getWidth(characterList.get(i));
 				svgCharacterWidthArray.setElementAt(i,  width);
 			}
-			svgCharacterWidthArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			svgCharacterWidthArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return svgCharacterWidthArray;
 	}
@@ -497,7 +497,7 @@ public class TextLine implements Iterable<SVGText> {
 				characterSeparationArray.setElementAt(i, separation);
 				x = nextX;
 			}
-			characterSeparationArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			characterSeparationArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return characterSeparationArray;
 	}

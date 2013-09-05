@@ -12,13 +12,13 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
-import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.ImageAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.MixedAnalyzer;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
-import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.TableAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.FigureAnalyzer;
+import org.xmlcml.svg2xml.page.ImageAnalyzer;
+import org.xmlcml.svg2xml.page.MixedAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.TableAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -29,7 +29,7 @@ public class DivContainer extends AbstractContainer {
 	private boolean box;
 	private PathContainer pathContainer;
 	private ImageContainer imageContainer;
-	private TextAnalyzerX textAnalyzerX;
+	private TextAnalyzer textAnalyzerX;
 	private TextStructurer textStructurer;
 	private ScriptContainer scriptContainer;
 	private HtmlTable tableElement;
@@ -78,7 +78,7 @@ public class DivContainer extends AbstractContainer {
 
 	public void addTextList(List<SVGText> characterList) {
 		if (characterList != null && characterList.size() > 0) {
-			textAnalyzerX = new TextAnalyzerX();
+			textAnalyzerX = new TextAnalyzer();
 			textAnalyzerX.setTextCharacters(characterList);
 			List<TextLine> textLineList = getTextAnalyzer().getTextLines();
 			textStructurer = new TextStructurer(null);
@@ -134,11 +134,11 @@ public class DivContainer extends AbstractContainer {
 		return sb.toString();
 	}
 
-	public TextAnalyzerX getTextAnalyzer() {
+	public TextAnalyzer getTextAnalyzer() {
 		return textAnalyzerX;
 	}
 
-	public void setTextAnalyzerX(TextAnalyzerX textAnalyzerX) {
+	public void setTextAnalyzerX(TextAnalyzer textAnalyzerX) {
 		this.textAnalyzerX = textAnalyzerX;
 	}
 
@@ -158,14 +158,14 @@ public class DivContainer extends AbstractContainer {
 		return imageContainer == null ? null : imageContainer.getImageList();
 	}
 
-	public PathAnalyzerX getPathAnalyzer() {
-		PathAnalyzerX pathAnalyzer = new PathAnalyzerX();
+	public PathAnalyzer getPathAnalyzer() {
+		PathAnalyzer pathAnalyzer = new PathAnalyzer();
 		List<SVGPath> pathList = getPathList(); 
 		pathAnalyzer.readPathList(pathList);return pathAnalyzer;
 	}
 
-	public ImageAnalyzerX getImageAnalyzer() {
-		ImageAnalyzerX imageAnalyzer = new ImageAnalyzerX();
+	public ImageAnalyzer getImageAnalyzer() {
+		ImageAnalyzer imageAnalyzer = new ImageAnalyzer();
 		List<SVGImage> imageList = getImageList(); 
 		imageAnalyzer.readImageList(imageList);return imageAnalyzer;
 	}
@@ -178,7 +178,7 @@ public class DivContainer extends AbstractContainer {
 			return table;
 		}
 		if (tableElement == null) {
-			TableAnalyzerX tableAnalyzer = new TableAnalyzerX(getTextAnalyzer(), getPathAnalyzer());
+			TableAnalyzer tableAnalyzer = new TableAnalyzer(getTextAnalyzer(), getPathAnalyzer());
 			tableElement = tableAnalyzer.createTable();
 			LOG.trace(tableElement.toXML());
 		}
@@ -187,7 +187,7 @@ public class DivContainer extends AbstractContainer {
 
 	public HtmlDiv createFigureElement() {
 		if (figureElement == null) {
-			FigureAnalyzerX figureAnalyzer = new FigureAnalyzerX(getTextAnalyzer(), getPathAnalyzer(), getImageAnalyzer(), this.svgChunk);
+			FigureAnalyzer figureAnalyzer = new FigureAnalyzer(getTextAnalyzer(), getPathAnalyzer(), getImageAnalyzer(), this.svgChunk);
 			figureElement = figureAnalyzer.createFigure();
 		}
 		return figureElement;

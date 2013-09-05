@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -16,7 +16,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageFontSizeAnalyzerX extends AbstractAnalyzer {
+public class PageFontSizeAnalyzerX extends PageChunkAnalyzer {
 
 	private static final Logger LOG = Logger.getLogger(PageFontSizeAnalyzerX.class);
 
@@ -59,11 +59,6 @@ public class PageFontSizeAnalyzerX extends AbstractAnalyzer {
 			elementsByFontSize.put(fontSize100, svgElement);
 		}
 		return elementsByFontSize;
-	}
-	
-	@Override
-	public SVGG oldAnnotateChunk() {
-		throw new RuntimeException("annotate NYI");
 	}
 	
 }

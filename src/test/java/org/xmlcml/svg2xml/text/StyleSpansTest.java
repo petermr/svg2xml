@@ -6,8 +6,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 
 public class StyleSpansTest {
 

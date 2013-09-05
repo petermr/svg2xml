@@ -20,12 +20,29 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.old.HtmlEditor;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
 import com.google.common.collect.Multimap;
 
+/** process a complete document.
+ * 
+ * may be called standalone or in an iteration from DocumentListAnalyzer
+ * 
+ * uses PDFAnalyzerIO as helper to manage the IO variables.
+ * uses PDFAnalyzerOptions as helper to manage the processing options.
+ * 
+ * creates List<PageAnalyzer> as a result of processing all pages
+ * 
+ * intermediate results may be stored in directory created for each document.
+ * collects conversion to HTML as  runningTextElement;
+ * 
+ * @author pm286
+ *
+ */
 
-public class PDFAnalyzer /*implements Annotatable */{
+public class PDFAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
 	
@@ -37,13 +54,13 @@ public class PDFAnalyzer /*implements Annotatable */{
 	PDFIndex pdfIndex;
 	// created by analyzing pages
 	private List<PageAnalyzer> pageAnalyzerList;
-	PDFAnalyzerOptions pdfOptions;
+	private PDFAnalyzerOptions pdfOptions;
 
 	private HtmlElement runningTextElement;
 
 	public PDFAnalyzer() {
 		pdfIo = new PDFAnalyzerIO(this);
-		pdfOptions = new PDFAnalyzerOptions(this);
+		setPdfOptions(new PDFAnalyzerOptions(this));
 	}
 
 	public PDFAnalyzer(DocumentListAnalyzer documentListAnalyzer) {
@@ -158,13 +175,13 @@ public class PDFAnalyzer /*implements Annotatable */{
 		ensurePDFIndex();
 		createSVGFilesfromPDF();
 		analyzeRawSVGPagesWithPageAnalyzers();
-		pdfIo.outputFiles(pdfOptions);
+		pdfIo.outputFiles(getPdfOptions());
 	}
 
 
 	public void analyzeRawSVGPagesWithPageAnalyzers() {
 		pageAnalyzerList = createAndFillPageAnalyzers();
-		pdfIo.outputFiles(pdfOptions);
+		pdfIo.outputFiles(getPdfOptions());
 		createIndexesAndRemoveDuplicates();
 		SYSOUT.println();
 		writeSvgPages();
@@ -334,5 +351,33 @@ public class PDFAnalyzer /*implements Annotatable */{
 	public Element getRunningTextHtml() {
 		return runningTextElement;
 	}
-	
+
+	public PDFAnalyzerOptions getPdfOptions() {
+		return pdfOptions;
+	}
+
+	public void setPdfOptions(PDFAnalyzerOptions pdfOptions) {
+		this.pdfOptions = pdfOptions;
+	}
+
+	public boolean getOutputHtmlChunks() {
+		return pdfOptions.outputHtmlChunks;
+	}
+
+	public boolean getOutputFigures() {
+		return pdfOptions.outputFigures;
+	}
+
+	public boolean getOutputFooters() {
+		return pdfOptions.outputFooters;
+	}
+
+	public boolean getOutputHeaders() {
+		return pdfOptions.outputHeaders;
+	}
+
+	public boolean getOutputTables() {
+		return pdfOptions.outputTables;
+	}
+
 }

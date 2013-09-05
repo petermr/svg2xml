@@ -16,7 +16,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 
 /** holds a list of characters, normally in a horizontal line
  * 
@@ -52,17 +52,17 @@ public class HorizontalCharacterListOld implements Iterable<SVGText> {
 	private String lineContentIncludingSpaces = null;
 	private List<HorizontalCharacterListOld> subLines;
 	private WordSequence wordSequence;
-	private TextAnalyzerX textAnalyzerX;
+	private TextAnalyzer textAnalyzerX;
 	private SimpleFontOld simpleFont;
 	private Integer y;
 	private RealArray characterWidthArray;
 
-	public HorizontalCharacterListOld(TextAnalyzerX textAnalyzerX, List<SVGText> characterList) {
+	public HorizontalCharacterListOld(TextAnalyzer textAnalyzerX, List<SVGText> characterList) {
 		this.characterList = characterList;
 		this.textAnalyzerX = textAnalyzerX;
 	}
 	
-	public HorizontalCharacterListOld(TextAnalyzerX textAnalyzerX) {
+	public HorizontalCharacterListOld(TextAnalyzer textAnalyzerX) {
 		this(textAnalyzerX, new ArrayList<SVGText>());
 	}
 	

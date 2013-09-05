@@ -19,9 +19,9 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.old.ChunkAnalyzerX;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.tools.Chunk;
 
@@ -76,7 +76,7 @@ public class ChunkAnalyzerTest {
 		List<Chunk> leafChunks = Fixtures.createLeafChunks(Fixtures.TWO_CHUNKS1_PDF, 1);
 		ChunkAnalyzerX chunkAnalyzer = new ChunkAnalyzerX();
 		chunkAnalyzer.analyzeChunk(leafChunks.get(0));
-		TextAnalyzerX textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
+		TextAnalyzer textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
 		textAnalyzerX.getTextLineByYCoordMap();
 		List<TextLine> lineList = textAnalyzerX.getLinesInIncreasingY();
 //		CMLUtil.debug(svgPage, new FileOutputStream("target/chunkAnalyzer/twoChunks1.svg"), 1);

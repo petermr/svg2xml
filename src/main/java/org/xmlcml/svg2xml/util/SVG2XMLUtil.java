@@ -10,9 +10,9 @@ import nu.xom.Text;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.graphics.svg.SVGConstants;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 
 public class SVG2XMLUtil {
@@ -188,7 +188,7 @@ public class SVG2XMLUtil {
 	}
 
 	private static void removeSVGXAttributes(SVGElement graphic) {
-		Nodes nodes = graphic.query("//@*[namespace-uri()='"+SVGUtil.SVGX_NS+"']");
+		Nodes nodes = graphic.query("//@*[namespace-uri()='"+SVGConstants.SVGX_NS+"']");
 		detachNodes(nodes);
 	}
 

@@ -30,12 +30,12 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerUtils;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
@@ -71,7 +71,7 @@ public class TextStructurer {
 
 	private static final double Y_EPS = 0.5; // line can wobble 
 
-	private TextAnalyzerX textAnalyzer;
+	private TextAnalyzer textAnalyzer;
 	
 	private List<TextLine> linesWithCommonestFont;
 	private List<TextLine> linesWithLargestFont;
@@ -112,7 +112,7 @@ public class TextStructurer {
 	 * this may not be a good idea
 	 * @param textAnalyzer to copy lines from
 	 */
-	public TextStructurer(TextAnalyzerX textAnalyzer) {
+	public TextStructurer(TextAnalyzer textAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
 		if (textAnalyzer != null) {
 			textAnalyzer.setTextStructurer(this);
@@ -125,7 +125,7 @@ public class TextStructurer {
 		return createTextStructurer(svgFile, null);
 	}
 
-	public static TextStructurer createTextStructurer(File svgFile, TextAnalyzerX textAnalyzer) {
+	public static TextStructurer createTextStructurer(File svgFile, TextAnalyzer textAnalyzer) {
 		TextStructurer container = new TextStructurer(textAnalyzer);
 		List<TextLine> textLineList = TextStructurer.createTextLineList(svgFile);
 		if (textLineList != null) {
@@ -214,7 +214,7 @@ public class TextStructurer {
 					meanFontSizeArray.setElementAt(i, textLineList.get(i).getMeanFontSize());
 				}
 			}
-			meanFontSizeArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			meanFontSizeArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return meanFontSizeArray;
 	}
@@ -411,7 +411,7 @@ public class TextStructurer {
 				interTextLineSeparationArray.addElement(y - y0);
 				y0 = y;
 			}
-			interTextLineSeparationArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			interTextLineSeparationArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return interTextLineSeparationArray;
 	}
@@ -489,7 +489,7 @@ public class TextStructurer {
 					textLineCoordinateArray.addElement(y0);
 				}
 			}
-			textLineCoordinateArray.format(TextAnalyzerX.NDEC_FONTSIZE);
+			textLineCoordinateArray.format(TextAnalyzer.NDEC_FONTSIZE);
 		}
 		return textLineCoordinateArray;
 	}
@@ -508,9 +508,9 @@ public class TextStructurer {
 				if (xRight == null) {
 					xRight = xLast;
 				}
-				if (xRight - xLast > TextAnalyzerX.INDENT_MIN) {
+				if (xRight - xLast > TextAnalyzer.INDENT_MIN) {
 					indent = xLast;
-				} else if (xLast - xRight > TextAnalyzerX.INDENT_MIN) {
+				} else if (xLast - xRight > TextAnalyzer.INDENT_MIN) {
 					indent = xRight;
 				}
 			}
@@ -644,14 +644,14 @@ public class TextStructurer {
 		this.svgChunk = svgChunk;
 	}
 
-	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, TextAnalyzerX textAnalyzer) {
+	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, TextAnalyzer textAnalyzer) {
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		textStructurer.createLinesSortedInXThenY(textCharacters, textAnalyzer);
 		return textStructurer;
 	}
 
 	private void createLinesSortedInXThenY(List<SVGText> textCharacters,
-			TextAnalyzerX textAnalyzer) {
+			TextAnalyzer textAnalyzer) {
 		this.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		textLineList = this.getLinesInIncreasingY();
 		for (TextLine textLine : textLineList) {
@@ -664,7 +664,7 @@ public class TextStructurer {
 	}
 	
 	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters) {
-		TextAnalyzerX textAnalyzer = new TextAnalyzerX();
+		TextAnalyzer textAnalyzer = new TextAnalyzer();
 		textAnalyzer.setTextCharacters(textCharacters);
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		// the next two lines may be unnecessary
@@ -677,7 +677,7 @@ public class TextStructurer {
 		return textStructurer;
 	}
 	
-	public TextAnalyzerX getTextAnalyzer() {
+	public TextAnalyzer getTextAnalyzer() {
 		return textAnalyzer;
 	}
 
@@ -699,9 +699,9 @@ public class TextStructurer {
 				if (xLeft == null) {
 					xLeft = xStart;
 				}
-				if (xLeft - xStart > TextAnalyzerX.INDENT_MIN) {
+				if (xLeft - xStart > TextAnalyzer.INDENT_MIN) {
 					indent = xLeft;
-				} else if (xStart - xLeft > TextAnalyzerX.INDENT_MIN) {
+				} else if (xStart - xLeft > TextAnalyzer.INDENT_MIN) {
 					indent = xStart;
 				}
 			}
@@ -726,9 +726,9 @@ public class TextStructurer {
 				if (xLeft == null) {
 					xLeft = xStart;
 				}
-				if (xLeft - xStart > TextAnalyzerX.INDENT_MIN) {
+				if (xLeft - xStart > TextAnalyzer.INDENT_MIN) {
 					indent = xLeft;
-				} else if (xStart - xLeft > TextAnalyzerX.INDENT_MIN) {
+				} else if (xStart - xLeft > TextAnalyzer.INDENT_MIN) {
 					indent = xStart;
 				}
 			}
@@ -742,8 +742,8 @@ public class TextStructurer {
 		return textLineList;
 	}
 
-	public static AbstractAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters) {
-			TextAnalyzerX textAnalyzer = new TextAnalyzerX();
+	public static PageChunkAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters) {
+			TextAnalyzer textAnalyzer = new TextAnalyzer();
 			TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer);
 			return textAnalyzer;
 	}

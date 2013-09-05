@@ -14,7 +14,7 @@ import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
-import org.xmlcml.svg2xml.analyzer.TableAnalyzerX;
+import org.xmlcml.svg2xml.page.TableAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class TableCaption extends TableChunk {
@@ -50,7 +50,7 @@ public class TableCaption extends TableChunk {
 		Integer number = null;
 		if (caption != null) {
 			String value = caption.getValue();
-			Matcher matcher = TableAnalyzerX.PATTERN.matcher(value);
+			Matcher matcher = TableAnalyzer.PATTERN.matcher(value);
 			if (matcher.matches()) {
 				String tableId = matcher.group(1);
 				number = new Integer(tableId);

@@ -27,10 +27,10 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
-import org.xmlcml.svg2xml.analyzer.PageAnalyzer;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -43,7 +43,7 @@ import com.google.common.collect.Multiset;
  * @author pm286
  *
  */
-public class TextAnalyzerXOld extends AbstractAnalyzer {
+public class TextAnalyzerXOld extends PageChunkAnalyzer {
 
 	private static final String ID_PREFIX = "textChunk";
 	private final static Logger LOG = Logger.getLogger(TextAnalyzerXOld.class);
@@ -745,7 +745,7 @@ public class TextAnalyzerXOld extends AbstractAnalyzer {
 		}
 		createdHtmlElement = this.createHtmlDivWithParas();
 		if (createdHtmlElement != null) {
-			AbstractAnalyzer.tidyStyles(createdHtmlElement);
+			PageChunkAnalyzer.tidyStyles(createdHtmlElement);
 		}
 		return createdHtmlElement;
 	}

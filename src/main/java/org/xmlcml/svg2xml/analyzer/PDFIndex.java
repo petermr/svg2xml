@@ -32,19 +32,22 @@ import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.indexer.AbstractIndexer;
+import org.xmlcml.svg2xml.indexer.AppendixIndexer;
+import org.xmlcml.svg2xml.indexer.BibRefIndexer;
+import org.xmlcml.svg2xml.indexer.ChapterIndexer;
+import org.xmlcml.svg2xml.indexer.DOIIndexer;
+import org.xmlcml.svg2xml.indexer.FigureIndexer;
+import org.xmlcml.svg2xml.indexer.LicenceIndexer;
+import org.xmlcml.svg2xml.indexer.MiscellaneousIndexer;
+import org.xmlcml.svg2xml.indexer.SchemeIndexer;
+import org.xmlcml.svg2xml.indexer.SummaryIndexer;
+import org.xmlcml.svg2xml.indexer.TableIndexer;
 import org.xmlcml.svg2xml.old.HtmlAnalyzer;
-import org.xmlcml.svg2xml.semantic.AppendixAnalyzer;
-import org.xmlcml.svg2xml.semantic.BibRefAnalyzer;
-import org.xmlcml.svg2xml.semantic.ChapterAnalyzer;
-import org.xmlcml.svg2xml.semantic.DOIAnalyzer;
-import org.xmlcml.svg2xml.semantic.LicenceAnalyzer;
-import org.xmlcml.svg2xml.semantic.SchemeAnalyzer;
-import org.xmlcml.svg2xml.semantic.SnippetAnalyzer;
-import org.xmlcml.svg2xml.semantic.SummaryAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.IntListPattern;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
-import org.xmlcml.svg2xml.text.Suscript;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 import org.xmlcml.svg2xml.util.TextFlattener;
@@ -121,18 +124,18 @@ public class PDFIndex {
 
 	Set<ChunkId> usedIdSet;
 	
-	private AppendixAnalyzer appendixAnalyzer;
-	private BibRefAnalyzer   bibRefAnalyzer;
-	private ChapterAnalyzer  chapterAnalyzer;
-	private DOIAnalyzer      doiAnalyzer;
-	        FigureAnalyzerX  figureAnalyzer;
-	private LicenceAnalyzer  licenceAnalyzer;
-	private SchemeAnalyzer   schemeAnalyzer;
-	private SnippetAnalyzer  snippetAnalyzer;
-	private SummaryAnalyzer  summaryAnalyzer;
-	private TableAnalyzerX   tableAnalyzer;
+	private AppendixIndexer appendixAnalyzer;
+	private BibRefIndexer   bibRefAnalyzer;
+	private ChapterIndexer  chapterAnalyzer;
+	private DOIIndexer      doiAnalyzer;
+	        FigureIndexer  figureAnalyzer;
+	private LicenceIndexer  licenceAnalyzer;
+	private SchemeIndexer   schemeAnalyzer;
+	private MiscellaneousIndexer  snippetAnalyzer;
+	private SummaryIndexer  summaryAnalyzer;
+	private TableIndexer   tableAnalyzer;
 
-	private List<AbstractAnalyzer> analyzerList;
+	private List<AbstractIndexer> analyzerList;
 
 	public PDFIndex(PDFAnalyzer analyzer) {
 		this.pdfAnalyzer = analyzer;
@@ -358,11 +361,11 @@ public class PDFIndex {
 	}
 
 	private void indexByContentAnalyzers(String content, ChunkId id) {
-		ensureContentAnalyzers();
+		ensureSemanticAnalyzers();
 		ensureUsedIdSet();
 		// skip after successful index; order is roughly most likely to hit
-		if (figureAnalyzer.indexAndLabelChunk(content, id) != null) return;
-		if (tableAnalyzer.indexAndLabelChunk(content, id) != null) return;
+//		if (figureAnalyzer.indexAndLabelChunk(content, id) != null) return;
+//		if (tableAnalyzer.indexAndLabelChunk(content, id) != null) return;
 		if (bibRefAnalyzer.indexAndLabelChunk(content, id) != null) return;
 		if (appendixAnalyzer.indexAndLabelChunk(content, id) != null) return;
 		if (chapterAnalyzer.indexAndLabelChunk(content, id) != null) return;
@@ -373,28 +376,28 @@ public class PDFIndex {
 		if (snippetAnalyzer.indexAndLabelChunk(content, id) != null) return;
 	}
 
-	private void ensureContentAnalyzers() {
+	private void ensureSemanticAnalyzers() {
 		if (figureAnalyzer == null) {
-			analyzerList = new ArrayList<AbstractAnalyzer>();
-			appendixAnalyzer = new AppendixAnalyzer(this);
+			analyzerList = new ArrayList<AbstractIndexer>();
+			appendixAnalyzer = new AppendixIndexer(this);
 			analyzerList.add(appendixAnalyzer);
-			bibRefAnalyzer = new BibRefAnalyzer(this);
+			bibRefAnalyzer = new BibRefIndexer(this);
 			analyzerList.add(bibRefAnalyzer);
-			doiAnalyzer = new DOIAnalyzer(this);
+			doiAnalyzer = new DOIIndexer(this);
 			analyzerList.add(doiAnalyzer);
-			chapterAnalyzer = new ChapterAnalyzer(this);
+			chapterAnalyzer = new ChapterIndexer(this);
 			analyzerList.add(chapterAnalyzer);
-			figureAnalyzer = new FigureAnalyzerX(this);
+			figureAnalyzer = new FigureIndexer(this);
 			analyzerList.add(figureAnalyzer);
-			licenceAnalyzer = new LicenceAnalyzer(this);
+			licenceAnalyzer = new LicenceIndexer(this);
 			analyzerList.add(licenceAnalyzer);
-			schemeAnalyzer = new SchemeAnalyzer(this);
+			schemeAnalyzer = new SchemeIndexer(this);
 			analyzerList.add(schemeAnalyzer);
-			snippetAnalyzer = new SnippetAnalyzer(this);
+			snippetAnalyzer = new MiscellaneousIndexer(this);
 			analyzerList.add(snippetAnalyzer);
-			summaryAnalyzer = new SummaryAnalyzer(this);
+			summaryAnalyzer = new SummaryIndexer(this);
 			analyzerList.add(summaryAnalyzer);
-			tableAnalyzer = new TableAnalyzerX(this);
+			tableAnalyzer = new TableIndexer(this);
 			analyzerList.add(tableAnalyzer);
 		}
 	}
@@ -534,18 +537,18 @@ public class PDFIndex {
 		this.usedIdSet = usedIdSet;
 	}
 
-	public TableAnalyzerX getTableAnalyzer() {
-		ensureContentAnalyzers();
+	public TableIndexer getTableAnalyzer() {
+		ensureSemanticAnalyzers();
 		return tableAnalyzer;
 	}
 
-	public FigureAnalyzerX getFigureAnalyzer() {
-		ensureContentAnalyzers();
+	public FigureIndexer getFigureAnalyzer() {
+		ensureSemanticAnalyzers();
 		return figureAnalyzer;
 	}
 
-	public List<AbstractAnalyzer> getAnalyzerList() {
-		ensureContentAnalyzers();
+	public List<AbstractIndexer> getAnalyzerList() {
+		ensureSemanticAnalyzers();
 		return analyzerList;
 	}
 

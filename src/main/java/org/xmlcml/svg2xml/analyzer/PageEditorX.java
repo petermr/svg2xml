@@ -15,6 +15,12 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.old.ChunkAnalyzerX;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.FigureAnalyzer;
+import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.TableAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.table.TableOld;
 import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
@@ -75,13 +81,13 @@ public class PageEditorX {
 	private List<Figure> figureList;
 	private List<TableOld> tableList;
 
-	private PathAnalyzerX pathAnalyzerX;
+	private PathAnalyzer pathAnalyzerX;
 //	private PageClipPathAnalyzer clipPathAnalyzer;
 //	private PageFontSizeAnalyzer fontSizeAnalyzer;
 	private WhitespaceChunkerAnalyzerX pageChunkSplitterX;
-	private TextAnalyzerX textAnalyzerX;
-	private FigureAnalyzerX figureAnalyzerX;
-	private TableAnalyzerX tableAnalyzerX;
+	private TextAnalyzer textAnalyzerX;
+	private FigureAnalyzer figureAnalyzerX;
+	private TableAnalyzer tableAnalyzerX;
 	private ChunkAnalyzerX currentChunkAnalyzerX;
 
 	private Integer rotationAngle;
@@ -118,9 +124,9 @@ public class PageEditorX {
 
 	// ========================= TRANSFERRED ELSEWHERE ======================
 	
-	public PathAnalyzerX ensurePathAnalyzer() {
+	public PathAnalyzer ensurePathAnalyzer() {
 		if (pathAnalyzerX == null) {
-			pathAnalyzerX = new PathAnalyzerX();
+			pathAnalyzerX = new PathAnalyzer();
 		}
 		return pathAnalyzerX;
 	}
@@ -129,12 +135,12 @@ public class PageEditorX {
 		return pageNumber;
 	}
 
-	public AbstractAnalyzer getPathAnalyzer() {
+	public PageChunkAnalyzer getPathAnalyzer() {
 		return pathAnalyzerX;
 	}
 
 
-	public AbstractAnalyzer getTextAnalyzer() {
+	public PageChunkAnalyzer getTextAnalyzer() {
 		return textAnalyzerX;
 	}
 
@@ -184,23 +190,23 @@ public class PageEditorX {
 		return pageChunkSplitterX;
 	}
 
-	public TextAnalyzerX ensureTextAnalyzer() {
+	public TextAnalyzer ensureTextAnalyzer() {
 		if (textAnalyzerX == null) {
-			textAnalyzerX = new TextAnalyzerX();
+			textAnalyzerX = new TextAnalyzer();
 		}
 		return textAnalyzerX;
 	}
 
-	public FigureAnalyzerX ensureFigureAnalyzer() {
+	public FigureAnalyzer ensureFigureAnalyzer() {
 		if (figureAnalyzerX == null) {
-			figureAnalyzerX = new FigureAnalyzerX();
+			figureAnalyzerX = new FigureAnalyzer();
 		}
 		return figureAnalyzerX;
 	}
 
-	public TableAnalyzerX ensureTableAnalyzer() {
+	public TableAnalyzer ensureTableAnalyzer() {
 		if (tableAnalyzerX == null) {
-			tableAnalyzerX = new TableAnalyzerX();
+			tableAnalyzerX = new TableAnalyzer();
 		}
 		return tableAnalyzerX;
 	}

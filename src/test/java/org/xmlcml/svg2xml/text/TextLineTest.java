@@ -13,7 +13,7 @@ import org.xmlcml.cml.testutil.JumboTestUtils;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.analyzer.TextAnalyzerTest;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;

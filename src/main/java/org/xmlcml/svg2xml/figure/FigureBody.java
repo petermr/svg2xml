@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
+import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.tools.Chunk;
 import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
 
@@ -44,7 +44,7 @@ public class FigureBody extends Chunk {
 			if (id != null) {
 				bodyAnalysis.addAttribute(new Attribute(SVGPlusConstantsX.ID, id));
 			}
-			FigureAnalyzerX figureAnalyzer = figure.getFigureAnalyzer();
+			FigureAnalyzer figureAnalyzer = figure.getFigureAnalyzer();
 			Real2 margins = figureAnalyzer.getClusterWhitespaceBoxMargins();
 			for (FigurePanel figurePanel : figurePanelList) {
 				List<FigureFragment> fragmentList = 

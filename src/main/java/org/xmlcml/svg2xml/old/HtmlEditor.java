@@ -18,22 +18,22 @@ import nu.xom.Nodes;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGPath;
-import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.analyzer.AbstractAnalyzer;
 import org.xmlcml.svg2xml.analyzer.ChunkId;
-import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.ImageAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.MixedAnalyzer;
 import org.xmlcml.svg2xml.analyzer.PDFAnalyzer;
 import org.xmlcml.svg2xml.analyzer.PDFAnalyzerIO;
-import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.TableAnalyzerX;
-import org.xmlcml.svg2xml.analyzer.TextAnalyzerX;
+import org.xmlcml.svg2xml.indexer.FigureIndexer;
+import org.xmlcml.svg2xml.indexer.TableIndexer;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.FigureAnalyzer;
+import org.xmlcml.svg2xml.page.ImageAnalyzer;
+import org.xmlcml.svg2xml.page.MixedAnalyzer;
+import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.TableAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class HtmlEditor {
@@ -82,11 +82,11 @@ public class HtmlEditor {
 			} else if (HtmlAnalyzer.OMIT.equals(classAttribute)) {
 				// already designated as OMIT
 				LOG.trace("OMITTED "+id);
-			} else if (FigureAnalyzerX.TITLE.equals(classAttribute0)) {
+			} else if (FigureIndexer.TITLE.equals(classAttribute0)) {
 				htmlAnalyzer.setChunkType(classAttribute0);
 				figureHtmlAnalyzerList.add(htmlAnalyzer);
 				LOG.trace(classAttribute+" = "+id);
-			} else if (TableAnalyzerX.TITLE.equals(classAttribute0)) {
+			} else if (TableIndexer.TITLE.equals(classAttribute0)) {
 				htmlAnalyzer.setId(id);
 				htmlAnalyzer.setChunkType(classAttribute0);
 				tableHtmlAnalyzerList.add(htmlAnalyzer);
@@ -166,18 +166,18 @@ public class HtmlEditor {
 	}
 
 	public void mergeCaptions() {
-		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
-			String chunkType = htmlAnalyzer.addTypeSerialAttributes();
-			if (FigureAnalyzerX.TITLE.equals(chunkType)) {
-				LOG.trace("FIG FIX");
-				if (htmlAnalyzer.containsDivImage()) {
-					LOG.trace("***********IMG************");
-				} else {
-					HtmlAnalyzer previousAnalyzer = htmlAnalyzer.getPreviousHtmlAnalyzer(htmlAnalyzerByIdMap);
-					htmlAnalyzer.addImageDivTo(previousAnalyzer);
-				}
-			}
-		}
+//		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
+//			String chunkType = htmlAnalyzer.addTypeSerialAttributes();
+//			if (FigureSemanticAnalyzer.TITLE.equals(chunkType)) {
+//				LOG.trace("FIG FIX");
+//				if (htmlAnalyzer.containsDivImage()) {
+//					LOG.trace("***********IMG************");
+//				} else {
+//					HtmlAnalyzer previousAnalyzer = htmlAnalyzer.getPreviousHtmlAnalyzer(htmlAnalyzerByIdMap);
+//					htmlAnalyzer.addImageDivTo(previousAnalyzer);
+//				}
+//			}
+//		}
 	}
 
 	/** create list of entities
@@ -305,21 +305,21 @@ public class HtmlEditor {
 
 	public void analyzeFigures() {
 		for (HtmlAnalyzer figureHtmlAnalyzer : figureHtmlAnalyzerList) {
-			FigureAnalyzerX figureAnalyzer = createFigureAnalyzer(figureHtmlAnalyzer);
+			FigureAnalyzer figureAnalyzer = createFigureAnalyzer(figureHtmlAnalyzer);
 			figureAnalyzer.analyze();
 		}
 	}
 
-	private FigureAnalyzerX createFigureAnalyzer(HtmlAnalyzer figureHtmlAnalyzer) {
-		FigureAnalyzerX figureAnalyzer = null;
-		AbstractAnalyzer analyzer = figureHtmlAnalyzer.getAnalyzer();
+	private FigureAnalyzer createFigureAnalyzer(HtmlAnalyzer figureHtmlAnalyzer) {
+		FigureAnalyzer figureAnalyzer = null;
+		PageChunkAnalyzer analyzer = figureHtmlAnalyzer.getAnalyzer();
 		if (analyzer instanceof MixedAnalyzer) {
-			TextAnalyzerX textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
-			ImageAnalyzerX imageAnalyzer = ((MixedAnalyzer)analyzer).getImageAnalyzer();
-			PathAnalyzerX pathAnalyzer = ((MixedAnalyzer)analyzer).getPathAnalyzer();
-			figureAnalyzer = new FigureAnalyzerX(textAnalyzer, pathAnalyzer, imageAnalyzer, null);
-		} else if (analyzer instanceof TextAnalyzerX) {
-			figureAnalyzer = new FigureAnalyzerX((TextAnalyzerX)analyzer, (PathAnalyzerX)null, (ImageAnalyzerX)null, null);
+			TextAnalyzer textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
+			ImageAnalyzer imageAnalyzer = ((MixedAnalyzer)analyzer).getImageAnalyzer();
+			PathAnalyzer pathAnalyzer = ((MixedAnalyzer)analyzer).getPathAnalyzer();
+			figureAnalyzer = new FigureAnalyzer(textAnalyzer, pathAnalyzer, imageAnalyzer, null);
+		} else if (analyzer instanceof TextAnalyzer) {
+			figureAnalyzer = new FigureAnalyzer((TextAnalyzer)analyzer, (PathAnalyzer)null, (ImageAnalyzer)null, null);
 			LOG.error("Figure has no path/image");
 		}
 		return figureAnalyzer;
@@ -327,7 +327,7 @@ public class HtmlEditor {
 
 	public void analyzeTables() {
 		for (HtmlAnalyzer tableHtmlAnalyzer : tableHtmlAnalyzerList) {
-			TableAnalyzerX tableAnalyzer = createTableAnalyzer(tableHtmlAnalyzer);
+			TableAnalyzer tableAnalyzer = createTableAnalyzer(tableHtmlAnalyzer);
 //			tableAnalyzer.analyze();
 			HtmlElement htmlElement = tableAnalyzer.createTable();
 			LOG.debug("Table "+htmlElement.toXML());
@@ -340,28 +340,28 @@ public class HtmlEditor {
 		}
 	}
 
-	private TableAnalyzerX createTableAnalyzer(HtmlAnalyzer tableHtmlAnalyzer) {
-		TableAnalyzerX tableAnalyzer = null;
-		AbstractAnalyzer analyzer = tableHtmlAnalyzer.getAnalyzer();
+	private TableAnalyzer createTableAnalyzer(HtmlAnalyzer tableHtmlAnalyzer) {
+		TableAnalyzer tableAnalyzer = null;
+		PageChunkAnalyzer analyzer = tableHtmlAnalyzer.getAnalyzer();
 		
 		if (analyzer instanceof MixedAnalyzer) {
 			MixedAnalyzer mixedAnalyzer = ((MixedAnalyzer)analyzer);
 			LOG.trace("M "+mixedAnalyzer);
-			TextAnalyzerX textAnalyzer = mixedAnalyzer.getTextAnalyzer();
+			TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
 			if (textAnalyzer == null) {
 				LOG.error("Table has no text so cannot process");
 				return null;
 			}
-			ImageAnalyzerX imageAnalyzer = mixedAnalyzer.getImageAnalyzer();
+			ImageAnalyzer imageAnalyzer = mixedAnalyzer.getImageAnalyzer();
 			if (imageAnalyzer != null) {
 				LOG.error("Cannot currently analyze images in Tables");
 				return null;
 			}
-			PathAnalyzerX pathAnalyzer = mixedAnalyzer.getPathAnalyzer();
-			tableAnalyzer = new TableAnalyzerX(textAnalyzer, pathAnalyzer);
-		} else if (analyzer instanceof TextAnalyzerX) {
-			TextAnalyzerX textAnalyzer = (TextAnalyzerX)analyzer;
-			tableAnalyzer = new TableAnalyzerX(textAnalyzer, null);
+			PathAnalyzer pathAnalyzer = mixedAnalyzer.getPathAnalyzer();
+			tableAnalyzer = new TableAnalyzer(textAnalyzer, pathAnalyzer);
+		} else if (analyzer instanceof TextAnalyzer) {
+			TextAnalyzer textAnalyzer = (TextAnalyzer)analyzer;
+			tableAnalyzer = new TableAnalyzer(textAnalyzer, null);
 		}
 		return tableAnalyzer;
 	}

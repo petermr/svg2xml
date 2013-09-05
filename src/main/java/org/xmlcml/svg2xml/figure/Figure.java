@@ -9,7 +9,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.analyzer.FigureAnalyzerX;
+import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.tools.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.tools.Caption;
 import org.xmlcml.svg2xml.tools.Chunk;
@@ -29,7 +29,7 @@ public class Figure extends Chunk {
 	
 	private Chunk caption;
 	private FigureBody figureBody;
-	private FigureAnalyzerX figureAnalyzerX;
+	private FigureAnalyzer figureAnalyzerX;
 	private List<FigurePanel> panelList;
 	private List<FigureFragment> fragmentList;
 	private Element figureAnalysis;
@@ -42,7 +42,7 @@ public class Figure extends Chunk {
 		super();
 	}
 
-	public Figure(FigureAnalyzerX figureAnalyzerX) {
+	public Figure(FigureAnalyzer figureAnalyzerX) {
 		this();
 		this.figureAnalyzerX = figureAnalyzerX;
 	}
@@ -144,7 +144,7 @@ public class Figure extends Chunk {
 		return figureBody == null ? null : figureBody.getFigurePanelList();
 	}
 
-	public FigureAnalyzerX getFigureAnalyzer() {
+	public FigureAnalyzer getFigureAnalyzer() {
 		return figureAnalyzerX;
 	}
 

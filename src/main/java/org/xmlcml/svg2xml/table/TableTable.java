@@ -25,7 +25,7 @@ import org.xmlcml.html.HtmlHead;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTh;
-import org.xmlcml.svg2xml.analyzer.PathAnalyzerX;
+import org.xmlcml.svg2xml.page.PathAnalyzer;
 
 /** holds temporary table as list of chunks.
  * might disappear into TableAnalyzer later?
@@ -109,7 +109,7 @@ public class TableTable extends TableChunk {
 		
 	private RealRangeArray createVerticalMaskFromPaths() {
 	
-		this.pathList = PathAnalyzerX.removeDuplicatePaths(pathList);
+		this.pathList = PathAnalyzer.removeDuplicatePaths(pathList);
 		this.pathBox = SVGUtil.createBoundingBox(pathList);
 		totalBox = totalBox.plus(pathBox);
 		// because some "lines" (e.g. in BMC) are multiple paths. This is a mess and needs more 
