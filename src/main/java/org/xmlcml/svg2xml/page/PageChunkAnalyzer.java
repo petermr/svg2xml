@@ -219,7 +219,7 @@ public abstract class PageChunkAnalyzer {
 		rect.setOpacity(opacity);
 		g.appendChild(rect);
 		if (message != null) {
-			SVGText text = createTextInBox(opacity, bbox, message, fontSize);
+			SVGElement text = createTextInBox(opacity, bbox, message, fontSize);
 			if (text == null) {
 				throw new RuntimeException("Null text: "+bbox);
 			}
@@ -229,10 +229,10 @@ public abstract class PageChunkAnalyzer {
 		return g;
 	}
 
-	public static SVGText createTextInBox(Double opacity, Real2Range bbox, String message,
+	public static SVGElement createTextInBox(Double opacity, Real2Range bbox, String message,
 			Double fontSize) {
 
-		SVGText text = null;
+		SVGElement text = null;
 		if (bbox != null &&  bbox.getCorners() != null) {
 			text = new SVGText(bbox.getCorners()[0], message);
 			text.setOpacity(opacity);

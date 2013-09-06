@@ -223,7 +223,7 @@ public class Axis {
 		if (LineOrientation.HORIZONTAL.equals(lineOrientation)) {
 			List<SVGText> horizontalTexts = getTexts(boundedTexts, LineOrientation.HORIZONTAL);
 			countTSpanChildren("HOR ", horizontalTexts);
-			for (SVGText horizontalText : horizontalTexts) {
+			for (SVGElement horizontalText : horizontalTexts) {
 				horizontalText.debug("HOR TEXT");
 			}
 			analyzeHorizontalAxis(horizontalTexts);
@@ -522,7 +522,7 @@ public class Axis {
 	private CMLArray createNumericValues(List<SVGText> numericTexts) {
 		CMLArray array = null;
 		if (numericTexts.size() == 1 ) {
-			SVGText text = numericTexts.get(0);
+			SVGElement text = numericTexts.get(0);
 			String dataType = text.getAttributeValue(TypedNumber.DATA_TYPE);
 			String numbers = text.getAttributeValue(TypedNumber.NUMBERS);
 			LOG.trace("NUMBERS: "+numbers);
@@ -537,7 +537,7 @@ public class Axis {
 			String dataType = getCommonDataType(numericTexts);
 			if (dataType != null) {
 				List<String> values = new ArrayList<String>();
-				for (SVGText numericText : numericTexts) {
+				for (SVGElement numericText : numericTexts) {
 					values.add(TypedNumber.getNumericValue(numericText));
 				}
 				if (CMLConstants.XSD_INTEGER.equals(dataType)) {
@@ -554,7 +554,7 @@ public class Axis {
 
 	private String getCommonDataType(List<SVGText> numericTexts) {
 		String dataType = null;
-		for (SVGText numericText : numericTexts) {
+		for (SVGElement numericText : numericTexts) {
 			String dt = numericText.getAttributeValue(TypedNumber.DATA_TYPE);
 			if (dataType == null) {
 				dataType = dt;

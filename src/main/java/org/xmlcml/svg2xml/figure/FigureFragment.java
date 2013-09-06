@@ -246,7 +246,7 @@ public class FigureFragment {
 			singleWordList = new ArrayList<String>();
 			word2List = new ArrayList<String>();
 			multiWordList = new ArrayList<String>();
-			for (SVGText text : textElements) {
+			for (SVGElement text : textElements) {
 				String value = text.getValue().trim();
 				Double d = GraphUtil.parseDouble(value);
 				if (d != null) {

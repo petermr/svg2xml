@@ -8,6 +8,7 @@ import nu.xom.Attribute;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 
@@ -171,7 +172,7 @@ public class TypedNumber {
 		}
 	}
 
-	public static String getNumericValue(SVGText numericText) {
+	public static String getNumericValue(SVGElement numericText) {
 		return numericText.getAttributeValue(NUMBER);
 	}
 

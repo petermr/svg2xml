@@ -3,6 +3,7 @@ package org.xmlcml.svg2xml.figure;
 import java.util.regex.Pattern;
 
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
@@ -41,8 +42,8 @@ public class Caption extends Chunk {
 	}
 	private String regex ;
 	private SVGG gName;
-	public SVGText svgText;
-	private SVGText label; // e.g. figure or table
+	public SVGElement svgText;
+	private SVGElement label; // e.g. figure or table
 	private Pattern captionPattern;
 	
 	public Caption(Chunk chunk) {

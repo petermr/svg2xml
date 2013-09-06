@@ -232,7 +232,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		for (ScriptLine scriptLine : scriptLineList) {
 			if (scriptLine != null) {
 				List<SVGText> textList = scriptLine.getTextList();
-				for (SVGText text : textList) {
+				for (SVGElement text : textList) {
 					g.appendChild(new SVGText(text));
 				}
 			}

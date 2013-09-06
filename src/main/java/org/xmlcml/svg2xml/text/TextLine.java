@@ -22,6 +22,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
@@ -59,8 +60,8 @@ public class TextLine implements Iterable<SVGText> {
 	private static final double BOLD = 0.25;
 	private static final double EPS = 0.05;
 	private static final double COORD_EPS = 0.0001;
-	private static final SVGText SUP = new SVGText(new Real2(0., 0.), "SUP");
-	private static final SVGText SUB = new SVGText(new Real2(0., 0.), "SUB");
+	private static final SVGElement SUP = new SVGText(new Real2(0., 0.), "SUP");
+	private static final SVGElement SUB = new SVGText(new Real2(0., 0.), "SUB");
 	private static final Double FONT_Y_FACTOR = 0.5;
 	
 	private List<SVGText> characterList;
@@ -219,7 +220,7 @@ public class TextLine implements Iterable<SVGText> {
 		if (fontFamilyMultiset == null) {
 			fontFamilyMultiset = HashMultiset.create();
 			for (int i = 0; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
+				SVGElement text = characterList.get(i);
 				String family = text.getFontFamily();
 				fontFamilyMultiset.add(family);
 			}
@@ -231,7 +232,7 @@ public class TextLine implements Iterable<SVGText> {
 		if (fontFamilySet == null) {
 			fontFamilySet = new HashSet<String>();
 			for (int i = 0; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
+				SVGElement text = characterList.get(i);
 				String family = text.getFontFamily();
 				fontFamilySet.add(family);
 			}
@@ -243,7 +244,7 @@ public class TextLine implements Iterable<SVGText> {
 		if (fontSizeContainerSet == null) {
 			fontSizeContainerSet = new HashSet<TextCoordinate>();
 			for (int i = 0; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
+				SVGElement text = characterList.get(i);
 				TextCoordinate fontSize = new TextCoordinate(text.getFontSize());
 				fontSizeContainerSet.add(fontSize);
 			}
@@ -530,7 +531,7 @@ public class TextLine implements Iterable<SVGText> {
 	 * @param spaceX
 	 * @param templateText to copy attributes from
 	 */
-	private void addSpaceCharacter(List<SVGText> newCharacters, double spaceX, SVGText templateText) {
+	private void addSpaceCharacter(List<SVGText> newCharacters, double spaceX, SVGElement templateText) {
 		SVGText spaceText = new SVGText();
 		CMLUtil.copyAttributes(templateText, spaceText);
 		spaceText.setText(" ");
@@ -554,7 +555,7 @@ public class TextLine implements Iterable<SVGText> {
 	public Set<TextCoordinate> getFontSizeSet() {
 		if (fontSizeSet == null) {
 			fontSizeSet = new HashSet<TextCoordinate>();
-			for (SVGText text : characterList) {
+			for (SVGElement text : characterList) {
 				double fontSize = text.getFontSize();
 				fontSizeSet.add(new TextCoordinate(fontSize));
 			}
@@ -721,7 +722,7 @@ public class TextLine implements Iterable<SVGText> {
 		Double currentFontSize = null;
 		HtmlSpan span = null;
 		StringBuffer sb = null;
-		for (SVGText character : characterList) {
+		for (SVGElement character : characterList) {
 			String fontFamily = character.getFontFamily();
 			String fontStyle = character.getFontStyle();
 			String fontWeight = character.getFontWeight();
@@ -814,7 +815,7 @@ public class TextLine implements Iterable<SVGText> {
 	public String getSpacedLineString() {
 		StringBuilder sb = new StringBuilder();
 		if (characterList != null) {
-			for (SVGText text : characterList) {
+			for (SVGElement text : characterList) {
 				String s = text.getValue();
 				if (s.trim().length() == 0) {
 					s = " ";
@@ -840,7 +841,7 @@ public class TextLine implements Iterable<SVGText> {
 	public String getRawValue() {
 		StringBuilder sb = new StringBuilder();
 		if (characterList != null) {
-			for (SVGText text : characterList) {
+			for (SVGElement text : characterList) {
 				sb.append(text.getValue());
 			}
 		}
@@ -884,7 +885,7 @@ public class TextLine implements Iterable<SVGText> {
 		if (fontSizeMultiset == null) {
 			fontSizeMultiset = HashMultiset.create();
 			for (int i = 0; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
+				SVGElement text = characterList.get(i);
 				Double size = text.getFontSize();
 				fontSizeMultiset.add(size);
 			}
