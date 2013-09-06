@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 import org.xmlcml.graphics.svg.SVGG;
 
@@ -7,8 +7,9 @@ import org.xmlcml.graphics.svg.SVGG;
  * @author pm286
  *
  */
-public interface Annotatable {
+public interface AnnotatableDead {
 	
 	SVGG oldAnnotateChunk();
 
+	int grot();
 }

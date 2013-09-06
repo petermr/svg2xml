@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageFontSizeAnalyzerOld /*extends PageChunkAnalyzer*/ {
+public class PageFontSizeAnalyzerDead {
 //
 //	private static final Logger LOG = Logger.getLogger(PageFontSizeAnalyzerOld.class);
 //

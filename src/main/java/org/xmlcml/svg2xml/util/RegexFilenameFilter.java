@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.util;
 
 import java.io.File;
 import java.io.FilenameFilter;

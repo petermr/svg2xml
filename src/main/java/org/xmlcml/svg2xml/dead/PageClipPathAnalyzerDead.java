@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,7 +31,7 @@ import com.google.common.collect.Multimap;
  * @author pm286
  *
  */
-public class PageClipPathAnalyzerOld  /*extends PageChunkAnalyzer */ {
+public class PageClipPathAnalyzerDead {
 
 //	public static String[] fillColors = {
 //		"red",

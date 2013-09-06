@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import com.google.common.collect.HashBiMap;
  * @author pm286
  *
  */
-public class PageEditorOld {
+public class PageEditorDead {
 
 //	private static final Logger LOG = Logger.getLogger(PageEditorOld.class);
 //	

@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 import java.io.FileOutputStream;
 
@@ -19,7 +19,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.old.ChunkAnalyzerXOld;
+import org.xmlcml.svg2xml.dead.ChunkAnalyzerXDead;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.paths.Chunk;

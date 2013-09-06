@@ -10,8 +10,6 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.old.SubSupAnalyzerXOld;
-import org.xmlcml.svg2xml.old.SubSupAnalyzerXOld.SubSup;
 
 /** may be obsolete, but not checked */
 public class TypedNumber {

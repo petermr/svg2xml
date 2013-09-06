@@ -20,7 +20,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.collection.DocumentListAnalyzer;
-import org.xmlcml.svg2xml.old.HtmlEditor;
+import org.xmlcml.svg2xml.dead.HtmlEditorDead;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
@@ -237,16 +237,16 @@ public class PDFAnalyzer {
 		
 	}
 
-	private void analyzeAndCreateHTML() {
-		HtmlEditor htmlEditor = new HtmlEditor(this);
-		htmlEditor.getHtmlAnalyzerListSortedByChunkId();
-		htmlEditor.removeDuplicates();
-		htmlEditor.createLinkedElementList();
-		htmlEditor.mergeCaptions();
-		htmlEditor.categorizeHtml();
-		htmlEditor.analyzeTables();
-		htmlEditor.analyzeFigures();
-		htmlEditor.outputHtmlElements();
+	private void analyzeAndCreateHTMLDead() {
+//		HtmlEditorOld htmlEditor = new HtmlEditorOld(this);
+//		htmlEditor.getHtmlAnalyzerListSortedByChunkId();
+//		htmlEditor.removeDuplicates();
+//		htmlEditor.createLinkedElementList();
+//		htmlEditor.mergeCaptions();
+//		htmlEditor.categorizeHtml();
+//		htmlEditor.analyzeTables();
+//		htmlEditor.analyzeFigures();
+//		htmlEditor.outputHtmlElements();
 	}
 
 	private void writeSvgPages() {

@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.paths.LineAnalyzer;
 import org.xmlcml.svg2xml.paths.PolylineAnalyzer;
 
-public class ChunkAnalyzerXOld /*extends PageChunkAnalyzer */{
+public class ChunkAnalyzerXDead{
 
 //	private static final Logger LOG = Logger.getLogger(ChunkAnalyzerXOld.class);
 //

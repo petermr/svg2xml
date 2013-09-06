@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ import com.google.common.collect.Multiset.Entry;
  * @author pm286
  *
  */
-public class TextStructurerOld {
+public class TextStructurerDead {
 
 //	private static final Logger LOG = Logger.getLogger(TextStructurerOld.class);
 //

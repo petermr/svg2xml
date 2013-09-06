@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ import com.google.common.collect.Multiset.Entry;
  * @author pm286
  *
  */
-public class TextLineOld /*implements Iterable<SVGText>*/ {
+public class TextLineDead {
 
 //	private static final String SERIF = "Serif";
 //	private final static Logger LOG = Logger.getLogger(TextLineOld.class);

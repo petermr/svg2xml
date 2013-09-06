@@ -35,7 +35,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
-import org.xmlcml.svg2xml.old.PageEditorOld;
+import org.xmlcml.svg2xml.dead.PageEditorDead;
 import org.xmlcml.svg2xml.paths.Chunk;
 
 /**

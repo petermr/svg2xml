@@ -32,6 +32,7 @@ import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.dead.HtmlAnalyzerDead;
 import org.xmlcml.svg2xml.indexer.AbstractIndexer;
 import org.xmlcml.svg2xml.indexer.AppendixIndexer;
 import org.xmlcml.svg2xml.indexer.BibRefIndexer;
@@ -43,7 +44,6 @@ import org.xmlcml.svg2xml.indexer.MiscellaneousIndexer;
 import org.xmlcml.svg2xml.indexer.SchemeIndexer;
 import org.xmlcml.svg2xml.indexer.SummaryIndexer;
 import org.xmlcml.svg2xml.indexer.TableIndexer;
-import org.xmlcml.svg2xml.old.HtmlAnalyzerOld;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.IntListPattern;
 import org.xmlcml.svg2xml.text.ScriptLine;
@@ -258,48 +258,48 @@ public class PDFIndex {
 	}
 
 	private void printDuplicates(String title, List<List<ChunkId>> idListList) {
-			if (idListList.size() > 0 ) {
-				LOG.trace("duplicate "+title);
-				for (List<ChunkId> idList : idListList) {
-					if (title.equals(CONTENT)) {
-	//				    output(idList, title);
-						duplicateContentCount++;
-					} else if (title.equals(FLATTENED)) {
-						LOG.trace("flattened"+idList);
-						outputDuplicates(idList, title);
-						duplicateFlattenedCount++;
-					} else if (title.equals(FIRST_INTEGER)) {
-						LOG.trace(FIRST_INTEGER+idList);
-						outputDuplicates(idList, title);
-						duplicateFirstIntegerCount++;
-					} else if (title.equals(BBOX)) {
-	//					output(idList,  title);
-						Set<String> set = new HashSet<String>();
-						for (ChunkId id : idList) {
-							HtmlAnalyzerOld htmlAnalyzer = getHtmlAnalyzerById(id);
-							// not all chunks are HTML
-							if (htmlAnalyzer != null) {
-								String s = htmlAnalyzer.toXML();
-								LOG.trace(s);
-								set.add(s);
-							}
-						}
-						if (set.size() == 1) {
-							LOG.trace("bbox "+set.toString());
-						}
-						duplicateBboxCount++;
-					} else if (title.equals(IMAGE)) {
-						outputDuplicates(idList, title);
-						duplicateImageCount++;
-					} else if (title.equals(PATH)) {
-						outputDuplicates(idList, title);
-						duplicatePathCount++;
-					}
-				}
-			}
+//			if (idListList.size() > 0 ) {
+//				LOG.trace("duplicate "+title);
+//				for (List<ChunkId> idList : idListList) {
+//					if (title.equals(CONTENT)) {
+//	//				    output(idList, title);
+//						duplicateContentCount++;
+//					} else if (title.equals(FLATTENED)) {
+//						LOG.trace("flattened"+idList);
+//						outputDuplicates(idList, title);
+//						duplicateFlattenedCount++;
+//					} else if (title.equals(FIRST_INTEGER)) {
+//						LOG.trace(FIRST_INTEGER+idList);
+//						outputDuplicates(idList, title);
+//						duplicateFirstIntegerCount++;
+//					} else if (title.equals(BBOX)) {
+//	//					output(idList,  title);
+//						Set<String> set = new HashSet<String>();
+//						for (ChunkId id : idList) {
+//							HtmlAnalyzerOld htmlAnalyzer = getHtmlAnalyzerById(id);
+//							// not all chunks are HTML
+//							if (htmlAnalyzer != null) {
+//								String s = htmlAnalyzer.toXML();
+//								LOG.trace(s);
+//								set.add(s);
+//							}
+//						}
+//						if (set.size() == 1) {
+//							LOG.trace("bbox "+set.toString());
+//						}
+//						duplicateBboxCount++;
+//					} else if (title.equals(IMAGE)) {
+//						outputDuplicates(idList, title);
+//						duplicateImageCount++;
+//					} else if (title.equals(PATH)) {
+//						outputDuplicates(idList, title);
+//						duplicatePathCount++;
+//					}
+//				}
+//			}
 		}
 
-	private HtmlAnalyzerOld getHtmlAnalyzerById(ChunkId id) {
+	private HtmlAnalyzerDead getHtmlAnalyzerById(ChunkId id) {
 //		return pdfAnalyzer.htmlEditor.getHtmlAnalyzerByIdMap().get(id);
 		return null;
 	}
@@ -484,38 +484,38 @@ public class PDFIndex {
 	}
 
 	public void AnalyzeDuplicates() {
-		List<IntListPattern> extractedIntegerList = new ArrayList<IntListPattern>();
-		for (List<ChunkId> idList : flattenedIdListList) {
-			List<String> valueList = new ArrayList<String>();
-			for (ChunkId id : idList) {
-				HtmlAnalyzerOld htmlAnalyzer = getHtmlAnalyzerById(id);
-				// not all chunks are HTML
-				if (htmlAnalyzer != null) {
-					String value = htmlAnalyzer.getValue();
-					valueList.add(value);
-				}
-			}
-			Set<String> patternStringSet = new HashSet<String>();
-			Pattern pattern = null;
-			for (String value : valueList) {
-				pattern = TextFlattener.createDigitStringMatchingPatternCapture(value);
-				patternStringSet.add(pattern.toString());
-			}
-			if (patternStringSet.size() == 1 && valueList.size() > 0) {
-				TextFlattener textFlattener = new TextFlattener();
-				textFlattener.createIntegerPattern(valueList.get(0));
-				LOG.trace("T "+textFlattener.getIntegerPattern().toString());
-				for (String value : valueList) { 
-					List<Integer> integerList = textFlattener.captureIntegers(value);
-					LOG.trace("V "+value+" "+ integerList);
-					IntListPattern extractedInteger = new IntListPattern(pattern, integerList);
-					extractedIntegerList.add(extractedInteger);
-				}
-			}
-		}
-		for (IntListPattern extractedI : extractedIntegerList) {
-			LOG.trace("Pattern: "+extractedI.toString());
-		}
+//		List<IntListPattern> extractedIntegerList = new ArrayList<IntListPattern>();
+//		for (List<ChunkId> idList : flattenedIdListList) {
+//			List<String> valueList = new ArrayList<String>();
+//			for (ChunkId id : idList) {
+//				HtmlAnalyzerOld htmlAnalyzer = getHtmlAnalyzerById(id);
+//				// not all chunks are HTML
+//				if (htmlAnalyzer != null) {
+//					String value = htmlAnalyzer.getValue();
+//					valueList.add(value);
+//				}
+//			}
+//			Set<String> patternStringSet = new HashSet<String>();
+//			Pattern pattern = null;
+//			for (String value : valueList) {
+//				pattern = TextFlattener.createDigitStringMatchingPatternCapture(value);
+//				patternStringSet.add(pattern.toString());
+//			}
+//			if (patternStringSet.size() == 1 && valueList.size() > 0) {
+//				TextFlattener textFlattener = new TextFlattener();
+//				textFlattener.createIntegerPattern(valueList.get(0));
+//				LOG.trace("T "+textFlattener.getIntegerPattern().toString());
+//				for (String value : valueList) { 
+//					List<Integer> integerList = textFlattener.captureIntegers(value);
+//					LOG.trace("V "+value+" "+ integerList);
+//					IntListPattern extractedInteger = new IntListPattern(pattern, integerList);
+//					extractedIntegerList.add(extractedInteger);
+//				}
+//			}
+//		}
+//		for (IntListPattern extractedI : extractedIntegerList) {
+//			LOG.trace("Pattern: "+extractedI.toString());
+//		}
 	}
 
 	public void addUsedId(ChunkId id) {
@@ -556,12 +556,12 @@ public class PDFIndex {
 		for (int i = 0; i < idListList.size(); i++) {
 			List<ChunkId> idList = idListList.get(i);
 			for (ChunkId id : idList) {
-				if (getUsedIdSet().contains(id)) continue;
-				HtmlAnalyzerOld analyzer = getHtmlAnalyzerById(id);
-				if (analyzer != null) {
-					analyzer.setClassAttribute(title+"."+i);
-					getUsedIdSet().add(id);
-				}
+//				if (getUsedIdSet().contains(id)) continue;
+//				HtmlAnalyzerOld analyzer = getHtmlAnalyzerById(id);
+//				if (analyzer != null) {
+//					analyzer.setClassAttribute(title+"."+i);
+//					getUsedIdSet().add(id);
+//				}
 			}
 		}
 	}

@@ -9,15 +9,15 @@ import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.old.HtmlEditor;
-import org.xmlcml.svg2xml.old.HtmlVisitor;
+import org.xmlcml.svg2xml.dead.HtmlEditorDead;
+import org.xmlcml.svg2xml.dead.HtmlVisitorDead;
 
 /**
  * Not really the same as the other analyzers, but helps to tidey code
  * @author pm286
  *
  */
-public class SpeciesIndexer extends HtmlVisitor {
+public class SpeciesIndexer /*extends HtmlVisitor*/ {
 	private static final Logger LOG = Logger.getLogger(SpeciesIndexer.class);
 	private static final String BINOMIAL_REGEX_S = "[A-Z][a-z]*\\.?\\s+[a-z][a-z]+(\\s+[a-z]+)*";
 	private final static Pattern PATTERN = Pattern.compile(BINOMIAL_REGEX_S);
@@ -29,10 +29,10 @@ public class SpeciesIndexer extends HtmlVisitor {
 	public SpeciesIndexer() {
 	}
 	
-	@Override
-	public void visit(HtmlEditor htmlEditor) {
-		HtmlUl speciesList = htmlEditor.searchHtml(ITALIC_XPATH_S, PATTERN);
-	}
+//	@Override
+//	public void visit(HtmlEditorOld htmlEditor) {
+//		HtmlUl speciesList = htmlEditor.searchHtml(ITALIC_XPATH_S, PATTERN);
+//	}
 
 	/** Pattern for the content for this analyzer
 	 * 

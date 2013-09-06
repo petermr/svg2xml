@@ -9,7 +9,7 @@ import junit.framework.Assert;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.svg2xml.text.FontStyleTest;
+import org.xmlcml.svg2xml.text.FontStyleTestDead;
 
 public class TextFlattenerTest {
 

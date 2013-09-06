@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.old;
+package org.xmlcml.svg2xml.dead;
 
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ import com.google.common.collect.Multiset;
  * @author pm286
  *
  */
-public class TextAnalyzerXOld /*extends PageChunkAnalyzer*/ {
+public class TextAnalyzerDead {
 
 //	private static final String ID_PREFIX = "textChunk";
 //	private final static Logger LOG = Logger.getLogger(TextAnalyzerXOld.class);
@@ -60,8 +60,8 @@ public class TextAnalyzerXOld /*extends PageChunkAnalyzer*/ {
 //	private static final double YPARA_SEPARATION_FACTOR = 1.15;
 //	
 //	public static final double DEFAULT_TEXTWIDTH_FACTOR = 0.9;
-	public static final int NDEC_FONTSIZE = 3;
-	public static final double INDENT_MIN = 1.0; //pixels
+//	public static final int NDEC_FONTSIZE = 3;
+//	public static final double INDENT_MIN = 1.0; //pixels
 //	public static Double TEXT_EPS = 1.0;
 //
 //
