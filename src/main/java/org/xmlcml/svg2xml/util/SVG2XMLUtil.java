@@ -119,8 +119,8 @@ public class SVG2XMLUtil {
 			svgElement = svg;
 		}
 		try {
-			if (!filename.endsWith(SVGPlusConstantsX.DOT_SVG)) {
-				filename += SVGPlusConstantsX.DOT_SVG;
+			if (!filename.endsWith(SVG2XMLConstantsX.DOT_SVG)) {
+				filename += SVG2XMLConstantsX.DOT_SVG;
 			}
 			File outFile = new File(dir, filename);
 			if (debug) {LOG.debug("wrote: "+outFile);}

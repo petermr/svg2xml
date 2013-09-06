@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.svg2xml.collection.DocumentListAnalyzer;
 
 /** tests DocumentListAnalyzer (either diretcories oe files)
  * 

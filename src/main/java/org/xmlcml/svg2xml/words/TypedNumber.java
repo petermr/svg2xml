@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.words;
 
 import java.util.List;
 
+
 import nu.xom.Attribute;
 
 import org.apache.log4j.Logger;
@@ -9,9 +10,10 @@ import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.old.SubSupAnalyzerX;
-import org.xmlcml.svg2xml.old.SubSupAnalyzerX.SubSup;
+import org.xmlcml.svg2xml.old.SubSupAnalyzerXOld;
+import org.xmlcml.svg2xml.old.SubSupAnalyzerXOld.SubSup;
 
+/** may be obsolete, but not checked */
 public class TypedNumber {
 
 	private final static Logger LOG = Logger.getLogger(TypedNumber.class);
@@ -85,19 +87,19 @@ public class TypedNumber {
 	 */
 	public static TypedNumber interpretExponentialNotation(List<SVGTSpan> tSpans) {
 		TypedNumber typedNumber = null;
-		// of form 1.2x10<sup>34</sup>
-		if (tSpans.size() == 2) {
-			SVGTSpan tSpan0 = tSpans.get(0);
-			SVGTSpan tSpan1 = tSpans.get(1);
-			Integer power = null;
-			if (SubSup.SUPERSCRIPT.toString().equals(tSpan1.getAttributeValue(SubSupAnalyzerX.SCRIPT_TYPE))) {
-				try {
-					power = new Integer(tSpan1.getValue());
-					typedNumber = createAndParseExponentialForm(tSpan0.getValue().trim(), power);
-				} catch (Exception e) {
-				}
-			}
-		}
+//		// of form 1.2x10<sup>34</sup>
+//		if (tSpans.size() == 2) {
+//			SVGTSpan tSpan0 = tSpans.get(0);
+//			SVGTSpan tSpan1 = tSpans.get(1);
+//			Integer power = null;
+//			if (SubSup.SUPERSCRIPT.toString().equals(tSpan1.getAttributeValue(SubSupAnalyzerX.SCRIPT_TYPE))) {
+//				try {
+//					power = new Integer(tSpan1.getValue());
+//					typedNumber = createAndParseExponentialForm(tSpan0.getValue().trim(), power);
+//				} catch (Exception e) {
+//				}
+//			}
+//		}
 		return typedNumber;
 	}
 

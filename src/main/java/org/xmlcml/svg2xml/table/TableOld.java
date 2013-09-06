@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.table;
 
 
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.paths.Chunk;
 
 /** not actually used
  * 

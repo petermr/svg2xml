@@ -20,7 +20,7 @@ import org.xmlcml.euclid.test.StringTestBase;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.text.SvgPlusCoordinate;
+import org.xmlcml.svg2xml.text.TextCoordinate;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.ScriptLine;
@@ -312,10 +312,10 @@ public class TextAnalyzerTest {
 	 */
 	public void getFontSizeSetTest() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		Set<SvgPlusCoordinate> fontSizeSet = textStructurer.getFontSizeSet();
+		Set<TextCoordinate> fontSizeSet = textStructurer.getFontSizeSet();
 		Assert.assertEquals("font sizes", 2, fontSizeSet.size());
-		Assert.assertTrue("font large", fontSizeSet.contains(new SvgPlusCoordinate(9.465)));
-		Assert.assertTrue("font small", fontSizeSet.contains(new SvgPlusCoordinate(7.07)));
+		Assert.assertTrue("font large", fontSizeSet.contains(new TextCoordinate(9.465)));
+		Assert.assertTrue("font small", fontSizeSet.contains(new TextCoordinate(7.07)));
 	}
 
 	@Test
@@ -324,11 +324,11 @@ public class TextAnalyzerTest {
 	 */
 	public void getTextLinesByFontSizeTest() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize = textStructurer.getTextLineListByFontSize();
+		Multimap<TextCoordinate, TextLine> textLineListByFontSize = textStructurer.getTextLineListByFontSize();
 		Assert.assertEquals("font sizes", 17, textLineListByFontSize.size());
-		List<TextLine> largeLines = (List<TextLine>) textLineListByFontSize.get(new SvgPlusCoordinate(9.465));
+		List<TextLine> largeLines = (List<TextLine>) textLineListByFontSize.get(new TextCoordinate(9.465));
 		Assert.assertEquals("font large", 11, largeLines.size());
-		Assert.assertEquals("font small", 6, ((List<TextLine>) textLineListByFontSize.get(new SvgPlusCoordinate(7.07))).size());
+		Assert.assertEquals("font small", 6, ((List<TextLine>) textLineListByFontSize.get(new TextCoordinate(7.07))).size());
 	}
 
 	@Test
@@ -347,7 +347,7 @@ public class TextAnalyzerTest {
 	 */
 	public void getLargestFontTest() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		SvgPlusCoordinate maxSize = textStructurer.getLargestFontSize();
+		TextCoordinate maxSize = textStructurer.getLargestFontSize();
 		Assert.assertEquals("largest font", 9.47, maxSize.getDouble(), 0.001);
 	}
 

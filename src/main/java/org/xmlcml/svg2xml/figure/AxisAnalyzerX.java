@@ -14,7 +14,6 @@ import org.xmlcml.svg2xml.paths.Axis;
 import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svg2xml.tools.PlotBox;
 
 public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
 
@@ -44,7 +43,7 @@ public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
 	private SVGElement container;
 	public double eps;
 
-	private PlotBox plotBox;
+	private GraphPlotBox plotBox;
 
 	public AxisAnalyzerX(SVGElement container) {
 		super();
@@ -75,9 +74,9 @@ public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
 		}
 	}
 	
-	private PlotBox createPlotBox() {
+	private GraphPlotBox createPlotBox() {
 		if (horizontalAxis != null && verticalAxis != null) {
-			plotBox = new PlotBox(horizontalAxis, verticalAxis);
+			plotBox = new GraphPlotBox(horizontalAxis, verticalAxis);
 			LOG.trace("PLOT BOX "+plotBox);
 			drawBox();
 		}
@@ -173,7 +172,7 @@ public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
 		this.boxThickness = boxThickness;
 	}
 
-	public PlotBox getPlotBox() {
+	public GraphPlotBox getPlotBox() {
 		return plotBox;
 	}
 

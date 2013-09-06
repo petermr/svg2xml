@@ -12,7 +12,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
-import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.paths.Chunk;
 
 public class Fixtures {
 

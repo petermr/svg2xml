@@ -22,9 +22,6 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.analyzer.ChunkId;
-import org.xmlcml.svg2xml.analyzer.PDFAnalyzer;
-import org.xmlcml.svg2xml.analyzer.PDFAnalyzerIO;
 import org.xmlcml.svg2xml.indexer.FigureIndexer;
 import org.xmlcml.svg2xml.indexer.TableIndexer;
 import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
@@ -34,6 +31,9 @@ import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PathAnalyzer;
 import org.xmlcml.svg2xml.page.TableAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.pdf.ChunkId;
+import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
+import org.xmlcml.svg2xml.pdf.PDFAnalyzerIO;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class HtmlEditor {
@@ -42,13 +42,13 @@ public class HtmlEditor {
 	
 	private static final String TEXT = "TEXT";
 
-	private List<HtmlAnalyzer> htmlAnalyzerListSortedByChunkId;
+	private List<HtmlAnalyzerOld> htmlAnalyzerListSortedByChunkId;
 	private PDFAnalyzer pdfAnalyzer;
-	private Map<ChunkId, HtmlAnalyzer> htmlAnalyzerByIdMap;
-	private List<HtmlAnalyzer> figureHtmlAnalyzerList;
-	private List<HtmlAnalyzer> tableHtmlAnalyzerList;
-	private List<HtmlAnalyzer> mergedHtmlAnalyzerList;
-	private HtmlAnalyzer textDivAnalyzer;
+	private Map<ChunkId, HtmlAnalyzerOld> htmlAnalyzerByIdMap;
+	private List<HtmlAnalyzerOld> figureHtmlAnalyzerList;
+	private List<HtmlAnalyzerOld> tableHtmlAnalyzerList;
+	private List<HtmlAnalyzerOld> mergedHtmlAnalyzerList;
+	private HtmlAnalyzerOld textDivAnalyzer;
 
 	private PDFAnalyzerIO pdfIo;
 	
@@ -65,11 +65,11 @@ public class HtmlEditor {
 		LOG.debug("Merging HTML");
 		HtmlDiv textDiv = new HtmlDiv();
 		createTextDivAnalyzer(textDiv);
-		HtmlAnalyzer lastAnalyzer = null;
-		figureHtmlAnalyzerList = new ArrayList<HtmlAnalyzer>();
-		tableHtmlAnalyzerList = new ArrayList<HtmlAnalyzer>();
-		mergedHtmlAnalyzerList = new ArrayList<HtmlAnalyzer>();
-		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
+		HtmlAnalyzerOld lastAnalyzer = null;
+		figureHtmlAnalyzerList = new ArrayList<HtmlAnalyzerOld>();
+		tableHtmlAnalyzerList = new ArrayList<HtmlAnalyzerOld>();
+		mergedHtmlAnalyzerList = new ArrayList<HtmlAnalyzerOld>();
+		for (HtmlAnalyzerOld htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
 			String id = htmlAnalyzer.getId();
 			String classAttribute = htmlAnalyzer.getClassAttribute();
 			String classAttribute0 = (classAttribute == null) ? null : classAttribute.split("\\s+")[0];
@@ -79,7 +79,7 @@ public class HtmlEditor {
 				LOG.trace("merging "+id);
 				merge(lastAnalyzer, htmlAnalyzer, textDiv);
 				lastAnalyzer = htmlAnalyzer;
-			} else if (HtmlAnalyzer.OMIT.equals(classAttribute)) {
+			} else if (HtmlAnalyzerOld.OMIT.equals(classAttribute)) {
 				// already designated as OMIT
 				LOG.trace("OMITTED "+id);
 			} else if (FigureIndexer.TITLE.equals(classAttribute0)) {
@@ -100,14 +100,14 @@ public class HtmlEditor {
 	}
 
 	private void createTextDivAnalyzer(HtmlDiv textDiv) {
-		textDivAnalyzer = new HtmlAnalyzer(textDiv, this);
+		textDivAnalyzer = new HtmlAnalyzerOld(textDiv, this);
 		textDivAnalyzer.setClassAttribute(TEXT);
 		textDivAnalyzer.setChunkType(TEXT);
 		textDivAnalyzer.setSerial(1);
 		textDivAnalyzer.setId("t.1.0");
 	}
 
-	private void merge(HtmlAnalyzer lastAnalyzer, HtmlAnalyzer htmlAnalyzer, HtmlDiv topDiv) {
+	private void merge(HtmlAnalyzerOld lastAnalyzer, HtmlAnalyzerOld htmlAnalyzer, HtmlDiv topDiv) {
 		TextStructurer lastTextContainer = (lastAnalyzer == null) ? 
 				null : lastAnalyzer.getTextStructurer();
 		TextStructurer textStructurer = htmlAnalyzer.getTextStructurer();
@@ -134,14 +134,14 @@ public class HtmlEditor {
 
 	public void removeDuplicates() {
 		getHtmlAnalyzerListSortedByChunkId();
-		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
+		for (HtmlAnalyzerOld htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
 			ChunkId id = new ChunkId(htmlAnalyzer.getId());
 			if (pdfAnalyzer.getIndex().getUsedIdSet().contains(id)) {
 				String classAttribute = htmlAnalyzer.getClassAttribute();
 				LOG.trace(id+" "+classAttribute);
 				if (classAttribute == null) {
 					LOG.trace("skip duplicate: "+id+" "+classAttribute);
-					htmlAnalyzer.setClassAttribute(HtmlAnalyzer.OMIT);
+					htmlAnalyzer.setClassAttribute(HtmlAnalyzerOld.OMIT);
 				}
 			}
 		}
@@ -149,15 +149,15 @@ public class HtmlEditor {
 
 	public void outputHtmlElements() {
 		LOG.debug("figures HTML");
-		for (HtmlAnalyzer htmlAnalyzer : figureHtmlAnalyzerList) {
+		for (HtmlAnalyzerOld htmlAnalyzer : figureHtmlAnalyzerList) {
 			htmlAnalyzer.outputElementAsHtml(pdfIo.getExistingOutputDocumentDir());
 		}
 		LOG.debug("tables HTML");
-		for (HtmlAnalyzer htmlAnalyzer : tableHtmlAnalyzerList) {
+		for (HtmlAnalyzerOld htmlAnalyzer : tableHtmlAnalyzerList) {
 			htmlAnalyzer.outputElementAsHtml(pdfIo.getExistingOutputDocumentDir());
 		}
 		LOG.debug("merged HTML");
-		for (HtmlAnalyzer htmlAnalyzer : mergedHtmlAnalyzerList) {
+		for (HtmlAnalyzerOld htmlAnalyzer : mergedHtmlAnalyzerList) {
 			htmlAnalyzer.outputElementAsHtml(pdfIo.getExistingOutputDocumentDir());
 		}
 		LOG.debug("merged TEXT");
@@ -222,13 +222,13 @@ public class HtmlEditor {
 		}
 	}
 
-	public List<HtmlAnalyzer> getHtmlAnalyzerListSortedByChunkId() {
+	public List<HtmlAnalyzerOld> getHtmlAnalyzerListSortedByChunkId() {
 		if (htmlAnalyzerListSortedByChunkId == null) {
 			List<ChunkId> chunkIdList = Arrays.asList(htmlAnalyzerByIdMap.keySet().toArray(new ChunkId[0]));
 			Collections.sort(chunkIdList);
-			htmlAnalyzerListSortedByChunkId = new ArrayList<HtmlAnalyzer>();
+			htmlAnalyzerListSortedByChunkId = new ArrayList<HtmlAnalyzerOld>();
 			for (ChunkId id : chunkIdList) {
-				HtmlAnalyzer htmlAnalyzer = htmlAnalyzerByIdMap.get(id);
+				HtmlAnalyzerOld htmlAnalyzer = htmlAnalyzerByIdMap.get(id);
 				htmlAnalyzer.setId(id.toString());
 				htmlAnalyzerListSortedByChunkId.add(htmlAnalyzer);
 			}
@@ -236,7 +236,7 @@ public class HtmlEditor {
 		return htmlAnalyzerListSortedByChunkId;
 	}
 
-	Map<ChunkId, HtmlAnalyzer> getHtmlAnalyzerByIdMap() {
+	Map<ChunkId, HtmlAnalyzerOld> getHtmlAnalyzerByIdMap() {
 		ensureHtmlAnalyzerByIdMap();
 		return htmlAnalyzerByIdMap;
 	}
@@ -247,26 +247,26 @@ public class HtmlEditor {
 
 	public void createLinkedElementList() {
 		getHtmlAnalyzerListSortedByChunkId();
-		HtmlAnalyzer lastAnalyzer = null;;
-		for (HtmlAnalyzer htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
+		HtmlAnalyzerOld lastAnalyzer = null;;
+		for (HtmlAnalyzerOld htmlAnalyzer : htmlAnalyzerListSortedByChunkId) {
 			htmlAnalyzer.addLinks(lastAnalyzer);
 			lastAnalyzer = htmlAnalyzer;
 		}
 	}
 
 	String getValueFromHtml(ChunkId id) {
-		HtmlAnalyzer htmlAnalyzer = getHtmlAnalyzerByIdMap().get(id);
+		HtmlAnalyzerOld htmlAnalyzer = getHtmlAnalyzerByIdMap().get(id);
 		return htmlAnalyzer.getValue();
 	}
 
-	protected HtmlAnalyzer getHtmlAnalyzer(ChunkId id) {
+	protected HtmlAnalyzerOld getHtmlAnalyzer(ChunkId id) {
 		ensureHtmlAnalyzerByIdMap();
 		return (htmlAnalyzerByIdMap == null) ? null : htmlAnalyzerByIdMap.get(id);
 	}
 
 	protected void ensureHtmlAnalyzerByIdMap() {
 		if (htmlAnalyzerByIdMap == null) {
-			htmlAnalyzerByIdMap = new HashMap<ChunkId, HtmlAnalyzer>();
+			htmlAnalyzerByIdMap = new HashMap<ChunkId, HtmlAnalyzerOld>();
 		}
 	}
 
@@ -275,7 +275,7 @@ public class HtmlEditor {
 		throw new RuntimeException("NYI");
 	}
 
-	void indexHtmlBySvgId(HtmlAnalyzer htmlAnalyzer, ChunkId chunkId) {
+	void indexHtmlBySvgId(HtmlAnalyzerOld htmlAnalyzer, ChunkId chunkId) {
 		ensureHtmlAnalyzerByIdMap();
 		htmlAnalyzerByIdMap.put(chunkId, htmlAnalyzer);
 	}
@@ -288,7 +288,7 @@ public class HtmlEditor {
 	 */
 	void labelChunk(ChunkId id, String title, Integer serial) {
 		getHtmlAnalyzer(id);
-		HtmlAnalyzer htmlAnalyzer = getHtmlAnalyzer(id);
+		HtmlAnalyzerOld htmlAnalyzer = getHtmlAnalyzer(id);
 		if (htmlAnalyzer != null) {
 			htmlAnalyzer.addClassAttributeIfMissing(title, serial);
 		}
@@ -299,18 +299,18 @@ public class HtmlEditor {
 	}
 	
 	public void addHtmlElement(HtmlElement htmlElement, ChunkId chunkId) {
-		HtmlAnalyzer htmlAnalyzer = new HtmlAnalyzer(htmlElement, this);
+		HtmlAnalyzerOld htmlAnalyzer = new HtmlAnalyzerOld(htmlElement, this);
 		getHtmlAnalyzerByIdMap().put(chunkId, htmlAnalyzer);
 	}
 
 	public void analyzeFigures() {
-		for (HtmlAnalyzer figureHtmlAnalyzer : figureHtmlAnalyzerList) {
+		for (HtmlAnalyzerOld figureHtmlAnalyzer : figureHtmlAnalyzerList) {
 			FigureAnalyzer figureAnalyzer = createFigureAnalyzer(figureHtmlAnalyzer);
 			figureAnalyzer.analyze();
 		}
 	}
 
-	private FigureAnalyzer createFigureAnalyzer(HtmlAnalyzer figureHtmlAnalyzer) {
+	private FigureAnalyzer createFigureAnalyzer(HtmlAnalyzerOld figureHtmlAnalyzer) {
 		FigureAnalyzer figureAnalyzer = null;
 		PageChunkAnalyzer analyzer = figureHtmlAnalyzer.getAnalyzer();
 		if (analyzer instanceof MixedAnalyzer) {
@@ -326,7 +326,7 @@ public class HtmlEditor {
 	}
 
 	public void analyzeTables() {
-		for (HtmlAnalyzer tableHtmlAnalyzer : tableHtmlAnalyzerList) {
+		for (HtmlAnalyzerOld tableHtmlAnalyzer : tableHtmlAnalyzerList) {
 			TableAnalyzer tableAnalyzer = createTableAnalyzer(tableHtmlAnalyzer);
 //			tableAnalyzer.analyze();
 			HtmlElement htmlElement = tableAnalyzer.createTable();
@@ -340,7 +340,7 @@ public class HtmlEditor {
 		}
 	}
 
-	private TableAnalyzer createTableAnalyzer(HtmlAnalyzer tableHtmlAnalyzer) {
+	private TableAnalyzer createTableAnalyzer(HtmlAnalyzerOld tableHtmlAnalyzer) {
 		TableAnalyzer tableAnalyzer = null;
 		PageChunkAnalyzer analyzer = tableHtmlAnalyzer.getAnalyzer();
 		

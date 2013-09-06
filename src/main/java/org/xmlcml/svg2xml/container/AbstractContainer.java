@@ -19,9 +19,10 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.indexer.LicenceIndexer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** containers contain the outputs of PageAnalyzer
@@ -82,6 +83,8 @@ public abstract class AbstractContainer {
 
 	private Integer tableNumber;
 	private Integer figureNumber;
+
+	private PageChunkAnalyzer pageChunkAnalyzer;
 
 	public AbstractContainer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
@@ -284,6 +287,8 @@ public abstract class AbstractContainer {
 		if (this instanceof DivContainer) {
 			DivContainer divContainer = (DivContainer) this;
 			tableElement = divContainer.createTableHtmlElement();
+			tableElement.addAttribute(new Attribute("style", "border:1px solid red;"));
+			tableElement.setBorder(1);
 		}
 		return tableElement;
 	}
@@ -329,7 +334,9 @@ public abstract class AbstractContainer {
 
 	public Element getFigureElement() {
 		if (figureElement != null) {
-			figureElement.addAttribute(new Attribute("border", "3pt"));
+			figureElement.addAttribute(new Attribute("style", "border:1px solid black;"));
+			// should be on image
+//			figureElement.addAttribute(new Attribute("width", "50%"));
 		}
 		return figureElement;
 	}
@@ -340,5 +347,13 @@ public abstract class AbstractContainer {
 
 	public Element getTableElement() {
 		return tableElement;
+	}
+
+	public void setPageChunkAnalyzer(PageChunkAnalyzer pageChunkAnalyzer) {
+		this.pageChunkAnalyzer = pageChunkAnalyzer;
+	}
+	
+	public PageChunkAnalyzer getPageChunkAnalyzer() {
+		return this.pageChunkAnalyzer;
 	}
 }

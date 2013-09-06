@@ -3,6 +3,7 @@ package org.xmlcml.svg2xml.table;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Nodes;
 
@@ -71,6 +72,7 @@ public class TableCaption extends TableChunk {
 		}
 		captionBody = SVG2XMLUtil.removeStyles(captionBody);
 		caption.appendChild(captionBody);
+		caption.addAttribute(new Attribute("style", "border:1px solid blue"));
 		return caption;
 	}
 	

@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.tools.Chunk;
-import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.paths.Chunk;
+import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
 /** FigurePanels are logical subunits of the FigureBody
  * They are usually determined heuristically by whitespace or explicit borders
@@ -61,7 +61,7 @@ public class FigurePanel extends Chunk {
 
 	private void makeAggregateAnalysis() {
 		panelAnalysis = new Element(PANEL_TAG);
-		panelAnalysis.addAttribute(new Attribute(SVGPlusConstantsX.ID, this.getId()));
+		panelAnalysis.addAttribute(new Attribute(SVG2XMLConstantsX.ID, this.getId()));
 		for (FigureFragment fragment : fragmentList) {
 			Element primitives = fragment.getPrimitivesElement();
 			if (primitives != null) {

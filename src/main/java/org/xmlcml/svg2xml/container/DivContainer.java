@@ -78,7 +78,7 @@ public class DivContainer extends AbstractContainer {
 
 	public void addTextList(List<SVGText> characterList) {
 		if (characterList != null && characterList.size() > 0) {
-			textAnalyzerX = new TextAnalyzer();
+			textAnalyzerX = new TextAnalyzer(pageAnalyzer);
 			textAnalyzerX.setTextCharacters(characterList);
 			List<TextLine> textLineList = getTextAnalyzer().getTextLines();
 			textStructurer = new TextStructurer(null);
@@ -159,13 +159,13 @@ public class DivContainer extends AbstractContainer {
 	}
 
 	public PathAnalyzer getPathAnalyzer() {
-		PathAnalyzer pathAnalyzer = new PathAnalyzer();
+		PathAnalyzer pathAnalyzer = new PathAnalyzer(pageAnalyzer);
 		List<SVGPath> pathList = getPathList(); 
 		pathAnalyzer.readPathList(pathList);return pathAnalyzer;
 	}
 
 	public ImageAnalyzer getImageAnalyzer() {
-		ImageAnalyzer imageAnalyzer = new ImageAnalyzer();
+		ImageAnalyzer imageAnalyzer = new ImageAnalyzer(pageAnalyzer);
 		List<SVGImage> imageList = getImageList(); 
 		imageAnalyzer.readImageList(imageList);return imageAnalyzer;
 	}

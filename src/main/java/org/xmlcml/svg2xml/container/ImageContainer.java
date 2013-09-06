@@ -10,9 +10,9 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
-import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.pdf.PDFIndex;
 
 public class ImageContainer extends AbstractContainer  {
 

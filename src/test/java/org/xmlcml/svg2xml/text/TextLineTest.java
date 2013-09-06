@@ -83,7 +83,7 @@ public class TextLineTest {
 	@Test
 	public void testFontSizeSetLine0() {
 		TextLine textLine0 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 0);
-		Set<SvgPlusCoordinate> fontSizeSet = textLine0.getFontSizeSet();
+		Set<TextCoordinate> fontSizeSet = textLine0.getFontSizeSet();
 		Assert.assertNotNull("line0 set", fontSizeSet);
 		Assert.assertEquals("line0 size", 1, fontSizeSet.size());
 		Assert.assertEquals("line0 fontSize", 7.07, fontSizeSet.iterator().next().getDouble(), 0.01);
@@ -92,7 +92,7 @@ public class TextLineTest {
 	@Test
 	public void testFontSizeSetLine5() {
 		TextLine textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 5);
-		Set<SvgPlusCoordinate> fontSizeSet = textLine5.getFontSizeSet();
+		Set<TextCoordinate> fontSizeSet = textLine5.getFontSizeSet();
 		Assert.assertNotNull("line5 set", fontSizeSet);
 		Assert.assertEquals("line5 size", 1, fontSizeSet.size());
 		Assert.assertEquals("line5 fontSize", 9.465, fontSizeSet.iterator().next().getDouble(), 0.01);

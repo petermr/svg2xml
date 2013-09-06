@@ -9,9 +9,9 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
-import org.xmlcml.svg2xml.analyzer.PDFIndex;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.pdf.PDFIndex;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class PathContainer extends AbstractContainer  {

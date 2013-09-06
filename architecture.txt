@@ -1,10 +1,31 @@
-AMI2-SVGPlus Architecture
+AMI2-SVG2XML Architecture
 =========================
 
-SVGPlus has the following design concepts:
-	commands and resources are defined in a 
-	core: 
-		SVGPlusConverter: the entryPoint for the conversion
-		AbstractAction, AbstractActionElement: toplevel abstract classes for Action and Element
-		Chunk (maybe obsolete)
-		DocumentAnalyzer: converts x
+SVG2XML can currently:
+  * process a list of PDFs with DocumentAnalyzer
+  * split each PDF (managed by PDFAnalyzer) into Pages
+  * split each Page (managed by PageAnalyzer) into Chunks (components of a page), 
+  * analyze SVG primitives (<text> , <path>, <image>) in a chunk 
+     via TextAnalyzer, PathAnalyzer, ImageAnalyzer.
+     These use AbstractContainers to hold the content as it is analyzed.
+  * more specialized Containers are needed for complex content
+    such as styled and subscripted text (ScriptContainer).
+  * some chunks become more specialized (MixedAnalyzer = Text+path+image) and acquire
+    structure and purpose FigureAnalyzer, TableAnalyzer 
+  * packages paths, text, figure, table are used for specialist analysis
+  
+ Each Analyzer communicates with its container:
+  * PDFAnalyzer contains DocumentListAnalyzer
+  * PageAnalyzer contains PDFAnalyzer 
+  * PageChunkAnalyzer contains PageAnalyzer.
+  This each pageChunk "knows" which PDFAnalyzer it is from and can access resources
+    such as directories
+    
+ PDFAnalyzer uses
+  * PDFAnalyzerIO for its directories, etc
+  * PDFAnalyzerOptions for control of operations
+  
+ PageAnalyzer uses
+  * PageIO for directories and options (this is primarily for analysing single pages)
+  
+  

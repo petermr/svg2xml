@@ -67,7 +67,7 @@ public class TextLine implements Iterable<SVGText> {
 	private Double yCoord = null;
 	private List<Double> yCoordList = null;
 	private Double fontSize = null;
-	private Set<SvgPlusCoordinate> fontSizeContainerSet = null;
+	private Set<TextCoordinate> fontSizeContainerSet = null;
 	private String physicalStyle;
 	private List<String> physicalStyleList;
 	
@@ -88,7 +88,7 @@ public class TextLine implements Iterable<SVGText> {
 	private RealArray svgCharacterWidthArray;
 	private RealArray excessWidthArray;
 	private double spaceFactor = DEFAULT_SPACE_FACTOR;
-	private Set<SvgPlusCoordinate> fontSizeSet;
+	private Set<TextCoordinate> fontSizeSet;
 	private Suscript suscript;
 	private Set<String> fontFamilySet;
 	private Multiset<String> fontFamilyMultiset;
@@ -187,7 +187,7 @@ public class TextLine implements Iterable<SVGText> {
 	public Double getFontSize() {
 		Double fs = null;
 		fontSizeContainerSet = getFontSizeContainerSet();
-		for (SvgPlusCoordinate fontSize : fontSizeContainerSet) {
+		for (TextCoordinate fontSize : fontSizeContainerSet) {
 			LOG.trace("FSZ "+fontSize);
 		}
 		if (fontSizeContainerSet != null) {
@@ -239,12 +239,12 @@ public class TextLine implements Iterable<SVGText> {
 		return fontFamilySet;
 	}
 	
-	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
+	public Set<TextCoordinate> getFontSizeContainerSet() {
 		if (fontSizeContainerSet == null) {
-			fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
+			fontSizeContainerSet = new HashSet<TextCoordinate>();
 			for (int i = 0; i < characterList.size(); i++) {
 				SVGText text = characterList.get(i);
-				SvgPlusCoordinate fontSize = new SvgPlusCoordinate(text.getFontSize());
+				TextCoordinate fontSize = new TextCoordinate(text.getFontSize());
 				fontSizeContainerSet.add(fontSize);
 			}
 		}
@@ -551,12 +551,12 @@ public class TextLine implements Iterable<SVGText> {
 		return spaceWidths == null ? null : spaceWidths.getMean();
 	}
 
-	public Set<SvgPlusCoordinate> getFontSizeSet() {
+	public Set<TextCoordinate> getFontSizeSet() {
 		if (fontSizeSet == null) {
-			fontSizeSet = new HashSet<SvgPlusCoordinate>();
+			fontSizeSet = new HashSet<TextCoordinate>();
 			for (SVGText text : characterList) {
 				double fontSize = text.getFontSize();
-				fontSizeSet.add(new SvgPlusCoordinate(fontSize));
+				fontSizeSet.add(new TextCoordinate(fontSize));
 			}
 		}
 		return fontSizeSet;

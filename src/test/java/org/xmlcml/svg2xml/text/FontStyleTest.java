@@ -11,11 +11,11 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.GraphicsElement.FontWeight;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.old.ChunkAnalyzerX;
+import org.xmlcml.svg2xml.old.ChunkAnalyzerXOld;
 import org.xmlcml.svg2xml.old.FontStyleOld;
 import org.xmlcml.svg2xml.old.FontStyleOld.Style;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.tools.Chunk;
+import org.xmlcml.svg2xml.paths.Chunk;
 
 public class FontStyleTest {
 

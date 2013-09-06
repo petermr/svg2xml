@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.page.PageAnalyzerTest;
 
 public class SampleTest {
 

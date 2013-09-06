@@ -30,12 +30,12 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.svg2xml.analyzer.ChunkId;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
+import org.xmlcml.svg2xml.pdf.ChunkId;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
@@ -76,10 +76,10 @@ public class TextStructurer {
 	private List<TextLine> linesWithCommonestFont;
 	private List<TextLine> linesWithLargestFont;
 	private List<TextLine> textLineList;
-	private SvgPlusCoordinate largestFontSize;
-	private SvgPlusCoordinate commonestFontSize;
+	private TextCoordinate largestFontSize;
+	private TextCoordinate commonestFontSize;
 	private Real2Range textLinesLargetFontBoundingBox;
-	private Set<SvgPlusCoordinate> fontSizeSet;
+	private Set<TextCoordinate> fontSizeSet;
 
 	private Multiset<String> fontFamilySet;
 	private List<Double> actualWidthsOfSpaceCharactersList;
@@ -92,7 +92,7 @@ public class TextStructurer {
 	private Multiset<Double> separationSet;
 	private Map<Integer, TextLine> textLineByYCoordMap;
 	private RealArray textLineCoordinateArray;
-	private Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize;
+	private Multimap<TextCoordinate, TextLine> textLineListByFontSize;
 
 	private List<Real2Range> textLineChunkBoxes;
 
@@ -195,8 +195,8 @@ public class TextStructurer {
 
 
 	
-	public Set<SvgPlusCoordinate> getFontSizeContainerSet() {
-		Set<SvgPlusCoordinate> fontSizeContainerSet = new HashSet<SvgPlusCoordinate>();
+	public Set<TextCoordinate> getFontSizeContainerSet() {
+		Set<TextCoordinate> fontSizeContainerSet = new HashSet<TextCoordinate>();
 		if (fontSizeContainerSet != null) {
 			for (TextLine textLine : textLineList) {
 				fontSizeContainerSet.addAll(textLine.getFontSizeContainerSet());
@@ -273,7 +273,7 @@ public class TextStructurer {
 		return linesWithCommonestFont;
 	}
 
-	public SvgPlusCoordinate getCommonestFontSize() {
+	public TextCoordinate getCommonestFontSize() {
 		commonestFontSize = null;
 		Map<Double, Integer> fontCountMap = new HashMap<Double, Integer>();
 		for (TextLine textLine : textLineList) {
@@ -299,17 +299,17 @@ public class TextStructurer {
 			int count = fontCountMap.get(fontSize);
 			LOG.trace(">> "+fontSize+" .. "+fontCountMap.get(fontSize));
 			if (commonestFontSize == null || count > frequency) {
-			    commonestFontSize = new SvgPlusCoordinate(fontSize);
+			    commonestFontSize = new TextCoordinate(fontSize);
 			    frequency = count;
 			}
 		}
 		if (commonestFontSize != null) LOG.trace("commonest "+commonestFontSize.getDouble());
 	}
 	
-	public SvgPlusCoordinate getLargestFontSize() {
+	public TextCoordinate getLargestFontSize() {
 		largestFontSize = null;
-		Set<SvgPlusCoordinate> fontSizes = this.getFontSizeSet();
-		for (SvgPlusCoordinate fontSize : fontSizes) {
+		Set<TextCoordinate> fontSizes = this.getFontSizeSet();
+		for (TextCoordinate fontSize : fontSizes) {
 			if (largestFontSize == null || largestFontSize.getDouble() < fontSize.getDouble()) {
 				largestFontSize = fontSize;
 			}
@@ -336,12 +336,12 @@ public class TextStructurer {
 		return boundingBox;
 	}
 
-	public Set<SvgPlusCoordinate> getFontSizeSet() {
+	public Set<TextCoordinate> getFontSizeSet() {
 		if (fontSizeSet == null) {
 			if (textLineList != null) {
-				fontSizeSet = new HashSet<SvgPlusCoordinate>();
+				fontSizeSet = new HashSet<TextCoordinate>();
 				for (TextLine textLine : textLineList) {
-					Set<SvgPlusCoordinate> textLineFontSizeSet = textLine.getFontSizeSet();
+					Set<TextCoordinate> textLineFontSizeSet = textLine.getFontSizeSet();
 					fontSizeSet.addAll(textLineFontSizeSet);
 				}
 			}
@@ -416,13 +416,13 @@ public class TextStructurer {
 		return interTextLineSeparationArray;
 	}
 
-	public Multimap<SvgPlusCoordinate, TextLine> getTextLineListByFontSize() {
+	public Multimap<TextCoordinate, TextLine> getTextLineListByFontSize() {
 		if (textLineListByFontSize == null) {
 			textLineListByFontSize = ArrayListMultimap.create();
 			for (TextLine textLine : textLineList) {
-				Set<SvgPlusCoordinate> fontSizeSet = textLine.getFontSizeSet();
+				Set<TextCoordinate> fontSizeSet = textLine.getFontSizeSet();
 				if (fontSizeSet != null) {
-					for (SvgPlusCoordinate fontSize : fontSizeSet) {
+					for (TextCoordinate fontSize : fontSizeSet) {
 						textLineListByFontSize.put(fontSize, textLine);
 					}
 				}
@@ -519,8 +519,8 @@ public class TextStructurer {
 	}
 
 	public TextLineSet getTextLineSetByFontSize(double fontSize) {
-		Multimap<SvgPlusCoordinate, TextLine> textLineListByFontSize = this.getTextLineListByFontSize();
-		List<TextLine> textLines = (List<TextLine>) textLineListByFontSize.get(new SvgPlusCoordinate(fontSize));
+		Multimap<TextCoordinate, TextLine> textLineListByFontSize = this.getTextLineListByFontSize();
+		List<TextLine> textLines = (List<TextLine>) textLineListByFontSize.get(new TextCoordinate(fontSize));
 		return new TextLineSet(textLines);
 	}
 
@@ -537,7 +537,7 @@ public class TextStructurer {
 	 */
 	public List<TextLine> getCommonestFontSizeTextLineList() {
 		if (commonestFontSizeTextLineList == null) {
-			SvgPlusCoordinate commonestFontSize = getCommonestFontSize();
+			TextCoordinate commonestFontSize = getCommonestFontSize();
 			Double commonestFontSizeValue = (commonestFontSize == null) ?
 					null : commonestFontSize.getDouble();
 			commonestFontSizeTextLineList = new ArrayList<TextLine>();
@@ -633,9 +633,13 @@ public class TextStructurer {
 	}
 
 	public static TextStructurer createTextStructurerWithSortedLines(File svgFile) {
+		return TextStructurer.createTextStructurerWithSortedLines(svgFile, (PageAnalyzer) null);
+	}
+
+	public static TextStructurer createTextStructurerWithSortedLines(File svgFile, PageAnalyzer pageAnalyzer) {
 		SVGElement svgChunk = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
-		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
+		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters, pageAnalyzer);
 		textStructurer.setSvgChunk(svgChunk);
 		return textStructurer;
 	}
@@ -663,8 +667,8 @@ public class TextStructurer {
 		textAnalyzer.setTextStructurer(this);
 	}
 	
-	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters) {
-		TextAnalyzer textAnalyzer = new TextAnalyzer();
+	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, PageAnalyzer pageAnalyzer) {
+		TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
 		textAnalyzer.setTextCharacters(textCharacters);
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		// the next two lines may be unnecessary
@@ -742,8 +746,8 @@ public class TextStructurer {
 		return textLineList;
 	}
 
-	public static PageChunkAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters) {
-			TextAnalyzer textAnalyzer = new TextAnalyzer();
+	public static PageChunkAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters, PageAnalyzer pageAnalyzer) {
+			TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
 			TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer);
 			return textAnalyzer;
 	}

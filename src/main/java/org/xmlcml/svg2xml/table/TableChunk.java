@@ -4,9 +4,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Element;
-import nu.xom.Nodes;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
@@ -14,8 +11,8 @@ import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 /** superclass of cells, rows, etc in table
@@ -226,7 +223,7 @@ public class TableChunk {
 
 	protected HtmlElement createHtmlThroughTextStructurer() {
 		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters, (PageAnalyzer)null);
 		HtmlElement htmlElement = textStructurer.createHtmlElement();
 		return htmlElement;
 	}

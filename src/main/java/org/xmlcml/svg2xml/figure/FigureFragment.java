@@ -25,7 +25,7 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.util.GraphUtil;
-import org.xmlcml.svg2xml.util.SVGPlusConstantsX;
+import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
 public class FigureFragment {
 
@@ -92,7 +92,7 @@ public class FigureFragment {
 		extractPrimitives();
 		LOG.trace(toString());
 		primitivesElement = new Element(FRAGMENT_TAG);
-		primitivesElement.addAttribute(new Attribute(SVGPlusConstantsX.ID, id));
+		primitivesElement.addAttribute(new Attribute(SVG2XMLConstantsX.ID, id));
 		analyzeCircles();
 		analyzeImages();
 		analyzeLines();
