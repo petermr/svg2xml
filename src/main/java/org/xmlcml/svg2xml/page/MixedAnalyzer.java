@@ -1,7 +1,5 @@
 package org.xmlcml.svg2xml.page;
 
-import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +15,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.DivContainer;
-import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
-import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class MixedAnalyzer extends PageChunkAnalyzer {
 
@@ -95,24 +91,6 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 	public PathAnalyzer getPathAnalyzer() {return pathAnalyzer;}
 	public TextAnalyzer getTextAnalyzer() {return textAnalyzer;}
 
-//	/** annotates each section with its own analyzer.annotateChunk()
-//	 * 
-//	 */
-//	@Override
-//	public SVGG oldAnnotateChunk() {
-//		ensureAnalyzerList();
-//		SVGG g = new SVGG();
-//		for (AbstractAnalyzer analyzer : analyzerList) {
-//			SVGG gg = analyzer.oldAnnotateChunk();
-//			if (gg != null) {
-//				g.appendChild(gg.copy());
-//			}
-//		}
-//		String title = "MIXED: "+this;
-//		g.setTitle(title);
-//		return g;
-//	}
-	
 	@Override
 	public HtmlElement createHtmlElement() {
 		HtmlDiv element = new HtmlDiv();

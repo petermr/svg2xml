@@ -137,17 +137,17 @@ public abstract class FigureComponent {
 			} else {
 				figureType = FigureType.IMAGE;
 			}
-			for (SVGImage image : filteredImageList) {
-				PageAnalyzer pdfAnalyzer = figureAnalyzer.getPageAnalyzer();
-				String id = figureAnalyzer.getChunkId().toString();
-				LOG.debug("IMAGE "+image.getWidth()+" "+image.getHeight());
-				File file = new File("target/image"+id+".png");
-				try {
-					image.writeImage(file.toString(), SVGImage.IMAGE_PNG);
-				} catch (IOException e) {
-					throw new RuntimeException(e);
-				}
-			}
+//			for (SVGImage image : filteredImageList) {
+//				PageAnalyzer pdfAnalyzer = figureAnalyzer.getPageAnalyzer();
+//				String id = figureAnalyzer.getChunkId().toString();
+//				LOG.debug("IMAGE "+image.getWidth()+" "+image.getHeight());
+//				File file = new File("target/image"+id+".png");
+//				try {
+//					image.writeImage(file.toString(), SVGImage.IMAGE_PNG);
+//				} catch (IOException e) {
+//					throw new RuntimeException(e);
+//				}
+//			}
 		} else if (filteredImageList.size() == 0 && filteredPathList.size() > 0 && filteredTextList.size() == 0 ) {
 			figureType = FigureType.PATHS;
 		} else if (filteredImageList.size() == 0 && filteredPathList.size() == 0 && filteredTextList.size() > 0 ) {

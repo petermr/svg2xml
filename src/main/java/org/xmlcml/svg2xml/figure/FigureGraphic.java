@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.figure;
 
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +24,8 @@ public class FigureGraphic extends FigureComponent {
 
 	private static final Double OFFSET_X = 0.;
 	private static final Double OFFSET_Y = 0.;
+	private static final double DIMENSION_MARGIN = 1.05;
+	
 	private BufferedImage bufferedImage;
 
 	public FigureGraphic(FigureAnalyzer figureAnalyzer) {
@@ -49,8 +52,11 @@ public class FigureGraphic extends FigureComponent {
 
 	private HiddenGraphics createHiddenGraphics() {
 		HiddenGraphics hg = new HiddenGraphics();
-		hg.setDimension(svgContainer.getBoundingBox().getDimension());
-		bufferedImage = hg.createImage(svgContainer);
+		Dimension dimension = svgContainer.getDimension();
+		hg.setDimension(dimension);
+//		LOG.debug("Dimension: "+dimension.width+", "+dimension.height);
+		hg.setDimension(new Dimension((int)(dimension.width*DIMENSION_MARGIN), (int)(dimension.height*DIMENSION_MARGIN)));
+		bufferedImage = hg.createImageTranslatedToOrigin(svgContainer);
 		return hg;
 	}
 

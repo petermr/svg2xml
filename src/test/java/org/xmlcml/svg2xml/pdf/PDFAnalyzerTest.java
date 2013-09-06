@@ -25,9 +25,9 @@ public class PDFAnalyzerTest {
 	public void multipleTest() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 //		analyzer.analyzePDFFile(Fixtures.GEO310_PDF);
-//		analyzer.analyzePDFFile(Fixtures.MATH311_PDF);
+		analyzer.analyzePDFFile(Fixtures.MATH311_PDF);
 //		analyzer.analyzePDFFile(Fixtures.TREE313_PDF);
-		analyzer.analyzePDFFile(Fixtures.BMC174_PDF);
+//		analyzer.analyzePDFFile(Fixtures.BMC174_PDF);
 //		analyzer.analyzePDFFile(Fixtures.ROBERTS_PDF);
 //		analyzer.analyzePDFFile(Fixtures.MDPI_02982_PDF);
 //		analyzer.analyzePDFFile(Fixtures.ELS_1917_PDF);

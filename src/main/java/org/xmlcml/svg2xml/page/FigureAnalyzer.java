@@ -245,7 +245,7 @@ public class FigureAnalyzer extends PageChunkAnalyzer {
 	public HtmlDiv createFigure() {
 		String id = getIdFromSvgElement();
 		List<ScriptLine> scriptLineList = textAnalyzer.getTextStructurer().getScriptedLineList(); 
-		Double yCoordinateOfCaption = iterateThroughLinesToFiindCaption(scriptLineList);
+		Double yCoordinateOfCaption = iterateThroughLinesToFindCaption(scriptLineList);
 		if (yCoordinateOfCaption != null) {
 			createCaptionAndGraphic(id, yCoordinateOfCaption);
 		}
@@ -281,7 +281,7 @@ public class FigureAnalyzer extends PageChunkAnalyzer {
 		return div;
 	}
 
-	private Double iterateThroughLinesToFiindCaption(List<ScriptLine> scriptLineList) {
+	private Double iterateThroughLinesToFindCaption(List<ScriptLine> scriptLineList) {
 		Double ySplit = null;
 		for (ScriptLine scriptLine : scriptLineList) {	
 			String s = scriptLine.getTextContentWithSpaces();
