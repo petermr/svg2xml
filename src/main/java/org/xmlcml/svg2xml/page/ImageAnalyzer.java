@@ -47,20 +47,6 @@ public class ImageAnalyzer extends PageChunkAnalyzer {
 	
 	public List<SVGImage> getImageList() { return imageList;}
 
-//	@Override
-	public SVGG oldAnnotateChunk() {
-		SVGG g = new SVGG();
-		for (int i = 0; i < imageList.size(); i++) {
-			SVGImage image = imageList.get(i);
-			annotateElement(image, "green", "blue", 0.5, 0.2);
-			g.appendChild(image.copy());
-		}
-		String title = "IMAGE "+imageList.size();
-		outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
-		g.setTitle(title);
-		return g;
-	}
-
 	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
 		ImageContainer imageContainer = new ImageContainer(pageAnalyzer);
 		ensureAbstractContainerList();

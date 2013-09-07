@@ -161,8 +161,8 @@ public class PathAnalyzer extends PageChunkAnalyzer {
 				annotateElement(path, "purple", "blue", 0.5, 0.2);
 				g.appendChild(path.copy());
 			}
-			String title = "PATH "+pathList.size();
-			outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "cyan");
+			String title = "JUNK PATH "+pathList.size();
+			outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "magenta");
 			g.setTitle(title);
 		}
 		return g;

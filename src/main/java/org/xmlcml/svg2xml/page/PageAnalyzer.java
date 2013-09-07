@@ -44,7 +44,19 @@ import org.xmlcml.svg2xml.pdf.PDFIndex;
  * processes a page.
  * 
  * normally called by an iteration over pages from PDFAnalyzer.
- * main routine is splitChunksAnnotateAndCreatePage
+ * main routine is splitChunksAnnotateAndCreatePage()
+ *   this creates whitespace-separated chunks and binds each to a PageChunkAnalyzer.
+ *   the PageChunkAnalyzer is specialized as (say)
+ *    *  FigureAnalyzer, ImageAnalyzer, PathAnalyzer, MixedAnalyzer, TextAnalyzer
+ *       these analyzers may output files (especially FigureAnalyzer) but most output is 
+ *       reserved until later.
+
+ * 
+ * optionally (but normally) components are then output with
+ *       PDFAnalyzer 		pdfIo.outputFiles(getPdfOptions()); // move this to PageAnalyzer
+ *       Each PageChunkAnalyzer is bound to a corresponding AbstractContainer (e.g. PathContainer)
+ *       each of which has a createHtmlElement().
+ *       
  * @author pm286
  *
  */
@@ -388,7 +400,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			SVGG chunk = abstractContainer.getSVGChunk();
 			String chunkId = chunk.getId();
-			File file = pageIo.createChunkFile(chunkId);
+			File file = new File(pageIo.createChunkFilename(chunkId));
 			PageIO.outputFile(chunk, file);
 			LOG.trace(abstractContainer.getClass() + " " + chunkId);
 		}
@@ -435,7 +447,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	private void outputImageFile(String chunkId, SVGImage image) {
-		File file = pageIo.createImageFile(chunkId);
+		File file = new File(pageIo.createImageFilename(chunkId));
 		PageIO.outputImage(image, file, pageIo.getImageMimeType());
 	}
 
@@ -443,6 +455,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		LOG.debug(".......................");
 		Set<ChunkId> chunkIdSet = new HashSet<ChunkId>(); 
 		ensureAbstractContainerList();
+		LOG.debug("abstractContainers "+abstractContainerList.size());
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			ChunkId chunkId = abstractContainer.getChunkId();
 			if (chunkId == null) {
@@ -451,7 +464,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			}
 			normalizeDuplicateChunkId(chunkIdSet, abstractContainer, chunkId);
 			long time = System.currentTimeMillis();
-			LOG.trace(abstractContainer.getClass()+" "+chunkId+" "+abstractContainer.getType());
+			LOG.debug("abstractContainer: "+abstractContainer.getClass()+" "+chunkId+" "+abstractContainer.getType()+" "+abstractContainer.hashCode());
 			HtmlElement element = abstractContainer.createHtmlElement();
 			ContainerType type = abstractContainer.getType();
 			if (pageIo.isOutputFigures() && ContainerType.FIGURE.equals(type)) {

@@ -32,7 +32,7 @@ import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 /** superclass of raw components of PDFPage SVG.
  * 
  * Components are:
- *  FigureAnalyzer, ImageAnalyzer, PathAnalyzer,TableAnalyzer, TextAnalyzer
+ *  FigureAnalyzer, ImageAnalyzer, PathAnalyzer, MixedAnalyzer, TextAnalyzer
  *  
  *  Each component can access the PageAnalyzer , and through that the PDFAnalyzer
  *  for the document. Most analyzers have an AbstractContainer which processes the raw

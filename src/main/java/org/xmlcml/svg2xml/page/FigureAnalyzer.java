@@ -1,6 +1,5 @@
 package org.xmlcml.svg2xml.page;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +13,11 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlA;
 import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
+import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.figure.Caption;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.figure.FigureCaption;
@@ -250,12 +252,13 @@ public class FigureAnalyzer extends PageChunkAnalyzer {
 			createCaptionAndGraphic(id, yCoordinateOfCaption);
 		}
 		String imageName = getPageIO().createImageFilename(id);
-		HtmlDiv div = createHtmlImgDivElement(imageName);
+		HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "50%");
 		if (figureCaption != null) {
 			figureCaption.processCaptionText(div);
 		}
 		if (figureGraphic != null) {
-			figureGraphic.createImageFromComponents(imageName);
+			String svgName = getPageIO().createSvgFilename(id);
+			figureGraphic.createAndWriteImageAndSVG(imageName, div, svgName);
 		}
 		
 
@@ -270,15 +273,6 @@ public class FigureAnalyzer extends PageChunkAnalyzer {
 	public String getIdFromSvgElement() {
 		String id = svgElement == null ? null : svgElement.getId();
 		return id;
-	}
-
-	private HtmlDiv createHtmlImgDivElement(String pngName) {
-		HtmlDiv div = new HtmlDiv();
-		HtmlImg img = new HtmlImg();
-		img.setSrc("../../../"+pngName);
-		img.addAttribute(new Attribute("width", "50%"));
-		div.appendChild(img);
-		return div;
 	}
 
 	private Double iterateThroughLinesToFindCaption(List<ScriptLine> scriptLineList) {

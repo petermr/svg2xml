@@ -96,7 +96,9 @@ public abstract class AbstractContainer {
 			htmlElement = new HtmlDiv();
 			for (AbstractContainer container : containerList) {
 				HtmlElement htmlElement1 = container.createHtmlElement();
-				htmlElement.appendChild(htmlElement1);
+				if (htmlElement1 != null) {
+					htmlElement.appendChild(htmlElement1);
+				}
 			}
 		}
 		return htmlElement;

@@ -200,22 +200,23 @@ public class PageIO {
 		aggregatedCount = count;
 	}
 
-	public File createChunkFile(String chunkId) {
-		File file = new File(finalSVGDocumentDir, CHUNK+"."+chunkId+DOT_SVG);
-		return file;
+	public String createChunkFilename(String chunkId) {
+		return createFilename(CHUNK, chunkId, DOT_SVG);
 	}
 
-	public File createImageFile(String chunkId) {
-		File file = new File(finalSVGDocumentDir, IMAGE+"."+chunkId+DOT_PNG);
-		return file;
+	public String createImageFilename(String chunkId) {
+		return createFilename(IMAGE, chunkId, DOT_PNG);
 	}
 	
-	public String createImageFilename(String chunkId) {
-		File file = createImageFile(chunkId);
+	public String createSvgFilename(String chunkId) {
+		return createFilename(IMAGE, chunkId, DOT_SVG);
+	}
+	
+	private String createFilename(String root, String id, String suffix) {
+		File file = new File(finalSVGDocumentDir, IMAGE+"."+id+suffix);
 		return file.getPath().replaceAll("\\\\", "/");
 	}
 	
-
 	public static File createHtmlFile(File dir, ContainerType type, String chunkId) {
 		dir.mkdirs();
 		return new File(dir, type+"."+chunkId+DOT_HTML);

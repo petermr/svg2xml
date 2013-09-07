@@ -53,6 +53,10 @@ public abstract class FigureComponent {
 	private FigureAnalyzer figureAnalyzer;
 	protected PageAnalyzer pageAnalyzer;
 
+	protected FigureComponent(PageAnalyzer pageAnalyzer) {
+		this.pageAnalyzer = pageAnalyzer;
+	}
+
 	protected FigureComponent(FigureAnalyzer figureAnalyzer) {
 		this(figureAnalyzer.getTextAnalyzer(), figureAnalyzer.getPathAnalyzer(), figureAnalyzer.getImageAnalyzer());
 		this.figureAnalyzer = figureAnalyzer;
@@ -162,6 +166,11 @@ public abstract class FigureComponent {
 		LOG.debug("FIGURE"+this.getClass().getName()+"************************************************** "+figureType+ 
 				" "+filteredTextList.size()+" "+filteredPathList.size()+" "+filteredImageList.size());
 		return figureType;
+	}
+
+	public void setSVGContainer(SVGG svgContainer) {
+		this.svgContainer = svgContainer;
+		boundingBox = svgContainer == null ? null : svgContainer.getBoundingBox();
 	}
 
 
