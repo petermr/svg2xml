@@ -192,6 +192,9 @@ public class Fixtures {
 	public static final File PDFS_ELS_DIR = new File(PDFS_DIR, "els/");
 	public static final File ELS_1917_PDF = new File(PDFS_ELS_DIR, "1-s2.0-S1055790313001917-main.pdf");
 	
+	public static final File PDFS_CELL_DIR = new File(PDFS_DIR, "cell/");
+	public static final File CELL_8994_PDF = new File(PDFS_CELL_DIR, "PIIS0092867413008994.pdf");
+
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {

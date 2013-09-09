@@ -21,7 +21,7 @@ import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.indexer.LicenceIndexer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
@@ -57,10 +57,8 @@ public abstract class AbstractContainer {
 
 	private static final Pattern TABLE_CAPTION = Pattern.compile(".*Tab(le)?\\s+(\\d+).*");
 	private static final Pattern FIGURE_CAPTION = Pattern.compile(".*Fig(ure)?\\s+(\\d+).*");
-
 	private static final double HEADER_MAX = 80;
 	private static final double FOOTER_MIN = 715; // not calibrated yet
-
 	private static final Double MIN_TITLE_SIZE = 15.0; // first guess
 
 	Pattern ACKNOWLEDGEMENT_P = Pattern.compile("([Aa]cknowledge?ments?)");
@@ -84,7 +82,7 @@ public abstract class AbstractContainer {
 	private Integer tableNumber;
 	private Integer figureNumber;
 
-	private PageChunkAnalyzer pageChunkAnalyzer;
+	private ChunkAnalyzer chunkAnalyzer;
 
 	public AbstractContainer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
@@ -351,11 +349,11 @@ public abstract class AbstractContainer {
 		return tableElement;
 	}
 
-	public void setPageChunkAnalyzer(PageChunkAnalyzer pageChunkAnalyzer) {
-		this.pageChunkAnalyzer = pageChunkAnalyzer;
+	public void setChunkAnalyzer(ChunkAnalyzer chunkAnalyzer) {
+		this.chunkAnalyzer = chunkAnalyzer;
 	}
 	
-	public PageChunkAnalyzer getPageChunkAnalyzer() {
-		return this.pageChunkAnalyzer;
+	public ChunkAnalyzer getChunkAnalyzer() {
+		return this.chunkAnalyzer;
 	}
 }

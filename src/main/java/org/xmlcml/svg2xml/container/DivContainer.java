@@ -64,6 +64,7 @@ public class DivContainer extends AbstractContainer {
 		if (imageList != null && imageList.size() > 0) {
 			imageContainer = new ImageContainer(pageAnalyzer);
 			imageContainer.add(imageList);
+			imageContainer.setChunkId(this.getChunkId());
 			this.add(imageContainer);
 		}
 	}
@@ -72,6 +73,7 @@ public class DivContainer extends AbstractContainer {
 		if (pathList != null && pathList.size() > 0) {
 			pathContainer = new PathContainer(pageAnalyzer);
 			pathContainer.add(pathList);
+			pathContainer.setChunkId(this.getChunkId());
 			this.add(pathContainer);
 		}
 	}

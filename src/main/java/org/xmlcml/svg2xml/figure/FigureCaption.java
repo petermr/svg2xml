@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PathAnalyzer;
@@ -13,7 +14,7 @@ import org.xmlcml.svg2xml.text.TextStructurer;
 public class FigureCaption extends FigureComponent {
 
 	private final static Logger LOG = Logger.getLogger(FigureCaption.class);
-	private FigureAnalyzer figureAnalyzer;
+	private ChunkAnalyzer figureAnalyzer;
 	
 	public FigureCaption(FigureAnalyzer figureAnalyzer) {
 		super(figureAnalyzer);

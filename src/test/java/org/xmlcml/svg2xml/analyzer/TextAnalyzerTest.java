@@ -611,15 +611,15 @@ public class TextAnalyzerTest {
 //		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
 //	}
 	
-	@Test
-	/** 
-	 * superscripts
-	 */
-	public void testCreateHTMLDivWithParas() throws Exception {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		HtmlElement div = textStructurer.getTextAnalyzer().createHtmlElement();
-		CMLUtil.debug(div, new FileOutputStream("target/divParas0.html"), 0);
-	}
+//	@Test
+//	/** 
+//	 * superscripts
+//	 */
+//	public void testCreateHTMLDivWithParas() throws Exception {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		HtmlElement div = textStructurer.getTextAnalyzer().createHtmlElement();
+//		CMLUtil.debug(div, new FileOutputStream("target/divParas0.html"), 0);
+//	}
 	
 //	@Test
 //	/** 

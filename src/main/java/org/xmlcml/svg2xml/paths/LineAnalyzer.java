@@ -11,7 +11,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.svg2xml.figure.AxisAnalyzerX;
 import org.xmlcml.svg2xml.figure.GraphPlotBox;
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;

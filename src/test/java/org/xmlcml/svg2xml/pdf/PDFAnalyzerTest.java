@@ -21,20 +21,20 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-	//@Ignore
+	@Ignore
 	public void multipleTest() {
-		PDFAnalyzer analyzer = new PDFAnalyzer();
-//		analyzer.analyzePDFFile(Fixtures.GEO310_PDF);
-//		analyzer.analyzePDFFile(Fixtures.MATH311_PDF);
-		analyzer.analyzePDFFile(Fixtures.TREE313_PDF);
-//		analyzer.analyzePDFFile(Fixtures.BMC174_PDF);
-//		analyzer.analyzePDFFile(Fixtures.ROBERTS_PDF);
-//		analyzer.analyzePDFFile(Fixtures.MDPI_02982_PDF);
-//		analyzer.analyzePDFFile(Fixtures.ELS_1917_PDF);
-//		analyzer.analyzePDFFile(Fixtures.NATURE_12352_PDF);
-//		analyzer.analyzePDFFile(Fixtures.PEERJ_50_PDF);
-//		analyzer.analyzePDFFile(Fixtures.PLOS_0049149_PDF);
-//		analyzer.analyzePDFFile(new File("../pdfs/acs/nn400656n.pdf"));
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.GEO310_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.MATH311_PDF);
+		new PDFAnalyzer().analyzePDFFile(Fixtures.TREE313_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.BMC174_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.ROBERTS_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.CELL_8994_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.MDPI_02982_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.ELS_1917_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.NATURE_12352_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.PEERJ_50_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.PLOS_0049149_PDF);
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/acs/nn400656n.pdf"));
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-//	@Ignore
+	@Ignore
 	public void testPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFs(Fixtures.PDFS_BMC_DIR.toString());

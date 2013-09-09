@@ -54,7 +54,7 @@ import org.xmlcml.svg2xml.paths.Chunk;
  * @author pm286
  *
  */
-public class PathAnalyzer extends PageChunkAnalyzer {
+public class PathAnalyzer extends ChunkAnalyzer {
 
 	private static final int SVG_BOX_Y = 800;
 	private static final int SVG_BOX_X = 1000;
@@ -87,7 +87,7 @@ public class PathAnalyzer extends PageChunkAnalyzer {
 			for (SVGPath path : pathListIn) {
 				this.pathList.add(path); 
 			}
-			getBoundingBoxAndParent(pathList.get(0));
+//			getBoundingBoxAndParent(pathList.get(0));
 		}
 	}
 
@@ -104,7 +104,7 @@ public class PathAnalyzer extends PageChunkAnalyzer {
 		this.splitAtMoveCommands();
 		this.interpretPathsAsRectCirclePolylineAndReplace();
 		this.splitPolylinesToLines(minLinesInPolyline);
-		getSVGPage().removeEmptySVGG();
+		svgChunk.removeEmptySVGG();
 	}
 
 	public void splitAtMoveCommands() {
@@ -152,56 +152,57 @@ public class PathAnalyzer extends PageChunkAnalyzer {
 		return strings;
 	}
 
-	public SVGG oldAnnotateChunk() {
-		SVGG g = null;
-		if (pathList != null && pathList.size() > 0) {
-			g = new SVGG();
-			for (int i = 0; i < pathList.size(); i++) {
-				SVGPath path = pathList.get(i);
-				annotateElement(path, "purple", "blue", 0.5, 0.2);
-				g.appendChild(path.copy());
-			}
-			String title = "JUNK PATH "+pathList.size();
-			outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "magenta");
-			g.setTitle(title);
-		}
-		return g;
-	}
+//	private SVGG oldAnnotateChunk() {
+//		SVGG g = null;
+//		if (pathList != null && pathList.size() > 0) {
+//			g = new SVGG();
+//			for (int i = 0; i < pathList.size(); i++) {
+//				SVGPath path = pathList.get(i);
+//				annotateElement(path, "purple", "blue", 0.5, 0.2);
+//				g.appendChild(path.copy());
+//			}
+//			String title = "JUNK PATH "+pathList.size();
+//			outputAnnotatedBox(g, 0.2, 0.7, title, 5.0, "magenta");
+//			g.setTitle(title);
+//		}
+//		return g;
+//	}
 	
-	@Override
-	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
-		return annotateElements(svgElements, 0.2, 0.7, 5.0, "cyan");
-	}
-
+//	@Override
+//	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+//		return annotateElements(svgElements, 0.2, 0.7, 5.0, "cyan");
+//	}
+//
 
 	
-	@Override
-	public HtmlElement createHtmlElement() {
-		LOG.trace("path html"+pathList.size()); 
-		HtmlElement element = new HtmlDiv();
-		SVGSVG svg = new SVGSVG();
-		svg.setWidth(SVG_BOX_X);
-		svg.setHeight(SVG_BOX_Y);
-		SVGG g = new SVGG();
-		svg.appendChild(g);
-		Transform2 transform = new Transform2();
-		transform.applyScalesToThis(0.5, 0.5);
-		g.setTransform(transform);
-		element.appendChild(svg);
-		for (int i = 0; i < pathList.size(); i++) {
-			SVGPath path = (SVGPath) pathList.get(i).copy();
-			Double strokeWidth = path.getStrokeWidth();
-			if (strokeWidth == null || strokeWidth < 1.0) {
-				path.setStrokeWidth(1.0);
-			}
-			Nodes nodes = path.query("./@clip-path");
-			for (int j = 0; j < nodes.size(); j++) {
-				nodes.get(j).detach();
-			}
-			g.appendChild(path);
-		}
-		return element;
-	}
+//	@Override
+//	public HtmlElement createHtmlElement() {
+//		throw new RuntimeException("PathAnalyzer.createHtmlElement()");
+////		LOG.trace("path html"+pathList.size()); 
+////		HtmlElement element = new HtmlDiv();
+////		SVGSVG svg = new SVGSVG();
+////		svg.setWidth(SVG_BOX_X);
+////		svg.setHeight(SVG_BOX_Y);
+////		SVGG g = new SVGG();
+////		svg.appendChild(g);
+////		Transform2 transform = new Transform2();
+////		transform.applyScalesToThis(0.5, 0.5);
+////		g.setTransform(transform);
+////		element.appendChild(svg);
+////		for (int i = 0; i < pathList.size(); i++) {
+////			SVGPath path = (SVGPath) pathList.get(i).copy();
+////			Double strokeWidth = path.getStrokeWidth();
+////			if (strokeWidth == null || strokeWidth < 1.0) {
+////				path.setStrokeWidth(1.0);
+////			}
+////			Nodes nodes = path.query("./@clip-path");
+////			for (int j = 0; j < nodes.size(); j++) {
+////				nodes.get(j).detach();
+////			}
+////			g.appendChild(path);
+////		}
+////		return element;
+//	}
 	
 	
 	/** with help from
@@ -425,7 +426,7 @@ http://stackoverflow.com/questions/4958161/determine-the-centre-center-of-a-circ
 	public List<SVGLine> splitPolylinesToLines(Integer minLinesInPolyline) {
 		LOG.trace("minLines: "+minLinesInPolyline);
 		List<SVGLine> lineList = new ArrayList<SVGLine>();
-		List<SVGElement> polylineList = SVGUtil.getQuerySVGElements(getSVGPage(), ".//svg:polyline");
+		List<SVGElement> polylineList = SVGUtil.getQuerySVGElements(svgChunk, ".//svg:polyline");
 		for (SVGElement polyline : polylineList) {
 			List<SVGLine> lines = ((SVGPolyline)polyline).createLineList();
 			if (lines.size() < minLinesInPolyline) {

@@ -82,8 +82,8 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	}
 
 	public static List<Chunk> chunkCreateWhitespaceChunkList(SVGSVG svgPage) {
-		WhitespaceChunkerAnalyzerX pageChunkSplitterAnalyzer = new WhitespaceChunkerAnalyzerX();
-		List<Chunk> finalChunkList = pageChunkSplitterAnalyzer.splitByWhitespace(svgPage);
+		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzer = new WhitespaceChunkerAnalyzerX();
+		List<Chunk> finalChunkList = whitespaceChunkerAnalyzer.splitByWhitespace(svgPage);
 		return finalChunkList;
 	}
 

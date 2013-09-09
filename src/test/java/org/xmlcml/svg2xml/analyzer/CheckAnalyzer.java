@@ -1,6 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PathAnalyzer;
@@ -13,16 +13,16 @@ import org.xmlcml.svg2xml.page.TextAnalyzer;
  */
 public class CheckAnalyzer {
 
-	Class<? extends PageChunkAnalyzer> clazz;
+	Class<? extends ChunkAnalyzer> clazz;
 	private Integer count = null;
 	private Integer imageCount;
 	private Integer pathCount;
 	private Integer textCount;
-	private PageChunkAnalyzer imageAnalyzer;
-	private PageChunkAnalyzer pathAnalyzer;
-	private PageChunkAnalyzer textAnalyzer;
+	private ChunkAnalyzer imageAnalyzer;
+	private ChunkAnalyzer pathAnalyzer;
+	private ChunkAnalyzer textAnalyzer;
 	
-	public static CheckAnalyzer createCheckAnalyzer(PageChunkAnalyzer analyzer) {
+	public static CheckAnalyzer createCheckAnalyzer(ChunkAnalyzer analyzer) {
 		CheckAnalyzer  checkAnalyzer = null;
 		if (analyzer instanceof TextAnalyzer) {
 			checkAnalyzer = new CheckAnalyzer((TextAnalyzer) analyzer);
@@ -55,7 +55,7 @@ public class CheckAnalyzer {
 		this(TextAnalyzer.class, textAnalyzer.getTextCharacters().size());
 	}
 	
-	public CheckAnalyzer(Class<? extends PageChunkAnalyzer> clazz, int count) {
+	public CheckAnalyzer(Class<? extends ChunkAnalyzer> clazz, int count) {
 		this.clazz = clazz;
 		this.count = count;
 	}

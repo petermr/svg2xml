@@ -29,7 +29,7 @@ import com.google.common.collect.Multiset;
  * @author pm286
  *
  */
-public class TextAnalyzer extends PageChunkAnalyzer {
+public class TextAnalyzer extends ChunkAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(TextAnalyzer.class);
 	static {
@@ -49,15 +49,15 @@ public class TextAnalyzer extends PageChunkAnalyzer {
 	private TextLine rawCharacterList;
 	private Map<Integer, TextLine> characterByXCoordMap;
 
-	public List<Real2Range> emptyYTextBoxes;
-	public List<Real2Range> emptyXTextBoxes;
+//	public List<Real2Range> emptyYTextBoxes;
+//	public List<Real2Range> emptyXTextBoxes;
 
 	private SVGElement svgParent;
     private List<SVGText> textCharacters;
 	
 	/** refactored container */
 	private TextStructurer textStructurer;
-	private HtmlElement htmlElement;
+//	private HtmlElement htmlElement;
 	
 	public TextAnalyzer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -134,11 +134,11 @@ public class TextAnalyzer extends PageChunkAnalyzer {
 		return this.textStructurer;
 	}
 	
-	@Override
-	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
-		return annotateElements(svgElements, 0.2, 0.7, 5.0, "pink");
-	}
-
+//	@Override
+//	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+//		return annotateElements(svgElements, 0.2, 0.7, 5.0, "pink");
+//	}
+//
 	
 	
 	
@@ -236,20 +236,21 @@ public class TextAnalyzer extends PageChunkAnalyzer {
 		this.textStructurer = textStructurer;
 	}
 
-	public HtmlElement createHtmlElement() {
-		LOG.trace("createHTMLParasAndDivs");
-		List<TextLine> textLines = this.getLinesInIncreasingY();
-		LOG.trace("lines "+textLines.size());
-		for (TextLine textLine : textLines){
-			LOG.trace(">> "+textLine);
-		}
-		ensureTextContainerWithSortedLines();
-		htmlElement = textStructurer.createHtmlElement();
-		if (htmlElement != null) {
-			PageChunkAnalyzer.tidyStyles(htmlElement);
-		}
-		return htmlElement;
-	}
+//	public HtmlElement createHtmlElement() {
+//		throw new RuntimeException("TextAnalyzer.createHtmlElement()");
+////		LOG.trace("createHTMLParasAndDivs");
+////		List<TextLine> textLines = this.getLinesInIncreasingY();
+////		LOG.trace("lines "+textLines.size());
+////		for (TextLine textLine : textLines){
+////			LOG.trace(">> "+textLine);
+////		}
+////		ensureTextContainerWithSortedLines();
+////		htmlElement = textStructurer.createHtmlElement();
+////		if (htmlElement != null) {
+////			PageChunkAnalyzer.tidyStyles(htmlElement);
+////		}
+////		return htmlElement;
+//	}
 	
 //	//FIXME to use Splitters customized for different dataTypes  and parameters
 //	/** splits svgg into textStructurers using a list of splitters

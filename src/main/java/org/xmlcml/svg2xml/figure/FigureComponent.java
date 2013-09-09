@@ -13,6 +13,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
@@ -50,7 +51,7 @@ public abstract class FigureComponent {
 	private List<SVGPath> filteredPathList;
 	private List<SVGImage> filteredImageList;
 
-	private FigureAnalyzer figureAnalyzer;
+	private ChunkAnalyzer figureAnalyzer;
 	protected PageAnalyzer pageAnalyzer;
 
 	protected FigureComponent(PageAnalyzer pageAnalyzer) {

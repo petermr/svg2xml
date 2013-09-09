@@ -17,7 +17,7 @@ import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.DivContainer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 
-public class MixedAnalyzer extends PageChunkAnalyzer {
+public class MixedAnalyzer extends ChunkAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(MixedAnalyzer.class);
 
@@ -25,7 +25,7 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 	private PathAnalyzer pathAnalyzer = null;
 	private TextAnalyzer textAnalyzer = null;
 
-	private List<PageChunkAnalyzer> analyzerList;
+	private List<ChunkAnalyzer> analyzerList;
 
 	private Real2Range boundingBox;
 
@@ -91,29 +91,30 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 	public PathAnalyzer getPathAnalyzer() {return pathAnalyzer;}
 	public TextAnalyzer getTextAnalyzer() {return textAnalyzer;}
 
-	@Override
-	public HtmlElement createHtmlElement() {
-		HtmlDiv element = new HtmlDiv();
-		for (PageChunkAnalyzer analyzer : analyzerList) {
-			LOG.debug("MIXED "+analyzer);
-			HtmlDiv div = new HtmlDiv();
-			element.appendChild(div);
-			HtmlElement childElement = analyzer.createHtmlElement();
-			if (childElement != null) {
-				div.appendChild(childElement);
-			}
-		}
-		return element;
-	}
+//	@Override
+//	public HtmlElement createHtmlElement() {
+//		throw new RuntimeException("MixedAnalyzer.createHtmlElement()");
+////		HtmlDiv element = new HtmlDiv();
+////		for (PageChunkAnalyzer analyzer : analyzerList) {
+////			LOG.debug("MIXED "+analyzer);
+////			HtmlDiv div = new HtmlDiv();
+////			element.appendChild(div);
+////			HtmlElement childElement = analyzer.createHtmlElement();
+////			if (childElement != null) {
+////				div.appendChild(childElement);
+////			}
+////		}
+////		return element;
+//	}
 
-	public void add(PageChunkAnalyzer analyzer) {
+	public void add(ChunkAnalyzer analyzer) {
 		ensureAnalyzerList();
 		LOG.trace("Added "+analyzer);
 		setTypedAnalyzer(analyzer);
 		analyzerList.add(analyzer);
 	}
 
-	private void setTypedAnalyzer(PageChunkAnalyzer analyzer) {
+	private void setTypedAnalyzer(ChunkAnalyzer analyzer) {
 		if (analyzer instanceof ImageAnalyzer) {
 			imageAnalyzer = (ImageAnalyzer) analyzer;
 		} else if (analyzer instanceof PathAnalyzer) {
@@ -125,7 +126,7 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 
 	private void ensureAnalyzerList() {
 		if (analyzerList == null) {
-			analyzerList = new ArrayList<PageChunkAnalyzer>();
+			analyzerList = new ArrayList<ChunkAnalyzer>();
 		}
 	}
 
@@ -224,8 +225,8 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 			pathAnalyzer = null;
 		}
 		if (analyzerList != null) {
-			List<PageChunkAnalyzer> newAnalyzerList = new ArrayList<PageChunkAnalyzer>();
-			for (PageChunkAnalyzer analyzer : analyzerList) {
+			List<ChunkAnalyzer> newAnalyzerList = new ArrayList<ChunkAnalyzer>();
+			for (ChunkAnalyzer analyzer : analyzerList) {
 				if (!(analyzer instanceof PathAnalyzer)) {
 					newAnalyzerList.add(analyzer);
 				}
@@ -242,8 +243,8 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 			imageAnalyzer = null;
 		}
 		if (analyzerList != null) {
-			List<PageChunkAnalyzer> newAnalyzerList = new ArrayList<PageChunkAnalyzer>();
-			for (PageChunkAnalyzer analyzer : analyzerList) {
+			List<ChunkAnalyzer> newAnalyzerList = new ArrayList<ChunkAnalyzer>();
+			for (ChunkAnalyzer analyzer : analyzerList) {
 				if (!(analyzer instanceof ImageAnalyzer)) {
 					newAnalyzerList.add(analyzer);
 				}
@@ -260,8 +261,8 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 			textAnalyzer = null;
 		}
 		if (analyzerList != null) {
-			List<PageChunkAnalyzer> newAnalyzerList = new ArrayList<PageChunkAnalyzer>();
-			for (PageChunkAnalyzer analyzer : analyzerList) {
+			List<ChunkAnalyzer> newAnalyzerList = new ArrayList<ChunkAnalyzer>();
+			for (ChunkAnalyzer analyzer : analyzerList) {
 				if (!(analyzer instanceof TextAnalyzer)) {
 					newAnalyzerList.add(analyzer);
 				}
@@ -297,6 +298,7 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 		if (this.removeFrameBoxFromPathList()) {
 			divContainer.setBox(true);
 		}
+		divContainer.setChunkId(this.getChunkId());
 		divContainer.addImageList(this.getImageList());
 		divContainer.addPathList(this.getPathList());
 		divContainer.addTextList(this.getTextList());
@@ -305,14 +307,14 @@ public class MixedAnalyzer extends PageChunkAnalyzer {
 		return abstractContainerList;
 	}
 
-	@Override
-	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
-		return annotateElements(svgElements, 0.2, 0.7, 5.0, "yellow");
-	}
+//	@Override
+//	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
+//		return annotateElements(svgElements, 0.2, 0.7, 5.0, "yellow");
+//	}
 
 
 	private SVGG createSVGAndOutput(int humanPageNumber, int counter, SVGG gOrig,
-			PageChunkAnalyzer analyzerX,  String suffix, MixedAnalyzer mixedAnalyzer) {
+			ChunkAnalyzer analyzerX,  String suffix, MixedAnalyzer mixedAnalyzer) {
 		ChunkId chunkId;
 //		if (mixedAnalyzer.removeFrameBoxFromPathList()) {
 //			gOrig = mixedAnalyzer.getSVGG();

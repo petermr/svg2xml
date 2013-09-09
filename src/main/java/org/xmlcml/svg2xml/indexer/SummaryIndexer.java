@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 

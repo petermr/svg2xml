@@ -44,8 +44,8 @@ public class FigureBody extends Chunk {
 			if (id != null) {
 				bodyAnalysis.addAttribute(new Attribute(SVG2XMLConstantsX.ID, id));
 			}
-			FigureAnalyzer figureAnalyzer = figure.getFigureAnalyzer();
-			Real2 margins = figureAnalyzer.getClusterWhitespaceBoxMargins();
+//			FigureAnalyzer figureAnalyzer = figure.getFigureAnalyzer();
+			Real2 margins = figure.getClusterWhitespaceBoxMargins();
 			for (FigurePanel figurePanel : figurePanelList) {
 				List<FigureFragment> fragmentList = 
 					figurePanel.groupIntoWhitespaceSeparatedFragments(margins);

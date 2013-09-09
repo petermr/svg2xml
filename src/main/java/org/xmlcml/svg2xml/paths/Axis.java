@@ -25,7 +25,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.figure.AxisAnalyzerX;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
@@ -58,7 +58,7 @@ public class Axis {
 	private Double boxThickness;
 	private Double boxLengthExtension;
 	private AxisAnalyzerX axisAnalyzerX;
-	private PageChunkAnalyzer textAnalyzerX;
+	private ChunkAnalyzer textAnalyzerX;
 	private String id;
 
 	private double minTickLengthPixels;
@@ -584,7 +584,7 @@ public class Axis {
 		}
 	}
 
-	public PageChunkAnalyzer getTextAnalyzerX() {
+	public ChunkAnalyzer getTextAnalyzerX() {
 		return textAnalyzerX;
 	}
 

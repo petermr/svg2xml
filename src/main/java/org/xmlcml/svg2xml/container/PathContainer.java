@@ -68,8 +68,6 @@ public class PathContainer extends AbstractContainer  {
 			String svgName = pageAnalyzer.getPageIO().createSvgFilename(id);
 			HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "20%");
 			htmlElement.appendChild(div);
-//			HtmlP p = new HtmlP("PATH: "+summaryString());
-//			div.appendChild(p);
 			FigureGraphic figureGraphic = new FigureGraphic(pageAnalyzer);
 			removeAnnotatedRects(svgChunk);
 			figureGraphic.setSVGContainer(svgChunk);

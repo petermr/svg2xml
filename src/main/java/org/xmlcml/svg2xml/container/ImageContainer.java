@@ -10,8 +10,10 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
+import org.xmlcml.svg2xml.figure.FigureGraphic;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 
 public class ImageContainer extends AbstractContainer  {
@@ -52,11 +54,13 @@ public class ImageContainer extends AbstractContainer  {
 	@Override
 	public HtmlElement createHtmlElement() {
 		if (htmlElement == null) {
-			htmlElement = new HtmlDiv();
-			HtmlImg imgElement = new HtmlImg();
-			imgElement.setAlt("Image NYI");
-			htmlElement.appendChild(imgElement);
-			HtmlP p = new HtmlP("PATH");
+			super.createHtmlElement();
+			ChunkId chunkId = getChunkId();
+			String id = chunkId == null ? String.valueOf(System.currentTimeMillis()) : chunkId.toString();
+			String imageName = pageAnalyzer.getPageIO().createImageFilename(id);
+			HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "20%");
+			htmlElement.appendChild(div);
+			HtmlP p = new HtmlP("IMAGE");
 			htmlElement.appendChild(p);
 		}
 		return htmlElement;

@@ -24,7 +24,7 @@ import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.indexer.FigureIndexer;
 import org.xmlcml.svg2xml.indexer.TableIndexer;
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;

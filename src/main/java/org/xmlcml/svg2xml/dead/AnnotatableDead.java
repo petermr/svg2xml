@@ -9,7 +9,7 @@ import org.xmlcml.graphics.svg.SVGG;
  */
 public interface AnnotatableDead {
 	
-	SVGG oldAnnotateChunk();
-
-	int grot();
+//	SVGG oldAnnotateChunk();
+//
+//	int grot();
 }

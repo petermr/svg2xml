@@ -31,7 +31,7 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.container.ScriptContainer;
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
@@ -746,7 +746,7 @@ public class TextStructurer {
 		return textLineList;
 	}
 
-	public static PageChunkAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters, PageAnalyzer pageAnalyzer) {
+	public static ChunkAnalyzer createTextAnalyzerWithSortedLines(List<SVGText> characters, PageAnalyzer pageAnalyzer) {
 			TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
 			TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer);
 			return textAnalyzer;

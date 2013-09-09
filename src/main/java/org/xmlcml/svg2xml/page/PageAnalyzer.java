@@ -41,20 +41,28 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 
 /**
- * processes a page.
- * 
+ * Processes a page.
+ * <p>
  * normally called by an iteration over pages from PDFAnalyzer.
  * main routine is splitChunksAnnotateAndCreatePage()
- *   this creates whitespace-separated chunks and binds each to a PageChunkAnalyzer.
- *   the PageChunkAnalyzer is specialized as (say)
- *    *  FigureAnalyzer, ImageAnalyzer, PathAnalyzer, MixedAnalyzer, TextAnalyzer
+ *   this creates whitespace-separated chunks and binds each to a ChunkAnalyzer.
+ *   the ChunkAnalyzer is specialized as (say)
+ *   <ul>
+ *     <li>FigureAnalyzer</li>
+ *     <li> ImageAnalyzer</li>
+ *     <li> PathAnalyzer</li>
+ *     <li> MixedAnalyzer</li>
+ *     <li> TextAnalyzer</li>
+ *     </ul>
  *       these analyzers may output files (especially FigureAnalyzer) but most output is 
  *       reserved until later.
-
+ * </p>
  * 
- * optionally (but normally) components are then output with
+ * Optionally (but normally) components are then output with
+ * <code>
  *       PDFAnalyzer 		pdfIo.outputFiles(getPdfOptions()); // move this to PageAnalyzer
- *       Each PageChunkAnalyzer is bound to a corresponding AbstractContainer (e.g. PathContainer)
+ *       </code>
+ *       Each ChunkAnalyzer is bound to a corresponding AbstractContainer (e.g. PathContainer)
  *       each of which has a createHtmlElement().
  *       
  * @author pm286
@@ -104,9 +112,13 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		pageIo.ensureWhitespaceSVGChunkList();
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gOrig = (SVGG) gList.get(ichunk);
-			PageChunkAnalyzer analyzer = PageChunkAnalyzer.createSpecificAnalyzer(gOrig, this);
-			List<AbstractContainer> newContainerList = analyzer.createContainers(this);
-			annotateAndOutput(newContainerList, analyzer);
+			ChunkAnalyzer chunkAnalyzer = ChunkAnalyzer.createSpecificAnalyzer(gOrig, this);
+			chunkAnalyzer.setSVGChunk(gOrig);
+			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers(this);
+			for (AbstractContainer newContainer : newContainerList) {
+				newContainer.setSVGChunk(gOrig);
+			}
+			annotateAndOutput(newContainerList, chunkAnalyzer);
 		}
 		pageIo.createFinalSVGPageFromChunks();
 	}
@@ -123,10 +135,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
 
 	private void annotateAndOutput (
-			List<? extends AbstractContainer> newContainerList, PageChunkAnalyzer pageChunkAnalyzer) {
+			List<? extends AbstractContainer> newContainerList, ChunkAnalyzer pageChunkAnalyzer) {
 		ensureAbstractContainerList();
 		for (AbstractContainer newContainer : newContainerList) {
-			newContainer.setPageChunkAnalyzer(pageChunkAnalyzer);
+			newContainer.setChunkAnalyzer(pageChunkAnalyzer);
 			ChunkId chunkId = new ChunkId(pageIo.getHumanPageNumber(), aggregatedContainerCount);
 			newContainer.setChunkId(chunkId); 
 			abstractContainerList.add(newContainer);
@@ -135,14 +147,14 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			gOut = annotateChunkAndAddIdAndAttributes(gOut, chunkId, pageChunkAnalyzer, PageIO.DECIMAL_PLACES);
 			newContainer.setSVGChunk(gOut);
 			newContainer.setChunkId(chunkId);
-			LOG.trace("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
+			LOG.debug("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
 			pageIo.add(gOut);
 			aggregatedContainerCount++;
 		}
 	}
 
 
-	void writeFinalSVGChunks(List<? extends AbstractContainer> containerList, PageChunkAnalyzer analyzer, File outputDocumentDir) {
+	void writeFinalSVGChunks(List<? extends AbstractContainer> containerList, ChunkAnalyzer analyzer, File outputDocumentDir) {
 		Character cc = 'a';
 		for (AbstractContainer container : containerList) {
 			container.writeFinalSVGChunk(outputDocumentDir, cc++, getHumanPageNumber(), getAggregatedCount());
@@ -165,12 +177,12 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return TITLE;
 	}
 
-	private SVGG annotateChunkAndAddIdAndAttributes(SVGG gOrig, ChunkId chunkId, PageChunkAnalyzer analyzerX, int decimalPlaces) {
+	private SVGG annotateChunkAndAddIdAndAttributes(SVGG gOrig, ChunkId chunkId, ChunkAnalyzer analyzerX, int decimalPlaces) {
 		if (analyzerX == null) {
 			throw new RuntimeException("Null analyzer");
 		}
 		List<SVGElement> gList = SVGUtil.getQuerySVGElements(gOrig, "//svg:g");
-		SVGG gOut = analyzerX.annotateChunk(gList);
+		SVGG gOut = analyzerX.createChunkFromList(gList);
 		gOut.setId(chunkId.toString());
 		CMLUtil.copyAttributes(gOrig, gOut);
 		gOut.format(decimalPlaces);
@@ -413,13 +425,16 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			SVGG chunk = abstractContainer.getSVGChunk();
 			String chunkId = chunk.getId();
-			PageChunkAnalyzer pageChunkAnalyzer = abstractContainer.getPageChunkAnalyzer();
-			if (pageChunkAnalyzer instanceof ImageAnalyzer) {
-				throw new RuntimeException("Image: "+chunkId);
-			} else if(pageChunkAnalyzer instanceof FigureAnalyzer) {
-				throw new RuntimeException("Figure: "+chunkId);
-			} else if(pageChunkAnalyzer instanceof MixedAnalyzer) {
-				MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageChunkAnalyzer;
+			ChunkAnalyzer chunkAnalyzer = abstractContainer.getChunkAnalyzer();
+			if (chunkAnalyzer instanceof ImageAnalyzer) {
+				ImageAnalyzer imageAnalyzer = (ImageAnalyzer) chunkAnalyzer;
+				List<SVGImage> imageList = imageAnalyzer.getImageList();
+				outputImageFiles(chunkId, imageAnalyzer, imageList);
+				LOG.debug("ImageAnalyzer needs writing: "+chunkId);
+			} else if(chunkAnalyzer instanceof FigureAnalyzer) {
+				throw new RuntimeException("FigureAnalyzer needs writing: "+chunkId);
+			} else if(chunkAnalyzer instanceof MixedAnalyzer) {
+				MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) chunkAnalyzer;
 				ImageAnalyzer imageAnalyzer = mixedAnalyzer.getImageAnalyzer();
 				if (imageAnalyzer != null) {
 					List<SVGImage> imageList = imageAnalyzer.getImageList();
@@ -438,7 +453,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			outputImageFile(chunkId, imageList.get(0));
 		} else {
 			// enumerate images with letters
-			char cc = 'a';
+			int cc = 1;
 			for (SVGImage image :imageList) {
 				outputImageFile(chunkId+"."+cc, image);
 				cc++;

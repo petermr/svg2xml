@@ -17,7 +17,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PageChunkAnalyzer;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextLine;
 
@@ -55,7 +55,7 @@ public class PageSplitterAndHtmlTest {
 		};
 		for (int i = 0; i < gList.size(); i++) {
 			SVGElement g = gList.get(i);
-			PageChunkAnalyzer analyzer = PageChunkAnalyzer.createSpecificAnalyzer(g, (PageAnalyzer) null);
+			ChunkAnalyzer analyzer = ChunkAnalyzer.createSpecificAnalyzer(g, (PageAnalyzer) null);
 			CheckAnalyzer checkAnalyzer = CheckAnalyzer.createCheckAnalyzer(analyzer);
 			Assert.assertTrue("analyzer "+i+" "+analyzer+"; "+checkAnalyzers[i], checkAnalyzer.equals(checkAnalyzers[i]));
 		}
@@ -589,7 +589,7 @@ public class PageSplitterAndHtmlTest {
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		SVGElement g = gList.get(chunk);
 //		g.debug("GGG");
-		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) PageChunkAnalyzer.createSpecificAnalyzer(g, (PageAnalyzer) null);
+		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) ChunkAnalyzer.createSpecificAnalyzer(g, (PageAnalyzer) null);
 		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
 		TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
 		LOG.trace("TextAnalyzer "+textAnalyzer);
@@ -599,7 +599,7 @@ public class PageSplitterAndHtmlTest {
 		}
 		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
 //		Element element = textAnalyzer.createHtmlDivWithParas();
-		Element element = textAnalyzer.createHtmlElement();
+		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
 		JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
 		try {
 			Nodes nodes = element.query("//@style");
