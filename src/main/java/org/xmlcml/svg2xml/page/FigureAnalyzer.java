@@ -45,11 +45,8 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(FigureAnalyzer.class);
 
-//	private static final String CHUNK_STYLE = "chunkStyle";
 	public static final String FRAGMENT = "FRAGMENT";
 	public static final String OUTLINE_BOX = "outlineBox";
-//	private static final Object USE_CAPTIONS = "useCaptions";
-
 	public static final Pattern CAPTION_PATTERN = Pattern.compile("[Ff][Ii][Gg][Uu]?[Rr]?[Ee]?\\s*\\.?\\s*(\\d*).*", Pattern.DOTALL);
 
 	private static final Double YEPS = 2.0;
@@ -66,14 +63,6 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		super(pageAnalyzer);
 	}
 	
-	public void analyze() {
-		LOG.error("Figure NYI");
-	}
-
-//	public FigureAnalyzer(PDFIndex pdfIndex) {
-//		super(pdfIndex);
-//	}
-	
 	public FigureAnalyzer(TextAnalyzer textAnalyzer,
 			PathAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer, SVGElement svgElement) {
 		super(textAnalyzer.getPageAnalyzer());
@@ -82,103 +71,6 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		this.imageAnalyzer = imageAnalyzer;
 		this.setSVGChunk(svgElement);
 	}
-
-	
-
-	
-
-//	public List<Figure> createFigures() {
-//		if (locationStrategy == null) {
-//			throw new RuntimeException("Must give strategy");
-//		}
-//		if (OUTLINE_BOX.equals(locationStrategy)) {
-//			createFiguresFromBoxes();
-//		} else if (USE_CAPTIONS.equals(locationStrategy)) {
-//			getListOfFiguresAndAssembleFromCaptions();
-//		} else {
-//			throw new RuntimeException("Unknown or missing locationStrategy: "+locationStrategy);
-//		}
-//		return figureList;
-//	}
-
-//	public void setLocationStrategy(String strategy) {
-//		this.locationStrategy = strategy;
-//	}
-
-//	private List<Figure> createFiguresFromBoxes() {
-//		figureList = new ArrayList<Figure>();
-//		List<SVGElement> boxChunks = null;
-////				List<SVGElement> boxChunks = SVGUtil.getQuerySVGElements(
-////				svgPage, ".//svg:g[@"+CHUNK_STYLE+"='"+ChunkStyle.OUTLINED_BOX+"']");
-//		// we have already chunked the text, so look for captions
-//		for (SVGElement boxChunk : boxChunks) {
-//			/**
-//			 *  of form 
-//			 *  <g xmlns="http://www.w3.org/2000/svg" clipPath="clipPath8" chunkStyle="CAPTION">
-//			 *    <text style=" stroke  ... 
-//			 *    <g name="para">
-//                    <text style=" stroke : none;" x="62.929" y="473.365" font-size="8.0">Figure 1 Multi-gene phylogenetic ...
-//                  </g>
-//                </g>
-//			 */
-//			// A figure must have a caption (to avoid mention of Figure 1 in main text)
-//			Chunk caption = getCaptionFromBox(boxChunk);
-//			if (caption != null) {
-//				Figure figure = createFigure(boxChunk);
-//				boxChunk.getParent().replaceChild(boxChunk, figure);
-//				figure.addCaption(caption);
-//				figureList.add(figure);
-//			}
-//		}
-//		return figureList;
-//	}
-
-//	/**
-//	 * this is where figures have no box and we have to assemble from chunks
-//	 */
-//	private void getListOfFiguresAndAssembleFromCaptions() {
-//		// find captions
-//		List<SVGElement> boxChunks = null;
-////		List<SVGElement> boxChunks = SVGUtil.getQuerySVGElements(
-////				svgPage, ".//svg:g[@"+CHUNK_STYLE+"='"+ChunkStyle.OUTLINED_BOX+"']");
-//		for (SVGElement boxChunk : boxChunks) {
-//			Chunk caption = getCaptionFromBox(boxChunk);
-//			if (caption != null) {
-//				throw new RuntimeException("NYI");
-//			}
-//		}
-//	}
-
-//	private Figure createFigure(SVGElement chunk) {
-//		Figure figure = new Figure(this/*, figureStyle*/);
-//		figure.copyAttributesAndChildrenFromSVGElement(chunk);
-//		figure.createElementListAndCalculateBoundingBoxes(/*chunk*/);
-//		return figure;
-//	}
-
-//	/** caption is identified by "Fig. " or "Figure " as dictated by stylesheet
-//	 * 
-//	 * @param boxChunk
-//	 * @return
-//	 */
-//	private Chunk getCaptionFromBox(SVGElement boxChunk) {
-//		Chunk caption = null;
-//		String startsWith = null;
-//		List<SVGElement> captionElements = SVGUtil.getQuerySVGElements(
-//				boxChunk, "./svg:g[svg:g[@name='para']/svg:text[starts-with(., '"+startsWith+"')]]");
-//		if (captionElements.size() == 1) {
-//			caption = createCaptionAndReplace((Chunk)captionElements.get(0));
-//		}
-//		return caption;
-//	}
-
-//	private Chunk createCaptionAndReplace(Chunk chunk) {
-//		Chunk caption = new Caption(chunk);
-//		caption.copyAttributesAndChildrenFromSVGElement(chunk);
-//		chunk.detach();
-//		caption.createElementListAndCalculateBoundingBoxes();
-//		return caption;
-//	}
 
 	public HtmlDiv createFigure() {
 		String id = String.valueOf(getChunkId());
@@ -201,11 +93,6 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		return div;
 	}
 
-//	public String getIdFromSvgElement() {
-//		String id = svgChunk == null ? null : svgChunk.getId();
-//		return id;
-//	}
-
 	private Double iterateThroughLinesToFindCaption(List<ScriptLine> scriptLineList) {
 		Double ySplit = null;
 		for (ScriptLine scriptLine : scriptLineList) {	
@@ -213,7 +100,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 			LOG.trace("Y "+scriptLine.getBoundingBox()+" "+s);
 			if (CAPTION_PATTERN.matcher(s).matches()) {
 				ySplit = scriptLine.getBoundingBox().getYMin();
-				LOG.debug("Figure Caption: "+scriptLine.getTextContentWithSpaces());
+				LOG.trace("Figure Caption: "+scriptLine.getTextContentWithSpaces());
 				break;
 			}
 		}
@@ -223,10 +110,10 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 	private void createCaptionAndGraphic(String id, Double ySplit) {
 		figureCaption = new FigureCaption(this);
 		figureCaption.addElements(FigureComponent.ABOVE, ySplit - YEPS);
-		LOG.debug("Caption "+figureCaption.getSvgContainer().getChildCount());
+		LOG.trace("Caption "+figureCaption.getSvgContainer().getChildCount());
 		figureGraphic = new FigureGraphic(this);
 		figureGraphic.addElements(FigureComponent.BELOW, ySplit + YEPS);
-		LOG.debug("Graphic "+figureGraphic.getSvgContainer().getChildCount());
+		LOG.trace("Graphic "+figureGraphic.getSvgContainer().getChildCount());
 		try {
 			CMLUtil.debug(figureCaption.getSvgContainer(), new FileOutputStream("target/caption"+id+".svg"), 1);
 			CMLUtil.debug(figureGraphic.getSvgContainer(), new FileOutputStream("target/graphic"+id+".svg"), 1);

@@ -12,7 +12,7 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.container.AbstractContainer;
-import org.xmlcml.svg2xml.container.DivContainer;
+import org.xmlcml.svg2xml.container.MixedContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
@@ -50,7 +50,7 @@ public class PageAnalyzerTest {
 	public void testPageAnalyzer8() {
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(TextFixtures.createSVG(TextFixtures.BMC_312MULT_8_SVG), null);
 //		PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
-		pageAnalyzer.splitChunksAnnotateAndCreatePage();
+		pageAnalyzer.splitChunksAndCreatePage();
 //		pageAnalyzer.analyze();
 //		List<AbstractContainer> containerList = pageAnalyzer.getPageAnalyzerContainerList();
 //		Assert.assertNotNull("containerList", containerList);
@@ -87,13 +87,13 @@ public class PageAnalyzerTest {
 				new Class[]{
 				ScriptContainer.class,
 				PathContainer.class,
-				DivContainer.class,
+				MixedContainer.class,
 				ScriptContainer.class,
 				ScriptContainer.class,
-				DivContainer.class,
+				MixedContainer.class,
 				ScriptContainer.class,
 				ScriptContainer.class,
-				DivContainer.class,
+				MixedContainer.class,
 				ScriptContainer.class,
 				PathContainer.class,
 				ScriptContainer.class,},
@@ -284,7 +284,7 @@ public class PageAnalyzerTest {
 				new Class[]{
 						ScriptContainer.class,
 						ScriptContainer.class,
-						DivContainer.class,
+						MixedContainer.class,
 						ScriptContainer.class,
 						ScriptContainer.class,
 						},

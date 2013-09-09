@@ -25,6 +25,12 @@ public class ChunkId implements Comparable<ChunkId> {
 			throw new RuntimeException("cannot parse identifier: "+id, e);
 		}
 	}
+	
+	public ChunkId(ChunkId chunkId) {
+		this.pageNumber = chunkId.pageNumber;
+		this.chunkNumber = chunkId.chunkNumber;
+		this.subChunkNumber = chunkId.subChunkNumber;
+	}
 
 	public ChunkId(int pageNumber, int ichunk) {
 		this.pageNumber = pageNumber;

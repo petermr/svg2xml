@@ -23,9 +23,9 @@ import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
-public class DivContainer extends AbstractContainer {
+public class MixedContainer extends AbstractContainer {
 
-	public final static Logger LOG = Logger.getLogger(DivContainer.class);
+	public final static Logger LOG = Logger.getLogger(MixedContainer.class);
 	private boolean box;
 	private PathContainer pathContainer;
 	private ImageContainer imageContainer;
@@ -35,35 +35,35 @@ public class DivContainer extends AbstractContainer {
 	private HtmlTable tableElement;
 	private HtmlDiv figureElement;
 
-	public DivContainer(PageAnalyzer pageAnalyzer) {
+	public MixedContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 
-	public static DivContainer createDivContainer(PageAnalyzer pageAnalyzer, MixedAnalyzer mixedAnalyzer) {
-		DivContainer divContainer = new DivContainer(pageAnalyzer);
-		addSVGElements(divContainer, mixedAnalyzer);
-		return divContainer;
+	public static MixedContainer createMixedContainer(PageAnalyzer pageAnalyzer, MixedAnalyzer mixedAnalyzer) {
+		MixedContainer mixedContainer = new MixedContainer(pageAnalyzer);
+		addSVGElements(mixedContainer, mixedAnalyzer);
+		return mixedContainer;
 	}
 
-	private static void addSVGElements(DivContainer divContainer, MixedAnalyzer mixedAnalyzer) {
+	private static void addSVGElements(MixedContainer mixedContainer, MixedAnalyzer mixedAnalyzer) {
 		List<SVGPath> pathList = mixedAnalyzer.getPathList();
 		if (pathList != null && pathList.size() > 0){
-			divContainer.addPathList(pathList);
+			mixedContainer.addPathList(pathList);
 		}
 		List<SVGImage> imageList = mixedAnalyzer.getImageList();
 		if (imageList != null && imageList.size() > 0){
-			divContainer.addImageList(imageList);
+			mixedContainer.addImageList(imageList);
 		}
 		List<SVGText> textList = mixedAnalyzer.getTextList();
 		if (textList != null && textList.size() > 0){
-			divContainer.addTextList(textList);
+			mixedContainer.addTextList(textList);
 		}
 	}
 
 	public void addImageList(List<SVGImage> imageList) {
 		if (imageList != null && imageList.size() > 0) {
 			imageContainer = new ImageContainer(pageAnalyzer);
-			imageContainer.add(imageList);
+			imageContainer.addImageList(imageList);
 			imageContainer.setChunkId(this.getChunkId());
 			this.add(imageContainer);
 		}
@@ -72,7 +72,7 @@ public class DivContainer extends AbstractContainer {
 	public void addPathList(List<SVGPath> pathList) {
 		if (pathList != null && pathList.size() > 0) {
 			pathContainer = new PathContainer(pageAnalyzer);
-			pathContainer.add(pathList);
+			pathContainer.addPathList(pathList);
 			pathContainer.setChunkId(this.getChunkId());
 			this.add(pathContainer);
 		}
@@ -160,16 +160,17 @@ public class DivContainer extends AbstractContainer {
 		return imageContainer == null ? null : imageContainer.getImageList();
 	}
 
-	public PathAnalyzer getPathAnalyzer() {
+	public PathAnalyzer createPathAnalyzer() {
 		PathAnalyzer pathAnalyzer = new PathAnalyzer(pageAnalyzer);
 		List<SVGPath> pathList = getPathList(); 
-		pathAnalyzer.readPathList(pathList);return pathAnalyzer;
+		pathAnalyzer.addPathList(pathList);
+		return pathAnalyzer;
 	}
 
-	public ImageAnalyzer getImageAnalyzer() {
+	public ImageAnalyzer createImageAnalyzer() {
 		ImageAnalyzer imageAnalyzer = new ImageAnalyzer(pageAnalyzer);
 		List<SVGImage> imageList = getImageList(); 
-		imageAnalyzer.readImageList(imageList);return imageAnalyzer;
+		imageAnalyzer.addImageList(imageList);return imageAnalyzer;
 	}
 
 	public HtmlTable createTableHtmlElement() {
@@ -180,7 +181,7 @@ public class DivContainer extends AbstractContainer {
 			return table;
 		}
 		if (tableElement == null) {
-			TableAnalyzer tableAnalyzer = new TableAnalyzer(getTextAnalyzer(), getPathAnalyzer());
+			TableAnalyzer tableAnalyzer = new TableAnalyzer(getTextAnalyzer(), createPathAnalyzer());
 			tableElement = tableAnalyzer.createTable();
 			LOG.trace(tableElement.toXML());
 		}
@@ -189,7 +190,7 @@ public class DivContainer extends AbstractContainer {
 
 	public HtmlDiv createFigureElement() {
 		if (figureElement == null) {
-			FigureAnalyzer figureAnalyzer = new FigureAnalyzer(getTextAnalyzer(), getPathAnalyzer(), getImageAnalyzer(), this.svgChunk);
+			FigureAnalyzer figureAnalyzer = new FigureAnalyzer(getTextAnalyzer(), createPathAnalyzer(), createImageAnalyzer(), this.svgChunk);
 			figureElement = figureAnalyzer.createFigure();
 		}
 		return figureElement;

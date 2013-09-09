@@ -14,6 +14,7 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlTable;
+import org.xmlcml.svg2xml.paths.Path2SVGInterpreter;
 import org.xmlcml.svg2xml.table.TableTable;
 
 /**
@@ -28,11 +29,8 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	private TextAnalyzer textAnalyzer;
 	private PathAnalyzer pathAnalyzer;
 
-	private Real2Range pathBox;
-//	private Real2Range textBox;
-
+//	private Real2Range pathBox;
 	private List<SVGPath> pathList;
-
 	private List<SVGText> textList;
 	
 	public TableAnalyzer() {
@@ -45,11 +43,11 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	}
 
 	public void analyze() {
-		pathAnalyzer.forceRemoveDuplicatePaths();
 		List<SVGPath> pathList = pathAnalyzer.getPathList();
+		pathList = Path2SVGInterpreter.removeDuplicatePaths(pathList);
 		List<SVGText> textList = textAnalyzer.getTextCharacters();
-		pathBox = SVGUtil.createBoundingBox(pathList);
-		RealRange pathBoxXRange = pathBox.getXRange();
+//		pathBox = SVGUtil.createBoundingBox(pathList);
+//		RealRange pathBoxXRange = pathBox.getXRange();
 		Real2Range textBox = SVGUtil.createBoundingBox(textList);
 		RealRange textBoxYRange = textBox.getYRange();
 		List<Real2Range> boxList = SVGUtil.createNonOverlappingBoundingBoxList(pathList);

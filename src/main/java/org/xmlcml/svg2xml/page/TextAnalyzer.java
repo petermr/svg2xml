@@ -48,16 +48,11 @@ public class TextAnalyzer extends ChunkAnalyzer {
 
 	private TextLine rawCharacterList;
 	private Map<Integer, TextLine> characterByXCoordMap;
-
-//	public List<Real2Range> emptyYTextBoxes;
-//	public List<Real2Range> emptyXTextBoxes;
-
 	private SVGElement svgParent;
     private List<SVGText> textCharacters;
 	
 	/** refactored container */
 	private TextStructurer textStructurer;
-//	private HtmlElement htmlElement;
 	
 	public TextAnalyzer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -134,15 +129,6 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		return this.textStructurer;
 	}
 	
-//	@Override
-//	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
-//		return annotateElements(svgElements, 0.2, 0.7, 5.0, "pink");
-//	}
-//
-	
-	
-	
-
 	// ===========utils============================
 	
 	private void debug(String string, Map<Integer, TextLine> textByCoordMap) {
@@ -158,12 +144,12 @@ public class TextAnalyzer extends ChunkAnalyzer {
 					LOG.trace(">> "+text.getXY()+" "+text.getText()+ " ");
 				}
 			}
-//			System.out.println();
 		}
 	}
 
 
 	public List<SVGText> getTextCharacters() {
+		// need to sync with TextContainer
 		return textCharacters;
 	}
 	
@@ -220,63 +206,13 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		ensureTextContainerWithSortedLines().getTextLineByYCoordMap();
 	}
 
-//	public RealArray getModalExcessWidthArray() {
-//		return ensureTextContainerWithSortedLines().getModalExcessWidthArray();
-//	}
-
 	public Multiset<Double> createSeparationSet(int decimalPlaces) {
 		return ensureTextContainerWithSortedLines().createSeparationSet(decimalPlaces);
 	}
 
-//	public List<Double> getActualWidthsOfSpaceCharactersList() {
-//		return ensureTextContainerWithSortedLines().getActualWidthsOfSpaceCharactersList();
-//	}
-
 	public void setTextStructurer(TextStructurer textStructurer) {
 		this.textStructurer = textStructurer;
 	}
-
-//	public HtmlElement createHtmlElement() {
-//		throw new RuntimeException("TextAnalyzer.createHtmlElement()");
-////		LOG.trace("createHTMLParasAndDivs");
-////		List<TextLine> textLines = this.getLinesInIncreasingY();
-////		LOG.trace("lines "+textLines.size());
-////		for (TextLine textLine : textLines){
-////			LOG.trace(">> "+textLine);
-////		}
-////		ensureTextContainerWithSortedLines();
-////		htmlElement = textStructurer.createHtmlElement();
-////		if (htmlElement != null) {
-////			PageChunkAnalyzer.tidyStyles(htmlElement);
-////		}
-////		return htmlElement;
-//	}
-	
-//	//FIXME to use Splitters customized for different dataTypes  and parameters
-//	/** splits svgg into textStructurers using a list of splitters
-//	 * 
-//	 * @param gOrig
-//	 * @param chunkId
-//	 * @param splitters
-//	 * @return
-//	 */
-//	public List<TextStructurer> createSplitTextContainers(SVGG gOrig, ChunkId chunkId, Splitter ...splitters) {
-//		TextStructurer textStructurer = new TextStructurer(this);
-//		textStructurer.getScriptedLineList();
-//		List<TextStructurer> splitTLCList = new ArrayList<TextStructurer>();
-//		splitTLCList.add(textStructurer);
-//		for (Splitter splitter : splitters) {
-//			List<TextStructurer> newSplitTLCList = new ArrayList<TextStructurer>();
-//			for (TextStructurer tlc : splitTLCList) {
-//				List<TextStructurer> splitList = textStructurer.split(splitter);
-//				LOG.debug("SPLIT: "+splitList);
-//				newSplitTLCList.addAll(splitList);
-//			}
-//			splitTLCList = newSplitTLCList;
-//		}
-//		LOG.debug("SPLIT "+splitTLCList.size());
-//		return splitTLCList;
-//	}
 
 	/** counter is container counter
 	 * 
@@ -286,7 +222,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	 * @return
 	 */
 	@Override
-	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
+	public List<AbstractContainer> createContainers() {
 		TextStructurer textStructurer1 = this.getTextStructurer();
 		textStructurer1.getScriptedLineList();
 		List<TextStructurer> splitList = textStructurer1.splitOnFontBoldChange(-1);
@@ -320,7 +256,4 @@ public class TextAnalyzer extends ChunkAnalyzer {
 			}
 		}
 	}
-
-
-	
 }

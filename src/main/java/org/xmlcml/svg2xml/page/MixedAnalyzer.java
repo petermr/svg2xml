@@ -14,7 +14,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.AbstractContainer;
-import org.xmlcml.svg2xml.container.DivContainer;
+import org.xmlcml.svg2xml.container.MixedContainer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 
 public class MixedAnalyzer extends ChunkAnalyzer {
@@ -40,14 +40,14 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	public void readImageList(List<SVGImage> imageList) {
 		if (imageList != null && imageList.size() > 0) {
 			imageAnalyzer = new ImageAnalyzer(pageAnalyzer);
-			imageAnalyzer.readImageList(imageList);
+			imageAnalyzer.addImageList(imageList);
 		}
 	}
 	
 	public void readPathList(List<SVGPath> pathList) {
 		if (pathList != null && pathList.size() > 0) {
 			pathAnalyzer = new PathAnalyzer(pageAnalyzer);
-			pathAnalyzer.readPathList(pathList);
+			pathAnalyzer.addPathList(pathList);
 		}
 	}
 	
@@ -90,22 +90,6 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	public ImageAnalyzer getImageAnalyzer() {return imageAnalyzer;}
 	public PathAnalyzer getPathAnalyzer() {return pathAnalyzer;}
 	public TextAnalyzer getTextAnalyzer() {return textAnalyzer;}
-
-//	@Override
-//	public HtmlElement createHtmlElement() {
-//		throw new RuntimeException("MixedAnalyzer.createHtmlElement()");
-////		HtmlDiv element = new HtmlDiv();
-////		for (PageChunkAnalyzer analyzer : analyzerList) {
-////			LOG.debug("MIXED "+analyzer);
-////			HtmlDiv div = new HtmlDiv();
-////			element.appendChild(div);
-////			HtmlElement childElement = analyzer.createHtmlElement();
-////			if (childElement != null) {
-////				div.appendChild(childElement);
-////			}
-////		}
-////		return element;
-//	}
 
 	public void add(ChunkAnalyzer analyzer) {
 		ensureAnalyzerList();
@@ -293,42 +277,18 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	 * @return
 	 */
 	@Override
-	public List<AbstractContainer> createContainers(PageAnalyzer pageAnalyzer) {
-		DivContainer divContainer = new DivContainer(pageAnalyzer);
+	public List<AbstractContainer> createContainers() {
+		MixedContainer mixedContainer = new MixedContainer(pageAnalyzer);
 		if (this.removeFrameBoxFromPathList()) {
-			divContainer.setBox(true);
+			mixedContainer.setBox(true);
 		}
-		divContainer.setChunkId(this.getChunkId());
-		divContainer.addImageList(this.getImageList());
-		divContainer.addPathList(this.getPathList());
-		divContainer.addTextList(this.getTextList());
+		mixedContainer.setChunkId(this.getChunkId());
+		mixedContainer.addImageList(this.getImageList());
+		mixedContainer.addPathList(this.getPathList());
+		mixedContainer.addTextList(this.getTextList());
 		ensureAbstractContainerList();
-		abstractContainerList.add(divContainer);
+		abstractContainerList.add(mixedContainer);
 		return abstractContainerList;
-	}
-
-//	@Override
-//	public SVGG annotateChunk(List<? extends SVGElement> svgElements) {
-//		return annotateElements(svgElements, 0.2, 0.7, 5.0, "yellow");
-//	}
-
-
-	private SVGG createSVGAndOutput(int humanPageNumber, int counter, SVGG gOrig,
-			ChunkAnalyzer analyzerX,  String suffix, MixedAnalyzer mixedAnalyzer) {
-		ChunkId chunkId;
-//		if (mixedAnalyzer.removeFrameBoxFromPathList()) {
-//			gOrig = mixedAnalyzer.getSVGG();
-//			SVG2XMLUtil.writeToSVGFile(new File("target"), "mixed."+humanPageNumber+"."+(counter)+"D.svg", gOrig);
-//			mixedAnalyzer.normalizePathAnalyzers();
-//			LOG.trace("New Mixed AnalyzerType: "+mixedAnalyzer.getAnalyzerType());
-//		}
-//		DivContainer divContainer = DivContainer.createDivContainer(this, mixedAnalyzer);
-//		containerList.add(divContainer);
-//		chunkId = new ChunkId(humanPageNumber, counter);
-//		SVGG gOut = annotateChunkAndAddIdAndAttributes(gOrig, chunkId, analyzerX);
-//		SVG2XMLUtil.writeToSVGFile(new File("target"), "chunk"+humanPageNumber+"."+(counter)+suffix, gOut);
-//		return gOut;
-		return null;
 	}
 
 }

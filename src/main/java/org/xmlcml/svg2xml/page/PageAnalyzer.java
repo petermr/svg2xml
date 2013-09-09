@@ -21,7 +21,9 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlBody;
@@ -88,10 +90,17 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		 * 
 		 */
 	protected List<AbstractContainer> abstractContainerList;
-	
+
 	private PageAnalyzer() {
 		pageIo = new PageIO();
 	}	
+	
+	public PageAnalyzer(SVGElement svgElement) {
+		this();
+		if (svgElement instanceof SVGSVG) {
+			pageIo.setSvgInPage((SVGSVG)svgElement);
+		}
+	}
 
 	public PageAnalyzer(SVGSVG svgPage, PDFAnalyzer pdfAnalyzer) {
 		this();
@@ -106,22 +115,83 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		pageIo.setSvgInPage(svgPage);
 	}
 
-	public void splitChunksAnnotateAndCreatePage() {
+
+	/**
+	 * Main routine creating ChunkAnalyzers from SVGGs.
+	 * 
+	 */
+	public void splitChunksAndCreatePage() {
  		List<SVGElement> gList = createWhitespaceChunkList();
 		pageIo.setSvgOutPage(pageIo.createBlankSVGOutPageWithNumberAndSize());
 		pageIo.ensureWhitespaceSVGChunkList();
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
-			SVGG gOrig = (SVGG) gList.get(ichunk);
-			ChunkAnalyzer chunkAnalyzer = ChunkAnalyzer.createSpecificAnalyzer(gOrig, this);
-			chunkAnalyzer.setSVGChunk(gOrig);
-			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers(this);
+			SVGG gChunk = (SVGG) gList.get(ichunk);
+			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
+			chunkAnalyzer.setSVGChunk(gChunk);
+			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers();
 			for (AbstractContainer newContainer : newContainerList) {
-				newContainer.setSVGChunk(gOrig);
+				newContainer.setSVGChunk(gChunk);
 			}
-			annotateAndOutput(newContainerList, chunkAnalyzer);
+			createChunksAndOutput(newContainerList, chunkAnalyzer);
 		}
 		pageIo.createFinalSVGPageFromChunks();
 	}
+	
+	/** decides whether chunk is Text, Path, Image or Mixed
+	 * 
+	 * @param svgElement
+	 * @return analyzer suited to type (e.g. TextAnalyzer)
+	 */
+	public ChunkAnalyzer createSpecificAnalyzer(SVGElement svgElement) {
+		ChunkAnalyzer analyzer = null;
+		List<SVGText> textList = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgElement, ".//svg:text"));
+		List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(svgElement, ".//svg:path"));
+		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(svgElement, ".//svg:image"));
+		String id = svgElement.getId();
+		ChunkId chunkId = id == null ? null : new ChunkId(id);
+		if (textList.size() != 0 && (pathList.size() == 0 && imageList.size() == 0)) {
+			analyzer = new TextAnalyzer(textList, this);
+		} else if (pathList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {
+			analyzer = this.createPathAnalyzer(pathList);
+		} else if (imageList.size() != 0 && (textList.size() == 0 && pathList.size() == 0)) {
+			analyzer = this.createImageAnalyzer(imageList);
+		} else {
+			analyzer = new MixedAnalyzer(this);
+			ChunkAnalyzer childAnalyzer = null;
+			MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) analyzer;
+			if (imageList.size() != 0) {
+				childAnalyzer = this.createImageAnalyzer(imageList);
+				mixedAnalyzer.add(childAnalyzer);
+				childAnalyzer.setChunkId(chunkId, 1);
+			}
+			if (textList.size() != 0) {
+				childAnalyzer = new TextAnalyzer(textList, this);
+				mixedAnalyzer.add(childAnalyzer);
+				childAnalyzer.setChunkId(chunkId, 2);
+			}
+			if (pathList.size() != 0) {
+				childAnalyzer = this.createPathAnalyzer(pathList);
+				mixedAnalyzer.add(childAnalyzer);
+				childAnalyzer.setChunkId(chunkId, 3);
+			}
+			LOG.trace("MIXED: "+analyzer);
+		}
+		analyzer.setSVGChunk(svgElement);
+		return analyzer;
+	}
+
+	private ChunkAnalyzer createImageAnalyzer(List<SVGImage> imageList) {
+		ImageAnalyzer imageAnalyzer = new ImageAnalyzer(this);
+		imageAnalyzer.addImageList(imageList);
+		return imageAnalyzer;
+	}
+
+	private PathAnalyzer createPathAnalyzer(List<SVGPath> pathList) {
+		PathAnalyzer pathAnalyzer = new PathAnalyzer(this);
+		pathAnalyzer.addPathList(pathList);
+		return pathAnalyzer;
+	}
+
 	
 	protected void ensureAbstractContainerList() {
 		if (abstractContainerList == null) {
@@ -134,7 +204,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 
-	private void annotateAndOutput (
+	private void createChunksAndOutput (
 			List<? extends AbstractContainer> newContainerList, ChunkAnalyzer pageChunkAnalyzer) {
 		ensureAbstractContainerList();
 		for (AbstractContainer newContainer : newContainerList) {
@@ -144,7 +214,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			abstractContainerList.add(newContainer);
 			SVGG gOut = newContainer.createSVGGChunk();
 			gOut.setId(chunkId.toString());
-			gOut = annotateChunkAndAddIdAndAttributes(gOut, chunkId, pageChunkAnalyzer, PageIO.DECIMAL_PLACES);
+			gOut = createChunksAndAddIdAndAttributes(gOut, chunkId, pageChunkAnalyzer, PageIO.DECIMAL_PLACES);
 			newContainer.setSVGChunk(gOut);
 			newContainer.setChunkId(chunkId);
 			LOG.debug("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
@@ -177,7 +247,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return TITLE;
 	}
 
-	private SVGG annotateChunkAndAddIdAndAttributes(SVGG gOrig, ChunkId chunkId, ChunkAnalyzer analyzerX, int decimalPlaces) {
+	private SVGG createChunksAndAddIdAndAttributes(SVGG gOrig, ChunkId chunkId, ChunkAnalyzer analyzerX, int decimalPlaces) {
 		if (analyzerX == null) {
 			throw new RuntimeException("Null analyzer");
 		}
@@ -519,7 +589,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(rawSvgPageFile);
 		pageAnalyzer.setRawSVGDocumentDir(rawSVGDirectory);
 		pageAnalyzer.setMachinePageNumber(pageCounter);
-		pageAnalyzer.splitChunksAnnotateAndCreatePage();
+		pageAnalyzer.splitChunksAndCreatePage();
 		LOG.trace(pageAnalyzer.getPageIO().toString());
 		return pageAnalyzer;
 	}

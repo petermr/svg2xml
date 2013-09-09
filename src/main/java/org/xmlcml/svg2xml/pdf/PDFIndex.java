@@ -223,7 +223,7 @@ public class PDFIndex {
 				TextFlattener textFlattener = createTextFlattener(idList.get(0));
 				List<List<Integer>> intListList = new ArrayList<List<Integer>>();
 				for (ChunkId id : idList) {
-					LOG.debug("NYI");
+					LOG.trace("NYI");
 //					String htmlValue = getValue(id);
 //					List<Integer> ints = textFlattener.captureIntegers(htmlValue);
 //					intListList.add(ints);
@@ -583,16 +583,16 @@ public class PDFIndex {
 
 	public void addToBoldIndex(Double fontSize, ScriptContainer scriptContainer) {
 		ensureContainerMaps();
-		LOG.debug("Adding: "+fontSize+" "+scriptContainer);
+		LOG.trace("Adding: "+fontSize+" "+scriptContainer);
 		scriptContainerByBoldFontSize.put(fontSize, scriptContainer);
 	}
 
 	public void addToPathIndex(String pathString, PathContainer pathContainer) {
-		LOG.debug("Adding: "+pathString+" "+pathContainer);
+		LOG.trace("NYI Adding: "+pathString+" "+pathContainer);
 	}
 
 	public void addToImageIndex(String imageString, ImageContainer imageContainer) {
-		LOG.debug("Adding: "+imageString+" "+imageContainer);
+		LOG.trace("NYI Adding: "+imageString+" "+imageContainer);
 	}
 
 	public void analyzeContainers() {
@@ -606,7 +606,7 @@ public class PDFIndex {
 		if (fontSizes != null) {
 			Arrays.sort(fontSizes);
 			for (Double fontSize : fontSizes) {
-				LOG.debug("************* "+fontSize);
+				LOG.trace("************* "+fontSize);
 				List<AbstractContainer> containers = getListByKey(fontSize);
 				for (AbstractContainer container : containers) {
 					if (container instanceof ScriptContainer) {
@@ -615,7 +615,7 @@ public class PDFIndex {
 							RealRangeArray wordArray = script.getWordRangeArray();
 							wordArray.sortAndRemoveOverlapping();
 							wordArray.format(pdfAnalyzer.getDecimalPlaces());
-							LOG.debug("wordArray >>>>>>>> "+wordArray);
+							LOG.trace("wordArray >>>>>>>> "+wordArray);
 							for (SVGText character : script.getSVGTextCharacters()) {
 								LOG.trace(character.getValue()+"_"+character.getX()+" ");
 							}

@@ -186,14 +186,14 @@ public class ListContainer extends AbstractContainer {
 	}
 
 	ListContainer createNonIndentedList() {
-		LOG.debug("Skipping any non-indented lists");
+		LOG.trace("Skipping any non-indented lists");
 		// will have to look for bullets, numbers, etc. 
 		return null;
 	}
 
 
 	private ListContainer createComplexIndentedList() {
-		LOG.debug("Skipping any complex indented lists");
+		LOG.trace("Skipping any complex indented lists");
 		return null;
 	}
 

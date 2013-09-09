@@ -25,10 +25,11 @@ import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-/** containers contain the outputs of PageAnalyzer
- * they roughly mirror the HTML hierarchy and all implement
+/** Containers contain the outputs of PageAnalyzer.
+ * <p>
+ * They roughly mirror the HTML hierarchy and all implement
  * createHTML methods. 
- * 
+ * </p>
  * @author pm286
  *
  */
@@ -78,7 +79,6 @@ public abstract class AbstractContainer {
 	private HtmlTable tableElement;
 	
 	private ContainerType type;
-
 	private Integer tableNumber;
 	private Integer figureNumber;
 
@@ -87,6 +87,11 @@ public abstract class AbstractContainer {
 	public AbstractContainer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
 		ensureContainerList();
+	}
+
+	public AbstractContainer(ChunkAnalyzer chunkAnalyzer) {
+		this(chunkAnalyzer.getPageAnalyzer());
+		this.chunkAnalyzer = chunkAnalyzer;
 	}
 
 	public HtmlElement createHtmlElement() {
@@ -274,8 +279,8 @@ public abstract class AbstractContainer {
 	}
 
 	private HtmlDiv processFigure() {
-		if (this instanceof DivContainer) {
-			DivContainer divContainer = (DivContainer) this;
+		if (this instanceof MixedContainer) {
+			MixedContainer divContainer = (MixedContainer) this;
 			figureElement = divContainer.createFigureElement();
 		} else {
 			LOG.error("Unprocessed figure: "+this.getClass());
@@ -284,9 +289,9 @@ public abstract class AbstractContainer {
 	}
 
 	private HtmlTable processTable() {
-		if (this instanceof DivContainer) {
-			DivContainer divContainer = (DivContainer) this;
-			tableElement = divContainer.createTableHtmlElement();
+		if (this instanceof MixedContainer) {
+			MixedContainer mixedContainer = (MixedContainer) this;
+			tableElement = mixedContainer.createTableHtmlElement();
 			tableElement.addAttribute(new Attribute("style", "border:1px solid red;"));
 			tableElement.setBorder(1);
 		}

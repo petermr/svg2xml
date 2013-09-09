@@ -95,7 +95,7 @@ public abstract class FigureComponent {
 		for (SVGElement element : allElementList) {
 			svgContainer.appendChild(element.copy());
 		}
-		LOG.debug("Container "+svgContainer.getChildCount());
+		LOG.trace("Container "+svgContainer.getChildCount());
 		boundingBox = svgContainer.getBoundingBox();
 		getFigureType();
 	}
@@ -111,7 +111,7 @@ public abstract class FigureComponent {
 				count++;
 			}
 		}
-		System.out.println(title+": "+count);
+		LOG.trace(title+": "+count);
 		return resultList;
 	}
 
@@ -164,7 +164,7 @@ public abstract class FigureComponent {
 		} else {
 			figureType = FigureType.UNKNOWN;
 		}
-		LOG.debug("FIGURE"+this.getClass().getName()+"************************************************** "+figureType+ 
+		LOG.trace("FIGURE"+this.getClass().getName()+"************************************************** "+figureType+ 
 				" "+filteredTextList.size()+" "+filteredPathList.size()+" "+filteredImageList.size());
 		return figureType;
 	}

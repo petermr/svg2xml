@@ -14,10 +14,11 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.cml.testutil.JumboTestUtils;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextLine;
 
@@ -53,9 +54,10 @@ public class PageSplitterAndHtmlTest {
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 3, 1547),      //12
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 3, 692),       //13
 		};
+		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG)svg);
 		for (int i = 0; i < gList.size(); i++) {
 			SVGElement g = gList.get(i);
-			ChunkAnalyzer analyzer = ChunkAnalyzer.createSpecificAnalyzer(g, (PageAnalyzer) null);
+			ChunkAnalyzer analyzer = pageAnalyzer.createSpecificAnalyzer(g);
 			CheckAnalyzer checkAnalyzer = CheckAnalyzer.createCheckAnalyzer(analyzer);
 			Assert.assertTrue("analyzer "+i+" "+analyzer+"; "+checkAnalyzers[i], checkAnalyzer.equals(checkAnalyzers[i]));
 		}
@@ -589,7 +591,8 @@ public class PageSplitterAndHtmlTest {
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		SVGElement g = gList.get(chunk);
 //		g.debug("GGG");
-		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) ChunkAnalyzer.createSpecificAnalyzer(g, (PageAnalyzer) null);
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(g);
+		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
 		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
 		TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
 		LOG.trace("TextAnalyzer "+textAnalyzer);

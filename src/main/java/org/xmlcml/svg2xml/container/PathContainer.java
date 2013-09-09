@@ -10,7 +10,6 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.figure.FigureGraphic;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.PathAnalyzer;
@@ -23,36 +22,19 @@ public class PathContainer extends AbstractContainer  {
 	public final static Logger LOG = Logger.getLogger(PathContainer.class);
 
 	private List<SVGPath> pathList;
+	private PathAnalyzer pathAnalyzer;
 	
 	public PathContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 	
-	public PathContainer(List<SVGPath> pathList, PageAnalyzer pageAnalyzer) {
-		super(pageAnalyzer);
-		this.add(pathList);
+	public PathContainer(PathAnalyzer pathAnalyzer) {
+		super(pathAnalyzer);
+		this.pathAnalyzer = pathAnalyzer;
+		this.pathAnalyzer.setPathContainer(this);
 	}
 
-	/** move to PathAnalyzerX
-	 * 
-	 * @param pageAnalyzer
-	 * @param pathAnalyzer
-	 * @return
-	 */
-	public static PathContainer createPathContainer(PageAnalyzer pageAnalyzer, PathAnalyzer pathAnalyzer) {
-		PathContainer pathContainer = new PathContainer(pageAnalyzer);
-		addSVGElements(pathContainer, pathAnalyzer);
-		return pathContainer;
-	}
-	
-	private static void addSVGElements(PathContainer pathContainer, PathAnalyzer pathAnalyzer) {
-		List<SVGPath> pathList = pathAnalyzer.getPathList();
-		if (pathList != null && pathList.size() > 0){
-			pathContainer.addPathList(pathList);
-		}
-	}
-
-	private void addPathList(List<SVGPath> pathList) {
+	public void addPathList(List<SVGPath> pathList) {
 		ensurePathList();
 		this.pathList.addAll(pathList);
 	}
@@ -73,7 +55,7 @@ public class PathContainer extends AbstractContainer  {
 			figureGraphic.setSVGContainer(svgChunk);
 			figureGraphic.createAndWriteImageAndSVG(imageName, div, svgName);
 		} else {
-			LOG.error("Null Path Chunk");
+			LOG.error("Null Path Chunk: "/*+pathList+" "+((pathList != null) ? pathList.size() : "null"*/);
 		}
 		return htmlElement;
 	}
@@ -87,13 +69,14 @@ public class PathContainer extends AbstractContainer  {
 	}
 
 	public List<SVGPath> getPathList() {
+		ensurePathList();
 		return pathList;
 	}
 
-	public void add(SVGPath path) {
-		ensurePathList();
-	}
-
+//	public void add(SVGPath path) {
+//		ensurePathList();
+//	}
+//
 	private void ensurePathList() {
 		if (pathList == null) {
 			this.pathList = new ArrayList<SVGPath>();
@@ -125,11 +108,6 @@ public class PathContainer extends AbstractContainer  {
 		StringBuilder sb = new StringBuilder(super.toString()+"\n");
 		sb.append(outputSVGList("Paths", pathList));
 		return sb.toString();
-	}
-
-	public void add(List<SVGPath> pathList) {
-		ensurePathList();
-		this.pathList.addAll(pathList);
 	}
 
 	public void addToIndexes(PDFIndex pdfIndex) {

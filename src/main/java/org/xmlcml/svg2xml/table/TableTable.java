@@ -17,7 +17,6 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
@@ -25,7 +24,7 @@ import org.xmlcml.html.HtmlHead;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTh;
-import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.paths.Path2SVGInterpreter;
 
 /** holds temporary table as list of chunks.
  * might disappear into TableAnalyzer later?
@@ -109,7 +108,7 @@ public class TableTable extends TableChunk {
 		
 	private RealRangeArray createVerticalMaskFromPaths() {
 	
-		this.pathList = PathAnalyzer.removeDuplicatePaths(pathList);
+		this.pathList = Path2SVGInterpreter.removeDuplicatePaths(pathList);
 		this.pathBox = SVGUtil.createBoundingBox(pathList);
 		totalBox = totalBox.plus(pathBox);
 		// because some "lines" (e.g. in BMC) are multiple paths. This is a mess and needs more 

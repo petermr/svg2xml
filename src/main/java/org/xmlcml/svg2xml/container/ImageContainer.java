@@ -19,37 +19,24 @@ import org.xmlcml.svg2xml.pdf.PDFIndex;
 public class ImageContainer extends AbstractContainer  {
 
 	public final static Logger LOG = Logger.getLogger(ImageContainer.class);
-
+	
 	private List<SVGImage> imageList;
+	private ImageAnalyzer imageAnalyzer;
 	
 	public ImageContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 	
-	/** move to ImageAnalyzerX
-	 * 
-	 * @param pageAnalyzer
-	 * @param imageAnalyzer
-	 * @return
-	 */
-	public static ImageContainer createImageContainer(PageAnalyzer pageAnalyzer, ImageAnalyzer imageAnalyzer) {
-		ImageContainer imageContainer = new ImageContainer(pageAnalyzer);
-		addSVGElements(imageContainer, imageAnalyzer);
-		return imageContainer;
-	}
-	
-	private static void addSVGElements(ImageContainer imageContainer, ImageAnalyzer imageAnalyzer) {
-		List<SVGImage> imageList = imageAnalyzer.getImageList();
-		if (imageList != null && imageList.size() > 0){
-			imageContainer.addImageList(imageList);
-		}
+	public ImageContainer(ImageAnalyzer imageAnalyzer) {
+		super(imageAnalyzer);
+		this.imageAnalyzer = imageAnalyzer;
+		this.imageAnalyzer.setImageContainer(this);
 	}
 
-	private void addImageList(List<SVGImage> imageList) {
+	public void addImageList(List<SVGImage> imageList) {
 		ensureImageList();
 		this.imageList.addAll(imageList);
 	}
-
 
 	@Override
 	public HtmlElement createHtmlElement() {
@@ -67,13 +54,14 @@ public class ImageContainer extends AbstractContainer  {
 	}
 	
 	public List<SVGImage> getImageList() {
+		ensureImageList();
 		return imageList;
 	}
 
-	public void add(SVGImage image) {
-		ensureImageList();
-		this.imageList.add(image);
-	}
+//	public void add(SVGImage image) {
+//		ensureImageList();
+//		this.imageList.add(image);
+//	}
 
 	private void ensureImageList() {
 		if (imageList == null) {
@@ -105,11 +93,11 @@ public class ImageContainer extends AbstractContainer  {
 		return sb.toString();
 	}
 
-	public void add(List<SVGImage> imageList) {
-		ensureImageList();
-		this.imageList.addAll(imageList);
-	}
-	
+//	public void add(List<SVGImage> imageList) {
+//		ensureImageList();
+//		this.imageList.addAll(imageList);
+//	}
+//	
 	public void addToIndexes(PDFIndex pdfIndex) {
 		String imageString = this.toString();
 		pdfIndex.addToImageIndex(imageString, this);
