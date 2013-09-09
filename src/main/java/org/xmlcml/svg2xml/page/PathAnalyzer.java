@@ -24,6 +24,7 @@ import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
 import org.xmlcml.svg2xml.dead.PageEditorDead;
 import org.xmlcml.svg2xml.paths.Chunk;
+import org.xmlcml.svg2xml.paths.Path2SVGInterpreter;
 
 /**
  * Analyzes paths either direct children of chunks or extracted from them.
@@ -38,9 +39,21 @@ public class PathAnalyzer extends ChunkAnalyzer {
 	public final static Logger LOG = Logger.getLogger(PathAnalyzer.class);
 
 	private PathContainer pathContainer;
+	private Path2SVGInterpreter path2SVGInterpreter;
 	
 	public PathAnalyzer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
+	}
+
+	/**
+	 * Construct a PathAnalyzer with descendant paths from svgElement
+	 * 
+	 * @param svgElement
+	 * @param pageAnalyzer
+	 */
+	public PathAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
+		super(pageAnalyzer);
+		addPathList(SVGPath.extractPaths(svgElement));
 	}
 
 	public void addPathList(List<SVGPath> pathList) {
@@ -91,5 +104,19 @@ public class PathAnalyzer extends ChunkAnalyzer {
 		return s;
 	}
 
+	public void interpretAsSVG() {
+		ensurePath2SVGInterpreter();
+		path2SVGInterpreter.interpretPathsAsRectCirclePolylineAndReplace();
+	}
+
+	private void ensurePath2SVGInterpreter() {
+		if (path2SVGInterpreter == null) {
+			this.path2SVGInterpreter = new Path2SVGInterpreter(pathContainer.getPathList());
+		}
+	}
+
+	public Path2SVGInterpreter getPath2SVGInterpreter() {
+		return path2SVGInterpreter;
+	}
 
 }

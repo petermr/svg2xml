@@ -106,6 +106,7 @@ public abstract class AbstractContainer {
 		}
 		return htmlElement;
 	}
+	
 	public abstract SVGG createSVGGChunk();
 	
 	private void ensureContainerList() {
@@ -192,7 +193,7 @@ public abstract class AbstractContainer {
 					LOG.debug("CHUNK "+chunk.toXML());
 				}
 			} else {
-				LOG.debug("no chunk "+this.getClass());
+				LOG.trace("no chunk "+this.getClass());
 			}
 		}
 		return chunkId;
@@ -340,8 +341,6 @@ public abstract class AbstractContainer {
 	public Element getFigureElement() {
 		if (figureElement != null) {
 			figureElement.addAttribute(new Attribute("style", "border:1px solid black;"));
-			// should be on image
-//			figureElement.addAttribute(new Attribute("width", "50%"));
 		}
 		return figureElement;
 	}

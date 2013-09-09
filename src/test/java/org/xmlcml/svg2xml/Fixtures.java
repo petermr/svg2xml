@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import nu.xom.Builder;
+import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
@@ -194,6 +195,11 @@ public class Fixtures {
 	
 	public static final File PDFS_CELL_DIR = new File(PDFS_DIR, "cell/");
 	public static final File CELL_8994_PDF = new File(PDFS_CELL_DIR, "PIIS0092867413008994.pdf");
+
+	public static final File FIGURE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/figure");
+	public static final File FIGURE_RECT_LINE_SVG = new File(FIGURE_DIR, "rectLine.svg");
+	public static final File FIGURE_TEXT_LINE_SVG = new File(FIGURE_DIR, "textLine.svg");
+	public static final File FIGURE_NOPATH_SVG = new File(FIGURE_DIR, "nopath.svg");
 
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {

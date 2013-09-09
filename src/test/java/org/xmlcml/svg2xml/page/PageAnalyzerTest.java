@@ -73,7 +73,6 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage1() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE1);
-//		LOG.debug(pageAnalyzer.toString());
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		Assert.assertNotNull("containers", containerList);
 		Assert.assertEquals("containers", 12, containerList.size());

@@ -6,6 +6,7 @@ import java.util.List;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.html.HtmlDiv;
@@ -73,10 +74,6 @@ public class PathContainer extends AbstractContainer  {
 		return pathList;
 	}
 
-//	public void add(SVGPath path) {
-//		ensurePathList();
-//	}
-//
 	private void ensurePathList() {
 		if (pathList == null) {
 			this.pathList = new ArrayList<SVGPath>();
@@ -86,7 +83,7 @@ public class PathContainer extends AbstractContainer  {
 	@Override
 	public SVGG createSVGGChunk() {
 		SVGG g = new SVGG();
-		for (SVGPath path : pathList) {
+		for (SVGElement path : pathList) {
 			g.appendChild(path.copy());
 		}
 		return g;

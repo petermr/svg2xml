@@ -575,7 +575,7 @@ public class PDFIndex {
 			} else if (container instanceof ImageContainer) {
 				((ImageContainer)container).addToIndexes(this);
 			} else {
-				LOG.debug("Cannot index " + container.getClass());
+				LOG.trace("Cannot index " + container.getClass());
 			}
 		}
 //		LOG.debug("PageAnalyzer NYI");

@@ -127,7 +127,6 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
 			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
-			chunkAnalyzer.setSVGChunk(gChunk);
 			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers();
 			for (AbstractContainer newContainer : newContainerList) {
 				newContainer.setSVGChunk(gChunk);
@@ -139,15 +138,15 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	
 	/** decides whether chunk is Text, Path, Image or Mixed
 	 * 
-	 * @param svgElement
+	 * @param gChunk
 	 * @return analyzer suited to type (e.g. TextAnalyzer)
 	 */
-	public ChunkAnalyzer createSpecificAnalyzer(SVGElement svgElement) {
+	public ChunkAnalyzer createSpecificAnalyzer(SVGElement gChunk) {
 		ChunkAnalyzer analyzer = null;
-		List<SVGText> textList = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgElement, ".//svg:text"));
-		List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(svgElement, ".//svg:path"));
-		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(svgElement, ".//svg:image"));
-		String id = svgElement.getId();
+		List<SVGText> textList = SVGText.extractTexts(SVGUtil.getQuerySVGElements(gChunk, ".//svg:text"));
+		List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(gChunk, ".//svg:path"));
+		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(gChunk, ".//svg:image"));
+		String id = gChunk.getId();
 		ChunkId chunkId = id == null ? null : new ChunkId(id);
 		if (textList.size() != 0 && (pathList.size() == 0 && imageList.size() == 0)) {
 			analyzer = new TextAnalyzer(textList, this);
@@ -176,7 +175,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			}
 			LOG.trace("MIXED: "+analyzer);
 		}
-		analyzer.setSVGChunk(svgElement);
+		analyzer.setSVGChunk(gChunk);
 		return analyzer;
 	}
 
@@ -189,6 +188,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	private PathAnalyzer createPathAnalyzer(List<SVGPath> pathList) {
 		PathAnalyzer pathAnalyzer = new PathAnalyzer(this);
 		pathAnalyzer.addPathList(pathList);
+		pathAnalyzer.interpretAsSVG();
 		return pathAnalyzer;
 	}
 
@@ -217,7 +217,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			gOut = createChunksAndAddIdAndAttributes(gOut, chunkId, pageChunkAnalyzer, PageIO.DECIMAL_PLACES);
 			newContainer.setSVGChunk(gOut);
 			newContainer.setChunkId(chunkId);
-			LOG.debug("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
+			LOG.trace("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
 			pageIo.add(gOut);
 			aggregatedContainerCount++;
 		}
