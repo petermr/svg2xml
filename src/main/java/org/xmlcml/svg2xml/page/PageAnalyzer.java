@@ -188,7 +188,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	private PathAnalyzer createPathAnalyzer(List<SVGPath> pathList) {
 		PathAnalyzer pathAnalyzer = new PathAnalyzer(this);
 		pathAnalyzer.addPathList(pathList);
-		pathAnalyzer.interpretAsSVG();
+		pathAnalyzer.convertPathsToSVG();
 		return pathAnalyzer;
 	}
 
@@ -478,7 +478,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public void outputChunks() {
 		ensureAbstractContainerList();
 		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
-		SYSOUT.println(".......................");
+//		SYSOUT.println(".......................");
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			SVGG chunk = abstractContainer.getSVGChunk();
 			String chunkId = chunk.getId();
@@ -491,7 +491,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public void outputImages() {
 		ensureAbstractContainerList();
 		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
-		SYSOUT.println(".......................");
+//		SYSOUT.println(".......................");
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			SVGG chunk = abstractContainer.getSVGChunk();
 			String chunkId = chunk.getId();
@@ -537,7 +537,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	public void outputHtmlComponents() {
-		LOG.debug(".......................");
+		LOG.trace(".......................");
 		Set<ChunkId> chunkIdSet = new HashSet<ChunkId>(); 
 		ensureAbstractContainerList();
 		LOG.debug("abstractContainers "+abstractContainerList.size());

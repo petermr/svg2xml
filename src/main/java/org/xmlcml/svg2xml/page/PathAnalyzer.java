@@ -1,29 +1,14 @@
 package org.xmlcml.svg2xml.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Nodes;
+import nu.xom.ParentNode;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.euclid.RealRange;
-import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
-import org.xmlcml.graphics.svg.SVGPolyline;
-import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.PathContainer;
-import org.xmlcml.svg2xml.dead.PageEditorDead;
-import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.paths.Path2SVGInterpreter;
 
 /**
@@ -104,9 +89,10 @@ public class PathAnalyzer extends ChunkAnalyzer {
 		return s;
 	}
 
-	public void interpretAsSVG() {
+	public void convertPathsToSVG() {
 		ensurePath2SVGInterpreter();
-		path2SVGInterpreter.interpretPathsAsRectCirclePolylineAndReplace();
+		List<SVGElement> convertedPathList = Path2SVGInterpreter.interpretPathsAsRectCirclePolylineAndReplace(getPathList());
+		pathContainer.setConvertedPathList(convertedPathList);
 	}
 
 	private void ensurePath2SVGInterpreter() {
@@ -117,6 +103,40 @@ public class PathAnalyzer extends ChunkAnalyzer {
 
 	public Path2SVGInterpreter getPath2SVGInterpreter() {
 		return path2SVGInterpreter;
+	}
+
+	public PathContainer getPathContainer() {
+		return pathContainer;
+	}
+
+	public List<SVGElement> getConvertedPathList() {
+		return pathContainer == null ? null : pathContainer.getConvertedPathList();
+	}
+
+	/** replaces old paths with new SVGElements where they have been converted
+	 * 
+	 */
+	public void convertPaths2SVG() {
+		convertPathsToSVG();
+		List<SVGElement> convertedPaths = pathContainer.getConvertedPathList();
+		List<SVGPath> pathList = getPathList();
+		if (convertedPaths.size() != pathList.size()){
+			throw new RuntimeException("converted paths ("+convertedPaths.size()+") != old paths ("+pathList.size()+")");
+		}
+		for (int i = 0; i < pathList.size(); i++) {
+			SVGPath oldPath = pathList.get(i);
+			ParentNode parent = oldPath.getParent();
+			SVGElement convertedElement = convertedPaths.get(i);
+			if (convertedElement instanceof SVGPath) {
+				// no need to replace as no conversion done
+			} else {
+				parent.replaceChild(oldPath, convertedElement);
+			}
+		}
+	}
+
+	public SVGElement getSVGChunk() {
+		return pathContainer == null ? null : pathContainer.getSVGChunk();
 	}
 
 }

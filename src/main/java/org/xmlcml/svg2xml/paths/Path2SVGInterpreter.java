@@ -21,9 +21,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGPathPrimitive;
-import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
-import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.svg2xml.page.PageIO;
@@ -44,14 +42,6 @@ public class Path2SVGInterpreter {
 	private boolean splitAtMoveCommands = true;
 
 	private SVGG svgChunk;
-	private SVGElement newSVGElement;
-	private SVGRect rect;
-	private SVGCircle circle;
-	private SVGPolygon polygon;
-	private SVGPolyline polyline;
-	private SVGLine line;
-	
-	private int id;
 	
 	public Path2SVGInterpreter(List<SVGPath> pathList) {
 		this.pathList = pathList;
@@ -73,87 +63,53 @@ public class Path2SVGInterpreter {
 	 * 
 	 * @param pathList
 	 */
-	public void interpretPathsAsRectCirclePolylineAndReplace() {
-		id = 0;
+	public static List<SVGElement> interpretPathsAsRectCirclePolylineAndReplace(List<SVGPath> pathList) {
+		List<SVGElement> newElementList = new ArrayList<SVGElement>();
+		int id = 0;
 		for (SVGPath path : pathList) {
-			newSVGElement = null;
-			
-			rect = createRectangleIfPossible(path);
-			if (rect != null) {
-				newSVGElement = rect;
-				continue;
-			}
-			
-			circle = createCircleIfPossible(path);
-			if (circle != null) {
-				newSVGElement = circle;
-				continue;
-			}
-			
-			polyline = createPolylineIfPossible(path);
-			if (polyline == null) {
-				LOG.trace("Cannot interpret as polyline: "+path.toXML());
-				continue;
-			}
-				
-			line = createSingleLineIfPossible(path);
-			if (line != null) {
-				newSVGElement = line;
-				continue;
-			}
-			
-			polygon = polyline.createPolygon(RECT_EPS);
-			if (polygon != null) {
-				polygon.setId("polygon"+id);
-				polygon.format(PageIO.DECIMAL_PLACES);
-				replace(path, polygon);
-				newSVGElement = polygon;
-			} else {
-				replace(path, polyline);
-			}
-			if (newSVGElement != null) {
-				copyAttributes(path, newSVGElement);
-			}
+			SVGElement newElement = createSVGFromPath(path);
+			newElement.setId(newElement.getClass().getSimpleName().toLowerCase().substring("svg".length())+"."+id);
+			newElementList.add(newElement);
 			id++;
 		}
+		return newElementList;
 	}
 
-
-	private SVGLine createSingleLineIfPossible(SVGPath path) {
-		line = polyline.createSingleLine();
-		if (line != null) {
-			line.setId("line"+id);
-			LOG.trace("created line");
-			line.format(PageIO.DECIMAL_PLACES);
-			replace(path, line);
+	/** create best guess at higher SVGElement
+	 * try rect, circle, line, polygon, polyline, else original path
+	 * 
+	 * @param pathList
+	 */
+	public static SVGElement createSVGFromPath(SVGPath path) {
+		SVGElement newSvg = null;
+		newSvg = path.createRectangle(RECT_EPS);
+		if (newSvg == null) {
+			newSvg = path.createCircle(_CIRCLE_EPS);
 		}
-		return line;
-	}
-
-
-	private SVGPolyline createPolylineIfPossible(SVGPath path) {
-		polyline = path.createPolyline();
-		if (polyline != null) {
-			polyline.setId("polyline"+id);
-			LOG.trace("created polyline with lines: "+polyline.getLineList().size());
-			polyline.format(PageIO.DECIMAL_PLACES);
-			boolean duplicate = polyline.removeDuplicateLines();
-			if (duplicate) {
-				LOG.trace("polyline has duplicate lines");
+		if (newSvg == null) {
+			SVGPolyline polyline = path.createPolyline();
+			// not a polyline, return unchanged path
+			if (polyline == null) {
+				newSvg = new SVGPath(path);
+			} else {
+				// SVG is a polyline, try the variants
+					// is it a line?
+				newSvg = polyline.createSingleLine();
+				if (newSvg == null) {
+					// or a polygon?
+					newSvg = polyline.createPolygon(RECT_EPS);
+				}
+				// no, reset to polyline
+				if (newSvg == null) {
+					newSvg = polyline;
+				}
 			}
 		}
-		return polyline;
+		copyAttributes(path, newSvg);
+		newSvg.format(PageIO.DECIMAL_PLACES);
+		return newSvg;
 	}
 
-	private SVGRect createRectangleIfPossible(SVGPath path) {
-		rect = path.createRectangle(RECT_EPS);
-		if (rect != null) {
-			LOG.trace("R1"+rect);
-			annotateRect(path, rect, id);
-		}
-		return rect;
-	}
-	
 	public boolean isRemoveDuplicatePaths() {
 		return removeDuplicatePaths;
 	}
@@ -187,7 +143,7 @@ public class Path2SVGInterpreter {
 		this.removeDuplicatePaths();
 		this.removeRedundantMoveCommands();
 		this.splitAtMoveCommands();
-		this.interpretPathsAsRectCirclePolylineAndReplace();
+		List<SVGElement> elementList = Path2SVGInterpreter.interpretPathsAsRectCirclePolylineAndReplace(pathList);
 		this.splitPolylinesToLines(minLinesInPolyline);
 //		ensureSVGChunk();
 //		svgChunk.removeEmptySVGG();
@@ -340,41 +296,6 @@ public class Path2SVGInterpreter {
 	}
 
 
-	private SVGCircle createCircleIfPossible(SVGPath path) {
-		circle = path.createCircle(_CIRCLE_EPS);
-		if (circle != null) {
-			annotateCircle(path);
-		}
-		return circle;
-	}
-
-
-	private void annotateCircle(SVGPath path) {
-		LOG.trace("created circle");
-		circle.format(PageIO.DECIMAL_PLACES);
-		circle.setId("circle"+id);
-		replace(path, circle);
-	}
-	private void annotateRect(SVGPath path, SVGRect rect, int id) {
-		LOG.trace("created rect: "+rect);
-		rect.format(PageIO.DECIMAL_PLACES);
-		rect.setId("rect"+id);
-		replace(path, rect);
-	}
-
-
-	private void replace(SVGPath path, SVGElement newElem) {
-			if (path != null && newElem != null) {
-				newElem.detach();
-				ParentNode parent = path.getParent();
-				if (parent != null) {
-					parent.replaceChild(path,  newElem);
-	//				newElem.addAttribute(new Attribute(Chunk.CHUNK_STYLE, "fromPath"));
-				}
-			}
-		}
-
-
 	public boolean isSplitAtMoveCommands() {
 		return splitAtMoveCommands;
 	}
@@ -476,10 +397,6 @@ public class Path2SVGInterpreter {
 				result.addAttribute(new Attribute(attName, val));
 			}
 		}
-	}
-
-	public SVGElement getNewSVGElement() {
-		return newSVGElement;
 	}
 
 }

@@ -24,6 +24,8 @@ public class PathContainer extends AbstractContainer  {
 
 	private List<SVGPath> pathList;
 	private PathAnalyzer pathAnalyzer;
+
+	private List<SVGElement> convertedPathList;
 	
 	public PathContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -110,5 +112,13 @@ public class PathContainer extends AbstractContainer  {
 	public void addToIndexes(PDFIndex pdfIndex) {
 		String pathString = this.toString();
 		pdfIndex.addToPathIndex(pathString, this);
+	}
+
+	public void setConvertedPathList(List<SVGElement> convertedPathList) {
+		this.convertedPathList = convertedPathList;
+	}
+
+	public List<SVGElement> getConvertedPathList() {
+		return convertedPathList;
 	}
 }

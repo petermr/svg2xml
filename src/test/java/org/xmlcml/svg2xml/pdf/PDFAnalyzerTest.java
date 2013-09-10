@@ -25,12 +25,12 @@ public class PDFAnalyzerTest {
 	public void multipleTest() {
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.GEO310_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.MATH311_PDF);
-//		new PDFAnalyzer().analyzePDFFile(Fixtures.TREE313_PDF);
+		new PDFAnalyzer().analyzePDFFile(Fixtures.TREE313_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.BMC174_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.ROBERTS_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.CELL_8994_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.MDPI_02982_PDF);
-		new PDFAnalyzer().analyzePDFFile(Fixtures.ELS_1917_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.ELS_1917_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.NATURE_12352_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.PEERJ_50_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.PLOS_0049149_PDF);
