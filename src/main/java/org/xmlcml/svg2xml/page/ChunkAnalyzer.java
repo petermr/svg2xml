@@ -4,35 +4,18 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Element;
-import nu.xom.Node;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGImage;
-import org.xmlcml.graphics.svg.SVGPath;
-import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlB;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlI;
 import org.xmlcml.svg2xml.container.AbstractContainer;
-import org.xmlcml.svg2xml.dead.PageEditorDead;
 import org.xmlcml.svg2xml.pdf.ChunkId;
-import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.pdf.PDFIndex;
-import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** superclass of raw components of PDFPage SVG.
  * 
  * Components are:
- *  FigureAnalyzer, ImageAnalyzer, PathAnalyzer, MixedAnalyzer, TextAnalyzer
+ *  FigureAnalyzer, ImageAnalyzer, ShapeAnalyzer, MixedAnalyzer, TextAnalyzer
  *  
  *  Each component can access the PageAnalyzer , and through that the PDFAnalyzer
  *  for the document. Most analyzers have an AbstractContainer which processes the raw

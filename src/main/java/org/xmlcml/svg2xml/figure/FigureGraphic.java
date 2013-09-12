@@ -21,7 +21,7 @@ import org.xmlcml.html.HtmlImg;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
@@ -44,7 +44,7 @@ public class FigureGraphic extends FigureComponent {
 	}
 
 	public FigureGraphic(TextAnalyzer textAnalyzer,
-			PathAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer) {
+			ShapeAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer) {
 		super(textAnalyzer, pathAnalyzer, imageAnalyzer);
 	}
 

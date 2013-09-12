@@ -16,7 +16,7 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
-import org.xmlcml.svg2xml.container.PathContainer;
+import org.xmlcml.svg2xml.container.ShapeContainer;
 
 /**
  * Analyzes images.

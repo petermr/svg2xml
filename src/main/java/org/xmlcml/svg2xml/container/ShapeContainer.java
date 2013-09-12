@@ -6,40 +6,32 @@ import java.util.List;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.figure.FigureGraphic;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-public class PathContainer extends AbstractContainer  {
+public class ShapeContainer extends AbstractContainer  {
 
-	public final static Logger LOG = Logger.getLogger(PathContainer.class);
+	public final static Logger LOG = Logger.getLogger(ShapeContainer.class);
 
-	private List<SVGPath> pathList;
-	private PathAnalyzer pathAnalyzer;
+	private ShapeAnalyzer shapeAnalyzer;
+	private List<SVGShape> shapeList;
 
-	private List<SVGElement> convertedPathList;
-	
-	public PathContainer(PageAnalyzer pageAnalyzer) {
+	public ShapeContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 	
-	public PathContainer(PathAnalyzer pathAnalyzer) {
-		super(pathAnalyzer);
-		this.pathAnalyzer = pathAnalyzer;
-		this.pathAnalyzer.setPathContainer(this);
-	}
-
-	public void addPathList(List<SVGPath> pathList) {
-		ensurePathList();
-		this.pathList.addAll(pathList);
+	public ShapeContainer(ShapeAnalyzer shapeAnalyzer) {
+		super(shapeAnalyzer);
+		this.shapeAnalyzer = shapeAnalyzer;
+		this.shapeAnalyzer.setShapeContainer(this);
 	}
 
 	@Override
@@ -58,35 +50,35 @@ public class PathContainer extends AbstractContainer  {
 			figureGraphic.setSVGContainer(svgChunk);
 			figureGraphic.createAndWriteImageAndSVG(imageName, div, svgName);
 		} else {
-			LOG.error("Null Path Chunk: "/*+pathList+" "+((pathList != null) ? pathList.size() : "null"*/);
+			LOG.trace("Null Shape Chunk: "/*+shapeList+" "+((shapeList != null) ? shapeList.size() : "null"*/);
 		}
 		return htmlElement;
 	}
 
 	// this is a mess
 	private void removeAnnotatedRects(SVGG svgChunk) {
-		Nodes nodes = svgChunk.query("//*[@title='org.xmlcml.svg2xml.page.PathAnalyzer1']");
+		Nodes nodes = svgChunk.query("//*[@title='org.xmlcml.svg2xml.page.ShapeAnalyzer1']");
 		for (int i = 0; i < nodes.size(); i++) {
 			nodes.get(i).detach();
 		}
 	}
 
-	public List<SVGPath> getPathList() {
-		ensurePathList();
-		return pathList;
+	public List<SVGShape> getShapeList() {
+		ensureShapeList();
+		return shapeList;
 	}
 
-	private void ensurePathList() {
-		if (pathList == null) {
-			this.pathList = new ArrayList<SVGPath>();
+	private void ensureShapeList() {
+		if (shapeList == null) {
+			this.shapeList = new ArrayList<SVGShape>();
 		}
 	}
 	
 	@Override
 	public SVGG createSVGGChunk() {
 		SVGG g = new SVGG();
-		for (SVGElement path : pathList) {
-			g.appendChild(path.copy());
+		for (SVGShape shape : shapeList) {
+			g.appendChild(shape.copy());
 		}
 		return g;
 	}
@@ -94,31 +86,28 @@ public class PathContainer extends AbstractContainer  {
 
 	@Override
 	public String summaryString() {
-		StringBuilder sb = new StringBuilder(">>>PathContainer>>>"+" paths: "+pathList.size()+"\n");
-		for (SVGPath path : pathList) {
-			sb.append(SVG2XMLUtil.trimText(20, path.getSignature())+"\n");
+		StringBuilder sb = new StringBuilder(">>>ShapeContainer>>>"+" shapes: "+shapeList.size()+"\n");
+		for (SVGShape shape : shapeList) {
+			sb.append(SVG2XMLUtil.trimText(20, shape.getSignature())+"\n");
 		}
-		sb.append("<<<PathContainer<<<");
+		sb.append("<<<ShapeContainer<<<");
 		return sb.toString();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(super.toString()+"\n");
-		sb.append(outputSVGList("Paths", pathList));
+		sb.append(outputSVGList("Shapes", shapeList));
 		return sb.toString();
 	}
 
 	public void addToIndexes(PDFIndex pdfIndex) {
-		String pathString = this.toString();
-		pdfIndex.addToPathIndex(pathString, this);
+		String shapeString = this.toString();
+		pdfIndex.addToShapeIndex(shapeString, this);
 	}
 
-	public void setConvertedPathList(List<SVGElement> convertedPathList) {
-		this.convertedPathList = convertedPathList;
+	public void setShapeList(List<SVGShape> shapeList) {
+		this.shapeList = shapeList;
 	}
 
-	public List<SVGElement> getConvertedPathList() {
-		return convertedPathList;
-	}
 }

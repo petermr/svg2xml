@@ -4,19 +4,19 @@ package org.xmlcml.svg2xml.container;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
-import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TableAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
@@ -27,7 +27,7 @@ public class MixedContainer extends AbstractContainer {
 
 	public final static Logger LOG = Logger.getLogger(MixedContainer.class);
 	private boolean box;
-	private PathContainer pathContainer;
+	private ShapeContainer shapeContainer;
 	private ImageContainer imageContainer;
 	private TextAnalyzer textAnalyzerX;
 	private TextStructurer textStructurer;
@@ -46,9 +46,9 @@ public class MixedContainer extends AbstractContainer {
 	}
 
 	private static void addSVGElements(MixedContainer mixedContainer, MixedAnalyzer mixedAnalyzer) {
-		List<SVGPath> pathList = mixedAnalyzer.getPathList();
-		if (pathList != null && pathList.size() > 0){
-			mixedContainer.addPathList(pathList);
+		List<SVGShape> shapeList = mixedAnalyzer.getShapeList();
+		if (shapeList != null && shapeList.size() > 0){
+			mixedContainer.addShapeList(shapeList);
 		}
 		List<SVGImage> imageList = mixedAnalyzer.getImageList();
 		if (imageList != null && imageList.size() > 0){
@@ -69,12 +69,12 @@ public class MixedContainer extends AbstractContainer {
 		}
 	}
 
-	public void addPathList(List<SVGPath> pathList) {
-		if (pathList != null && pathList.size() > 0) {
-			pathContainer = new PathContainer(pageAnalyzer);
-			pathContainer.addPathList(pathList);
-			pathContainer.setChunkId(this.getChunkId());
-			this.add(pathContainer);
+	public void addShapeList(List<SVGShape> shapeList) {
+		if (shapeList != null && shapeList.size() > 0) {
+			shapeContainer = new ShapeContainer(pageAnalyzer);
+			shapeContainer.setShapeList(shapeList);
+			shapeContainer.setChunkId(this.getChunkId());
+			this.add(shapeContainer);
 		}
 	}
 
@@ -144,26 +144,26 @@ public class MixedContainer extends AbstractContainer {
 		this.textAnalyzerX = textAnalyzerX;
 	}
 
-	public PathContainer getPathContainer() {
-		return pathContainer;
+	public ShapeContainer getPathContainer() {
+		return shapeContainer;
 	}
 	
 	public List<SVGText> getTextCharacters() {
 		return textAnalyzerX == null ? null : textAnalyzerX.getTextCharacters();
 	}
 	
-	public List<SVGPath> getPathList() {
-		return pathContainer == null ? null : pathContainer.getPathList();
+	public List<SVGShape> getShapeList() {
+		return shapeContainer == null ? null : shapeContainer.getShapeList();
 	}
 
 	public List<SVGImage> getImageList() {
 		return imageContainer == null ? null : imageContainer.getImageList();
 	}
 
-	public PathAnalyzer createPathAnalyzer() {
-		PathAnalyzer pathAnalyzer = new PathAnalyzer(pageAnalyzer);
-		List<SVGPath> pathList = getPathList(); 
-		pathAnalyzer.addPathList(pathList);
+	public ShapeAnalyzer createPathAnalyzer() {
+		ShapeAnalyzer pathAnalyzer = new ShapeAnalyzer(pageAnalyzer);
+		List<SVGShape> shapeList = getShapeList(); 
+		pathAnalyzer.addShapeList(shapeList);
 		return pathAnalyzer;
 	}
 

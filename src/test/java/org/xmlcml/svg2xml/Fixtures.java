@@ -197,10 +197,12 @@ public class Fixtures {
 	public static final File CELL_8994_PDF = new File(PDFS_CELL_DIR, "PIIS0092867413008994.pdf");
 
 	public static final File PATHS_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/paths");
-	public static final File PATHS_RECT_LINE_SVG = new File(PATHS_DIR, "rectLine.svg");
-	public static final File PATHS_TEXT_LINE_SVG = new File(PATHS_DIR, "textLine.svg");
-	public static final File PATHS_NOPATH_SVG = new File(PATHS_DIR, "nopath.svg");
-	public static final File PATHS_BMCLOGO_SVG = new File(PATHS_DIR, "bmclogo.svg");
+	public static final File PATHS_SIMPLE_TREE_SVG = new File(Fixtures.PATHS_DIR, "simpleTree.svg");
+	public static final File PATHS_CLUSTER1_SVG = new File(Fixtures.PATHS_DIR, "page4panel1Cluster1.svg");
+	public static final File PATHS_CLUSTER1A_SVG = new File(Fixtures.PATHS_DIR, "page4panel1Cluster1a.svg");
+	public static final File PATHS_CLUSTER2A_SVG = new File(Fixtures.PATHS_DIR, "page4panel1Cluster2a.svg");
+	public static final File PATHS_PANEL1_SVG = new File(Fixtures.PATHS_DIR, "page7figurePanel1.svg");
+	
 
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {

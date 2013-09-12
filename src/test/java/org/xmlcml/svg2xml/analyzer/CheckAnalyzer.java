@@ -3,7 +3,7 @@ package org.xmlcml.svg2xml.analyzer;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
-import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 
 /** checks result of running analyzer
@@ -16,18 +16,18 @@ public class CheckAnalyzer {
 	Class<? extends ChunkAnalyzer> clazz;
 	private Integer count = null;
 	private Integer imageCount;
-	private Integer pathCount;
+	private Integer shapeCount;
 	private Integer textCount;
-	private ChunkAnalyzer imageAnalyzer;
-	private ChunkAnalyzer pathAnalyzer;
-	private ChunkAnalyzer textAnalyzer;
+//	private ChunkAnalyzer imageAnalyzer;
+//	private ChunkAnalyzer shapeAnalyzer;
+//	private ChunkAnalyzer textAnalyzer;
 	
 	public static CheckAnalyzer createCheckAnalyzer(ChunkAnalyzer analyzer) {
 		CheckAnalyzer  checkAnalyzer = null;
 		if (analyzer instanceof TextAnalyzer) {
 			checkAnalyzer = new CheckAnalyzer((TextAnalyzer) analyzer);
-		} else if (analyzer instanceof PathAnalyzer) {
-			checkAnalyzer = new CheckAnalyzer((PathAnalyzer) analyzer);
+		} else if (analyzer instanceof ShapeAnalyzer) {
+			checkAnalyzer = new CheckAnalyzer((ShapeAnalyzer) analyzer);
 		} else if (analyzer instanceof MixedAnalyzer) {
 			checkAnalyzer = new CheckAnalyzer((MixedAnalyzer) analyzer);
 		} else if (analyzer instanceof ImageAnalyzer) {
@@ -40,14 +40,14 @@ public class CheckAnalyzer {
 		this(ImageAnalyzer.class, imageAnalyzer.getImageList().size());
 	}
 	
-	public CheckAnalyzer(PathAnalyzer pathAnalyzer) {
-		this(PathAnalyzer.class, pathAnalyzer.getPathList().size());
+	public CheckAnalyzer(ShapeAnalyzer shapeAnalyzer) {
+		this(ShapeAnalyzer.class, shapeAnalyzer.getShapeList().size());
 	}
 	
 	public CheckAnalyzer(MixedAnalyzer mixedAnalyzer) {
 		this(MixedAnalyzer.class, 
 				mixedAnalyzer.getImageAnalyzer(),
-				mixedAnalyzer.getPathAnalyzer(),
+				mixedAnalyzer.getShapeAnalyzer(),
 				mixedAnalyzer.getTextAnalyzer());
 	}
 	
@@ -61,18 +61,18 @@ public class CheckAnalyzer {
 	}
 	
 	public CheckAnalyzer(Class<? extends MixedAnalyzer> clazz, 
-			ImageAnalyzer imageAnalyzer, PathAnalyzer pathAnalyzer, TextAnalyzer textAnalyzer) {
+			ImageAnalyzer imageAnalyzer, ShapeAnalyzer shapeAnalyzer, TextAnalyzer textAnalyzer) {
 		this.clazz = clazz;
 		this.imageCount = imageAnalyzer == null ? 0 : imageAnalyzer.getImageList().size();
-		this.pathCount = pathAnalyzer == null ? 0 : pathAnalyzer.getPathList().size();
+		this.shapeCount = shapeAnalyzer == null ? 0 : shapeAnalyzer.getShapeList().size();
 		this.textCount = textAnalyzer == null ? 0 : textAnalyzer.getTextCharacters().size();
 	}
 	
 	public CheckAnalyzer(Class<? extends MixedAnalyzer> clazz, 
-			int imageCount, int pathCount, int textCount) {
+			int imageCount, int shapeCount, int textCount) {
 		this.clazz = clazz;
 		this.imageCount = imageCount;
-		this.pathCount = pathCount;
+		this.shapeCount = shapeCount;
 		this.textCount = textCount;
 	}
 	
@@ -83,7 +83,7 @@ public class CheckAnalyzer {
 			CheckAnalyzer analyzer = (CheckAnalyzer) analy;
 			if (this.clazz.equals(MixedAnalyzer.class) && analyzer.clazz.equals(MixedAnalyzer.class)) {
 				equals = (this.imageCount.equals(analyzer.imageCount)) && 
-			         (this.pathCount.equals(analyzer.pathCount)) && 
+			         (this.shapeCount.equals(analyzer.shapeCount)) && 
 			         (this.textCount.equals(analyzer.textCount)); 
 			} else if (this.clazz.equals(analyzer.clazz)) {
 				equals = (this.count.equals(analyzer.count));
@@ -93,6 +93,6 @@ public class CheckAnalyzer {
 	}
 	
 	public String toString() {
-		return "image: "+imageCount+"; path "+pathCount+"; text "+textCount;
+		return "image: "+imageCount+"; path "+shapeCount+"; text "+textCount;
 	}
 }

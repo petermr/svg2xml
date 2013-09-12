@@ -52,7 +52,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 	private static final Double YEPS = 2.0;
 	
 	private TextAnalyzer textAnalyzer;
-	private PathAnalyzer pathAnalyzer;
+	private ShapeAnalyzer pathAnalyzer;
 	private ImageAnalyzer imageAnalyzer;
 
 	private FigureCaption figureCaption;
@@ -64,7 +64,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 	}
 	
 	public FigureAnalyzer(TextAnalyzer textAnalyzer,
-			PathAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer, SVGElement svgElement) {
+			ShapeAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer, SVGElement svgElement) {
 		super(textAnalyzer.getPageAnalyzer());
 		this.textAnalyzer = textAnalyzer;
 		this.pathAnalyzer = pathAnalyzer;
@@ -126,7 +126,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		return textAnalyzer;
 	}
 
-	public PathAnalyzer getPathAnalyzer() {
+	public ShapeAnalyzer getShapeAnalyzer() {
 		return pathAnalyzer;
 	}
 

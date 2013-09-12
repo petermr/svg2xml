@@ -8,14 +8,13 @@ import java.util.List;
 
 import nu.xom.Element;
 
-import org.apache.commons.math.stat.descriptive.AggregateSummaryStatistics;
 import org.apache.log4j.Logger;
 import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlElement;
+import org.xmlcml.pdf2svg.SVGSerializer;
 import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzerIO;
@@ -225,7 +224,9 @@ public class PageIO {
 	public static void outputFile(Element element, File file) {
 		try {
 			file.getParentFile().mkdirs();
-			CMLUtil.debug(element, new FileOutputStream(file), 1);
+			SVGSerializer svgSerializer = new SVGSerializer(new FileOutputStream(file));
+			svgSerializer.write(CMLUtil.ensureDocument(element));
+//			CMLUtil.debug(element, new FileOutputStream(file), 1);
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot write file: "+file, e);
 		}

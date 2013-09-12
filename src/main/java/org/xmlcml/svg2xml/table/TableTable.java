@@ -15,6 +15,7 @@ import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlBody;
@@ -24,7 +25,8 @@ import org.xmlcml.html.HtmlHead;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTh;
-import org.xmlcml.svg2xml.paths.Path2SVGInterpreter;
+
+import util.Path2ShapeConverter;
 
 /** holds temporary table as list of chunks.
  * might disappear into TableAnalyzer later?
@@ -48,7 +50,7 @@ public class TableTable extends TableChunk {
 	private TableChunk footerChunk;
 	private HtmlTable htmlTable;
 
-	private List<SVGPath> pathList;
+	private List<SVGShape> shapeList;
 	private List<SVGText> textList;
 	private Real2Range pathBox;
 	private Real2Range textBox;
@@ -68,15 +70,15 @@ public class TableTable extends TableChunk {
 	}
 
 	private static TableTable createTableTable(SVGElement svgElement) {
-		List<SVGPath> pathList = SVGPath.extractPaths(svgElement);
+		List<SVGShape> shapeList = SVGShape.extractShapes(svgElement);
 		List<SVGText> textList = SVGText.extractTexts(svgElement);
-		TableTable table = new TableTable(pathList, textList);
+		TableTable table = new TableTable(shapeList, textList);
 		return table;
 	}
 
-	public TableTable(List<SVGPath> pathList, List<SVGText> textList) {
+	public TableTable(List<SVGShape> pathList, List<SVGText> textList) {
 		this();
-		this.pathList = pathList;
+		this.shapeList = pathList;
 		this.textList = textList;
 	}
 
@@ -94,7 +96,7 @@ public class TableTable extends TableChunk {
 	public RealRangeArray createCoarseVerticalMask() {
 		textBox = SVGUtil.createBoundingBox(textList);
 		totalBox = textBox;
-		if (pathList != null && pathList.size() > 0) {
+		if (shapeList != null && shapeList.size() > 0) {
 			verticalMask = createVerticalMaskFromPaths();
 			verticalMask.addTerminatingCaps(totalBox.getYMin(), totalBox.getYMax());
 		} else {
@@ -108,12 +110,12 @@ public class TableTable extends TableChunk {
 		
 	private RealRangeArray createVerticalMaskFromPaths() {
 	
-		this.pathList = Path2SVGInterpreter.removeDuplicatePaths(pathList);
-		this.pathBox = SVGUtil.createBoundingBox(pathList);
+		this.shapeList = Path2ShapeConverter.removeDuplicateShapes(shapeList);
+		this.pathBox = SVGUtil.createBoundingBox(shapeList);
 		totalBox = totalBox.plus(pathBox);
 		// because some "lines" (e.g. in BMC) are multiple paths. This is a mess and needs more 
 		// heuristics
-		List<Real2Range> pathBboxList = SVGUtil.createNonOverlappingBoundingBoxList(pathList);
+		List<Real2Range> pathBboxList = SVGUtil.createNonOverlappingBoundingBoxList(shapeList);
 		verticalMask = new RealRangeArray(pathBboxList, RealRange.Direction.VERTICAL);
 		return verticalMask;
 	}
@@ -235,8 +237,8 @@ public class TableTable extends TableChunk {
 		return maxHorizontalChunks;
 	}
 
-	public List<SVGPath> getPathList() {
-		return pathList;
+	public List<SVGShape> getShapeList() {
+		return shapeList;
 	}
 
 	public List<TableChunk> createVerticalTextChunks() {

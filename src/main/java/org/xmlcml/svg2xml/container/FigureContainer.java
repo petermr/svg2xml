@@ -15,7 +15,7 @@ public class FigureContainer extends AbstractContainer  {
 
 	private List<ScriptContainer> captionList;
 	private List<ImageContainer> imageContainerList;
-	private List<PathContainer> pathContainerList;
+	private List<ShapeContainer> pathContainerList;
 	
 	public FigureContainer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -30,7 +30,7 @@ public class FigureContainer extends AbstractContainer  {
 			imageContainerList = new ArrayList<ImageContainer>();
 		}
 		if (pathContainerList == null) {
-			pathContainerList = new ArrayList<PathContainer>();
+			pathContainerList = new ArrayList<ShapeContainer>();
 		}
 	}
 

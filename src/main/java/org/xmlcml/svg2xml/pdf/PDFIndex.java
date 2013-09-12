@@ -30,7 +30,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
-import org.xmlcml.svg2xml.container.PathContainer;
+import org.xmlcml.svg2xml.container.ShapeContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.dead.HtmlAnalyzerDead;
 import org.xmlcml.svg2xml.indexer.AbstractIndexer;
@@ -570,8 +570,8 @@ public class PDFIndex {
 		for (AbstractContainer container : pageAnalyzer.getAbstractContainerList()) {
 			if (container instanceof ScriptContainer) {
 				((ScriptContainer)container).addToIndexes(this);
-			} else if (container instanceof PathContainer) {
-				((PathContainer)container).addToIndexes(this);
+			} else if (container instanceof ShapeContainer) {
+				((ShapeContainer)container).addToIndexes(this);
 			} else if (container instanceof ImageContainer) {
 				((ImageContainer)container).addToIndexes(this);
 			} else {
@@ -587,7 +587,7 @@ public class PDFIndex {
 		scriptContainerByBoldFontSize.put(fontSize, scriptContainer);
 	}
 
-	public void addToPathIndex(String pathString, PathContainer pathContainer) {
+	public void addToShapeIndex(String pathString, ShapeContainer pathContainer) {
 		LOG.trace("NYI Adding: "+pathString+" "+pathContainer);
 	}
 

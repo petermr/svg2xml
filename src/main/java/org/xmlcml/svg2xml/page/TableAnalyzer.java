@@ -10,12 +10,14 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
-import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlTable;
-import org.xmlcml.svg2xml.paths.Path2SVGInterpreter;
 import org.xmlcml.svg2xml.table.TableTable;
+
+import util.Path2ShapeConverter;
 
 /**
  * @author pm286
@@ -27,30 +29,30 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
 
 	private TextAnalyzer textAnalyzer;
-	private PathAnalyzer pathAnalyzer;
+	private ShapeAnalyzer pathAnalyzer;
 
 //	private Real2Range pathBox;
-	private List<SVGPath> pathList;
+	private List<SVGShape> shapeList;
 	private List<SVGText> textList;
 	
 	public TableAnalyzer() {
 		super();
 	}
 
-	public TableAnalyzer(TextAnalyzer textAnalyzer, PathAnalyzer pathAnalyzer) {
+	public TableAnalyzer(TextAnalyzer textAnalyzer, ShapeAnalyzer pathAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
 		this.pathAnalyzer = pathAnalyzer;
 	}
 
 	public void analyze() {
-		List<SVGPath> pathList = pathAnalyzer.getPathList();
-		pathList = Path2SVGInterpreter.removeDuplicatePaths(pathList);
+		List<SVGShape> shapeList = pathAnalyzer.getShapeList();
+		shapeList = Path2ShapeConverter.removeDuplicateShapes(shapeList);
 		List<SVGText> textList = textAnalyzer.getTextCharacters();
 //		pathBox = SVGUtil.createBoundingBox(pathList);
 //		RealRange pathBoxXRange = pathBox.getXRange();
 		Real2Range textBox = SVGUtil.createBoundingBox(textList);
 		RealRange textBoxYRange = textBox.getYRange();
-		List<Real2Range> boxList = SVGUtil.createNonOverlappingBoundingBoxList(pathList);
+		List<Real2Range> boxList = SVGUtil.createNonOverlappingBoundingBoxList(shapeList);
 		RealRangeArray verticalBoxes = new RealRangeArray(boxList, RealRange.Direction.VERTICAL);
 		verticalBoxes.addTerminatingCaps(textBoxYRange.getMin(), textBoxYRange.getMax());
 		RealRangeArray yGaps = verticalBoxes.inverse();
@@ -59,9 +61,9 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	}
 	
 	public HtmlTable createTable() {
-		pathList = pathAnalyzer == null ? null : pathAnalyzer.getPathList();
+		shapeList = pathAnalyzer == null ? null : pathAnalyzer.getShapeList();
 		textList = textAnalyzer == null ? null : textAnalyzer.getTextCharacters();
-		TableTable tableTable = new TableTable(pathList, textList);
+		TableTable tableTable = new TableTable(shapeList, textList);
 		tableTable.analyzeVerticalTextChunks();
 		HtmlTable htmlTable = tableTable.createHtmlElement();
 		Integer tableNumber = tableTable.getTableNumber();

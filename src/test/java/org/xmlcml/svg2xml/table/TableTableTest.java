@@ -36,9 +36,9 @@ public class TableTableTest {
 	@Test
 	public void testTableAndVerticalMask() {
 		TableTable table = createTable(TableFixtures.TABLEFILE);
-		Assert.assertEquals("unnormalized paths", 8, table.getPathList().size());
+		Assert.assertEquals("unnormalized paths", 8, table.getShapeList().size());
 		RealRangeArray vMask = table.createCoarseVerticalMask();
-		Assert.assertEquals("normalized paths", 4, table.getPathList().size());
+		Assert.assertEquals("normalized paths", 4, table.getShapeList().size());
 		Assert.assertEquals("vMask", "Direction: null; size: 4\n"+
 			"((86.485,110.36)(110.645,123.571)(123.854,293.195)(293.422,318.872))", vMask.toString());
 	}

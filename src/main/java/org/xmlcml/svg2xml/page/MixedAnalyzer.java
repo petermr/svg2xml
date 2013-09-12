@@ -9,20 +9,17 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
-import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.MixedContainer;
-import org.xmlcml.svg2xml.pdf.ChunkId;
 
 public class MixedAnalyzer extends ChunkAnalyzer {
 
 	static final Logger LOG = Logger.getLogger(MixedAnalyzer.class);
 
 	private ImageAnalyzer imageAnalyzer = null;
-	private PathAnalyzer pathAnalyzer = null;
+	private ShapeAnalyzer shapeAnalyzer = null;
 	private TextAnalyzer textAnalyzer = null;
 
 	private List<ChunkAnalyzer> analyzerList;
@@ -30,7 +27,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	private Real2Range boundingBox;
 
 	private List<SVGImage> imageList;
-	private List<SVGPath> pathList;
+	private List<SVGShape> shapeList;
 	private List<SVGText> textList;
 	
 	public MixedAnalyzer(PageAnalyzer pageAnalyzer) {
@@ -44,10 +41,10 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 		}
 	}
 	
-	public void readPathList(List<SVGPath> pathList) {
-		if (pathList != null && pathList.size() > 0) {
-			pathAnalyzer = new PathAnalyzer(pageAnalyzer);
-			pathAnalyzer.addPathList(pathList);
+	public void readShapeList(List<SVGShape> shapeList) {
+		if (shapeList != null && shapeList.size() > 0) {
+			shapeAnalyzer = new ShapeAnalyzer(pageAnalyzer);
+			shapeAnalyzer.addShapeList(shapeList);
 		}
 	}
 	
@@ -65,11 +62,11 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 		return imageList;
 	}
 	
-	public List<SVGPath> getPathList() {
-		if (pathList == null) {
-			pathList = (pathAnalyzer == null) ? null : pathAnalyzer.getPathList();
+	public List<SVGShape> getShapeList() {
+		if (shapeList == null) {
+			shapeList = (shapeAnalyzer == null) ? null : shapeAnalyzer.getShapeList();
 		}
-		return pathList;
+		return shapeList;
 	}
 	
 	public List<SVGText> getTextList() {
@@ -82,13 +79,13 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	public String toString() {
 		return "" +
 				"image "+(getImageList() == null ? "0" : getImageList().size())+"; "+
-				"path "+(getPathList() == null ? "0" : getPathList().size())+"; "+
+				"shape "+(getShapeList() == null ? "0" : getShapeList().size())+"; "+
 				"text "+(getTextList() == null ? null : getTextList().size())+"; ";
 
 	}
 
 	public ImageAnalyzer getImageAnalyzer() {return imageAnalyzer;}
-	public PathAnalyzer getPathAnalyzer() {return pathAnalyzer;}
+	public ShapeAnalyzer getShapeAnalyzer() {return shapeAnalyzer;}
 	public TextAnalyzer getTextAnalyzer() {return textAnalyzer;}
 
 	public void add(ChunkAnalyzer analyzer) {
@@ -101,8 +98,8 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	private void setTypedAnalyzer(ChunkAnalyzer analyzer) {
 		if (analyzer instanceof ImageAnalyzer) {
 			imageAnalyzer = (ImageAnalyzer) analyzer;
-		} else if (analyzer instanceof PathAnalyzer) {
-			pathAnalyzer = (PathAnalyzer) analyzer;
+		} else if (analyzer instanceof ShapeAnalyzer) {
+			shapeAnalyzer = (ShapeAnalyzer) analyzer;
 		} else if (analyzer instanceof TextAnalyzer) {
 			textAnalyzer = (TextAnalyzer) analyzer;
 		}
@@ -115,25 +112,25 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	}
 
 	/** identify a box round the object.
-	 * often (some of) the paths create a frame, either a rect or 
-	 * rounded rect. This is often made of separate paths along the edges
+	 * often (some of) the shapes create a frame, either a rect or 
+	 * rounded rect. This is often made of separate shapes along the edges
 	 * and perhaps with rounded corners. This is a simple heuristic. 
 	 * Maybe we'll add more later.
 	 * 
-	 * The box can then be removed by detach()ing the paths
+	 * The box can then be removed by detach()ing the shapes
 	 * 
 	 * @return empty list if none found
 	 */
-	public List<SVGPath> getFrameBox(double eps) {
-		List<SVGPath> box = new ArrayList<SVGPath>();
-		List<SVGPath> pathList = getPathList();
-		if (pathList != null) {
+	public List<SVGShape> getFrameBox(double eps) {
+		List<SVGShape> box = new ArrayList<SVGShape>();
+		List<SVGShape> shapeList = getShapeList();
+		if (shapeList != null) {
 			this.getBoundingBox();
 			List<Real2Range> edgeBoxes = createEdgeBoxes(boundingBox, eps);
-			for (SVGPath path : pathList) {
-				Real2Range bbox = path.getBoundingBox();
+			for (SVGShape shape : shapeList) {
+				Real2Range bbox = shape.getBoundingBox();
 				if (bbox.isContainedInAnyRange(edgeBoxes)) {
-					box.add(path);
+					box.add(shape);
 				}
 			}
 		}
@@ -157,7 +154,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	public Real2Range getBoundingBox() {
 		if (boundingBox == null) {
 			addToBoundingBox(getTextList());
-			addToBoundingBox(getPathList());
+			addToBoundingBox(getShapeList());
 			addToBoundingBox(getImageList());
 		}
 		return boundingBox;
@@ -174,12 +171,12 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 		}
 	}
 
-	public boolean removeFrameBoxFromPathList() {
-		List<SVGPath> frameBox = getFrameBox(5.0);
+	public boolean removeFrameBoxFromShapeList() {
+		List<SVGShape> frameBox = getFrameBox(5.0);
 		if (frameBox.size() >= 4) {
-			for (SVGPath path : frameBox) {
-				if (!pathList.remove(path)) {
-					LOG.debug("cannot remove path");
+			for (SVGShape shape : frameBox) {
+				if (!shapeList.remove(shape)) {
+					LOG.debug("cannot remove shape");
 				}
 			}
 			return true;
@@ -190,28 +187,28 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	public SVGG getSVGG() {
 		SVGG svgG = new SVGG();
 		svgG.copyElementsFrom(textList);
-		svgG.copyElementsFrom(pathList);
+		svgG.copyElementsFrom(shapeList);
 		svgG.copyElementsFrom(imageList);
 		return svgG;
 	}
 
 	public void normalize() {
-		normalizePathAnalyzers();
+		normalizeShapeAnalyzers();
 		normalizeTextAnalyzers();
 		normalizeImageAnalyzers();
 	}
 
-	void normalizePathAnalyzers() {
-		if (pathList != null && pathList.size() == 0) {
-			pathList = null;
+	void normalizeShapeAnalyzers() {
+		if (shapeList != null && shapeList.size() == 0) {
+			shapeList = null;
 		}
-		if (pathList == null) {
-			pathAnalyzer = null;
+		if (shapeList == null) {
+			shapeAnalyzer = null;
 		}
 		if (analyzerList != null) {
 			List<ChunkAnalyzer> newAnalyzerList = new ArrayList<ChunkAnalyzer>();
 			for (ChunkAnalyzer analyzer : analyzerList) {
-				if (!(analyzer instanceof PathAnalyzer)) {
+				if (!(analyzer instanceof ShapeAnalyzer)) {
 					newAnalyzerList.add(analyzer);
 				}
 			}
@@ -260,8 +257,8 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 		if (imageList != null) {
 			type += "+"+ImageAnalyzer.class.getSimpleName();
 		}
-		if (pathList != null) {
-			type += "+"+PathAnalyzer.class.getSimpleName();
+		if (shapeList != null) {
+			type += "+"+ShapeAnalyzer.class.getSimpleName();
 		}
 		if (textList != null) {
 			type += "+"+TextAnalyzer.class.getSimpleName();
@@ -279,12 +276,12 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	@Override
 	public List<AbstractContainer> createContainers() {
 		MixedContainer mixedContainer = new MixedContainer(pageAnalyzer);
-		if (this.removeFrameBoxFromPathList()) {
+		if (this.removeFrameBoxFromShapeList()) {
 			mixedContainer.setBox(true);
 		}
 		mixedContainer.setChunkId(this.getChunkId());
 		mixedContainer.addImageList(this.getImageList());
-		mixedContainer.addPathList(this.getPathList());
+		mixedContainer.addShapeList(this.getShapeList());
 		mixedContainer.addTextList(this.getTextList());
 		ensureAbstractContainerList();
 		abstractContainerList.add(mixedContainer);

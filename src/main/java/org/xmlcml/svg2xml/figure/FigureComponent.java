@@ -1,8 +1,6 @@
 package org.xmlcml.svg2xml.figure;
 
-    import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
+    import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,13 +9,13 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
-import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 
 public abstract class FigureComponent {
@@ -40,15 +38,15 @@ public abstract class FigureComponent {
 
 	protected SVGG svgContainer;
 	protected TextAnalyzer textAnalyzer;
-	protected PathAnalyzer pathAnalyzer;
+	protected ShapeAnalyzer shapeAnalyzer;
 	protected ImageAnalyzer imageAnalyzer;
 	protected Real2Range boundingBox;
 
 	private List<SVGText> textList;
-	private List<SVGPath> pathList;
+	private List<SVGShape> shapeList;
 	private List<SVGImage> imageList;
 	private List<SVGText> filteredTextList;
-	private List<SVGPath> filteredPathList;
+	private List<SVGShape> filteredShapeList;
 	private List<SVGImage> filteredImageList;
 
 	private ChunkAnalyzer figureAnalyzer;
@@ -59,17 +57,17 @@ public abstract class FigureComponent {
 	}
 
 	protected FigureComponent(FigureAnalyzer figureAnalyzer) {
-		this(figureAnalyzer.getTextAnalyzer(), figureAnalyzer.getPathAnalyzer(), figureAnalyzer.getImageAnalyzer());
+		this(figureAnalyzer.getTextAnalyzer(), figureAnalyzer.getShapeAnalyzer(), figureAnalyzer.getImageAnalyzer());
 		this.figureAnalyzer = figureAnalyzer;
 		this.pageAnalyzer = figureAnalyzer.getPageAnalyzer();
 	}
 
-	protected FigureComponent(TextAnalyzer textAnalyzer, PathAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer)  {
+	protected FigureComponent(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
 		this.textAnalyzer = textAnalyzer;
-		this.pathAnalyzer = pathAnalyzer;
+		this.shapeAnalyzer = shapeAnalyzer;
 		this.imageAnalyzer = imageAnalyzer;
 		this.textList = new ArrayList<SVGText>();
-		this.pathList = new ArrayList<SVGPath>();
+		this.shapeList = new ArrayList<SVGShape>();
 		this.imageList = new ArrayList<SVGImage>();
 	}
 
@@ -82,10 +80,10 @@ public abstract class FigureComponent {
 			filteredTextList = SVGText.extractTexts(createElementList("TEXT", where, ySplit, textList));
 			allElementList.addAll(filteredTextList);
 		}
-		if (pathAnalyzer != null) {
-			pathList = pathAnalyzer.getPathList();
-			filteredPathList = SVGPath.extractPaths(createElementList("PATH", where, ySplit, pathList));
-			allElementList.addAll(filteredPathList);
+		if (shapeAnalyzer != null) {
+			shapeList = shapeAnalyzer.getShapeList();
+			filteredShapeList = SVGShape.extractShapes(createElementList("SHAPE", where, ySplit, shapeList));
+			allElementList.addAll(filteredShapeList);
 		}
 		if (imageAnalyzer != null) {
 			imageList = imageAnalyzer.getImageList();
@@ -136,7 +134,7 @@ public abstract class FigureComponent {
 	
 	public FigureType getFigureType() {
 		FigureType figureType = FigureType.UNKNOWN;
-		if (filteredImageList.size() > 0 && filteredPathList.size() == 0 && filteredTextList.size() == 0 ) {
+		if (filteredImageList.size() > 0 && filteredShapeList.size() == 0 && filteredTextList.size() == 0 ) {
 			if (filteredImageList.size() > 1) {
 				figureType = FigureType.IMAGES;
 			} else {
@@ -153,19 +151,19 @@ public abstract class FigureComponent {
 //					throw new RuntimeException(e);
 //				}
 //			}
-		} else if (filteredImageList.size() == 0 && filteredPathList.size() > 0 && filteredTextList.size() == 0 ) {
+		} else if (filteredImageList.size() == 0 && filteredShapeList.size() > 0 && filteredTextList.size() == 0 ) {
 			figureType = FigureType.PATHS;
-		} else if (filteredImageList.size() == 0 && filteredPathList.size() == 0 && filteredTextList.size() > 0 ) {
+		} else if (filteredImageList.size() == 0 && filteredShapeList.size() == 0 && filteredTextList.size() > 0 ) {
 			figureType = FigureType.TEXT;
-		} else if (filteredImageList.size() == 0 && filteredPathList.size() > 0 && filteredTextList.size() > 0 ) {
+		} else if (filteredImageList.size() == 0 && filteredShapeList.size() > 0 && filteredTextList.size() > 0 ) {
 			figureType = FigureType.PATHS_TEXT;
-		} else if (filteredImageList.size() > 0 && filteredPathList.size() > 0 && filteredTextList.size() > 0 ) {
+		} else if (filteredImageList.size() > 0 && filteredShapeList.size() > 0 && filteredTextList.size() > 0 ) {
 			figureType = FigureType.MIXED;
 		} else {
 			figureType = FigureType.UNKNOWN;
 		}
 		LOG.trace("FIGURE"+this.getClass().getName()+"************************************************** "+figureType+ 
-				" "+filteredTextList.size()+" "+filteredPathList.size()+" "+filteredImageList.size());
+				" "+filteredTextList.size()+" "+filteredShapeList.size()+" "+filteredImageList.size());
 		return figureType;
 	}
 

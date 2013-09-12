@@ -13,7 +13,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.MixedContainer;
-import org.xmlcml.svg2xml.container.PathContainer;
+import org.xmlcml.svg2xml.container.ShapeContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
@@ -85,7 +85,7 @@ public class PageAnalyzerTest {
 		checkAbstractContainers(
 				new Class[]{
 				ScriptContainer.class,
-				PathContainer.class,
+				ShapeContainer.class,
 				MixedContainer.class,
 				ScriptContainer.class,
 				ScriptContainer.class,
@@ -94,7 +94,7 @@ public class PageAnalyzerTest {
 				ScriptContainer.class,
 				MixedContainer.class,
 				ScriptContainer.class,
-				PathContainer.class,
+				ShapeContainer.class,
 				ScriptContainer.class,},
 				containerList);
 	}

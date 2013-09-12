@@ -23,6 +23,7 @@ import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -41,6 +42,8 @@ import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
+
+import util.Path2ShapeConverter;
 
 /**
  * Processes a page.
@@ -119,13 +122,18 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	/**
 	 * Main routine creating ChunkAnalyzers from SVGGs.
 	 * 
+	 * split into chunks by whitespace
+	 * then normalize all paths with Path2ShapeConverter. Do this for each
+	 * chunk to avoid problems with widely distributed elements.
 	 */
 	public void splitChunksAndCreatePage() {
+		Path2ShapeConverter path2ShapeConverter = new Path2ShapeConverter();
  		List<SVGElement> gList = createWhitespaceChunkList();
 		pageIo.setSvgOutPage(pageIo.createBlankSVGOutPageWithNumberAndSize());
 		pageIo.ensureWhitespaceSVGChunkList();
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
+			path2ShapeConverter.convertPathsToShapes(gChunk);
 			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
 			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers();
 			for (AbstractContainer newContainer : newContainerList) {
@@ -143,16 +151,19 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 */
 	public ChunkAnalyzer createSpecificAnalyzer(SVGElement gChunk) {
 		ChunkAnalyzer analyzer = null;
-		List<SVGText> textList = SVGText.extractTexts(SVGUtil.getQuerySVGElements(gChunk, ".//svg:text"));
-		List<SVGPath> pathList = SVGPath.extractPaths(SVGUtil.getQuerySVGElements(gChunk, ".//svg:path"));
+		List<SVGText> textList = SVGText.extractTexts(gChunk);
+//		List<SVGPath> pathList = SVGPath.extractPaths(gChunk);
+		List<SVGShape> shapeList = SVGShape.extractShapes(gChunk);
+//		List<SVGShape> shapeList = Path2ShapeConverter.replacePathsByShapes(pathList);
+		
 		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(gChunk, ".//svg:image"));
 		String id = gChunk.getId();
 		ChunkId chunkId = id == null ? null : new ChunkId(id);
-		if (textList.size() != 0 && (pathList.size() == 0 && imageList.size() == 0)) {
+		if (textList.size() != 0 && (shapeList.size() == 0 && imageList.size() == 0)) {
 			analyzer = new TextAnalyzer(textList, this);
-		} else if (pathList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {
-			analyzer = this.createPathAnalyzer(pathList);
-		} else if (imageList.size() != 0 && (textList.size() == 0 && pathList.size() == 0)) {
+		} else if (shapeList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {
+			analyzer = this.createShapeAnalyzer(shapeList);
+		} else if (imageList.size() != 0 && (textList.size() == 0 && shapeList.size() == 0)) {
 			analyzer = this.createImageAnalyzer(imageList);
 		} else {
 			analyzer = new MixedAnalyzer(this);
@@ -168,8 +179,8 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				mixedAnalyzer.add(childAnalyzer);
 				childAnalyzer.setChunkId(chunkId, 2);
 			}
-			if (pathList.size() != 0) {
-				childAnalyzer = this.createPathAnalyzer(pathList);
+			if (shapeList.size() != 0) {
+				childAnalyzer = this.createShapeAnalyzer(shapeList);
 				mixedAnalyzer.add(childAnalyzer);
 				childAnalyzer.setChunkId(chunkId, 3);
 			}
@@ -185,11 +196,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return imageAnalyzer;
 	}
 
-	private PathAnalyzer createPathAnalyzer(List<SVGPath> pathList) {
-		PathAnalyzer pathAnalyzer = new PathAnalyzer(this);
-		pathAnalyzer.addPathList(pathList);
-		pathAnalyzer.convertPathsToSVG();
-		return pathAnalyzer;
+	private ShapeAnalyzer createShapeAnalyzer(List<SVGShape> shapeList) {
+		ShapeAnalyzer shapeAnalyzer = new ShapeAnalyzer(this);
+		shapeAnalyzer.addShapeList(shapeList);
+		return shapeAnalyzer;
 	}
 
 	

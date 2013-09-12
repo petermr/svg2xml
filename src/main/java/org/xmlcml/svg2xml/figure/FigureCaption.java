@@ -8,7 +8,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
-import org.xmlcml.svg2xml.page.PathAnalyzer;
+import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextStructurer;
 public class FigureCaption extends FigureComponent {
@@ -19,7 +19,7 @@ public class FigureCaption extends FigureComponent {
 	public FigureCaption(FigureAnalyzer figureAnalyzer) {
 		super(figureAnalyzer);
 	}
-	public FigureCaption(TextAnalyzer textAnalyzer, PathAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer)  {
+	public FigureCaption(TextAnalyzer textAnalyzer, ShapeAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer)  {
 		super(textAnalyzer, pathAnalyzer, imageAnalyzer);
 	}
 
