@@ -79,7 +79,7 @@ public class ChunkAnalyzerTest {
 //		TextAnalyzer textAnalyzerX = chunkAnalyzer.getTextAnalyzerX();
 //		textAnalyzerX.getTextLineByYCoordMap();
 //		List<TextLine> lineList = textAnalyzerX.getLinesInIncreasingY();
-////		CMLUtil.debug(svgPage, new FileOutputStream("target/chunkAnalyzer/twoChunks1.svg"), 1);
+////		SVGUtil.debug(svgPage, new FileOutputStream("target/chunkAnalyzer/twoChunks1.svg"), 1);
 //	}
 		
 
@@ -88,14 +88,14 @@ public class ChunkAnalyzerTest {
 		SVGElement svgElement = Fixtures.getSVGPageFromPDF(Fixtures.TWO_COLUMNS_PDF, 1);
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgElement);
-		CMLUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/twoColumn.svg"), 1);
+		SVGUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/twoColumn.svg"), 1);
 		SVGSVG svgPage = (SVGSVG) svgElement;
 		List<SVGG> leafGs = SVGG.extractGs(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@LEAF='3']"));
 		Assert.assertEquals("leafs ", 14, leafGs.size()); // there is a near zero (single space para)
 		for (SVGG g : leafGs) {
 			SVGRect box = g.drawBox("red", "yellow", 1.0, 0.3);
 		}
-		CMLUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/twoColumnBoxes.svg"), 1);
+		SVGUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/twoColumnBoxes.svg"), 1);
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class ChunkAnalyzerTest {
 		for (SVGG g : leafGs) {
 			Chunk chunk =(Chunk) g;
 		}
-		CMLUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/twoColumnBoxes.svg"), 1);
+		SVGUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/twoColumnBoxes.svg"), 1);
 	}
 
 	
@@ -119,7 +119,7 @@ public class ChunkAnalyzerTest {
 		SVGElement svgElement = Fixtures.getSVGPageFromPDF(Fixtures.BMC310_PDF, 1);
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgElement);
-		CMLUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/bmc310_1.svg"), 1);
+		SVGUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/bmc310_1.svg"), 1);
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class ChunkAnalyzerTest {
 		SVGElement svgElement = Fixtures.getSVGPageFromPDF(Fixtures.BMC313_PDF, 2);
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgElement);
-		CMLUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/bmc313_2.svg"), 2);
+		SVGUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/bmc313_2.svg"), 2);
 	}
 
 	@Test
@@ -137,7 +137,7 @@ public class ChunkAnalyzerTest {
 		SVGElement svgElement = Fixtures.getSVGPageFromPDF(Fixtures.BMC313_PDF, 3);
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgElement);
-		CMLUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/bmc313_3.svg"), 2);
+		SVGUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/bmc313_3.svg"), 2);
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class ChunkAnalyzerTest {
 		SVGElement svgElement = Fixtures.getSVGPageFromPDF(Fixtures.SUSCRIPTS_PDF, 1);
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgElement);
-		CMLUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/suscripts.svg"), 2);
+		SVGUtil.debug(svgElement, new FileOutputStream("target/chunkAnalyzer/suscripts.svg"), 2);
 	}
 
 

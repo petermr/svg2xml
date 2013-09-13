@@ -10,10 +10,10 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
@@ -324,7 +324,7 @@ public class ScriptContainerTest {
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
 		HtmlElement divElement = sc.createHtmlElement();
-		CMLUtil.debug(divElement, new FileOutputStream("target/bmc174_6_3.html"), 0);
+		SVGUtil.debug(divElement, new FileOutputStream("target/bmc174_6_3.html"), 0);
 	}
 
 
@@ -449,7 +449,7 @@ public class ScriptContainerTest {
 			FileNotFoundException {
 		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
 		HtmlElement divElement = sc.createHtmlElement();
-		CMLUtil.debug(divElement, new FileOutputStream(outfile), 0);
+		SVGUtil.debug(divElement, new FileOutputStream(outfile), 0);
 	}
 
 
@@ -505,7 +505,7 @@ public class ScriptContainerTest {
 			if (words[i].length > 0) {
 				if (words[i].length != scriptWords.size()) {
 					for (int j = 0; j < scriptWords.size(); j++) {
-						System.out.println(scriptWords.get(j).getRawValue());
+						LOG.trace(scriptWords.get(j).getRawValue());
 					}
 				}
 				Assert.assertEquals("line"+i, words[i].length, scriptWords.size());

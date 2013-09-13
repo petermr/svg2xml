@@ -7,7 +7,7 @@ import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
 
@@ -119,7 +119,7 @@ public class TableBodyTest {
 		table.setBorder(1);
 		try {
 			FileOutputStream fos = new FileOutputStream("target/table.html");
-			CMLUtil.debug(table, fos, 1);
+			SVGUtil.debug(table, fos, 1);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

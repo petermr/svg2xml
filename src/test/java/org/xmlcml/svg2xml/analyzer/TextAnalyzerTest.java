@@ -618,7 +618,7 @@ public class TextAnalyzerTest {
 //	public void testCreateHTMLDivWithParas() throws Exception {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 //		HtmlElement div = textStructurer.getTextAnalyzer().createHtmlElement();
-//		CMLUtil.debug(div, new FileOutputStream("target/divParas0.html"), 0);
+//		SVGUtil.debug(div, new FileOutputStream("target/divParas0.html"), 0);
 //	}
 	
 //	@Test
@@ -629,7 +629,7 @@ public class TextAnalyzerTest {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 //		List<ScriptLine> textGroupList = textStructurer.getScriptedLineList();
 //		HtmlElement div = textStructurer.createHtmlElementWithParas(textGroupList);
-//		CMLUtil.debug(div, new FileOutputStream("target/divParasNew.html"), 0);
+//		SVGUtil.debug(div, new FileOutputStream("target/divParasNew.html"), 0);
 //	}
 //	
 //	@Test
@@ -640,7 +640,7 @@ public class TextAnalyzerTest {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PAGE3RESULTS_SVG);
 //		List<ScriptLine> textGroupList = textStructurer.getScriptedLineList();
 //		HtmlElement div = textStructurer.createHtmlElementWithParas(textGroupList);
-//		CMLUtil.debug(div, new FileOutputStream("target/divBold.html"), 0);
+//		SVGUtil.debug(div, new FileOutputStream("target/divBold.html"), 0);
 //	}
 	
 
@@ -673,13 +673,12 @@ public class TextAnalyzerTest {
 		TextLine largeLine = largestLineList.get(5);
 		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
 		printLine(largeLineSVG);
-		System.out.println();
 	}
 
 	private void printLine(List<SVGText> largeLineSVG) {
-//		System.out.print("LINE: ");
+//		SYSOUT.print("LINE: ");
 //		for (SVGText large : largeLineSVG) {
-//			System.out.print(" "+large.getValue());
+//			SYSOUT.print(" "+large.getValue());
 //		}
 	}
 

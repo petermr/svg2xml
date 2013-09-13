@@ -64,7 +64,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	}
 
 	public TextAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
-		this(SVGText.extractTexts(svgElement), pageAnalyzer);
+		this(SVGText.extractSelfAndDescendantTexts(svgElement), pageAnalyzer);
 	}
 
 	public String getTag() {

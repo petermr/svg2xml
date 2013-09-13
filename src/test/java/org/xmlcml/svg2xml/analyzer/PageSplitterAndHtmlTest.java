@@ -15,6 +15,7 @@ import org.xmlcml.cml.testutil.JumboTestUtils;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
@@ -609,7 +610,7 @@ public class PageSplitterAndHtmlTest {
 			for (int i = 0; i < nodes.size(); i++) {
 				nodes.get(i).detach();
 			}
-			CMLUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
+			SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

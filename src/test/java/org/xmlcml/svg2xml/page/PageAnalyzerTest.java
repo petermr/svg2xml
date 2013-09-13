@@ -8,14 +8,13 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.MixedContainer;
-import org.xmlcml.svg2xml.container.ShapeContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.container.ShapeContainer;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.StyleSpans;
@@ -55,7 +54,7 @@ public class PageAnalyzerTest {
 //		List<AbstractContainer> containerList = pageAnalyzer.getPageAnalyzerContainerList();
 //		Assert.assertNotNull("containerList", containerList);
 //		for (AbstractContainer container : containerList) {
-//			System.out.println(container.toString());
+//			SYSOUT.println(container.toString());
 //		}
 	}
 
@@ -189,7 +188,7 @@ public class PageAnalyzerTest {
 		int i = 0;
 		for (AbstractContainer container : containerList) {
 			Fixtures.HTML_MULTIPLE312_DIR.mkdirs();
-			CMLUtil.debug(container.createHtmlElement(), 
+			SVGUtil.debug(container.createHtmlElement(), 
 					new FileOutputStream(new File(Fixtures.HTML_MULTIPLE312_DIR, "page2."+(i++)+".html")), 1);
 		}
 	}

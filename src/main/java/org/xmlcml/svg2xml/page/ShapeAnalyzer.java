@@ -40,7 +40,7 @@ public class ShapeAnalyzer extends ChunkAnalyzer {
 	 */
 	public ShapeAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
-		List<SVGShape> shapeList = SVGShape.extractShapes(svgElement);
+		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgElement);
 		addShapeList(shapeList);
 		this.svgChunk = svgElement;
 	}

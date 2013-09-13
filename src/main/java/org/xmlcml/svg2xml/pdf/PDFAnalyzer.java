@@ -185,7 +185,7 @@ public class PDFAnalyzer {
 		pdfIo.outputFiles(getPdfOptions());
 		createIndexesAndRemoveDuplicates();
 		SYSOUT.println();
-		writeSvgPages();
+//		writeSvgPages();
 	}
 
 	private void debugContainers() {
@@ -249,11 +249,12 @@ public class PDFAnalyzer {
 //		htmlEditor.outputHtmlElements();
 	}
 
-	private void writeSvgPages() {
-		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			pageAnalyzer.writeRawSVGPageToFinalDirectory();
-		}
-	}
+//	private void writeSvgPages() {
+//		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
+////			pageAnalyzer.writeRawSVGPageToFinalDirectory();
+//			pageAnalyzer.writeFinalSVGPageToFinalDirectory();
+//		}
+//	}
 
 	public void createSVGFilesfromPDF() {
 		LOG.trace("createSVG");

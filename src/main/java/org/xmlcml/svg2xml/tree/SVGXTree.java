@@ -283,7 +283,7 @@ public class SVGXTree extends SVGG {
 		SVGSVG svg = new SVGSVG();
 		svg.appendChild(this.copy());
 		try {
-			CMLUtil.debug(svg, new FileOutputStream(filename), 1);
+			SVGUtil.debug(svg, new FileOutputStream(filename), 1);
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot write: ", e);
 		}

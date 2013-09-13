@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.util;
 
 import java.io.File;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -119,9 +120,9 @@ public class GraphUtil {
 
 	public static void debugToFile(Element elem, File file) {
 		try {
-			CMLUtil.debug(elem, new FileOutputStream(file), 1);
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot write, "+file.getAbsolutePath(), e);
+			SVGUtil.debug(elem, new FileOutputStream(file), 1);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -190,7 +191,7 @@ public class GraphUtil {
 					g.setTransform(new Transform2(new Vector2(corner)));
 				}
 			}
-			CMLUtil.debug(svgElement, new FileOutputStream(file), 1);
+			SVGUtil.debug(svgElement, new FileOutputStream(file), 1);
 			LOG.trace("Wrote file "+file.getAbsolutePath());
 		} catch (Exception e) {
 			throw new RuntimeException("Cannot write svg page "+filename, e);

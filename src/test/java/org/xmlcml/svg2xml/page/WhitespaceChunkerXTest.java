@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.paths.Chunk;
 
 public class WhitespaceChunkerXTest {
@@ -25,7 +25,7 @@ public class WhitespaceChunkerXTest {
 		Assert.assertNotNull(finalChunkList);
 		Assert.assertEquals("chunks", 15, finalChunkList.size());
 		Fixtures.drawChunkBoxes(finalChunkList);
-		CMLUtil.debug(svgPage, new FileOutputStream("target/pageSplitter0.svg"), 1);
+		SVGUtil.debug(svgPage, new FileOutputStream("target/pageSplitter0.svg"), 1);
 	}
 
 	@Test
@@ -36,7 +36,7 @@ public class WhitespaceChunkerXTest {
 		Assert.assertNotNull(finalChunkList);
 		Assert.assertEquals("chunks", 29, finalChunkList.size());
 		Fixtures.drawChunkBoxes(finalChunkList);
-		CMLUtil.debug(svgPage, new FileOutputStream("target/testHarter3.svg"), 1);
+		SVGUtil.debug(svgPage, new FileOutputStream("target/testHarter3.svg"), 1);
 	}
 
 	@Test
@@ -47,7 +47,7 @@ public class WhitespaceChunkerXTest {
 		Assert.assertNotNull(finalChunkList);
 		Assert.assertEquals("chunks", 29, finalChunkList.size());
 		Fixtures.drawChunkBoxes(finalChunkList);
-		CMLUtil.debug(svgPage, new FileOutputStream("target/testHarter3small.svg"), 1);
+		SVGUtil.debug(svgPage, new FileOutputStream("target/testHarter3small.svg"), 1);
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class WhitespaceChunkerXTest {
 			Assert.assertNotNull(finalChunkList);
 			Assert.assertEquals("chunks", chunkCount, finalChunkList.size());
 			Fixtures.drawChunkBoxes(finalChunkList);
-			CMLUtil.debug(svgPage, new FileOutputStream(outputFile), 1);
+			SVGUtil.debug(svgPage, new FileOutputStream(outputFile), 1);
 		} catch (Exception e){
 			throw new RuntimeException("Cannot test", e);
 		}

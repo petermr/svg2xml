@@ -11,6 +11,8 @@ public class PDFAnalyzerOptions {
 	
 	boolean summarize = false;
 	PDFAnalyzer pdfAnalyzer;
+// output 	
+	boolean outputAnnotatedSvgPages = true;
 	boolean outputChunks = false;
 	boolean outputHtmlChunks = false;
 	boolean outputRawFigureHtml = false;
@@ -19,7 +21,10 @@ public class PDFAnalyzerOptions {
 	boolean outputImages = true;
 	boolean outputRawTableHtml = false;
 	boolean outputRunningText = true;
-	public boolean outputHtml = true;
+	public boolean debugHtmlPage = true;
+	public boolean outputHtmlPage = true;
+
+	public boolean annotateChunks = true;
 
 	public PDFAnalyzerOptions(PDFAnalyzer pdfAnalyzer) {
 		this.pdfAnalyzer = pdfAnalyzer;

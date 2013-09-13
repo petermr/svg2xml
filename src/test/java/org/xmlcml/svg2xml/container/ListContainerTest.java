@@ -6,7 +6,7 @@ import java.io.PrintStream;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.text.TextFixtures;
 
@@ -49,7 +49,7 @@ public class ListContainerTest {
 		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
 		ListContainer listContainer = ListContainer.createList(sc);
 		HtmlElement elem = listContainer.createHtmlElement();
-		CMLUtil.debug(elem, new FileOutputStream(new File(outfile)), 1);
+		SVGUtil.debug(elem, new FileOutputStream(new File(outfile)), 1);
 	}
 
 	@Test

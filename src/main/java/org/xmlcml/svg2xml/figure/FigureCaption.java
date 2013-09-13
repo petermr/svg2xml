@@ -25,7 +25,7 @@ public class FigureCaption extends FigureComponent {
 
 	public void processCaptionText(HtmlDiv div) {
 		LOG.trace(svgContainer.getChildCount());
-		List<SVGText> characters = SVGText.extractTexts(svgContainer);
+		List<SVGText> characters = SVGText.extractSelfAndDescendantTexts(svgContainer);
 		TextAnalyzer textAnalyzer1 = new TextAnalyzer(characters, pageAnalyzer);
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer1);
 		div.appendChild(textStructurer.createHtmlElement());

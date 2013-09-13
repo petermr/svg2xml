@@ -115,8 +115,8 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		figureGraphic.addElements(FigureComponent.BELOW, ySplit + YEPS);
 		LOG.trace("Graphic "+figureGraphic.getSvgContainer().getChildCount());
 		try {
-			CMLUtil.debug(figureCaption.getSvgContainer(), new FileOutputStream("target/caption"+id+".svg"), 1);
-			CMLUtil.debug(figureGraphic.getSvgContainer(), new FileOutputStream("target/graphic"+id+".svg"), 1);
+			SVGUtil.debug(figureCaption.getSvgContainer(), new FileOutputStream("target/caption"+id+".svg"), 1);
+			SVGUtil.debug(figureGraphic.getSvgContainer(), new FileOutputStream("target/graphic"+id+".svg"), 1);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

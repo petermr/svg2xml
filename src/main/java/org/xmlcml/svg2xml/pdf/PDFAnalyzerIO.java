@@ -186,15 +186,22 @@ public class PDFAnalyzerIO {
 	public void outputFiles(PDFAnalyzerOptions options) {
 		for (PageAnalyzer pageAnalyzer : pdfAnalyzer.getPageAnalyzerList()) {
 			if (options.summarize) pageAnalyzer.summaryContainers();
-			if (options.outputChunks) pageAnalyzer.outputChunks();
+			if (options.outputChunks) {
+				pageAnalyzer.outputChunks();
+			}
 			if (options.outputHtmlChunks ||
 					options.outputRawFigureHtml ||
 					options.outputRawTableHtml) {
 				pageAnalyzer.outputHtmlComponents();
 			}
-			if (options.outputImages) pageAnalyzer.outputImages();
+			if (options.outputImages) {
+				pageAnalyzer.outputImages();
+			}
 			if (options.outputRunningText) {
 				pageAnalyzer.outputHtmlRunningText();
+			}
+			if (options.outputAnnotatedSvgPages) {
+				pageAnalyzer.writeFinalSVGPageToFinalDirectory();
 			}
 		}
 		if (options.outputRunningText) {

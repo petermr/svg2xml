@@ -15,7 +15,7 @@ public class PDFAnalyzerTest {
 
 	@Test
 //	@Ignore
-	public void testPDFAnalyzerPDF() {
+	public void testPDFAnalyzerPDFWithSVG() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFFile(Fixtures.MULTIPLE312_PDF);
 	}

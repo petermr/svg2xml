@@ -70,8 +70,8 @@ public class TableTable extends TableChunk {
 	}
 
 	private static TableTable createTableTable(SVGElement svgElement) {
-		List<SVGShape> shapeList = SVGShape.extractShapes(svgElement);
-		List<SVGText> textList = SVGText.extractTexts(svgElement);
+		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgElement);
+		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgElement);
 		TableTable table = new TableTable(shapeList, textList);
 		return table;
 	}
@@ -318,7 +318,7 @@ public class TableTable extends TableChunk {
 		// size of growing table children
 		int nn = table.query("//*").size();
 		try {
-			CMLUtil.debug(table, new FileOutputStream("target/table"+nn+".html"), 1);
+			SVGUtil.debug(table, new FileOutputStream("target/table"+nn+".html"), 1);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

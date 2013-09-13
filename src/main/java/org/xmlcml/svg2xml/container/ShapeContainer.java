@@ -34,6 +34,10 @@ public class ShapeContainer extends AbstractContainer  {
 		this.shapeAnalyzer.setShapeContainer(this);
 	}
 
+	/**
+	 * uses svgChunk to create image and imageDiv.
+	 * 
+	 */
 	@Override
 	public HtmlElement createHtmlElement() {
 		htmlElement = null;

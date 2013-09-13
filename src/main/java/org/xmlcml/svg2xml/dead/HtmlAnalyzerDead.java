@@ -234,7 +234,7 @@ public class HtmlAnalyzerDead {
 //				File outfile = new File(outputDir, chunkFileRoot+SVG2XMLConstantsX.DOT_HTML);
 //				LOG.debug("writing "+outfile);
 //				OutputStream os = new FileOutputStream(outfile);
-//				CMLUtil.debug(htmlElement, os, 1);
+//				SVGUtil.debug(htmlElement, os, 1);
 //				os.close();
 //			} catch (Exception e) {
 //				throw new RuntimeException("cannot write HTML: ",e);

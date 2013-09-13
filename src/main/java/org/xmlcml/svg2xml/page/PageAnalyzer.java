@@ -1,6 +1,9 @@
 package org.xmlcml.svg2xml.page;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,7 +24,6 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
@@ -129,17 +131,24 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public void splitChunksAndCreatePage() {
 		Path2ShapeConverter path2ShapeConverter = new Path2ShapeConverter();
  		List<SVGElement> gList = createWhitespaceChunkList();
+ 		LOG.trace("chunkList: "+gList.size());
 		pageIo.setSvgOutPage(pageIo.createBlankSVGOutPageWithNumberAndSize());
 		pageIo.ensureWhitespaceSVGChunkList();
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
+			try {
+				SVGUtil.debug(gChunk, new FileOutputStream("target/chunk"+ichunk+".svg"), 1);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+	 		LOG.trace("chunk: "+gChunk.toXML().length());
 			path2ShapeConverter.convertPathsToShapes(gChunk);
 			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
 			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers();
 			for (AbstractContainer newContainer : newContainerList) {
 				newContainer.setSVGChunk(gChunk);
 			}
-			createChunksAndOutput(newContainerList, chunkAnalyzer);
+			createChunksAndStoreInContainer(newContainerList, chunkAnalyzer);
 		}
 		pageIo.createFinalSVGPageFromChunks();
 	}
@@ -150,19 +159,19 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 * @return analyzer suited to type (e.g. TextAnalyzer)
 	 */
 	public ChunkAnalyzer createSpecificAnalyzer(SVGElement gChunk) {
+		// path ytransformations have already been done
 		ChunkAnalyzer analyzer = null;
-		List<SVGText> textList = SVGText.extractTexts(gChunk);
-//		List<SVGPath> pathList = SVGPath.extractPaths(gChunk);
-		List<SVGShape> shapeList = SVGShape.extractShapes(gChunk);
-//		List<SVGShape> shapeList = Path2ShapeConverter.replacePathsByShapes(pathList);
-		
-		List<SVGImage> imageList = SVGImage.extractImages(SVGUtil.getQuerySVGElements(gChunk, ".//svg:image"));
+		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(gChunk);
+		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(gChunk);
+		List<SVGImage> imageList = SVGImage.extractSelfAndDescendantImages(gChunk);
+		LOG.trace("text: "+textList.size()+" shapeList: "+shapeList.size()+" imageList: "+imageList.size());
 		String id = gChunk.getId();
 		ChunkId chunkId = id == null ? null : new ChunkId(id);
 		if (textList.size() != 0 && (shapeList.size() == 0 && imageList.size() == 0)) {
 			analyzer = new TextAnalyzer(textList, this);
-		} else if (shapeList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {
+		} else if (shapeList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {			
 			analyzer = this.createShapeAnalyzer(shapeList);
+//			gChunk.debug("shapeOnly");
 		} else if (imageList.size() != 0 && (textList.size() == 0 && shapeList.size() == 0)) {
 			analyzer = this.createImageAnalyzer(imageList);
 		} else {
@@ -184,7 +193,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				mixedAnalyzer.add(childAnalyzer);
 				childAnalyzer.setChunkId(chunkId, 3);
 			}
-			LOG.trace("MIXED: "+analyzer);
+			LOG.debug("MIXED: "+analyzer+" "+gChunk.getChildCount());
 		}
 		analyzer.setSVGChunk(gChunk);
 		return analyzer;
@@ -214,7 +223,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 
-	private void createChunksAndOutput (
+	private void createChunksAndStoreInContainer (
 			List<? extends AbstractContainer> newContainerList, ChunkAnalyzer pageChunkAnalyzer) {
 		ensureAbstractContainerList();
 		for (AbstractContainer newContainer : newContainerList) {
@@ -222,13 +231,13 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			ChunkId chunkId = new ChunkId(pageIo.getHumanPageNumber(), aggregatedContainerCount);
 			newContainer.setChunkId(chunkId); 
 			abstractContainerList.add(newContainer);
-			SVGG gOut = newContainer.createSVGGChunk();
-			gOut.setId(chunkId.toString());
-			gOut = createChunksAndAddIdAndAttributes(gOut, chunkId, pageChunkAnalyzer, PageIO.DECIMAL_PLACES);
-			newContainer.setSVGChunk(gOut);
+			SVGG gChunk = newContainer.createSVGGChunk();
+			gChunk.setId(chunkId.toString());
+			gChunk = createChunksAndAddIdAndAttributes(gChunk, chunkId, pageChunkAnalyzer, PageIO.DECIMAL_PLACES);
+			newContainer.setSVGChunk(gChunk);
 			newContainer.setChunkId(chunkId);
 			LOG.trace("Chunk "+newContainer.getClass()+" "+chunkId+" "/*+gOut*/);
-			pageIo.add(gOut);
+			pageIo.add(gChunk);
 			aggregatedContainerCount++;
 		}
 	}
@@ -310,7 +319,8 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 //		pageIo.readRawSVGPageIfNecessary();
 		processNonUnicodeCharactersInTitles();
 		List<Chunk> chunkList = createWhitespaceSeparatedChunks();
-		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
+		// wrong place for this
+//		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
 		List<SVGElement> gList = SVGG.generateElementList(pageIo.getRawSVGPage(), "svg:g/svg:g/svg:g[@edge='YMIN']");
 		return gList;
 	}
@@ -322,7 +332,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 
-	void annotatePage() {
+	private void annotatePage() {
 		List<SVGG> gList = SVGG.extractGs(SVGUtil.getQuerySVGElements(pageIo.getRawSVGPage(), ".//svg:g[@id]"));
 		for (SVGG g : gList) {
 			ChunkId chunkId = new ChunkId(g.getId());
@@ -609,7 +619,8 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		div.setId(String.valueOf(pageIo.getHumanPageNumber()));
 		SYSOUT.println("*************************HTML**************************"+div.getId()+">>>>>> \n");
 		File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), ContainerType.TEXT, div.getId());
-		PageIO.outputFile(div, file);
+		// should already have been output
+		// PageIO.outputFile(div, file);
 	}
 
 	private HtmlElement createRunningHtml() {
@@ -663,6 +674,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			sb.append(container.summaryString()+"\n........................\n");
 		}
 		return sb.toString();
+	}
+
+	public void writeFinalSVGPageToFinalDirectory() {
+		pageIo.writeFinalSVGPageToFinalDirectory();
 	}
 
 }

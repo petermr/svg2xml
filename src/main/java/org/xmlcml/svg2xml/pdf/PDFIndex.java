@@ -468,7 +468,7 @@ public class PDFIndex {
 				dir.mkdirs();
 				File file = new File(dir, id+SVG2XMLConstantsX.DOT_SVG);
 				SVGElement element = svgElementByIdMap.get(id);
-				CMLUtil.debug(element, new FileOutputStream(file), 1);
+				SVGUtil.debug(element, new FileOutputStream(file), 1);
 				LOG.trace("wrote: "+file.getAbsolutePath());
 			}
 		} catch (Exception e) {
@@ -624,7 +624,7 @@ public class PDFIndex {
 							for (ScriptWord word : words) {
 								LOG.trace(" ~  "+word.getRawValue());
 							}
-//							System.out.println();
+//							SYSOUT.println();
 						}
 					}
 					LOG.trace("------"+container.getRawValue());

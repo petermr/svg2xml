@@ -40,7 +40,7 @@ public class TreeTest {
 		Assert.assertEquals(83, verticalLines.size());
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS);
 		Assert.assertEquals(95, horizontalLines.size());
-		CMLUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER1A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER1A_SVG),1);
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class TreeTest {
 		List<SVGLine> svgLines = ComplexLineTest.extractLines((SVGElement)svg.getChildElements().get(0));
 		List<SVGLine> zeroLines = ComplexLine.createSubsetAndRemove(svgLines, LineOrientation.ZERO, EPS);
 		extendZeroLines(zeroLines, LineOrientation.HORIZONTAL, 1.5f);
-		CMLUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER1A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER1A_SVG),1);
 	}
 
 	private void extendZeroLines(List<SVGLine> svgLines, LineOrientation lineOrientation, double length) {
@@ -87,7 +87,7 @@ public class TreeTest {
 //		SVGXTree tree = new SVGXTree();
 //		tree.analyzeLines(verticalComplexLines, SideOrientation.MINUS);
 		
-		CMLUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER2A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER2A_SVG),1);
 	}
 
 	@Test
@@ -140,7 +140,7 @@ public class TreeTest {
 
 		tree.getTreeAnalyzer().extractLinesWithBranchAtEnd(LineOrientation.HORIZONTAL, SideOrientation.EMPTYLIST);
 		
-		CMLUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER2A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER2A_SVG),1);
 	}
 
 	@Test

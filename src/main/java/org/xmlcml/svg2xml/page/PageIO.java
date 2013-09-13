@@ -13,6 +13,7 @@ import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.pdf2svg.SVGSerializer;
 import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
@@ -114,12 +115,12 @@ public class PageIO {
 		return machinePageNumber;
 	}
 
-	public void add(SVGG gOut) {
-		ensureGoutList();
-		whitespaceSVGChunkList.add(gOut);
+	public void add(SVGG gChunk) {
+		ensureChunkList();
+		whitespaceSVGChunkList.add(gChunk);
 	}
 
-	private void ensureGoutList() {
+	private void ensureChunkList() {
 		if (whitespaceSVGChunkList == null) {
 			whitespaceSVGChunkList = new ArrayList<SVGG>();
 		}
@@ -141,7 +142,20 @@ public class PageIO {
 			finalSVGDocumentDir.mkdirs();
 			String id = rawSVGPage.getId();
 			LOG.trace("ID "+id);
-			CMLUtil.debug(
+			SVGUtil.debug(
+				rawSVGPage, new FileOutputStream(new File(finalSVGDocumentDir, pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
+	public void writeFinalSVGPageToFinalDirectory() {
+		try {
+			String pageRoot = createPageRootWithHumanNumber();
+			finalSVGDocumentDir.mkdirs();
+			String id = finalSVGPage.getId();
+			LOG.trace("ID "+id);
+			SVGUtil.debug(
 				rawSVGPage, new FileOutputStream(new File(finalSVGDocumentDir, pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -172,7 +186,16 @@ public class PageIO {
 	}
 
 	public void createFinalSVGPageFromChunks() {
+		if (pdfAnalyzer == null) {
+			pdfAnalyzer = new PDFAnalyzer();
+		}
+		if (pdfAnalyzer != null && pdfAnalyzer.getPdfOptions().annotateChunks) {
+			WhitespaceChunkerAnalyzerX.drawBoxes(whitespaceSVGChunkList, "none", "yellow", 0.5);
+		}
 		for (SVGG g : whitespaceSVGChunkList) {
+			if (g.toXML().contains("yellow")) {
+				LOG.trace("rect");
+			}
 			finalSVGPage.appendChild(g);
 		}
 	}
@@ -221,12 +244,12 @@ public class PageIO {
 		return new File(dir, type+"."+chunkId+DOT_HTML);
 	}
 
+	// must add this in somewhere: WhitespaceChunkerAnalyzerX.drawBoxes
 	public static void outputFile(Element element, File file) {
 		try {
 			file.getParentFile().mkdirs();
 			SVGSerializer svgSerializer = new SVGSerializer(new FileOutputStream(file));
 			svgSerializer.write(CMLUtil.ensureDocument(element));
-//			CMLUtil.debug(element, new FileOutputStream(file), 1);
 		} catch (IOException e) {
 			throw new RuntimeException("Cannot write file: "+file, e);
 		}
@@ -279,6 +302,7 @@ public class PageIO {
 	public String getImageMimeType() {
 		return this.imageMimeType ;
 	}
+
 
 
 }

@@ -120,7 +120,7 @@ public class TableChunk {
 			this.setHorizontalMask(horizontalGaps.inverse());
 	//		LOG.debug("Horizontal Mask "+getHorizontalMask());
 			if (horizontalMask != null && horizontalMask.size() > 1) {
-//				System.out.println("HM"+horizontalMask);
+				LOG.trace("HM"+horizontalMask);
 			}
 		}
 

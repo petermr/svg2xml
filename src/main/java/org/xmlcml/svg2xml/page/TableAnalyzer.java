@@ -69,7 +69,7 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 		Integer tableNumber = tableTable.getTableNumber();
 		if (tableNumber != null) {
 			try {
-				CMLUtil.debug(htmlTable, new FileOutputStream("target/TABLEX"+tableNumber+".html"), 1);
+				SVGUtil.debug(htmlTable, new FileOutputStream("target/TABLEX"+tableNumber+".html"), 1);
 			} catch (IOException e) {
 				throw new RuntimeException("Cannot output file", e);
 			}

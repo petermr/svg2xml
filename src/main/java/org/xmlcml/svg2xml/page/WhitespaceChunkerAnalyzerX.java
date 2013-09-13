@@ -185,9 +185,9 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 		}
 	}
 
-	public static void drawBoxes(List<Chunk> chunkList, String stroke, String fill, Double opacity) {
+	public static void drawBoxes(List<SVGG> chunkList, String stroke, String fill, Double opacity) {
 		if (chunkList != null) {
-			for (Chunk chunk : chunkList) {
+			for (SVGG chunk : chunkList) {
 				Real2Range bbox = chunk.getBoundingBox();
 				SVGRect rect = new SVGRect( bbox);
 				rect.setStroke(stroke);
