@@ -71,7 +71,8 @@ public class Figure extends Chunk {
 	private FigureBody createFigureBody() {
 		// assume caption is separated from rest by horizontal line. May need to check more later
 		ensureFigureBody();
-		List<SVGElement> oldGList = SVGUtil.getQuerySVGElements(this, "./svg:g[not(@chunkStyle='"+Caption.CAPTION+"')]");
+//		List<SVGElement> oldGList = SVGUtil.getQuerySVGElements(this, "./svg:g[not(@chunkStyle='"+Caption.CAPTION+"')]");
+		List<SVGElement> oldGList = SVGUtil.getQuerySVGElements(this, "./svg:g[not(@chunkStyle='"+"CAPTION"+"')]");
 		figureBody.transferGChildren(oldGList);
 		// clean up old Gs
 		this.removeEmptySVGG();

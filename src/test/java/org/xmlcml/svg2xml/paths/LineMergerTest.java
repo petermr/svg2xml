@@ -11,9 +11,9 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.svg2xml.paths.LineMerger.MergeMethod;
 
-public class LineJoinTest {
+public class LineMergerTest {
 
-	private final static Logger LOG = Logger.getLogger(LineJoinTest.class);
+	private final static Logger LOG = Logger.getLogger(LineMergerTest.class);
 	
 	public final static double EPS = 0.01;
 	@Test

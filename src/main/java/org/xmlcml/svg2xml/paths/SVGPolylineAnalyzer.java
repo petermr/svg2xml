@@ -38,9 +38,9 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzerOptions;
 import org.xmlcml.svg2xml.util.GraphUtil;
 
 
-public class PolylineAnalyzer extends SVGPathAnalyzer {
+public class SVGPolylineAnalyzer extends SVGPathAnalyzer {
 
-	private final static Logger LOG = Logger.getLogger(PolylineAnalyzer.class);
+	private final static Logger LOG = Logger.getLogger(SVGPolylineAnalyzer.class);
 
 	private static final String VERT = "VERT";
 	private static final String HOR = "HOR";
@@ -67,7 +67,7 @@ public class PolylineAnalyzer extends SVGPathAnalyzer {
 	private Map<Integer, List<SVGLine>> verticalMap;
 	private boolean mergePolylinesAtContiguousEndPoints = true;
 
-	public PolylineAnalyzer() {
+	public SVGPolylineAnalyzer() {
 	}
 
 //	public void analyzePolylines() {

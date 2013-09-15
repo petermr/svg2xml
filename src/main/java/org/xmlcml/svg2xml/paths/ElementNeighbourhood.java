@@ -7,6 +7,13 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
 
+/** the geometric neighbourhood of an element.
+ * <p>
+ * Used to determine whether elements are touching, need merging, etc.
+ * </p>
+ * @author pm286
+ *
+ */
 public class ElementNeighbourhood {
 	private SVGElement element;
 	private List<SVGElement> neighbourList;
@@ -25,25 +32,25 @@ public class ElementNeighbourhood {
 		return neighbourList;
 	}
 	
-	public Real2Range ensureExtendedBoundingBox(double eps) {
+	private Real2Range ensureExtendedBoundingBox(double eps) {
 		if (extendedBBox == null) {
 			extendedBBox = BoundingBoxManager.createExtendedBox(element, eps);
 		}
 		return extendedBBox;
 	}
 
-	public boolean isTouching(SVGElement fpn, double eps) {
+	boolean isTouching(SVGElement fpn, double eps) {
 		ensureExtendedBoundingBox(eps);
 		Real2Range fpnBox = fpn.getBoundingBox();
 		return fpnBox.intersectionWith(extendedBBox) != null;
 	}
 
-	public void addNeighbour(SVGElement neighbour) {
+	void addNeighbour(SVGElement neighbour) {
 		ensureNeighbourList();
 		neighbourList.add(neighbour);
 	}
 
-	public void addNeighbourList(List<SVGElement> newNeighbourList) {
+	void addNeighbourList(List<SVGElement> newNeighbourList) {
 		ensureNeighbourList();
 		neighbourList.addAll(newNeighbourList);
 	}
@@ -54,7 +61,7 @@ public class ElementNeighbourhood {
 		}
 	}
 
-	public void remove(SVGElement oldElem) {
+	private void remove(SVGElement oldElem) {
 		if (neighbourList != null) {
 			if (!neighbourList.remove(oldElem))  {
 				throw new RuntimeException("cannot remove oldElem"); 

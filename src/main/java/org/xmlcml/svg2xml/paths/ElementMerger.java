@@ -5,7 +5,9 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.svg2xml.paths.LineMerger.MergeMethod;
 
 /** merges two or more SVGElements
- * 
+ * <p>
+ * An embryonic start of systematising element merging
+ * </p>
  * @author pm286
  *
  */
@@ -21,13 +23,13 @@ public abstract class ElementMerger {
 	 * @param elem to merge
 	 * @return new element (null if none created)
 	 */
-	public static ElementMerger createElementMerger(SVGElement elem, double eps) {
-		ElementMerger elementMerger = null;
-		if (elem != null && elem instanceof SVGLine) {
-			elementMerger = new LineMerger((SVGLine)elem, eps);
-		}
-		return elementMerger;
-	}
+//	private static ElementMerger createElementMerger(SVGElement elem, double eps) {
+//		ElementMerger elementMerger = null;
+//		if (elem != null && elem instanceof SVGLine) {
+//			elementMerger = new LineMerger((SVGLine)elem, eps);
+//		}
+//		return elementMerger;
+//	}
 	
 	public ElementMerger(SVGElement elem, double eps) {
 		this.elem0 = elem;

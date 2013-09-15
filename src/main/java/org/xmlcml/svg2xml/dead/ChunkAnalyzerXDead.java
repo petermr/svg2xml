@@ -17,8 +17,8 @@ import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.paths.Chunk;
-import org.xmlcml.svg2xml.paths.LineAnalyzer;
-import org.xmlcml.svg2xml.paths.PolylineAnalyzer;
+import org.xmlcml.svg2xml.paths.SVGLineAnalyzer;
+import org.xmlcml.svg2xml.paths.SVGPolylineAnalyzer;
 
 public class ChunkAnalyzerXDead{
 

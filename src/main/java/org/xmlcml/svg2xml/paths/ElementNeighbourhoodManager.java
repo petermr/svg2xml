@@ -23,7 +23,6 @@ public class ElementNeighbourhoodManager {
 
 	private final static Logger LOG = Logger.getLogger(ElementNeighbourhoodManager.class);
 	
-//	private List<ElementNeighbourhood> elementNeighbourhoodList;
 	private Map<SVGElement, ElementNeighbourhood> neighbourhoodByElementMap;
 	private Multimap<Integer, SVGElement> elementsByXMap;
 	private Integer deltaX = 5;
@@ -104,14 +103,14 @@ public class ElementNeighbourhoodManager {
 		}
 	}
 
-	public BoundingBoxManager createAndPopulateBoundingBoxManager() {
+	private BoundingBoxManager createAndPopulateBoundingBoxManager() {
 		this.bboxManager = new BoundingBoxManager();
 		bboxManager.setBBoxList(BoundingBoxManager.createBBoxList(elementList));
 		totalBox = bboxManager.getTotalBox();
 		return bboxManager;
 	}
 	
-	public void createAndPopulateIntegerIndexes() {
+	private void createAndPopulateIntegerIndexes() {
 		indexElementsByIntegers();
 	}
 
@@ -166,7 +165,7 @@ public class ElementNeighbourhoodManager {
 		return integers;
 	}
 
-	public Set<SVGElement> findNeighboursByIntegerGrid(Real2Range r2r) {
+	private Set<SVGElement> findNeighboursByIntegerGrid(Real2Range r2r) {
 		if (elementsByXMap == null || elementsByYMap == null) {
 			throw new RuntimeException("coordinates have not been indexed");
 		}
@@ -177,7 +176,7 @@ public class ElementNeighbourhoodManager {
 		return intersect(xelements, yelements);
 	}
 
-	public Set<SVGElement> getFirstPassNeighbours(SVGElement elem) {
+	private Set<SVGElement> getFirstPassNeighbours(SVGElement elem) {
 		Real2Range bbox = elem.getBoundingBox();
 		Set<SVGElement> firstPass = findNeighboursByIntegerGrid(bbox);
 		firstPass.remove(elem);
@@ -205,7 +204,7 @@ public class ElementNeighbourhoodManager {
 		return elementSet;
 	}
 
-	public ElementNeighbourhood getTouchingNeighbours(SVGElement elem, double eps) {
+	private ElementNeighbourhood getTouchingNeighbours(SVGElement elem, double eps) {
 		Set<SVGElement> fpNeighbours = getFirstPassNeighbours(elem);
 		ElementNeighbourhood elementNeighbours = new ElementNeighbourhood(elem);
 		for (SVGElement fpn : fpNeighbours) {
@@ -233,7 +232,7 @@ public class ElementNeighbourhoodManager {
 //		}
 //	}
 
-	public void createTouchingNeighbours(double eps) {
+	void createTouchingNeighbours(double eps) {
 		for (SVGElement elem : elementList) {
 			LOG.trace("+++++++++++++++++ creating touching neighbours for "+elem.getId());
 			ElementNeighbourhood en = this.getNeighbourhood(elem);
@@ -252,7 +251,7 @@ public class ElementNeighbourhoodManager {
 	 * @param complexLine
 	 * @param eps
 	 */
-	public void addLinesTo(ComplexLine complexLine, double eps) {
+	private void addLinesTo(ComplexLine complexLine, double eps) {
 		ElementNeighbourhood neighbourhood = this.getTouchingNeighbours(complexLine.getBackbone(), eps);
 		List<SVGElement> elements = neighbourhood.getNeighbourList();
 		complexLine.addLines(SVGLine.extractLines(elements));
@@ -262,7 +261,7 @@ public class ElementNeighbourhoodManager {
 	 * 
 	 * @param oldLine
 	 */
-	public void removeElement(SVGElement element) {
+	private void removeElement(SVGElement element) {
 		ElementNeighbourhood neighbourhood = this.getNeighbourhood(element);
 		// remove neighbours
 		if (neighbourhood != null) {
@@ -297,7 +296,7 @@ public class ElementNeighbourhoodManager {
 		}
 	}
 	
-	public void replaceElementsByElement(SVGElement newElement, List<SVGElement> oldElements) {
+	void replaceElementsByElement(SVGElement newElement, List<SVGElement> oldElements) {
 		LOG.trace("new Element "+newElement.getId() + "replaces...");
 		List<SVGElement> oldNeighbourList = new ArrayList<SVGElement>();
 		for (SVGElement oldElement : oldElements) {
@@ -320,7 +319,7 @@ public class ElementNeighbourhoodManager {
 		addElement(newElement, oldNeighbourList);
 	}
 
-	public void addElement(SVGElement newElement, List<SVGElement> knownNeighbours) {
+	private void addElement(SVGElement newElement, List<SVGElement> knownNeighbours) {
 		ElementNeighbourhood neighbourhood = this.getNeighbourhood(newElement);
 		if (neighbourhood != null) {
 			throw new RuntimeException("neighbourhood manager already contains neighbourhood for "+newElement.getId());
@@ -339,48 +338,51 @@ public class ElementNeighbourhoodManager {
 		}
 	}
 
-	public void addElement(SVGElement newElement) {
+	private void addElement(SVGElement newElement) {
 		addElement(newElement, new ArrayList<SVGElement>());
 	}
-	
-	public static List<SVGElement> mergeElements(List<SVGElement> elements, double eps) {
-		ElementNeighbourhoodManager enm = new ElementNeighbourhoodManager(elements);
-		List<SVGElement> elems;
-		while (true) {
-			enm.createTouchingNeighbours(eps);
-			elems = enm.getElementList();
-			SVGElement newElem = null;
-			SVGElement oldElem = null;
-			SVGElement oldElem1 = null;
-			for (int i = 0; i < elems.size(); i++) {
-				oldElem1 = elems.get(i);
-				ElementMerger elementMerger = ElementMerger.createElementMerger(oldElem1, eps);
-				ElementNeighbourhood neighbourhood = enm.getNeighbourhood(oldElem1);
-				if (neighbourhood == null) {
-					continue;
-				}
-				List<SVGElement> neighbours = neighbourhood.getNeighbourList();
-				for (SVGElement neighbour : neighbours) {
-					oldElem = neighbour;
-					newElem = elementMerger.createNewElement(oldElem);
-					if (newElem != null) {
-						LOG.trace(oldElem1.getId()+" + "+oldElem.getId()+" => "+newElem.getId());
-						break;
-					}
-				} 
-				if (newElem != null) {
-					enm.replaceElementsByElement(newElem, Arrays.asList(new SVGElement[] {oldElem, oldElem1}));
-					break;
-				}
-			} // end of loop through elements
-			if (newElem == null) {
-				break;
-			}
-		} // end of infinite loop
-		return enm.getElementList();
-	}
+
+	/** never used - an attempt to generalize 
+	 * */
+//	private static List<SVGElement> mergeElements(List<SVGElement> elements, double eps) {
+//		ElementNeighbourhoodManager enm = new ElementNeighbourhoodManager(elements);
+//		List<SVGElement> elems;
+//		while (true) {
+//			enm.createTouchingNeighbours(eps);
+//			elems = enm.getElementList();
+//			SVGElement newElem = null;
+//			SVGElement oldElem = null;
+//			SVGElement oldElem1 = null;
+//			for (int i = 0; i < elems.size(); i++) {
+//				oldElem1 = elems.get(i);
+//				ElementMerger elementMerger = ElementMerger.createElementMerger(oldElem1, eps);
+//				ElementNeighbourhood neighbourhood = enm.getNeighbourhood(oldElem1);
+//				if (neighbourhood == null) {
+//					continue;
+//				}
+//				List<SVGElement> neighbours = neighbourhood.getNeighbourList();
+//				for (SVGElement neighbour : neighbours) {
+//					oldElem = neighbour;
+//					newElem = elementMerger.createNewElement(oldElem);
+//					if (newElem != null) {
+//						LOG.trace(oldElem1.getId()+" + "+oldElem.getId()+" => "+newElem.getId());
+//						break;
+//					}
+//				} 
+//				if (newElem != null) {
+//					enm.replaceElementsByElement(newElem, Arrays.asList(new SVGElement[] {oldElem, oldElem1}));
+//					break;
+//				}
+//			} // end of loop through elements
+//			if (newElem == null) {
+//				break;
+//			}
+//		} // end of infinite loop
+//		return enm.getElementList();
+//	}
 
 	/*
+	 * 
 	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

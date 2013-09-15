@@ -15,7 +15,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
-import org.xmlcml.svg2xml.figure.Caption;
+import org.xmlcml.svg2xml.dead.CaptionDead;
 import org.xmlcml.svg2xml.figure.Figure;
 import org.xmlcml.svg2xml.figure.FigureCaption;
 import org.xmlcml.svg2xml.figure.FigureComponent;

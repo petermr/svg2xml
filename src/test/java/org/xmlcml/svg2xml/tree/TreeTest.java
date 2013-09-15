@@ -35,7 +35,6 @@ public class TreeTest {
 		List<SVGLine> zeroLines = ComplexLine.createSubsetAndRemove(svgLines, LineOrientation.ZERO, EPS);
 		Assert.assertEquals("lines", 71, zeroLines.size());
 		Assert.assertEquals("lines", 178, svgLines.size());
-		System.out.println(svgLines.size());
 		List<SVGLine> verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, EPS);
 		Assert.assertEquals(83, verticalLines.size());
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS);
@@ -173,7 +172,7 @@ public class TreeTest {
 		Assert.assertEquals("svgLines", 42, svgLines.size());
 		
 		SVGG g = (SVGG)svgLines.get(0).getParent();
-		g.debug("g");
+//		g.debug("g");
 		SVGXTree tree = new SVGXTree(g);
 		
 		TreeAnalyzer treeAnalyzer = tree.getTreeAnalyzer();
@@ -256,7 +255,7 @@ public class TreeTest {
 		assertHorizontalVerticalLines(treeAnalyzer, countsb, orientation);
 		tree.buildTree();
 		SVGSVG.wrapAndWriteAsSVG(tree, new File(outfile));
-		tree.debug("Tree");
+//		tree.debug("Tree");
 	}
 	
 	private void assertHorizontalVerticalLines(TreeAnalyzer treeAnalyzer, int[] counts, LineOrientation treeOrientation ) {

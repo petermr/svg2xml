@@ -21,7 +21,7 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-//	@Ignore
+	@Ignore
 	public void multipleTest() {
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.GEO310_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.MATH311_PDF);
@@ -50,6 +50,7 @@ public class PDFAnalyzerTest {
 
 
 	@Test
+	@Ignore
 	public void testPDFAnalyzerSVG() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.setRawSvgDirectory(Fixtures.SVG_MULTIPLE312_DIR);
@@ -57,7 +58,7 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-	//@Ignore
+	@Ignore
 	public void testPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFs(Fixtures.PDFS_BMC_DIR.toString());

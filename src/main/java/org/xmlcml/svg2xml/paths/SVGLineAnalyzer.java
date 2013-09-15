@@ -16,9 +16,9 @@ import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-public class LineAnalyzer extends SVGPathAnalyzer {
+public class SVGLineAnalyzer extends SVGPathAnalyzer {
 
-	private final static Logger LOG = Logger.getLogger(LineAnalyzer.class);
+	private final static Logger LOG = Logger.getLogger(SVGLineAnalyzer.class);
 
 	private final static Double EPS = 0.0001;
 	private final static Vector2 XAXIS = new Vector2(1.0, 0.0);
@@ -29,7 +29,7 @@ public class LineAnalyzer extends SVGPathAnalyzer {
 	private List<GraphPlotBox> plotBoxList;
 	private GraphPlotBox plotBox;
 
-	public LineAnalyzer() {
+	public SVGLineAnalyzer() {
 	}
 	
 	/** copy lines for analysis
