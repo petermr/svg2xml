@@ -193,7 +193,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				mixedAnalyzer.add(childAnalyzer);
 				childAnalyzer.setChunkId(chunkId, 3);
 			}
-			LOG.debug("MIXED: "+analyzer+" "+gChunk.getChildCount());
+			LOG.trace("MIXED: "+analyzer+" "+gChunk.getChildCount());
 		}
 		analyzer.setSVGChunk(gChunk);
 		return analyzer;

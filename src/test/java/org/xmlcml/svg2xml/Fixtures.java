@@ -198,10 +198,15 @@ public class Fixtures {
 
 	public static final File PATHS_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/paths");
 	public static final File PATHS_SIMPLE_TREE_SVG = new File(Fixtures.PATHS_DIR, "simpleTree.svg");
-	public static final File PATHS_CLUSTER1_SVG = new File(Fixtures.PATHS_DIR, "page4panel1Cluster1.svg");
-	public static final File PATHS_CLUSTER1A_SVG = new File(Fixtures.PATHS_DIR, "page4panel1Cluster1a.svg");
-	public static final File PATHS_CLUSTER2A_SVG = new File(Fixtures.PATHS_DIR, "page4panel1Cluster2a.svg");
-	public static final File PATHS_PANEL1_SVG = new File(Fixtures.PATHS_DIR, "page7figurePanel1.svg");
+	
+	public static final File TREE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/tree");
+	public static final File TREE_CLUSTER1_SVG = new File(Fixtures.TREE_DIR, "page4panel1Cluster1.svg");
+	public static final File TREE_CLUSTER1A_SVG = new File(Fixtures.TREE_DIR, "page4panel1Cluster1a.svg");
+	public static final File TREE_CLUSTER2A_SVG = new File(Fixtures.TREE_DIR, "page4panel1Cluster2a.svg");
+	public static final File TREE_PANEL1_SVG = new File(Fixtures.TREE_DIR, "panel1.svg");
+	public static final File TREE_8_2_SVG = new File(Fixtures.TREE_DIR, "image.g.8.2.svg");
+	public static final File TREE_8_2_SMALL_SVG = new File(Fixtures.TREE_DIR, "image.g.8.2small.svg");
+	public static final File TREE_3_2_A_SVG = new File(Fixtures.TREE_DIR, "image.g.3.2a.svg");
 	
 
 	

@@ -12,7 +12,12 @@ import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.svg2xml.paths.ComplexLine.Direction;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 
-/** a convenience class to help join lines
+/** a convenience class to help join lines.
+ * <p>
+ * Lines must be either horizontal or vertical. Merging is for parallel 
+ * or optionally antiparallel) lines - i.e. those that are visually indistinguishable
+ * from a (normally longer) line.
+ * </p>
  * 
  * @author pm286
  *
@@ -27,18 +32,31 @@ public class LineMerger extends ElementMerger {
 	private final static Logger LOG = Logger.getLogger(LineMerger.class);
 	private Direction direction; 
 	private LineOrientation orientation;
-	private MergeMethod method = MergeMethod.OVERLAP;
-	
+	private MergeMethod method = MergeMethod.OVERLAP; // why is this the default?
+
+	/** constructs a LineMerger.
+	 * 
+	 * <p>
+	 * MergeMethod defaults to OVERLAP
+	 * </p>
+	 * @param line0
+	 * @param eps
+	 */
 	public LineMerger(SVGLine line0, double eps) {
+		this(line0, eps, MergeMethod.OVERLAP);
+	}
+	
+	public LineMerger(SVGLine line0, double eps, MergeMethod method) {
 		super(line0, eps);
 		direction = ComplexLine.getLineDirection(line0, eps);
 		orientation = ComplexLine.getLineOrientation(line0, eps);
+		this.method = method;
 	}
 	
-	public static LineMerger createLineMerger(SVGLine line0, double eps) {
+	public static LineMerger createLineMerger(SVGLine line0, double eps, MergeMethod method) {
 		LineMerger lineJoin = null;
 		if (!line0.isZero(eps)) {
-			lineJoin = new LineMerger(line0, eps);
+			lineJoin = new LineMerger(line0, eps, method);
 		}
 		return lineJoin;
 	}
@@ -77,7 +95,7 @@ public class LineMerger extends ElementMerger {
 				newLine.setId(line0.getId()+"x");
 			}
 		} else {
-			LOG.debug("Cannot make lines from: "+line0.getId()+" / "+line1.getId());
+			LOG.trace("Cannot make lines from: "+line0.getId()+" / "+line1.getId());
 		}
 		return newLine;
 	}
@@ -123,18 +141,20 @@ public class LineMerger extends ElementMerger {
 		return newLine;
 	}
 	
-	public static List<SVGLine> mergeLines(List<SVGLine> linesxx, double eps) {
+	public static List<SVGLine> mergeLines(List<SVGLine> linesxx, double eps, MergeMethod method) {
+		LOG.trace("lines "+linesxx.size());
 		ElementNeighbourhoodManager enm = new ElementNeighbourhoodManager(linesxx);
 		List<SVGElement> elems;
 		while (true) {
 			enm.createTouchingNeighbours(eps);
 			elems = enm.getElementList();
+			LOG.trace("elems "+elems.size());
 			SVGElement newElem = null;
 			SVGElement oldElem = null;
 			SVGElement oldElem1 = null;
 			for (int i = 0; i < elems.size(); i++) {
 				oldElem1 = elems.get(i);
-				LineMerger lineMerger = LineMerger.createLineMerger((SVGLine)oldElem1, eps);
+				LineMerger lineMerger = LineMerger.createLineMerger((SVGLine)oldElem1, eps, method);
 				ElementNeighbourhood neighbourhood = enm.getNeighbourhood(oldElem1);
 				if (neighbourhood == null) {
 					continue;

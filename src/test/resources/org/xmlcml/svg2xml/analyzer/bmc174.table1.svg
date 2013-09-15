@@ -3,7 +3,7 @@
  <g id="g.4.2" svgx:role="chunk" edge="YMIN" width="5.0" title="chunk2" cmlx:boundingBox="((56.693,290.551),(86.485,318.872))" xmlns:svgx="http://www.xml-cml.org/schema/svgx" xmlns:cmlx="http://www.xml-cml.org/schema/cmlx">
   <g title="TEXT 430">
      <!-- Caption -->
- <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOJ+AdvOT3b30f6db.B" svgx:width="541.0" x="56.693" y="95.451" font-size="8.966" font-family="Helvetica" font-weight="bold">T</text>
+   <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOJ+AdvOT3b30f6db.B" svgx:width="541.0" x="56.693" y="95.451" font-size="8.966" font-family="Helvetica" font-weight="bold">T</text>
    <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOJ+AdvOT3b30f6db.B" svgx:width="520.0" x="61.544" y="95.451" font-size="8.966" font-family="Helvetica" font-weight="bold">a</text>
    <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOJ+AdvOT3b30f6db.B" svgx:width="593.0" x="66.206" y="95.451" font-size="8.966" font-family="Helvetica" font-weight="bold">b</text>
    <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOJ+AdvOT3b30f6db.B" svgx:width="270.0" x="71.523" y="95.451" font-size="8.966" font-family="Helvetica" font-weight="bold">l</text>
@@ -436,7 +436,6 @@
    <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOK+AdvOT46dcae81" svgx:width="500.0" x="93.553" y="318.872" font-size="6.974" font-family="Helvetica" font-weight="normal">e</text>
    <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOK+AdvOT46dcae81" svgx:width="510.0" x="99.439" y="318.872" font-size="6.974" font-family="Helvetica" font-weight="normal">1</text>
    <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="MHHFOK+AdvOT46dcae81" svgx:width="197.0" x="102.996" y="318.872" font-size="6.974" font-family="Helvetica" font-weight="normal">.</text>
-   <rect stroke="black" stroke-width="1.0" x="56.693" y="86.485" width="222.32814000000002" height="232.387" title="TEXT 430" fill="pink" opacity="0.2"/>
   </g>
   <g title="PATH 8">
    <path stroke="black" clip-path="url(#clipPath1)" fill="#000000" stroke-width="0.0" d="M56.693 110.361 L290.551 110.361 L290.551 110.645 L56.693 110.645 "/>
@@ -447,7 +446,6 @@
    <path fill="none" clip-path="url(#clipPath1)" stroke="#000000" stroke-width="0.0" d="M290.551 123.854 L56.693 123.854 L56.693 123.571 L290.551 123.571 L290.551 123.854 "/>
    <path stroke="black" clip-path="url(#clipPath1)" fill="#000000" stroke-width="0.0" d="M290.551 293.422 L56.693 293.422 L56.693 293.195 L290.551 293.195 L290.551 293.422 "/>
    <path fill="none" clip-path="url(#clipPath1)" stroke="#000000" stroke-width="0.0" d="M290.551 293.422 L56.693 293.422 L56.693 293.195 L290.551 293.195 L290.551 293.422 "/>
-   <rect stroke="black" stroke-width="1.0" x="56.693" y="110.36" width="233.858" height="183.062" title="PATH 8" fill="cyan" opacity="0.2"/>
   </g>
  </g>
 </svg>

@@ -1,26 +1,26 @@
 package org.xmlcml.svg2xml.tree;
 
+import java.io.File;
 import java.io.FileOutputStream;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.paths.ComplexLine.SideOrientation;
+import org.xmlcml.svg2xml.paths.LineMerger.MergeMethod;
 import org.xmlcml.svg2xml.paths.ComplexLineTest;
 import org.xmlcml.svg2xml.paths.LineMerger;
-import org.xmlcml.svg2xml.util.GraphUtil;
 
 public class TreeTest {
 	private final static Logger LOG = Logger.getLogger(TreeTest.class);
@@ -29,7 +29,7 @@ public class TreeTest {
 	
 	@Test
 	public void testCluster() throws Exception {
-		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.PATHS_CLUSTER1_SVG);
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.TREE_CLUSTER1_SVG);
 		List<SVGLine> svgLines = ComplexLineTest.extractLines((SVGElement)svg.getChildElements().get(0));
 		Assert.assertEquals("lines", 249, svgLines.size());
 		List<SVGLine> zeroLines = ComplexLine.createSubsetAndRemove(svgLines, LineOrientation.ZERO, EPS);
@@ -40,16 +40,16 @@ public class TreeTest {
 		Assert.assertEquals(83, verticalLines.size());
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS);
 		Assert.assertEquals(95, horizontalLines.size());
-		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER1A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.TREE_CLUSTER1A_SVG),1);
 	}
 
 	@Test
 	public void testClusterRedrawTree() throws Exception {
-		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.PATHS_CLUSTER1_SVG);
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.TREE_CLUSTER1_SVG);
 		List<SVGLine> svgLines = ComplexLineTest.extractLines((SVGElement)svg.getChildElements().get(0));
 		List<SVGLine> zeroLines = ComplexLine.createSubsetAndRemove(svgLines, LineOrientation.ZERO, EPS);
 		extendZeroLines(zeroLines, LineOrientation.HORIZONTAL, 1.5f);
-		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER1A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.TREE_CLUSTER1A_SVG),1);
 	}
 
 	private void extendZeroLines(List<SVGLine> svgLines, LineOrientation lineOrientation, double length) {
@@ -67,7 +67,7 @@ public class TreeTest {
 	@Test
 	public void testCluster1() throws Exception {
 		double EPS1 = 0.3;
-		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.PATHS_CLUSTER1_SVG);
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.TREE_CLUSTER1_SVG);
 		List<SVGLine> svgLines = ComplexLineTest.extractLines((SVGElement)svg.getChildElements().get(0));
 		for (SVGLine line : svgLines) {
 			line.setStrokeWidth(0.3);
@@ -77,9 +77,9 @@ public class TreeTest {
 //		addZeroAsPoints(zeroLines, svg);
 		List<SVGLine> verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, EPS1);
 		Assert.assertEquals(83, verticalLines.size());
-		List<SVGLine> joinedVerticalLines = LineMerger.mergeLines(verticalLines, EPS1);
+		List<SVGLine> joinedVerticalLines = LineMerger.mergeLines(verticalLines, EPS1, MergeMethod.TOUCHING_LINES);
 		int size = joinedVerticalLines.size();
-		Assert.assertTrue("size "+size, 61 >= size && size >= 60);
+		Assert.assertTrue("size "+size, 81 >= size && size >= 80);
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS1);
 		extendZeroLines(zeroLines, LineOrientation.HORIZONTAL, 0.5f);
 		List<ComplexLine> verticalComplexLines = 
@@ -87,13 +87,13 @@ public class TreeTest {
 //		SVGXTree tree = new SVGXTree();
 //		tree.analyzeLines(verticalComplexLines, SideOrientation.MINUS);
 		
-		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER2A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.TREE_CLUSTER2A_SVG),1);
 	}
 
 	@Test
 	public void testCluster7() throws Exception {
 		double EPS1 = 0.3;
-		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.PATHS_CLUSTER1_SVG);
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.TREE_CLUSTER1_SVG);
 		List<SVGElement> lineElements = SVGUtil.getQuerySVGElements(svg,  ".//svg:line");
 		List<SVGLine> svgLines = SVGLine.extractLines(lineElements);
 		Assert.assertEquals(249, svgLines.size());
@@ -140,12 +140,12 @@ public class TreeTest {
 
 		tree.getTreeAnalyzer().extractLinesWithBranchAtEnd(LineOrientation.HORIZONTAL, SideOrientation.EMPTYLIST);
 		
-		SVGUtil.debug(svg, new FileOutputStream(Fixtures.PATHS_CLUSTER2A_SVG),1);
+		SVGUtil.debug(svg, new FileOutputStream(Fixtures.TREE_CLUSTER2A_SVG),1);
 	}
 
 	@Test
 	public void testCluster7a() {
-		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.PATHS_PANEL1_SVG);
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.TREE_PANEL1_SVG);
 		List<SVGElement> lineElements = SVGUtil.getQuerySVGElements(svg,  ".//svg:line");
 		List<SVGLine> svgLines = SVGLine.extractLines(lineElements);
 		
@@ -165,17 +165,126 @@ public class TreeTest {
 	}
 	
 	@Test
-	public void testCluster7Tree() {
-		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.PATHS_PANEL1_SVG);
+	public void testPanel1Tree() {
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(Fixtures.TREE_PANEL1_SVG);
 		List<SVGElement> lineElements = SVGUtil.getQuerySVGElements(svg, ".//svg:line");
+		Assert.assertEquals("lines", 42, lineElements.size());
 		List<SVGLine> svgLines = SVGLine.extractLines(lineElements);
+		Assert.assertEquals("svgLines", 42, svgLines.size());
 		
-		SVGXTree tree = new SVGXTree((SVGG)svgLines.get(0).getParent());
+		SVGG g = (SVGG)svgLines.get(0).getParent();
+		g.debug("g");
+		SVGXTree tree = new SVGXTree(g);
+		
 		TreeAnalyzer treeAnalyzer = tree.getTreeAnalyzer();
+		Assert.assertNull("singleEnd null", treeAnalyzer.getSingleEndedLines());
 		treeAnalyzer.analyzeBranchesAtLineEnds(tree, svgLines, EPS);
+		int[] counts = { 14, 14, 0, 0, 14,   
+				         28, 28, 15, 0, 13, 
+				         15};
+		assertHorizontalVerticalLines(treeAnalyzer, counts, LineOrientation.HORIZONTAL);
 		tree.buildTree();
-		
+		SVGSVG.wrapAndWriteAsSVG(tree, new File("target/panel1Tree.svg"));
 //		tree.debug("Tree");
 	}
 
+	@Test
+	public void testImage82SmallTree() {
+		int[] countsa = {28, 28, 21}; 
+		int[] countsb = {7, 7, 0, 0, 7, 
+		        14, 14, 8, 0,  6,
+		        8};
+		testTree(Fixtures.TREE_8_2_SMALL_SVG, countsa, countsb, "target/82smallTree.svg", LineOrientation.HORIZONTAL);
+	}
+	
+	@Test
+	public void testImage82Tree() {
+		int[] countsa = {43, 43, 32}; 
+		int[] countsb = {11, 11, 0, 1, 10, 
+		        21, 21, 11, 0,  10,
+		        11};
+		testTree(Fixtures.TREE_8_2_SVG, countsa, countsb, "target/82Tree.svg", LineOrientation.HORIZONTAL);
+		
+	}
+	
+	@Test
+	public void testImage32aTree() {
+		int[] countsa = {229, 229, 173}; 
+		int[] countsb = new int[] {57, 57, 0, 1, 56, 
+		        115, 115, 60, 0,  52,
+		        60};
+		testTree(Fixtures.TREE_3_2_A_SVG, countsa, countsb, "target/tree32a.svg", LineOrientation.HORIZONTAL);
+	}
+
+	@Test
+	public void testImage32aNewTree() {
+		SVGElement svg =  SVGElement.readAndCreateSVG(Fixtures.TREE_8_2_SMALL_SVG);
+		SVGXTree tree = makeTree(svg, 1.0, MergeMethod.TOUCHING_LINES);
+		SVGSVG.wrapAndWriteAsSVG(tree, new File("target/newTree.svg"));
+	}
+
+	@Test
+	public void testMakeTree() {
+		SVGElement svg =  SVGElement.readAndCreateSVG(Fixtures.TREE_8_2_SMALL_SVG);
+		SVGXTree tree = SVGXTree.makeTree(svg, 1.0, MergeMethod.TOUCHING_LINES);
+		SVGSVG.wrapAndWriteAsSVG(tree, new File("target/makeTree.svg"));
+	}
+	
+	@Test
+	public void testMakeTree32() {
+		SVGElement svg =  SVGElement.readAndCreateSVG(Fixtures.TREE_3_2_A_SVG);
+		SVGXTree tree = SVGXTree.makeTree(svg, 1.0, MergeMethod.TOUCHING_LINES);
+		SVGSVG.wrapAndWriteAsSVG(tree, new File("target/makeTree32.svg"));
+	}
+
+	// ========================================================
+	
+	private void testTree(File insvg, int[] countsa, int[] countsb, String outfile, LineOrientation orientation) {
+		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(insvg);
+		SVGPolyline.replacePolyLinesBySplitLines(svg);
+		List<SVGElement> lineElements = SVGUtil.getQuerySVGElements(svg, ".//svg:line");
+		Assert.assertEquals("lines", countsa[0], lineElements.size());
+		List<SVGLine> svgLines = SVGLine.extractLines(lineElements);
+		Assert.assertEquals(countsa[1], svgLines.size());
+		svgLines = LineMerger.mergeLines(svgLines, 1.0, MergeMethod.TOUCHING_LINES);		
+		Assert.assertEquals(countsa[2], svgLines.size());
+		SVGG g = (SVGG)svgLines.get(0).getParent();
+		SVGXTree tree = new SVGXTree(g);
+		
+		TreeAnalyzer treeAnalyzer = tree.getTreeAnalyzer();
+		treeAnalyzer.analyzeBranchesAtLineEnds(tree, svgLines, EPS);
+		assertHorizontalVerticalLines(treeAnalyzer, countsb, orientation);
+		tree.buildTree();
+		SVGSVG.wrapAndWriteAsSVG(tree, new File(outfile));
+		tree.debug("Tree");
+	}
+	
+	private void assertHorizontalVerticalLines(TreeAnalyzer treeAnalyzer, int[] counts, LineOrientation treeOrientation ) {
+		Assert.assertEquals("vertical", counts[0], treeAnalyzer.getVerticalLines().size());
+		Assert.assertEquals("verticalComplex", counts[1], treeAnalyzer.getVerticalComplexLines().size());
+		Assert.assertEquals("verticalPlus", counts[2], treeAnalyzer.getMinusEndedVerticalLines().size());
+		Assert.assertEquals("verticalMinus", counts[3], treeAnalyzer.getPlusEndedVerticalLines().size());
+		Assert.assertEquals("verticalDouble", counts[4], treeAnalyzer.getDoubleEndedVerticalLines().size());
+		Assert.assertEquals("horizontal", counts[5], treeAnalyzer.getHorizontalLines().size());
+		Assert.assertEquals("horizontalComplex", counts[6], treeAnalyzer.getHorizontalComplexLines().size());
+		Assert.assertEquals("horizontalPlus", counts[7], treeAnalyzer.getMinusEndedHorizontalLines().size());
+		Assert.assertEquals("horizontalMinus", counts[8], treeAnalyzer.getPlusEndedHorizontalLines().size());
+		Assert.assertEquals("horizontalDouble", counts[9], treeAnalyzer.getDoubleEndedHorizontalLines().size());
+		Assert.assertEquals("treeOrientation", treeOrientation, treeAnalyzer.getTreeOrientation());
+		Assert.assertNotNull("singleEnd not null", treeAnalyzer.getSingleEndedLines());
+		Assert.assertEquals("singleEnd", counts[10], treeAnalyzer.getSingleEndedLines().size());
+	}
+
+	// MergeMethod.TOUCHING_LINES
+	private SVGXTree makeTree(SVGElement root, double eps, MergeMethod method) {
+		SVGPolyline.replacePolyLinesBySplitLines(root);
+		List<SVGLine> lines = SVGLine.extractSelfAndDescendantLines(root);
+		lines = LineMerger.mergeLines(lines, eps, method);		
+		SVGXTree tree = new SVGXTree(root);
+		TreeAnalyzer treeAnalyzer = tree.getTreeAnalyzer();
+		treeAnalyzer.analyzeBranchesAtLineEnds(tree, lines, eps);
+		tree.buildTree();
+		return tree;
+	}
+	
 }

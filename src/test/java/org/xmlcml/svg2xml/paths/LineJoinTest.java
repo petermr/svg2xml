@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.svg2xml.paths.LineMerger.MergeMethod;
 
 public class LineJoinTest {
 
@@ -18,7 +19,7 @@ public class LineJoinTest {
 	@Test
 	public void testLineJoin() {
 		SVGLine line0 = new SVGLine(new Real2(1.,2.), new Real2(2., 2.));
-		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS);
+		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS, MergeMethod.OVERLAP);
 		SVGLine newLine = (SVGLine) lineJoin.createNewElement(new SVGLine(new Real2(2.,2.), new Real2(3., 2.)));
 		Assert.assertNotNull(newLine);
 		Assert.assertTrue(SVGLine.isEqual(new SVGLine(new Real2(1., 2.), new Real2(3., 2.)), newLine, EPS));
@@ -27,7 +28,7 @@ public class LineJoinTest {
 	@Test
 	public void testLineJoin1() {
 		SVGLine line0 = new SVGLine(new Real2(1.,2.), new Real2(2., 2.));
-		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS);
+		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS, MergeMethod.OVERLAP);
 		SVGLine newLine = (SVGLine) lineJoin.createNewElement(new SVGLine(new Real2(3.,2.), new Real2(2., 2.)));
 		Assert.assertNotNull(newLine);
 		Assert.assertTrue(SVGLine.isEqual(new SVGLine(new Real2(1., 2.), new Real2(3., 2.)), newLine, EPS));
@@ -36,7 +37,7 @@ public class LineJoinTest {
 	@Test
 	public void testLineJoin2() {
 		SVGLine line0 = new SVGLine(new Real2(1.,2.), new Real2(2., 2.));
-		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS);
+		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS, MergeMethod.OVERLAP);
 		SVGLine newLine = (SVGLine) lineJoin.createNewElement(new SVGLine(new Real2(0.,2.), new Real2(1., 2.)));
 		Assert.assertNotNull(newLine);
 		Assert.assertTrue(SVGLine.isEqual(new SVGLine(new Real2(0., 2.), new Real2(2., 2.)), newLine, EPS));
@@ -45,28 +46,27 @@ public class LineJoinTest {
 	@Test
 	public void testLineJoin3() {
 		SVGLine line0 = new SVGLine(new Real2(1.,2.), new Real2(2., 2.));
-		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS);
+		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS, MergeMethod.OVERLAP);
 		SVGLine newLine = (SVGLine) lineJoin.createNewElement(new SVGLine(new Real2(1.,2.), new Real2(0., 2.)));
 		Assert.assertNotNull(newLine);
 		Assert.assertTrue(SVGLine.isEqual(new SVGLine(new Real2(0., 2.), new Real2(2., 2.)), newLine, EPS));
 	}
 	
 	@Test
-	@Ignore // FIXME
-	public void testLineNoJoin() {
+	public void testLineOverlap() {
 		SVGLine line0 = new SVGLine(new Real2(1.,2.), new Real2(3., 2.));
-		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS);
+		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS, MergeMethod.OVERLAP);
 		SVGLine newLine = (SVGLine) lineJoin.createNewElement(new SVGLine(new Real2(2.,2.), new Real2(3., 2.)));
-		Assert.assertNull("should be null "+newLine.toXML(), newLine);
+		Assert.assertNotNull("newLine ", newLine);
+		Assert.assertTrue(SVGLine.isEqual(new SVGLine(new Real2(1., 2.), new Real2(3., 2.)), newLine, EPS));
 	}
 	
 	@Test
-	@Ignore
-	public void testLineNoJoin1() {
+	public void testLineOverlap1() {
 		SVGLine line0 = new SVGLine(new Real2(1.,2.), new Real2(3., 2.));
-		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS);
+		LineMerger lineJoin = LineMerger.createLineMerger(line0, EPS, MergeMethod.OVERLAP);
 		SVGLine newLine = (SVGLine) lineJoin.createNewElement(new SVGLine(new Real2(1.,2.), new Real2(2., 2.)));
-		Assert.assertNull("should be null "+newLine.toXML(), newLine);
+		Assert.assertTrue(SVGLine.isEqual(new SVGLine(new Real2(1., 2.), new Real2(3., 2.)), newLine, EPS));
 	}
 	
 	@Test
@@ -84,7 +84,7 @@ public class LineJoinTest {
 		for (SVGLine line : svgLines) {
 			line.setId("V"+(i++));
 		}
-		svgLines = LineMerger.mergeLines(svgLines, EPS);
+		svgLines = LineMerger.mergeLines(svgLines, EPS, MergeMethod.OVERLAP);
 		Assert.assertEquals(5, svgLines.size());
 		for (SVGLine line : svgLines) {
 			if ("V4".equals(line.getId())){

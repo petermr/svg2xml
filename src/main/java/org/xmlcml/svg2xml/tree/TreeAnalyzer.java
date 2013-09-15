@@ -115,6 +115,20 @@ public class TreeAnalyzer {
 		}
 		return goodTree;
 	}
+	
+	public List<ComplexLine> getSingleEndedLines() {return singleEndedLines;}
+	
+	public List<SVGLine> getVerticalLines() {return verticalLines;}
+	public List<ComplexLine> getVerticalComplexLines() {return verticalComplexLines;}
+	public List<ComplexLine> getMinusEndedVerticalLines() {return minusEndedVerticalLines;}
+	public List<ComplexLine> getPlusEndedVerticalLines() {return plusEndedVerticalLines;}
+	public List<ComplexLine> getDoubleEndedVerticalLines() {return doubleEndedVerticalLines;}
+	
+	public List<SVGLine> getHorizontalLines() {return horizontalLines;}
+	public List<ComplexLine> getHorizontalComplexLines() {return horizontalComplexLines;}
+	public List<ComplexLine> getMinusEndedHorizontalLines() {return minusEndedHorizontalLines;}
+	public List<ComplexLine> getPlusEndedHorizontalLines() {return plusEndedHorizontalLines;}
+	public List<ComplexLine> getDoubleEndedHorizontalLines() {return doubleEndedHorizontalLines;}
 
 	private void indexComplexLines() {
 		complexLineByLineMap = new HashMap<SVGLine, ComplexLine>();

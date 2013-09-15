@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.tree;
 
 import java.io.File;
+
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,21 +19,18 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
+import org.xmlcml.svg2xml.paths.LineMerger;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.paths.ComplexLine.SideOrientation;
+import org.xmlcml.svg2xml.paths.LineMerger.MergeMethod;
 
 public class SVGXTree extends SVGG {
 	
-
-
-
-
-
-
 	private final static Logger LOG = Logger.getLogger(SVGXTree.class);
 	
 	private static final String CHILD = "child";
@@ -63,7 +61,7 @@ public class SVGXTree extends SVGG {
 
 	
 	private double eps;
-	private SVGG parentSVGG;
+	private SVGElement parentSVGElement;
 	private TreeAnalyzer treeAnalyzer;
 	private List<SVGXTreeNode> rootNodeList;
 	private ArrayList<SVGXTreeNode> childlessNodeList;
@@ -72,14 +70,32 @@ public class SVGXTree extends SVGG {
 
 	private Element xmlTree;
 
-	public SVGXTree(SVGG parentSVGG) {
+	public SVGXTree(SVGElement parentSVGG) {
 		this.eps = EPS;
-		this.parentSVGG = parentSVGG;
+		this.parentSVGElement = parentSVGG;
 		this.setId("tree."+parentSVGG.getId());
 		this.treeAnalyzer = new TreeAnalyzer(this);
 		this.setId(parentSVGG.getId());
 	}
 
+	/** create tree from SVG
+	 * 
+	 * @param container selected SVG container (normally a G or SVG)
+	 * @param eps error margin
+	 * @param method of line join (try MergeMethod.TOUCHING_LINES)
+	 * @return
+	 */
+	public static SVGXTree makeTree(SVGElement container, double eps, MergeMethod method) {
+		SVGPolyline.replacePolyLinesBySplitLines(container);
+		List<SVGLine> lines = SVGLine.extractSelfAndDescendantLines(container);
+		lines = LineMerger.mergeLines(lines, eps, method);		
+		SVGXTree tree = new SVGXTree(container);
+		TreeAnalyzer treeAnalyzer = tree.getTreeAnalyzer();
+		treeAnalyzer.analyzeBranchesAtLineEnds(tree, lines, eps);
+		tree.buildTree();
+		return tree;
+	}
+	
 	public void setEpsilon(double eps) {
 		this.eps = eps;
 	}
@@ -119,6 +135,10 @@ public class SVGXTree extends SVGG {
 
 	public void buildTree() {
 		getTreeAnalyzer().buildTree();
+		decorateWithLengthsAndTexts();
+	}
+
+	private void decorateWithLengthsAndTexts() {
 		addSVGLinkLinesAndRootNode();
 		addLengthsToSVG();
 		addTexts();
@@ -198,7 +218,7 @@ public class SVGXTree extends SVGG {
 
 		List<Real2Range> childlessBBoxes = createExtendedBoxes(getChildlessNodeList(), minNodeDelta, maxNodeDelta,
 			getTreeOrientation(), getTreeSideOrientation());
-		List<SVGElement> textList = SVGUtil.getQuerySVGElements(parentSVGG, "./svg:text");
+		List<SVGElement> textList = SVGUtil.getQuerySVGElements(parentSVGElement, "./svg:text");
 		SideOrientation sideOrientation = getTreeSideOrientation();
 		if (sideOrientation != null) {
 			List<Real2Range> textBBoxes = createExtendedBoxes(textList, minNodeDelta, maxNodeDelta,
