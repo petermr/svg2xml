@@ -5,7 +5,6 @@ import java.io.File;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 
 public class PDFAnalyzerTest {
 
@@ -58,10 +57,16 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void testPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFs(Fixtures.PDFS_BMC_DIR.toString());
 	}	
+	
+	@Test
+	@Ignore // hits memory limit
+	public void testCHBudget() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf"));
+	}
 	
 }

@@ -207,9 +207,10 @@ public class Fixtures {
 	public static final File TREE_8_2_SVG = new File(Fixtures.TREE_DIR, "image.g.8.2.svg");
 	public static final File TREE_8_2_SMALL_SVG = new File(Fixtures.TREE_DIR, "image.g.8.2small.svg");
 	public static final File TREE_3_2_A_SVG = new File(Fixtures.TREE_DIR, "image.g.3.2a.svg");
-	
 
-	
+	public static final File FONT_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/font");
+	public static final File BMC_RUNNING_NORMAL_SVG = new File(Fixtures.FONT_DIR, "bmc.running.normal.svg");
+
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
 			SVGRect bbox = chunk.createGraphicalBoundingBox();

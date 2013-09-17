@@ -60,49 +60,4 @@ public class AxisAnalyzerTest {
 		SVGUtil.debug(svg, "target/xyaxis.svg", 1);
 	}
 
-//	@Test
-//	public void testSimpleAxis1() {
-//		SVGSVG svg = new SVGSVG();
-//		SimpleAxis simpleAxis = new SimpleAxis(LineOrientation.HORIZONTAL);
-//		
-//		svg.appendChild(simpleAxis.createAxis());
-//		SVGUtil.debug(svg, "target/xaxis.svg", 1);
-//		svg = new SVGSVG();
-//		svg.appendChild(new SimpleAxis(LineOrientation.VERTICAL).createAxis());
-//		SVGUtil.debug(svg, "target/yaxis.svg", 1);
-//		svg = new SVGSVG();
-//		svg.appendChild(new SimpleAxis(LineOrientation.HORIZONTAL).createAxis());
-//		svg.appendChild(new SimpleAxis(LineOrientation.VERTICAL).createAxis());
-//		SVGUtil.debug(svg, "target/xyaxis.svg", 1);
-//	}
-
-//	private SVGG createXAxis() {
-//		SVGG g = new SVGG();
-//		SVGLine xLine = new SVGLine(XSTART, XEND);
-//		g.appendChild(xLine);
-//		Double tick0 = (double)YMIN;
-//		Double tick1 = (double)YMIN+XTICKLENGTH;
-//		int x = XMIN;
-//		for (int i = 0; i < NXTICKS; i++) {
-//			SVGLine xTick = new SVGLine(new Real2((double)x, tick0), new Real2((double)x, tick1));
-//			g.appendChild(xTick);
-//			x += XDELTA;
-//		}
-//		return g;
-//	}
-//	
-//	private SVGG createYAxis() {
-//		SVGG g = new SVGG();
-//		SVGLine yLine = new SVGLine(YSTART, YEND);
-//		g.appendChild(yLine);
-//		Double tick0 = (double)XMIN;
-//		Double tick1 = (double)XMIN+YTICKLENGTH;
-//		int y = YMIN;
-//		for (int i = 0; i < NYTICKS; i++) {
-//			SVGLine yTick = new SVGLine(new Real2(tick0, (double)y), new Real2(tick1, (double)y));
-//			g.appendChild(yTick);
-//			y += YDELTA;
-//		}
-//		return g;
-//	}
 }

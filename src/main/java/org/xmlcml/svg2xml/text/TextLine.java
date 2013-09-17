@@ -31,8 +31,6 @@ import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svg2xml.dead.SimpleFontDead;
-import org.xmlcml.svg2xml.dead.WordSequenceDead;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
@@ -76,7 +74,6 @@ public class TextLine implements Iterable<SVGText> {
 	private List<TextLine> subLines;
 //	private WordSequenceDead wordSequence;
 	private TextAnalyzer textAnalyzerX;
-	private SimpleFontDead simpleFont;
 	private RealArray characterWidthArray;
 	private final static Double SCALE = 0.001; // width multiplied by 1000
 	private Double SPACE_WIDTH1000 = /*274.0*/ 200.;
