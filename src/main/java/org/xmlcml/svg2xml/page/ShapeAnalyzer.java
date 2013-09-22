@@ -17,7 +17,7 @@ import util.Path2ShapeConverter;
 /**
  * Analyzes paths either direct children of chunks or extracted from them.
  * <p>
- * PathAnalyzer contains not member variables except PathContainer
+ * ShapeAnalyzer contains no member variables except PathContainer
  * </p>
  * @author pm286
  *
@@ -33,15 +33,24 @@ public class ShapeAnalyzer extends ChunkAnalyzer {
 	}
 
 	/**
-	 * Construct a PathAnalyzer with descendant paths from svgElement
+	 * Construct a ShapeAnalyzer with list of shapes
+	 * 
+	 * @param shapeList
+	 * @param pageAnalyzer
+	 */
+	public ShapeAnalyzer(List<SVGShape> shapeList, PageAnalyzer pageAnalyzer) {
+		this(pageAnalyzer);
+		addShapeList(shapeList);
+	}
+
+	/**
+	 * Construct a ShapeAnalyzer with descendant paths from svgElement
 	 * 
 	 * @param svgElement
 	 * @param pageAnalyzer
 	 */
 	public ShapeAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
-		super(pageAnalyzer);
-		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgElement);
-		addShapeList(shapeList);
+		this(SVGShape.extractSelfAndDescendantShapes(svgElement), pageAnalyzer);
 		this.svgChunk = svgElement;
 	}
 

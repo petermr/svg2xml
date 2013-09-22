@@ -57,7 +57,7 @@ import util.Path2ShapeConverter;
  *   <ul>
  *     <li>FigureAnalyzer</li>
  *     <li> ImageAnalyzer</li>
- *     <li> PathAnalyzer</li>
+ *     <li> ShapeAnalyzer</li>
  *     <li> MixedAnalyzer</li>
  *     <li> TextAnalyzer</li>
  *     </ul>

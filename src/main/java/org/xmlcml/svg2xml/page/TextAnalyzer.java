@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.page;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -8,13 +9,15 @@ import java.util.Set;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Angle;
+import org.xmlcml.euclid.Polar;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.text.TextCoordinate;
@@ -36,6 +39,21 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
+	public enum TextOrientation {
+		ANY,
+		IRREGULAR,
+		ROT_0,
+		ROT_PI2,
+		ROT_PI,
+		ROT_3PI2,
+	}
+	
+	private static final Real2 TEXT_ROT_0 = new Real2(1., 0.);
+	private static final Real2 TEXT_ROT_PI2 = new Real2(0., 1.);
+	private static final Real2 TEXT_ROT_PI = new Real2(-1., 0.);
+	private static final Real2 TEXT_ROT_3PI2 = new Real2(0., -1.0);
+	private static final Double MIN_DOT_ANGLE = 0.99;
+	
 	public static final String TEXT1 = "text1";
 	public static final String CHUNK = "chunk";
 	public static final String TEXT = "TEXT";
@@ -43,6 +61,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	public static final double DEFAULT_TEXTWIDTH_FACTOR = 0.9;
 	public static final int NDEC_FONTSIZE = 3;
 	public static final double INDENT_MIN = 1.0; //pixels
+	
 	public static Double TEXT_EPS = 1.0;
 
 
@@ -50,12 +69,24 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	private Map<Integer, TextLine> characterByXCoordMap;
 	private SVGElement svgParent;
     private List<SVGText> textCharacters;
+    
+    private TextOrientation textOrientation = TextOrientation.ANY;
+    private TextAnalyzer rot0TextAnalyzer = null;
+    private TextAnalyzer rotPi2TextAnalyzer = null;
+    private TextAnalyzer rotPiTextAnalyzer = null;
+    private TextAnalyzer rot3Pi2TextAnalyzer = null;
+    private TextAnalyzer rotIrregularTextAnalyzer = null;
 	
 	/** refactored container */
 	private TextStructurer textStructurer;
 	
 	public TextAnalyzer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
+	}
+	
+	private TextAnalyzer(PageAnalyzer pageAnalyzer, TextOrientation textOrientation) {
+		this(pageAnalyzer);
+		this.textOrientation = textOrientation;
 	}
 	
 	public TextAnalyzer(List<SVGText> characterList, PageAnalyzer pageAnalyzer) {
@@ -149,12 +180,23 @@ public class TextAnalyzer extends ChunkAnalyzer {
 
 
 	public List<SVGText> getTextCharacters() {
-		// need to sync with TextContainer
+		ensureTextCharacters();
 		return textCharacters;
 	}
 	
 	public void setTextCharacters(List<SVGText> textCharacters) {
 		this.textCharacters = textCharacters;
+	}
+	
+	public void addCharacter(SVGText character){
+		ensureTextCharacters();
+		textCharacters.add(character);
+	}
+
+	private void ensureTextCharacters() {
+		if (textCharacters == null) {
+			textCharacters = new ArrayList<SVGText>();
+		}
 	}
 
 	// =========== Delegates ============
@@ -256,4 +298,96 @@ public class TextAnalyzer extends ChunkAnalyzer {
 			}
 		}
 	}
+
+	public List<SVGText> getHorizontalTextCharacters() {
+		ensureRotatedTextAnalyzers();
+		return rot0TextAnalyzer.getTextCharacters();
+	}
+
+	private void ensureRotatedTextAnalyzers() {
+		if (TextOrientation.ANY.equals(textOrientation)) {
+			if (rot0TextAnalyzer == null ||
+				rotPi2TextAnalyzer == null ||
+				rotPiTextAnalyzer == null ||
+				rot3Pi2TextAnalyzer == null ||
+				rotIrregularTextAnalyzer == null) {
+				rot0TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_0);
+				rotPi2TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_PI2);
+				rotPiTextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_PI);
+				rot3Pi2TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_3PI2);
+				rotIrregularTextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.IRREGULAR);
+				addCharactersToAnalyzers();
+			}
+		}
+	}
+
+	private void addCharactersToAnalyzers() {
+		for (SVGText text : textCharacters) {
+			Transform2 t2 = text.getCumulativeTransform();
+			Angle angle = t2.getAngleOfRotationNew();
+			Polar polar = new Polar(1.0, angle);
+			Real2 r2 = polar.getXY();
+			if (r2.dotProduct(TEXT_ROT_0) > MIN_DOT_ANGLE) {
+				rot0TextAnalyzer.addCharacter(text);
+			} else if (r2.dotProduct(TEXT_ROT_PI2) > MIN_DOT_ANGLE) {
+				rotPi2TextAnalyzer.addCharacter(text);
+			} else if (r2.dotProduct(TEXT_ROT_PI) > MIN_DOT_ANGLE) {
+				rotPiTextAnalyzer.addCharacter(text);
+			} else if (r2.dotProduct(TEXT_ROT_3PI2) > MIN_DOT_ANGLE) {
+				rot3Pi2TextAnalyzer.addCharacter(text);
+			} else {
+				rotIrregularTextAnalyzer.addCharacter(text);
+			}
+		}
+	}
+
+	public TextAnalyzer getRot0TextAnalyzer() {
+		ensureRotatedTextAnalyzers();
+		return rot0TextAnalyzer;
+	}
+	
+	public TextAnalyzer getRotPi2TextAnalyzer() {
+		ensureRotatedTextAnalyzers();
+		return rotPi2TextAnalyzer;
+	}
+	
+	public TextAnalyzer getRotPiTextAnalyzer() {
+		ensureRotatedTextAnalyzers();
+		return rotPiTextAnalyzer;
+	}
+	
+	public TextAnalyzer getRot3Pi2TextAnalyzer() {
+		ensureRotatedTextAnalyzers();
+		return rot3Pi2TextAnalyzer;
+	}
+	
+	public TextAnalyzer getRotIrregularTextAnalyzer() {
+		ensureRotatedTextAnalyzers();
+		return rotIrregularTextAnalyzer;
+	}
+	
+	public List<SVGText> getRot0TextCharacters() {
+		return getRot0TextAnalyzer().getTextCharacters();
+	}
+
+	public List<SVGText> getRotPi2TextCharacters() {
+		return getRotPi2TextAnalyzer().getTextCharacters();
+	}
+
+	public List<SVGText> getRotPiTextCharacters() {
+		return getRotPiTextAnalyzer().getTextCharacters();
+	}
+
+	public List<SVGText> getRot3Pi2TextCharacters() {
+		return getRot3Pi2TextAnalyzer().getTextCharacters();
+	}
+	
+	public List<SVGText> getRotIrregularTextCharacters() {
+		return getRotIrregularTextAnalyzer().getTextCharacters();
+	}
+
+	public TextOrientation getTextOrientation() {
+		return textOrientation;
+	}
+
 }

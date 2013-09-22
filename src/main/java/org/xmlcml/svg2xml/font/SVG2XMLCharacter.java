@@ -97,11 +97,20 @@ public class SVG2XMLCharacter /*extends SVGElement*/ implements Comparable {
 			for (int i = 0; i < dd.length; i++) {
 				observedSortedWidthList.set(i, dd[i]);
 			}
-			SYSOUT.println(unicodePoint+" "+(char)(int)(long)unicodePoint+
+
+			Double delta = null;
+			if (pdfWidthSet !=null && pdfWidthSet.size() > 0 && observedSortedWidthList.size() > 0) {
+				Double pdfWidth = pdfWidthSet.iterator().next();
+				Double obsWidth = observedSortedWidthList.get(0);
+				delta = (pdfWidth == null || obsWidth == null) ? null : pdfWidth - obsWidth;
+			}
+				
+			LOG.trace(unicodePoint+
+					" "+(char)(int)(long)unicodePoint+
 					" pw: "+pdfWidthSet+
-					" ow: "+set.size()+" ("+
-					Util.format((pdfWidthSet.iterator().next() - observedSortedWidthList.get(0)), 1)+
-					") "+observedSortedWidthList+" >> "+
+					" ow: "+set.size()+((delta != null) ? " ("+
+					Util.format(delta, 1)+") " : "")+
+					observedSortedWidthList+" >> "+
 					"");
 		}
 	}
@@ -118,13 +127,13 @@ public class SVG2XMLCharacter /*extends SVGElement*/ implements Comparable {
 			width = Util.format(width, 1);
 			observedWidthSet.add(width);
 			Set<Multiset.Entry<Double>> set = (observedWidthSet.size() > 0) ? observedWidthSet.entrySet() : null;
-//			SYSOUT.println(set);
 		}
 	}
 
 	private void ensureObservedWidthSet() {
 		if (observedWidthSet == null) {
 			observedWidthSet = HashMultiset.create();
+			LOG.trace("obs widths "+observedWidthSet.size());
 		}
 	}
 

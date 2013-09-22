@@ -1,5 +1,9 @@
 package org.xmlcml.svg2xml.font;
 
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,20 +61,23 @@ public class SVG2XMLFont {
 			for (Long unicode : characterMap.keySet()) {
 				unicodeList.add(unicode);
 			}
-//			LOG.debug(unicodeList.size());
+			LOG.trace(unicodeList.size());
 			Long[] unicodes = unicodeList.toArray(new Long[0]);
-//			LOG.debug(unicodes.length);
 			Arrays.sort(unicodes);
 			unicodeList = Arrays.asList(unicodes);
+			LOG.trace("U "+unicodeList.size());
 		}
 		return unicodeList;
 	}
 
 	public void debug(String msg) {
 		ensureSortedUnicodeList();
-//		SYSOUT.println(msg);
 		for (int i = 0; i < unicodeList.size(); i++) {
-			characterMap.get(unicodeList.get(i)).debug("char");
+			Long unicodeLong = unicodeList.get(i);
+			SVG2XMLCharacter character = characterMap.get(unicodeLong);
+			if (character != null) {
+				character.debug("char");
+			}
 		}
 	}
 

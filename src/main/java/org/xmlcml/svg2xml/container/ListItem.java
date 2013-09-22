@@ -81,7 +81,15 @@ public class ListItem {
 		if (value != null) {
 			Matcher matcher = listItemNumber.matcher(value);
 			if (matcher.matches()) {
-				leadingInteger = new Integer(matcher.group(1));
+				String integerS = matcher.group(1);
+				// some numbers might just be very large 
+				if (integerS.length() < 6) {
+					try {
+						leadingInteger = new Integer(integerS);
+					} catch (NumberFormatException nfe) {
+						
+					}
+				}
 			}
 		}
 		return leadingInteger;

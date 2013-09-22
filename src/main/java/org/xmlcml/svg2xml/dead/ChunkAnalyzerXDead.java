@@ -30,7 +30,7 @@ public class ChunkAnalyzerXDead{
 //	private List<SVGText> texts;
 //	private List<SVGPath> paths;
 //	private TextAnalyzer textAnalyzerX;
-//	private PathAnalyzer pathAnalyzerX;
+//	private ShapeAnalyzer shapeAnalyzerX;
 //	private List<SVGLine> lines;
 //	private LineAnalyzer lineAnalyzerX;
 //	private List<SVGPolyline> polylines;
@@ -107,8 +107,8 @@ public class ChunkAnalyzerXDead{
 //	private void analyzePaths() {
 //		ensurePaths();
 //		if (paths.size() > 0) {
-//			pathAnalyzerX = new PathAnalyzer();
-//			pathAnalyzerX.interpretPathsAsRectCirclePolylineAndReplace();
+//			shapeAnalyzerX = new ShapeAnalyzer();
+//			shapeAnalyzerX.interpretPathsAsRectCirclePolylineAndReplace();
 //		}
 //	}
 //

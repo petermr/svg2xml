@@ -6,6 +6,8 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 
 public class AxisAnalyzerTest {
@@ -58,6 +60,11 @@ public class AxisAnalyzerTest {
 		svg.appendChild(verticalAxis.createAxis());
 		svg.appendChild(horizontalAxis.createAxis());
 		SVGUtil.debug(svg, "target/xyaxis.svg", 1);
+	}
+	
+	@Test
+	public void testXaxis() {
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.XAXIS_SVG,  "./svg:g");
 	}
 
 }

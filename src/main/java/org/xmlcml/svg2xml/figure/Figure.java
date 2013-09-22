@@ -202,7 +202,7 @@ public class Figure extends Chunk {
 		this.panelSeparation = panelSeparation;
 	}
 
-	public void setPanelSeparation(String s) {
+	private void setPanelSeparation(String s) {
 		try {
 			Double d = new Double(s);
 			this.panelSeparation = d;
@@ -211,7 +211,7 @@ public class Figure extends Chunk {
 		}
 	}
 
-	public Real2 getClusterWhitespaceBoxMargins() {
+	Real2 getClusterWhitespaceBoxMargins() {
 		return clusterWhitespaceBoxMargins;
 	}
 
@@ -219,12 +219,8 @@ public class Figure extends Chunk {
 		return clusterColours;
 	}
 
-	public void setClusterMargins(Real2 clusterWhitespaceBoxMargins) {
+	private void setClusterMargins(Real2 clusterWhitespaceBoxMargins) {
 		this.clusterWhitespaceBoxMargins = clusterWhitespaceBoxMargins;
-	}
-
-	public void setClusterMargins(String mm) {
-		this.clusterWhitespaceBoxMargins = new Real2(mm);
 	}
 
 	//	public List<Figure> createFigures() {

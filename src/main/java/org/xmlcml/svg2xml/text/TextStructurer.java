@@ -10,30 +10,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nu.xom.Elements;
+import nu.xom.Element;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
+import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 
@@ -103,10 +103,10 @@ public class TextStructurer {
 	private SVGElement svgChunk;
 
 	private Real2Range boundingBox;
-
 	private ScriptContainer scriptContainer;
-
 	private HtmlElement htmlElement;
+	private List<SVGText> rawCharacters;
+	private TextOrientation textOrientation;
 
 	/** this COPIES the lines in the textAnalyzer
 	 * this may not be a good idea
@@ -116,11 +116,37 @@ public class TextStructurer {
 		this.textAnalyzer = textAnalyzer;
 		if (textAnalyzer != null) {
 			textAnalyzer.setTextStructurer(this);
-			List<SVGText> characters = textAnalyzer.getTextCharacters();
-			this.createLinesSortedInXThenY(characters, textAnalyzer);
+			rawCharacters = textAnalyzer.getTextCharacters();
+			transformIfNotHorizontalOrientation();
+			this.createLinesSortedInXThenY(rawCharacters, textAnalyzer);
 		}
 	}
 
+	private void transformIfNotHorizontalOrientation() {
+		this.textOrientation = textAnalyzer.getTextOrientation();
+		if (!TextOrientation.ANY.equals(textOrientation) && 
+			!TextOrientation.ROT_0.equals(textOrientation) &&
+			rawCharacters.size() > 0) {
+			Transform2 rot = rawCharacters.get(0).getCumulativeTransform();
+			Angle angle = rot.getAngleOfRotationNew();
+			angle = angle.multiplyBy(-1.0);
+			Transform2 rotation = new Transform2(angle);
+			Real2Range boundingBox = new Real2Range();
+			for (SVGText text : rawCharacters) {
+				text.applyTransform(rotation);
+				Transform2 rotChar = Transform2.getRotationAboutPoint(angle, text.getXY());
+				text.applyTransform(rotChar);
+				boundingBox = boundingBox.plus(text.getBoundingBox());
+			}
+		}
+	}
+	
+	public SVGSVG getDebugSVG() {
+		return SVGUtil.createSVGSVG(rawCharacters);
+	}
+
+
+	
 	public static TextStructurer createTextStructurer(File svgFile) {
 		return createTextStructurer(svgFile, null);
 	}
@@ -654,8 +680,7 @@ public class TextStructurer {
 		return textStructurer;
 	}
 
-	private void createLinesSortedInXThenY(List<SVGText> textCharacters,
-			TextAnalyzer textAnalyzer) {
+	private void createLinesSortedInXThenY(List<SVGText> textCharacters, TextAnalyzer textAnalyzer) {
 		this.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		textLineList = this.getLinesInIncreasingY();
 		for (TextLine textLine : textLineList) {
@@ -1184,7 +1209,7 @@ public class TextStructurer {
 		}
 		return htmlElement;
 	}
-	
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		if (textLineList == null) {

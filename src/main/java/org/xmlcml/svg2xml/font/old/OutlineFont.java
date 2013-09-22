@@ -194,7 +194,7 @@ public class OutlineFont {
 		glyphBySigMap.put(glyph.getSignature(), glyph);
 	}
 	
-//	public void analyzePaths(PathAnalyzer analyzer) {
+//	public void analyzePaths(ShapeAnalyzer analyzer) {
 //		analyzePaths(analyzer.getPaths());
 //	}
 	

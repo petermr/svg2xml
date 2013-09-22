@@ -25,9 +25,9 @@ import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-public class FigureGraphic extends FigureComponent {
+public class Graphic extends NewComponent {
 
-	private final static Logger LOG = Logger.getLogger(FigureGraphic.class);
+	private final static Logger LOG = Logger.getLogger(Graphic.class);
 
 	private static final Double OFFSET_X = 0.;
 	private static final Double OFFSET_Y = 0.;
@@ -35,17 +35,17 @@ public class FigureGraphic extends FigureComponent {
 	
 	private BufferedImage bufferedImage;
 
-	public FigureGraphic(PageAnalyzer pageAnalyzer) {
+	public Graphic(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
 	}
 
-	public FigureGraphic(FigureAnalyzer figureAnalyzer) {
+	public Graphic(FigureAnalyzer figureAnalyzer) {
 		super(figureAnalyzer);
 	}
 
-	public FigureGraphic(TextAnalyzer textAnalyzer,
-			ShapeAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer) {
-		super(textAnalyzer, pathAnalyzer, imageAnalyzer);
+	public Graphic(TextAnalyzer textAnalyzer,
+			ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer) {
+		super(textAnalyzer, shapeAnalyzer, imageAnalyzer);
 	}
 
 	public void createImageFromComponents(String pngName) {
@@ -80,7 +80,7 @@ public class FigureGraphic extends FigureComponent {
 
 	public void createAndWriteImageAndSVG(String imageName, HtmlDiv div, String svgName) {
 		this.createImageFromComponents(imageName);
-		FigureGraphic.addSvgToDiv(div, svgName);
+		Graphic.addSvgToDiv(div, svgName);
 		this.saveAsSVG(svgName);
 	}
 

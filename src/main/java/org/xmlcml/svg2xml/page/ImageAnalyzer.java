@@ -1,22 +1,12 @@
 package org.xmlcml.svg2xml.page;
 
-import java.util.ArrayList;
-
 import java.util.List;
-
-import nu.xom.Attribute;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
-import org.xmlcml.graphics.svg.SVGPath;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlImg;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
-import org.xmlcml.svg2xml.container.ShapeContainer;
 
 /**
  * Analyzes images.
@@ -37,6 +27,29 @@ public class ImageAnalyzer extends ChunkAnalyzer {
 	public ImageAnalyzer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
 	}
+	
+	/**
+	 * Construct a ImageAnalyzer with list of images
+	 * 
+	 * @param imageList
+	 * @param pageAnalyzer
+	 */
+	public ImageAnalyzer(List<SVGImage> imageList, PageAnalyzer pageAnalyzer) {
+		this(pageAnalyzer);
+		addImageList(imageList);
+	}
+
+	/**
+	 * Construct a ImageAnalyzer with descendant paths from svgElement
+	 * 
+	 * @param svgElement
+	 * @param pageAnalyzer
+	 */
+	public ImageAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
+		this(SVGImage.extractSelfAndDescendantImages(svgElement), pageAnalyzer);
+		this.svgChunk = svgElement;
+	}
+
 	
 	public void addImageList(List<SVGImage> imageList) {
 		if (imageList != null) {

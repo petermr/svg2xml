@@ -24,7 +24,7 @@ public class PDFAnalyzerTest {
 	public void multipleTest() {
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.GEO310_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.MATH311_PDF);
-		new PDFAnalyzer().analyzePDFFile(Fixtures.TREE313_PDF);
+//		new PDFAnalyzer().analyzePDFFile(Fixtures.TREE313_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.BMC174_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.ROBERTS_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.CELL_8994_PDF);
@@ -57,16 +57,19 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-//	@Ignore
+	@Ignore
 	public void testPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFs(Fixtures.PDFS_BMC_DIR.toString());
 	}	
 	
 	@Test
-	@Ignore // hits memory limit
+	//@Ignore // hits memory limit
 	public void testCHBudget() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf"));
-	}
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf"));
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Banedanmark.pdf"));
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/IYR2011DRC.pdf"));
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2010FINAL.pdf"));
+		}
 	
 }

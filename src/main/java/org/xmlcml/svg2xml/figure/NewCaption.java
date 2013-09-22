@@ -11,16 +11,16 @@ import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextStructurer;
-public class FigureCaption extends FigureComponent {
+public class NewCaption extends NewComponent {
 
-	private final static Logger LOG = Logger.getLogger(FigureCaption.class);
+	private final static Logger LOG = Logger.getLogger(NewCaption.class);
 	private ChunkAnalyzer figureAnalyzer;
 	
-	public FigureCaption(FigureAnalyzer figureAnalyzer) {
+	public NewCaption(FigureAnalyzer figureAnalyzer) {
 		super(figureAnalyzer);
 	}
-	public FigureCaption(TextAnalyzer textAnalyzer, ShapeAnalyzer pathAnalyzer, ImageAnalyzer imageAnalyzer)  {
-		super(textAnalyzer, pathAnalyzer, imageAnalyzer);
+	public NewCaption(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
+		super(textAnalyzer, shapeAnalyzer, imageAnalyzer);
 	}
 
 	public void processCaptionText(HtmlDiv div) {

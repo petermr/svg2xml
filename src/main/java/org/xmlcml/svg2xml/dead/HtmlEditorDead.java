@@ -316,10 +316,10 @@ public class HtmlEditorDead {
 //		if (analyzer instanceof MixedAnalyzer) {
 //			TextAnalyzer textAnalyzer = ((MixedAnalyzer)analyzer).getTextAnalyzer();
 //			ImageAnalyzer imageAnalyzer = ((MixedAnalyzer)analyzer).getImageAnalyzer();
-//			PathAnalyzer pathAnalyzer = ((MixedAnalyzer)analyzer).getPathAnalyzer();
-//			figureAnalyzer = new FigureAnalyzer(textAnalyzer, pathAnalyzer, imageAnalyzer, null);
+//			ShapeAnalyzer shapeAnalyzer = ((MixedAnalyzer)analyzer).getShapeAnalyzer();
+//			figureAnalyzer = new FigureAnalyzer(textAnalyzer, shapeAnalyzer, imageAnalyzer, null);
 //		} else if (analyzer instanceof TextAnalyzer) {
-//			figureAnalyzer = new FigureAnalyzer((TextAnalyzer)analyzer, (PathAnalyzer)null, (ImageAnalyzer)null, null);
+//			figureAnalyzer = new FigureAnalyzer((TextAnalyzer)analyzer, (ShapeAnalyzer)null, (ImageAnalyzer)null, null);
 //			LOG.error("Figure has no path/image");
 //		}
 //		return figureAnalyzer;
@@ -357,8 +357,8 @@ public class HtmlEditorDead {
 //				LOG.error("Cannot currently analyze images in Tables");
 //				return null;
 //			}
-//			PathAnalyzer pathAnalyzer = mixedAnalyzer.getPathAnalyzer();
-//			tableAnalyzer = new TableAnalyzer(textAnalyzer, pathAnalyzer);
+//			ShapeAnalyzer ShapeAnalyzer = mixedAnalyzer.getShapeAnalyzer();
+//			tableAnalyzer = new TableAnalyzer(textAnalyzer, ShapeAnalyzer);
 //		} else if (analyzer instanceof TextAnalyzer) {
 //			TextAnalyzer textAnalyzer = (TextAnalyzer)analyzer;
 //			tableAnalyzer = new TableAnalyzer(textAnalyzer, null);

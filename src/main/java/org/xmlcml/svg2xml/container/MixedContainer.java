@@ -160,11 +160,11 @@ public class MixedContainer extends AbstractContainer {
 		return imageContainer == null ? null : imageContainer.getImageList();
 	}
 
-	public ShapeAnalyzer createPathAnalyzer() {
-		ShapeAnalyzer pathAnalyzer = new ShapeAnalyzer(pageAnalyzer);
+	public ShapeAnalyzer createShapeAnalyzer() {
+		ShapeAnalyzer shapeAnalyzer = new ShapeAnalyzer(pageAnalyzer);
 		List<SVGShape> shapeList = getShapeList(); 
-		pathAnalyzer.addShapeList(shapeList);
-		return pathAnalyzer;
+		shapeAnalyzer.addShapeList(shapeList);
+		return shapeAnalyzer;
 	}
 
 	public ImageAnalyzer createImageAnalyzer() {
@@ -181,7 +181,7 @@ public class MixedContainer extends AbstractContainer {
 			return table;
 		}
 		if (tableElement == null) {
-			TableAnalyzer tableAnalyzer = new TableAnalyzer(getTextAnalyzer(), createPathAnalyzer());
+			TableAnalyzer tableAnalyzer = new TableAnalyzer(getTextAnalyzer(), createShapeAnalyzer());
 			tableElement = tableAnalyzer.createTable();
 			LOG.trace(tableElement.toXML());
 		}
@@ -190,8 +190,8 @@ public class MixedContainer extends AbstractContainer {
 
 	public HtmlDiv createFigureElement() {
 		if (figureElement == null) {
-			FigureAnalyzer figureAnalyzer = new FigureAnalyzer(getTextAnalyzer(), createPathAnalyzer(), createImageAnalyzer(), this.svgChunk);
-			figureElement = figureAnalyzer.createFigure();
+			FigureAnalyzer figureAnalyzer = new FigureAnalyzer(getTextAnalyzer(), createShapeAnalyzer(), createImageAnalyzer(), this.svgChunk);
+			figureElement = figureAnalyzer.createHtmlFigure();
 		}
 		return figureElement;
 	}

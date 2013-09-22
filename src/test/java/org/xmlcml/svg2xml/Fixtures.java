@@ -210,7 +210,22 @@ public class Fixtures {
 
 	public static final File FONT_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/font");
 	public static final File BMC_RUNNING_NORMAL_SVG = new File(Fixtures.FONT_DIR, "bmc.running.normal.svg");
+	public static final File IMAGE_3_2_SVG = new File(Fixtures.FONT_DIR, "image.g.3.2.svg");
 
+	public static final File FIGURE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/figure");
+	public static final File FIGURE_PAGE_3_SVG = new File(Fixtures.FIGURE_DIR, "page3.svg");
+	public static final File TREE_G_8_2_SVG = new File(Fixtures.FIGURE_DIR, "tree.g.8.2.svg");
+	public static final File MATHS_G_6_6_SVG = new File(Fixtures.FIGURE_DIR, "maths.g.6.6.svg");
+	public static final File MATHS_G_6_8_SVG = new File(Fixtures.FIGURE_DIR, "maths.g.6.8.svg");
+	public static final File MATHS_G_7_2_SVG = new File(Fixtures.FIGURE_DIR, "maths.g.7.2.svg");
+	public static final File HISTOGRAM_SVG = new File(Fixtures.FIGURE_DIR, "histogram.svg");
+	public static final File XAXIS_SVG = new File(Fixtures.FIGURE_DIR, "xaxis.svg");
+	public static final File MULTIPLE_G_7_2_SVG = new File(Fixtures.FIGURE_DIR, "multiple.g.7.2.svg");
+	public static final File MULTIPLE_G_9_2_SVG = new File(Fixtures.FIGURE_DIR, "multiple.g.9.2.svg");
+	
+	public final static String WHALE_ROOT = "whale-1471-2148-11-314";
+	public static final File WHALE_314_PDF = new File(PDFS_BMC_DIR, WHALE_ROOT+".pdf");
+	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
 			SVGRect bbox = chunk.createGraphicalBoundingBox();

@@ -578,10 +578,14 @@ public class ScriptLine implements Iterable<TextLine> {
 					currentStroke = stroke;
 					currentY = y;
 				}
-				currentSpan.addCharacter(character);
-				double width = TextLine.getWidth(character);
-				lastX = x + width;
-				LOG.trace("   W "+width+" "+lastX);
+				if (character != null && currentSpan != null) {
+					currentSpan.addCharacter(character);
+					Double width = TextLine.getWidth(character);
+					if (width != null) {
+						lastX = x + width;
+						LOG.trace("   W "+width+" "+lastX);
+					}
+				}
 			}
 		}
 		return styleSpans;

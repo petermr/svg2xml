@@ -46,6 +46,10 @@ public abstract class ChunkAnalyzer {
 		this.svgChunk = svgChunk;
 		getChunkId();
 	}
+	
+	protected SVGElement getSVGChunk() {
+		return svgChunk;
+	}
 
 	public List<AbstractContainer> createContainers() {
 		throw new RuntimeException("Override for: "+this.getClass());

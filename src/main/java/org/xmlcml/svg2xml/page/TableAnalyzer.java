@@ -29,7 +29,7 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
 
 	private TextAnalyzer textAnalyzer;
-	private ShapeAnalyzer pathAnalyzer;
+	private ShapeAnalyzer shapeAnalyzer;
 
 //	private Real2Range pathBox;
 	private List<SVGShape> shapeList;
@@ -39,13 +39,13 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 		super();
 	}
 
-	public TableAnalyzer(TextAnalyzer textAnalyzer, ShapeAnalyzer pathAnalyzer) {
+	public TableAnalyzer(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
-		this.pathAnalyzer = pathAnalyzer;
+		this.shapeAnalyzer = shapeAnalyzer;
 	}
 
 	public void analyze() {
-		List<SVGShape> shapeList = pathAnalyzer.getShapeList();
+		List<SVGShape> shapeList = shapeAnalyzer.getShapeList();
 		shapeList = Path2ShapeConverter.removeDuplicateShapes(shapeList);
 		List<SVGText> textList = textAnalyzer.getTextCharacters();
 //		pathBox = SVGUtil.createBoundingBox(pathList);
@@ -61,7 +61,7 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	}
 	
 	public HtmlTable createTable() {
-		shapeList = pathAnalyzer == null ? null : pathAnalyzer.getShapeList();
+		shapeList = shapeAnalyzer == null ? null : shapeAnalyzer.getShapeList();
 		textList = textAnalyzer == null ? null : textAnalyzer.getTextCharacters();
 		TableTable tableTable = new TableTable(shapeList, textList);
 		tableTable.analyzeVerticalTextChunks();
