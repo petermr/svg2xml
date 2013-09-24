@@ -25,9 +25,9 @@ public class TableFixtures {
 	public final static File HROW1FILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.hrow.1.svg");
 	public final static File HROW2FILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.hrow.2.svg");
 	
-	public static final String TEXT_OR_PATH_XPATH = "//svg:text|//svg:path";
-	public static final String PATH_XPATH = "//svg:path";
-	public static final String TEXT_XPATH = "//svg:text";
+	public static final String TEXT_OR_PATH_XPATH = ".//svg:text|//svg:path";
+	public static final String PATH_XPATH = ".//svg:path";
+	public static final String TEXT_XPATH = ".//svg:text";
 	
 	public static final Real2Range PAGE_BOX = new Real2Range(new RealRange(0., 600.), new RealRange(0., 800.));
 	

@@ -95,7 +95,7 @@ public class PageEditorDead {
 //
 //	public static void removeUnwantedSVGAttributesAndAddIds(SVGSVG svgPage) {
 //		Long time0 = System.currentTimeMillis();
-//		List<SVGElement> elements = SVGUtil.getQuerySVGElements(svgPage, "//svg:*");
+//		List<SVGElement> elements = SVGUtil.getQuerySVGElements(svgPage, ".//svg:*");
 //		List<Attribute> attributeList = new ArrayList<Attribute>();
 //		int attno = 0;
 //		for (SVGElement element : elements) {

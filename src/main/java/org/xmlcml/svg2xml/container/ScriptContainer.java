@@ -155,7 +155,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	 * @param htmlElement
 	 */
 	private void cleanSpaceSpans(HtmlElement htmlElement) {
-		Nodes spans = htmlElement.query("//*[local-name()='span' and count(*) = 0 and text()[normalize-space(.)='']]");
+		Nodes spans = htmlElement.query(".//*[local-name()='span' and count(*) = 0 and text()[normalize-space(.)='']]");
 		for (int i = 0; i < spans.size(); i++) {
 			Element span = (Element) spans.get(i);
 			String value = span.getValue();
@@ -169,7 +169,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	 * @param htmlElement
 	 */
 	private void cleanMultipleSpaces(HtmlElement htmlElement) {
-		Nodes spans = htmlElement.query("//text()[normalize-space(.)='' and string-length(.) > 1]");
+		Nodes spans = htmlElement.query(".//text()[normalize-space(.)='' and string-length(.) > 1]");
 		for (int i = 0; i < spans.size(); i++) {
 			Text text = (Text) spans.get(i);
 			text.setValue(" ");
@@ -181,7 +181,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	 * @param htmlElement
 	 */
 	private void cleanEmptySpans(HtmlElement htmlElement) {
-		Nodes spans = htmlElement.query("//*[local-name()='span' and count(node()) = 0]");
+		Nodes spans = htmlElement.query(".//*[local-name()='span' and count(node()) = 0]");
 		for (int i = 0; i < spans.size(); i++) {
 			Element span = (Element) spans.get(i);
 			span.detach();
@@ -201,7 +201,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 	}
 
 	private void addSoftHyphen(HtmlElement spaceElement) {
-		Nodes texts = spaceElement.query("//text()");
+		Nodes texts = spaceElement.query(".//text()");
 		if (texts.size() > 0 ) {
 			Text lastText = (Text) texts.get(texts.size() - 1);
 			String textValue = lastText.getValue();

@@ -309,7 +309,7 @@ public class OutlineFont {
 
 	private void analyze(SVGElement pathElement, Boolean stats) {
 		if (pathElement != null) {
-			Nodes paths = pathElement.query("//*[local-name()='g']/*[local-name()='path']");
+			Nodes paths = pathElement.query(".//*[local-name()='g']/*[local-name()='path']");
 			List<SVGPath> svgPathList = new ArrayList<SVGPath>();
 			for (int i = 0; i < paths.size(); i++) {
 				svgPathList.add((SVGPath) paths.get(i));

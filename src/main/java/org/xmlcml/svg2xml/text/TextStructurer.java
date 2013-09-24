@@ -1223,4 +1223,13 @@ public class TextStructurer {
 		return sb.toString();
 	}
 
+	/** detach every character in rawCharacters.
+	 * 
+	 */
+	public void detachCharacters() {
+		for (SVGText character : rawCharacters) {
+			character.detach();
+		}
+	}
+
 }

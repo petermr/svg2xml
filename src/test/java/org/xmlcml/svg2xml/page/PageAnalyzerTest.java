@@ -230,7 +230,11 @@ public class PageAnalyzerTest {
 		String actual = containerList.get(3).createHtmlElement().toXML();
 		LOG.trace(".. "+actual);
 		Assert.assertEquals("html3", 
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\">L opsin gene of two African hominoids, humans [18] and chimpanzees (primarily  <i>P. t. verus</i> ) [25]. In the present study, we focused on gibbons (Family Hylobatidae), com-monly known as the lesser apes, for which normal tri-chromacy is reported [30]. Gibbons occur in Asia and are the most diverse and speciose of all living apes [31], mak-ing them an ideal group with which to assess the range of L/M opsin genetic variation. We examined the nucleotide variation of both the L and M opsin genes by sequencing the 3.6~3.9-kb genomic region encompassing exon 3 to exon 5 from individuals in five species and three genera of gibbons. <p /></div>",
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\" id=\"g.2.3\">L opsin gene of two African hominoids, humans [18] and chimpanzees (primarily  <i>P. t. verus</i>" +
+				" ) [25]. In the present study, we focused on gibbons (Family Hylobatidae), com-monly known as the lesser apes, for which normal tri-chromacy is reported" +
+				" [30]. Gibbons occur in Asia and are the most diverse and speciose of all living apes [31], mak-ing them an ideal group with which to assess the range" +
+				" of L/M opsin genetic variation. We examined the nucleotide variation of both the L and M opsin genes by sequencing the 3.6~3.9-kb genomic region" +
+				" encompassing exon 3 to exon 5 from individuals in five species and three genera of gibbons. </div>",
 				actual);
 	}
 

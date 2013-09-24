@@ -223,7 +223,7 @@ public abstract class AbstractContainer {
 
 	private void calculateType() {
 		createHtmlElement();
-		Nodes boldNodes = htmlElement.query("//*[local-name()='b']");
+		Nodes boldNodes = htmlElement.query(".//*[local-name()='b']");
 		tableNumber = getCaptionNumber(TABLE_CAPTION, boldNodes);
 		figureNumber = getCaptionNumber(FIGURE_CAPTION, boldNodes);
 		if (tableNumber != null) {

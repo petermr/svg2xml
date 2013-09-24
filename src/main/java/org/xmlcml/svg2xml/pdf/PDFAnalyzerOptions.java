@@ -30,4 +30,8 @@ public class PDFAnalyzerOptions {
 		this.pdfAnalyzer = pdfAnalyzer;
 	}
 
+	public boolean isOutputAnnotatedSvgPages() {
+		return outputAnnotatedSvgPages;
+	}
+
 }

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:svgx="http://www.xml-cml.org/schema/svgx" width="800">
    <g transform="translate(0.0, -300.0)">
 
-    <line fill="#000000" stroke="black" stroke-width="0.0" x1="246.22" y1="383.514" x2="246.22" y2="382.806" id="line.802"/>
-    <line fill="none" stroke="#060808" stroke-width="0.75" x1="105.856" y1="386.239" x2="530.153" y2="386.241" id="line.971"/>
+    <line fill="none" stroke="#000000" stroke-width="0.75" x1="105.856" y1="386.239" x2="530.153" y2="386.241" id="line.971"/>
     <line fill="none" stroke="#000000" stroke-width="0.75" x1="105.794" y1="386.239" x2="105.794" y2="390.905" id="line.972"/>
     <line fill="none" stroke="#000000" stroke-width="0.75" x1="161.967" y1="386.239" x2="161.967" y2="390.905" id="line.973"/>
     <line fill="none" stroke="#000000" stroke-width="0.75" x1="218.139" y1="386.239" x2="218.139" y2="390.905" id="line.974"/>
@@ -12,6 +11,7 @@
     <line fill="none" stroke="#000000" stroke-width="0.75" x1="386.66" y1="386.239" x2="386.66" y2="390.905" id="line.977"/>
     <line fill="none" stroke="#000000" stroke-width="0.75" x1="442.833" y1="386.239" x2="442.833" y2="390.905" id="line.978"/>
     <line fill="none" stroke="#000000" stroke-width="0.75" x1="499.006" y1="386.239" x2="499.006" y2="390.905" id="line.979"/>
+    
     <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="KGIAMK+MyriadPro-Regular" svgx:width="513.0" x="103.561" y="404.413" font-size="9.0" font-family="Helvetica" font-weight="normal">0</text>
     <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="KGIAMK+MyriadPro-Regular" svgx:width="513.0" x="159.73" y="404.413" font-size="9.0" font-family="Helvetica" font-weight="normal">2</text>
     <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="KGIAMK+MyriadPro-Regular" svgx:width="513.0" x="215.899" y="404.413" font-size="9.0" font-family="Helvetica" font-weight="normal">4</text>

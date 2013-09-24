@@ -222,9 +222,20 @@ public class Fixtures {
 	public static final File XAXIS_SVG = new File(Fixtures.FIGURE_DIR, "xaxis.svg");
 	public static final File MULTIPLE_G_7_2_SVG = new File(Fixtures.FIGURE_DIR, "multiple.g.7.2.svg");
 	public static final File MULTIPLE_G_9_2_SVG = new File(Fixtures.FIGURE_DIR, "multiple.g.9.2.svg");
+	public static final File LINEPLOTS_10_2_SVG = new File(Fixtures.FIGURE_DIR, "lineplots.g.10.2.svg");
+	public static final File SCATTERPLOT_FIVE_7_2_SVG = new File(Fixtures.FIGURE_DIR, "scatterplot5.g.7.2.svg");
+	public static final File SCATTERPLOT_7_2_SVG = new File(Fixtures.FIGURE_DIR, "scatterplot.g.7.2.svg");
+	public static final File SCATTERPLOTRED_7_2_SVG = new File(Fixtures.FIGURE_DIR, "scatterplotred.g.7.2.svg");
+
+	// this uses outline fonts for graphics...
+	public final static String GRAPHIC_TEXT_ROOT = "insect-1471-2148-11-315";
+	public static final File GRAPHIC_TEXT_315_PDF = new File(PDFS_BMC_DIR, GRAPHIC_TEXT_ROOT+".pdf");
 	
-	public final static String WHALE_ROOT = "whale-1471-2148-11-314";
-	public static final File WHALE_314_PDF = new File(PDFS_BMC_DIR, WHALE_ROOT+".pdf");
+	public final static String SCATTERPLOTS_ROOT = "scatterplots-1471-2148-11-322";
+	public static final File SCATTERPLOTS_322_PDF = new File(PDFS_BMC_DIR, SCATTERPLOTS_ROOT+".pdf");
+	
+	public final static String LINEPLOTS_ROOT = "lineplots-1471-2148-11-327";
+	public static final File LINEPLOTS_327_PDF = new File(PDFS_BMC_DIR, LINEPLOTS_ROOT+".pdf");
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
@@ -270,7 +281,7 @@ public class Fixtures {
 
 	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
 		SVGSVG svgPage = Fixtures.getSVGPageFromPDF(pdfFile, pageNum);
-		LOG.debug("svgPage "+svgPage.query("//*").size());
+		LOG.debug("svgPage "+svgPage.query(".//*").size());
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgPage);
 		return svgPage;

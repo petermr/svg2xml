@@ -316,7 +316,7 @@ public class Axis {
 		for (SVGElement axisMark : axisMarks) {
 			axisMark.setStroke("yellow");
 		}
-		List<SVGElement> rects = SVGUtil.getQuerySVGElements(svgg, "//svg:rect");
+		List<SVGElement> rects = SVGUtil.getQuerySVGElements(svgg, ".//svg:rect");
 		for (SVGElement rect : rects) {
 			rect.detach();
 		}

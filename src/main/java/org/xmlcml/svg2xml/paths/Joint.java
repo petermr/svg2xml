@@ -91,10 +91,25 @@ public class Joint implements Comparable<Joint> {
 	
 	public String toString() {
 		String s = "";
+		s += backbone;
 		if (line != null) { 
-			s += /*line.toXML()+*/" "+line.getEuclidLine().getLength()+"\n";
+			s += /*line.toXML()+*/" "+line.getEuclidLine().getLength();
 		}
+		s += " "+point;
+		s += "\n";
 		return s;
 	}
+
+	/** detaches line SVG components.
+	 * 
+	 * To show effect of removal (e.g. of axes) on diagram. Backbone will not
+	 * be removed.
+	 * 
+	 * 
+	 */
+	public void detach() {
+		line.detach();
+	}
+
 
 }

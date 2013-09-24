@@ -47,7 +47,7 @@ public class PageFontSizeAnalyzerDead {
 //	public void analyze(SVGElement svgPage) {
 //		elementsByFontSize = ArrayListMultimap.create();
 //		LOG.trace("getting font sizes");
-//		textList = SVGUtil.getQuerySVGElements(svgPage, "//svg:text[@font-size]");
+//		textList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:text[@font-size]");
 //		LOG.trace("creating maps");
 //		createMapsForElementsByFontSize();
 //		LOG.trace("created maps");

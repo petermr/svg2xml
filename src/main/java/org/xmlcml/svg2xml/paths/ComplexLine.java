@@ -295,6 +295,8 @@ public class ComplexLine {
 		if (joint != null) {
 			ensureJointList();
 			jointList.add(joint);
+		} else {
+			System.out.println("null "+line);
 		}
 		return joint;
 	}
@@ -599,6 +601,29 @@ public class ComplexLine {
 		LOG.debug("jointSpacing: "+calculateInterJointSpacing(jointList, JOINT_EPS));
 		for (Joint joint : jointList) {
 			LOG.debug("J "+joint);
+		}
+	}
+
+	/** detaches all SVG components.
+	 * 
+	 * To show effect of removal (e.g. of axes) on diagram
+	 */
+	public void detach() {
+		for (Joint joint : jointList){
+			joint.detach();
+		}
+		backbone.detach();
+	}
+
+	/** detaches all ComplexLines in list
+	 * 
+	 * @param complexLineList
+	 */
+	public static void detach(List<ComplexLine> complexLineList) {
+		if (complexLineList != null) {
+			for (ComplexLine complexLine : complexLineList) {
+				complexLine.detach();
+			}
 		}
 	}
 

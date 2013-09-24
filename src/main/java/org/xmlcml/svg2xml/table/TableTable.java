@@ -316,7 +316,7 @@ public class TableTable extends TableChunk {
 		}
 		removeEmptyTables(body);
 		// size of growing table children
-		int nn = table.query("//*").size();
+		int nn = table.query(".//*").size();
 		try {
 			SVGUtil.debug(table, new FileOutputStream("target/table"+nn+".html"), 1);
 		} catch (Exception e) {

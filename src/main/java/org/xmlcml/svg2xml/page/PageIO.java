@@ -198,6 +198,13 @@ public class PageIO {
 			}
 			finalSVGPage.appendChild(g);
 		}
+		if (pdfAnalyzer.getPdfOptions().isOutputAnnotatedSvgPages()) {
+			String pageRoot = createPageRootWithHumanNumber();
+			try {
+				SVGUtil.debug(
+						finalSVGPage, new FileOutputStream(new File("target/"+pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
+			} catch (Exception e) {throw(new RuntimeException(e));}
+		}
 	}
 	
 	/*

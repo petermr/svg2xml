@@ -98,7 +98,7 @@ public class SubSupAnalyzerDead {
 //	private void detachEmptyGs() {
 //		if (texts.size() > 0) {
 //			while (true) {
-//				List<SVGElement> emptyGs = SVGUtil.getQuerySVGElements(this.texts.get(0), "//svg:g[count(*)=0]");
+//				List<SVGElement> emptyGs = SVGUtil.getQuerySVGElements(this.texts.get(0), ".//svg:g[count(*)=0]");
 //				for (SVGElement emptyG : emptyGs) {
 //					emptyG.detach();
 //				}

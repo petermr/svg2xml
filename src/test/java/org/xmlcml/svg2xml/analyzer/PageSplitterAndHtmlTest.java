@@ -606,7 +606,7 @@ public class PageSplitterAndHtmlTest {
 		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
 		JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
 		try {
-			Nodes nodes = element.query("//@style");
+			Nodes nodes = element.query(".//@style");
 			for (int i = 0; i < nodes.size(); i++) {
 				nodes.get(i).detach();
 			}

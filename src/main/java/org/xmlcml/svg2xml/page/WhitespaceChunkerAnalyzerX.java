@@ -179,7 +179,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	}
 
 	private void removeEmptyChunks(Chunk topChunk) {
-		List<SVGElement> emptyGList = SVGUtil.getQuerySVGElements(topChunk, "//svg:g[count(*)=0]");
+		List<SVGElement> emptyGList = SVGUtil.getQuerySVGElements(topChunk, ".//svg:g[count(*)=0]");
 		for (SVGElement g : emptyGList) {
 			g.detach();
 		}
@@ -189,12 +189,14 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 		if (chunkList != null) {
 			for (SVGG chunk : chunkList) {
 				Real2Range bbox = chunk.getBoundingBox();
-				SVGRect rect = new SVGRect( bbox);
-				rect.setStroke(stroke);
-				rect.setFill(fill);
-				rect.setStrokeWidth(0.9);
-				rect.setOpacity(opacity);
-				chunk.appendChild(rect);
+				if (bbox != null) {
+					SVGRect rect = new SVGRect( bbox);
+					rect.setStroke(stroke);
+					rect.setFill(fill);
+					rect.setStrokeWidth(0.9);
+					rect.setOpacity(opacity);
+					chunk.appendChild(rect);
+				}
 			}
 		}
 	}

@@ -61,8 +61,8 @@ public class PageClipPathAnalyzerDead {
 //		elementsByClip = ArrayListMultimap.create();
 //		pathsByClip = ArrayListMultimap.create();
 //		textsByClip = ArrayListMultimap.create();
-//		clipPathRefsList = SVGUtil.getQuerySVGElements(svgPage, "//svg:*[@clip-path]");
-//		svgClipPathList = SVGUtil.getQuerySVGElements(svgPage, "/svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
+//		clipPathRefsList = SVGUtil.getQuerySVGElements(svgPage, ".//svg:*[@clip-path]");
+//		svgClipPathList = SVGUtil.getQuerySVGElements(svgPage, "./svg:svg/svg:g/svg:defs/svg:clipPath[svg:path]");
 //		
 //		createMapsByClipPath();
 //		

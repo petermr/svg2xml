@@ -141,7 +141,6 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
-	 		LOG.trace("chunk: "+gChunk.toXML().length());
 			path2ShapeConverter.convertPathsToShapes(gChunk);
 			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
 			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers();
@@ -152,7 +151,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		}
 		pageIo.createFinalSVGPageFromChunks();
 	}
-	
+
 	/** decides whether chunk is Text, Path, Image or Mixed
 	 * 
 	 * @param gChunk
@@ -270,7 +269,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		if (analyzerX == null) {
 			throw new RuntimeException("Null analyzer");
 		}
-		List<SVGElement> gList = SVGUtil.getQuerySVGElements(gOrig, "//svg:g");
+		List<SVGElement> gList = SVGUtil.getQuerySVGElements(gOrig, ".//svg:g");
 		SVGG gOut = analyzerX.createChunkFromList(gList);
 		gOut.setId(chunkId.toString());
 		CMLUtil.copyAttributes(gOrig, gOut);
@@ -410,7 +409,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	private static void replaceSpansByTextChildren(HtmlElement div) {
 //		String xpath = "//*[local-name()='span' and count(text()) = 1  and count(*) = 0]";
 //		replaceNodesWithChildren(div, xpath);
-		String xpath = "//*[local-name()='span' and count(text()) = 1  and count(*) = 0]/text()";
+		String xpath = ".//*[local-name()='span' and count(text()) = 1  and count(*) = 0]/text()";
 		replaceParentsWithNodes(div, xpath);
 	}
 
@@ -431,7 +430,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	private static void removeWhitespaceSpan(HtmlElement div) {
-		removeNodes(div, "//*[local-name()='span' and normalize-space(.)='']");
+		removeNodes(div, ".//*[local-name()='span' and normalize-space(.)='']");
 	}
 
 	private static void removeNodes(HtmlElement div, String xpath) {
@@ -442,7 +441,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	private static void removeSpanSubSupBI(HtmlElement div) {
-		replaceParentsWithNodes(div, "//*[local-name()='span']/*[local-name()='sub' or local-name()='sup' or local-name()='b' or local-name()='i']");
+		replaceParentsWithNodes(div, ".//*[local-name()='span']/*[local-name()='sub' or local-name()='sup' or local-name()='b' or local-name()='i']");
 	}
 
 	/** not tested
@@ -617,7 +616,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public void outputHtmlRunningText() {
 		HtmlElement div = this.createRunningHtml();
 		div.setId(String.valueOf(pageIo.getHumanPageNumber()));
-		SYSOUT.println("*************************HTML**************************"+div.getId()+">>>>>> \n");
+		SYSOUT.print("["+div.getId()+"]");
 		File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), ContainerType.TEXT, div.getId());
 		// should already have been output
 		// PageIO.outputFile(div, file);
@@ -643,7 +642,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			} else if (ContainerType.LIST.equals(type)) {
 				runningTextHtmlElement.appendChild(abstractContainer.getListElement().copy());
 			} else if (ContainerType.TABLE.equals(type)) {
-				runningTextHtmlElement.appendChild(abstractContainer.getTableElement().copy());
+				Element element = abstractContainer.getTableElement();
+				if (element != null) {
+					runningTextHtmlElement.appendChild(element.copy());
+				}
 			} else if (ContainerType.TEXT.equals(type)) {
 				HtmlElement div = abstractContainer.createHtmlElement();
 				PageIO.copyChildElementsFromTo(div, runningTextHtmlElement);

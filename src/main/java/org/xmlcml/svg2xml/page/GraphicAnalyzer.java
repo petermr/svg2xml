@@ -44,6 +44,16 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		createAnalyzers();
 	}
 
+	/** create GraphicAnalyzer.
+	 * 
+	 * PageAnalyzer is dummy.
+	 * 
+	 * @param svgChunk
+	 */
+	public GraphicAnalyzer(SVGElement svgChunk) {
+		this(new PageAnalyzer((SVGElement) null), svgChunk);
+	}
+
 	private void createAnalyzers() {
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgChunk);
 		if (textList != null && textList.size() >0) {
@@ -92,6 +102,8 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		}
 		return graphicAnalyzer;
 	}
+	
+	
 
 	/** create TextAnalyzer for given orientation.
 	 * 

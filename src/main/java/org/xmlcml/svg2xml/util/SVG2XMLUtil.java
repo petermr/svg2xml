@@ -156,7 +156,7 @@ public class SVG2XMLUtil {
 		if (element == null) {
 			LOG.error("NULL htmlElement");
 		}
-		Nodes styles = element.query("//@style");
+		Nodes styles = element.query(".//@style");
 		detachNodes(styles);
 		return element;
 	}
@@ -171,8 +171,8 @@ public class SVG2XMLUtil {
 		removeAnnotationBoxes(graphic);
 	}
 
-	private static void removeAnnotationBoxes(SVGElement graphic) {
-		Nodes nodes = graphic.query("//*[local-name()='rect' and @fill='yellow' and @opacity='0.5']");
+	public static void removeAnnotationBoxes(SVGElement graphic) {
+		Nodes nodes = graphic.query(".//*[local-name()='rect' and @fill='yellow' and @opacity='0.5']");
 		detachNodes(nodes);
 	}
 
@@ -182,13 +182,13 @@ public class SVG2XMLUtil {
 		}
 	}
 
-	private static void removeAttributes(String attname, SVGElement graphic) {
-		Nodes nodes = graphic.query("//@"+attname);
+	public static void removeAttributes(String attname, SVGElement element) {
+		Nodes nodes = element.query(".//@"+attname);
 		detachNodes(nodes);
 	}
 
-	private static void removeSVGXAttributes(SVGElement graphic) {
-		Nodes nodes = graphic.query("//@*[namespace-uri()='"+SVGConstants.SVGX_NS+"']");
+	private static void removeSVGXAttributes(SVGElement element) {
+		Nodes nodes = element.query(".//@*[namespace-uri()='"+SVGConstants.SVGX_NS+"']");
 		detachNodes(nodes);
 	}
 

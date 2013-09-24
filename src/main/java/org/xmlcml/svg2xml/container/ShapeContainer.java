@@ -61,7 +61,7 @@ public class ShapeContainer extends AbstractContainer  {
 
 	// this is a mess
 	private void removeAnnotatedRects(SVGG svgChunk) {
-		Nodes nodes = svgChunk.query("//*[@title='org.xmlcml.svg2xml.page.ShapeAnalyzer1']");
+		Nodes nodes = svgChunk.query(".//*[@title='org.xmlcml.svg2xml.page.ShapeAnalyzer1']");
 		for (int i = 0; i < nodes.size(); i++) {
 			nodes.get(i).detach();
 		}

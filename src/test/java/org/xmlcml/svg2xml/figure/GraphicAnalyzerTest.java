@@ -139,13 +139,13 @@ public class GraphicAnalyzerTest {
 	 */
 	public void testHistogram() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.HISTOGRAM_SVG,  "./svg:g");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "histogram", 
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "histogram", 
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">0 2 4 6 8 10 12 14 Time (Myr) </div>");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, "histogram", 
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "histogram", 
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Sampling  frequency </div>");
 	}
 	
-	private void testSVGandHTML(GraphicAnalyzer graphicAnalyzer,
+	private void testExtractionOfTextWithTextStructurer(GraphicAnalyzer graphicAnalyzer,
 			TextOrientation textOrientation, String root, String refHtml) {
 		String root1 = root + "_"+textOrientation.toString().toLowerCase();
 		testSVGandHTML(graphicAnalyzer, textOrientation, "target/"+root1+".svg",  "target/"+root1+".html", root1, refHtml);
@@ -159,7 +159,7 @@ public class GraphicAnalyzerTest {
 	 */
 	public void testXAxis() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.XAXIS_SVG,  "./svg:g");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "xaxis",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "xaxis",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">0 2 4 6 8 10 12 14 Time (Myr) </div>");
 	}
 	
@@ -170,9 +170,9 @@ public class GraphicAnalyzerTest {
 	 */
 	public void testMultiple72() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MULTIPLE_G_7_2_SVG,  "./svg:g");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "multiple72",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "multiple72",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><i>H. agilis</i> <p /><b>**</b> <b>**</b> 0.4  0.2  0.0  <i>H. lar</i> <p /><b>** *</b> 0.2  0.1null <p /><b>NE</b> 0.0  <i>H. pileatus</i> 0.2  <p /><b>** **</b> 0.1  0.0  <sub><i>N. leucogenys</i></sub> <p /><b>**</b> <b>**</b> 0.4  0.2  0.0  <i>S. syndactylus</i> 0.3  0.2  <p /><b>**</b> 0.1  0.0  <p /><b>Ex Int Ex Int G</b> <sub><b>A </b></sub> <b>G</b> <sub><b>X</b></sub> <b>L M Kim et al</b> </div>");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, "multiple72",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "multiple72",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>Nucleotide diversity (</b> S <b>)  of L and M opsin genes (x 10</b> <sup><b>-2</b></sup> <b>)</b> </div>");
 	}
 	
@@ -183,9 +183,9 @@ public class GraphicAnalyzerTest {
 	 */
 	public void testMaths66() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_6_SVG,  "./svg:g");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "maths66",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "maths66",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">AB </div>");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, "maths66",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "maths66",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.51.01.52.0 </div>");
 	}
 	
@@ -196,9 +196,9 @@ public class GraphicAnalyzerTest {
 	 */
 	public void testMaths68() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_8_SVG,  "./svg:g");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "maths68",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "maths68",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">255075100 Taxon sampling (%) </div>");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, "maths68",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "maths68",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.40.60.81.01.21.4 0.40.60.81.01.21.4 Extinction rate ( μ ) </div>");
 		}
 	
@@ -209,13 +209,67 @@ public class GraphicAnalyzerTest {
 	 */
 	public void testMultiple92() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MULTIPLE_G_9_2_SVG,  "./svg:g");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "multiple92",
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "multiple92",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>Exon 3 Intron 3 Exon 4 Intron 4 Exon 5</b> <b>Hag</b> <b>Hla</b> <b>Hpi</b> <b>Nle</b> <b>Ssy</b> </div>");
-		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, "multiple92", 
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "multiple92", 
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\" />");
 	}
 	
-
+	@Test
+	/** .
+	 * 
+	 * Single Double axis plot
+	 */
+	public void testScatterplotRed() {
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOTRED_7_2_SVG,  "./svg:g");
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "scatterplotred",
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\">  0.04   <sup>0.03  </sup> <sup>0.02  </sup> 0.01   0.00   0.00   0.01   0.02   0.03   0.04   0.05   <p />" +
+				"<b>dN of </b> <b><i>EF-1 </i></b> <i>α</i> </div>");
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "scatterplotred", 
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>dN of </b> <i>β</i> <b><i>-tub </i></b> </div>");
+	}
+	
+	
+	@Test
+	/** .
+	 * 
+	 * Single Double axis plot with more types of point
+	 * 
+	 * This has corrupted greek letters
+	 */
+	public void testMulticolourScatterplot() {
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOT_7_2_SVG,  "./svg:g");
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "scatterplot",
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\">  0.04   <sup>0.03  </sup> <sup>0.02  </sup> 0.01   0.00   0.00   0.01   0.02   0.03   0.04   0.05   <p /><b>dN of </b> <b><i>EF-1 </i></b> null </div>");
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "scatterplot", 
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>dN of </b> Ε <b><i>-tub </i></b> </div>");
+	}
+	
+	@Test
+	/** .
+	 * 
+	 * Five Double axis plot with more types of point
+	 * 
+	 * The results are not intuitive as they are sorted by Y so read across the page
+	 * 
+	 * This has corrupted greek letters
+	 */
+	public void test5Scatterplots() {
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g");
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "scatterplot5",
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\">0.14    B  C A  0.50   0.04   <sup>0.12  </sup> 0.40   <sup>0.03   0.10  </sup> <sup>0.30  </sup>" +
+				" 0.08   <sup>0.02  </sup> <sup>0.06  </sup>" +
+				" 0.20   0.04   0.01   0.10   0.02   0.00   0.00  0.00   0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.050.00   0.01   0.02   0.03   0.04   0.05   <p />" +
+				"<b>dN of </b> <b><i>EF-1 </i></b> null  <b>dN of  </b> <b><i>-tub </i></b> <b>dN of  </b> <b><i>-tub </i></b> D   <sub>0.60   </sub>" +
+				" E  0.40   <sup>0.50  </sup> 0.30   <sup>0.40  </sup> 0.30   <sup>0.20  </sup>" +
+				" 0.20   0.10   0.10   0.00   0.00   0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.05   <p />" +
+				"<b>dN of  </b> <b><i>-tub  </i></b> <b>dN of  </b> <b><i>-tub </i></b> </div>");
+		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "scatterplot5", 
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>dS of </b> <b><i>EF-1</i></b> Δ null <p /><b>dN of </b>" +
+				" Ε <b><i>-tub </i></b> <b>p-distance of rDNA cluster </b>" +
+				" <b>p-distance of intron within </b> <b><i>EF-1</i></b> Δ <sup>null</sup> <p /><b>dS of </b> Ε <b><i>-tub </i></b> </div>");
+	}
+	
 	
 	// =============================================
 	private static void testSVGandHTML(GraphicAnalyzer graphicAnalyzer, TextOrientation textOrientation, 

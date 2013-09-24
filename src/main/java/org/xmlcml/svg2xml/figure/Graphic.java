@@ -49,10 +49,13 @@ public class Graphic extends NewComponent {
 	}
 
 	public void createImageFromComponents(String pngName) {
-		if (svgContainer != null) {
+		if (svgContainer != null && boundingBox != null) {
 			Real2 translateToOrigin = new Real2(-boundingBox.getXMin() + OFFSET_X, -boundingBox.getYMin() + OFFSET_Y);
 			svgContainer.setTransform(new Transform2(new Vector2(translateToOrigin)));
-			SVG2XMLUtil.tidy(svgContainer);
+//			SVG2XMLUtil.tidy(svgContainer); // we don't want to strip SVGX-width at this stage
+			SVG2XMLUtil.removeAttributes("clip-path", svgContainer);
+//			removeSVGXAttributes(svgContainer);
+			SVG2XMLUtil.removeAnnotationBoxes(svgContainer);
 			
 			HiddenGraphics hg = createHiddenGraphics();
 			try {
