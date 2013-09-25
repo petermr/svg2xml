@@ -164,7 +164,7 @@ public class SVG2XMLFontTest {
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		String[] fontFamilyNames = graphicsEnvironment.getAvailableFontFamilyNames();
 		for (String fontFamilyName : fontFamilyNames) {
-//			SYSOUT.println(fontFamilyName);
+//			LOG.trace(fontFamilyName);
 		}
 	}
 

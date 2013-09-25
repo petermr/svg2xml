@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,6 +37,8 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 public class OutlineFont {
+	private static final PrintStream SYSOUT = System.out;
+
 	private final static Logger LOG = Logger.getLogger(OutlineFont.class);
 	
 	private static final String CHAR = "char";
@@ -149,7 +152,7 @@ public class OutlineFont {
 					fontRoot.insertChild(glyph.glyphElement, 0);
 				}
 			} else {
-//				System.out.println("Null "+i);
+//				SYSOUT.println("Null "+i);
 			}
 		}
 	}
@@ -333,7 +336,6 @@ public class OutlineFont {
 		Boolean stats = false;
 		int i = 0;
 		while (i < args.length) {
-//			System.out.println(i);
 			if (false) {
 			} else if ("-c".equals(args[i])) {
 				outlineFont.setPathfile(args[++i]);i++;
@@ -407,9 +409,9 @@ public class OutlineFont {
 	}
 
 	private static void usage() {
-		System.out.println(" -if <fontfile.xml> -c <corpus.xml> -of <outfont.xml> -og <glyphs.xml> -n <name> - gf <genfamily> -st");
-		System.out.println("   corpus is SVG file for finding glyphs; og is glyph output; of is updated font;");
-		System.out.println("   if no input font, use name and generic family to create new one");
+		SYSOUT.println(" -if <fontfile.xml> -c <corpus.xml> -of <outfont.xml> -og <glyphs.xml> -n <name> - gf <genfamily> -st");
+		SYSOUT.println("   corpus is SVG file for finding glyphs; og is glyph output; of is updated font;");
+		SYSOUT.println("   if no input font, use name and generic family to create new one");
 	}
 
 	public static void main(String[] args) {
@@ -431,7 +433,7 @@ public class OutlineFont {
 		for (Glyph glyph : countByGlyphMap.keySet()) {
 			Integer count = countByGlyphMap.get(glyph);
 			if (count < 10) continue;
-			System.out.println(glyph+"..."+count+"... "+glyph.getSignature());
+			SYSOUT.println(glyph+"..."+count+"... "+glyph.getSignature());
 			List<Vector2> vectors = glyph.getLineVectors();
 			for (Vector2 lineVector : vectors) {
 				// normalize to NE/SE quadrants
@@ -449,18 +451,18 @@ public class OutlineFont {
 				String vs = new Real2(lineVector).format(2).toString();
 				vectorMultimap.put(vs, glyph);
 				slopeMultimap.put(slopeS, glyph);
-				System.out.print(vs+"  ");
+				SYSOUT.print(vs+"  ");
 				vectorStrings.add(vs);
 			}
-			System.out.println();
+			SYSOUT.println();
 		}
-		System.out.println("vector");
+		SYSOUT.println("vector");
 		for (String vs : vectorMultimap.keySet() ) {
-			System.out.println(vs+"   "+vectorMultimap.get(vs).size());
+			SYSOUT.println(vs+"   "+vectorMultimap.get(vs).size());
 		}
-		System.out.println("slope");
+		SYSOUT.println("slope");
 		for (String vs : slopeMultimap.keySet() ) {
-			System.out.println(vs+"   "+slopeMultimap.get(vs).size());
+			SYSOUT.println(vs+"   "+slopeMultimap.get(vs).size());
 		}
 	}
 }

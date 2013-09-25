@@ -3,7 +3,7 @@ package org.xmlcml.svg2xml.figure;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlotComponent {
+public class GraphicPrimitivesNavigator {
 
 	public static final String COUNT = "count";
 	public static final String DIMENSION = "dimension";
@@ -17,7 +17,7 @@ public class PlotComponent {
 	private String type;
 	private Map<String, Object> objectMap;
 
-	public PlotComponent(String type, Object[] objects) {
+	public GraphicPrimitivesNavigator(String type, Object[] objects) {
 		this.type = type;
 		createMap(objects);
 	}

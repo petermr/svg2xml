@@ -10,10 +10,13 @@ import nu.xom.Node;
 import nu.xom.ParsingException;
 import nu.xom.ValidityException;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 public class XMLDeclTest {
 	
+	private static final Logger LOG = Logger.getLogger(XMLDeclTest.class);
+
 	@Test
 	public void testXMLDeclarationInCDATA() {
 		
@@ -21,20 +24,20 @@ public class XMLDeclTest {
 			Element e = new Builder().build(new FileInputStream("src/test/resources/declaration.xml")).getRootElement();
 			for (int i = 0; i < e.getChildCount(); i++) {
 				Node child = e.getChild(i);				
-//				System.out.println(child+ " "+child.getValue());
+//				LOG.debug(child+ " "+child.getValue());
 			}
 			
 		} catch (ValidityException e) {
-			System.out.println("invalid");
+			LOG.debug("invalid");
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
-			System.out.println("FNF");
+			LOG.debug("FNF");
 			e.printStackTrace();
 		} catch (ParsingException e) {
-			System.out.println("Parsing");
+			LOG.debug("Parsing");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("IO");
+			LOG.debug("IO");
 			e.printStackTrace();
 		}
 	}

@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.paths;
+package org.xmlcml.svg2xml.axisold;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,8 +9,6 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Vector2;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.svg2xml.figure.AxisAnalyzerX;
-import org.xmlcml.svg2xml.figure.GraphPlotBox;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -66,8 +64,9 @@ public class SVGLineAnalyzer extends SVGPathAnalyzer {
 		return lineAngleMap;
 	}
 	
-	public void analyzeLinesAsAxesAndWhatever(SVGG svgg, List<SVGLine> lines) {
+	public void analyzeLinesAsAxesAndWhatever(SVGG svgg) {
 		this.svgg = svgg;
+		List<SVGLine> lines = SVGLine.extractSelfAndDescendantLines(svgg);
 		this.addLines(lines);
 		findAxes();
 	}

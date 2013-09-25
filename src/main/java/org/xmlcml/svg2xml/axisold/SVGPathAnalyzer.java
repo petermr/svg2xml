@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.paths;
+package org.xmlcml.svg2xml.axisold;
 
 import org.xmlcml.graphics.svg.SVGG;
 

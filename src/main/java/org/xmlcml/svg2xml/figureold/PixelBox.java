@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.figure;
+package org.xmlcml.svg2xml.figureold;
 
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;

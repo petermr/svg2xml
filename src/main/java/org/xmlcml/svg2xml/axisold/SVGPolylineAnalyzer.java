@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.paths;
+package org.xmlcml.svg2xml.axisold;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,11 +28,11 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.dead.ChunkAnalyzerXDead;
-import org.xmlcml.svg2xml.figure.GraphPlotBox;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzerOptions;
 import org.xmlcml.svg2xml.util.GraphUtil;

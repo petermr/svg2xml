@@ -16,10 +16,10 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.dead.CaptionDead;
-import org.xmlcml.svg2xml.figure.Figure;
-import org.xmlcml.svg2xml.figure.NewCaption;
-import org.xmlcml.svg2xml.figure.NewComponent;
-import org.xmlcml.svg2xml.figure.Graphic;
+import org.xmlcml.svg2xml.figure.FigureCaption;
+import org.xmlcml.svg2xml.figure.FigureComponent;
+import org.xmlcml.svg2xml.figure.FigureGraphic;
+import org.xmlcml.svg2xml.figureold.Figure;
 import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.text.ScriptLine;
 
@@ -55,8 +55,8 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 	private ShapeAnalyzer shapeAnalyzer;
 	private ImageAnalyzer imageAnalyzer;
 
-	private NewCaption figureCaption;
-	private Graphic figureGraphic;
+	private FigureCaption figureCaption;
+	private FigureGraphic figureGraphic;
 
 
 	public FigureAnalyzer(PageAnalyzer pageAnalyzer) {
@@ -80,7 +80,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 			createCaptionAndGraphic(id, yCoordinateOfCaption);
 		}
 		String imageName = getPageIO().createImageFilename(id);
-		HtmlDiv div = Graphic.createHtmlImgDivElement(imageName, "50%");
+		HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "50%");
 		if (figureCaption != null) {
 			figureCaption.processCaptionText(div);
 		}
@@ -108,11 +108,11 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 	}
 
 	private void createCaptionAndGraphic(String id, Double ySplit) {
-		figureCaption = new NewCaption(this);
-		figureCaption.addElements(NewComponent.ABOVE, ySplit - YEPS);
+		figureCaption = new FigureCaption(this);
+		figureCaption.addElements(FigureComponent.ABOVE, ySplit - YEPS);
 		LOG.trace("Caption "+figureCaption.getSvgContainer().getChildCount());
-		figureGraphic = new Graphic(this);
-		figureGraphic.addElements(NewComponent.BELOW, ySplit + YEPS);
+		figureGraphic = new FigureGraphic(this);
+		figureGraphic.addElements(FigureComponent.BELOW, ySplit + YEPS);
 		LOG.trace("Graphic "+figureGraphic.getSvgContainer().getChildCount());
 		try {
 			SVGUtil.debug(figureCaption.getSvgContainer(), new FileOutputStream("target/caption"+id+".svg"), 1);

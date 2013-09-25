@@ -3,6 +3,7 @@ package org.xmlcml.svg2xml.text;
 import java.io.File;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -87,6 +88,7 @@ public class TextFixtures {
 		{"Hla, ","<I>H. lar</I>","; Hpi, ","<I>H. pileatus</I>","; Nle, ","<I>N. leucogenys</I>","; Ssy, ","<I>S. syndactylus</I>",".",}, 
 	};	
 	// ==========================================================================================
+	private static final Logger LOG = Logger.getLogger(TextFixtures.class);
 	
 	
 	public static void testSpans(String[][] values, File file) {
@@ -97,7 +99,7 @@ public class TextFixtures {
 			if (values[i].length > 0) {
 				if (values[i].length != styleSpans.size()) {
 					for (int j = 0; j < styleSpans.size(); j++) {
-						System.out.println(styleSpans.get(j).toString());
+						LOG.trace(styleSpans.get(j).toString());
 					}
 				}
 				Assert.assertEquals("line"+i, values[i].length, styleSpans.size());

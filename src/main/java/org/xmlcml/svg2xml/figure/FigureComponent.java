@@ -18,7 +18,7 @@ import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 
-public abstract class NewComponent {
+public abstract class FigureComponent {
 
 
 	public enum FigureType {
@@ -31,7 +31,7 @@ public abstract class NewComponent {
 		UNKNOWN
 	}
 	
-	private final static Logger LOG = Logger.getLogger(NewComponent.class);
+	private final static Logger LOG = Logger.getLogger(FigureComponent.class);
 
 	public static final String ABOVE = "above";
 	public static final String BELOW = "below";
@@ -52,17 +52,17 @@ public abstract class NewComponent {
 	private ChunkAnalyzer figureAnalyzer;
 	protected PageAnalyzer pageAnalyzer;
 
-	protected NewComponent(PageAnalyzer pageAnalyzer) {
+	protected FigureComponent(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
 	}
 
-	protected NewComponent(FigureAnalyzer figureAnalyzer) {
+	protected FigureComponent(FigureAnalyzer figureAnalyzer) {
 		this(figureAnalyzer.getTextAnalyzer(), figureAnalyzer.getShapeAnalyzer(), figureAnalyzer.getImageAnalyzer());
 		this.figureAnalyzer = figureAnalyzer;
 		this.pageAnalyzer = figureAnalyzer.getPageAnalyzer();
 	}
 
-	protected NewComponent(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
+	protected FigureComponent(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
 		this.textAnalyzer = textAnalyzer;
 		this.shapeAnalyzer = shapeAnalyzer;
 		this.imageAnalyzer = imageAnalyzer;

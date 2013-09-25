@@ -11,15 +11,15 @@ import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextStructurer;
-public class NewCaption extends NewComponent {
+public class FigureCaption extends FigureComponent {
 
-	private final static Logger LOG = Logger.getLogger(NewCaption.class);
+	private final static Logger LOG = Logger.getLogger(FigureCaption.class);
 	private ChunkAnalyzer figureAnalyzer;
 	
-	public NewCaption(FigureAnalyzer figureAnalyzer) {
+	public FigureCaption(FigureAnalyzer figureAnalyzer) {
 		super(figureAnalyzer);
 	}
-	public NewCaption(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
+	public FigureCaption(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
 		super(textAnalyzer, shapeAnalyzer, imageAnalyzer);
 	}
 

@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.figure;
+package org.xmlcml.svg2xml.figureold;
 
 import java.util.ArrayList;
 import java.util.List;

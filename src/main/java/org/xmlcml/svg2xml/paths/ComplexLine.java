@@ -296,7 +296,7 @@ public class ComplexLine {
 			ensureJointList();
 			jointList.add(joint);
 		} else {
-			System.out.println("null "+line);
+			LOG.trace("null "+line);
 		}
 		return joint;
 	}

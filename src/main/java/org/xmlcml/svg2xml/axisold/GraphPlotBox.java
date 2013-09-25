@@ -1,9 +1,8 @@
-package org.xmlcml.svg2xml.figure;
+package org.xmlcml.svg2xml.axisold;
 
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svg2xml.paths.Axis;
 
 public class GraphPlotBox {
 

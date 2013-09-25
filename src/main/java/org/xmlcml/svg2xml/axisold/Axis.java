@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.paths;
+package org.xmlcml.svg2xml.axisold;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +23,13 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.figure.AxisAnalyzerX;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.paths.ComplexLine;
+import org.xmlcml.svg2xml.paths.Joint;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.words.TypedNumber;

@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.figure;
+package org.xmlcml.svg2xml.figureold;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,6 +22,7 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.figure.LineUnivariate;
 import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.util.GraphUtil;

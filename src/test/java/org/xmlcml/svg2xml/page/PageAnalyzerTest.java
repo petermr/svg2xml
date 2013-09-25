@@ -54,7 +54,7 @@ public class PageAnalyzerTest {
 //		List<AbstractContainer> containerList = pageAnalyzer.getPageAnalyzerContainerList();
 //		Assert.assertNotNull("containerList", containerList);
 //		for (AbstractContainer container : containerList) {
-//			SYSOUT.println(container.toString());
+//			LOG.trace(container.toString());
 //		}
 	}
 
