@@ -14,13 +14,13 @@ import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 
-public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
+public class AxisAnalyzer {
 
-	static final Logger LOG = Logger.getLogger(AxisAnalyzerX.class);
+	static final Logger LOG = Logger.getLogger(AxisAnalyzer.class);
 
-	public static final String AXES_BOX = "axesBox";
 	public static final double _MAJOR_MINOR_TICK_RATIO = 1.1;
 
+	private List<SVGLine> svgLines;
 	private List<ComplexLine> horizontalComplexLines;
 	private List<SVGLine> horizontalLines;
 	private List<ComplexLine> verticalComplexLines;
@@ -36,67 +36,133 @@ public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
 
 	private List<Axis> horizontalAxisList;
 	private List<Axis> verticalAxisList;
-	private Axis verticalAxis;
+	private List<GraphPlotBox> plotBoxList;
 	private Axis horizontalAxis;
+	private Axis verticalAxis;
+	private GraphPlotBox plotBox;
 	
-	private SVGElement container;
+	private SVGElement g;
 	public double eps;
 
-	private GraphPlotBox plotBox;
 
-	public AxisAnalyzerX(SVGElement container) {
+	public AxisAnalyzer(SVGElement g) {
 		super();
-		this.container = container;
+		this.g = g;
+		ensureSVGLines();
 	}
 	
-	public void createVerticalHorizontalAxisList(List<SVGLine> svgLines, double eps) {
+	public void setEpsilon(double eps) {
 		this.eps = eps;
-		if (verticalAxisList == null) {
-			if (svgLines.get(0).getParent() == null) {
-				throw new RuntimeException("NO PARENT ");
-			}
-			this.verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, eps);
-			this.horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, eps);
-			this.verticalComplexLines = ComplexLine.createComplexLines(this.verticalLines, this.horizontalLines, eps);
+	}
+	public void createVerticalHorizontalAxisListAndPlotBox() {
+		createVerticalAxisList();
+		createHorizontalAxisList();
+		createPlotBoxListOrPlotBox();
+	}
+
+	public void createPlotBoxListOrPlotBox() {
+		createVerticalAxisList();
+		createHorizontalAxisList();
+		if (horizontalAxis != null && verticalAxis != null) {
+			plotBox = createPlotBox();
+		} else if (verticalAxisList.size() > 1 && horizontalAxisList.size() > 1) {
+			plotBoxList = createPlotBoxList();
+		} else {
+		}
+	}
+
+	public void createHorizontalAxisList() {
+		if (horizontalAxisList == null) {
+			ensureHorizontalAndVerticalLines();
 			this.horizontalComplexLines = ComplexLine.createComplexLines(this.horizontalLines, this.verticalLines, eps);
 			horizontalAxisList = createAxisList(horizontalComplexLines, LineOrientation.HORIZONTAL);
 			if (horizontalAxisList.size() == 1) {
 				this.horizontalAxis = horizontalAxisList.get(0);
-			}
-			// not fully implemented
+			} 
+		}
+	}
+
+	private void ensureHorizontalAndVerticalLines() {
+		ensureSVGLines();
+		ensureHorizontalLines();
+		ensureVerticalLines();
+	}
+
+	private void ensureVerticalLines() {
+		if (verticalLines == null) {
+			this.verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, eps);
+		}
+	}
+
+	private void ensureHorizontalLines() {
+		if (horizontalLines == null) {
+			this.horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, eps);
+		}
+	}
+
+	public void createVerticalAxisList() {
+		if (verticalAxisList == null) {
+			ensureSVGLines();
+			ensureHorizontalAndVerticalLines();
+			this.verticalComplexLines = ComplexLine.createComplexLines(this.verticalLines, this.horizontalLines, eps);
 			verticalAxisList = createAxisList(verticalComplexLines, LineOrientation.VERTICAL);
 			if (verticalAxisList.size() == 1) {
 				this.verticalAxis = verticalAxisList.get(0);
 			}
-			plotBox = createPlotBox();
-			LOG.trace("FINISHED AXES");
 		}
 	}
 	
+	private void ensureSVGLines() {
+		if (svgLines == null && g != null) {
+			svgLines = SVGLine.extractSelfAndDescendantLines(g);
+		}
+	}
+
 	private GraphPlotBox createPlotBox() {
 		if (horizontalAxis != null && verticalAxis != null) {
 			plotBox = new GraphPlotBox(horizontalAxis, verticalAxis);
 			LOG.trace("PLOT BOX "+plotBox);
-			drawBox();
 		}
 		return plotBox;
 	}
 	
-	private void drawBox() {
-		SVGRect bbox =plotBox.createRect();
-		bbox.setClassName(AXES_BOX);
-		bbox.setOpacity(0.3);
-		bbox.setStroke("cyan");
-		bbox.setStrokeWidth(5.0);
-		container.appendChild(bbox);
+	private List<GraphPlotBox> createPlotBoxList() {
+		plotBoxList = new ArrayList<GraphPlotBox>();
+		if (horizontalAxisList != null && verticalAxisList != null) {
+			for (int i = 0; i < horizontalAxisList.size(); i++) {
+				Axis horAxis = horizontalAxisList.get(i);
+				for (int j = 0; j < verticalAxisList.size(); j++) {
+					Axis vertAxis = verticalAxisList.get(j);
+					plotBox = new GraphPlotBox(horAxis, vertAxis);
+					if (plotBox != null && plotBox.areAxesTouching(eps)) {
+						LOG.debug("PLOT BOX "+plotBox);
+						plotBoxList.add(plotBox);
+					}
+				}
+			}
+		}
+		return plotBoxList;
 	}
+	
 
 	public Axis getVerticalAxis() {
+		createVerticalAxisList();
 		return verticalAxis;
 	}
 
 	public Axis getHorizontalAxis() {
+		createHorizontalAxisList();
 		return horizontalAxis;
+	}
+
+	public List<Axis> getVerticalAxisList() {
+		createVerticalAxisList();
+		return verticalAxisList;
+	}
+
+	public List<Axis> getHorizontalAxisList() {
+		createHorizontalAxisList();
+		return horizontalAxisList;
 	}
 
 
@@ -114,7 +180,7 @@ public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
 				if (axis != null) {
 					axisList.add(axis);
 //					container.debug("AXIS CONT");
-					axis.processScaleValuesAndTitles(container);
+					axis.processScaleValuesAndTitles(g);
 					axis.createAxisGroup();
 					LOG.debug("************  AXIS "+axis);
 				}
@@ -173,6 +239,10 @@ public class AxisAnalyzerX /* extends AbstractAnalyzer */ {
 
 	public GraphPlotBox getPlotBox() {
 		return plotBox;
+	}
+
+	public List<GraphPlotBox> getPlotBoxList() {
+		return plotBoxList;
 	}
 
 }

@@ -24,21 +24,36 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
+import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
-import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.paths.ComplexLine;
-import org.xmlcml.svg2xml.paths.Joint;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.svg2xml.paths.Joint;
 import org.xmlcml.svg2xml.words.TypedNumber;
 
+/** an axis on a graph.
+ * 
+ * Normally horizontal or vertical. 
+ * 
+ * Being refactored from old version.
+ * 
+ * @author pm286
+ *
+ */
 public class Axis {
-
 
 	private final static Logger LOG = Logger.getLogger(Axis.class);
 
+	public enum Direction {
+		BELOW,
+		ABOVE,
+		LEFT,
+		RIGHT
+	}
+	
 	public static final String AXIS_PREF = "axis_";
 	public static final String AXIS = AXIS_PREF+ "axis";
 	private static final String AXISCLASS = AXIS_PREF+ "axis";
@@ -47,6 +62,12 @@ public class Axis {
 	private static final String MAJOR_TICKS = AXIS_PREF+ "majorTicks";
 	private static final String MINOR_TICKS = AXIS_PREF+ "minorTicks";
 	private static final String VALUES = AXIS_PREF+ "values";
+	private static final Double XTEXT_EXTENSION = 50.; // spread of vertical labels beyond backbone
+	
+	private static final Double X_SIDE = 10.; // spread of horizontal labels beyond backbone
+	private static final Double X_VERT = 25.;
+	private static final Double Y_SIDE = 10.; // spread of horizontal labels beyond backbone
+	private static final Double Y_VERT = 45.;
 
 	private double eps = 0.001;
 	private ComplexLine complexLine;
@@ -58,7 +79,7 @@ public class Axis {
 	private List<SVGElement> texts;
 	private Double boxThickness;
 	private Double boxLengthExtension;
-	private AxisAnalyzerX axisAnalyzerX;
+	private AxisAnalyzer axisAnalyzerX;
 	private ChunkAnalyzer textAnalyzerX;
 	private String id;
 
@@ -93,7 +114,7 @@ public class Axis {
 	private Double pixelToValueScale;
 
 
-	public Axis(AxisAnalyzerX axisAnalyzerX) {
+	public Axis(AxisAnalyzer axisAnalyzerX) {
 		this.axisAnalyzerX = axisAnalyzerX;
 		this.boxLengthExtension = axisAnalyzerX.getBoxLengthExtension();
 		this.boxThickness = axisAnalyzerX.getBoxThickness();
@@ -211,6 +232,50 @@ public class Axis {
 	 * @param boxThickness
 	 * @param boxLengthExtension
 	 */
+	public List<SVGText> extractText(SVGElement container) {
+		if (LineOrientation.HORIZONTAL.equals(lineOrientation)) {
+			return extractHorizontalAxisText(container, Direction.BELOW); // below to start with
+		} else if (LineOrientation.VERTICAL.equals(lineOrientation)) {
+			return extractVerticalAxisText(container, Direction.LEFT);
+		} else {
+			return null;
+		}
+	}
+
+	private List<SVGText> extractHorizontalAxisText(SVGElement container, Direction direction) {
+		Real2Range bbox = complexLine.getBoundingBoxWithoutJoints();
+		LOG.debug(bbox);
+		Real2Range bboxExt = bbox.getReal2RangeExtendedInX((double)X_SIDE, (double)X_SIDE);
+		double above = (Direction.BELOW.equals(direction)) ? 0.0 : X_VERT;
+		double below = (Direction.ABOVE.equals(direction)) ? 0.0 : X_VERT;
+		bboxExt = bboxExt.getReal2RangeExtendedInY(above, below);
+		LOG.debug(bboxExt);
+		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(container);
+		textList = SVGText.extractTexts(SVGUtil.findElementsWithin(bboxExt, textList));
+		return textList;
+	}
+
+	private List<SVGText> extractVerticalAxisText(SVGElement container, Direction direction) {
+		Real2Range bbox = complexLine.getBoundingBoxWithoutJoints();
+		LOG.debug(bbox);
+		Real2Range bboxExt = bbox.getReal2RangeExtendedInY((double)Y_SIDE, (double)Y_SIDE);
+		double right = (Direction.RIGHT.equals(direction)) ? 0.0 : Y_VERT;
+		double left = (Direction.LEFT.equals(direction)) ? 0.0 : Y_VERT;
+		bboxExt = bboxExt.getReal2RangeExtendedInX(right, left);
+		LOG.debug(bboxExt);
+		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(container);
+		textList = SVGText.extractTexts(SVGUtil.findElementsWithin(bboxExt, textList));
+		return textList;
+	}
+
+	/** only works for correctly oriented text
+	 * may have to rotate for other text
+	 * 
+	 * @param container
+	 * @param boxThickness
+	 * @param boxLengthExtension
+	 */
+	@Deprecated // because it relies on TSpans
 	public void processScaleValuesAndTitles(SVGElement container) {
 		texts = SVGUtil.getQuerySVGElements(container, ".//svg:text");
 		countTSpanChildren("ALL ", texts);
@@ -225,7 +290,7 @@ public class Axis {
 			List<SVGText> horizontalTexts = getTexts(boundedTexts, LineOrientation.HORIZONTAL);
 			countTSpanChildren("HOR ", horizontalTexts);
 			for (SVGElement horizontalText : horizontalTexts) {
-				horizontalText.debug("HOR TEXT");
+				LOG.trace("HOR TEXT"+horizontalText);
 			}
 			analyzeHorizontalAxis(horizontalTexts);
 		} else if (LineOrientation.VERTICAL.equals(lineOrientation)) {
@@ -607,7 +672,8 @@ public class Axis {
 				LOG.trace("ADDED TEXT ");
 				subTextList.add(text);
 			} else {
-				text.debug("NOT ADDED");
+				LOG.trace("NOT added: "+text);
+//				text.debug("NOT ADDED");
 			}
 		}
 		return subTextList;
@@ -686,7 +752,7 @@ public class Axis {
 			addAxisAttribute(joint.getLine(), getId());
 		}
 		minorTickSpacingInPixels = ComplexLine.calculateInterJointSpacing(minorTickJointList, axisAnalyzerX.jointEps);
-		majorTickJointList = getMajorTicks(AxisAnalyzerX._MAJOR_MINOR_TICK_RATIO);
+		majorTickJointList = getMajorTicks(AxisAnalyzer._MAJOR_MINOR_TICK_RATIO);
 		majorTickSpacingInPixels = ComplexLine.calculateInterJointSpacing(majorTickJointList, axisAnalyzerX.jointEps);
 		majorTickSpacingPixelsToMinorTick = null;
 		if (majorTickSpacingInPixels != null && minorTickSpacingInPixels != null) {

@@ -309,7 +309,7 @@ public class TableTable extends TableChunk {
 				TableCaption.addCaptionTo(table, caption);
 				// might be more than one caption (e.g. subtables
 				this.tableNumber = tableNumber != null ? tableNumber : TableCaption.getNumber(caption);
-				LOG.debug("table number: "+tableNumber);
+				LOG.trace("table number: "+tableNumber);
 			} else {
 				LOG.trace("HTML: "+htmlElement);
 			}

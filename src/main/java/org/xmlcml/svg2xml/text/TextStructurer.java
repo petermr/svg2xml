@@ -122,6 +122,10 @@ public class TextStructurer {
 		}
 	}
 
+	public TextStructurer(List<SVGText> textList) {
+		this(new TextAnalyzer(textList, (PageAnalyzer)null));
+	}
+
 	private void transformIfNotHorizontalOrientation() {
 		this.textOrientation = textAnalyzer.getTextOrientation();
 		if (!TextOrientation.ANY.equals(textOrientation) && 
@@ -959,7 +963,7 @@ public class TextStructurer {
 
 	private TextStructurer createTextStructurerFromTextLineGroups(int startLineGroup, int lineGroupNumber) {
 		getScriptedLineList();
-		TextStructurer textStructurer = new TextStructurer(null);
+		TextStructurer textStructurer = new TextStructurer((TextAnalyzer)null);
 		textStructurer.textAnalyzer = this.textAnalyzer;
 		for (int iGroup = startLineGroup; iGroup <= lineGroupNumber; iGroup++) {
 			ScriptLine textLineGroup = scriptedLineList.get(iGroup);
@@ -1140,7 +1144,7 @@ public class TextStructurer {
 
 	private void addTextLineGroups(List<TextStructurer> splitLineGroups, int last, int next) {
 		if (next > last) {
-			TextStructurer tc = new TextStructurer(null);
+			TextStructurer tc = new TextStructurer((TextAnalyzer)null);
 			splitLineGroups.add(tc);
 			for (int j = last; j < next; j++) {
 				tc.add(scriptedLineList.get(j));

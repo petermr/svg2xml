@@ -2,10 +2,15 @@ package org.xmlcml.svg2xml.axisold;
 
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.svg2xml.page.BoundingBoxManager;
+import org.xmlcml.svg2xml.paths.ComplexLine;
 
 public class GraphPlotBox {
 
+
+	public static final String AXES_BOX = "axesBox";
 
 	private Axis horizontalAxis;
 	private Axis verticalAxis;
@@ -48,5 +53,29 @@ public class GraphPlotBox {
 
 	public Real2Range getBoxRange() {
 		return boxRange;
+	}
+	
+	public boolean areAxesTouching(double eps) {
+		boolean touching = false;
+		ComplexLine horizontalComplexLine = (horizontalAxis == null) ? null : horizontalAxis.getComplexLine();
+		ComplexLine verticalComplexLine = (verticalAxis == null) ? null : verticalAxis.getComplexLine();
+		if (horizontalComplexLine != null && verticalComplexLine != null) {
+			Real2Range horizontalBBox = BoundingBoxManager.createExtendedBox(horizontalComplexLine.getBackbone(), eps);
+			Real2Range verticalBBox = BoundingBoxManager.createExtendedBox(verticalComplexLine.getBackbone(), eps);
+			Real2Range overlap = horizontalBBox.intersectionWith(verticalBBox);
+			touching = overlap != null;
+		}
+		return touching;
+	}
+	
+	public SVGG drawBox() {
+		SVGG g = new SVGG();
+		SVGRect bbox = this.createRect();
+		bbox.setClassName(AXES_BOX);
+		bbox.setOpacity(0.3);
+		bbox.setStroke("cyan");
+		bbox.setStrokeWidth(5.0);
+		g.appendChild(bbox);
+		return g;
 	}
 }

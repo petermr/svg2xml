@@ -157,14 +157,14 @@ public class ListContainer extends AbstractContainer {
 				LOG.debug("HEADER "+header.toString());
 			}
 			if (currentInteger != null) {
-				LOG.debug("********************************List from: "+firstInteger+" to "+lastInteger);
+				LOG.trace("********************************List from: "+firstInteger+" to "+lastInteger);
 				currentList = numberedItemList;
 			} else if (currentBullet  != null) {
-				LOG.debug("********************************List of ("+ bulletedItemList.size()+") bullets: "+currentBullet);
+				LOG.trace("********************************List of ("+ bulletedItemList.size()+") bullets: "+currentBullet);
 				currentList = bulletedItemList;
 			}
 			if (footer != null) {
-				LOG.debug("FOOTER "+footer.toString());
+				LOG.trace("FOOTER "+footer.toString());
 			}
 		}
 	}

@@ -267,7 +267,7 @@ public class ScriptLine implements Iterable<TextLine> {
 
 	/** NYI */
 	private ScriptLine reportErrorOrMathsSuscript() {
-		LOG.debug("Suscript problem: Maths or table? "+textLineList.size());
+		LOG.trace("Suscript problem: Maths or table? "+textLineList.size());
 		ScriptLine group = new ScriptLine(textStructurer);
 //	    splitArray.add(group);
 

@@ -219,6 +219,31 @@ public class ComplexLine {
 		
 	}
 
+	/** gets boundingBox of backbone and joints.
+	 * 
+	 * @return null if no backbone
+	 */
+	public Real2Range getBoundingBoxIncludingJoints() {
+		Real2Range bbox = null; 
+		if (backbone != null) {
+			bbox = backbone.getBoundingBox();
+			if (jointList != null) {
+				for (Joint joint : jointList) {
+					bbox = bbox.plus(joint.getBoundingBox());
+				}
+			}
+		}
+		return bbox;
+	}
+
+	/** gets boundingBox of backbone without joints.
+	 * 
+	 * @return null if no backbone
+	 */
+	public Real2Range getBoundingBoxWithoutJoints() {
+		return (backbone == null) ? null : backbone.getBoundingBox();
+	}
+
 	public static Direction getLineDirection(SVGLine line, double eps) {
 		Direction direction = null;
 		Real2 coord0 = line.getXY(0);
@@ -281,11 +306,19 @@ public class ComplexLine {
 		return backboneDirection;
 	}
 
+	/** creates joints.
+	 * 
+	 * 
+	 * @param lines
+	 * @return empty list if no lines
+	 */
 	public List<Joint> addLines(List<SVGLine> lines) {
-		LOG.trace("adding lines: "+lines.size());
 		jointList = new ArrayList<Joint>();
-		for (SVGLine line : lines) {
-			Joint joint = this.addLine(line);
+		if (lines != null) {
+			LOG.trace("adding lines: "+lines.size());
+			for (SVGLine line : lines) {
+				Joint joint = this.addLine(line);
+			}
 		}
 		return jointList;
 	}

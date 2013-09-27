@@ -26,6 +26,7 @@ public class SVGLineAnalyzer extends SVGPathAnalyzer {
 	private Axis verticalAxis;
 	private List<GraphPlotBox> plotBoxList;
 	private GraphPlotBox plotBox;
+	private Double eps = EPS;
 
 	public SVGLineAnalyzer() {
 	}
@@ -37,9 +38,12 @@ public class SVGLineAnalyzer extends SVGPathAnalyzer {
 	private void addLines(List<SVGLine> lines) {
 		this.lines = new ArrayList<SVGLine>();
 		for (SVGLine line : lines) {
-//			this.lines.add(new SVGLine(line));
 			this.lines.add(line);
 		}
+	}
+	
+	public void setEpsilon(double eps) {
+		this.eps = eps;
 	}
 	
 	public Multimap<Integer, SVGLine> getLineAngleMap() {
@@ -64,21 +68,29 @@ public class SVGLineAnalyzer extends SVGPathAnalyzer {
 		return lineAngleMap;
 	}
 	
-	public void analyzeLinesAsAxesAndWhatever(SVGG svgg) {
+	public List<GraphPlotBox> findGraphPlotBoxList(SVGG svgg) {
 		this.svgg = svgg;
-		List<SVGLine> lines = SVGLine.extractSelfAndDescendantLines(svgg);
-		this.addLines(lines);
-		findAxes();
+		ensureLines();
+		return findGraphPlotBoxList();
 	}
 
-	private void findAxes() {
+	private void ensureLines() {
+		if (lines == null && svgg != null) {
+			lines = SVGLine.extractSelfAndDescendantLines(svgg);
+			this.addLines(lines);
+		}
+	}
+
+	private List<GraphPlotBox> findGraphPlotBoxList() {
 		plotBoxList = new ArrayList<GraphPlotBox>();
-		AxisAnalyzerX axisAnalyzerX = new AxisAnalyzerX(svgg);
-		axisAnalyzerX.createVerticalHorizontalAxisList(lines, EPS);
-		plotBox = axisAnalyzerX.getPlotBox();
+		AxisAnalyzer axisAnalyzer = new AxisAnalyzer(svgg);
+		axisAnalyzer.setEpsilon(eps);
+		axisAnalyzer.createVerticalHorizontalAxisListAndPlotBox();
+		plotBox = axisAnalyzer.getPlotBox();
 		if (plotBox != null) {
 			plotBoxList.add(plotBox);
 		}
+		return plotBoxList;
 	}
 
 	public String debug() {

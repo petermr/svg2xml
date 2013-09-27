@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.svg2xml.paths.ComplexLine.Direction;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.paths.ComplexLine.SideOrientation;
@@ -109,6 +110,14 @@ public class Joint implements Comparable<Joint> {
 	 */
 	public void detach() {
 		line.detach();
+	}
+
+	/** gets bounding box of line in joint.
+	 * 
+	 * @return null if no line
+	 */
+	public Real2Range getBoundingBox() {
+		return (line == null) ? null : line.getBoundingBox();
 	}
 
 

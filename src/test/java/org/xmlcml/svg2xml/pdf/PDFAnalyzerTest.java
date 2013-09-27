@@ -19,6 +19,7 @@ public class PDFAnalyzerTest {
 		analyzer.analyzePDFFile(Fixtures.MULTIPLE312_PDF);
 	}
 
+	
 	@Test
 	@Ignore
 	public void multipleTest() {
@@ -64,6 +65,13 @@ public class PDFAnalyzerTest {
 	public void testPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFs(Fixtures.PDFS_BMC_DIR.toString());
+	}	
+	
+	@Test
+	@Ignore
+	public void testAllPDFAnalyzerDIR() {
+		PDFAnalyzer analyzer = new PDFAnalyzer();
+		analyzer.analyzePDFs("../pdfs/bmc");
 	}	
 	
 	@Test
