@@ -94,6 +94,11 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		this.setTextCharacters(characterList);
 	}
 
+	public TextAnalyzer(List<SVGText> characterList) {
+		super((PageAnalyzer)null);
+		this.setTextCharacters(characterList);
+	}
+
 	public TextAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
 		this(SVGText.extractSelfAndDescendantTexts(svgElement), pageAnalyzer);
 	}

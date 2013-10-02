@@ -71,7 +71,7 @@ public class ListContainerTest {
 	@Test
 	// PROBLEM WITH SEPARATE ACCENTS on slightly different line
 	// also wobbly x coords for start of indent (up to 0.6 pixel)
-	@Ignore // superscripts not sorted out
+//S	@Ignore // superscripts not sorted out
 	public void testNPGList54() throws Exception {
 		File file = TextFixtures.NPG_00778_5_4SA_SVG;
 		String outfile = "target/npg00778.chunk5.4Sa.html";

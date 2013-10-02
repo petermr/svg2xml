@@ -620,7 +620,7 @@ public class PDFIndex {
 								LOG.trace(character.getValue()+"_"+character.getX()+" ");
 							}
 //							SYSOUT.println();
-							List<ScriptWord> words = script.getWords();
+							List<ScriptWord> words = script.getScriptWordList();
 							for (ScriptWord word : words) {
 								LOG.trace(" ~  "+word.getRawValue());
 							}

@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.axisold;
+package org.xmlcml.svg2xml.plot;
 
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;

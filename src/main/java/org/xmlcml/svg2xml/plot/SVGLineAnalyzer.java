@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.axisold;
+package org.xmlcml.svg2xml.plot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +14,7 @@ import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-public class SVGLineAnalyzer extends SVGPathAnalyzer {
+public class SVGLineAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(SVGLineAnalyzer.class);
 
@@ -27,6 +27,7 @@ public class SVGLineAnalyzer extends SVGPathAnalyzer {
 	private List<GraphPlotBox> plotBoxList;
 	private GraphPlotBox plotBox;
 	private Double eps = EPS;
+	private SVGG svgg;
 
 	public SVGLineAnalyzer() {
 	}

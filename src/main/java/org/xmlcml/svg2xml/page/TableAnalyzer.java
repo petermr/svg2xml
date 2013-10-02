@@ -27,6 +27,7 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	private static final Logger LOG = Logger.getLogger(TableAnalyzer.class);
 
 	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
+//	public static final Pattern PATTERN = Pattern.compile("^\\s*Sub\\s*Vote\\s*(\\d+).*", Pattern.DOTALL);
 
 	private TextAnalyzer textAnalyzer;
 	private ShapeAnalyzer shapeAnalyzer;

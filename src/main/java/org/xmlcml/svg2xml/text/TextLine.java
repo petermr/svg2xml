@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.PrintStream;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import nu.xom.Attribute;
+import nu.xom.Element;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -31,6 +33,7 @@ import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
@@ -47,10 +50,12 @@ import com.google.common.collect.Multiset.Entry;
  */
 public class TextLine implements Iterable<SVGText> {
 
+    //current guess (number of partial spaces to trigger full space)
+	private static final double SPACE_FACTOR1 = 0.2;  
 	private static final String SERIF = "Serif";
 	private final static Logger LOG = Logger.getLogger(TextLine.class);
 	private final static PrintStream SYSOUT = System.out;
-	static {
+	static { 
 		LOG.setLevel(Level.DEBUG);
 	}
 
@@ -62,22 +67,16 @@ public class TextLine implements Iterable<SVGText> {
 	private static final SVGElement SUB = new SVGText(new Real2(0., 0.), "SUB");
 	private static final Double FONT_Y_FACTOR = 0.5;
 	
-	private List<SVGText> characterList;
+	private List<SVGText> textList;
 	private Double yCoord = null;
 	private List<Double> yCoordList = null;
 	private Double fontSize = null;
 	private Set<TextCoordinate> fontSizeContainerSet = null;
-	private String physicalStyle;
-	private List<String> physicalStyleList;
 	
 	private String lineContent = null;
 	private List<TextLine> subLines;
-//	private WordSequenceDead wordSequence;
 	private TextAnalyzer textAnalyzerX;
 	private RealArray characterWidthArray;
-	private final static Double SCALE = 0.001; // width multiplied by 1000
-	private Double SPACE_WIDTH1000 = /*274.0*/ 200.;
-	public final static Double DEFAULT_SPACE_FACTOR = 0.05;
 	private Real2Range boundingBox = null;
 	private Double meanFontSize;
 	private RealArray fontSizeArray;
@@ -85,7 +84,7 @@ public class TextLine implements Iterable<SVGText> {
 	private RealArray spaceWidthArray;
 	private RealArray svgCharacterWidthArray;
 	private RealArray excessWidthArray;
-	private double spaceFactor = DEFAULT_SPACE_FACTOR;
+	private double spaceFactor = SVGText.DEFAULT_SPACE_FACTOR;
 	private Set<TextCoordinate> fontSizeSet;
 	private Suscript suscript;
 	private Set<String> fontFamilySet;
@@ -93,27 +92,22 @@ public class TextLine implements Iterable<SVGText> {
 	private Multiset<Double> fontSizeMultiset;
 
 	private void resetWhenLineContentChanged() {
-		characterList = null;
+		textList = null;
 		yCoord = null;
 		yCoordList = null;
 		fontSize = null;
 		fontSizeContainerSet = null;
-		physicalStyle = null;
-		physicalStyleList = null;
 		boundingBox = null;
 		meanFontSize =null;
 		fontSizeArray = null;
 		
 		lineContent = null;
-//		lineContentIncludingSpaces = null;
 		subLines = null;
-//		wordSequence = null;
-//		integerY = null;
 		characterWidthArray = null;
 	}
 	
 	public TextLine(TextAnalyzer textAnalyzerX, List<SVGText> characterList) {
-		this.characterList = characterList;
+		this.textList = characterList;
 		this.textAnalyzerX = textAnalyzerX;
 	}
 	
@@ -123,9 +117,9 @@ public class TextLine implements Iterable<SVGText> {
 	
 	public TextLine(Collection<SVGText> texts, TextAnalyzer textAnalyzer) {
 		this.textAnalyzerX = textAnalyzer;
-		characterList = new ArrayList<SVGText>();
+		textList = new ArrayList<SVGText>();
 		for (SVGText text : texts) {
-			characterList.add(text);
+			textList.add(text);
 		}
 	}
 
@@ -133,6 +127,13 @@ public class TextLine implements Iterable<SVGText> {
 	 * 
 	 */
 	public TextLine() {
+	}
+
+	public static List<TextLine> createSortedTextLineList(Element el) {
+		SVGElement g = SVGElement.readAndCreateSVG(el);
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, g);
+		return textStructurer.getTextLineList();
 	}
 
 	/**
@@ -146,8 +147,8 @@ public class TextLine implements Iterable<SVGText> {
 			subLines = new ArrayList<TextLine>();
 			Double lastFontSize = null;
 			TextLine charList = null;
-			for (int i = 0; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
+			for (int i = 0; i < textList.size(); i++) {
+				SVGText text = textList.get(i);
 				Double fontSize = text.getFontSize();
 				LOG.trace("fontSize "+fontSize);
 				if (i == 0 
@@ -216,8 +217,8 @@ public class TextLine implements Iterable<SVGText> {
 	public Multiset<String> getFontFamilyMultiset() {
 		if (fontFamilyMultiset == null) {
 			fontFamilyMultiset = HashMultiset.create();
-			for (int i = 0; i < characterList.size(); i++) {
-				SVGElement text = characterList.get(i);
+			for (int i = 0; i < textList.size(); i++) {
+				SVGElement text = textList.get(i);
 				String family = text.getFontFamily();
 				fontFamilyMultiset.add(family);
 			}
@@ -228,8 +229,8 @@ public class TextLine implements Iterable<SVGText> {
 	private Set<String> getFontFamilySet() {
 		if (fontFamilySet == null) {
 			fontFamilySet = new HashSet<String>();
-			for (int i = 0; i < characterList.size(); i++) {
-				SVGElement text = characterList.get(i);
+			for (int i = 0; i < textList.size(); i++) {
+				SVGElement text = textList.get(i);
 				String family = text.getFontFamily();
 				fontFamilySet.add(family);
 			}
@@ -240,8 +241,8 @@ public class TextLine implements Iterable<SVGText> {
 	public Set<TextCoordinate> getFontSizeContainerSet() {
 		if (fontSizeContainerSet == null) {
 			fontSizeContainerSet = new HashSet<TextCoordinate>();
-			for (int i = 0; i < characterList.size(); i++) {
-				SVGElement text = characterList.get(i);
+			for (int i = 0; i < textList.size(); i++) {
+				SVGElement text = textList.get(i);
 				TextCoordinate fontSize = new TextCoordinate(text.getFontSize());
 				fontSizeContainerSet.add(fontSize);
 			}
@@ -271,8 +272,8 @@ public class TextLine implements Iterable<SVGText> {
 		if (yCoordList == null) {
 			Double lastYCoord = null;
 			yCoordList = new ArrayList<Double>();
-			for (int i = 0; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
+			for (int i = 0; i < textList.size(); i++) {
+				SVGText text = textList.get(i);
 				Double yCoord = text.getY();
 				if (yCoord == null) {
 					throw new RuntimeException("text has no Y coord");
@@ -288,38 +289,38 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	public List<SVGText> getCharacterList() {
-		return characterList;
+		return textList;
 	}
 
 	public SVGText get(int i) {
-		return characterList.get(i);
+		return textList.get(i);
 	}
 
 	public void add(SVGText svgText) {
 		if (svgText != null) {
 			yCoord = (yCoord == null) ? svgText.getY() : yCoord;
 			ensureCharacterList();
-			characterList.add(svgText);
+			textList.add(svgText);
 		}
 	}
 
 	
 	private void ensureCharacterList() {
-		if (characterList == null) {
-			characterList = new ArrayList<SVGText>();
+		if (textList == null) {
+			textList = new ArrayList<SVGText>();
 		}
 	}
 
 	public int size() {
-		return characterList.size();
+		return textList.size();
 	}
 
 	public Iterator<SVGText> iterator() {
-		return characterList.iterator();
+		return textList.iterator();
 	}
 	
 	public List<SVGText> getSVGTextCharacters() {
-		return characterList;
+		return textList;
 	}
 
 	public void sortLineByX() {
@@ -335,7 +336,7 @@ public class TextLine implements Iterable<SVGText> {
 		for (int x : xArray) {
 			newCharacterList.add(lineByXCoordMap.get(x));
 		}
-		this.characterList = newCharacterList;
+		this.textList = newCharacterList;
 		getFontSize();
 		getYCoord();
 //		getSinglePhysicalStyle();
@@ -349,8 +350,8 @@ public class TextLine implements Iterable<SVGText> {
 	String getLineContent() {
 		if (lineContent == null) {
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
+			for (int i = 0; i < textList.size(); i++) {
+				SVGText text = textList.get(i);
 				String ch = text.getText();
 				sb.append(ch);
 			}
@@ -361,7 +362,7 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	public boolean isBold() {
-		for (SVGText character : characterList) {
+		for (SVGText character : textList) {
 			if (!character.isBold()) return false;
 		}
 		return true;
@@ -376,10 +377,10 @@ public class TextLine implements Iterable<SVGText> {
 			}
 		} else {
 			
-			s = "chars: "+characterList.size() +
+			s = "chars: "+textList.size() +
 				" Y: "+yCoord+
 				" fontSize: "+fontSize+
-				" physicalStyle: "+physicalStyle+
+//				" physicalStyle: "+physicalStyle+
 				" >>"+getLineContent();
 		}
 		return s;
@@ -391,7 +392,7 @@ public class TextLine implements Iterable<SVGText> {
 
 	public String getLineString() {
 		StringBuilder sb = new StringBuilder();
-		for (SVGText text : characterList) {
+		for (SVGText text : textList) {
 			sb.append(text.getText());
 		}
 		return sb.toString();
@@ -408,30 +409,61 @@ public class TextLine implements Iterable<SVGText> {
 	 * this is essentially a word break detector and marker
 	 */
 	public void insertSpaces(double sFactor) {
-		if (characterList.size() > 0) {
+		if (textList.size() > 0) {
 			List<SVGText> newCharacters = new ArrayList<SVGText>();
-			SVGText lastText = characterList.get(0);
+			SVGText lastText = textList.get(0);
 			newCharacters.add(lastText);
-			Double fontSize = lastText.getFontSize();
-			Double lastWidth = getWidth(lastText);
-			Double lastX = lastText.getX();
-			for (int i = 1; i < characterList.size(); i++) {
-				SVGText text = characterList.get(i);
-				double x = text.getX();
-				double separation = x -lastX;
-				double extraWidth = separation - lastWidth;
-			    if (extraWidth > sFactor * fontSize) {
-			    	addSpaceCharacter(newCharacters, lastX + lastWidth, lastText);
+			for (int i = 1; i < textList.size(); i++) {
+				SVGText text = textList.get(i);
+				Double nSpaces = lastText.getEnSpaceCount(text);
+			    while (nSpaces > SVGText.SPACE_FACTOR) {
+			    	SVGText space = lastText.createSpaceCharacterAfter();
+			    	newCharacters.add(space);
+			    	nSpaces -= 1;
+			    	lastText = space;
 			    }
 			    newCharacters.add(text);
-				lastWidth = getWidth(text);
-				lastX = x;
+			    lastText = text;
 			}
 			resetWhenLineContentChanged();
-			characterList = newCharacters;
+			textList = newCharacters;
 		}
 	}
 
+//	/** computes inter-char gaps. If >= computed width of space adds ONE space
+//	 * later routines can calculate exact number of spaces if wished
+//	 * this is essentially a word break detector and marker
+//	 */
+//	public void insertSpaces(double sFactor) {
+//		if (textList.size() > 0) {
+//			List<SVGText> newCharacters = new ArrayList<SVGText>();
+//			SVGText lastText = textList.get(0);
+//			newCharacters.add(lastText);
+//			Double fontSize = lastText.getFontSize();
+//			Double lastWidth = lastText.getScaledWidth();
+//			Double lastX = lastText.getX();
+//			for (int i = 1; i < textList.size(); i++) {
+//				SVGText text = textList.get(i);
+//				double x = text.getX();
+//				double extraSpace = calculateExtraSpace(sFactor, fontSize, lastWidth, lastX, x);
+//			    if (extraSpace > 0) {
+//			    	addSpaceCharacter(newCharacters, lastX + lastWidth, lastText);
+//			    }
+//			    newCharacters.add(text);
+//				lastWidth = text.getScaledWidth();
+//				lastX = x;
+//			}
+//			resetWhenLineContentChanged();
+//			textList = newCharacters;
+//		}
+//	}
+
+//	private double calculateExtraSpace(double sFactor, Double fontSize, Double lastWidth,
+//			Double lastX, double x) {
+//		double extraSpace = x - lastX - lastWidth - sFactor * fontSize;
+//		return extraSpace;
+//	}
+//
 	public Double getMeanFontSize() {
 		if (meanFontSize == null) {
 			getFontSizeArray();
@@ -441,10 +473,10 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	private RealArray getFontSizeArray() {
-		if (fontSizeArray == null || characterList != null || characterList.size() == 0) {
-			fontSizeArray = new RealArray(characterList.size());
-			for (int i = 0; i < characterList.size(); i++) {
-				fontSizeArray.setElementAt(i, characterList.get(i).getFontSize());
+		if (fontSizeArray == null || textList != null || textList.size() == 0) {
+			fontSizeArray = new RealArray(textList.size());
+			for (int i = 0; i < textList.size(); i++) {
+				fontSizeArray.setElementAt(i, textList.get(i).getFontSize());
 			}
 		}
 		return fontSizeArray;
@@ -452,12 +484,12 @@ public class TextLine implements Iterable<SVGText> {
 
 	public Real2Range getBoundingBox() {{
 		if (boundingBox == null) 
-			if (characterList != null && characterList.size() > 0) {
-				double xmin = characterList.get(0).getBoundingBox().getXMin();
-				double xmax = characterList.get(characterList.size()-1).getBoundingBox().getXMax();
+			if (textList != null && textList.size() > 0) {
+				double xmin = textList.get(0).getBoundingBox().getXMin();
+				double xmax = textList.get(textList.size()-1).getBoundingBox().getXMax();
 				RealRange xRange = new RealRange(xmin, xmax); 
-				double ymin = characterList.get(0).getBoundingBox().getYMin();
-				double ymax = characterList.get(characterList.size()-1).getBoundingBox().getYMax();
+				double ymin = textList.get(0).getBoundingBox().getYMin();
+				double ymax = textList.get(textList.size()-1).getBoundingBox().getYMax();
 				RealRange yRange = new RealRange(ymin, ymax); 
 				boundingBox = new Real2Range(xRange, yRange);
 			}
@@ -470,9 +502,9 @@ public class TextLine implements Iterable<SVGText> {
 	 */
 	private RealArray getSVGCharacterWidthArray() {
 		if (svgCharacterWidthArray == null) { 
-			svgCharacterWidthArray = new RealArray(characterList.size());
-			for (int i = 0; i < characterList.size() ; i++) {
-				Double width = getWidth(characterList.get(i));
+			svgCharacterWidthArray = new RealArray(textList.size());
+			for (int i = 0; i < textList.size() ; i++) {
+				Double width = textList.get(i).getScaledWidth();
 				svgCharacterWidthArray.setElementAt(i,  width);
 			}
 			svgCharacterWidthArray.format(TextAnalyzer.NDEC_FONTSIZE);
@@ -487,10 +519,10 @@ public class TextLine implements Iterable<SVGText> {
 	 */
 	private RealArray getCharacterSeparationArray() {
 		if (characterSeparationArray == null) { 
-			characterSeparationArray = new RealArray(characterList.size() - 1);
-			Double x = characterList.get(0).getX();
-			for (int i = 0; i < characterList.size() - 1; i++) {
-				Double nextX = characterList.get(i + 1).getX();
+			characterSeparationArray = new RealArray(textList.size() - 1);
+			Double x = textList.get(0).getX();
+			for (int i = 0; i < textList.size() - 1; i++) {
+				Double nextX = textList.get(i + 1).getX();
 				Double separation = nextX - x;
 				characterSeparationArray.setElementAt(i, separation);
 				x = nextX;
@@ -511,8 +543,8 @@ public class TextLine implements Iterable<SVGText> {
 		getCharacterSeparationArray();
 		if (characterSeparationArray != null) { 
 			spaceWidthArray = new RealArray();
-			for (int i = 0; i < characterList.size() - 1; i++) {
-				SVGText charx = characterList.get(i);
+			for (int i = 0; i < textList.size() - 1; i++) {
+				SVGText charx = textList.get(i);
 				String text = charx.getText();
 				if (CMLConstants.S_SPACE.equals(charx.getText())) {
 					spaceWidthArray.addElement(characterSeparationArray.elementAt(i));
@@ -523,26 +555,19 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 
-	/**
-	 * @param newCharacters
-	 * @param spaceX
-	 * @param templateText to copy attributes from
-	 */
-	private void addSpaceCharacter(List<SVGText> newCharacters, double spaceX, SVGElement templateText) {
-		SVGText spaceText = new SVGText();
-		CMLUtil.copyAttributes(templateText, spaceText);
-		spaceText.setText(" ");
-		spaceText.setX(spaceX);
-		PDF2SVGUtil.setSVGXAttribute(spaceText, PDF2SVGUtil.CHARACTER_WIDTH, String.valueOf(SPACE_WIDTH1000));
-		newCharacters.add(spaceText);
-	}
-
-	public static Double getWidth(SVGText text) {
-		String widthS = PDF2SVGUtil.getSVGXAttribute(text, PDF2SVGUtil.CHARACTER_WIDTH);
-		Double fontSize = text.getFontSize();
-		Double width = widthS == null ? null : new Double(widthS) * SCALE;
-		return width == null ? null : width * fontSize;
-	}
+//	/**
+//	 * @param newCharacters
+//	 * @param spaceX
+//	 * @param templateText to copy attributes from
+//	 */
+//	private void addSpaceCharacter(List<SVGText> newCharacters, double spaceX, SVGElement templateText) {
+//		SVGText spaceText = new SVGText();
+//		CMLUtil.copyAttributes(templateText, spaceText);
+//		spaceText.setText(" ");
+//		spaceText.setX(spaceX);
+//		PDF2SVGUtil.setSVGXAttribute(spaceText, PDF2SVGUtil.CHARACTER_WIDTH, String.valueOf(SPACE_WIDTH1000));
+//		newCharacters.add(spaceText);
+//	}
 
 	public Double getMeanWidthOfSpaceCharacters() {
 		RealArray spaceWidths = getActualWidthsOfSpaceCharacters();
@@ -552,7 +577,7 @@ public class TextLine implements Iterable<SVGText> {
 	public Set<TextCoordinate> getFontSizeSet() {
 		if (fontSizeSet == null) {
 			fontSizeSet = new HashSet<TextCoordinate>();
-			for (SVGElement text : characterList) {
+			for (SVGElement text : textList) {
 				double fontSize = text.getFontSize();
 				fontSizeSet.add(new TextCoordinate(fontSize));
 			}
@@ -594,45 +619,48 @@ public class TextLine implements Iterable<SVGText> {
 		return subscript;
 	}
 
-	/** mainly debug
-	 * 
-	 * @return
-	 */
-	public List<SVGText> createSuscriptString() {
-		List<SVGText> textList = new ArrayList<SVGText>();
-		Integer thisIndex = 0;
-		TextLine superscript = this.getSuperscript();
-		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.characterList;
-		Integer superIndex = 0;
-		TextLine subscript = this.getSubscript();
-		List<SVGText> subChars = (subscript == null) ? new ArrayList<SVGText>() : subscript.characterList;
-		Integer subIndex = 0;
-		while (true) {
-			SVGText nextSup = peekNext(superChars, superIndex);
-			SVGText nextThis = peekNext(characterList, thisIndex);
-			SVGText nextSub = peekNext(subChars, subIndex);
-			SVGText nextText = textWithLowestX(nextSup, nextThis, nextSub);
-			if (nextText == null) {
-				break;
-			}
-			SVGText mark = null;
-			if (nextText.equals(nextSup)) {
-				superIndex++;
-				mark = (SVGText) SUP.copy();
-			} else if (nextText.equals(nextThis)) {
-				thisIndex++;
-			} else if (nextText.equals(nextSub)) {
-				subIndex++;
-				mark = (SVGText) SUB.copy();
-			}
-			if (mark != null) {
-				mark.setXY(nextText.getXY());
-				textList.add(mark);
-			}
-			textList.add(nextText);
-		}
-		return textList;
-	}
+//	/** mainly debug
+//	 * 
+//	 * @return
+//	 */
+//	private List<SVGText> createSuscriptString() {
+//		List<SVGText> textList = new ArrayList<SVGText>();
+//		Integer thisIndex = 0;
+//		TextLine superscript = this.getSuperscript();
+//		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.textList;
+//		Integer superIndex = 0;
+//		TextLine subscript = this.getSubscript();
+//		List<SVGText> subChars = (subscript == null) ? new ArrayList<SVGText>() : subscript.textList;
+//		Integer subIndex = 0;
+//		while (true) {
+//			SVGText nextSup = peekNext(superChars, superIndex);
+//			SVGText nextThis = peekNext(textList, thisIndex);
+//			SVGText nextSub = peekNext(subChars, subIndex);
+//			SVGText nextText = textWithLowestX(nextSup, nextThis, nextSub);
+//			if (nextText == null) {
+//				break;
+//			}
+//			SVGText mark = null;
+//			if (nextText.equals(nextSup)) {
+//				superIndex++;
+//				mark = (SVGText) SUP.copy();
+//			} else if (nextText.equals(nextThis)) {
+//				thisIndex++;
+//			} else if (nextText.equals(nextSub)) {
+//				subIndex++;
+//				mark = (SVGText) SUB.copy();
+//			} else {
+//				LOG.debug("NEXT OMITTED");
+//			}
+//			LOG.debug(superIndex+" "+thisIndex+" "+subIndex);
+//			if (mark != null) {
+//				mark.setXY(nextText.getXY());
+//				textList.add(mark);
+//			}
+//			textList.add(nextText);
+//		}
+//		return textList;
+//	}
 
 	/** mainly debug
 	 * 
@@ -642,15 +670,15 @@ public class TextLine implements Iterable<SVGText> {
 		List<TextLine> textLineList = new ArrayList<TextLine>();
 		Integer thisIndex = 0;
 		TextLine superscript = this.getSuperscript();
-		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.characterList;
+		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.textList;
 		Integer superIndex = 0;
 		TextLine subscript = this.getSubscript();
-		List<SVGText> subChars = (subscript == null) ? new ArrayList<SVGText>() : subscript.characterList;
+		List<SVGText> subChars = (subscript == null) ? new ArrayList<SVGText>() : subscript.textList;
 		Integer subIndex = 0;
 		TextLine textLine = null;
 		while (true) {
 			SVGText nextSup = peekNext(superChars, superIndex);
-			SVGText nextThis = peekNext(characterList, thisIndex);
+			SVGText nextThis = peekNext(textList, thisIndex);
 			SVGText nextSub = peekNext(subChars, subIndex);
 			SVGText nextText = textWithLowestX(nextSup, nextThis, nextSub);
 			if (nextText == null) {
@@ -694,7 +722,7 @@ public class TextLine implements Iterable<SVGText> {
 	}
 //
 
-	private HtmlElement getHtmlElement() {
+	public HtmlElement getHtmlElement() {
 		HtmlElement htmlElement = null;
 		Suscript suscript = this.getSuscript();
 		if (suscript == null || suscript.equals(Suscript.NONE)) {
@@ -719,7 +747,7 @@ public class TextLine implements Iterable<SVGText> {
 		Double currentFontSize = null;
 		HtmlSpan span = null;
 		StringBuffer sb = null;
-		for (SVGElement character : characterList) {
+		for (SVGElement character : textList) {
 			String fontFamily = character.getFontFamily();
 			String fontStyle = character.getFontStyle();
 			String fontWeight = character.getFontWeight();
@@ -789,6 +817,9 @@ public class TextLine implements Iterable<SVGText> {
 
 	public static SVGText textWithLowestX(SVGText nextSup, SVGText nextThis, SVGText nextSub) {
 		SVGText lowestText = null;
+		if (nextSup == null && nextThis == null && nextSub == null) {
+			return null;
+		}
 		if (nextSup != null && (lowestText == null || (lowestText.getX() > nextSup.getX()))) {
 			lowestText = nextSup;
 		}
@@ -798,6 +829,7 @@ public class TextLine implements Iterable<SVGText> {
 		if (nextSub != null && (lowestText == null || (lowestText.getX() > nextSub.getX()))) {
 			lowestText = nextSub;
 		}
+		LOG.trace("lowestX "+lowestText.getX());
 		return lowestText;
 	}
 
@@ -811,8 +843,8 @@ public class TextLine implements Iterable<SVGText> {
 
 	public String getSpacedLineString() {
 		StringBuilder sb = new StringBuilder();
-		if (characterList != null) {
-			for (SVGElement text : characterList) {
+		if (textList != null) {
+			for (SVGElement text : textList) {
 				String s = text.getValue();
 				if (s.trim().length() == 0) {
 					s = " ";
@@ -837,8 +869,8 @@ public class TextLine implements Iterable<SVGText> {
 
 	public String getRawValue() {
 		StringBuilder sb = new StringBuilder();
-		if (characterList != null) {
-			for (SVGElement text : characterList) {
+		if (textList != null) {
+			for (SVGElement text : textList) {
 				sb.append(text.getValue());
 			}
 		}
@@ -852,8 +884,8 @@ public class TextLine implements Iterable<SVGText> {
 	 * @param textLine
 	 */
 	public void merge(TextLine textLine) {
-		for (SVGText character : textLine.characterList) {
-			this.characterList.add(character);
+		for (SVGText character : textLine.textList) {
+			this.textList.add(character);
 		}
 	}
 
@@ -881,13 +913,69 @@ public class TextLine implements Iterable<SVGText> {
 	private Multiset<Double> getFontSizeMultiset() {
 		if (fontSizeMultiset == null) {
 			fontSizeMultiset = HashMultiset.create();
-			for (int i = 0; i < characterList.size(); i++) {
-				SVGElement text = characterList.get(i);
+			for (int i = 0; i < textList.size(); i++) {
+				SVGElement text = textList.get(i);
 				Double size = text.getFontSize();
 				fontSizeMultiset.add(size);
 			}
 		}
 		return fontSizeMultiset;
 	}
-		
+
+	/** gets raw list of words (no Phrases yet).
+	 * 
+	 * @return
+	 */
+	public RawWords getRawWords() {
+		int ntext = textList.size();
+		RawWords rawWords = new RawWords();
+		Word word = new Word();
+		rawWords.add(word);
+		for (int i = 0; i < ntext; i++) {
+			SVGText text = textList.get(i);
+			word.add(text);
+			if (i < ntext - 1)  {
+				SVGText nextText = textList.get(i + 1);
+				Double spaceCount = text.getEnSpaceCount(nextText);
+				if (spaceCount != null && spaceCount > SPACE_FACTOR1) {
+					word = new Word();
+					rawWords.add(word);
+				}
+			}
+		}
+		return rawWords;
+	}
+
+	public RealArray getXCoordinateArray() {
+		RealArray xArray = new RealArray();
+		for (int i = 0; i < textList.size(); i++) {
+			xArray.addElement(textList.get(i).getX());
+		}
+		return xArray;
+	}
+
+	public RealArray getFontWidthArray() {
+		RealArray xArray = new RealArray();
+		for (int i = 0; i < textList.size(); i++) {
+			xArray.addElement(textList.get(i).getSVGXFontWidth());
+		}
+		return xArray;
+	}
+
+	public List<String> getValueList() {
+		List<String> valueList = new ArrayList<String>();
+		for (SVGText text : textList) {
+			valueList.add(text.getValue());
+		}
+		return valueList;
+	}
+
+	public RealArray getSeparationArray() {
+		RealArray separationArray = new RealArray();
+		for (int i = 0; i < textList.size() - 1; i++) {
+			Double space = textList.get(i).getSeparation(textList.get(i + 1));
+			separationArray.addElement(space);
+		}
+		return separationArray;
+	}
 }

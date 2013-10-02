@@ -188,6 +188,7 @@ public class TextAnalyzerTest {
 	 * It's still not quite right
 	 * 
 	 */
+	@Ignore
 	public void minSpaceFactorTest() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		textStructurer.getLinesInIncreasingY();
@@ -222,6 +223,7 @@ public class TextAnalyzerTest {
 	 * It's still not quite right
 	 * 
 	 */
+	@Ignore
 	public void maxSpaceFactorTest() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		textStructurer.getLinesInIncreasingY();
@@ -424,17 +426,17 @@ public class TextAnalyzerTest {
 		Assert.assertEquals("sub", "0a", subscript.getLineString());
 	}
 
-	@Test
-	/** 
-	 * suscripts - mainly debugging routine 
-	 * does not produce html
-	 */
-	public void testCreateSuscriptLine0() {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		TextLine largeLine = textStructurer.getLinesWithLargestFont().get(0);
-		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
-		printLine(largeLineSVG);
-	}
+//	@Test
+//	/** 
+//	 * suscripts - mainly debugging routine 
+//	 * does not produce html
+//	 */
+//	public void testCreateSuscriptLine0() {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		TextLine largeLine = textStructurer.getLinesWithLargestFont().get(0);
+//		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
+//		printLine(largeLineSVG);
+//	}
 
 	@Test
 	/** 
@@ -651,29 +653,30 @@ public class TextAnalyzerTest {
 		}
 	}
 
-	@Test
-	/** 
-	 * suscripts
-	 */
-	public void testCreateSuscriptLine4() {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<TextLine> largestLineList = textStructurer.getLinesWithLargestFont();
-		TextLine largeLine = largestLineList.get(4);
-		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
-		printLine(largeLineSVG);
-	}
+//	@Test
+//	/** 
+//	 * suscripts
+//	 */
+//	public void testCreateSuscriptLine4() {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		List<TextLine> largestLineList = textStructurer.getLinesWithLargestFont();
+//		TextLine largeLine = largestLineList.get(4);
+//		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
+//		printLine(largeLineSVG);
+//	}
 
-	@Test
-	/** 
-	 * suscripts
-	 */
-	public void testCreateSuscriptLine5() {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<TextLine> largestLineList = textStructurer.getLinesWithLargestFont();
-		TextLine largeLine = largestLineList.get(5);
-		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
-		printLine(largeLineSVG);
-	}
+//	@Test
+//	/** 
+//	 * suscripts
+//	 */
+//	public void testCreateSuscriptLine5() {
+//		if (1==1) throw new RuntimeException("Skipped");
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
+//		List<TextLine> largestLineList = textStructurer.getLinesWithLargestFont();
+//		TextLine largeLine = largestLineList.get(5);
+//		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
+//		printLine(largeLineSVG);
+//	}
 
 	private void printLine(List<SVGText> largeLineSVG) {
 //		SYSOUT.print("LINE: ");

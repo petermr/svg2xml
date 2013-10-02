@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.TextCoordinate;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
@@ -117,6 +118,27 @@ public class TextStructurerTest {
 	public void testBMCGeotableTextLines() {
 		File geoFile2 = geoFileList.get(2);
 		TextStructurer container = TextStructurer.createTextStructurer(geoFile2);
+	}
+	
+	@Test
+	public void testFullTables() {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.BERICHT_PAGE6_SVG, (PageAnalyzer) null);
+		List<TabbedTextLine> tabbedTextLineList = textStructurer.createTabbedLineList();
+	}
+
+	@Test
+	public void testWordListCollection() {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.BERICHT_PAGE22_SVG, (PageAnalyzer) null);
+//		List<Tab> tabList = textStructurer.createSingleTabList();
+//		for (Tab tab : tabList) {
+//			System.out.print(tab+" . ");
+//		}
+//		System.out.println();
+
 	}
 
 }

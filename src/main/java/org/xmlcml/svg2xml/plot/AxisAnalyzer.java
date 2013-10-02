@@ -1,15 +1,11 @@
-package org.xmlcml.svg2xml.axisold;
+package org.xmlcml.svg2xml.plot;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
@@ -41,11 +37,10 @@ public class AxisAnalyzer {
 	private Axis verticalAxis;
 	private GraphPlotBox plotBox;
 	
-	private SVGElement g;
+	private SVGG g;
 	public double eps;
 
-
-	public AxisAnalyzer(SVGElement g) {
+	public AxisAnalyzer(SVGG g) {
 		super();
 		this.g = g;
 		ensureSVGLines();
@@ -179,10 +174,9 @@ public class AxisAnalyzer {
 				Axis axis = createAxis(complexLine, orientation);
 				if (axis != null) {
 					axisList.add(axis);
-//					container.debug("AXIS CONT");
-					axis.processScaleValuesAndTitles(g);
+					axis.processScaleValuesAndTitlesNew(g);
 					axis.createAxisGroup();
-					LOG.debug("************  AXIS "+axis);
+					LOG.trace("************  AXIS "+axis);
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.axisold;
+package org.xmlcml.svg2xml.plot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +32,9 @@ import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.paths.Joint;
+import org.xmlcml.svg2xml.text.RawWords;
+import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.words.TypedNumber;
 
 /** an axis on a graph.
@@ -91,7 +94,7 @@ public class Axis {
 	private Double majorTickSpacingInPixels = null;
 	private Double minorTickSpacingInPixels = null;
 	
-	private CMLArray majorTickMarkValues;
+	private CMLArray majorTickMarkValuesOld;
 	private CMLScalar scalar;
 	
 	private LineOrientation lineOrientation;
@@ -103,7 +106,7 @@ public class Axis {
 	private Double lowestTickMarkValue;
 	private Double highestTickMarkValue;
 
-	private List<SVGText> numericTexts;
+	private List<SVGText> numericTextsOld;
 	private List<SVGText> nonNumericTexts;
 
 	private Double arraySpacingInValues;
@@ -244,12 +247,12 @@ public class Axis {
 
 	private List<SVGText> extractHorizontalAxisText(SVGElement container, Direction direction) {
 		Real2Range bbox = complexLine.getBoundingBoxWithoutJoints();
-		LOG.debug(bbox);
+		LOG.trace(bbox);
 		Real2Range bboxExt = bbox.getReal2RangeExtendedInX((double)X_SIDE, (double)X_SIDE);
 		double above = (Direction.BELOW.equals(direction)) ? 0.0 : X_VERT;
 		double below = (Direction.ABOVE.equals(direction)) ? 0.0 : X_VERT;
 		bboxExt = bboxExt.getReal2RangeExtendedInY(above, below);
-		LOG.debug(bboxExt);
+		LOG.trace(bboxExt);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(container);
 		textList = SVGText.extractTexts(SVGUtil.findElementsWithin(bboxExt, textList));
 		return textList;
@@ -257,12 +260,12 @@ public class Axis {
 
 	private List<SVGText> extractVerticalAxisText(SVGElement container, Direction direction) {
 		Real2Range bbox = complexLine.getBoundingBoxWithoutJoints();
-		LOG.debug(bbox);
+		LOG.trace(bbox);
 		Real2Range bboxExt = bbox.getReal2RangeExtendedInY((double)Y_SIDE, (double)Y_SIDE);
 		double right = (Direction.RIGHT.equals(direction)) ? 0.0 : Y_VERT;
 		double left = (Direction.LEFT.equals(direction)) ? 0.0 : Y_VERT;
 		bboxExt = bboxExt.getReal2RangeExtendedInX(right, left);
-		LOG.debug(bboxExt);
+		LOG.trace(bboxExt);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(container);
 		textList = SVGText.extractTexts(SVGUtil.findElementsWithin(bboxExt, textList));
 		return textList;
@@ -300,6 +303,38 @@ public class Axis {
 				LOG.trace("ROT "+rotatedText.getValue()+" .. "+
 			       rotatedText.getTransform().getAngleOfRotation().getDegrees());
 			}
+		}
+	}
+
+
+	/** only works for correctly oriented text
+	 * may have to rotate for other text
+	 * 
+	 * assumes line of scale values and then a title
+	 * 
+	 * @param text 
+	 * @param boxThickness
+	 * @param boxLengthExtension
+	 */
+	public void processScaleValuesAndTitlesNew(SVGG g) {
+		List<SVGText> textList = this.extractText(g);
+		TextStructurer textStructurer = new TextStructurer(textList);
+		List<TextLine> textLineList = textStructurer.getTextLineList();
+		RawWords rawWords0 = (textLineList.size() > 0) ? textLineList.get(0).getRawWords() : null;
+//		IntArray intScales = (rawWords0 == null) ? null : rawWords0.translateToIntArray();
+		RealArray realScales = (rawWords0 == null) ? null : rawWords0.translateToRealArray();
+		RawWords title = (textLineList.size() > 1) ? textLineList.get(1).getRawWords() : null;
+		this.setAxisLabel(title.toString());
+		ensureTickmarks();
+		if (LineOrientation.HORIZONTAL.equals(lineOrientation)) {
+		     majorTickMarkValuesOld = new CMLArray(realScales);
+		} else if (LineOrientation.VERTICAL.equals(lineOrientation)) {
+//			List<SVGText> verticalTexts = getTexts(boundedTexts, LineOrientation.HORIZONTAL);
+//			analyzeVerticalAxis(verticalTexts);
+//			for (SVGText rotatedText : verticalTexts) {
+//				LOG.trace("ROT "+rotatedText.getValue()+" .. "+
+//			       rotatedText.getTransform().getAngleOfRotation().getDegrees());
+//			}
 		}
 	}
 
@@ -374,10 +409,10 @@ public class Axis {
 		// do minor first as major ticks are also included in minor
 		groupTickJoints(svgg, MINOR_TICKS, minorTickJointList);
 		groupTickJoints(svgg, MAJOR_TICKS, majorTickJointList);
-		if (nonNumericTexts.size() > 0) {
+		if (nonNumericTexts != null && nonNumericTexts.size() > 0) {
 			groupField(svgg, LABEL, nonNumericTexts.get(0));
 		}
-		groupFields(svgg, VALUES, numericTexts);
+		groupFields(svgg, VALUES, numericTextsOld);
 		List<SVGElement> axisMarks = SVGUtil.getQuerySVGElements(svgg, "./svg:*[contains(@class, '"+AXIS_PREF+"')]");
 		for (SVGElement axisMark : axisMarks) {
 			axisMark.setStroke("yellow");
@@ -483,11 +518,11 @@ public class Axis {
 	
 	private void getArraySpacingInValues() {
 		if (arraySpacingInValues == null) {
-			int size = majorTickMarkValues.getSize();
-			if (CMLConstants.XSD_INTEGER.equals(majorTickMarkValues.getDataType())) {
-				arraySpacingInValues = ((double) majorTickMarkValues.getInts()[size-1] - (double) majorTickMarkValues.getInts()[0])  / (double )(size - 1);
-			} else if (CMLConstants.XSD_DOUBLE.equals(majorTickMarkValues.getDataType())) {
-				arraySpacingInValues = ((double) majorTickMarkValues.getDoubles()[size-1] - (double) majorTickMarkValues.getDoubles()[0])  / (double )(size - 1);
+			int size = majorTickMarkValuesOld.getSize();
+			if (CMLConstants.XSD_INTEGER.equals(majorTickMarkValuesOld.getDataType())) {
+				arraySpacingInValues = ((double) majorTickMarkValuesOld.getInts()[size-1] - (double) majorTickMarkValuesOld.getInts()[0])  / (double )(size - 1);
+			} else if (CMLConstants.XSD_DOUBLE.equals(majorTickMarkValuesOld.getDataType())) {
+				arraySpacingInValues = ((double) majorTickMarkValuesOld.getDoubles()[size-1] - (double) majorTickMarkValuesOld.getDoubles()[0])  / (double )(size - 1);
 			} 
 			LOG.trace("SCALE/TICK "+arraySpacingInValues);
 		}
@@ -537,14 +572,14 @@ public class Axis {
 	}
 
 	private void mapTickPositionsToValues() {
-		if (majorTickMarkValues != null && majorTickJointList != null) {
-			if (majorTickMarkValues.getSize() == majorTickJointList.size()) {
+		if (majorTickMarkValuesOld != null && majorTickJointList != null) {
+			if (majorTickMarkValuesOld.getSize() == majorTickJointList.size()) {
 				getArraySpacingInValues();
 				// this should be elsewhere
 				List<SVGPolyline> polylines = SVGPolyline.extractPolylines(SVGUtil.getQuerySVGElements(null, "./svg:g/svg:polyline"));
 				transformArrayFromPixelsToScale(polylines);
 			} else {
-				LOG.trace("ARRAY: "+majorTickMarkValues.getSize()+ " != "+majorTickJointList.size());
+				LOG.trace("ARRAY: "+majorTickMarkValuesOld.getSize()+ " != "+majorTickJointList.size());
 			}
 		}
 	}
@@ -556,9 +591,9 @@ public class Axis {
 	private void processHorizontalScaleValuesAndScaleTitle(List<SVGText> texts) {
 		createNumericAndNonNumericTexts(texts);
 		Integer y = null;
-		Double numericYCoord = TextAnalyzerUtils.getCommonYCoordinate(numericTexts, axisAnalyzerX.eps);
+		Double numericYCoord = TextAnalyzerUtils.getCommonYCoordinate(numericTextsOld, axisAnalyzerX.eps);
 		if (numericYCoord != null) {
-			majorTickMarkValues = createNumericValues(numericTexts);
+			majorTickMarkValuesOld = createNumericValuesOld(numericTextsOld);
 		}
 		Double nonNumericYCoord = TextAnalyzerUtils.getCommonYCoordinate(nonNumericTexts, axisAnalyzerX.eps);
 		if (nonNumericYCoord != null && nonNumericTexts.size() > 0) {
@@ -574,10 +609,10 @@ public class Axis {
 		
 		createNumericAndNonNumericTexts(texts);
 		Integer y = null;
-		Double numericRightXCoord = TextAnalyzerUtils.getCommonRightXCoordinate(numericTexts, TextAnalyzer.TEXT_EPS);
-		Double numericLeftXCoord = TextAnalyzerUtils.getCommonLeftXCoordinate(numericTexts, TextAnalyzer.TEXT_EPS);
+		Double numericRightXCoord = TextAnalyzerUtils.getCommonRightXCoordinate(numericTextsOld, TextAnalyzer.TEXT_EPS);
+		Double numericLeftXCoord = TextAnalyzerUtils.getCommonLeftXCoordinate(numericTextsOld, TextAnalyzer.TEXT_EPS);
 		if (numericRightXCoord != null || numericLeftXCoord != null) {
-			majorTickMarkValues = createNumericValues(numericTexts);
+			majorTickMarkValuesOld = createNumericValuesOld(numericTextsOld);
 		}
 		Double nonNumericYCoord = TextAnalyzerUtils.getCommonYCoordinate(nonNumericTexts, axisAnalyzerX.eps);
 		if (nonNumericYCoord != null && nonNumericTexts.size() == 1) {
@@ -585,7 +620,7 @@ public class Axis {
 		}
 	}
 
-	private CMLArray createNumericValues(List<SVGText> numericTexts) {
+	private CMLArray createNumericValuesOld(List<SVGText> numericTexts) {
 		CMLArray array = null;
 		if (numericTexts.size() == 1 ) {
 			SVGElement text = numericTexts.get(0);
@@ -600,7 +635,7 @@ public class Axis {
 				array = new CMLArray(realArray.getArray());
 			}
 		} else {
-			String dataType = getCommonDataType(numericTexts);
+			String dataType = getCommonDataTypeOld(numericTexts);
 			if (dataType != null) {
 				List<String> values = new ArrayList<String>();
 				for (SVGElement numericText : numericTexts) {
@@ -618,7 +653,7 @@ public class Axis {
 		return array;
 	}
 
-	private String getCommonDataType(List<SVGText> numericTexts) {
+	private String getCommonDataTypeOld(List<SVGText> numericTexts) {
 		String dataType = null;
 		for (SVGElement numericText : numericTexts) {
 			String dt = numericText.getAttributeValue(TypedNumber.DATA_TYPE);
@@ -633,20 +668,20 @@ public class Axis {
 	}
 
 	private void createNumericAndNonNumericTexts(List<SVGText> texts) {
-		if (numericTexts == null) {
-			numericTexts = new ArrayList<SVGText>();
+		if (numericTextsOld == null) {
+			numericTextsOld = new ArrayList<SVGText>();
 			nonNumericTexts = new ArrayList<SVGText>();
 			for (SVGText text : texts) {
 				if (text.query("@"+TypedNumber.NUMBER).size() > 0 ||
 					text.query("@"+TypedNumber.NUMBERS).size() > 0  ) {
-					numericTexts.add(text);
+					numericTextsOld.add(text);
 				} else {
 					if (text.getValue().trim().length() != 0) {
 						nonNumericTexts.add(text);
 					}
 				}
 			}
-			LOG.trace("NUMERIC "+numericTexts.size()+" NON-NUM "+nonNumericTexts.size());
+			LOG.trace("NUMERIC "+numericTextsOld.size()+" NON-NUM "+nonNumericTexts.size());
 		}
 	}
 
@@ -783,9 +818,9 @@ public class Axis {
 	public String toString() {
 		String s = "\n";
 		ensureTickmarks();
-		if (majorTickMarkValues != null && majorTickSpacingInPixels != null && majorTickJointList != null) {
+		if (majorTickMarkValuesOld != null && majorTickSpacingInPixels != null && majorTickJointList != null) {
 			s += tickDetail("major", majorTickSpacingInPixels, majorTickJointList)+"\n";
-			int nValues = majorTickMarkValues.getSize();
+			int nValues = majorTickMarkValuesOld.getSize();
 			s += " "+nValues+" major values "+getLowestTickMarkValue()+" ... "+(nValues-1)+" gaps ... "+
 			" "+getHighestTickMarkValue()+"\n";
 		}
@@ -804,15 +839,15 @@ public class Axis {
 	}
 
 	private Double getLowestTickMarkValue() {
-		if (lowestTickMarkValue == null && majorTickMarkValues != null) {
-			lowestTickMarkValue = majorTickMarkValues.getElementAt(0).getNumberAsDouble();
+		if (lowestTickMarkValue == null && majorTickMarkValuesOld != null) {
+			lowestTickMarkValue = majorTickMarkValuesOld.getElementAt(0).getNumberAsDouble();
 		}
 		return lowestTickMarkValue;
 	}
 
 	private Double getHighestTickMarkValue() {
-		if (highestTickMarkValue == null && majorTickMarkValues != null) {
-			highestTickMarkValue = majorTickMarkValues.getElementAt(majorTickMarkValues.getSize()-1).getNumberAsDouble();
+		if (highestTickMarkValue == null && majorTickMarkValuesOld != null) {
+			highestTickMarkValue = majorTickMarkValuesOld.getElementAt(majorTickMarkValuesOld.getSize()-1).getNumberAsDouble();
 		}
 		return highestTickMarkValue;
 	}

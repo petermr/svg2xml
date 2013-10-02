@@ -154,7 +154,7 @@ public class ListContainer extends AbstractContainer {
 		} else {
 			lastInteger = currentInteger;
 			if (header != null) {
-				LOG.debug("HEADER "+header.toString());
+				LOG.trace("HEADER "+header.toString());
 			}
 			if (currentInteger != null) {
 				LOG.trace("********************************List from: "+firstInteger+" to "+lastInteger);

@@ -34,7 +34,7 @@ public class ScriptContainerTest {
 		TextStructurer textContainer = 
 				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_1SA_SVG);
 		Assert.assertEquals("1a", 
-				"TextStructurer: 1chars: 9 Y: 39.615 fontSize: 7.97 physicalStyle: null >>Page6of14\n",
+				"TextStructurer: 1chars: 9 Y: 39.615 fontSize: 7.97 >>Page6of14\n",
 				textContainer.toString());
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
@@ -64,7 +64,7 @@ public class ScriptContainerTest {
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
 		List<ScriptLine> scriptLineList = sc.getScriptLineList();
 		ScriptLine scriptLine = scriptLineList.get(0);
-		List<ScriptWord> scriptWords = scriptLine.getWords();
+		List<ScriptWord> scriptWords = scriptLine.getScriptWordList();
 		Assert.assertEquals("line0", 4, scriptWords.size());
 		String[] value ={"Page", "6", "of", "14"};
 		for (int i = 0; i < scriptWords.size(); i++) {
@@ -501,7 +501,7 @@ public class ScriptContainerTest {
 		Assert.assertEquals("scriptLines", words.length, scriptLineList.size());
 		for(int i = 0; i < words.length; i++) {
 			ScriptLine scriptLine = scriptLineList.get(i);
-			List<ScriptWord> scriptWords = scriptLine.getWords();
+			List<ScriptWord> scriptWords = scriptLine.getScriptWordList();
 			if (words[i].length > 0) {
 				if (words[i].length != scriptWords.size()) {
 					for (int j = 0; j < scriptWords.size(); j++) {

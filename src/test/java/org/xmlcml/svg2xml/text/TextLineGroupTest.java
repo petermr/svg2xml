@@ -119,11 +119,11 @@ public class TextLineGroupTest {
 		IntArray intArray = new IntArray(ref);
 		List <TextStructurer> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 3, textStructurerList.size());
-		Assert.assertEquals("T0 ", "TextStructurer: 1chars: 10 Y: 489.92 fontSize: 10.261 physicalStyle: null >>Discussion\n", 
+		Assert.assertEquals("T0 ", "TextStructurer: 1chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion\n", 
 				textStructurerList.get(0).toString());
-		Assert.assertEquals("T1 ", "TextStructurer: 1chars: 47 Y: 501.882 fontSize: 9.763 physicalStyle: null >>Thecurrentmodelofholinholeformationhypothesizes\n",
+		Assert.assertEquals("T1 ", "TextStructurer: 1chars: 47 Y: 501.882 fontSize: 9.763 >>Thecurrentmodelofholinholeformationhypothesizes\n",
 				textStructurerList.get(1).toString());
-		Assert.assertEquals("T2 ", "TextStructurer: 1chars: 45 Y: 513.842 fontSize: 9.763 physicalStyle: null >>thatλphagelysistimingismainlydeterminedbywhen\n",
+		Assert.assertEquals("T2 ", "TextStructurer: 1chars: 45 Y: 513.842 fontSize: 9.763 >>thatλphagelysistimingismainlydeterminedbywhen\n",
 				textStructurerList.get(2).toString());
 	}
 
@@ -136,11 +136,11 @@ public class TextLineGroupTest {
 		IntArray intArray = new IntArray(ref);
 		List <TextStructurer> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 2, TextStructurerList.size());
-		Assert.assertEquals("T0 ", "TextStructurer: 1chars: 10 Y: 489.92 fontSize: 10.261 physicalStyle: null >>Discussion\n", 
+		Assert.assertEquals("T0 ", "TextStructurer: 1chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion\n", 
 				TextStructurerList.get(0).toString());
 		Assert.assertEquals("T1 ", 
-				"TextStructurer: 2chars: 47 Y: 501.882 fontSize: 9.763 physicalStyle: null >>Thecurrentmodelofholinholeformationhypothesizes\n" +
-				"chars: 45 Y: 513.842 fontSize: 9.763 physicalStyle: null >>thatλphagelysistimingismainlydeterminedbywhen\n", 
+				"TextStructurer: 2chars: 47 Y: 501.882 fontSize: 9.763 >>Thecurrentmodelofholinholeformationhypothesizes\n" +
+				"chars: 45 Y: 513.842 fontSize: 9.763 >>thatλphagelysistimingismainlydeterminedbywhen\n", 
 				TextStructurerList.get(1).toString());
 	}
 
@@ -152,11 +152,11 @@ public class TextLineGroupTest {
 		IntArray intArray = new IntArray(ref);
 		List <TextStructurer> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 2, TextStructurerList.size());
-		Assert.assertEquals("T0 ", "TextStructurer: 2chars: 10 Y: 489.92 fontSize: 10.261 physicalStyle: null >>Discussion\n" +
-				"chars: 47 Y: 501.882 fontSize: 9.763 physicalStyle: null >>Thecurrentmodelofholinholeformationhypothesizes\n",
+		Assert.assertEquals("T0 ", "TextStructurer: 2chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion\n" +
+				"chars: 47 Y: 501.882 fontSize: 9.763 >>Thecurrentmodelofholinholeformationhypothesizes\n",
 				TextStructurerList.get(0).toString());
 		Assert.assertEquals("T1 ", 
-				"TextStructurer: 1chars: 45 Y: 513.842 fontSize: 9.763 physicalStyle: null >>thatλphagelysistimingismainlydeterminedbywhen\n",
+				"TextStructurer: 1chars: 45 Y: 513.842 fontSize: 9.763 >>thatλphagelysistimingismainlydeterminedbywhen\n",
 				TextStructurerList.get(1).toString());
 	}
 
@@ -168,7 +168,7 @@ public class TextLineGroupTest {
 		IntArray intArray = new IntArray(ref);
 		List <TextStructurer> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 2, TextStructurerList.size());
-		Assert.assertEquals("T0 ", "TextStructurer: 3chars: 10 Y: 489.92 fontSize: 10.261 physicalStyle: null >>Discussion\nchars: 47 Y: 501.882 fontSize: 9.763 physicalStyle: null >>Thecurrentmodelofholinholeformationhypothesizes\nchars: 45 Y: 513.842 fontSize: 9.763 physicalStyle: null >>thatλphagelysistimingismainlydeterminedbywhen\n",
+		Assert.assertEquals("T0 ", "TextStructurer: 3chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion\nchars: 47 Y: 501.882 fontSize: 9.763 >>Thecurrentmodelofholinholeformationhypothesizes\nchars: 45 Y: 513.842 fontSize: 9.763 >>thatλphagelysistimingismainlydeterminedbywhen\n",
 				TextStructurerList.get(0).toString());
 		Assert.assertEquals("T1 ", 
 				"null",
@@ -199,31 +199,31 @@ public class TextLineGroupTest {
 		List <TextStructurer> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 5, textStructurerList.size());
 		Assert.assertEquals("L0_1 ", 
-				"TextStructurer: 2chars: 41 Y: 95.394 fontSize: 9.763 physicalStyle: null >>betweenMLTandanothercommonlyusedmeasureof\n" +
-				"chars: 52 Y: 107.354 fontSize: 9.763 physicalStyle: null >>stochasticity,thecoefficientofvariation(CV,definedas\n",
+				"TextStructurer: 2chars: 41 Y: 95.394 fontSize: 9.763 >>betweenMLTandanothercommonlyusedmeasureof\n" +
+				"chars: 52 Y: 107.354 fontSize: 9.763 >>stochasticity,thecoefficientofvariation(CV,definedas\n",
 				textStructurerList.get(0).toString());
 		Assert.assertEquals("L2 ", 
-				"TextStructurer: 2chars: 44 Y: 119.314 fontSize: 9.763 physicalStyle: null >>SD/MLT;[15,25,48,49])(F=1.50,p=0.2445),indi-\n" +
-				"chars: 6 Y: 120.962 fontSize: 6.903 physicalStyle: null >>[1,12]\n",
+				"TextStructurer: 2chars: 44 Y: 119.314 fontSize: 9.763 >>SD/MLT;[15,25,48,49])(F=1.50,p=0.2445),indi-\n" +
+				"chars: 6 Y: 120.962 fontSize: 6.903 >>[1,12]\n",
 				textStructurerList.get(1).toString());
 		Assert.assertEquals("L3_4 ", 
-				"TextStructurer: 2chars: 45 Y: 131.278 fontSize: 9.763 physicalStyle: null >>catingaproportionalincreaseoftheSDwiththeMLT.\n" +
-				"chars: 51 Y: 143.238 fontSize: 9.763 physicalStyle: null >>Figure3Aalsorevealsarelativelyscatteredrelationship\n",
+				"TextStructurer: 2chars: 45 Y: 131.278 fontSize: 9.763 >>catingaproportionalincreaseoftheSDwiththeMLT.\n" +
+				"chars: 51 Y: 143.238 fontSize: 9.763 >>Figure3Aalsorevealsarelativelyscatteredrelationship\n",
 				textStructurerList.get(2).toString());
 		Assert.assertEquals("L5 ", 
-				"TextStructurer: 2chars: 1 Y: 150.839 fontSize: 6.903 physicalStyle: null >>2\n" +
-				"chars: 41 Y: 155.199 fontSize: 9.763 physicalStyle: null >>betweentheMLTsandtheSDs(adjustedR=0.363),\n",
+				"TextStructurer: 2chars: 1 Y: 150.839 fontSize: 6.903 >>2\n" +
+				"chars: 41 Y: 155.199 fontSize: 9.763 >>betweentheMLTsandtheSDs(adjustedR=0.363),\n",
 				textStructurerList.get(3).toString());
 		Assert.assertEquals("L6_end ", 
-				"TextStructurer: 9chars: 45 Y: 167.106 fontSize: 9.763 physicalStyle: null >>withseveralinstancesinwhichstrainswithsimilar\n" +
-				"chars: 45 Y: 179.067 fontSize: 9.763 physicalStyle: null >>MLTsareaccompaniedbyverydifferentSDs.Forexam-\n" +
-				"chars: 43 Y: 191.027 fontSize: 9.763 physicalStyle: null >>ple,themeanlysistimesforIN56andIN71were65.1\n" +
-				"chars: 44 Y: 202.987 fontSize: 9.763 physicalStyle: null >>and68.8min,buttheSDswere3.2and7.7min,respec-\n" +
-				"chars: 50 Y: 214.947 fontSize: 9.763 physicalStyle: null >>tively.Apparentlytheobservedpositiverelationshipis\n" +
-				"chars: 47 Y: 226.907 fontSize: 9.763 physicalStyle: null >>onlyageneraltrend,notanabsolute.Thescatteringof\n" +
-				"chars: 49 Y: 238.867 fontSize: 9.763 physicalStyle: null >>theplotalsosuggeststhatdifferentmissensemutations\n" +
-				"chars: 43 Y: 250.827 fontSize: 9.763 physicalStyle: null >>intheholinsequencecaninfluenceMLTandSDsome-\n" +
-				"chars: 18 Y: 262.729 fontSize: 9.763 physicalStyle: null >>whatindependently.\n",
+				"TextStructurer: 9chars: 45 Y: 167.106 fontSize: 9.763 >>withseveralinstancesinwhichstrainswithsimilar\n" +
+				"chars: 45 Y: 179.067 fontSize: 9.763 >>MLTsareaccompaniedbyverydifferentSDs.Forexam-\n" +
+				"chars: 43 Y: 191.027 fontSize: 9.763 >>ple,themeanlysistimesforIN56andIN71were65.1\n" +
+				"chars: 44 Y: 202.987 fontSize: 9.763 >>and68.8min,buttheSDswere3.2and7.7min,respec-\n" +
+				"chars: 50 Y: 214.947 fontSize: 9.763 >>tively.Apparentlytheobservedpositiverelationshipis\n" +
+				"chars: 47 Y: 226.907 fontSize: 9.763 >>onlyageneraltrend,notanabsolute.Thescatteringof\n" +
+				"chars: 49 Y: 238.867 fontSize: 9.763 >>theplotalsosuggeststhatdifferentmissensemutations\n" +
+				"chars: 43 Y: 250.827 fontSize: 9.763 >>intheholinsequencecaninfluenceMLTandSDsome-\n" +
+				"chars: 18 Y: 262.729 fontSize: 9.763 >>whatindependently.\n",
 				textStructurerList.get(4).toString());
 	}
 
@@ -235,7 +235,7 @@ public class TextLineGroupTest {
 		List<TextStructurer> splitList = textStructurer.splitOnFontBoldChange(0);
 		Assert.assertEquals("split", 2, splitList.size());
 		Assert.assertEquals("split0", 
-				"TextStructurer: 1chars: 10 Y: 464.578 fontSize: 10.261 physicalStyle: null >>Background\n", 
+				"TextStructurer: 1chars: 10 Y: 464.578 fontSize: 10.261 >>Background\n", 
 				splitList.get(0).toString());
 		TextStructurer split1 = splitList.get(1);
 		List<ScriptLine> split1GroupList = split1.getScriptedLineList();

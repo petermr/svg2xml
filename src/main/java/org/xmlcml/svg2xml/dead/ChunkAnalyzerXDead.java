@@ -12,13 +12,13 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.axisold.GraphPlotBox;
-import org.xmlcml.svg2xml.axisold.SVGLineAnalyzer;
-import org.xmlcml.svg2xml.axisold.SVGPolylineAnalyzer;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.paths.Chunk;
+import org.xmlcml.svg2xml.plot.GraphPlotBox;
+import org.xmlcml.svg2xml.plot.SVGLineAnalyzer;
+import org.xmlcml.svg2xml.plot.SVGPolylineAnalyzer;
 
 public class ChunkAnalyzerXDead{
 

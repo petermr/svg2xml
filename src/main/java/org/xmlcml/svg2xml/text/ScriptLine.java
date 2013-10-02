@@ -174,9 +174,9 @@ public class ScriptLine implements Iterable<TextLine> {
 	
 	public String summaryString() {
 		StringBuilder sb = new StringBuilder("");
-		List<ScriptWord> wordList = this.getWords();
+		List<ScriptWord> scriptWordList = this.getScriptWordList();
 		int i = 0;
-		for (ScriptWord word : wordList) {
+		for (ScriptWord word : scriptWordList) {
 			if (i++ > 0 ) sb.append(" ");
 			sb.append(word.summaryString());
 		}
@@ -278,7 +278,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	}
 	
 	private ScriptLine reportErrorOrMaths(List<ScriptLine> splitArray) {
-		LOG.debug("Maths or table? "+textLineList.size());
+		LOG.trace("Maths or table? "+textLineList.size());
 //		TextLineGroup group = new TextLineGroup();
 		ScriptLine group = null;
 	    splitArray.add(group);
@@ -394,8 +394,8 @@ public class ScriptLine implements Iterable<TextLine> {
 	 * 
 	 * @return
 	 */
-	public List<ScriptWord> getWords() {
-		List<ScriptWord> wordList = new ArrayList<ScriptWord>();
+	public List<ScriptWord> getScriptWordList() {
+		List<ScriptWord> scriptWordList = new ArrayList<ScriptWord>();
 		RealRangeArray rangeArray = this.getWordRangeArray();
 		LOG.trace("WA "+rangeArray);
 		List<SVGText> characters = this.getSVGTextCharacters();
@@ -427,7 +427,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			if (currentRange == null || lowestX <= currentRange.getMax()) {
 				if (word == null) {
 					word = new ScriptWord(nlines);
-					wordList.add(word);
+					scriptWordList.add(word);
 				}
 				if (character == null) {
 					break;
@@ -441,7 +441,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			}
 			if (lowestLine == null && character == null) break;
 		}
-		return wordList;
+		return scriptWordList;
 	}
 
 	public RealRangeArray getWordRangeArray() {
@@ -580,7 +580,7 @@ public class ScriptLine implements Iterable<TextLine> {
 				}
 				if (character != null && currentSpan != null) {
 					currentSpan.addCharacter(character);
-					Double width = TextLine.getWidth(character);
+					Double width = character.getScaledWidth();
 					if (width != null) {
 						lastX = x + width;
 						LOG.trace("   W "+width+" "+lastX);

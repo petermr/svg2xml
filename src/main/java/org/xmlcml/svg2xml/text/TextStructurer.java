@@ -108,6 +108,8 @@ public class TextStructurer {
 	private List<SVGText> rawCharacters;
 	private TextOrientation textOrientation;
 
+	private List<RawWords> rawWordsList;
+
 	/** this COPIES the lines in the textAnalyzer
 	 * this may not be a good idea
 	 * @param textAnalyzer to copy lines from
@@ -668,6 +670,11 @@ public class TextStructurer {
 
 	public static TextStructurer createTextStructurerWithSortedLines(File svgFile, PageAnalyzer pageAnalyzer) {
 		SVGElement svgChunk = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
+		return createTextStructurerWithSortedLines(pageAnalyzer, svgChunk);
+	}
+
+	public static TextStructurer createTextStructurerWithSortedLines(PageAnalyzer pageAnalyzer,
+			SVGElement svgChunk) {
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
 		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters, pageAnalyzer);
 		textStructurer.setSvgChunk(svgChunk);
@@ -1234,6 +1241,39 @@ public class TextStructurer {
 		for (SVGText character : rawCharacters) {
 			character.detach();
 		}
+	}
+
+	/** create list of Phrases from textLines
+	 * 
+	 */
+	public void createRawWordsList() {
+		if (rawWordsList == null) {
+			rawWordsList = new ArrayList<RawWords>();
+			this.getLinesInIncreasingY();
+			for (TextLine textLine : textLineList) {
+				RawWords rawWords = textLine.getRawWords();
+				rawWordsList.add(rawWords);
+			}
+		}
+	}
+
+	public ColumnMaps createColumnMaps() {
+		ColumnMaps columnMaps = new ColumnMaps(this);
+		return columnMaps;
+	}
+
+	public List<Tab> createSingleTabList() {
+		getTextLineList();
+		createRawWordsList();
+		ColumnMaps columnMaps = new ColumnMaps(this);
+		columnMaps.getTabs();
+		List<Tab> tabList = columnMaps.createSingleTabList();
+		return tabList;
+	}
+
+	public List<TabbedTextLine> createTabbedLineList() {
+		getTextLineList();
+		return null;
 	}
 
 }

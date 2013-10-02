@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 import nu.xom.Builder;
@@ -236,6 +237,14 @@ public class Fixtures {
 	
 	public final static String LINEPLOTS_ROOT = "lineplots-1471-2148-11-327";
 	public static final File LINEPLOTS_327_PDF = new File(PDFS_BMC_DIR, LINEPLOTS_ROOT+".pdf");
+
+	public static final File TABLE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/table");
+	public static final File DK_PAGE1_SVG = new File(Fixtures.TABLE_DIR, "dk.page1.svg");
+	public static final File BERICHT_PAGE6_SVG = new File(Fixtures.TABLE_DIR, "bericht.page6.svg");
+	public static final File BERICHT_PAGE22_SVG = new File(Fixtures.TABLE_DIR, "bericht.page22.svg");
+
+	
+// ==================================================	
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {

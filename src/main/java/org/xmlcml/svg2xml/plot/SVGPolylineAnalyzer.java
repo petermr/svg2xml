@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.axisold;
+package org.xmlcml.svg2xml.plot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzerOptions;
 import org.xmlcml.svg2xml.util.GraphUtil;
 
 
-public class SVGPolylineAnalyzer extends SVGPathAnalyzer {
+public class SVGPolylineAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(SVGPolylineAnalyzer.class);
 
@@ -66,6 +66,7 @@ public class SVGPolylineAnalyzer extends SVGPathAnalyzer {
 	private Map<Integer, List<SVGLine>> horizontalMap;
 	private Map<Integer, List<SVGLine>> verticalMap;
 	private boolean mergePolylinesAtContiguousEndPoints = true;
+	private SVGG svgg;
 
 	public SVGPolylineAnalyzer() {
 	}
@@ -185,6 +186,7 @@ public class SVGPolylineAnalyzer extends SVGPathAnalyzer {
 //		}
 	}
 
+	// FIXME not used or tested
 	public void analyzePolylines(SVGG svgg, List<SVGPolyline> polylines, GraphPlotBox plotBox) {
 		Real2Range boxRange = (plotBox == null) ? null : plotBox.getBoxRange();
 		if (boxRange != null)

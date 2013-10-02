@@ -6,8 +6,8 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.axisold.GraphPlotBox;
-import org.xmlcml.svg2xml.axisold.SVGLineAnalyzer;
+import org.xmlcml.svg2xml.plot.GraphPlotBox;
+import org.xmlcml.svg2xml.plot.SVGLineAnalyzer;
 
 public class SVGLineAnalyzerTest {
 
