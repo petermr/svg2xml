@@ -23,10 +23,10 @@ public class PDFAnalyzerTest {
 	@Test
 	@Ignore
 	public void multipleTest() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol2.2013-2014.pdf"));
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol3.2013-2014.pdf"));
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol2.2013-2014.pdf"));
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol3.2013-2014.pdf"));
 //		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol4.2013-2014.pdf"));
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/ipcc/FinalDraft_All.pdf"));
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/ipcc/FinalDraft_All.pdf"));
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.GEO310_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.MATH311_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.TREE313_PDF);
@@ -83,7 +83,7 @@ public class PDFAnalyzerTest {
 	@Ignore // may have cured memory limit?
 	public void testCHBudget() {
 		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf")); // OK
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Banedanmark.pdf")); // OK
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Banedanmark.pdf")); // OK
 //		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/IYR2011DRC.pdf")); // OK
 //		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2010FINAL.pdf"));
 		}

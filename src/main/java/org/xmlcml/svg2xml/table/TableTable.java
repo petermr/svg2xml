@@ -8,13 +8,11 @@ import nu.xom.Element;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -25,6 +23,7 @@ import org.xmlcml.html.HtmlHead;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTh;
+import org.xmlcml.xml.XMLUtil;
 
 import util.Path2ShapeConverter;
 
@@ -300,7 +299,7 @@ public class TableTable extends TableChunk {
 				if (hasOnlyOneRow(htmlElement)) {
 					htmlElement = TableRow.convertBodyHeader(htmlElement);
 				} else {
-					CMLUtil.transferChildren(htmlElement, body);
+					XMLUtil.transferChildren(htmlElement, body);
 				}
 				body.appendChild(htmlElement);
 			} else if (htmlElement instanceof HtmlCaption) {

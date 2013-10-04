@@ -1,42 +1,6 @@
 package org.xmlcml.svg2xml.dead;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import nu.xom.Attribute;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.euclid.EuclidConstants;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.euclid.Real2Array;
-import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.euclid.RealArray;
-import org.xmlcml.euclid.Univariate;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGTSpan;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.container.AbstractContainer;
-import org.xmlcml.svg2xml.container.ScriptContainer;
-import org.xmlcml.svg2xml.page.ChunkAnalyzer;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.paths.Chunk;
-import org.xmlcml.svg2xml.text.TextCoordinate;
-import org.xmlcml.svg2xml.text.TextStructurer;
-
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Multiset;
 
 /** marginally might have useful character analysis routines (single uncomment)
  * 
@@ -332,7 +296,7 @@ public class TextAnalyzerDead {
 //				String ss = s.substring(last, i);
 //				if (ss.trim().length() > 0) {
 //					SVGTSpan tSpan = new SVGTSpan(real2Array.get(last), ss);
-//					CMLUtil.copyAttributes(textOrSpan, tSpan);
+//					XMLUtil.copyAttributes(textOrSpan, tSpan);
 //					tSpan.setId(id+"_"+last);
 //					Real2Array subArray = real2Array.createSubArray(last, i-1);
 //					tSpan.addAttribute(new Attribute(Word.COORDS, subArray.toString()));

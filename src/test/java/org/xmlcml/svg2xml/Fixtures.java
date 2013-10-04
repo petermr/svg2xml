@@ -13,8 +13,11 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.paths.Chunk;
+import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class Fixtures {
 
@@ -101,6 +104,11 @@ public class Fixtures {
 	public static File PAGE3RESULTS_SVG = new File(Fixtures.ANALYZER_DIR, "page3results.svg");
 // text stuff	
 	public static final File TEXT_DIR = new File(SVG2XML_DIR+"text/");
+	public static final File RAWWORDS_SVG = new File(Fixtures.TEXT_DIR, "rawwords.svg");
+	public static final TextLine RAWWORDS_TEXT_LINE = TextStructurer.createTextLine(Fixtures.RAWWORDS_SVG, 0);
+	
+
+
 // whole paper	
 	public static final File PDFS_BMC_DIR = new File(PDFS_DIR, "bmc/");
 	public static final File SVG_BMC_DIR = new File(SVG1_DIR, "bmc/");
@@ -242,6 +250,13 @@ public class Fixtures {
 	public static final File DK_PAGE1_SVG = new File(Fixtures.TABLE_DIR, "dk.page1.svg");
 	public static final File BERICHT_PAGE6_SVG = new File(Fixtures.TABLE_DIR, "bericht.page6.svg");
 	public static final File BERICHT_PAGE22_SVG = new File(Fixtures.TABLE_DIR, "bericht.page22.svg");
+
+	public static final TextStructurer BERICHT_PAGE6_TXTSTR = 
+			TextStructurer.createTextStructurerWithSortedLines(
+					Fixtures.BERICHT_PAGE6_SVG, (PageAnalyzer) null);
+	public final static List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
+	public final static TextLine BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
+
 
 	
 // ==================================================	

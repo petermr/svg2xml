@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.tree;
 
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +10,6 @@ import nu.xom.Element;
 import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
@@ -24,10 +21,12 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
-import org.xmlcml.svg2xml.paths.LineMerger;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.paths.ComplexLine.SideOrientation;
+import org.xmlcml.svg2xml.paths.LineMerger;
 import org.xmlcml.svg2xml.paths.LineMerger.MergeMethod;
+import org.xmlcml.xml.XMLConstants;
+import org.xmlcml.xml.XMLUtil;
 
 public class SVGXTree extends SVGG {
 	
@@ -145,7 +144,7 @@ public class SVGXTree extends SVGG {
 		Element xmlTree = buildXMLTree();
 		if (xmlTree != null) {
 			LOG.trace("TREE "+xmlTree.toXML());
-			CMLUtil.outputQuietly(xmlTree, new File("target/temp.tree.xml"), 1);
+			XMLUtil.outputQuietly(xmlTree, new File("target/temp.tree.xml"), 1);
 			displayTree("target/temp.svg");
 		}
 	}
@@ -165,7 +164,7 @@ public class SVGXTree extends SVGG {
 		if (xmlTree != null) {
 			StringBuilder sb = new StringBuilder();
 			Element element = xmlTree;
-			sb.insert(0,  CMLConstants.S_SEMICOLON);
+			sb.insert(0,  XMLConstants.S_SEMICOLON);
 			processElement(sb, element);
 			s = sb.toString();
 		}
@@ -180,14 +179,14 @@ public class SVGXTree extends SVGG {
 		sb.insert(0, label);
 		Elements childElements = element.getChildElements();
 		if (childElements.size() > 0) {
-			sb.insert(0,CMLConstants.S_RBRAK);
+			sb.insert(0,XMLConstants.S_RBRAK);
 			for (int i = 0; i < childElements.size(); i++) {
 				if (i > 0) {
-					sb.insert(0,  CMLConstants.S_COMMA);
+					sb.insert(0,  XMLConstants.S_COMMA);
 				}
 				processElement(sb, childElements.get(i));
 			}
-			sb.insert(0,CMLConstants.S_LBRAK);
+			sb.insert(0,XMLConstants.S_LBRAK);
 		}
 	}
 	

@@ -1,12 +1,12 @@
 package org.xmlcml.svg2xml.plot;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import nu.xom.Attribute;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.cml.element.CMLArray;
 import org.xmlcml.cml.element.CMLScalar;
 import org.xmlcml.euclid.IntArray;
@@ -36,6 +36,7 @@ import org.xmlcml.svg2xml.text.RawWords;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.words.TypedNumber;
+import org.xmlcml.xml.XMLConstants;
 
 /** an axis on a graph.
  * 
@@ -519,9 +520,9 @@ public class Axis {
 	private void getArraySpacingInValues() {
 		if (arraySpacingInValues == null) {
 			int size = majorTickMarkValuesOld.getSize();
-			if (CMLConstants.XSD_INTEGER.equals(majorTickMarkValuesOld.getDataType())) {
+			if (XMLConstants.XSD_INTEGER.equals(majorTickMarkValuesOld.getDataType())) {
 				arraySpacingInValues = ((double) majorTickMarkValuesOld.getInts()[size-1] - (double) majorTickMarkValuesOld.getInts()[0])  / (double )(size - 1);
-			} else if (CMLConstants.XSD_DOUBLE.equals(majorTickMarkValuesOld.getDataType())) {
+			} else if (XMLConstants.XSD_DOUBLE.equals(majorTickMarkValuesOld.getDataType())) {
 				arraySpacingInValues = ((double) majorTickMarkValuesOld.getDoubles()[size-1] - (double) majorTickMarkValuesOld.getDoubles()[0])  / (double )(size - 1);
 			} 
 			LOG.trace("SCALE/TICK "+arraySpacingInValues);
@@ -627,10 +628,10 @@ public class Axis {
 			String dataType = text.getAttributeValue(TypedNumber.DATA_TYPE);
 			String numbers = text.getAttributeValue(TypedNumber.NUMBERS);
 			LOG.trace("NUMBERS: "+numbers);
-			if (CMLConstants.XSD_INTEGER.equals(dataType)) {
+			if (XMLConstants.XSD_INTEGER.equals(dataType)) {
 				IntArray intArray = new IntArray(numbers);
 				array = new CMLArray(intArray.getArray());
-			} else if (CMLConstants.XSD_DOUBLE.equals(dataType)) {
+			} else if (XMLConstants.XSD_DOUBLE.equals(dataType)) {
 				RealArray realArray = new RealArray(numbers);
 				array = new CMLArray(realArray.getArray());
 			}
@@ -641,10 +642,10 @@ public class Axis {
 				for (SVGElement numericText : numericTexts) {
 					values.add(TypedNumber.getNumericValue(numericText));
 				}
-				if (CMLConstants.XSD_INTEGER.equals(dataType)) {
+				if (XMLConstants.XSD_INTEGER.equals(dataType)) {
 					IntArray intArray = new IntArray(values.toArray(new String[0]));
 					array = new CMLArray(intArray.getArray());
-				} else if (CMLConstants.XSD_DOUBLE.equals(dataType)) {
+				} else if (XMLConstants.XSD_DOUBLE.equals(dataType)) {
 					RealArray realArray = new RealArray(values.toArray(new String[0]));
 					array = new CMLArray(realArray.getArray());
 				}

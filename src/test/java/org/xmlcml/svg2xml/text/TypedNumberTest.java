@@ -6,7 +6,6 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
@@ -14,6 +13,7 @@ import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.words.TypedNumber;
 import org.xmlcml.svg2xml.words.TypedNumberList;
+import org.xmlcml.xml.XMLConstants;
 
 public class TypedNumberTest {
 
@@ -25,7 +25,7 @@ public class TypedNumberTest {
 		Integer power = 4;
 		TypedNumber typedNumber = TypedNumber.createAndParseExponentialForm(abscissaText, power);
 		Assert.assertNotNull("typedNumber", typedNumber);
-		Assert.assertEquals("typedNumber type", CMLConstants.XSD_DOUBLE, typedNumber.getDataType());
+		Assert.assertEquals("typedNumber type", XMLConstants.XSD_DOUBLE, typedNumber.getDataType());
 		Double d = (Double) typedNumber.getNumber();
 		Assert.assertEquals("abscissa", 12300.0, d, EPS);
 	}
@@ -36,7 +36,7 @@ public class TypedNumberTest {
 		Integer power = -4;
 		TypedNumber typedNumber = TypedNumber.createAndParseExponentialForm(abscissaText, power);
 		Assert.assertNotNull("typedNumber", typedNumber);
-		Assert.assertEquals("typedNumber type", CMLConstants.XSD_DOUBLE, typedNumber.getDataType());
+		Assert.assertEquals("typedNumber type", XMLConstants.XSD_DOUBLE, typedNumber.getDataType());
 		Double d = (Double) typedNumber.getNumber();
 		Assert.assertEquals("abscissa", 0.000123, d, EPS);
 	}
@@ -59,7 +59,7 @@ public class TypedNumberTest {
 //		SubSupAnalyzer.markSubSup(SubSup.SUPERSCRIPT, tSpans[1]);
 //		TypedNumber typedNumber = TypedNumber.interpretExponentialNotation(spanList);
 //		Assert.assertNotNull("typedNumber", typedNumber);
-//		Assert.assertEquals("typedNumber type", CMLConstants.XSD_DOUBLE, typedNumber.getDataType());
+//		Assert.assertEquals("typedNumber type", XMLConstants.XSD_DOUBLE, typedNumber.getDataType());
 //		Double d = (Double) typedNumber.getNumber();
 //		Assert.assertEquals("abscissa", 12300.0, d, EPS);
 	}
@@ -88,8 +88,8 @@ public class TypedNumberTest {
 		TypedNumberList typedNumberList = TypedNumberList.createList(spanList);
 		Assert.assertNotNull("typedNumberList", typedNumberList);
 		Assert.assertEquals("typedNumberList", 3, (int) typedNumberList.size());
-		Assert.assertEquals("typedNumberList", CMLConstants.XSD_INTEGER, typedNumberList.getDataType());
-		Assert.assertEquals("typedNumberList", CMLConstants.XSD_INTEGER, typedNumberList.get(0).getDataType());
+		Assert.assertEquals("typedNumberList", XMLConstants.XSD_INTEGER, typedNumberList.getDataType());
+		Assert.assertEquals("typedNumberList", XMLConstants.XSD_INTEGER, typedNumberList.get(0).getDataType());
 		IntArray intArray = typedNumberList.getIntArray();
 		Assert.assertNull("reals", typedNumberList.getRealArray());
 		Assert.assertNotNull("integers", intArray);
@@ -109,8 +109,8 @@ public class TypedNumberTest {
 		TypedNumberList typedNumberList = TypedNumberList.createList(spanList);
 		Assert.assertNotNull("typedNumberList", typedNumberList);
 		Assert.assertEquals("typedNumberList", 3, (int) typedNumberList.size());
-		Assert.assertEquals("typedNumberList", CMLConstants.XSD_DOUBLE, typedNumberList.getDataType());
-		Assert.assertEquals("typedNumberList", CMLConstants.XSD_DOUBLE, typedNumberList.get(0).getDataType());
+		Assert.assertEquals("typedNumberList", XMLConstants.XSD_DOUBLE, typedNumberList.getDataType());
+		Assert.assertEquals("typedNumberList", XMLConstants.XSD_DOUBLE, typedNumberList.get(0).getDataType());
 		Assert.assertNull("integers", typedNumberList.getIntArray());
 		RealArray realArray = typedNumberList.getRealArray();
 		Assert.assertNotNull("reals", realArray);
@@ -130,8 +130,8 @@ public class TypedNumberTest {
 		TypedNumberList typedNumberList = TypedNumberList.createList(spanList);
 		Assert.assertNotNull("typedNumberList", typedNumberList);
 		Assert.assertEquals("typedNumberList", 3, (int) typedNumberList.size());
-		Assert.assertEquals("typedNumberList", CMLConstants.XSD_DOUBLE, typedNumberList.getDataType());
-		Assert.assertEquals("typedNumberList", CMLConstants.XSD_DOUBLE, typedNumberList.get(0).getDataType());
+		Assert.assertEquals("typedNumberList", XMLConstants.XSD_DOUBLE, typedNumberList.getDataType());
+		Assert.assertEquals("typedNumberList", XMLConstants.XSD_DOUBLE, typedNumberList.get(0).getDataType());
 	}
 	
 	@Test
@@ -154,7 +154,7 @@ public class TypedNumberTest {
 		TypedNumber typedNumber = TypedNumber.createFromText(text);
 		Assert.assertNotNull("typedNumber", typedNumber);
 		Assert.assertEquals("typedNumber", 3, (int) (Integer) typedNumber.getNumber());
-		Assert.assertEquals("typedNumber", CMLConstants.XSD_INTEGER, typedNumber.getDataType());
+		Assert.assertEquals("typedNumber", XMLConstants.XSD_INTEGER, typedNumber.getDataType());
 	}
 	
 	@Test
@@ -164,7 +164,7 @@ public class TypedNumberTest {
 		TypedNumber typedNumber = TypedNumber.createFromText(text);
 		Assert.assertNotNull("typedNumber", typedNumber);
 		Assert.assertEquals("typedNumber", 3.1, (double) (Double) typedNumber.getNumber(), EPS);
-		Assert.assertEquals("typedNumber", CMLConstants.XSD_DOUBLE, typedNumber.getDataType());
+		Assert.assertEquals("typedNumber", XMLConstants.XSD_DOUBLE, typedNumber.getDataType());
 	}
 	
 	@Test

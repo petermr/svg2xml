@@ -1,18 +1,6 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import nu.xom.Attribute;
-
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlP;
 
 /** A paragraph groups Words into a section determined by geometrical features
  * 
@@ -62,7 +50,7 @@ public class ParagraphDead extends SVGG {
 //		} else {
 //			Word lastWord = (wordList.size() == 0) ? null : wordList.get(wordList.size()-1); 
 //			// hyphenated?
-//			if (lastWord != null && lastWord.endsWith(CMLConstants.S_MINUS) &&
+//			if (lastWord != null && lastWord.endsWith(XMLConstants.S_MINUS) &&
 //				Character.isLowerCase(word.getCharAt(0))) {
 //					String lastString = lastWord.getStringValue();
 //					String thisString = word.getStringValue();
@@ -111,7 +99,7 @@ public class ParagraphDead extends SVGG {
 //			int i = 0;
 //			for (Word word : wordList) {
 //				if (i++ > 0) {
-//					sb.append(CMLConstants.S_SPACE);
+//					sb.append(XMLConstants.S_SPACE);
 //				}
 //				sb.append(word.getStringValue());
 //			}

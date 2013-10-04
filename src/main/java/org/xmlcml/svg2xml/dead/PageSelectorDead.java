@@ -1,7 +1,5 @@
 package org.xmlcml.svg2xml.dead;
 
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
 
 
 public class PageSelectorDead {
@@ -89,8 +87,8 @@ public class PageSelectorDead {
 //		setAllFalse();
 //		boolean ok = couldInterpretAsKeyword(range);
 //		if (!ok) {
-//			range = range.replace(CMLConstants.S_WHITEREGEX, "");
-//			String[] ranges = range.split(CMLConstants.S_COMMA);
+//			range = range.replace(XMLConstants.S_WHITEREGEX, "");
+//			String[] ranges = range.split(XMLConstants.S_COMMA);
 //			Integer last = -1;
 //			for (String rangeComponent : ranges) {
 //				last = interpretRangeComponent(range, last, rangeComponent);
@@ -120,12 +118,12 @@ public class PageSelectorDead {
 //		if (getSize() == 0) {
 //			return 0;
 //		}
-//		String[] parts = r.split(CMLConstants.S_MINUS);
+//		String[] parts = r.split(XMLConstants.S_MINUS);
 //		try {
 //			Integer i0 = new Integer(parts[0]);
 //			Integer i1 = null;
 //			if (parts.length == 1) {
-//				i1 = (r.endsWith(CMLConstants.S_MINUS)) ? size-1 : null;
+//				i1 = (r.endsWith(XMLConstants.S_MINUS)) ? size-1 : null;
 //				setTrue(i0);
 //			} else if (parts.length == 2) {
 //				if (parts[1].length() == 0) {

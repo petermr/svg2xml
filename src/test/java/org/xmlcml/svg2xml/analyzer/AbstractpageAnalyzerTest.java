@@ -4,15 +4,15 @@ import junit.framework.Assert;
 import nu.xom.Element;
 
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
+import org.xmlcml.xml.XMLUtil;
 
 public class AbstractpageAnalyzerTest {
 
 	  
 	  @Test
 	  public void testTidyTagWhiteTag() {
-		  Element element = CMLUtil.parseXML("" +
+		  Element element = XMLUtil.parseXML("" +
 		  "<p>Borer" + 
 		  " <i>et</i>" +
 		  " <i>al</i>" +
@@ -31,7 +31,7 @@ public class AbstractpageAnalyzerTest {
 	  
 	  @Test
 	  public void testTidyTagWhiteTag0() {
-		  Element element = CMLUtil.parseXML("" +
+		  Element element = XMLUtil.parseXML("" +
 		  "<p>"+
 		  " <i>ONE</i>" +
 		  " <i>TWO</i>" +

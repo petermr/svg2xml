@@ -2,15 +2,14 @@ package org.xmlcml.svg2xml.words;
 
 import java.util.List;
 
-
 import nu.xom.Attribute;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.xml.XMLConstants;
 
 /** may be obsolete, but not checked */
 public class TypedNumber {
@@ -45,13 +44,13 @@ public class TypedNumber {
 
 	public TypedNumber(Double dubble) {
 		this.number = dubble;
-		dataType = CMLConstants.XSD_DOUBLE;
+		dataType = XMLConstants.XSD_DOUBLE;
 	}
 
 	public TypedNumber(Double abscissa, Integer power) {
 		Double exponentiated  =Math.pow(10.0, (double) power);
 		this.number = abscissa * exponentiated;
-		dataType = CMLConstants.XSD_DOUBLE;
+		dataType = XMLConstants.XSD_DOUBLE;
 	}
 
 	private void createFromString(String value) {
@@ -146,7 +145,7 @@ public class TypedNumber {
 			try {
 				Double dubble = new Double(value);
 				number = dubble;
-				dataType = CMLConstants.XSD_DOUBLE;
+				dataType = XMLConstants.XSD_DOUBLE;
 			} catch (Exception e1) {
 			}
 		}
@@ -156,7 +155,7 @@ public class TypedNumber {
 		try {
 			Integer integer = new Integer(value);
 			number = integer;
-			dataType = CMLConstants.XSD_INTEGER;
+			dataType = XMLConstants.XSD_INTEGER;
 		} catch (Exception e) {
 		}
 	}
@@ -166,9 +165,9 @@ public class TypedNumber {
 	}
 
 	public void convertToDouble() {
-		if (!(number instanceof Double) || !CMLConstants.XSD_DOUBLE.equals(dataType)) {
+		if (!(number instanceof Double) || !XMLConstants.XSD_DOUBLE.equals(dataType)) {
 			number = new Double((Integer)number);
-			dataType = CMLConstants.XSD_DOUBLE;
+			dataType = XMLConstants.XSD_DOUBLE;
 		}
 	}
 

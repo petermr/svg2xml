@@ -1,10 +1,8 @@
 package org.xmlcml.svg2xml.util;
 
 import java.io.File;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import nu.xom.Builder;
@@ -13,8 +11,6 @@ import nu.xom.Element;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Line2;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
@@ -22,12 +18,13 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.euclid.Vector2;
-import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGScript;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.page.BoundingBoxManager;
+import org.xmlcml.xml.XMLConstants;
 
 public class GraphUtil {
 	private final static Logger LOG = Logger.getLogger(GraphUtil.class);
@@ -129,7 +126,7 @@ public class GraphUtil {
 	public static Nodes query(SVGElement svgElement, String xpath) {
 		Nodes nodes = null;
 		try {
-			nodes = svgElement.query(xpath, CMLConstants.SVG_XPATH);
+			nodes = svgElement.query(xpath, XMLConstants.SVG_XPATH);
 		} catch (Exception e) {
 			throw new RuntimeException("Error in xpath: "+xpath);
 		}
@@ -199,7 +196,7 @@ public class GraphUtil {
 	}
 
 	private static void addZoomScript(SVGElement svgElement) {
-		svgElement.addNamespaceDeclaration(CMLConstants.XLINK_PREFIX, CMLConstants.XLINK_NS);
+		svgElement.addNamespaceDeclaration(XMLConstants.XLINK_PREFIX, XMLConstants.XLINK_NS);
 		SVGScript scriptRefElement = new SVGScript();
 		scriptRefElement.setHRef(SVG_PAN_JS);
 		svgElement.appendChild(scriptRefElement);

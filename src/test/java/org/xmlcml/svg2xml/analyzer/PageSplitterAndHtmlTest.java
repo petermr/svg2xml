@@ -10,7 +10,6 @@ import nu.xom.Nodes;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.cml.testutil.JumboTestUtils;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -22,6 +21,7 @@ import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.xml.XMLUtil;
 
 public class PageSplitterAndHtmlTest {
 
@@ -99,7 +99,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore // needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple2() {
-		Element ref = CMLUtil.parseXML(
+		Element ref = XMLUtil.parseXML(
                 "<div xmlns='http://www.w3.org/1999/xhtml'>\n"+
                 "<p>\n"+
                 "<span style='font-size:7.0px;font-family:Helvetica;'>Initiation</span>\n"+
@@ -121,7 +121,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore // needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple3() {
-		Element ref = CMLUtil.parseXML("<p xmlns='http://www.w3.org/1999/xhtml'>" +
+		Element ref = XMLUtil.parseXML("<p xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<span style='font-size:7.0px;font-family:Helvetica;'>Monomer</span>" +
 				"</p>");
 		testMultipleLineInMixedChunk(3, 1, ref);
@@ -130,7 +130,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore // needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple5() {
-		Element ref = CMLUtil.parseXML("" +
+		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
 				"<span style='font-size:7.0px;font-family:Helvetica;'>P</span>" +
@@ -157,7 +157,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple7() {
-		Element ref = CMLUtil.parseXML("" +
+		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
 				"<sub>" +
@@ -222,7 +222,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple9() {
-		Element ref = CMLUtil.parseXML("" +
+		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
 				"<span style='font-size:8.0px;font-family:Helvetica;'>t h g</span>" +
@@ -276,7 +276,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore // needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple10() {
-		Element ref = CMLUtil.parseXML("" +
+		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
 				"<span style='font-size:8.468px;font-style:bold;font-family:TimesNewRoman;'>Fig. 1. </span>" +
@@ -307,7 +307,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple11() {
-		Element ref = CMLUtil.parseXML("" +
+		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
 				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>the synthesis of blocks, stars, or other polymers of complex architecture. New materials that have the potential of revolutionizing a large part of the polymer industry are beginning to appear. Possible applications range from novel surfactants, dispersants, coatings, and adhesives, to biomaterials, membranes, drug delivery media, and materials for microelectronics.</span>" +
@@ -365,7 +365,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple12() {
-		Element ref = CMLUtil.parseXML("" +
+		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
 				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>free radicals to undergo radical–radical termination means that, for the case of radical polymerization, all chains cannot be simultaneously active. To confer living character on a radical polymerization, it is necessary to suppress or render insignificant all processes that terminate chains irreversibly. Thus, living radical polymerization only becomes possible in the presence of reagents that react with the propagating radicals (P</span>" +
@@ -424,7 +424,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple13() {
-		Element ref = CMLUtil.parseXML("" +
+		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
 				"<sup>" +

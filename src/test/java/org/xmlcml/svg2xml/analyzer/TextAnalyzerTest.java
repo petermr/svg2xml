@@ -1,30 +1,25 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 import junit.framework.Assert;
-import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.cml.testutil.JumboTestUtils;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.test.StringTestBase;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextCoordinate;
 import org.xmlcml.svg2xml.text.TextLine;
-import org.xmlcml.svg2xml.text.TextStructurer;
-import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextLineSet;
+import org.xmlcml.svg2xml.text.TextStructurer;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
@@ -510,7 +505,7 @@ public class TextAnalyzerTest {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 //		TextLine largeLine = textStructurer.getLinesWithLargestFont().get(0);
 //		HtmlElement p = largeLine.createHtmlLine();
-//		Element ref = CMLUtil.parseXML(
+//		Element ref = XMLUtil.parseXML(
 //				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
 //"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The rate constant is 0.61795 mg L</span>" +
 //"<sup>" +
@@ -536,7 +531,7 @@ public class TextAnalyzerTest {
 //	public void testCreateHTML1() {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 //		HtmlElement p = textStructurer.getLinesWithLargestFont().get(1).createHtmlLine();
-//		Element ref = CMLUtil.parseXML(
+//		Element ref = XMLUtil.parseXML(
 //				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
 //				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The temperature dependence of the rate constants is described</span>"+
 //			"</p>" +
@@ -551,7 +546,7 @@ public class TextAnalyzerTest {
 //	public void testCreateHTML2() {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 //		HtmlElement p = textStructurer.getLinesWithLargestFont().get(2).createHtmlLine();
-//		Element ref = CMLUtil.parseXML(""+
+//		Element ref = XMLUtil.parseXML(""+
 //		"<p xmlns='http://www.w3.org/1999/xhtml'>" +
 //		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>by the Arrhenius equation </span>" +
 //		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
@@ -591,7 +586,7 @@ public class TextAnalyzerTest {
 //	public void testCreateHTML5() {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 //		HtmlElement p = textStructurer.getLinesWithLargestFont().get(5).createHtmlLine();
-//		Element ref = CMLUtil.parseXML(
+//		Element ref = XMLUtil.parseXML(
 //				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
 //				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>130 and 200</span>" +
 //				"<sup>" +
@@ -865,7 +860,7 @@ public class TextAnalyzerTest {
 //		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 //		List<ScriptLine> textLineGroupList = textStructurer.getScriptedLineList();
 //		HtmlElement divElement = TextStructurer.createHtmlDiv(textLineGroupList);
-//		Element ref = CMLUtil.parseQuietlyToDocument(new File("src/test/resources/org/xmlcml/svg2xml/analyzer/textLineGroup0.html")).getRootElement();
+//		Element ref = XMLUtil.parseQuietlyToDocument(new File("src/test/resources/org/xmlcml/svg2xml/analyzer/textLineGroup0.html")).getRootElement();
 //		JumboTestUtils.assertEqualsCanonically("html", ref, divElement, true);
 //	}
 	

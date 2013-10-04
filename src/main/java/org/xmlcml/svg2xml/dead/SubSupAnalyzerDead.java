@@ -1,28 +1,5 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import nu.xom.Attribute;
-import nu.xom.ParentNode;
-
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.euclid.Real;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGTSpan;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.page.BoundingBoxManager;
-import org.xmlcml.svg2xml.page.ChunkAnalyzer;
-import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
-
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
 
 public class SubSupAnalyzerDead {
 
@@ -120,7 +97,7 @@ public class SubSupAnalyzerDead {
 //				for (SVGText text : lineTexts) {
 //					text.detach();
 //					SVGTSpan tSpan = new SVGTSpan();
-//					CMLUtil.copyAttributes(text, tSpan);
+//					XMLUtil.copyAttributes(text, tSpan);
 //					tSpan.setText(text.getValue());
 //					text1.appendChild(tSpan);
 //				}

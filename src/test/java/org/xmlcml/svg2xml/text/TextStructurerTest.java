@@ -129,15 +129,15 @@ public class TextStructurerTest {
 	}
 
 	@Test
+	@Ignore
 	public void testWordListCollection() {
 		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.BERICHT_PAGE22_SVG, (PageAnalyzer) null);
-//		List<Tab> tabList = textStructurer.createSingleTabList();
-//		for (Tab tab : tabList) {
-//			System.out.print(tab+" . ");
-//		}
-//		System.out.println();
+						Fixtures.BERICHT_PAGE6_SVG, (PageAnalyzer) null);
+		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY();
+		for (int i = 0; i < textLineList.size(); i++) {
+			System.out.println(">"+i+"> "+textLineList.get(i));
+		}
 
 	}
 

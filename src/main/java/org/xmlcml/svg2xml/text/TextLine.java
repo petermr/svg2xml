@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.PrintStream;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -17,8 +16,6 @@ import nu.xom.Element;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
@@ -32,10 +29,10 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
-import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
+import org.xmlcml.xml.XMLConstants;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -546,7 +543,7 @@ public class TextLine implements Iterable<SVGText> {
 			for (int i = 0; i < textList.size() - 1; i++) {
 				SVGText charx = textList.get(i);
 				String text = charx.getText();
-				if (CMLConstants.S_SPACE.equals(charx.getText())) {
+				if (XMLConstants.S_SPACE.equals(charx.getText())) {
 					spaceWidthArray.addElement(characterSeparationArray.elementAt(i));
 				}
 			}
@@ -562,7 +559,7 @@ public class TextLine implements Iterable<SVGText> {
 //	 */
 //	private void addSpaceCharacter(List<SVGText> newCharacters, double spaceX, SVGElement templateText) {
 //		SVGText spaceText = new SVGText();
-//		CMLUtil.copyAttributes(templateText, spaceText);
+//		XMLUtil.copyAttributes(templateText, spaceText);
 //		spaceText.setText(" ");
 //		spaceText.setX(spaceX);
 //		PDF2SVGUtil.setSVGXAttribute(spaceText, PDF2SVGUtil.CHARACTER_WIDTH, String.valueOf(SPACE_WIDTH1000));
@@ -977,5 +974,29 @@ public class TextLine implements Iterable<SVGText> {
 			separationArray.addElement(space);
 		}
 		return separationArray;
+	}
+
+	public List<Phrase> createPhraseList() {
+		List<Phrase> phraseList = new ArrayList<Phrase>();
+		RawWords rawWords = this.getRawWords();
+		for (Word word : rawWords) {
+			Phrase phrase = word.createPhrase();
+			phraseList.add(phrase);
+		}
+		return phraseList;
+	}
+	
+	public List<LineChunk> getLineChunks() {
+		List<LineChunk> lineChunkList = new ArrayList<LineChunk>();
+		List<Phrase> phraseList = this.createPhraseList();
+		for (int i = 0; i < phraseList.size(); i++) {
+			Phrase phrase = phraseList.get(i);
+			if (i > 0) {
+				Blank blank = phraseList.get(i - 1).createBlankBetween(phrase);
+				lineChunkList.add(blank);
+			}
+			lineChunkList.add(phrase);
+		}
+		return lineChunkList;
 	}
 }

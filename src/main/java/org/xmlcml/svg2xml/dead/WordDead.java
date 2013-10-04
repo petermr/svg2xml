@@ -1,20 +1,6 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.util.ArrayList;
-
-import java.util.List;
-
-import nu.xom.Attribute;
-
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.euclid.Real;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.euclid.Real2Array;
-import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGText;
 
 /** a contiguous set of characters with no intervening spaces
  * managaed as a <g> element
@@ -100,7 +86,7 @@ public class WordDead extends SVGG {
 //		if (t.getXY() == null) {
 //			throw new RuntimeException("no coords");
 //		}
-//		CMLUtil.copyAttributes(t, this.svgText);
+//		XMLUtil.copyAttributes(t, this.svgText);
 //		svgText.setId("w_"+t.getId());
 ////		svgText.debug("SVGT");
 //	}

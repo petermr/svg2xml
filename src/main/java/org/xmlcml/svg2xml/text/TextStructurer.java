@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import nu.xom.Element;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
@@ -28,9 +26,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.ScriptContainer;
-import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
-import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
@@ -1246,7 +1242,7 @@ public class TextStructurer {
 	/** create list of Phrases from textLines
 	 * 
 	 */
-	public void createRawWordsList() {
+	public List<RawWords> createRawWordsList() {
 		if (rawWordsList == null) {
 			rawWordsList = new ArrayList<RawWords>();
 			this.getLinesInIncreasingY();
@@ -1255,6 +1251,7 @@ public class TextStructurer {
 				rawWordsList.add(rawWords);
 			}
 		}
+		return rawWordsList;
 	}
 
 	public ColumnMaps createColumnMaps() {
@@ -1274,6 +1271,21 @@ public class TextStructurer {
 	public List<TabbedTextLine> createTabbedLineList() {
 		getTextLineList();
 		return null;
+	}
+
+	/** convenience method for reading a page and extracting a line.
+	 * 
+	 * <p>Perhaps mainly used in test.</p>
+	 * 
+	 * @param svgFile
+	 * @return
+	 */
+	public static TextLine createTextLine(File svgFile, int lineNumber) {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						svgFile, (PageAnalyzer) null);
+		List<TextLine> textLines = textStructurer.getLinesInIncreasingY();
+		return textLines.get(lineNumber);
 	}
 
 }

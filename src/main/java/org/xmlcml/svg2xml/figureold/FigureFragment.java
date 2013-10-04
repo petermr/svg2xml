@@ -9,7 +9,6 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGElement;
@@ -27,6 +26,7 @@ import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.util.GraphUtil;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
+import org.xmlcml.xml.XMLConstants;
 
 public class FigureFragment {
 
@@ -276,10 +276,10 @@ public class FigureFragment {
 						if (PROTEIN1_CHARS.indexOf(value) != -1) {
 							protein1CharList.add(value);
 						}
-					} else if (value.indexOf(CMLConstants.S_SPACE) == -1) {
+					} else if (value.indexOf(XMLConstants.S_SPACE) == -1) {
 						singleWordList.add(value);
 					} else {
-						String[] words = value.split(CMLConstants.S_WHITEREGEX);
+						String[] words = value.split(XMLConstants.S_WHITEREGEX);
 						if (words.length == 2) {
 							word2List.add(value);
 						} else {

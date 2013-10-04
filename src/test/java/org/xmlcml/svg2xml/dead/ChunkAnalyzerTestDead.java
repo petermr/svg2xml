@@ -1,29 +1,5 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.io.FileOutputStream;
-
-import java.util.List;
-
-import junit.framework.Assert;
-
-import org.apache.log4j.Logger;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.graphics.svg.SVGDefs;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGRect;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.dead.ChunkAnalyzerXDead;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
-import org.xmlcml.svg2xml.paths.Chunk;
-import org.xmlcml.svg2xml.text.TextLine;
 
 //@Ignore //uses old code
 public class ChunkAnalyzerTestDead {

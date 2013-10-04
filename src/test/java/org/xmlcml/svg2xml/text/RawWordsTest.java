@@ -1,25 +1,21 @@
 package org.xmlcml.svg2xml.text;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.svg2xml.Fixtures;
-
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Multiset.Entry;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.xml.XMLUtil;
 
 public class RawWordsTest {
 
 	public static RawWords RAW_WORDS = TextLineTest.PAGE_TEXT_LINE.getRawWords();
 	public static RawWords RAW_WORDS1 = TextLineTest.PAGE_TEXT_LINE1.getRawWords();
 	public static List<TextLine> DK_LIST = TextLine.createSortedTextLineList(
-			CMLUtil.parseQuietlyToDocument(Fixtures.DK_PAGE1_SVG).getRootElement());
+			XMLUtil.parseQuietlyToDocument(Fixtures.DK_PAGE1_SVG).getRootElement());
 
 
 	@Test
@@ -109,4 +105,40 @@ public class RawWordsTest {
 //		Assert.assertEquals("sets", 11, startSet.entrySet().size());
 //		System.out.println(startSet);
 	}
+	
+	@Test
+	public void testPhrase() {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.RAWWORDS_SVG, (PageAnalyzer) null);
+		RawWords rawWords = textStructurer.createRawWordsList().get(0);
+		Word word = rawWords.get(0);
+		Phrase phrase = word.createPhrase();
+		Assert.assertEquals("phrase", "{(Phenotypic).(tarsus).((mm))}", phrase.toString());
+		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phrase.getPrintableString());
+		List<Word> wordList = phrase.getWordList();
+		Assert.assertEquals("phrase", 3, wordList.size());
+		Assert.assertEquals("word0", "Phenotypic", wordList.get(0).toString());
+		Assert.assertEquals("word1", "tarsus", wordList.get(1).toString());
+		Assert.assertEquals("word2", "(mm)", wordList.get(2).toString());
+	}
+	
+	@Test
+	public void testPhrase1() {
+		TextLine textLine = Fixtures.BERICHT_PAGE6_34_TEXTLINE;
+		RawWords rawWords = textLine.getRawWords();
+		Assert.assertEquals("rawSpaces", "{(Total Topf 1)...........................(231).....(343).....(453).....(491)}",
+				rawWords.toString());
+		Word word0 = rawWords.get(0);
+		Assert.assertEquals("word0", "Total Topf 1", word0.toString());
+		Phrase phrase0 = word0.createPhrase();
+		Assert.assertEquals("phrase", "{(Total).(Topf).(1)}", phrase0.toString());
+		Assert.assertEquals("phrase", "Total Topf 1", phrase0.getPrintableString());
+		Assert.assertEquals("word1", "231", rawWords.get(1).createPhrase().getPrintableString());
+		Assert.assertEquals("word1", "343", rawWords.get(2).createPhrase().getPrintableString());
+		Assert.assertEquals("word1", "453", rawWords.get(3).createPhrase().getPrintableString());
+		Assert.assertEquals("word1", "491", rawWords.get(4).createPhrase().getPrintableString());
+	}
+	
+	
 }

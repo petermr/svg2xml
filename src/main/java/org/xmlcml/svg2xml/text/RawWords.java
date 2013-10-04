@@ -147,8 +147,7 @@ public class RawWords implements Iterable<Word> {
 				sb.append(".");
 			}
 		}
-		int elem = wordList.size() - 1;
-		sb.append("("+wordList.get(elem).toString()+")");
+		sb.append("("+wordList.get(wordList.size() - 1).toString()+")");
 		sb.append("}");
 		return sb.toString();
 	}
@@ -187,6 +186,24 @@ public class RawWords implements Iterable<Word> {
 			realArray.addElement(d);
 		}
 		return realArray;
+	}
+
+	/** some PDFs have explicit space characters, which are eliminated.
+	 * 
+	 * <p>
+	 * Multiple spaces are treated as single. Hopefully we'll deal with 
+	 * multiple spaces later if they matter.
+	 * </p>
+	 * 
+	 * @return new RawWords 
+	 */
+	public List<Phrase> createPhrases() {
+		List<Phrase> phraseList = new ArrayList<Phrase>();
+		for (Word word : wordList) {
+			Phrase phrase = word.createPhrase();
+			phraseList.add(phrase);
+		}
+		return phraseList;
 	}
 
 	

@@ -1,15 +1,5 @@
 package org.xmlcml.svg2xml.font.old;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import nu.xom.Element;
-import nu.xom.Nodes;
-
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGPath;
 
 /** a tool to decipher fonts
  * maybe obsolete
@@ -59,7 +49,7 @@ public class Equivalence {
 //		}
 //		textElement = (Element) textNodes.get(0);
 //		// remove all whitespace
-//		textString = textElement.getValue().replaceAll(CMLConstants.S_WHITEREGEX, "");
+//		textString = textElement.getValue().replaceAll(XMLConstants.S_WHITEREGEX, "");
 //		Nodes paths = equivalence.query("./*[local-name()='pathList']/*[local-name()='path']");
 //		if (paths.size() != textString.length()) {
 //			throw new RuntimeException("text string length "+textString.length()+" != path count "+paths.size());

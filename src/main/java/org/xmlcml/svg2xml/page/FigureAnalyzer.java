@@ -4,23 +4,13 @@ import java.io.FileOutputStream;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import nu.xom.Attribute;
-
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlA;
 import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlImg;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.svg2xml.dead.CaptionDead;
 import org.xmlcml.svg2xml.figure.FigureCaption;
 import org.xmlcml.svg2xml.figure.FigureComponent;
 import org.xmlcml.svg2xml.figure.FigureGraphic;
-import org.xmlcml.svg2xml.figureold.Figure;
-import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.text.ScriptLine;
 
 /**

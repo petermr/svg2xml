@@ -7,13 +7,12 @@ import junit.framework.Assert;
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.xml.XMLUtil;
 
 /** 
  * test for TableChunkList
@@ -26,7 +25,7 @@ public class TableTableTest {
 	
 	@Test
 	public void testTable0() {
-		Element element = CMLUtil.parseQuietlyToDocument(TableFixtures.TABLEFILE).getRootElement();
+		Element element = XMLUtil.parseQuietlyToDocument(TableFixtures.TABLEFILE).getRootElement();
 		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
 		//svgElement.debug("TAB");
 		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgElement);
@@ -89,7 +88,7 @@ public class TableTableTest {
 // ======================utils==================================
 	
 	private TableTable createTable(File file) {
-		Element element = CMLUtil.parseQuietlyToDocument(file).getRootElement();
+		Element element = XMLUtil.parseQuietlyToDocument(file).getRootElement();
 		TableTable table = TableTable.createTableTable(element);
 		return table;
 	}

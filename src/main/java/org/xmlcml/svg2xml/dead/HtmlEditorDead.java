@@ -1,40 +1,5 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import nu.xom.Builder;
-import nu.xom.Element;
-import nu.xom.Nodes;
-
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlLi;
-import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.indexer.FigureIndexer;
-import org.xmlcml.svg2xml.indexer.TableIndexer;
-import org.xmlcml.svg2xml.page.ChunkAnalyzer;
-import org.xmlcml.svg2xml.page.FigureAnalyzer;
-import org.xmlcml.svg2xml.page.ImageAnalyzer;
-import org.xmlcml.svg2xml.page.MixedAnalyzer;
-import org.xmlcml.svg2xml.page.ShapeAnalyzer;
-import org.xmlcml.svg2xml.page.TableAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.pdf.ChunkId;
-import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.pdf.PDFAnalyzerIO;
-import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class HtmlEditorDead {
 
@@ -334,7 +299,7 @@ public class HtmlEditorDead {
 //			// transfer any existing id and class attribute
 //			HtmlElement oldHtmlElement = tableHtmlAnalyzer.createHtmlElement();
 //			if (oldHtmlElement != null) {
-//				CMLUtil.copyAttributes(oldHtmlElement, htmlElement);
+//				XMLUtil.copyAttributes(oldHtmlElement, htmlElement);
 //			}
 //			tableHtmlAnalyzer.setHtmlElement(htmlElement);
 //		}

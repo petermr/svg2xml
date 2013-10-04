@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.paths;
 
 import java.util.List;
 
+
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGG;
@@ -23,6 +24,7 @@ public class SVGLineAnalyzerTest {
 	
 	@Test
 	public void testFindAxesBadEps() {
+		
 		SVGG g = SVGG.createSVGGChunk(Fixtures.LINEPLOTS_10_2_SVG,  "./svg:g", 0);
 		SVGLineAnalyzer lineAnalyzer = new SVGLineAnalyzer();
 		lineAnalyzer.setEpsilon(0.5);

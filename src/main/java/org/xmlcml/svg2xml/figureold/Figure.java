@@ -7,14 +7,14 @@ import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
+import org.xmlcml.xml.XMLConstants;
 
 /** a figure consists of (possibly optional) Caption and FigureBody
  * these are directly accessible but are also child elements of Figure
@@ -320,7 +320,7 @@ public class Figure extends Chunk {
 			if (col == null || col.trim().length() == 0) {
 				clusterColours = null;
 			} else {
-				clusterColours = col.split(CMLConstants.S_WHITEREGEX);
+				clusterColours = col.split(XMLConstants.S_WHITEREGEX);
 			}
 		}
 

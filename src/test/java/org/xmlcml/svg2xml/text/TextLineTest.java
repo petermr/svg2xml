@@ -11,10 +11,10 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
@@ -42,7 +42,7 @@ public class TextLineTest {
 		  "<text svgx:width='510.0' x='534.528' y='39.605' font-size='7.97'>4</text>"+
 		 "</g>"+
 		"</svg>";
-		public final static Element PAGE_ELEMENT = CMLUtil.parseXML(PAGE_STRING);
+		public final static Element PAGE_ELEMENT = XMLUtil.parseXML(PAGE_STRING);
 		public final static SVGElement PAGE_CHUNK = SVGElement.readAndCreateSVG(PAGE_ELEMENT);
 		
 		public final static TextStructurer PAGE_TEXT_STRUCTURER = 
@@ -63,7 +63,7 @@ public class TextLineTest {
 		  "<text svgx:width='556.0' x='282.206' y='251.045' font-size='7.399'>9</text>"+
 		 "</g>"+
 		"</svg>";
-		public final static Element PAGE_ELEMENT1 = CMLUtil.parseXML(PAGE_STRING1);
+		public final static Element PAGE_ELEMENT1 = XMLUtil.parseXML(PAGE_STRING1);
 		public final static SVGElement PAGE_CHUNK1 = SVGElement.readAndCreateSVG(PAGE_ELEMENT1);
 		
 		public final static TextStructurer PAGE_TEXT_STRUCTURER1 = 
@@ -97,7 +97,7 @@ public class TextLineTest {
 		  "<text svgx:width='333.0' x='222.376' y='262.165' font-size='7.399' >)</text>"+
 		"</g>"+
 	   "</svg>";
-		public final static Element PAGE_ELEMENT2 = CMLUtil.parseXML(PAGE_STRING2);
+		public final static Element PAGE_ELEMENT2 = XMLUtil.parseXML(PAGE_STRING2);
 		public final static SVGElement PAGE_CHUNK2 = SVGElement.readAndCreateSVG(PAGE_ELEMENT2);
 		public final static TextStructurer PAGE_TEXT_STRUCTURER2 = 
 				TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, PAGE_CHUNK2);

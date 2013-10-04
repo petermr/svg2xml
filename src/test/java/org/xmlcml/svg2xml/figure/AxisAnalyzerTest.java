@@ -81,7 +81,7 @@ public class AxisAnalyzerTest {
 	
 	
 	@Test
-	@Ignore // OOME needs debuggiing
+	@Ignore // OOME needs debugging
 	public void testPlotScatterplotFive() {
 		SVGG g = SVGG.createSVGGChunk(Fixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g", 0);
 		AxisAnalyzer axisAnalyzer = new AxisAnalyzer(g);

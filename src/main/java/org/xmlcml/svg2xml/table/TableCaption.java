@@ -8,7 +8,6 @@ import nu.xom.Element;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlCaption;
@@ -17,6 +16,7 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.page.TableAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
+import org.xmlcml.xml.XMLUtil;
 
 public class TableCaption extends TableChunk {
 
@@ -36,13 +36,13 @@ public class TableCaption extends TableChunk {
 		HtmlP p = new HtmlP();
 		if (captions.size() == 0) {
 			HtmlB b = new HtmlB();
-			CMLUtil.transferChildren(caption,  b);
+			XMLUtil.transferChildren(caption,  b);
 			p.appendChild(b);
 			caption.appendChild(p);
 			table.insertChild(caption, 1);  // because <head> is first
 		} else {
 			((Element)captions.get(0)).appendChild(p);
-			CMLUtil.transferChildren(caption,  p);
+			XMLUtil.transferChildren(caption,  p);
 		}
 	}
 

@@ -22,7 +22,6 @@ import nu.xom.Elements;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Transform2;
@@ -32,6 +31,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -285,14 +285,14 @@ public class OutlineFont {
 			}
 		}
 		try {
-			CMLUtil.debug(svg, glyphStream, 2);
+			XMLUtil.debug(svg, glyphStream, 2);
 		} catch (IOException e) {
 			throw new RuntimeException("Cannout output glyphs", e);
 		}
 	}
 	
 	public void debug(String msg) {
-		CMLUtil.debug(fontRoot, msg);
+		XMLUtil.debug(fontRoot, msg);
 	}
 
 	Glyph addNewGlyph(String charname, SVGPath svgPath) {
@@ -371,7 +371,7 @@ public class OutlineFont {
 		}
 		font.analyze(pathElement, stats);
 		if (outfontfile != null) {
-			CMLUtil.debug(font.fontRoot, new FileOutputStream(outfontfile), 2);
+			XMLUtil.debug(font.fontRoot, new FileOutputStream(outfontfile), 2);
 		}
 		if (outglyphfile != null) {
 			font.plotGlyphs(new FileOutputStream(outglyphfile));

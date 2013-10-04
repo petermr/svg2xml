@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntArray;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Util;
-
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 
 /** a list of Words.
  * 
@@ -22,7 +22,9 @@ import com.google.common.collect.Multiset;
  * @author pm286
  *
  */
-public class Phrase implements Iterable<Word> {
+public class Phrase  extends LineChunk implements Iterable<Word> {
+	
+	private static final Logger LOG = Logger.getLogger(Phrase.class);
 	
 	private List<Word> wordList;
 
@@ -135,22 +137,6 @@ public class Phrase implements Iterable<Word> {
 		return wordList.get(0).getStartX();
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder("{");
-		for (int i = 0; i < wordList.size() - 1; i++) {
-			Word word = wordList.get(i);
-			sb.append("("+word.toString()+")");
-			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
-			for (int j = 0; j < spaceCount; j++) {
-				sb.append(".");
-			}
-		}
-		sb.append("("+wordList.get(wordList.size() - 1).toString()+")");
-		sb.append("}");
-		return sb.toString();
-	}
-
 	/** translates words into integers if possible.
 
 	 * @return null if translation impossible
@@ -187,6 +173,64 @@ public class Phrase implements Iterable<Word> {
 		return realArray;
 	}
 
-	
-	
+	public List<Word> getWordList() {
+		return wordList;
+	}
+
+	public String getPrintableString() {
+		StringBuilder sb = new StringBuilder("");
+		for (int i = 0; i < wordList.size() - 1; i++) {
+			Word word = wordList.get(i);
+			sb.append(word.toString());
+			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
+			for (int j = 0; j < spaceCount; j++) {
+				sb.append(" ");
+			}
+		}
+		sb.append(wordList.get(wordList.size() - 1).toString());
+		return sb.toString();
+	}
+
+	/** creates rectangle between two phrases.
+	 * 
+	 * <b>sets bounding box in Blank</b>
+	 * @param nextPhrase
+	 * @return
+	 */
+	public Blank createBlankBetween(Phrase nextPhrase) {
+		
+		Real2Range thisBBox = this.getBoundingBox();
+		Real2Range nextBBox = nextPhrase.getBoundingBox();
+		RealRange xrange = new RealRange(thisBBox.getXMax(), nextBBox.getXMin());
+		RealRange yrange = new RealRange(
+				Math.min(thisBBox.getYMin(), nextBBox.getYMin()),
+				Math.max(thisBBox.getYMax(), nextBBox.getYMax()));
+		Blank blank = new Blank(new Real2Range(xrange, yrange));
+		return blank;
+	}
+
+	private Real2Range getBoundingBox() {
+		Word word0 = wordList.get(0);
+		Word wordN = wordList.get(wordList.size() - 1);
+		Real2Range bbox = new Real2Range(new RealRange(word0.getStartX(), wordN.getEndX()), word0.getYRange().plus(wordN.getYRange()));
+		return bbox;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("{");
+		for (int i = 0; i < wordList.size() - 1; i++) {
+			Word word = wordList.get(i);
+			sb.append("("+word.toString()+")");
+			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
+			for (int j = 0; j < spaceCount; j++) {
+				sb.append(".");
+			}
+		}
+		sb.append("("+wordList.get(wordList.size() - 1).toString()+")");
+//		sb.append("["+this.getBoundingBox()+"]");
+		sb.append("}");
+		return sb.toString();
+	}
+
 }

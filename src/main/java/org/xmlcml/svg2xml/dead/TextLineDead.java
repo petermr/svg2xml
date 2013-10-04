@@ -1,43 +1,5 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import nu.xom.Attribute;
-
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLConstants;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.euclid.Real;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.euclid.RealArray;
-import org.xmlcml.euclid.RealRange;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.html.HtmlSub;
-import org.xmlcml.html.HtmlSup;
-import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.text.Suscript;
-import org.xmlcml.svg2xml.text.TextCoordinate;
-import org.xmlcml.svg2xml.util.SVG2XMLUtil;
-
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
-import com.google.common.collect.Multiset.Entry;
 
 /** holds a list of characters, normally in a horizontal line
  * 
@@ -809,7 +771,7 @@ public class TextLineDead {
 //			for (int i = 0; i < characterList.size() - 1; i++) {
 //				SVGText charx = characterList.get(i);
 //				String text = charx.getText();
-//				if (CMLConstants.S_SPACE.equals(charx.getText())) {
+//				if (XMLConstants.S_SPACE.equals(charx.getText())) {
 //					spaceWidthArray.addElement(characterSeparationArray.elementAt(i));
 //				}
 //			}
@@ -825,7 +787,7 @@ public class TextLineDead {
 //	 */
 //	private void addSpaceCharacter(List<SVGText> newCharacters, double spaceX, SVGText templateText) {
 //		SVGText spaceText = new SVGText();
-//		CMLUtil.copyAttributes(templateText, spaceText);
+//		XMLUtil.copyAttributes(templateText, spaceText);
 //		spaceText.setText(" ");
 //		spaceText.setX(spaceX);
 //		PDF2SVGUtil.setSVGXAttribute(spaceText, PDF2SVGUtil.CHARACTER_WIDTH, String.valueOf(SPACE_WIDTH1000));

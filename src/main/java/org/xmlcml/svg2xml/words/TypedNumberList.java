@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.xmlcml.cml.base.CMLConstants;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.xml.XMLConstants;
 
 public class TypedNumberList implements Iterable<TypedNumber> {
 	List<TypedNumber> typedNumberList;
@@ -40,10 +40,10 @@ public class TypedNumberList implements Iterable<TypedNumber> {
 				if (typedNumber == null || typedNumber.getDataType() == null) {
 					return null;
 				}
-				if (typedNumberList.dataType == null || typedNumberList.dataType.equals(CMLConstants.XSD_INTEGER)) {
+				if (typedNumberList.dataType == null || typedNumberList.dataType.equals(XMLConstants.XSD_INTEGER)) {
 					typedNumberList.dataType = typedNumber.getDataType();
 				}
-				if (CMLConstants.XSD_DOUBLE.equals(typedNumberList.getDataType())) {
+				if (XMLConstants.XSD_DOUBLE.equals(typedNumberList.getDataType())) {
 					typedNumber.convertToDouble();
 				}
 				typedNumberList.add(typedNumber);
@@ -94,7 +94,7 @@ public class TypedNumberList implements Iterable<TypedNumber> {
 
 	public RealArray getRealArray() {
 		if (realArray == null) {
-			if (CMLConstants.XSD_DOUBLE.equals(dataType)) {
+			if (XMLConstants.XSD_DOUBLE.equals(dataType)) {
 				realArray = new RealArray(typedNumberList.size());
 				for (int i = 0; i < typedNumberList.size(); i++) {
 					realArray.setElementAt(i, (Double) typedNumberList.get(i).getNumber());
@@ -106,7 +106,7 @@ public class TypedNumberList implements Iterable<TypedNumber> {
 	
 	public IntArray getIntArray() {
 		if (intArray == null) {
-			if (CMLConstants.XSD_INTEGER.equals(dataType)) {
+			if (XMLConstants.XSD_INTEGER.equals(dataType)) {
 				intArray = new IntArray(typedNumberList.size());
 				for (int i = 0; i < typedNumberList.size(); i++) {
 					intArray.setElementAt(i, (Integer) typedNumberList.get(i).getNumber());
@@ -118,16 +118,16 @@ public class TypedNumberList implements Iterable<TypedNumber> {
 	
 	public String getNumberString() {
 		String[] strings = null;
-		if (CMLConstants.XSD_DOUBLE.equals(dataType)) {
+		if (XMLConstants.XSD_DOUBLE.equals(dataType)) {
 			RealArray realArray = getRealArray();
 			strings = realArray.getStringValues();
-		} else if (CMLConstants.XSD_INTEGER.equals(dataType)) {
+		} else if (XMLConstants.XSD_INTEGER.equals(dataType)) {
 			IntArray intArray = getIntArray();
 			strings = intArray.getStringValues();
 		}
 		String string = null;
 		if (strings != null) {
-			string = Util.concatenate(strings, CMLConstants.S_SPACE);
+			string = Util.concatenate(strings, XMLConstants.S_SPACE);
 		}
 		return string;
 	}

@@ -1,16 +1,8 @@
 package org.xmlcml.svg2xml.indexer;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.dead.HtmlEditorDead;
-import org.xmlcml.svg2xml.dead.HtmlVisitorDead;
 
 /**
  * Not really the same as the other analyzers, but helps to tidey code

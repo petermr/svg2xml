@@ -1,34 +1,5 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import nu.xom.Attribute;
-import nu.xom.Element;
-import nu.xom.Elements;
-import nu.xom.Node;
-import nu.xom.Nodes;
-import nu.xom.Text;
-
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlB;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlImg;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.svg2xml.page.ChunkAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.pdf.ChunkId;
-import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.pdf.PDFIndex;
-import org.xmlcml.svg2xml.text.TextStructurer;
-import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
 /** container for  HtmlElement
  * Used to manipulate HTML. 

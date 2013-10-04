@@ -1,23 +1,5 @@
 package org.xmlcml.svg2xml.dead;
 
-import java.util.ArrayList;
-
-import java.util.Iterator;
-import java.util.List;
-
-import nu.xom.Element;
-
-import org.apache.log4j.Logger;
-import org.xmlcml.cml.element.CMLArray;
-import org.xmlcml.cml.interfacex.HasDataType;
-import org.xmlcml.euclid.IntArray;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.euclid.RealArray;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGUtil;
 
 /** implemented as a new <g> element with new child elements
  * normally represents a horizontal line of characters, grouped into words

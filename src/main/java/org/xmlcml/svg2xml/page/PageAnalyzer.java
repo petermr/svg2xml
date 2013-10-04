@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.page;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -17,7 +16,6 @@ import nu.xom.Nodes;
 import nu.xom.ParentNode;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
@@ -44,6 +42,7 @@ import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
+import org.xmlcml.xml.XMLUtil;
 
 import util.Path2ShapeConverter;
 
@@ -272,7 +271,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		List<SVGElement> gList = SVGUtil.getQuerySVGElements(gOrig, ".//svg:g");
 		SVGG gOut = analyzerX.createChunkFromList(gList);
 		gOut.setId(chunkId.toString());
-		CMLUtil.copyAttributes(gOrig, gOut);
+		XMLUtil.copyAttributes(gOrig, gOut);
 		gOut.format(decimalPlaces);
 		return gOut;
 	}

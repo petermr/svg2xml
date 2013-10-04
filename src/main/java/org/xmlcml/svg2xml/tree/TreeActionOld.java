@@ -2,20 +2,15 @@ package org.xmlcml.svg2xml.tree;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.cml.base.CMLUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.util.PConstants;
-import org.xmlcml.svg2xml.util.GraphUtil;
+import org.xmlcml.xml.XMLUtil;
 
 public class TreeActionOld {
 
@@ -70,7 +65,7 @@ public class TreeActionOld {
 
 	private void writeNEXMLFile(String filename, Element nexml) {
 		String filename1 = filename+"."+nexml.getAttributeValue(PConstants.ID)+PConstants.NEXML;
-		CMLUtil.outputQuietly(nexml, new File(filename1), 1);
+		XMLUtil.outputQuietly(nexml, new File(filename1), 1);
 	}
 
 	private void makeTreeList(List<SVGElement> elements) {
