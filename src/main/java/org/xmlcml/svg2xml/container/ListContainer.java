@@ -207,7 +207,7 @@ public class ListContainer extends AbstractContainer {
 		ListItem multiScriptLine = null;
 		Double lastIndent = null;
 		for (ScriptLine scriptLine : scriptContainer) {
-			LOG.trace(scriptLine.getTextContentWithSpaces());
+//			LOG.trace(scriptLine.getTextContentWithSpaces());
 			Double leftMargin = scriptLine.getLeftMargin();
 			if (Real.isEqual(leftMargin, leftIndent0, INDENT_EPS)) {
 				multiScriptLine = new ListItem();

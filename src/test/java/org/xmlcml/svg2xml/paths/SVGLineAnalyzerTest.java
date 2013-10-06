@@ -19,7 +19,7 @@ public class SVGLineAnalyzerTest {
 		SVGG g = SVGG.createSVGGChunk(Fixtures.LINEPLOTS_10_2_SVG,  "./svg:g", 0);
 		SVGLineAnalyzer lineAnalyzer = new SVGLineAnalyzer();
 		List<GraphPlotBox> plotBoxList = lineAnalyzer.findGraphPlotBoxList(g);
-		LOG.debug("boxes: "+plotBoxList.size());
+		LOG.trace("boxes: "+plotBoxList.size());
 	}
 	
 	@Test
@@ -29,7 +29,7 @@ public class SVGLineAnalyzerTest {
 		SVGLineAnalyzer lineAnalyzer = new SVGLineAnalyzer();
 		lineAnalyzer.setEpsilon(0.5);
 		List<GraphPlotBox> plotBoxList = lineAnalyzer.findGraphPlotBoxList(g);
-		LOG.debug("boxes: "+plotBoxList.size());
+		LOG.trace("boxes: "+plotBoxList.size());
 	}
 	
 	public void testInternal() {

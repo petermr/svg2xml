@@ -395,4 +395,11 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		return textOrientation;
 	}
 
+	@Override 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+//		sb.append("characters: "+((rawCharacterList == null) ? "null" : rawCharacterList.size()));
+		sb.append("characters: "+((textCharacters == null) ? "null" : textCharacters.size()));
+		return sb.toString();
+	}
 }

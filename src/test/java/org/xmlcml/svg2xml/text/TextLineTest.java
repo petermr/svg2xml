@@ -220,7 +220,7 @@ public class TextLineTest {
 		RawWords rawWords = PAGE_TEXT_LINE2.getRawWords();
 		// there are explicit soaces to single word
 		Assert.assertEquals("rawWords", 1, rawWords.size());
-		System.out.println(rawWords.get(0));
+		LOG.trace(rawWords.get(0));
 	}
 
 

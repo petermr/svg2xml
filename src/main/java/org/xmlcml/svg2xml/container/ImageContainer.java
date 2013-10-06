@@ -42,15 +42,31 @@ public class ImageContainer extends AbstractContainer  {
 	public HtmlElement createHtmlElement() {
 		if (htmlElement == null) {
 			super.createHtmlElement();
-			ChunkId chunkId = getChunkId();
+			ChunkId chunkId = this.getChunkId();
 			String id = chunkId == null ? String.valueOf(System.currentTimeMillis()) : chunkId.toString();
-			String imageName = pageAnalyzer.getPageIO().createImageFilename(id);
-			HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "20%");
-			htmlElement.appendChild(div);
-			HtmlP p = new HtmlP("IMAGE");
-			htmlElement.appendChild(p);
+			if (imageList.size() > 1) {
+				HtmlDiv div = new HtmlDiv();
+				htmlElement.appendChild(div);
+				LOG.trace("IMAGES: "+imageList.size());
+				for (int i = 0; i < imageList.size(); i++ ) {
+					SVGImage image =imageList.get(i);
+					if (image.getImageValue().length() > 100) {
+						writeHtmlImg(id+"."+(i + 1), div);
+					}
+				}
+			} else {
+				writeHtmlImg(id, htmlElement);
+			}
 		}
 		return htmlElement;
+	}
+
+	private void writeHtmlImg(String id, HtmlElement parent) {
+		String imageName = pageAnalyzer.getPageIO().createImageFilename(id);
+		HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "20%");
+		parent.appendChild(div);
+		HtmlP p = new HtmlP("IMAGE");
+		parent.appendChild(p);
 	}
 	
 	public List<SVGImage> getImageList() {
@@ -93,11 +109,6 @@ public class ImageContainer extends AbstractContainer  {
 		return sb.toString();
 	}
 
-//	public void add(List<SVGImage> imageList) {
-//		ensureImageList();
-//		this.imageList.addAll(imageList);
-//	}
-//	
 	public void addToIndexes(PDFIndex pdfIndex) {
 		String imageString = this.toString();
 		pdfIndex.addToImageIndex(imageString, this);

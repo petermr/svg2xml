@@ -158,7 +158,7 @@ public class PDFAnalyzerIO {
 	List<File> collectRawSVGFiles() {
 		File[] rawSvgPageFiles = rawSvgDirectory.listFiles();
 		List<File> files = new ArrayList<File>();
-		LOG.debug("analyzing Files in: "+rawSvgDirectory);
+		LOG.trace("analyzing Files in: "+rawSvgDirectory);
 		if (rawSvgPageFiles == null) {
 			throw new RuntimeException("No files in "+rawSvgDirectory);
 		} else {
@@ -209,6 +209,15 @@ public class PDFAnalyzerIO {
 			outputDocumentDir = PageIO.createfinalSVGDocumentDirectory(rawSvgDirectory);
 			PageIO.outputFile(pdfAnalyzer.getRunningTextHtml(), PageIO.createHtmlFile(outputDocumentDir, ContainerType.TEXT, "0"));
 		}
+	}
+
+	public boolean skipOutput(PDFAnalyzerOptions options) {
+		boolean skip = false;
+		if (options.skipOutput) {
+			File outputDirectory = outputDocumentDir;
+			skip = outputDirectory.exists();
+		}
+		return skip;
 	}
 	
 

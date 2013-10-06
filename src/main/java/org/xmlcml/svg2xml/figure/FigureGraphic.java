@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import nu.xom.Attribute;
 
@@ -52,13 +53,12 @@ public class FigureGraphic extends FigureComponent {
 		if (svgContainer != null && boundingBox != null) {
 			Real2 translateToOrigin = new Real2(-boundingBox.getXMin() + OFFSET_X, -boundingBox.getYMin() + OFFSET_Y);
 			svgContainer.setTransform(new Transform2(new Vector2(translateToOrigin)));
-//			SVG2XMLUtil.tidy(svgContainer); // we don't want to strip SVGX-width at this stage
 			SVG2XMLUtil.removeAttributes("clip-path", svgContainer);
-//			removeSVGXAttributes(svgContainer);
 			SVG2XMLUtil.removeAnnotationBoxes(svgContainer);
 			
 			HiddenGraphics hg = createHiddenGraphics();
 			try {
+				LOG.trace("PNG "+pngName);
 				hg.write(SVGImage.IMAGE_PNG, new File(pngName));
 			} catch (IOException e) {
 				throw new RuntimeException("Cannot write image", e);
@@ -103,6 +103,10 @@ public class FigureGraphic extends FigureComponent {
 		a.setValue("SVG");
 		a.setTarget(HtmlElement.Target.separate);
 		div.appendChild(a);
+	}
+
+	public List<SVGImage> getImageList() {
+		return imageList;
 	}
 
 

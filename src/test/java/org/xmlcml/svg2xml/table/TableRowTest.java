@@ -24,7 +24,7 @@ public class TableRowTest {
 	
 	@Test
 	public void dummy() {
-		LOG.debug("TableRowChunkTest NYI");
+		LOG.trace("TableRowChunkTest NYI");
 	}
 
 	@Test

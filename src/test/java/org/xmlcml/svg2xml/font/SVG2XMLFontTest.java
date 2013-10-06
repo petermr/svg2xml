@@ -34,7 +34,7 @@ public class SVG2XMLFontTest {
 			SVGText svgText = textList.get(i);
 			font.getOrCreateSVG2XMLCharacter(svgText);
 		}
-		LOG.debug(font.ensureSortedUnicodeList().size());
+		LOG.trace(font.ensureSortedUnicodeList().size());
 		font.debug("font");
 	}
 
@@ -44,7 +44,6 @@ public class SVG2XMLFontTest {
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(bmc);
 		SVG2XMLFont font = new SVG2XMLFont("bmc.running");
 		font.addTextListAndGenerateSizes(textList);
-//		LOG.debug(font.ensureSortedUnicodeList().size());
 		font.debug("font");
 	}
 
@@ -54,7 +53,6 @@ public class SVG2XMLFontTest {
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(bmc);
 		SVG2XMLFont font = new SVG2XMLFont("image.3.2");
 		font.addTextListAndGenerateSizes(textList);
-//		LOG.debug(font.ensureSortedUnicodeList().size());
 		font.debug("font");
 	}
 	

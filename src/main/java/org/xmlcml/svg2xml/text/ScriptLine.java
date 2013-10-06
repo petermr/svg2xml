@@ -105,7 +105,7 @@ public class ScriptLine implements Iterable<TextLine> {
 							TextLine midLine = this.textLineList.get(serial - 1);
 							Double midY = midLine.getYCoord();
 							if (midY == null || lastY == null || currentY == null) {
-								LOG.error("null "+midY+" / "+currentY + " / "+lastY);
+								LOG.trace("null "+midY+" / "+currentY + " / "+lastY);
 							} else if (midY - lastY > currentY - midY) {
 								packageAsGroup(groupStart, serial - 1, splitArray);
 								groupStart = serial;

@@ -64,7 +64,7 @@ public class AxisAnalyzerTest {
 		axisAnalyzer.createVerticalHorizontalAxisListAndPlotBox();
 		GraphPlotBox plotBox = axisAnalyzer.getPlotBox();
 		Assert.assertNotNull(plotBox);
-		LOG.debug("plotBox "+plotBox);
+		LOG.trace("plotBox "+plotBox);
 	}
 	
 	@Test
@@ -76,7 +76,7 @@ public class AxisAnalyzerTest {
 		axisAnalyzer.createVerticalHorizontalAxisListAndPlotBox();
 		GraphPlotBox plotBox = axisAnalyzer.getPlotBox();
 		Assert.assertNotNull(plotBox);
-		LOG.debug("plotBox "+plotBox);
+		LOG.trace("plotBox "+plotBox);
 	}
 	
 	
@@ -159,7 +159,6 @@ public class AxisAnalyzerTest {
 		TextStructurer textStructurer = new TextStructurer(textList);
 		List<TextLine> textLineList = textStructurer.getTextLineList();
 		RawWords axialValues = textLineList.get(0).getRawWords();
-		  System.out.println("0 "+axialValues.toString());
 		  Assert.assertEquals("axial values", 4, axialValues.size());
 		TextLine textLine1 = textLineList.get(1);
 		  RealArray xArray = textLine1.getXCoordinateArray();
@@ -168,16 +167,15 @@ public class AxisAnalyzerTest {
 		  RealArray separationArray = textLine1.getSeparationArray().format(3);
 		  RealArray scaledSeparationArray = separationArray.multiplyBy(1. / textLine1.getFontSize()).format(3);
 		  List<String> valueArray = textLine1.getValueList();
- 		  System.out.println("X "+textLine1+
-				"\n"+xArray+
-				"\n"+widthArray+
-				"\n"+differenceArray+
-				"\n"+separationArray+
-				"\n"+scaledSeparationArray+
-				"\n"+valueArray.toString());
+// 		  System.out.println("X "+textLine1+
+//				"\n"+xArray+
+//				"\n"+widthArray+
+//				"\n"+differenceArray+
+//				"\n"+separationArray+
+//				"\n"+scaledSeparationArray+
+//				"\n"+valueArray.toString());
  		 RawWords title = textLine1.getRawWords();
   		 Assert.assertEquals("axial values", 1, title.size());
-		 System.out.println("1! "+title);
 	}
 	
 	@Test

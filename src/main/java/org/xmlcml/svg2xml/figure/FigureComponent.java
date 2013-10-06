@@ -44,7 +44,7 @@ public abstract class FigureComponent {
 
 	private List<SVGText> textList;
 	private List<SVGShape> shapeList;
-	private List<SVGImage> imageList;
+	protected List<SVGImage> imageList;
 	private List<SVGText> filteredTextList;
 	private List<SVGShape> filteredShapeList;
 	private List<SVGImage> filteredImageList;

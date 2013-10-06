@@ -31,7 +31,6 @@ import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ImageContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.container.ShapeContainer;
-import org.xmlcml.svg2xml.dead.HtmlAnalyzerDead;
 import org.xmlcml.svg2xml.indexer.AbstractIndexer;
 import org.xmlcml.svg2xml.indexer.AppendixIndexer;
 import org.xmlcml.svg2xml.indexer.BibRefIndexer;
@@ -296,11 +295,6 @@ public class PDFIndex {
 //				}
 //			}
 		}
-
-	private HtmlAnalyzerDead getHtmlAnalyzerById(ChunkId id) {
-//		return pdfAnalyzer.htmlEditor.getHtmlAnalyzerByIdMap().get(id);
-		return null;
-	}
 
 	/** preload a contentMap which can be used for several PDFAnalyzers
 	 * Warning - may require a lot of memory

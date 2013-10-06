@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -20,6 +19,7 @@ public class StyleSpan {
 
 	private final static Logger LOG = Logger.getLogger(StyleSpan.class);
 	private static final double EPS = 0.01;
+	private static final Double MIN_WIDTH = 0.01;
 	
 	private boolean bold;
 	private boolean italic;
@@ -137,14 +137,17 @@ public class StyleSpan {
 				 Double fontWidth = lastText.getSVGXFontWidth();
 				 if (fontSize != null && fontWidth != null) {
 					 Double spaceWidth = fontSize * fontWidth;
-					 double sp = deltax / spaceWidth;
-					 int nspaces = (int) sp;
-					 if (nspaces > 0) {
-						 StringBuilder sb = new StringBuilder();
-						 for (int i = 0; i < nspaces; i++) {
-							 sb.append(" ");
+					 if (spaceWidth > MIN_WIDTH) {
+						 double sp = deltax / spaceWidth;
+						 int nspaces = (int) sp;
+						 if (nspaces > 0) {
+							 LOG.debug(nspaces);
+							 StringBuilder sb = new StringBuilder();
+							 for (int i = 0; i < nspaces; i++) {
+								 sb.append(" ");
+							 }
+							 spaces = sb.toString();
 						 }
-						 spaces = sb.toString();
 					 }
 				 }
 			 }

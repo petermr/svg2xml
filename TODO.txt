@@ -1,6 +1,17 @@
 =SVG2XML=
 
-Label textLine as in/outdent, and bold for para matching
+==Publishers==
+eLife widths
+
+==Fonts==
+PeerJ DOIs
+
+==Text==
+Ligatures.
+
+Label textLine as in/outdent, and bold for para matching.
+
+HTML output repeated?
 
 
 =PeerJ=
@@ -10,3 +21,15 @@ of the other SVG primitives (e.g. text). SOLUTION. remove logo, but also need to
 ==Figures==
 http://stackoverflow.com/questions/12068726/mouse-pointer-detection-over-a-path2d/12069644#12069644
 creates outline of shape.
+
+Duplication of <image> in SVG.
+
+Avoid converting PNG-only to SVG.
+
+Multi-component images give resource problems.
+
+Some SVGs have 10^5 components - shading - ignore?
+
+
+
+

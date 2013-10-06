@@ -98,6 +98,10 @@ public abstract class AbstractContainer {
 		if (htmlElement == null) {
 			htmlElement = new HtmlDiv();
 			for (AbstractContainer container : containerList) {
+				if (container.getChunkId() == null) {
+					ChunkId chunkId = this.getChunkId();
+					container.setChunkId(chunkId);
+				}
 				HtmlElement htmlElement1 = container.createHtmlElement();
 				if (htmlElement1 != null) {
 					htmlElement.appendChild(htmlElement1);

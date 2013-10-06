@@ -91,15 +91,15 @@ public class ListContainerTest {
 	 */
 	
 	private static void createAndDebugList(String pub, File file, String outfile) {
-		SYSOUT.println("========="+pub+"===========");
+//		SYSOUT.println("========="+pub+"===========");
 		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
 		ListContainer listContainer = ListContainer.createList(sc);
 		if (listContainer != null) {
 //			listContainer.debug();
 		} else {
-			SYSOUT.println("Cannot create list");
+//			SYSOUT.println("Cannot create list");
 		}
-		SYSOUT.println("==========================");
+//		SYSOUT.println("==========================");
 	}
 
 }

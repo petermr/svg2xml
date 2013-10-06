@@ -75,8 +75,14 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 			figureCaption.processCaptionText(div);
 		}
 		if (figureGraphic != null) {
-			String svgName = getPageIO().createSvgFilename(id);
-			figureGraphic.createAndWriteImageAndSVG(imageName, div, svgName);
+			String svgName = getPageIO().createSvgFilename(id); 
+			int nfig = figureGraphic.getImageList().size();
+			if (nfig > 0) {
+				LOG.trace("Skipped svg with "+nfig+" PNGs");
+			} else {
+				LOG.trace("writing SVG "+svgName);
+				figureGraphic.createAndWriteImageAndSVG(imageName, div, svgName);
+			}
 		}
 		
 

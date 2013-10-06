@@ -20,7 +20,6 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.collection.DocumentListAnalyzer;
-import org.xmlcml.svg2xml.dead.HtmlEditorDead;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
@@ -175,17 +174,20 @@ public class PDFAnalyzer {
 	private void analyzePDF() {
 		ensurePDFIndex();
 		createSVGFilesfromPDF();
-		analyzeRawSVGPagesWithPageAnalyzers();
-		pdfIo.outputFiles(getPdfOptions());
+		if (!pdfIo.skipOutput(pdfOptions)) {
+			analyzeRawSVGPagesWithPageAnalyzers();
+		} else {
+			LOG.debug("Skipped Output: "+pdfIo.outputDocumentDir);
+		}
 	}
 
 
 	public void analyzeRawSVGPagesWithPageAnalyzers() {
+		// this does not output anything 
 		pageAnalyzerList = createAndFillPageAnalyzers();
+		// this outputs files
 		pdfIo.outputFiles(getPdfOptions());
 		createIndexesAndRemoveDuplicates();
-		SYSOUT.println();
-//		writeSvgPages();
 	}
 
 	private void debugContainers() {

@@ -21,10 +21,9 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svg2xml.dead.PageEditorDead;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
-import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
+import org.xmlcml.svg2xml.page.PageIO;
 
 /**
  * Chunk tags an SVG container (svg:g or svg:svg) as a chunk. 

@@ -161,7 +161,7 @@ public class BoundingBoxManager {
 	 */
 	private List<Real2Range> getBoxesSortedByEdge(BoxEdge edge) {
 		if (bboxList == null) {
-			LOG.debug("Null bboxList in BBManager");
+			LOG.trace("Null bboxList in BBManager");
 			return null;
 		}
 		List<Real2Range> sortedList = new ArrayList<Real2Range>();
