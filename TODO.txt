@@ -30,6 +30,9 @@ Multi-component images give resource problems.
 
 Some SVGs have 10^5 components - shading - ignore?
 
+==Bugs==
+rounded square can be interpreted as circle
+
 
 
 

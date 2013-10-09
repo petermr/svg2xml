@@ -288,7 +288,7 @@ public abstract class AbstractContainer {
 			MixedContainer divContainer = (MixedContainer) this;
 			figureElement = divContainer.createFigureElement();
 		} else {
-			LOG.error("Unprocessed figure: "+this.getClass());
+			LOG.trace("Unprocessed figure: "+this.getClass());
 		}
 		return figureElement;
 	}

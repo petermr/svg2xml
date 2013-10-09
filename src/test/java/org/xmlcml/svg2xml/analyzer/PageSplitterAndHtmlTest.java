@@ -19,6 +19,7 @@ import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzerTest;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.xml.XMLUtil;
@@ -585,37 +586,37 @@ public class PageSplitterAndHtmlTest {
 
 	private void testMultipleLineInMixedChunk(int chunk, int nlines, Element ref) {
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
-		analyzeChunkInSVGPage(chunk, nlines, ref, svg);
+		PageSplitterAndHtmlTest.analyzeChunkInSVGPage(chunk, nlines, ref, svg);
 	}
 
-	private static void analyzeChunkInSVGPage(int chunk, int nlines, Element ref, Element svg) {
-		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		SVGElement g = gList.get(chunk);
-//		g.debug("GGG");
-		PageAnalyzer pageAnalyzer = new PageAnalyzer(g);
-		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
-		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
-		TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
-		LOG.trace("TextAnalyzer "+textAnalyzer);
-		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-		for (TextLine textLine : textLines) {
-			LOG.trace(textLine);
-		}
-		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
-//		Element element = textAnalyzer.createHtmlDivWithParas();
-		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
-		LOG.trace(ref.toXML()+"\n\n"+element.toXML());
-		JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
-		try {
-			Nodes nodes = element.query(".//@style");
-			for (int i = 0; i < nodes.size(); i++) {
-				nodes.get(i).detach();
+	public static void analyzeChunkInSVGPage(int chunk, int nlines, Element ref, Element svg) {
+			List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+			SVGElement g = gList.get(chunk);
+	//		g.debug("GGG");
+			PageAnalyzer pageAnalyzer = new PageAnalyzer(g);
+			MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
+			LOG.trace("MixedAnalyzer "+mixedAnalyzer);
+			TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
+			LOG.trace("TextAnalyzer "+textAnalyzer);
+			List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+			for (TextLine textLine : textLines) {
+				LOG.trace(textLine);
 			}
-			SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
-		} catch (Exception e) {
-			e.printStackTrace();
+			Assert.assertEquals("lines"+chunk, nlines, textLines.size());
+	//		Element element = textAnalyzer.createHtmlDivWithParas();
+			Element element = textAnalyzer.getTextStructurer().createHtmlElement();
+			LOG.trace(ref.toXML()+"\n\n"+element.toXML());
+			JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
+			try {
+				Nodes nodes = element.query(".//@style");
+				for (int i = 0; i < nodes.size(); i++) {
+					nodes.get(i).detach();
+				}
+				SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-	}
 
 	
 }

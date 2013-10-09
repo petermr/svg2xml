@@ -305,12 +305,40 @@ public class PageAnalyzerTest {
 //		PDFAnalyzer.analyzeChunksInPagesInFiles(files, Fixtures.BMCSVGDIR, BMC_GEOTABLE, Fixtures.BMCOUTDIR);
 //	}
 //
-//	@Test
-//	public void testBoldResults() {
-//		SVGElement svgElement = SVGElement.readAndCreateSVG(new File("src/test/resources/org/xmlcml/svg2xml/svg/bmc/tree-page-2-results.svg"));
-//		PDFAnalyzer.analyzeChunkInSVGPage((SVGElement) svgElement.getChildElements().get(0), "chunk", Fixtures.BMCOUTDIR, "results");
-//	}
 	
+	@Test
+	public void testSVGBug() {
+		SVGElement svgElement = SVGElement.readAndCreateSVG(new File("src/test/resources/svg/Shukla/page8.svg"));
+//		analyzeChunkInSVGPage((SVGElement) svgElement.getChildElements().get(5), "chunk", "src/test/resources/org/xmlcml/svg2xml/svg/Shukla/out", "results");
+	}
+	
+	@Test
+	public void testSVGBug1() {
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(new File("src/test/resources/svg/Shukla/page8.svg"));
+		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		checkAbstractContainers(
+			new Class[]{
+					org.xmlcml.svg2xml.container.ScriptContainer.class,
+					org.xmlcml.svg2xml.container.ScriptContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.ShapeContainer.class,
+					org.xmlcml.svg2xml.container.MixedContainer.class,
+					org.xmlcml.svg2xml.container.ScriptContainer.class,
+					org.xmlcml.svg2xml.container.ScriptContainer.class,
+			},
+			containerList);
+	}
+
 	//================================================================
 	
 	//====================================================================
@@ -320,7 +348,7 @@ public class PageAnalyzerTest {
 		try {
 			Assert.assertEquals("size", classes.length, containerList.size());
 		} catch (AssertionError e) {
-			System.err.println("ERROR");
+			System.err.println("ERROR: found classes");
 			for (AbstractContainer container : containerList) {
 				System.err.println(container.getClass());
 			}
@@ -383,5 +411,7 @@ public class PageAnalyzerTest {
 			}
 		}
 	}
+	
+	
 
 }

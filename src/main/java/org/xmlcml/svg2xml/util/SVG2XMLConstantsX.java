@@ -48,4 +48,5 @@ public class SVG2XMLConstantsX {
 	
 	public static final String INPUT_FILE = "inputFile";
 	public static final String OUTPUT_DIR = "outputDir";
+	public static final String Z = "z";
 }

@@ -4,11 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 import nu.xom.Node;
 import nu.xom.Nodes;
@@ -43,6 +48,7 @@ import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
+import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 import org.xmlcml.xml.XMLUtil;
 
 import util.Path2ShapeConverter;
@@ -120,19 +126,54 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		this();
 		SVGSVG svgPage = convertLongHref(svgPageFile);
 		pageIo.setSvgInPage(svgPage);
+		tidySvgPage();
+	}
+
+	private void tidySvgPage() {
+		SVGElement svgPage = pageIo.getRawSVGPage();
+		removeClipPathsDefs(svgPage);
+		removeClipPathAttributes(svgPage);
+		numberElements();
+	}
+
+	private void numberElements() {
+		SVGElement svgPage = pageIo.getRawSVGPage();
+		for (int i = 0; i < svgPage.getChildElements().size(); i++) {
+			SVGUtil.setSVGXAttribute((SVGElement)svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
+		}
+	}
+
+	private void removeClipPathsDefs(SVGElement svgPage) {
+		List<SVGElement> defs = SVGUtil.getQuerySVGElements(svgPage, "./svg:defs");
+		for (SVGElement def : defs) {
+			removeClipPathChildrenAndEmptyDef(def);
+		}
+	}
+
+	private void removeClipPathAttributes(SVGElement svgPage) {
+		Nodes clipPathAttributes = svgPage.query("./*/@clip-path");
+		for (int i = 0; i < clipPathAttributes.size(); i++) {
+			clipPathAttributes.get(i).detach();
+		}
+	}
+
+	private void removeClipPathChildrenAndEmptyDef(SVGElement def) {
+		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(def, "./svg:clipPath");
+		for (SVGElement clipPath : clipPaths) {
+			clipPath.detach();
+		}
+		if (def.getChildElements().size() == 0) {
+			def.detach();
+		}
 	}
 
 	private SVGSVG convertLongHref(File svgPageFile) {
 		SVGSVG svgPage = null;
 		try {
 			String content = FileUtils.readFileToString(svgPageFile, "UTF-8");
-			ImageConverter cleaner = new ImageConverter();
 			long size = FileUtils.sizeOf(svgPageFile);
 			if (size > BIG_SVG_FILE) {
-				List<String> imageNames = null;
-					if (content.indexOf("<image") != -1) {
-						
-					}
+				ImageConverter cleaner = new ImageConverter();
 			}
 			svgPage = (SVGSVG) SVGElement.readAndCreateSVG(XMLUtil.parseXML(content));
 		} catch (IOException e) {
@@ -156,9 +197,15 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		pageIo.ensureWhitespaceSVGChunkList();
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
-			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk"+ichunk+".svg"));
+			String chunkId = this.getHumanPageNumber()+"."+ichunk;
+			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
 			path2ShapeConverter.convertPathsToShapes(gChunk);
+			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
 			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
+			if (!(chunkAnalyzer instanceof TextAnalyzer)) {
+				LOG.trace(chunkAnalyzer);
+				sortByZ(gChunk);
+			}
 			List<AbstractContainer> newContainerList = chunkAnalyzer.createContainers();
 			for (AbstractContainer newContainer : newContainerList) {
 				newContainer.setSVGChunk(gChunk);
@@ -166,6 +213,49 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			createChunksAndStoreInContainer(newContainerList, chunkAnalyzer);
 		}
 		pageIo.createFinalSVGPageFromChunks();
+	}
+
+	private void sortByZ(SVGG gChunk) {
+		Map<Integer, SVGElement> elementByZMap = new HashMap<Integer, SVGElement>();
+		List<SVGElement> childElements =SVGUtil.getQuerySVGElements(gChunk, "./*");
+		LOG.trace("child: "+childElements.size());
+		List<Integer> rawList = new ArrayList<Integer>();
+		for (SVGElement svgElement : childElements) {
+			Attribute attribute = SVGUtil.getSVGXAttributeAttribute(svgElement, SVG2XMLConstantsX.Z);
+			if (attribute != null) {
+				Integer z = new Integer(attribute.getValue());
+				elementByZMap.put(z, svgElement);
+				rawList.add(z);
+			}
+		}
+//		boolean isOrdered = isZListOrdered(rawList);
+//		if (!isOrdered) {
+			detachChildrenAndReplaceInZOrder(gChunk, elementByZMap, childElements, rawList);
+//		}
+	}
+
+	private void detachChildrenAndReplaceInZOrder(SVGG gChunk, Map<Integer, SVGElement> elementByZMap,
+			List<SVGElement> childElements, List<Integer> rawList) {
+		for (SVGElement childElement : childElements) {
+			childElement.detach();
+		}
+		Collections.sort(rawList);
+		for (Integer z : rawList) {
+//			System.out.print(z+" ");
+			gChunk.appendChild(elementByZMap.get(z));
+		}
+//		System.out.println();
+	}
+
+	private boolean isZListOrdered(List<Integer> rawList) {
+		boolean isOrdered = true;
+		for (int i = 0; i < rawList.size(); i++) {
+			if (i > 0 && rawList.get(i-1) > rawList.get(i)) {
+				isOrdered = false;
+				break;
+			}
+		}
+		return isOrdered;
 	}
 
 	/** decides whether chunk is Text, Path, Image or Mixed

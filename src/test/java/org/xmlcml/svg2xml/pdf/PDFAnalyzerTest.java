@@ -74,9 +74,22 @@ public class PDFAnalyzerTest {
 	
 	@Test
 	@Ignore
+	public void testSVGBug() {
+		PDFAnalyzer analyzer = new PDFAnalyzer();
+//		analyzer.analyzePDFs("../pdfs/dmd/Shukla.pdf");
+		analyzer.analyzePDFs("../pdfs/mdpi/metabolites-02-00100.pdf");
+	}	
+	
+	@Test
+	// uncomment to run tests
+	@Ignore
 	public void testAllPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
-		analyzer.analyzePDFs("../pdfs/bmc");
+//		analyzer.analyzePDFs("../pdfs/cell");
+//		analyzer.analyzePDFs("../pdfs/acs/biochem");
+		analyzer.analyzePDFs("../pdfs/mdpi");
+//		analyzer.analyzePDFs("../pdfs/bmc/misc");
+//		analyzer.analyzePDFs("../pdfs/dmd"); // problem with svg??
 	}	
 	
 	@Test

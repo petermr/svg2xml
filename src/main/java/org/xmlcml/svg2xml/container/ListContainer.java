@@ -220,8 +220,8 @@ public class ListContainer extends AbstractContainer {
 			} else if (Real.isEqual(leftMargin, leftIndent1, INDENT_EPS)) {
 				// OK
 			} else if (leftMargin == null) {
-				// should this ever happen?
-				LOG.error("Null Left margin: "+scriptLine.getTextContentWithSpaces()+"'");
+				// should this ever happen? it does, but maybe will be fixed
+				LOG.trace("Null Left margin: "+scriptLine.getTextContentWithSpaces()+"'");
 			}
 			multiScriptLine.add(scriptLine);
 		}
