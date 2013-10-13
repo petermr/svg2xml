@@ -74,6 +74,9 @@ public class PageIO {
 		if (rawSVGDocumentDir != null) {
 			finalSVGDocumentDir = createfinalSVGDocumentDirectory(rawSVGDocumentDir);
 			finalSVGDocumentDir.mkdirs();
+		} else {
+			finalSVGDocumentDir = new File("target");
+			finalSVGDocumentDir.mkdirs();
 		}
 		return finalSVGDocumentDir;
 	}
@@ -247,18 +250,30 @@ public class PageIO {
 	}
 	
 	public static File createHtmlFile(File dir, ContainerType type, String chunkId) {
-		dir.mkdirs();
-		return new File(dir, type+"."+chunkId+DOT_HTML);
+		if (dir != null) {
+			dir.mkdirs();
+			return new File(dir, type+"."+chunkId+DOT_HTML);
+		}
+		return null;
 	}
 
 	// must add this in somewhere: WhitespaceChunkerAnalyzerX.drawBoxes
 	public static void outputFile(Element element, File file) {
-		try {
-			file.getParentFile().mkdirs();
-			SVGSerializer svgSerializer = new SVGSerializer(new FileOutputStream(file));
-			svgSerializer.write(XMLUtil.ensureDocument(element));
-		} catch (IOException e) {
-			throw new RuntimeException("Cannot write file: "+file, e);
+		if (file != null) {
+			try {
+				File parentFile = file.getParentFile();
+				if (parentFile != null) {
+					file.getParentFile().mkdirs();
+				}
+				LOG.debug("writing to "+file);
+				Element elementCopy = (Element) element.copy();
+				SVGSerializer svgSerializer = new SVGSerializer(new FileOutputStream(file));
+				svgSerializer.write(XMLUtil.ensureDocument(elementCopy));
+			} catch (IOException e) {
+				throw new RuntimeException("Cannot write file: "+file, e);
+			}
+		} else {
+			throw new RuntimeException("Cannot write null file: ");
 		}
 	}
 

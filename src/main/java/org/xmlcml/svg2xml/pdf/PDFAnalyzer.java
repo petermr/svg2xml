@@ -234,30 +234,6 @@ public class PDFAnalyzer {
 		}
 	}
 
-	private void analyzeForLists(SVGG gChunk) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void analyzeAndCreateHTMLDead() {
-//		HtmlEditorOld htmlEditor = new HtmlEditorOld(this);
-//		htmlEditor.getHtmlAnalyzerListSortedByChunkId();
-//		htmlEditor.removeDuplicates();
-//		htmlEditor.createLinkedElementList();
-//		htmlEditor.mergeCaptions();
-//		htmlEditor.categorizeHtml();
-//		htmlEditor.analyzeTables();
-//		htmlEditor.analyzeFigures();
-//		htmlEditor.outputHtmlElements();
-	}
-
-//	private void writeSvgPages() {
-//		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-////			pageAnalyzer.writeRawSVGPageToFinalDirectory();
-//			pageAnalyzer.writeFinalSVGPageToFinalDirectory();
-//		}
-//	}
-
 	public void createSVGFilesfromPDF() {
 		LOG.trace("createSVG");
 		PDF2SVGConverter converter = new PDF2SVGConverter();

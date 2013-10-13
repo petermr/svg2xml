@@ -94,7 +94,7 @@ public class MixedContainer extends AbstractContainer {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		return super.createHtmlElement();
+		return super.createFigureHtmlElement();
 //		HtmlDiv divElement = new HtmlDiv();
 //		HtmlP p = new HtmlP();
 //		p.appendChild("DIV NYI");
@@ -144,7 +144,7 @@ public class MixedContainer extends AbstractContainer {
 		this.textAnalyzerX = textAnalyzerX;
 	}
 
-	public ShapeContainer getPathContainer() {
+	public AbstractContainer getPathContainer() {
 		return shapeContainer;
 	}
 	

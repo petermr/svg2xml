@@ -9,10 +9,9 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.util.Path2ShapeConverter;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ShapeContainer;
-
-import util.Path2ShapeConverter;
 
 /**
  * Analyzes paths either direct children of chunks or extracted from them.
@@ -102,7 +101,7 @@ public class ShapeAnalyzer extends ChunkAnalyzer {
 		return s;
 	}
 
-	public ShapeContainer getPathContainer() {
+	public AbstractContainer getPathContainer() {
 		return shapeContainer;
 	}
 

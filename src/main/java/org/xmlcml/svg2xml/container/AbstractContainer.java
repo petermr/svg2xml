@@ -19,6 +19,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlUl;
+import org.xmlcml.svg2xml.figure.FigureGraphic;
 import org.xmlcml.svg2xml.indexer.LicenceIndexer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
@@ -363,5 +364,36 @@ public abstract class AbstractContainer {
 	
 	public ChunkAnalyzer getChunkAnalyzer() {
 		return this.chunkAnalyzer;
+	}
+
+	protected HtmlElement createFigureHtmlElement() {
+		htmlElement = null;
+		if (svgChunk != null) {
+			this.createNewHtmlElement();
+			ChunkId chunkId = getChunkId();
+			String id = chunkId == null ? String.valueOf(System.currentTimeMillis()) : chunkId.toString();
+			String imageName = pageAnalyzer.getPageIO().createImageFilename(id);
+			String svgName = pageAnalyzer.getPageIO().createSvgFilename(id);
+			HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "20%");
+			htmlElement.appendChild(div);
+			FigureGraphic figureGraphic = new FigureGraphic(pageAnalyzer);
+			removeAnnotatedRects(svgChunk);
+			figureGraphic.setSVGContainer(svgChunk);
+			figureGraphic.createAndWriteImageAndSVG(imageName, div, svgName);
+		} else {
+			LOG.trace("Null Shape Chunk: "/*+shapeList+" "+((shapeList != null) ? shapeList.size() : "null"*/);
+		}
+		return htmlElement;
+	}
+
+	private void createNewHtmlElement() {
+		htmlElement = new HtmlDiv();
+	}
+
+	void removeAnnotatedRects(SVGG svgChunk) {
+		Nodes nodes = svgChunk.query(".//*[@title='org.xmlcml.svg2xml.page.ShapeAnalyzer1']");
+		for (int i = 0; i < nodes.size(); i++) {
+			nodes.get(i).detach();
+		}
 	}
 }

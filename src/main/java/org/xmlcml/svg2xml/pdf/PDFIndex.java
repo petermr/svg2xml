@@ -579,7 +579,7 @@ public class PDFIndex {
 		scriptContainerByBoldFontSize.put(fontSize, scriptContainer);
 	}
 
-	public void addToShapeIndex(String pathString, ShapeContainer pathContainer) {
+	public void addToShapeIndex(String pathString, AbstractContainer pathContainer) {
 		LOG.trace("NYI Adding: "+pathString+" "+pathContainer);
 	}
 

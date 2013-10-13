@@ -16,6 +16,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.util.Path2ShapeConverter;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
@@ -24,8 +25,6 @@ import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTh;
 import org.xmlcml.xml.XMLUtil;
-
-import util.Path2ShapeConverter;
 
 /** holds temporary table as list of chunks.
  * might disappear into TableAnalyzer later?

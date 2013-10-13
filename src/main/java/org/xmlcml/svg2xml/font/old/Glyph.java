@@ -10,10 +10,11 @@ import nu.xom.Nodes;
 import org.xmlcml.euclid.Line2;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Vector2;
-import org.xmlcml.graphics.svg.LinePrimitive;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGPathPrimitive;
+import org.xmlcml.graphics.svg.path.LinePrimitive;
+import org.xmlcml.graphics.svg.path.PathPrimitiveList;
 
 /**
   <glyph character="?3" signature="MLLCCCLLLCCCCCCCLLLZMLCCCCCCCLL">
@@ -147,7 +148,7 @@ public class Glyph {
 	
 	public List<Vector2> getLineVectors() {
 		List<Vector2> vectorList = new ArrayList<Vector2>();
-		List<SVGPathPrimitive> primitiveList = svgPath.ensurePrimitives();
+		PathPrimitiveList primitiveList = svgPath.ensurePrimitives();
 		for (int i = 1; i < primitiveList.size(); i++) {
 			SVGPathPrimitive primitive = primitiveList.get(i);
 			if (primitive instanceof LinePrimitive) {

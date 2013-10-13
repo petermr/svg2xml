@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +22,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.graphics.svg.ImageConverter;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
@@ -33,6 +31,8 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.image.ImageConverter;
+import org.xmlcml.graphics.svg.util.Path2ShapeConverter;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
@@ -43,6 +43,7 @@ import org.xmlcml.html.HtmlStyle;
 import org.xmlcml.html.HtmlTitle;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
+import org.xmlcml.svg2xml.container.MixedContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.pdf.ChunkId;
@@ -50,8 +51,6 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 import org.xmlcml.xml.XMLUtil;
-
-import util.Path2ShapeConverter;
 
 /**
  * Processes a page.
@@ -606,8 +605,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			SVGG chunk = abstractContainer.getSVGChunk();
 			String chunkId = chunk.getId();
+			LOG.trace("Chunk "+chunk.toXML());
 			File file = new File(pageIo.createChunkFilename(chunkId));
-			PageIO.outputFile(chunk, file);
+			SVGSVG.wrapAndWriteAsSVG(chunk, file);
+//			PageIO.outputFile(chunk, file);
 			LOG.trace(abstractContainer.getClass() + " " + chunkId);
 		}
 	}
@@ -673,6 +674,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		ensureAbstractContainerList();
 		LOG.trace("abstractContainers "+abstractContainerList.size());
 		for (AbstractContainer abstractContainer : abstractContainerList) {
+			LOG.debug(abstractContainer.getClass());
+			if (abstractContainer instanceof MixedContainer) {
+				LOG.debug(abstractContainer.getClass());
+			}
 			ChunkId chunkId = abstractContainer.getChunkId();
 			if (chunkId == null) {
 				// probably a bug
@@ -692,6 +697,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			if (type != null) {
 				LOG.trace("creating html chunk: "+type+": "+chunkId.toString()+" "+(System.currentTimeMillis()-time));
 				File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), type, chunkId.toString());
+				LOG.debug("html "+file+" "+element.toXML());
 				PageIO.outputFile(element, file);
 			}
 			chunkIdSet.add(chunkId);

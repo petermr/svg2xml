@@ -36,7 +36,7 @@ public class FigureContainer extends AbstractContainer  {
 
 	@Override
 	public HtmlElement createHtmlElement() {
-		super.createHtmlElement();
+		this.createFigureHtmlElement();
 		HtmlP p = new HtmlP("FIGURE");
 		htmlElement.appendChild(p);
 		return htmlElement;

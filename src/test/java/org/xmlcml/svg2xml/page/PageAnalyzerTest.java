@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.container.AbstractContainer;
@@ -293,19 +294,6 @@ public class PageAnalyzerTest {
 				containerList);
 	}
 	
-//	@Test
-//	public void testGeoTablePage() {
-//		int page = 2;
-//		PDFAnalyzer.analyzeChunkInSVGPage(Fixtures.BMCSVGDIR, BMC_GEOTABLE, page, Fixtures.BMCOUTDIR);
-//	}
-//	
-//	@Test
-//	public void testGeoTablePages() {
-//		File[] files = new File(Fixtures.BMCSVGDIR, BMC_GEOTABLE).listFiles();
-//		PDFAnalyzer.analyzeChunksInPagesInFiles(files, Fixtures.BMCSVGDIR, BMC_GEOTABLE, Fixtures.BMCOUTDIR);
-//	}
-//
-	
 	@Test
 	public void testSVGBug() {
 		SVGElement svgElement = SVGElement.readAndCreateSVG(new File("src/test/resources/svg/Shukla/page8.svg"));
@@ -338,6 +326,62 @@ public class PageAnalyzerTest {
 			},
 			containerList);
 	}
+	
+	@Test
+	public void testMDPIPageAndProcessing() {
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(new File("src/test/resources/svg/mdpi/metabolites-02-00039-page2.svg"));
+		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		checkAbstractContainers(
+		new Class[]{
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.MixedContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainer.class,
+		},
+		containerList);
+	}
+	
+	@Test
+	public void testOutput(){
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(new File("src/test/resources/svg/mdpi/metabolites-02-00039-page2.svg"));
+		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		MixedContainer mixedContainer10 = (MixedContainer) containerList.get(10);
+		SVGElement chunk10 = mixedContainer10.getChunkAnalyzer().getSVGChunk();
+		LOG.debug("chunk10 "+chunk10.toXML());
+		pageAnalyzer.outputChunks();
+		pageAnalyzer.outputHtmlComponents();
+		pageAnalyzer.outputImages();
+		pageAnalyzer.outputHtmlRunningText();
+		pageAnalyzer.writeFinalSVGPageToFinalDirectory();
+	}
+
+	
 
 	//================================================================
 	

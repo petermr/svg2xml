@@ -46,12 +46,11 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void testPDFAnalyzerUBIQ() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		// this fails to separate 2-column text
 //		analyzer.analyzePDFFile(new File("src/test/resources/pdfs/ubiquity/1-4-4-PB.pdf"));
-		// this fails with OOME heap space. Why??
 		analyzer.analyzePDFFile(new File("src/test/resources/pdfs/ubiquity/63-684-1-PB-1.pdf"));
 	}
 
@@ -93,12 +92,19 @@ public class PDFAnalyzerTest {
 	}	
 	
 	@Test
-	@Ignore // may have cured memory limit?
+	//@Ignore // may have cured memory limit?
 	public void testCHBudget() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf")); // OK
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf")); // OK		
 //		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Banedanmark.pdf")); // OK
 //		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/IYR2011DRC.pdf")); // OK
 //		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2010FINAL.pdf"));
-		}
+//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/ByLawTraffic2011.pdf")); // OK		
+	}
+	
+	@Test
+	//@Ignore
+	public void testMDPI() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/mdpi/metabolites-02-00039.pdf")); // has bitmapped cheical elements :-)
+	}
 	
 }
