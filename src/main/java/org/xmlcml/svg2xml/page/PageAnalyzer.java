@@ -674,9 +674,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		ensureAbstractContainerList();
 		LOG.trace("abstractContainers "+abstractContainerList.size());
 		for (AbstractContainer abstractContainer : abstractContainerList) {
-			LOG.debug(abstractContainer.getClass());
+			LOG.trace(abstractContainer.getClass());
 			if (abstractContainer instanceof MixedContainer) {
-				LOG.debug(abstractContainer.getClass());
+				LOG.trace(abstractContainer.getClass());
 			}
 			ChunkId chunkId = abstractContainer.getChunkId();
 			if (chunkId == null) {
@@ -697,7 +697,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			if (type != null) {
 				LOG.trace("creating html chunk: "+type+": "+chunkId.toString()+" "+(System.currentTimeMillis()-time));
 				File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), type, chunkId.toString());
-				LOG.debug("html "+file+" "+element.toXML());
+				LOG.trace("html "+file+" "+element.toXML());
 				PageIO.outputFile(element, file);
 			}
 			chunkIdSet.add(chunkId);

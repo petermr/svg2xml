@@ -258,6 +258,7 @@ public class Fixtures {
 	public final static TextLine BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 
 	public static final File IMAGE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/image");
+	public static final File MOLECULE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/molecules");
 
 
 	

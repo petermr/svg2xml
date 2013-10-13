@@ -373,7 +373,7 @@ public class PageAnalyzerTest {
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		MixedContainer mixedContainer10 = (MixedContainer) containerList.get(10);
 		SVGElement chunk10 = mixedContainer10.getChunkAnalyzer().getSVGChunk();
-		LOG.debug("chunk10 "+chunk10.toXML());
+		LOG.trace("chunk10 "+chunk10.toXML());
 		pageAnalyzer.outputChunks();
 		pageAnalyzer.outputHtmlComponents();
 		pageAnalyzer.outputImages();
