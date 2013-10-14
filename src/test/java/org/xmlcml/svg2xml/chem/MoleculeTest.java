@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.chem;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -14,6 +15,8 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.path.TramLine;
+import org.xmlcml.graphics.svg.path.TramLineManager;
 import org.xmlcml.svg2xml.Fixtures;
 
 /** test reading molecules
@@ -26,8 +29,8 @@ import org.xmlcml.svg2xml.Fixtures;
 public class MoleculeTest {
 
 	private final static Logger LOG = Logger.getLogger(MoleculeTest.class);
-	private static final Angle MAX_ANGLE = new Angle(0.02, Units.RADIANS);
-	private static final Double MAX_WIDTH = 1.0;
+	private static final Angle MAX_ANGLE = new Angle(0.03, Units.RADIANS);
+	private static final Double MAX_WIDTH = 2.0;
 
 	
 	@Test
@@ -93,12 +96,56 @@ public class MoleculeTest {
 		
 	}
 	
+	@Test
+	public void testWithElementPNG() {
+		createLinesFromOutlines("image.g.5.11", MAX_WIDTH, MAX_ANGLE, 48);
+		createLinesFromOutlines("image.g.5.12", MAX_WIDTH, MAX_ANGLE, 51);
+		createLinesFromOutlines("image.g.5.13", MAX_WIDTH, MAX_ANGLE, 88);
+		createLinesFromOutlines("image.g.5.14", MAX_WIDTH, MAX_ANGLE, 95);
+		
+	}
+	
+	@Test
+	public void testTramLines() {
+		List<SVGLine> lineList = createLinesFromOutlines("image.g.2.13", MAX_WIDTH, MAX_ANGLE, 13);
+		Assert.assertEquals("linelist", 13, lineList.size());
+		TramLineManager tramLineManager = new TramLineManager();
+		List<TramLine> tramLineList = tramLineManager.makeTramLineList(lineList);
+		Assert.assertEquals("tramLines", 2, tramLineList.size());
+
+	}
+	
+	@Test
+	public void testMoreTramLines() {
+		tramLineTester("image.g.2.13", MAX_WIDTH, MAX_ANGLE, 13, 2);
+		tramLineTester("image.g.2.11", MAX_WIDTH, MAX_ANGLE, 6, 0); // expected 1
+		tramLineTester("image.g.2.18", MAX_WIDTH, MAX_ANGLE, 21, 4); // why not 5?
+		tramLineTester("image.g.2.23", MAX_WIDTH, MAX_ANGLE, 24, 0); // expected 4
+		tramLineTester("image.g.2.25", MAX_WIDTH, MAX_ANGLE, 24, 2); //expected 5
+		tramLineTester("image.g.5.11", MAX_WIDTH, MAX_ANGLE, 48, 3); //expected 4
+		tramLineTester("image.g.5.12", MAX_WIDTH, MAX_ANGLE, 51, 5);
+		tramLineTester("image.g.5.13", MAX_WIDTH, MAX_ANGLE, 88, 9); // expected 10
+		tramLineTester("image.g.5.14", MAX_WIDTH, MAX_ANGLE, 95, 11);
+	}
+
+	private void tramLineTester(String root, double maxWidth, Angle angleEps, int lineCount, int tramLineCount) {
+		List<SVGLine> lineList = createLinesFromOutlines(root,maxWidth, angleEps, lineCount);
+		TramLineManager tramLineManager = new TramLineManager();
+		List<TramLine> tramLineList = tramLineManager.makeTramLineList(lineList);
+		for (TramLine tramLine : tramLineList) {
+			tramLine.setFillx("red");
+			tramLine.setStrokeWidthx(10.);
+		}
+		Assert.assertEquals("tramLines "+root, tramLineCount, tramLineList.size());
+	}
+	
 	// ================= HELPERS ===============
-	private static void createLinesFromOutlines(String fileRoot, Double maxWidth, Angle angleEps, int pathCount) {
+	private static List<SVGLine> createLinesFromOutlines(String fileRoot, Double maxWidth, Angle angleEps, int pathCount) {
 		List<SVGPath> pathList = SVGPath.extractPaths(SVGElement.readAndCreateSVG(new File(Fixtures.MOLECULE_DIR, fileRoot+".svg")));
 		Assert.assertEquals("paths", pathCount, pathList.size());
 		SVGG g = new SVGG();
 		int i = 0;
+		List<SVGLine> lineList = new ArrayList<SVGLine>();
 		for (SVGPath path : pathList) {
 			LOG.trace(path.getSignature());
 			SVGPath newPath = path.replaceAllUTurnsByButt(angleEps);
@@ -106,6 +153,7 @@ public class MoleculeTest {
 				SVGLine line = newPath.createLineFromMLLLL(angleEps, maxWidth);
 				if (line != null) {
 					g.appendChild(line);
+					lineList.add(line);
 				} else {
 					LOG.debug("Failed line"+i);
 					newPath.setFill("red");
@@ -119,5 +167,6 @@ public class MoleculeTest {
 			i++;
 		}
 		SVGSVG.wrapAndWriteAsSVG(g, new File("target/moleculeLines"+fileRoot+".svg"));
+		return lineList;
 	}
 }
