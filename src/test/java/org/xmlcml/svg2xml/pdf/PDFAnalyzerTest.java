@@ -104,7 +104,7 @@ public class PDFAnalyzerTest {
 	@Test
 	//@Ignore
 	public void testMDPI() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/mdpi/metabolites-02-00039.pdf")); // has bitmapped chemical elements :-)
+		new PDFAnalyzer().analyzePDFFile(new File("src/test/resources/pdfs/mdpi/metabolites-02-00039.pdf")); // has bitmapped chemical elements :-)
 	}
 	
 }

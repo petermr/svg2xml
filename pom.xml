@@ -27,7 +27,7 @@
     <artifactId>svg2xml-dev</artifactId>
     <version>0.1-SNAPSHOT</version>
     <name>AMI2-SVGPlus</name>
-    <description>Takes SVG from PDF2SVG and analyzes the domain-indepndent semantics</description>
+    <description>Takes SVG from PDF2SVG and analyzes the domain-independent semantics</description>
 
     <licenses>
         <license>

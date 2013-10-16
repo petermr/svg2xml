@@ -29,7 +29,7 @@ import org.xmlcml.svg2xml.Fixtures;
 public class MoleculeTest {
 
 	private final static Logger LOG = Logger.getLogger(MoleculeTest.class);
-	private static final Angle MAX_ANGLE = new Angle(0.03, Units.RADIANS);
+	private static final Angle MAX_ANGLE = new Angle(0.12, Units.RADIANS);
 	private static final Double MAX_WIDTH = 2.0;
 
 	
@@ -111,25 +111,25 @@ public class MoleculeTest {
 		Assert.assertEquals("linelist", 13, lineList.size());
 		TramLineManager tramLineManager = new TramLineManager();
 		List<TramLine> tramLineList = tramLineManager.makeTramLineList(lineList);
-		Assert.assertEquals("tramLines", 2, tramLineList.size());
+		Assert.assertEquals("tramLines", 3, tramLineList.size());
 
 	}
 	
 	@Test
 	public void testMoreTramLines() {
-		tramLineTester("image.g.2.13", MAX_WIDTH, MAX_ANGLE, 13, 2);
-		tramLineTester("image.g.2.11", MAX_WIDTH, MAX_ANGLE, 6, 0); // expected 1
-		tramLineTester("image.g.2.18", MAX_WIDTH, MAX_ANGLE, 21, 4); // why not 5?
-		tramLineTester("image.g.2.23", MAX_WIDTH, MAX_ANGLE, 24, 0); // expected 4
-		tramLineTester("image.g.2.25", MAX_WIDTH, MAX_ANGLE, 24, 2); //expected 5
-		tramLineTester("image.g.5.11", MAX_WIDTH, MAX_ANGLE, 48, 3); //expected 4
-		tramLineTester("image.g.5.12", MAX_WIDTH, MAX_ANGLE, 51, 5);
-		tramLineTester("image.g.5.13", MAX_WIDTH, MAX_ANGLE, 88, 9); // expected 10
-		tramLineTester("image.g.5.14", MAX_WIDTH, MAX_ANGLE, 95, 11);
+		tramLineTester("image.g.2.13", MAX_WIDTH, MAX_ANGLE, 13, 3);
+		tramLineTester("image.g.2.11", MAX_WIDTH, MAX_ANGLE, 6, 1);
+		tramLineTester("image.g.2.18", MAX_WIDTH, MAX_ANGLE, 21, 5);
+		tramLineTester("image.g.2.23", MAX_WIDTH, MAX_ANGLE, 24, 4);
+		tramLineTester("image.g.2.25", MAX_WIDTH, MAX_ANGLE, 24, 5);
+		tramLineTester("image.g.5.11", MAX_WIDTH, MAX_ANGLE, 48, 4);
+		tramLineTester("image.g.5.12", MAX_WIDTH, MAX_ANGLE, 51, 6);
+		tramLineTester("image.g.5.13", MAX_WIDTH, MAX_ANGLE, 88, 11);
+		tramLineTester("image.g.5.14", MAX_WIDTH, MAX_ANGLE, 95, 13);
 	}
 
 	private void tramLineTester(String root, double maxWidth, Angle angleEps, int lineCount, int tramLineCount) {
-		List<SVGLine> lineList = createLinesFromOutlines(root,maxWidth, angleEps, lineCount);
+		List<SVGLine> lineList = createLinesFromOutlines(root, maxWidth, angleEps, lineCount);
 		TramLineManager tramLineManager = new TramLineManager();
 		List<TramLine> tramLineList = tramLineManager.makeTramLineList(lineList);
 		for (TramLine tramLine : tramLineList) {
