@@ -104,7 +104,7 @@ public class MoleculeTest {
 	}
 	
 	@Test
-	@Ignore // FIXME
+//	@Ignore // FIXME
 	public void test00100() {
 		createLinesFromOutlines("02.00100.g.6.5", MAX_WIDTH, MAX_ANGLE, 34); // should be 27??
 		tramLineTester("02.00100.g.6.5", MAX_WIDTH, MAX_ANGLE, 34, 6);
@@ -121,7 +121,7 @@ public class MoleculeTest {
 	}
 	
 	@Test
-	@Ignore // FIXME
+//	@Ignore // FIXME
 	public void testTramLinesG2_11() {
 		List<SVGLine> lineList = createLinesFromOutlines("image.g.2.11", MAX_WIDTH, MAX_ANGLE, 6);
 		TramLineManager tramLineManager = new TramLineManager();
@@ -131,7 +131,7 @@ public class MoleculeTest {
 	}
 	
 	@Test
-	@Ignore // FIXME
+//	@Ignore // FIXME
 	public void testTramLines() {
 		List<SVGLine> lineList = createLinesFromOutlines("image.g.2.13", MAX_WIDTH, MAX_ANGLE, 13);
 		Assert.assertEquals("linelist", 13, lineList.size());
@@ -143,7 +143,7 @@ public class MoleculeTest {
 	}
 	
 	@Test
-	@Ignore // FIXME
+//	@Ignore // FIXME
 	public void testMoreTramLines() {
 		tramLineTester("image.g.2.13", MAX_WIDTH, MAX_ANGLE, 13, 3);
 		tramLineTester("image.g.2.11", MAX_WIDTH, MAX_ANGLE, 6, 1); 
@@ -175,7 +175,7 @@ public class MoleculeTest {
 	}
 
 	@Test
-	@Ignore // FIXME
+//	@Ignore // FIXME
 	public void testJunctionWithTram() {
 		List<SVGLine> lineList = createLinesFromOutlines("image.g.2.11", MAX_WIDTH, MAX_ANGLE, 6);
 		TramLineManager tramLineManager = new TramLineManager();
@@ -193,7 +193,7 @@ public class MoleculeTest {
 	}
 
 	@Test
-	@Ignore // FIXME
+//	@Ignore // FIXME
 	public void testJunctionWithTramAndText() {
 		String fileRoot = "image.g.2.11";
 		List<SVGLine> lineList = createLinesFromOutlines(fileRoot, MAX_WIDTH, MAX_ANGLE, 6);
@@ -217,7 +217,7 @@ public class MoleculeTest {
 	}
 
 	@Test
-	@Ignore // FIXME
+//	@Ignore // FIXME
 	public void testMergeJunctions() {
 		String fileRoot = "image.g.2.11";
 		List<SVGText> textList = createTextListAndAddIds(fileRoot);
