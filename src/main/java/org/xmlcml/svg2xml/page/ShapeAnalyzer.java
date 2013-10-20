@@ -2,14 +2,9 @@ package org.xmlcml.svg2xml.page;
 
 import java.util.List;
 
-import nu.xom.ParentNode;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.graphics.svg.util.Path2ShapeConverter;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ShapeContainer;
 

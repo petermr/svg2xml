@@ -12,7 +12,7 @@ import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.graphics.svg.util.Path2ShapeConverter;
+import org.xmlcml.graphics.svg.path.Path2ShapeConverter;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.table.TableTable;
 
