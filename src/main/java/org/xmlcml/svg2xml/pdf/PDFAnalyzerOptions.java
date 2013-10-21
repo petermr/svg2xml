@@ -26,7 +26,8 @@ public class PDFAnalyzerOptions {
 
 	public boolean annotateChunks = true;
 
-	public boolean skipOutput = false;
+//	public boolean skipOutput = false;
+	public boolean skipOutput = true;
 
 	public PDFAnalyzerOptions(PDFAnalyzer pdfAnalyzer) {
 		this.pdfAnalyzer = pdfAnalyzer;

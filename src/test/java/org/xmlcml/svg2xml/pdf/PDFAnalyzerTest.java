@@ -84,10 +84,11 @@ public class PDFAnalyzerTest {
 	@Ignore
 	public void testAllPDFAnalyzerDIR() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
+		analyzer.setSkipOutput(true);
 //		analyzer.analyzePDFs("../pdfs/cell");
 //		analyzer.analyzePDFs("../pdfs/acs/biochem");
-		analyzer.analyzePDFs("../pdfs/mdpi");
-//		analyzer.analyzePDFs("../pdfs/bmc/misc");
+//		analyzer.analyzePDFs("../pdfs/mdpi");
+		analyzer.analyzePDFs("../pdfs/bmc/page1");
 //		analyzer.analyzePDFs("../pdfs/dmd"); // problem with svg??
 	}	
 	

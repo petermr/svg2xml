@@ -360,4 +360,8 @@ public class PDFAnalyzer {
 		return pdfOptions.outputRawTableHtml;
 	}
 
+	public void setSkipOutput(boolean b) {
+		pdfOptions.skipOutput = b;
+	}
+
 }
