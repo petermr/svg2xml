@@ -46,12 +46,12 @@ public class PDFAnalyzerTest {
 	}
 
 	@Test
-//	@Ignore
+	@Ignore
 	public void testPDFAnalyzerUBIQ() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		// this fails to separate 2-column text
 //		analyzer.analyzePDFFile(new File("src/test/resources/pdfs/ubiquity/1-4-4-PB.pdf"));
-		analyzer.analyzePDFFile(new File("src/test/resources/pdfs/ubiquity/63-684-1-PB-1.pdf"));
+//		analyzer.analyzePDFFile(new File("src/test/resources/pdfs/ubiquity/63-684-1-PB-1.pdf"));
 	}
 
 
