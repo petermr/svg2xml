@@ -61,6 +61,10 @@ public class Word {
 	}
 	
 	public String toString() {
+		return getValue();
+	}
+
+	public String getValue() {
 		StringBuilder sb = new StringBuilder();
 		for (SVGText text : textList) {
 			sb.append(text.getValue());
@@ -178,9 +182,7 @@ public class Word {
 		return boundingBox.getYRange();
 	}
 	
-//	public IntArray getYRange() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
+	public Real2 getXY() {
+		return (textList.size() == 0) ? null : textList.get(0).getXY();
+	}
 }

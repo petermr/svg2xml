@@ -31,6 +31,10 @@ public class RawWords implements Iterable<Word> {
 		this.wordList = new ArrayList<Word>();
 	}
 
+	public List<Word> getWordList() {
+		return wordList;
+	}
+	
 	public void add(Word word) {
 		wordList.add(word);
 	}
@@ -136,22 +140,6 @@ public class RawWords implements Iterable<Word> {
 		return wordList.get(0).getStartX();
 	}
 	
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder("{");
-		for (int i = 0; i < wordList.size() - 1; i++) {
-			Word word = wordList.get(i);
-			sb.append("("+word.toString()+")");
-			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
-			for (int j = 0; j < spaceCount; j++) {
-				sb.append(".");
-			}
-		}
-		sb.append("("+wordList.get(wordList.size() - 1).toString()+")");
-		sb.append("}");
-		return sb.toString();
-	}
-
 	/** translates words into integers if possible.
 
 	 * @return null if translation impossible
@@ -205,7 +193,20 @@ public class RawWords implements Iterable<Word> {
 		}
 		return phraseList;
 	}
-
 	
-	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder("{");
+		for (int i = 0; i < wordList.size() - 1; i++) {
+			Word word = wordList.get(i);
+			sb.append("("+word.toString()+")");
+			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
+			for (int j = 0; j < spaceCount; j++) {
+				sb.append(".");
+			}
+		}
+		sb.append("("+wordList.get(wordList.size() - 1).toString()+")");
+		sb.append("}");
+		return sb.toString();
+	}
 }
