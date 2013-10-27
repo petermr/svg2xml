@@ -81,7 +81,7 @@ public class MixedContainer extends AbstractContainer {
 	public void addTextList(List<SVGText> characterList) {
 		if (characterList != null && characterList.size() > 0) {
 			textAnalyzerX = new TextAnalyzer(pageAnalyzer);
-			textAnalyzerX.setTextCharacters(characterList);
+			textAnalyzerX.setTextList(characterList);
 			List<TextLine> textLineList = getTextAnalyzer().getTextLines();
 			textStructurer = new TextStructurer((TextAnalyzer)null);
 			textStructurer.setTextLines(textLineList);

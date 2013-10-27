@@ -72,6 +72,13 @@ public class PDFAnalyzerTest {
 	}	
 	
 	@Test
+//	@Ignore
+	public void testPDFAnalyzerBMC() {
+		PDFAnalyzer analyzer = new PDFAnalyzer();
+		analyzer.analyzePDFs(new File(Fixtures.PDFS_BMC_DIR, "tree-1471-2148-11-313.pdf").toString());
+	}	
+	
+	@Test
 	@Ignore
 	public void testSVGBug() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
@@ -103,9 +110,15 @@ public class PDFAnalyzerTest {
 	}
 	
 	@Test
-	//@Ignore
+	@Ignore
 	public void testMDPI() {
 		new PDFAnalyzer().analyzePDFFile(new File("src/test/resources/pdfs/mdpi/metabolites-02-00039.pdf")); // has bitmapped chemical elements :-)
+	}
+	
+	@Test
+//	@Ignore
+	public void testScience() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/science/")); // has bitmapped chemical elements :-)
 	}
 	
 }

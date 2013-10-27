@@ -260,6 +260,8 @@ public class Fixtures {
 	public static final File IMAGE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/image");
 	public static final File MOLECULE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/molecules");
 
+	public static final File BUILDER_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/builder");
+
 
 	
 // ==================================================	

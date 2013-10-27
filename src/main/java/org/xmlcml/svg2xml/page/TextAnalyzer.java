@@ -89,14 +89,14 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		this.textOrientation = textOrientation;
 	}
 	
-	public TextAnalyzer(List<SVGText> characterList, PageAnalyzer pageAnalyzer) {
+	public TextAnalyzer(List<SVGText> textList, PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
-		this.setTextCharacters(characterList);
+		this.setTextList(textList);
 	}
 
-	public TextAnalyzer(List<SVGText> characterList) {
+	public TextAnalyzer(List<SVGText> textList) {
 		super((PageAnalyzer)null);
-		this.setTextCharacters(characterList);
+		this.setTextList(textList);
 	}
 
 	public TextAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
@@ -189,7 +189,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		return textCharacters;
 	}
 	
-	public void setTextCharacters(List<SVGText> textCharacters) {
+	public void setTextList(List<SVGText> textCharacters) {
 		this.textCharacters = textCharacters;
 	}
 	
@@ -309,20 +309,24 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		return rot0TextAnalyzer.getTextCharacters();
 	}
 
-	private void ensureRotatedTextAnalyzers() {
+	public void ensureRotatedTextAnalyzers() {
 		if (TextOrientation.ANY.equals(textOrientation)) {
-			if (rot0TextAnalyzer == null ||
-				rotPi2TextAnalyzer == null ||
-				rotPiTextAnalyzer == null ||
-				rot3Pi2TextAnalyzer == null ||
-				rotIrregularTextAnalyzer == null) {
-				rot0TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_0);
-				rotPi2TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_PI2);
-				rotPiTextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_PI);
-				rot3Pi2TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_3PI2);
-				rotIrregularTextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.IRREGULAR);
-				addCharactersToAnalyzers();
-			}
+			createRotatedTextAnalyzers();
+		}
+	}
+
+	public void createRotatedTextAnalyzers() {
+		if (rot0TextAnalyzer == null ||
+			rotPi2TextAnalyzer == null ||
+			rotPiTextAnalyzer == null ||
+			rot3Pi2TextAnalyzer == null ||
+			rotIrregularTextAnalyzer == null) {
+			rot0TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_0);
+			rotPi2TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_PI2);
+			rotPiTextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_PI);
+			rot3Pi2TextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.ROT_3PI2);
+			rotIrregularTextAnalyzer = new TextAnalyzer(pageAnalyzer, TextOrientation.IRREGULAR);
+			addCharactersToAnalyzers();
 		}
 	}
 
@@ -389,6 +393,10 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	
 	public List<SVGText> getRotIrregularTextCharacters() {
 		return getRotIrregularTextAnalyzer().getTextCharacters();
+	}
+	
+	public void setTextOrientation(TextOrientation textOrientation) {
+		this.textOrientation = textOrientation;
 	}
 
 	public TextOrientation getTextOrientation() {

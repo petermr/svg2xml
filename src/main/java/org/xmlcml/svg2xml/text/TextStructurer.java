@@ -84,7 +84,6 @@ public class TextStructurer {
 
 	private RealArray interTextLineSeparationArray;
 	private RealArray meanFontSizeArray;
-//	private RealArray modalExcessWidthArray;
 	private Multiset<Double> separationSet;
 	private Map<Integer, TextLine> textLineByYCoordMap;
 	private RealArray textLineCoordinateArray;
@@ -106,6 +105,10 @@ public class TextStructurer {
 
 	private List<RawWords> rawWordsList;
 
+	public TextStructurer() {
+		this(new TextAnalyzer((List<SVGText>)null, (PageAnalyzer)null));
+	}
+	
 	/** this COPIES the lines in the textAnalyzer
 	 * this may not be a good idea
 	 * @param textAnalyzer to copy lines from
@@ -701,7 +704,7 @@ public class TextStructurer {
 	
 	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, PageAnalyzer pageAnalyzer) {
 		TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
-		textAnalyzer.setTextCharacters(textCharacters);
+		textAnalyzer.setTextList(textCharacters);
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		// the next two lines may be unnecessary
 		textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
@@ -714,7 +717,14 @@ public class TextStructurer {
 	}
 	
 	public TextAnalyzer getTextAnalyzer() {
+		ensureTextAnalyzer();
 		return textAnalyzer;
+	}
+
+	private void ensureTextAnalyzer() {
+		if (this.textAnalyzer == null) {
+			this.textAnalyzer = new TextAnalyzer((PageAnalyzer)null);
+		}
 	}
 
 	/** finds maximum indent of lines
@@ -1286,6 +1296,17 @@ public class TextStructurer {
 						svgFile, (PageAnalyzer) null);
 		List<TextLine> textLines = textStructurer.getLinesInIncreasingY();
 		return textLines.get(lineNumber);
+	}
+
+//	public void setTextList(List<SVGText> textList) {
+//		this.textList = textList;
+//	}
+//
+	public void setTextCharacters(List<SVGText> textList) {
+		this.getTextAnalyzer();
+		if (textAnalyzer != null) {
+			textAnalyzer.setTextList(textList);	
+		}
 	}
 
 }
