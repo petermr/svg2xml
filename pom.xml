@@ -144,7 +144,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>org.xmlcml.svg2xml.analyzer.PDFAnalyzer</mainClass>
+                            <mainClass>package org.xmlcml.svg2xml.pdf.PDFAnalyzer</mainClass>
                         </manifest>
                     </archive>
                     <excludes>

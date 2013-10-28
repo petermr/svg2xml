@@ -116,9 +116,15 @@ public class PDFAnalyzerTest {
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testScience() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/science/")); // has bitmapped chemical elements :-)
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/science/")); // 3-column 
+	}
+	
+	@Test
+//	@Ignore
+	public void testAstro() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/arxiv/astro")); // 
 	}
 	
 }

@@ -1,17 +1,29 @@
 package org.xmlcml.svg2xml.builder;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
+import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.SVGPolygon;
+import org.xmlcml.graphics.svg.SVGPolyline;
+import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGShape;
+import org.xmlcml.graphics.svg.path.Path2ShapeConverter;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.Word;
 
 public class GeometryBuilderTest {
+
+	private static final Logger LOG = Logger.getLogger(GeometryBuilderTest.class);
 
 	@Test
 	public void testWordList() {
@@ -198,11 +210,69 @@ public class GeometryBuilderTest {
 				htmlElement.toXML());
 	}
 	
-	public void testArraysFromPaths() {
+	@Test
+	public void testPaths() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
 				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-		HtmlElement htmlElement = geometryBuilder.createArraysFromPaths();
+		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());
+		Assert.assertEquals("paths", 36, pathList.size());
 	}
 	
+	@Test
+	public void testShape() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
+				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
+		extractPlotComponents();
+		Assert.assertEquals("paths", 36, pathList.size());
+		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
+		Assert.assertEquals("shapes", 0, shapeList1.size());
+		Assert.assertEquals("lines", 6, lineList.size());
+		for (SVGLine line : lineList) {
+			LOG.debug("line: "+line);
+		}
+		Assert.assertEquals("polylines", 19, polylineList.size());
+		for (SVGPolyline polyline : polylineList) {
+			polyline.format(2);
+			LOG.debug("polyLine: "+polyline.size()+" "+polyline.getBoundingBox().getXRange().getRange()+"/"+polyline.getBoundingBox().getYRange().getRange());
+		}
+		System.out.println();
+		Assert.assertEquals("polygons", 11, polygonList.size());
+		for (SVGPolygon polygon : polygonList) {
+			polygon.format(2);
+			LOG.debug("polygon: "+polygon.size()+" "+polygon.getBoundingBox().getXRange().getRange()+"/"+polygon.getBoundingBox().getYRange().getRange());
+		}
+	}
+	
+	public void extractPlotComponents(GeometryBuilder geometryBuilder) {
+		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());
+		Path2ShapeConverter path2ShapeConverter = new Path2ShapeConverter();
+		List<SVGShape> shapeList = path2ShapeConverter.convertPathsToShapes(pathList);
+		List<SVGPolygon>  polygonList = new ArrayList<SVGPolygon>();
+		List<SVGPolyline>  polylineList = new ArrayList<SVGPolyline>();
+		List<SVGLine>  lineList = new ArrayList<SVGLine>();
+		List<SVGShape>  shapeList1 = new ArrayList<SVGShape>();
+		SVGSVG svg = new SVGSVG();
+		for (SVGShape shape : shapeList) {
+			if (shape instanceof SVGPolyline) {
+				polylineList.add((SVGPolyline)shape);
+				shape.setFill("none");
+	//			shape.setStroke("1.0");
+	//			svg.appendChild(shape);
+			} else if (shape instanceof SVGLine) {
+				lineList.add((SVGLine)shape);
+				shape.setFill("blue");
+				svg.appendChild(shape);
+			} else if (shape instanceof SVGPolygon) {
+				SVGPolygon polygon = (SVGPolygon)shape;
+				SVGCircle circle =  path2ShapeConverter.convertToCircle(polygon);
+				polygonList.add((SVGPolygon)shape);
+				shape.setFill("green");
+				svg.appendChild(shape);
+			} else {
+				shapeList1.add(shape);
+			}
+		}
+	}
+
 	
 }

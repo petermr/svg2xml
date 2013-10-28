@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.builder.SimpleGeometryBuilder;
+import org.xmlcml.graphics.svg.builder.SimpleBuilder;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
@@ -20,7 +21,7 @@ import org.xmlcml.svg2xml.text.Word;
  * @author pm286
  *
  */
-public class GeometryBuilder extends SimpleGeometryBuilder {
+public class GeometryBuilder extends SimpleBuilder {
 
 	private final static Logger LOG = Logger.getLogger(GeometryBuilder.class);
 	
@@ -110,6 +111,11 @@ public class GeometryBuilder extends SimpleGeometryBuilder {
 	public HtmlElement createHtmlElement() {
 		textStructurer = createTextStructurerWithRotation();
 		return textStructurer == null ? null : textStructurer.createHtmlElement();
+	}
+
+	public List<SVGPath> createArraysFromPaths() {
+		List<SVGPath> pathList = SVGPath.extractPaths(getSVGRoot());
+		return pathList;
 	}
 
 }
