@@ -1,13 +1,14 @@
 package org.xmlcml.svg2xml.builder;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.graphics.svg.SVGCircle;
+import org.xmlcml.euclid.Angle;
+import org.xmlcml.euclid.Angle.Units;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPath;
@@ -15,201 +16,379 @@ import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.graphics.svg.path.Path2ShapeConverter;
-import org.xmlcml.html.HtmlElement;
+import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.builder.JoinManager;
+import org.xmlcml.graphics.svg.builder.Joinable;
+import org.xmlcml.graphics.svg.builder.JoinableText;
+import org.xmlcml.graphics.svg.builder.Junction;
+import org.xmlcml.graphics.svg.builder.SimpleBuilder;
+import org.xmlcml.graphics.svg.builder.TramLine;
+import org.xmlcml.graphics.svg.builder.TramLineManager;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
-import org.xmlcml.svg2xml.text.Word;
 
+/** test reading molecules
+ * 
+ * Reads SVG and uses heuristics to create chemistry.
+ * 
+ * @author pm286
+ *
+ */
+@Ignore
 public class GeometryBuilderTest {
 
-	private static final Logger LOG = Logger.getLogger(GeometryBuilderTest.class);
+	private final static Logger LOG = Logger.getLogger(GeometryBuilderTest.class);
+	public static final Angle MAX_ANGLE = new Angle(0.12, Units.RADIANS);
+	public static final Double MAX_WIDTH = 2.0;
+
+	
+	@Test
+	public void testAllLists() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertNull("raw", geometryBuilder.getRawLineList());
+		Assert.assertNotNull("derived", geometryBuilder.getDerivedLineList());
+		Assert.assertEquals("derived", 6, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("paths", 0, geometryBuilder.getDerivedPathList().size());
+		List<SVGLine> singleLineList = geometryBuilder.getSingleLineList();
+		Assert.assertEquals("lines", 6, singleLineList.size());
+		geometryBuilder.createJoinableList();
+		Assert.assertEquals("joinable", 6, geometryBuilder.getJoinableList().size());
+		List<Junction> junctionList = geometryBuilder.createRawJunctionList();
+		Assert.assertEquals("junction", 7, junctionList.size());
+	}
 
 	@Test
-	public void testWordList() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.8.2.svg")));
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 16, wordList.size());
-		Assert.assertEquals("words",  "[ Hag L,  Hla L,  Hpi L, 81,  Hag M,  Hla M,  Hpi M, 100,  Ssy L, 99,  Ssy M,  Nle L, 95,  Nle M,  Human L,  Human M]", wordList.toString());
+	public void testJunction() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tram", 1, geometryBuilder.getTramLineList().size());
+		geometryBuilder.createMergedJunctions();
+		List<Junction> junctionList = geometryBuilder.getMergedJunctionList();
+		Assert.assertEquals("junctions", 6, junctionList.size());
+	}
+
+	
+	@Test
+	public void testnonWedgeBondsAndElements() {
+		SVGElement svgRoot = SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_13_SVG);
+		SimpleBuilder geometryBuilder = new GeometryBuilder(svgRoot);
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 13, geometryBuilder.getSingleLineList().size());
+	}
+
+	
+	@Test
+	public void testnonWedgeBondsAndElements1() {
+		SVGElement svgRoot = SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_16_SVG);
+		SimpleBuilder geometryBuilder = new GeometryBuilder(svgRoot);
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 20, geometryBuilder.getSingleLineList().size());
 	}
 	
+	@Test
+	public void testSubscripts() {
+		SVGElement svgRoot = SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG);
+		SimpleBuilder geometryBuilder = new GeometryBuilder(svgRoot);
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 6, geometryBuilder.getSingleLineList().size());
+		
+	}
+	
+	@Test
+	public void testWedges() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_18_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 22, geometryBuilder.getSingleLineList().size());
+	}
 
 	@Test
-	public void testWordList1() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2a.svg")));
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 126, wordList.size());
-		Assert.assertEquals("words",  "[Luscinia  , *, Ficedula, *, Turdus, *, Mimus, *, Sturnus, *, 0.5, Troglodytes, *, Sitta, "
-				+ "Regulus, Zosterops, 0.77, *, 0.66, Leiothrix, 0.93, Phylloscopus, Pycnonotus, *, Donacobius, *, Acrocephalus, "
-				+ "0.73, 0.83, Hirundo, Parus, *, Icterus, *, Dendroica, *, Emberiza, *, Serinus, *, 0.71, Motacilla, *, 0.91, "
-				+ "Lonchura, Nectarinia, *, Promerops, Petroica, *, Eopsaltria, Ptiloris, *, Paradisaea, *, Manucodia, *, Pica, *, *, "
-				+ "Corvus, *, Cyanocorax, *, Dicrurus, Rhipidura, *, Vireo, 0.72 a, 5, *, Cyclarhis, 4, *, *, Oriolus, 3, c, Coracina, 0.78, "
-				+ "Toxorhamphus, 0.84, *, 6, Cnemophilus, b 0.94, Philesturnus, Orthonyx, *, Pomatostomus, 0.5, Lichenostomus, b*, 2, "
-				+ "Amytornis #, *, Gerygone, Ailuroedus, *, *, Sericulus, a, 2, Menura, Tyrannus, *, Myiarchus, *, *, Camptostoma, *, "
-				+ "Onychorhynchus, *, 1b, Manacus, *, *, Hypocnemis, *, *, Phlegopsis, 1a, Pitta, Acanthisitta, ab, 12]", 
-				wordList.toString());
+	public void testNoRingsOrWedges() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_23_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 24, geometryBuilder.getSingleLineList().size());
 	}
 	
 	@Test
-	public void testWordListAllWords() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2.svg")));
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 410, wordList.size());
-		Assert.assertEquals("words",  "[-, p, Luscinia  , (Muscicapidae), a, *, Ficedula, c, *, i, c, a, (Turdidae), Turdus, s, *, e, u, (Mimidae),"
-				+ " Mimus, d, i, *, M, o, Sturnus, (Sturnidae), *, 0.5, (Troglodytidae), Certhi-, Troglodytes, *, oidea, Sitta, (Sittidae), Regulus,"
-				+ " (Regulidae), Zosterops, (Zosteropidae), 0.77, *, 0.66, (Timaliidae), Leiothrix, a, 0.93, -, d, Phylloscopus, (Phylloscopidae),"
-				+ " i, a, i, r, v, e, l, Pycnonotus, (Pycnonotidae), e, d, y, i, *, s, (Donacobiidae), Donacobius, S, o, s, *, (Acrocephalidae),"
-				+ " Acrocephalus, a, 0.73, 0.83, P, Hirundo, (Hirundinidae), (Paridae), Parus, *, Icterus, (Icteridae), *, Dendroica, (Parulidae),"
-				+ " -, *, r, (Emberizidae), Emberiza, e, *, a, s, (Fringillidae), Serinus, e, *, s, 0.71, d, a, i, Motacilla, (Motacillidae), *,"
-				+ " P, o, s, 0.91, Lonchura, (Estrildidae), e, (Nectariniidae), Nectarinia, n, i, *, (Promeropidae), Promerops, c, Petroica, s,"
-				+ " (Petroicidae), *, Eopsaltria, O, Ptiloris, *, Paradisaea, (Paradisaeidae), *, ', Manucodia, a, *, e, Pica, *, d, *, i, (Corvidae),"
-				+ " Corvus, *, o, Cyanocorax, v, *, r, (Dicruridae), o, Dicrurus, C, Rhipidura, (Rhipiduridae),  , *, e, Vireo, r, 0.72 a, (Vireonidae),"
-				+ " 5, *, o, Cyclarhis, 4, *, c, *, ', Coracina, (Campephagidae), 0.78, Toxorhamphus, (Melanocharitidae), 0.84, *, 6, (Cnemophilidae),"
-				+ " Cnemophilus, b 0.94, Philesturnus, (Callaeidae), Orthonyx, (Orthonychidae), *, (Pomatostomidae), Pomatostomus, 0.5, Lichenostomus,"
-				+ " (Meliphagidae), b, *, 2, Amytornis #, (Maluridae), *, (Acanthizidae), Gerygone, Ailuroedus, *, (Ptilonorhynchidae), *, Sericulus, a,"
-				+ " 2, Menura, (Menuridae), Tyrannus, s, *, e, Myiarchus, (Tyrannidae), *, *, n, Camptostoma, *, i, (Tityridae), c, Onychorhynchus, *,"
-				+ " 1, b, s, (Pipridae), Manacus, *, *, o, Hypocnemis, b, *, (Thamnophilidae), *, Phlegopsis, 1, a, u, (Pittidae), Pitta, S, Acanthisitta,"
-				+ " (Acanthisittidae), 0.07, a, b, 1, 2, 3, 5, ambiguous, 4, 6, UVS          VS, –, ,, VS          UVS, ,, Figure, 2, Phylogenetic,"
-				+ " recontruction, of, SWS1, opsin, evolution., Majority, rule, (50%), consensus, tree, of, passerines, based, on, concatenated,"
-				+ " mitochondrial, cytochrome, b, and, ND2,, nuclear, myoglobin, intron, 2,, ODC, introns, 6, to, 7,, TGFβ, 2, intron, 5,, and,"
-				+ " protein-coding, nuclear, c-myc, exon, 3,, RAG-1, and, RAG-2, sequences, (>, 9, kbp),, inferred, by, Bayesian, inference,,"
-				+ " analysed, in, eight, partitions,, with, two, parrots, and, two, falconiforms, as, outgroup., Posterior, probabilities, given,"
-				+ " at, nodes,, *, indicating, ≥, 0.95., Long, Ailuroedus, branch, truncated., VS/UVS, optimisation, represented, by, violet, for,"
-				+ " VS,, black, for, UVS, and, dotted, for, ambiguous., Transitions, from, one, state, to, another, are, indicated, by, numbers;,"
-				+ " 1a, and, 1b,, and, 2a, and, 2b,, respectively,, represent, uncertainties, due, to, ambiguous, ancestral, state., a,, b, and, c,"
-				+ " refer, to, insignificantly, supported, nodes, discussed, in, the, text., #, Sister, clade,, genus, Malurus, (not, included),,"
-				+ " contains, both, VS, and, UVS, species, [40].]", 
-				wordList.toString());
+	public void testHard() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_25_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 25, geometryBuilder.getSingleLineList().size());
 	}
 	
 	@Test
-	public void testHorizontalWordOrientation() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 331, wordList.size());
-		Assert.assertEquals("words",  "[Luscinia  , (Muscicapidae), *, Ficedula, *, (Turdidae), Turdus, *, (Mimidae),"
-				+ " Mimus, *, Sturnus, (Sturnidae), *, 0.5, (Troglodytidae), Certhi-, Troglodytes, *, oidea, Sitta,"
-				+ " (Sittidae), Regulus, (Regulidae), Zosterops, (Zosteropidae), 0.77, *, 0.66, (Timaliidae),"
-				+ " Leiothrix, 0.93, Phylloscopus, (Phylloscopidae), Pycnonotus, (Pycnonotidae), *, (Donacobiidae),"
-				+ " Donacobius, *, (Acrocephalidae), Acrocephalus, 0.73, 0.83, Hirundo, (Hirundinidae), (Paridae), Parus,"
-				+ " *, Icterus, (Icteridae), *, Dendroica, (Parulidae), *, (Emberizidae), Emberiza, *, (Fringillidae),"
-				+ " Serinus, *, 0.71, Motacilla, (Motacillidae), *, 0.91, Lonchura, (Estrildidae), (Nectariniidae),"
-				+ " Nectarinia, *, (Promeropidae), Promerops, Petroica, (Petroicidae), *, Eopsaltria, Ptiloris, *,"
-				+ " Paradisaea, (Paradisaeidae), *, Manucodia, *, Pica, *, *, (Corvidae), Corvus, *, Cyanocorax, *,"
-				+ " (Dicruridae), Dicrurus, Rhipidura, (Rhipiduridae), *, Vireo, 0.72 a, (Vireonidae), 5, *, Cyclarhis,"
-				+ " 4, *, *, Coracina, (Campephagidae), 0.78, Toxorhamphus, (Melanocharitidae), 0.84, *, 6, (Cnemophilidae),"
-				+ " Cnemophilus, b 0.94, Philesturnus, (Callaeidae), Orthonyx, (Orthonychidae), *, (Pomatostomidae),"
-				+ " Pomatostomus, 0.5, Lichenostomus, (Meliphagidae), b, *, 2, Amytornis #, (Maluridae), *, (Acanthizidae),"
-				+ " Gerygone, Ailuroedus, *, (Ptilonorhynchidae), *, Sericulus, a, 2, Menura, (Menuridae), Tyrannus, *,"
-				+ " Myiarchus, (Tyrannidae), *, *, Camptostoma, *, (Tityridae), Onychorhynchus, *, 1, b, (Pipridae),"
-				+ " Manacus, *, *, Hypocnemis, *, (Thamnophilidae), *, Phlegopsis, 1, a, (Pittidae), Pitta, Acanthisitta,"
-				+ " (Acanthisittidae), 0.07, a, b, 1, 2, 3, 5, ambiguous, 4, 6, UVS          VS, –, ,, VS          UVS, ,,"
-				+ " Figure, 2, Phylogenetic, recontruction, of, SWS1, opsin, evolution., Majority, rule, (50%), consensus,"
-				+ " tree, of, passerines, based, on, concatenated, mitochondrial, cytochrome, b, and, ND2,, nuclear,"
-				+ " myoglobin, intron, 2,, ODC, introns, 6, to, 7,, TGFβ, 2, intron, 5,, and, protein-coding, nuclear,"
-				+ " c-myc, exon, 3,, RAG-1, and, RAG-2, sequences, (>, 9, kbp),, inferred, by, Bayesian, inference,,"
-				+ " analysed, in, eight, partitions,, with, two, parrots, and, two, falconiforms, as, outgroup., Posterior,"
-				+ " probabilities, given, at, nodes,, *, indicating, ≥, 0.95., Long, Ailuroedus, branch, truncated., VS/UVS,"
-				+ " optimisation, represented, by, violet, for, VS,, black, for, UVS, and, dotted, for, ambiguous.,"
-				+ " Transitions, from, one, state, to, another, are, indicated, by, numbers;, 1a, and, 1b,, and, 2a,"
-				+ " and, 2b,, respectively,, represent, uncertainties, due, to, ambiguous, ancestral, state., a,, b,"
-				+ " and, c, refer, to, insignificantly, supported, nodes, discussed, in, the, text., #, Sister, clade,,"
-				+ " genus, Malurus, (not, included),, contains, both, VS, and, UVS, species, [40].]",
-				wordList.toString());
+	public void test00100() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_02_00100_65_SVG));
+		geometryBuilder.createRawAndDerivedLines(); // should be 27??
+		Assert.assertEquals("lines", 32, geometryBuilder.getSingleLineList().size()); // should be 34
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("lines", 6, geometryBuilder.getTramLineList().size());
+	}
+	
+	
+	@Test
+	public void testWithElementPNG5_11() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_11_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 40, geometryBuilder.getSingleLineList().size()); // FIXME should be 48
+	}		
+	@Test
+	public void testWithElementPNG5_12() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_12_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+// FIXME		Assert.assertEquals("lines", 51, geometryBuilder.getLineList().size());
+	}		
+	@Test
+	public void testWithElementPNG5_13() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_13_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 81, geometryBuilder.getSingleLineList().size());  
+	}		
+	@Test
+	public void testWithElementPNG5_14() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_14_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 91, geometryBuilder.getSingleLineList().size());
 	}
 	
 	@Test
-	public void testVerticalWordOrientation() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 10, wordList.size());
-		Assert.assertEquals("words",  "[Suboscines, Oscines, 'core Corvoidea', Passer-, Sylvi-, Muscicap-, oidea, oidea, oidea, Passerida]",
-				wordList.toString());
+	public void testTramLinesG2_11() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG));
+		List<SVGLine> lineList = geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 6, geometryBuilder.getSingleLineList().size());
+		TramLineManager tramLineManager = new TramLineManager();
+		List<TramLine> tramLineList = tramLineManager.createTramLineList(lineList);
+		Assert.assertEquals("tramLines", 1, tramLineList.size());
 	}
 	
 	@Test
-	public void testHorizontalScience() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 65, wordList.size());
-		Assert.assertEquals("words",  "[−10, 10, Synch + EC + self−Compton, 46, 10, Synch + EC + afterglow,"
-				+ " −11, 10, 45, 10, 14, 15, −12, 10, 10, 10, 44, 10, −13, 10, −13, 43, 10, 10, −14, 10, 42, 10,"
-				+ " −15, 10, −14, 10, 41, 10, −16, 10, 40, −15, 10, 10, −17, 4.0, 2.0, 1.0, 0.5, 10,"
-				+ "   Obs. wavelength (µm), 10, 12, 14, 16, 18, 20, 22, 24, 10, 10, 10, 10, 10, 10, 10, 10,"
-				+ " Observed frequency ν,  (Hz)]",
-				wordList.toString());
+	public void testTramLines() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_13_SVG));
+		Assert.assertNull("singleLines", geometryBuilder.getSingleLineList());
+		Assert.assertNull("explicitLines", geometryBuilder.getDerivedLineList());
+		Assert.assertNull("implicitLines", geometryBuilder.getRawLineList());
+		Assert.assertNull("paths", geometryBuilder.getDerivedPathList());
+		geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("singleLines", 13, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("explicitLines", 0, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("implicitLines", 13, geometryBuilder.getRawLineList().size());
+		// creating lines has removed paths
+		Assert.assertEquals("paths", 0, geometryBuilder.getCurrentPathList().size());
+		List<TramLine> tramLineList = geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("implicitLines", 13, geometryBuilder.getRawLineList().size());
+		//TramLine creation removes single lines
+		Assert.assertEquals("tramLines", 3, tramLineList.size());
+		Assert.assertEquals("singleLines", 7, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("explicitLines", 0, geometryBuilder.getDerivedLineList().size());
+
 	}
-/**
-[REPORTS, −10, Fig., 1., Multiwavelength, spectral, en-, 10, ergy, distribution, of, Sw, 1644+57, at, t, +, 0, Synch + EC + self−Compton, 46, 10, 2.9, days., Our, radio-through-UV, mea-, Synch + EC + afterglow, −11, 10, surements, are, represented, by, solid, circles,, with, data, from, the, published, 45, 10, circulars, (20), represented, by, open, cir-, 14, 15, −12, 10, 10, 10, cles, (41)., X-ray, and, soft, gamma-ray, points, from, the, Swift, X-ray, Telescope, 44, 10, (XRT), and, Burst, Alert, Telescope, (un-, −13, 10, corrected, for, host-galaxy, absorption), −13, are, shown, as, black, crosses,, and, the, 43, 10, 10, Fermi, Large, Area, Telescope, gamma-, −14, 10, ray, upper, limit, (42), is, shown, at, the, 42, far, right., The, 90%, uncertainty, region, 10, of, a, power-law, fit, to, the, XRT, data, (with, −15, 10, −14, N, absorption, removed), is, represented, 10, H, 41, by, the, blue, bowtie., (Inset), The, same, 10, data, zoomed, in, on, the, optical–, near-IR, −16, 10, window., Overplotted, are, two, different, 40, multicomponent, models, for, the, SED, −15, 10, 10, (43), (Fig., 2)., The, orange, curve, shows, −17, 4.0, 2.0, 1.0, 0.5, 10, a, model, with, synchrotron,, synchrotron,   Obs. wavelength (❾
-  char: 181; name: mu; f: Symbol; fn: FKKLBM+Symbol; e: Dictionary
- m), self-Compton,, and, external, Compton, 10, 12, 14, 16, 18, 20, 22, 24, (EC), contributions., The, purple, curve, 10, 10, 10, 10, 10, 10, 10, 10, shows, a, model, in, which, the, IR, emis-, Observed frequency ❾
-  char: 957; name: null; f: Symbol; fn: FKKLBM+Symbol; e: Dictionary
- ,  (Hz), sion, originates, from, a, compact, source, 14, of, synchrotron, emission, (∼, 4, ×, 10, cm)., Both, models, require, moderate, extinction, (A, ∼, 3, to, 5, mag)., Additional, synchrotron, models, are, shown, in, fig., S3., The, model, SEDs, here, and, in, fig., S3, were, V, generated, using, the, computer, code, from, (44,, 45)., 204, 8, JULY, 2011, VOL, 333, SCIENCE, www.sciencemag.org] */
-	
 	@Test
-	public void testVerticalScience() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 16, wordList.size());
-		Assert.assertEquals("words",  "[−1 , −2, Specific flux ν, F, (erg s, cm, ), ν,  , −1, Specific luminosity ν,"
-				+ " L, (erg s, ), ν,  ]",
-				wordList.toString());
+	public void testTramLines2_11() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("lines", 4, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("tramLines", 1, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("paths", 0, geometryBuilder.getDerivedLineList().size());
 	}
-	
 	@Test
-	public void testHorizontalScienceSmall() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 15, wordList.size());
-		Assert.assertEquals("words",  "[14, 15, 10, 10, −13, 10, −14, 10, −15, 10, 4.0, 2.0, 1.0, 0.5,   Obs. wavelength (µm)]",
-				wordList.toString());
+	public void testTramLines2_13() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_13_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tramLines", 3, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("singleLines", 13, geometryBuilder.getRawLineList().size());
 	}
-	
 	@Test
-	public void testHorizontalScienceSmallSuscript() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
-		HtmlElement htmlElement = geometryBuilder.createHtmlElement();
-		Assert.assertNotNull(htmlElement);
-		Assert.assertEquals("words",  "<div xmlns=\"http://www.w3.org/1999/xhtml\">10 <sup>14 </sup> 10 <sup>15</sup> 10 <sup>−13</sup> 10 <sup>−14</sup> 10 <sup>−15</sup> 4.0 2.0 1.0 0.5   Obs. wavelength ( µ m) </div>",
-				htmlElement.toXML());
+	public void testTramLines2_18() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_18_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("paths", 1, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("tramLines", 5, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("singleLines", 21, geometryBuilder.getRawLineList().size());
 	}
 	
 	@Test
-	public void testVerticalScienceSmall() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
-		List<Word> wordList = geometryBuilder.getWordList();
-		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 7, wordList.size());
-		Assert.assertEquals("words",  "[−1, Specific luminosity ν, L, (erg s, ), ν,  ]",
-				wordList.toString());
+	public void testTramLines2_23() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_23_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tramLines", 4, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("paths", 0, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("paths", 16, geometryBuilder.getSingleLineList().size());
+	}
+	@Test
+	public void testTramLines2_25() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_25_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tramLines", 5, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("paths", 1, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("paths", 15, geometryBuilder.getSingleLineList().size());
+	}
+	@Test
+	public void testTramLines5_11() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_11_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tramLines", 4, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("paths", 0, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("paths", 32, geometryBuilder.getSingleLineList().size());
+	}
+	@Test
+	public void testTramLines5_12() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_12_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tramLines", 6, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("paths", 1, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("paths", 31, geometryBuilder.getSingleLineList().size());
+	}
+	@Test
+	public void testTramLines5_13() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_13_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tramLines", 11, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("paths", 1, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("paths", 59, geometryBuilder.getSingleLineList().size());
+	}
+	@Test
+	public void testTramLines5_14() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_14_SVG));
+		geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("tramLines", 12, geometryBuilder.getTramLineList().size());
+		Assert.assertEquals("paths", 1, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("paths", 67, geometryBuilder.getSingleLineList().size());
 	}
 	
 	@Test
-	public void testVerticalScienceSmallSuscript() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
-				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
-		HtmlElement htmlElement = geometryBuilder.createHtmlElement();
-		Assert.assertNotNull(htmlElement);
-		Assert.assertEquals("words",  "<div xmlns=\"http://www.w3.org/1999/xhtml\">Specific luminosity  ν  L <sub>ν  </sub> (erg s <sup>−1</sup> ) </div>",
-				htmlElement.toXML());
+	public void testWedgeHash() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_18_SVG));
+		geometryBuilder.createRawAndDerivedLines();
+		// this contained a rect translated to a line
+		Assert.assertEquals("explicitLines", 1, geometryBuilder.getDerivedLineList().size());
+		Assert.assertEquals("implicitLines", 21, geometryBuilder.getRawLineList().size());
+		Assert.assertEquals("singleLines", 22, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("paths", 0, geometryBuilder.getCurrentPathList().size());
+		// polygon and 5 circles
+		Assert.assertEquals("shapes", 6, geometryBuilder.getCurrentShapeList().size());
+		// creating lines has removed paths
+		Assert.assertEquals("paths", 0, geometryBuilder.getCurrentPathList().size());
+		List<TramLine> tramLineList = geometryBuilder.createTramLineListAndRemoveUsedLines();
+		Assert.assertEquals("implicitLines", 21, geometryBuilder.getRawLineList().size());
+		//TramLine creation removes single lines
+		Assert.assertEquals("singleLines", 12, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("tramLines", 5, tramLineList.size());
+		Assert.assertEquals("explicitLines", 1, geometryBuilder.getDerivedLineList().size());
+
 	}
 	
+	
+	@Test
+	public void testJunctionMerging2_11() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG));
+		geometryBuilder.createMergedJunctions(); //, 6, 8, 6);    // fails
+		Assert.assertEquals("lines", 4, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 6, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 1, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionMerging2_13() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_13_SVG));
+		geometryBuilder.createMergedJunctions(); //, 13, 17, 10);
+		Assert.assertEquals("lines", 10, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 7, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 3, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionMerging2_18() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_18_SVG));
+		geometryBuilder.createMergedJunctions(); //, 21, 23, 14);
+		Assert.assertEquals("lines", 15, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 12, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 5, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionMerging2_23() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_23_SVG));
+		geometryBuilder.createMergedJunctions(); //, 24, 37, 21);
+		Assert.assertEquals("lines", 22, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 16, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 4, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionMerging2_25() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_25_SVG));
+		geometryBuilder.createMergedJunctions();//no hatches; should be 25, 32, 20; l of Cl not circular enough, =O too near other bonds
+		Assert.assertEquals("lines", 22, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 15, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 5, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionMerging5_11() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_11_SVG));
+		geometryBuilder.createMergedJunctions();//hatches and arrow; should be 36, 49, 26
+		Assert.assertEquals("lines", 23, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 32, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 4, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionMerging5_12() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_12_SVG));
+		geometryBuilder.createMergedJunctions();
+		Assert.assertEquals("lines", 23, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 31, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 6, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionMerging5_13() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_5_13_SVG));
+		geometryBuilder.createMergedJunctions();//first 37, 48, 26; second 39, 51, 27
+		Assert.assertEquals("lines", 42, geometryBuilder.getMergedJunctionList().size());
+		Assert.assertEquals("lines", 59, geometryBuilder.getSingleLineList().size());
+		Assert.assertEquals("lines", 11, geometryBuilder.getTramLineList().size());
+	}
+	
+	@Test
+	public void testJunctionWithTram() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG));
+		List<SVGLine> lineList = geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 6, geometryBuilder.getSingleLineList().size());
+		TramLineManager tramLineManager = new TramLineManager();
+		List<TramLine> tramLineList = tramLineManager.createTramLineList(lineList);
+		lineList = tramLineManager.removeUsedTramLinePrimitives(lineList);
+		Assert.assertEquals("tramLines", 1, tramLineList.size());
+		List<Joinable> joinableList = JoinManager.makeJoinableList(lineList);
+		Assert.assertEquals("no tram", 4, joinableList.size());
+		joinableList.add(tramLineList.get(0));
+		Assert.assertEquals("joinable", 5, joinableList.size());
+		List<Junction> junctionList = geometryBuilder.createRawJunctionList();
+		Assert.assertEquals("junction", 7, junctionList.size());
+	}
+
+	@Test
+	public void testJunctionWithTramAndText() {
+		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(Fixtures.IMAGE_2_11_SVG));
+		List<SVGLine> lineList = geometryBuilder.createRawAndDerivedLines();
+		Assert.assertEquals("lines", 6, geometryBuilder.getSingleLineList().size());
+		TramLineManager tramLineManager = new TramLineManager();
+		List<TramLine> tramLineList = tramLineManager.createTramLineList(lineList);
+		lineList = tramLineManager.removeUsedTramLinePrimitives(lineList);
+		List<Joinable> joinableList = JoinManager.makeJoinableList(lineList);
+		joinableList.addAll(tramLineList);
+		List<SVGText> textList = geometryBuilder.createRawTextList();
+		for (SVGText svgText : textList) {
+			joinableList.add(new JoinableText(svgText));
+		}
+		Assert.assertEquals("text", 11, joinableList.size());
+		List<Junction> junctionList = geometryBuilder.createRawJunctionList();
+		for (Junction junction : junctionList) {
+			LOG.trace(junction);
+		}
+		Assert.assertEquals("junction", 7, junctionList.size());
+	}
+
 	@Test
 	public void testPaths() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
@@ -220,12 +399,17 @@ public class GeometryBuilderTest {
 	
 	@Test
 	public void testShape() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
-				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-		extractPlotComponents();
+		SVGElement svg = SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg"));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(svg);
+		geometryBuilder.extractPlotComponents();
+		List<SVGPolygon> polygonList = geometryBuilder.getPolygonList();
+		List<SVGLine> lineList = geometryBuilder.getSingleLineList();
+		List<SVGShape> shapeList = geometryBuilder.getCurrentShapeList();
+		List<SVGPolyline> polylineList = geometryBuilder.getPolylineList();
+		List<SVGPath> pathList = geometryBuilder.getPathList();
 		Assert.assertEquals("paths", 36, pathList.size());
 		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
-		Assert.assertEquals("shapes", 0, shapeList1.size());
+		Assert.assertEquals("shapes", 0, shapeList.size());
 		Assert.assertEquals("lines", 6, lineList.size());
 		for (SVGLine line : lineList) {
 			LOG.debug("line: "+line);
@@ -242,37 +426,8 @@ public class GeometryBuilderTest {
 			LOG.debug("polygon: "+polygon.size()+" "+polygon.getBoundingBox().getXRange().getRange()+"/"+polygon.getBoundingBox().getYRange().getRange());
 		}
 	}
-	
-	public void extractPlotComponents(GeometryBuilder geometryBuilder) {
-		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());
-		Path2ShapeConverter path2ShapeConverter = new Path2ShapeConverter();
-		List<SVGShape> shapeList = path2ShapeConverter.convertPathsToShapes(pathList);
-		List<SVGPolygon>  polygonList = new ArrayList<SVGPolygon>();
-		List<SVGPolyline>  polylineList = new ArrayList<SVGPolyline>();
-		List<SVGLine>  lineList = new ArrayList<SVGLine>();
-		List<SVGShape>  shapeList1 = new ArrayList<SVGShape>();
-		SVGSVG svg = new SVGSVG();
-		for (SVGShape shape : shapeList) {
-			if (shape instanceof SVGPolyline) {
-				polylineList.add((SVGPolyline)shape);
-				shape.setFill("none");
-	//			shape.setStroke("1.0");
-	//			svg.appendChild(shape);
-			} else if (shape instanceof SVGLine) {
-				lineList.add((SVGLine)shape);
-				shape.setFill("blue");
-				svg.appendChild(shape);
-			} else if (shape instanceof SVGPolygon) {
-				SVGPolygon polygon = (SVGPolygon)shape;
-				SVGCircle circle =  path2ShapeConverter.convertToCircle(polygon);
-				polygonList.add((SVGPolygon)shape);
-				shape.setFill("green");
-				svg.appendChild(shape);
-			} else {
-				shapeList1.add(shape);
-			}
-		}
-	}
 
 	
+
+
 }

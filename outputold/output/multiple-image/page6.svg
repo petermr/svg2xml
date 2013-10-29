@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600.0" height="800.0" stroke="none" stroke-width="0.0" xmlns="http://www.w3.org/2000/svg"> 
+ <g svgx:role="chunk" edge="YMIN" width="10.0" title="chunk2" svgx:boundingBox="((56.696,538.965),(31.637,49.53))" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk2" svgx:boundingBox="((56.696,260.04),(31.637,49.53))"/>
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk100" svgx:boundingBox="((499.473,538.965),(31.637,39.607))"/>
+ </g>
+ <g svgx:role="chunk" edge="YMIN" width="10.0" title="chunk108" svgx:boundingBox="((56.692,538.583),(88.987,653.535))" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk2" svgx:boundingBox="((56.692,538.583),(88.987,653.535))"/>
+ </g>
+ <g svgx:role="chunk" edge="YMIN" width="10.0" title="chunk674" svgx:boundingBox="((56.683,540.267),(668.147,725.701))" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk2" svgx:boundingBox="((56.683,291.656),(668.15,725.701))"/>
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk221" svgx:boundingBox="((304.721,540.267),(668.147,725.692))"/>
+ </g>
+</svg>

@@ -257,12 +257,27 @@ public class Fixtures {
 	public final static List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
 	public final static TextLine BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 
-	public static final File IMAGE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/image");
-	public static final File MOLECULE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/molecules");
+	public static final File BUILDER_DIR = new File(SVG2XML_DIR, "builder");
 
-	public static final File BUILDER_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/builder");
+	public static final File IMAGES_DIR = new File(SVG2XML_DIR, "images");
+	public static final File IMAGE_G_2_2_SVG = new File(IMAGES_DIR, "image.g.2.2.svg");
+	public static final File IMAGE_G_2_2_PNG = new File(IMAGES_DIR, "image.g.2.2.png");
+	public static final File IMAGE_G_3_2_SVG = new File(IMAGES_DIR, "image.g.3.2.svg");
+	public static final File IMAGE_G_8_0_SVG = new File(IMAGES_DIR, "image.g.8.0.svg");
+	public static final File IMAGE_G_8_2_SVG = new File(IMAGES_DIR, "image.g.8.2.svg");
 
-
+	public static final File MOLECULE_DIR = new File(SVG2XML_DIR, "molecules");
+	public static final File IMAGE_2_11_SVG = new File(MOLECULE_DIR, "image.g.2.11.svg");
+	public static final File IMAGE_2_13_SVG = new File(MOLECULE_DIR, "image.g.2.13.svg");
+	public static final File IMAGE_2_16_SVG = new File(MOLECULE_DIR, "image.g.2.16.svg");
+	public static final File IMAGE_2_18_SVG = new File(MOLECULE_DIR, "image.g.2.18.svg");
+	public static final File IMAGE_2_23_SVG = new File(MOLECULE_DIR, "image.g.2.23.svg");
+	public static final File IMAGE_2_25_SVG = new File(MOLECULE_DIR, "image.g.2.25.svg");
+	public static final File IMAGE_5_11_SVG = new File(MOLECULE_DIR, "image.g.5.11.svg");
+	public static final File IMAGE_5_12_SVG = new File(MOLECULE_DIR, "image.g.5.12.svg");
+	public static final File IMAGE_5_13_SVG = new File(MOLECULE_DIR, "image.g.5.13.svg");
+	public static final File IMAGE_5_14_SVG = new File(MOLECULE_DIR, "image.g.5.14.svg");
+	public static final File IMAGE_02_00100_65_SVG = new File(MOLECULE_DIR, "02.00100.g.6.5.svg");
 	
 // ==================================================	
 	

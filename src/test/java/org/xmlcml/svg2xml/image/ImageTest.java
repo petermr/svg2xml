@@ -10,13 +10,13 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 public class ImageTest {
 	@Test
 	public void testImage() {
-		PageAnalyzer pageAnalyzer = new PageAnalyzer(new File(Fixtures.IMAGE_DIR, "multiple-image-page4.svg"));
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(new File(Fixtures.IMAGES_DIR, "multiple-image-page4.svg"));
 		pageAnalyzer.splitChunksAndCreatePage();
 	}
 
 	@Test
 	public void testImagePDF() {
-		new PDFAnalyzer().analyzePDFFile(new File(Fixtures.IMAGE_DIR, "multiple-image.pdf"));
+		new PDFAnalyzer().analyzePDFFile(new File(Fixtures.IMAGES_DIR, "multiple-image.pdf"));
 	}
 
 }
