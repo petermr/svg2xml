@@ -34,6 +34,7 @@ import org.xmlcml.svg2xml.Fixtures;
  *
  */
 @Ignore
+// FIXME _ think the raw material (rounded lines) causes problems and we should have simpler tests
 public class GeometryBuilderTest {
 
 	private final static Logger LOG = Logger.getLogger(GeometryBuilderTest.class);

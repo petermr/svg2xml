@@ -135,6 +135,24 @@ public class BoundingBoxManager {
 		return bboxList;
 	}
 	
+	/** adds extension to all boxes
+	 * 
+	 * @param elementList
+	 * @param xExtension x0, y0 are increased by extension.min() so should be negative (for expansion)
+	 * @param yExtension
+	 * @return
+	 */
+	public static List<Real2Range> createExtendedBBoxes(List<Real2Range> bList, 
+			RealRange xExtension, RealRange yExtension) {
+		List<Real2Range> bboxList = new ArrayList<Real2Range>();
+		if (bList != null) {
+			for (Real2Range bbox : bList) {
+				bboxList.add(createExtendedBox(bbox, xExtension, yExtension));
+			}
+		}
+		return bboxList;
+	}
+	
 	public void setBBoxList(List<Real2Range> bboxList) {
 		this.bboxList = bboxList;
 	}
@@ -321,7 +339,7 @@ public class BoundingBoxManager {
 	}
 
 	/** creates a box larger minExtension for x0, y0 and maxExtension on x1,y1.
-	 * note to expand the box minExtesion will have 2 negative values
+	 * note to expand the box symmetrically minExtension will have 2 negative values
 	 * @param elem
 	 * @param minExtension
 	 * @param maxExtension
@@ -329,6 +347,17 @@ public class BoundingBoxManager {
 	 */
 	public static Real2Range createExtendedBox(SVGElement elem, RealRange xExtension, RealRange yExtension) {
 		Real2Range bbox = elem.getBoundingBox();
+		return createExtendedBox(bbox, xExtension, yExtension);
+	}
+
+	/** creates a box larger minExtension for x0, y0 and maxExtension on x1,y1.
+	 * note to expand the box symmetrically minExtension will have 2 negative values
+	 * @param elem
+	 * @param minExtension
+	 * @param maxExtension
+	 * @return
+	 */
+	public static Real2Range createExtendedBox(Real2Range bbox, RealRange xExtension, RealRange yExtension) {
 		Real2[] corners = bbox.getCorners();
 		Real2Range extendedBBox = new Real2Range(
 			new RealRange(corners[0].getX()+xExtension.getMin(), corners[1].getX()+xExtension.getMax()),

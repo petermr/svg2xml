@@ -128,7 +128,7 @@ public class PDFAnalyzerTest {
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testNHS() {
 		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/nhs/GPinHoursEngBulletin2013Wk15.pdf")); // 
 	}

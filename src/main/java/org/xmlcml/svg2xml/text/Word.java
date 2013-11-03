@@ -15,8 +15,8 @@ public class Word {
 	private final static Logger LOG = Logger.getLogger(Word.class);
 	
 	List<SVGText> textList;
-
 	private Real2Range boundingBox;
+	private boolean guessWidth = true;
 	
 	public Word() {
 		
@@ -98,7 +98,9 @@ public class Word {
 
 	public Double getEndX() {
 		SVGText endText = textList.get(textList.size() - 1);
-		return endText.getX() + endText.getScaledWidth();
+		Double x = endText == null ? null : endText.getX();
+		Double w =  endText == null ? null : endText.getScaledWidth(guessWidth );
+		return x == null || w == null ? null : x + w;
 	}
 
 	public Double getMidX() {
@@ -184,5 +186,13 @@ public class Word {
 	
 	public Real2 getXY() {
 		return (textList.size() == 0) ? null : textList.get(0).getXY();
+	}
+
+	public static List<Real2Range> createBBoxList(List<Word> wordList) {
+		List<Real2Range> bboxList = new ArrayList<Real2Range>();
+		for (Word word : wordList) {
+			bboxList.add(word.getBoundingBox());
+		}
+		return bboxList;
 	}
 }
