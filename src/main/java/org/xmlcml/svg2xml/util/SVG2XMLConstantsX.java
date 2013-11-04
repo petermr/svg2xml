@@ -5,7 +5,6 @@ package org.xmlcml.svg2xml.util;
 public class SVG2XMLConstantsX {
 	
 	// suffixes
-	public static final String DOT_NEXML = ".nexml";
 	public static final String DOT_PDF = ".pdf";
 	public static final String DOT_SVG = ".svg";
 	public static final String DOT_HTML = ".html";
