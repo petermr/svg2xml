@@ -133,4 +133,15 @@ public class PDFAnalyzerTest {
 		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/nhs/GPinHoursEngBulletin2013Wk15.pdf")); // 
 	}
 	
+	@Test
+	@Ignore
+	public void testSuspectACS() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/acs/suspect_ol2015972_si_002.pdf")); // 
+	}
+	
+	@Test
+//	@Ignore
+	public void testZootaxa() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/zootaxa37/armbruster_08_genus_626780.pdf")); // 
+	}
 }
