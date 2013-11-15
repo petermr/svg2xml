@@ -72,7 +72,7 @@ public class PDFAnalyzerTest {
 	}	
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testPDFAnalyzerBMC() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
 		analyzer.analyzePDFs(new File(Fixtures.PDFS_BMC_DIR, "tree-1471-2148-11-313.pdf").toString());
@@ -140,8 +140,23 @@ public class PDFAnalyzerTest {
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testZootaxa() {
 		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/zootaxa37/armbruster_08_genus_626780.pdf")); // 
 	}
+	
+	@Test
+	@Ignore
+	public void testJurePharma() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/jure/Zutectra.pdf")); // 
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/jure/s-010161.pdf")); // 
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/jure/s-011877.pdf")); // 
+	}
+	
+	@Test
+//	@Ignore
+	public void testPlosone() {
+		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/plosone/journal.pone.0077058.pdf")); // 
+	}
+	
 }
