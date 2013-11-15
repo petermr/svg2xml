@@ -68,7 +68,7 @@ public class GeometryBuilder extends SimpleBuilder {
 	}
 	
 	private void init() {
-		this.textAnalyzer = new TextAnalyzer((PageAnalyzer)null);
+		this.textAnalyzer = new TextAnalyzer((PageAnalyzer) null);
 	}
 
 	public List<Word> getWordList() {

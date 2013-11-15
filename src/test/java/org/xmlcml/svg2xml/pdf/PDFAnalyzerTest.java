@@ -54,8 +54,6 @@ public class PDFAnalyzerTest {
 //		analyzer.analyzePDFFile(new File("src/test/resources/pdfs/ubiquity/63-684-1-PB-1.pdf"));
 	}
 
-
-
 	@Test
 	@Ignore
 	public void testPDFAnalyzerSVG() {
@@ -144,4 +142,5 @@ public class PDFAnalyzerTest {
 	public void testZootaxa() {
 		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/zootaxa37/armbruster_08_genus_626780.pdf")); // 
 	}
+	
 }

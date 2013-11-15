@@ -171,7 +171,7 @@ public class PageIO {
 
 	public void setMachinePageNumber(int pageNumber) {
 		this.machinePageNumber = pageNumber;
-		this.setHumanPageNumber(machinePageNumber+1);
+		this.setHumanPageNumber(machinePageNumber + 1);
 	}
 
 	public void setSvgInPage(SVGSVG svgPage) {

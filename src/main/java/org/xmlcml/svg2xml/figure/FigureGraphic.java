@@ -69,8 +69,7 @@ public class FigureGraphic extends FigureComponent {
 	private HiddenGraphics createHiddenGraphics() {
 		HiddenGraphics hg = new HiddenGraphics();
 		Dimension dimension = svgContainer.getDimension();
-		hg.setDimension(dimension);
-		hg.setDimension(new Dimension((int)(dimension.width*DIMENSION_MARGIN), (int)(dimension.height*DIMENSION_MARGIN)));
+		hg.setDimension(new Dimension((int) (dimension.width * DIMENSION_MARGIN), (int) (dimension.height * DIMENSION_MARGIN)));
 		bufferedImage = hg.createImageTranslatedToOrigin(svgContainer);
 		return hg;
 	}

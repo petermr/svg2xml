@@ -81,12 +81,19 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 				"image "+(getImageList() == null ? "0" : getImageList().size())+"; "+
 				"shape "+(getShapeList() == null ? "0" : getShapeList().size())+"; "+
 				"text "+(getTextList() == null ? null : getTextList().size())+"; ";
-
 	}
 
-	public ImageAnalyzer getImageAnalyzer() {return imageAnalyzer;}
-	public ShapeAnalyzer getShapeAnalyzer() {return shapeAnalyzer;}
-	public TextAnalyzer getTextAnalyzer() {return textAnalyzer;}
+	public ImageAnalyzer getImageAnalyzer() {
+		return imageAnalyzer;
+	}
+	
+	public ShapeAnalyzer getShapeAnalyzer() {
+		return shapeAnalyzer;
+	}
+	
+	public TextAnalyzer getTextAnalyzer() {
+		return textAnalyzer;
+	}
 
 	public void add(ChunkAnalyzer analyzer) {
 		ensureAnalyzerList();
