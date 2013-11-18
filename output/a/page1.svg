@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600.0" height="800.0" stroke="none" stroke-width="0.0" xmlns="http://www.w3.org/2000/svg"> 
+ <g svgx:role="chunk" edge="YMIN" width="10.0" title="chunk2" svgx:boundingBox="((59.761,359.54),(44.83,62.64))" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk2" svgx:boundingBox="((59.761,359.54),(44.83,62.64))"/>
+ </g>
+ <g svgx:role="chunk" edge="YMIN" width="10.0" title="chunk114" svgx:boundingBox="((12.0,563.701),(98.397,732.96))" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk2" svgx:boundingBox="((12.0,32.0),(181.3,558.0))"/>
+  <g svgx:role="chunk" edge="XMIN" width="10.0" title="chunk47" svgx:boundingBox="((50.76,563.701),(98.397,732.96))"/>
+ </g>
+</svg>
