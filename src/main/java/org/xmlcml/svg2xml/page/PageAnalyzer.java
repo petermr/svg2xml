@@ -110,7 +110,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public PageAnalyzer(SVGElement svgElement) {
 		this();
 		if (svgElement instanceof SVGSVG) {
-			pageIo.setSvgInPage((SVGSVG)svgElement);
+			pageIo.setSvgInPage((SVGSVG) svgElement);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	private void numberElements() {
 		SVGElement svgPage = pageIo.getRawSVGPage();
 		for (int i = 0; i < svgPage.getChildElements().size(); i++) {
-			SVGUtil.setSVGXAttribute((SVGElement)svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
+			SVGUtil.setSVGXAttribute((SVGElement) svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
 		}
 	}
 

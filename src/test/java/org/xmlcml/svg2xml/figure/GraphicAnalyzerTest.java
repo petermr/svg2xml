@@ -7,8 +7,10 @@ import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.image.HiddenGraphics;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
@@ -18,6 +20,12 @@ import org.xmlcml.svg2xml.text.TextStructurer;
 public class GraphicAnalyzerTest {
 
 	private final static Logger LOG = Logger.getLogger(GraphicAnalyzerTest.class);
+	
+	@Test
+	public void failingTestForFigureMargins() {
+		FigureGraphic f = new FigureGraphic(new FigureAnalyzer(new PageAnalyzer(SVGElement.readAndCreateSVG(Fixtures.FIGURE_PAGE_3_SVG))));
+		f.createImageFromComponents("target/margins.png");
+	}
 	
 	@Test
 	public void testGraphic() {

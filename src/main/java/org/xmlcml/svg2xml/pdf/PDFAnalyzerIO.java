@@ -166,7 +166,7 @@ public class PDFAnalyzerIO {
 			for (int i = 0; i < rawSvgPageFiles.length; i++) {
 				for (int j = 0; j < rawSvgPageFiles.length; j++) {
 					File filej = rawSvgPageFiles[j];
-					if (filej.getName().contains("page"+(i+1)+".svg")) {
+					if (filej.getName().contains("page"+(i + 1)+".svg")) {
 						files.add(filej);
 					}
 				}

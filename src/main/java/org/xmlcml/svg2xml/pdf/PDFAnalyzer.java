@@ -210,7 +210,7 @@ public class PDFAnalyzer {
 
 	private List<PageAnalyzer> createAndFillPageAnalyzers() {
 		File rawSVGDirectory = pdfIo.getRawSVGPageDirectory();
-		List<File> rawSvgPageFiles =pdfIo.collectRawSVGFiles();
+		List<File> rawSvgPageFiles = pdfIo.collectRawSVGFiles();
 		ensurePageAnalyzerList();
 		LOG.debug(rawSVGDirectory+" files: "+rawSvgPageFiles.size());
 		for (int pageCounter = 0; pageCounter < rawSvgPageFiles.size(); pageCounter++) {

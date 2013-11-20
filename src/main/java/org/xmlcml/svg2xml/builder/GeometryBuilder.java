@@ -42,7 +42,7 @@ import org.xmlcml.svg2xml.text.Word;
  * <h3>Strategy</h3>
  * 
  * UPDATE: 2013-10-23Split into GeometryBuilder and "SimpleBuilder" as it doesn't deal with Words (which
- * require TextStructurer.) it's possible the whole higherlevel primitive stuff should be removed to another
+ * require TextStructurer.) it's possible the whole higher-level primitive stuff should be removed to another
  * project.
  * 
  * @author pm286
@@ -145,7 +145,7 @@ public class GeometryBuilder extends SimpleBuilder {
 		return pathList;
 	}
 
-	public List<Junction> getRawJunctionList() {
+	/*public List<Junction> getRawJunctionList() {
 		return higherPrimitives == null ? null : higherPrimitives.getRawJunctionList();
 	}
 
@@ -163,7 +163,6 @@ public class GeometryBuilder extends SimpleBuilder {
 
 	public List<SVGPolyline> getPolylineList() {
 		return rawPrimitives.getPolylineList();
-	}
-
+	}*/
 
 }

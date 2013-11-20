@@ -106,7 +106,7 @@ public class TextStructurer {
 	private List<RawWords> rawWordsList;
 
 	public TextStructurer() {
-		this(new TextAnalyzer((List<SVGText>)null, (PageAnalyzer)null));
+		this(new TextAnalyzer((List<SVGText>) null, (PageAnalyzer) null));
 	}
 	
 	/** this COPIES the lines in the textAnalyzer
@@ -929,7 +929,7 @@ public class TextStructurer {
 		for (int i = 0; i < scriptedLineList.size() - 1; i++) {
 			ScriptLine textLineGroupA = scriptedLineList.get(i);
 			Double fontSizeA = textLineGroupA.getFontSize();
-			ScriptLine textLineB = scriptedLineList.get(i+1);
+			ScriptLine textLineB = scriptedLineList.get(i + 1);
 			Double fontSizeB = textLineB.getFontSize();
 			if (fontSizeA != null && fontSizeB != null) {
 				double ratioAB = fontSizeA / fontSizeB;
@@ -959,9 +959,9 @@ public class TextStructurer {
 			textStructurerList.add(this);
 		} else {
 			int start = 0;
-			for (int i = 0; i < afterLineGroups.size();i++) {
+			for (int i = 0; i < afterLineGroups.size(); i++) {
 				int lineNumber = afterLineGroups.elementAt(i);
-				if (lineNumber > scriptedLineList.size() -1) {
+				if (lineNumber > scriptedLineList.size() - 1) {
 					throw new RuntimeException("bad index: "+lineNumber);
 				}
 				TextStructurer newTextStructurer = createTextStructurerFromTextLineGroups(start, lineNumber);
@@ -1233,7 +1233,7 @@ public class TextStructurer {
 			sb.append("null");
 		} else {
 			sb.append("TextStructurer: "+ textLineList.size());
-			for (TextLine textLine :textLineList) {
+			for (TextLine textLine : textLineList) {
 				sb.append(textLine.toString()+"\n");
 			}
 		}

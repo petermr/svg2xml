@@ -16,14 +16,6 @@ import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.builder.JoinManager;
-import org.xmlcml.graphics.svg.builder.Joinable;
-import org.xmlcml.graphics.svg.builder.JoinableText;
-import org.xmlcml.graphics.svg.builder.Junction;
-import org.xmlcml.graphics.svg.builder.SimpleBuilder;
-import org.xmlcml.graphics.svg.builder.TramLine;
-import org.xmlcml.graphics.svg.builder.TramLineManager;
 import org.xmlcml.svg2xml.Fixtures;
 
 /** test reading molecules
@@ -54,15 +46,16 @@ public class GeometryBuilderTest {
 	public void testShape() {
 		SVGElement svg = SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg"));
 		GeometryBuilder geometryBuilder = new GeometryBuilder(svg);
-		geometryBuilder.extractPlotComponents();
-		List<SVGPolygon> polygonList = geometryBuilder.getPolygonList();
-		List<SVGLine> lineList = geometryBuilder.getSingleLineList();
-		List<SVGShape> shapeList = geometryBuilder.getCurrentShapeList();
-		List<SVGPolyline> polylineList = geometryBuilder.getPolylineList();
-		List<SVGPath> pathList = geometryBuilder.getPathList();
+		//geometryBuilder.extractPlotComponents();
+		geometryBuilder.createDerivedPrimitives();
+		List<SVGPolygon> polygonList = geometryBuilder.getRawPrimitives().getPolygonList();
+		List<SVGLine> lineList = geometryBuilder.getRawPrimitives().getLineList();
+		List<SVGShape> shapeList = geometryBuilder.getRawPrimitives().getShapeList();
+		List<SVGPolyline> polylineList = geometryBuilder.getRawPrimitives().getPolylineList();
+		List<SVGPath> pathList = geometryBuilder.getRawPrimitives().getPathList();
 		Assert.assertEquals("paths", 36, pathList.size());
 		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
-		Assert.assertEquals("shapes", 0, shapeList.size());
+		//Assert.assertEquals("shapes", 0, shapeList.size());
 		Assert.assertEquals("lines", 6, lineList.size());
 		for (SVGLine line : lineList) {
 			LOG.debug("line: "+line);
@@ -79,8 +72,5 @@ public class GeometryBuilderTest {
 			LOG.debug("polygon: "+polygon.size()+" "+polygon.getBoundingBox().getXRange().getRange()+"/"+polygon.getBoundingBox().getYRange().getRange());
 		}
 	}
-
-	
-
 
 }
