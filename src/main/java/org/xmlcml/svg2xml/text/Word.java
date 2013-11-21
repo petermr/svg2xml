@@ -73,13 +73,13 @@ public class Word {
 	}
 
 	public Double getSpaceCountBetween(Word followingWord) {
-		SVGText char0 = this.get(this.getCharacterCount()-1);
+		SVGText char0 = this.get(this.getCharacterCount() - 1);
 		SVGText char1 = followingWord.get(0);
 		return char0.getEnSpaceCount(char1);
 	}
 
 	public Double getSeparationBetween(Word followingWord) {
-		SVGText char0 = this.get(this.getCharacterCount()-1);
+		SVGText char0 = this.get(this.getCharacterCount() - 1);
 		SVGText char1 = followingWord.get(0);
 		return char0.getSeparation(char1);
 	}

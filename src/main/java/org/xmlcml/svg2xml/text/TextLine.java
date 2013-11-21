@@ -115,9 +115,7 @@ public class TextLine implements Iterable<SVGText> {
 	public TextLine(Collection<SVGText> texts, TextAnalyzer textAnalyzer) {
 		this.textAnalyzerX = textAnalyzer;
 		textList = new ArrayList<SVGText>();
-		for (SVGText text : texts) {
-			textList.add(text);
-		}
+		textList.addAll(texts);
 	}
 
 	/**

@@ -91,12 +91,12 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	
 	public TextAnalyzer(List<SVGText> textList, PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
-		this.setTextList(textList);
+		setTextList(textList);
 	}
 
 	public TextAnalyzer(List<SVGText> textList) {
-		super((PageAnalyzer)null);
-		this.setTextList(textList);
+		super((PageAnalyzer) null);
+		setTextList(textList);
 	}
 
 	public TextAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
@@ -120,13 +120,12 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		}
 	}
 
-
 	public List<TextLine> getLinesInIncreasingY() {
 		return ensureTextContainerWithSortedLines().getLinesInIncreasingY();
 	}
 
 	private void getRawCharacterList(List<SVGElement> textElements) {
-		this.rawCharacterList = new TextLine(this);
+		rawCharacterList = new TextLine(this);
 		for (int i = 0; i < textElements.size(); i++) {
 			SVGText text = (SVGText) textElements.get(i);
 			text.setBoundingBoxCached(true);
@@ -157,12 +156,12 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	}
 	
 	private TextStructurer ensureTextContainerWithSortedLines() {
-		if (this.textStructurer == null) {
-			this.textStructurer = TextStructurer.createTextStructurerWithSortedLines(textCharacters, this);
+		if (textStructurer == null) {
+			textStructurer = TextStructurer.createTextStructurerWithSortedLines(textCharacters, this);
 		} else {
-			this.textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
+			textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		}
-		return this.textStructurer;
+		return textStructurer;
 	}
 	
 	// ===========utils============================
@@ -407,7 +406,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 //		sb.append("characters: "+((rawCharacterList == null) ? "null" : rawCharacterList.size()));
-		sb.append("characters: "+((textCharacters == null) ? "null" : textCharacters.size()));
+		sb.append("characters: " + (textCharacters == null ? "null" : textCharacters.size()));
 		return sb.toString();
 	}
 }
