@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.bouncycastle.asn1.esf.SPuri;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
