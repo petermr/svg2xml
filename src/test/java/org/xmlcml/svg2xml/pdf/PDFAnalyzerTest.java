@@ -23,15 +23,15 @@ public class PDFAnalyzerTest {
 	@Test
 	@Ignore
 	public void multipleTest() {
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol2.2013-2014.pdf"));
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol3.2013-2014.pdf"));
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Tz.Vol4.2013-2014.pdf"));
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/ipcc/FinalDraft_All.pdf"));
+//		analyzePDF(("../pdfs/misc/Tz.Vol2.2013-2014.pdf"));
+//		analyzePDF(("../pdfs/misc/Tz.Vol3.2013-2014.pdf"));
+//		analyzePDF(("../pdfs/misc/Tz.Vol4.2013-2014.pdf"));
+//		analyzePDF(("../pdfs/ipcc/FinalDraft_All.pdf"));
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.GEO310_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.MATH311_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.TREE313_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.GRAPHIC_TEXT_315_PDF);
-//		new PDFAnalyzer().analyzePDFFile(new File("src/test/resources/pdfs/royalsoc/120109.full.pdf"));
+//		analyzePDF(("src/test/resources/pdfs/royalsoc/120109.full.pdf"));
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.LINEPLOTS_327_PDF);
 		new PDFAnalyzer().analyzePDFFile(Fixtures.SCATTERPLOTS_322_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.BMC174_PDF);
@@ -42,7 +42,7 @@ public class PDFAnalyzerTest {
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.NATURE_12352_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.PEERJ_50_PDF);
 //		new PDFAnalyzer().analyzePDFFile(Fixtures.PLOS_0049149_PDF);
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/acs/nn400656n.pdf"));
+//		analyzePDF(("../pdfs/acs/nn400656n.pdf"));
 	}
 
 	@Test
@@ -81,9 +81,8 @@ public class PDFAnalyzerTest {
 	@Test
 	@Ignore
 	public void testSVGBug() {
-		PDFAnalyzer analyzer = new PDFAnalyzer();
 //		analyzer.analyzePDFs("../pdfs/dmd/Shukla.pdf");
-		analyzer.analyzePDFs("../pdfs/mdpi/metabolites-02-00100.pdf");
+		analyzePDF("../pdfs/mdpi/metabolites-02-00100.pdf");
 	}	
 	
 	@Test
@@ -102,61 +101,68 @@ public class PDFAnalyzerTest {
 	@Test
 	@Ignore // may have cured memory limit?
 	public void testCHBudget() {
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf")); // OK		
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/Banedanmark.pdf")); // OK
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/IYR2011DRC.pdf")); // OK
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/2010FINAL.pdf"));
-//		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/misc/ByLawTraffic2011.pdf")); // OK		
+//		analyzePDF(("../pdfs/misc/2013-06-28-asp-2014-bericht-de.pdf")); // OK		
+//		analyzePDF(("../pdfs/misc/Banedanmark.pdf")); // OK
+//		analyzePDF(("../pdfs/misc/IYR2011DRC.pdf")); // OK
+//		analyzePDF(("../pdfs/misc/2010FINAL.pdf"));
+//		analyzePDF(("../pdfs/misc/ByLawTraffic2011.pdf")); // OK		
 	}
 	
 	@Test
 	@Ignore
 	public void testMDPI() {
-		new PDFAnalyzer().analyzePDFFile(new File("src/test/resources/pdfs/mdpi/metabolites-02-00039.pdf")); // has bitmapped chemical elements :-)
+		analyzePDF(("src/test/resources/pdfs/mdpi/metabolites-02-00039.pdf")); // has bitmapped chemical elements :-)
 	}
 	
 	@Test
 	@Ignore
 	public void testScience() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/science/")); // 3-column 
+		analyzePDF(("../pdfs/science/")); // 3-column 
 	}
 	
 	@Test
 	@Ignore
 	public void testAstro() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/arxiv/astro")); // 
+		analyzePDF(("../pdfs/arxiv/astro")); // 
 	}
 	
 	@Test
 	@Ignore
 	public void testNHS() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/nhs/GPinHoursEngBulletin2013Wk15.pdf")); // 
+		analyzePDF(("../pdfs/nhs/GPinHoursEngBulletin2013Wk15.pdf")); // 
 	}
 	
 	@Test
 	@Ignore
 	public void testSuspectACS() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/acs/suspect_ol2015972_si_002.pdf")); // 
+		analyzePDF(("../pdfs/acs/suspect_ol2015972_si_002.pdf")); // 
 	}
 	
 	@Test
 	@Ignore
 	public void testZootaxa() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/zootaxa37/armbruster_08_genus_626780.pdf")); // 
+		analyzePDF(("../pdfs/zootaxa37/armbruster_08_genus_626780.pdf")); // 
 	}
 	
 	@Test
 	@Ignore
 	public void testJurePharma() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/jure/Zutectra.pdf")); // 
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/jure/s-010161.pdf")); // 
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/jure/s-011877.pdf")); // 
+		analyzePDF(("../pdfs/jure/Zutectra.pdf")); // 
+		analyzePDF(("../pdfs/jure/s-010161.pdf")); // 
+		analyzePDF(("../pdfs/jure/s-011877.pdf")); // 
 	}
 	
 	@Test
-//	@Ignore
+	@Ignore
 	public void testPlosone() {
-		new PDFAnalyzer().analyzePDFFile(new File("../pdfs/plosone/journal.pone.0077058.pdf")); // 
+		analyzePDF("../pdfs/plosone/journal.pone.0077058.pdf"); // 
+	}
+
+	private void analyzePDF(String filename) {
+		File file = new File(filename);
+		if (file.exists() && !file.isDirectory()) {
+			new PDFAnalyzer().analyzePDFFile(file);
+		}
 	}
 	
 }
