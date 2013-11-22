@@ -119,7 +119,7 @@ public class TextStructurer {
 			textAnalyzer.setTextStructurer(this);
 			rawCharacters = textAnalyzer.getTextCharacters();
 			transformIfNotHorizontalOrientation();
-			this.createLinesSortedInXThenY(rawCharacters, textAnalyzer);
+			createLinesSortedInXThenY(rawCharacters, textAnalyzer);
 		}
 	}
 
@@ -503,7 +503,7 @@ public class TextStructurer {
 			Multimap<Integer, SVGText> charactersByY = TextAnalyzerUtils.createCharactersByY(textCharacters);
 			for (Integer yCoord : charactersByY.keySet()) {
 				Collection<SVGText> characters = charactersByY.get(yCoord);
-				TextLine textLine = new TextLine(characters, this.textAnalyzer);
+				TextLine textLine = new TextLine(characters, textAnalyzer);
 				textLine.sortLineByX();
 				textLineByYCoordMap.put(yCoord, textLine);
 			}
@@ -691,8 +691,8 @@ public class TextStructurer {
 	}
 
 	private void createLinesSortedInXThenY(List<SVGText> textCharacters, TextAnalyzer textAnalyzer) {
-		this.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
-		textLineList = this.getLinesInIncreasingY();
+		sortLineByXandMakeTextLineByYCoordMap(textCharacters);
+		textLineList = getLinesInIncreasingY();
 		for (TextLine textLine : textLineList) {
 			LOG.trace("TL "+textLine);
 		}
@@ -1255,7 +1255,7 @@ public class TextStructurer {
 	public List<RawWords> createRawWordsList() {
 		if (rawWordsList == null) {
 			rawWordsList = new ArrayList<RawWords>();
-			this.getLinesInIncreasingY();
+			getLinesInIncreasingY();
 			for (TextLine textLine : textLineList) {
 				RawWords rawWords = textLine.getRawWords();
 				rawWordsList.add(rawWords);

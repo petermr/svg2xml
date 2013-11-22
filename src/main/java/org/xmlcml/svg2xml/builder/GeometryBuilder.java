@@ -10,6 +10,9 @@ import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.builder.HigherPrimitives;
+import org.xmlcml.graphics.svg.builder.JoinManager;
+import org.xmlcml.graphics.svg.builder.Joinable;
+import org.xmlcml.graphics.svg.builder.JoinableText;
 import org.xmlcml.graphics.svg.builder.Junction;
 import org.xmlcml.graphics.svg.builder.SimpleBuilder;
 import org.xmlcml.html.HtmlElement;
@@ -143,6 +146,16 @@ public class GeometryBuilder extends SimpleBuilder {
 	public List<SVGPath> createArraysFromPaths() {
 		List<SVGPath> pathList = SVGPath.extractPaths(getSVGRoot());
 		return pathList;
+	}
+	
+	@Override
+	protected void createJoinableList() {
+		List<Joinable> joinableList = JoinManager.makeJoinableList(higherPrimitives.getLineList());
+		joinableList.addAll(higherPrimitives.getTramLineList());
+
+		
+		
+		higherPrimitives.addJoinableList(joinableList);
 	}
 
 	/*public List<Junction> getRawJunctionList() {
