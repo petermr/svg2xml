@@ -96,6 +96,10 @@ public class Word {
 		return textList.get(0).getX();
 	}
 
+	/** gets end point or String, including width of last character.
+	 * 
+	 * @return
+	 */
 	public Double getEndX() {
 		SVGText endText = textList.get(textList.size() - 1);
 		Double x = endText == null ? null : endText.getX();
