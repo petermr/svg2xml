@@ -5,3 +5,4 @@ syntax: regexp
 ^\.hgignore~$
 ^target/
 ^nonPublic/
+^svg/suspect_ol2015972_si_002/
