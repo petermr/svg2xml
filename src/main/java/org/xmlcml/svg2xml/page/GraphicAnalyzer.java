@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
@@ -51,7 +52,7 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	 * @param svgChunk
 	 */
 	public GraphicAnalyzer(SVGElement svgChunk) {
-		this(new PageAnalyzer((SVGElement) null), svgChunk);
+		this(new PageAnalyzer((SVGSVG) null), svgChunk);
 	}
 
 	private void createAnalyzers() {
@@ -97,7 +98,7 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		SVGG chunk = SVGG.createSVGGChunk(svgFile, xPath, index);
 		GraphicAnalyzer graphicAnalyzer = null;
 		if (chunk != null) {
-			PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGElement) null);
+			PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG) null);
 			graphicAnalyzer = new GraphicAnalyzer(pageAnalyzer, chunk);
 		}
 		return graphicAnalyzer;

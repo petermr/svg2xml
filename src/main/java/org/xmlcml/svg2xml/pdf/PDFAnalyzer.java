@@ -15,7 +15,7 @@ import java.util.Map;
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
@@ -221,11 +221,30 @@ public class PDFAnalyzer {
 		return pageAnalyzerList;
 	}
 	
-	public void createRunningHtml() {
+	public List<PageAnalyzer> createAndFillPageAnalyzers(List<SVGSVG> svgList) {
+		ensurePageAnalyzerList();
+		for (int pageCounter = 0; pageCounter < svgList.size(); pageCounter++) {
+			SYSOUT.print(pageCounter+"~");
+			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(svgList.get(pageCounter), pageCounter);
+			pageAnalyzerList.add(pageAnalyzer);
+		}
+		return pageAnalyzerList;
+	}
+	
+	public HtmlElement createRunningHtml() {
 		runningTextElement = new HtmlDiv();
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
 			PageIO.copyChildElementsFromTo(pageAnalyzer.getRunningHtmlElement(), runningTextElement);
 		}
+		return runningTextElement;
+	}
+
+	public HtmlElement forceCreateRunningHtml() {
+		runningTextElement = new HtmlDiv();
+		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
+			PageIO.copyChildElementsFromTo(pageAnalyzer.createRunningHtml(), runningTextElement);
+		}
+		return runningTextElement;
 	}
 
 	private void ensurePageAnalyzerList() {
@@ -249,7 +268,7 @@ public class PDFAnalyzer {
 		}
 	}
 
-	private void createSVGFilesfromPDF(PDF2SVGConverter converter, String inputName) {
+	public void createSVGFilesfromPDF(PDF2SVGConverter converter, String inputName) {
 		File svgDocumentDir = pdfIo.getRawSVGDirectory();
 		File[] files = (svgDocumentDir == null) ? null : svgDocumentDir.listFiles();
 		if (!svgDocumentDir.exists() || files == null || files.length == 0) {
@@ -328,7 +347,7 @@ public class PDFAnalyzer {
 		return pageAnalyzerList;
 	}
 
-	public Element getRunningTextHtml() {
+	public HtmlElement getRunningTextHtml() {
 		return runningTextElement;
 	}
 

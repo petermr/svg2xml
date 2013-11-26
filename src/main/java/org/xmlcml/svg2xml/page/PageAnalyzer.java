@@ -107,11 +107,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		pageIo = new PageIO();
 	}	
 	
-	public PageAnalyzer(SVGElement svgElement) {
+	public PageAnalyzer(SVGSVG svg) {
 		this();
-		if (svgElement instanceof SVGSVG) {
-			pageIo.setSvgInPage((SVGSVG)svgElement);
-		}
+		pageIo.setSvgInPage(svg);
 	}
 
 	public PageAnalyzer(SVGSVG svgPage, PDFAnalyzer pdfAnalyzer) {
@@ -731,6 +729,14 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return pageAnalyzer;
 	}
 
+	public static PageAnalyzer createAndAnalyze(SVGSVG svg, Integer pageCounter) {
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(svg);
+		pageAnalyzer.setMachinePageNumber(pageCounter);
+		pageAnalyzer.splitChunksAndCreatePage();
+		LOG.trace(pageAnalyzer.getPageIO().toString());
+		return pageAnalyzer;
+	}
+
 	public void outputHtmlRunningText() {
 		HtmlElement div = this.createRunningHtml();
 		div.setId(String.valueOf(pageIo.getHumanPageNumber()));
@@ -740,7 +746,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		// PageIO.outputFile(div, file);
 	}
 
-	private HtmlElement createRunningHtml() {
+	public HtmlElement createRunningHtml() {
 		runningTextHtmlElement = new HtmlDiv();
 		ensureAbstractContainerList();
 		for (AbstractContainer abstractContainer : abstractContainerList) {

@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
@@ -21,7 +22,7 @@ public class GraphicAnalyzerTest {
 	
 	@Test
 	public void testGraphic() {
-		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGElement) null);
+		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG) null);
 		SVGElement svgElement = SVGElement.readAndCreateSVG(Fixtures.FIGURE_PAGE_3_SVG);
 		SVGG graphic = (SVGG) SVGG.generateElementList(svgElement, "svg:g/svg:g/svg:g[@edge='YMIN']").get(2);
 		GraphicAnalyzer graphicAnalyzer = new GraphicAnalyzer(pageAnalyzer, graphic);

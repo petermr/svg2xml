@@ -593,7 +593,10 @@ public class PageSplitterAndHtmlTest {
 			List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 			SVGElement g = gList.get(chunk);
 	//		g.debug("GGG");
-			PageAnalyzer pageAnalyzer = new PageAnalyzer(g);
+			if (!(g instanceof SVGG)) {
+				throw new RuntimeException("BUG: g should be SVGG");
+			}
+			PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG)g);
 			MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
 			LOG.trace("MixedAnalyzer "+mixedAnalyzer);
 			TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
