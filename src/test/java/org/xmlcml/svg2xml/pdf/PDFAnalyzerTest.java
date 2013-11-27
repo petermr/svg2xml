@@ -153,6 +153,12 @@ public class PDFAnalyzerTest {
 	}
 	
 	@Test
+//	@Ignore
+	public void testMisc() {
+		analyzePDF(("../pdfs/misc/strongschools.pdf")); // 
+	}
+	
+	@Test
 	@Ignore
 	public void testPlosone() {
 		analyzePDF("../pdfs/plosone/journal.pone.0077058.pdf"); // 
