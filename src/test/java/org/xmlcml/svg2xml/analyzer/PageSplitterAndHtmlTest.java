@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -615,6 +616,8 @@ public class PageSplitterAndHtmlTest {
 				for (int i = 0; i < nodes.size(); i++) {
 					nodes.get(i).detach();
 				}
+				File file = new File("target/");
+				file.mkdirs();
 				SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.page;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -111,6 +112,8 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		figureGraphic.addElements(FigureComponent.BELOW, ySplit + YEPS);
 		LOG.trace("Graphic "+figureGraphic.getSvgContainer().getChildCount());
 		try {
+			File file = new File("target/");
+			file.mkdirs();
 			SVGUtil.debug(figureCaption.getSvgContainer(), new FileOutputStream("target/caption"+id+".svg"), 1);
 			SVGUtil.debug(figureGraphic.getSvgContainer(), new FileOutputStream("target/graphic"+id+".svg"), 1);
 		} catch (Exception e) {

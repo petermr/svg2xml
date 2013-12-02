@@ -75,7 +75,7 @@ public class PageIO {
 			finalSVGDocumentDir = createfinalSVGDocumentDirectory(rawSVGDocumentDir);
 			finalSVGDocumentDir.mkdirs();
 		} else {
-			finalSVGDocumentDir = new File("target");
+			finalSVGDocumentDir = new File("target/");
 			finalSVGDocumentDir.mkdirs();
 		}
 		return finalSVGDocumentDir;
@@ -204,8 +204,10 @@ public class PageIO {
 		if (pdfAnalyzer.getPdfOptions().isOutputAnnotatedSvgPages()) {
 			String pageRoot = createPageRootWithHumanNumber();
 			try {
+				File target = new File("target/");
+				target.mkdirs();
 				SVGUtil.debug(
-						finalSVGPage, new FileOutputStream(new File("target/"+pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
+						finalSVGPage, new FileOutputStream(new File(target, pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
 			} catch (Exception e) {throw(new RuntimeException(e));}
 		}
 	}
