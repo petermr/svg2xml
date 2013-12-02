@@ -195,9 +195,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
 			String chunkId = this.getHumanPageNumber()+"."+ichunk;
-			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
+//			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
 			path2ShapeConverter.convertPathsToShapes(gChunk);
-			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
+//			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
 			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
 			if (!(chunkAnalyzer instanceof TextAnalyzer)) {
 				LOG.trace(chunkAnalyzer);
@@ -605,7 +605,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			String chunkId = chunk.getId();
 			LOG.trace("Chunk "+chunk.toXML());
 			File file = new File(pageIo.createChunkFilename(chunkId));
-			SVGSVG.wrapAndWriteAsSVG(chunk, file);
+//			SVGSVG.wrapAndWriteAsSVG(chunk, file);
 //			PageIO.outputFile(chunk, file);
 			LOG.trace(abstractContainer.getClass() + " " + chunkId);
 		}
