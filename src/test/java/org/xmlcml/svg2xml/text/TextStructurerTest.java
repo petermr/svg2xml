@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +12,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.text.TextCoordinate;
-import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
 import com.google.common.collect.Multiset;
@@ -141,4 +138,53 @@ public class TextStructurerTest {
 
 	}
 
+	@Test
+	public void testHOText() {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.IMAGE_2_11_HO_SVG, (PageAnalyzer) null);
+		List<RawWords> wordList = textStructurer.createRawWordsList();
+		Assert.assertEquals("ho", "{(HO)}", wordList.get(0).toString());
+	}
+	
+	@Test
+	public void testSubscriptedText() {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.IMAGE_2_11_NO2_SVG, (PageAnalyzer) null);
+		List<RawWords> wordList = textStructurer.createRawWordsList();
+		Assert.assertEquals("no2", 2, wordList.size());
+		Assert.assertEquals("no", "{(NO)}", wordList.get(0).toString());
+		Assert.assertEquals("xy", "(299.7,525.78)", wordList.get(0).get(0).getXY().toString());
+		Assert.assertEquals("no", "{(2)}", wordList.get(1).toString());
+		Assert.assertEquals("xys", "(312.42,527.7)", wordList.get(1).get(0).getXY().toString());
+	}
+	
+	@Test
+	public void test2_11() {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.IMAGE_2_11_SVG, (PageAnalyzer) null);
+		List<RawWords> wordList = textStructurer.createRawWordsList();
+		Assert.assertEquals("2.11", 3, wordList.size());
+		Assert.assertEquals("1", "{(HO)........(NO)}", wordList.get(0).toString());
+		Assert.assertEquals("2", "{(2)}", wordList.get(1).toString());
+		Assert.assertEquals("2", "{(O)}", wordList.get(2).toString());
+	}
+	
+	
+	@Test
+	public void test2_15() {
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.IMAGE_2_15_SVG, (PageAnalyzer) null);
+		List<RawWords> wordList = textStructurer.createRawWordsList();
+		Assert.assertEquals("words", 6, wordList.size());
+		Assert.assertEquals("0", "{(O)}", wordList.get(0).toString());
+		Assert.assertEquals("1", "{(N)}", wordList.get(1).toString());
+		Assert.assertEquals("2", "{(H)}", wordList.get(2).toString());
+		Assert.assertEquals("3", "{(H)}", wordList.get(3).toString());
+		Assert.assertEquals("4", "{(OH)..(O)}", wordList.get(4).toString());
+		Assert.assertEquals("5", "{(Cyclopiazonic).(acid)}", wordList.get(5).toString());
+	}
 }

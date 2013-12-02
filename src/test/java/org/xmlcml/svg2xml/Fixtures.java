@@ -268,7 +268,10 @@ public class Fixtures {
 
 	public static final File MOLECULE_DIR = new File(SVG2XML_DIR, "molecules");
 	public static final File IMAGE_2_11_SVG = new File(MOLECULE_DIR, "image.g.2.11.svg");
+	public static final File IMAGE_2_11_NO2_SVG = new File(MOLECULE_DIR, "image.g.2.11.no2.svg");
+	public static final File IMAGE_2_11_HO_SVG = new File(MOLECULE_DIR, "image.g.2.11.ho.svg");
 	public static final File IMAGE_2_13_SVG = new File(MOLECULE_DIR, "image.g.2.13.svg");
+	public static final File IMAGE_2_15_SVG = new File(MOLECULE_DIR, "image.g.2.15.svg");
 	public static final File IMAGE_2_16_SVG = new File(MOLECULE_DIR, "image.g.2.16.svg");
 	public static final File IMAGE_2_18_SVG = new File(MOLECULE_DIR, "image.g.2.18.svg");
 	public static final File IMAGE_2_23_SVG = new File(MOLECULE_DIR, "image.g.2.23.svg");
@@ -278,7 +281,7 @@ public class Fixtures {
 	public static final File IMAGE_5_13_SVG = new File(MOLECULE_DIR, "image.g.5.13.svg");
 	public static final File IMAGE_5_14_SVG = new File(MOLECULE_DIR, "image.g.5.14.svg");
 	public static final File IMAGE_02_00100_65_SVG = new File(MOLECULE_DIR, "02.00100.g.6.5.svg");
-	
+
 // ==================================================	
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
