@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.page;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -67,6 +68,8 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 		Integer tableNumber = tableTable.getTableNumber();
 		if (tableNumber != null) {
 			try {
+				File file = new File("target/");
+				file.mkdirs();
 				SVGUtil.debug(htmlTable, new FileOutputStream("target/TABLEX"+tableNumber+".html"), 1);
 			} catch (IOException e) {
 				throw new RuntimeException("Cannot output file", e);

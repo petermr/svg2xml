@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
