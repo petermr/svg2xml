@@ -42,6 +42,7 @@
 
 	<dependencies>
 		<!-- this shouldn't be needed - check transitive dependencies -->
+		<!--  
 		<dependency>
 			<groupId>org.xml-cml</groupId>
 			<artifactId>euclid-dev</artifactId>
@@ -53,10 +54,17 @@
 			<artifactId>cmlxom</artifactId>
 			<version>3.2-SNAPSHOT</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.xml-cml</groupId>
 			<artifactId>pdf2svg-dev</artifactId>
 			<version>0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.xmlcml</groupId>
+			<artifactId>svgbuilder</artifactId>
+			<version>0.1-SNAPSHOT</version>
+
 		</dependency>
 
 		<dependency>
