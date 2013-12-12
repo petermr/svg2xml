@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.table;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -316,6 +317,8 @@ public class TableTable extends TableChunk {
 		// size of growing table children
 		int nn = table.query(".//*").size();
 		try {
+			File file = new File("target/");
+			file.mkdirs();
 			SVGUtil.debug(table, new FileOutputStream("target/table"+nn+".html"), 1);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

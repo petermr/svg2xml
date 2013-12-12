@@ -95,21 +95,22 @@ public class Fixtures {
 	public final static File ANYSVGDIR = new File(SVGTOP, "any");
 
 	public static final File ANALYZER_DIR = new File(SVG2XML_DIR+"analyzer/");
-	/** a 4 line chunk (paragraph) with no suscripts */
+	
+	//A 4 line chunk (paragraph) with no suscripts
 	public static final File PARA1_SVG = new File(Fixtures.ANALYZER_DIR, "1parachunk.svg");
-	// 3 paragraphs
+	
+	//3 paragraphs
 	public static final File PARA_SUSCRIPT_SVG = new File(Fixtures.ANALYZER_DIR, "parasWithSuscripts.svg");
 	private static final File LINE1_SVG = new File(Fixtures.ANALYZER_DIR, "singleLine.svg");
 
 	public static File PAGE3RESULTS_SVG = new File(Fixtures.ANALYZER_DIR, "page3results.svg");
-// text stuff	
+	
+	//Text stuff	
 	public static final File TEXT_DIR = new File(SVG2XML_DIR+"text/");
 	public static final File RAWWORDS_SVG = new File(Fixtures.TEXT_DIR, "rawwords.svg");
 	public static final TextLine RAWWORDS_TEXT_LINE = TextStructurer.createTextLine(Fixtures.RAWWORDS_SVG, 0);
-	
 
-
-// whole paper	
+	//Whole paper	
 	public static final File PDFS_BMC_DIR = new File(PDFS_DIR, "bmc/");
 	public static final File SVG_BMC_DIR = new File(SVG1_DIR, "bmc/");
 	public static final File MULTIPLE312_DIR = new File(PDFS_BMC_DIR, "multiple-1471-2148-11-312/");
@@ -268,7 +269,10 @@ public class Fixtures {
 
 	public static final File MOLECULE_DIR = new File(SVG2XML_DIR, "molecules");
 	public static final File IMAGE_2_11_SVG = new File(MOLECULE_DIR, "image.g.2.11.svg");
+	public static final File IMAGE_2_11_NO2_SVG = new File(MOLECULE_DIR, "image.g.2.11.no2.svg");
+	public static final File IMAGE_2_11_HO_SVG = new File(MOLECULE_DIR, "image.g.2.11.ho.svg");
 	public static final File IMAGE_2_13_SVG = new File(MOLECULE_DIR, "image.g.2.13.svg");
+	public static final File IMAGE_2_15_SVG = new File(MOLECULE_DIR, "image.g.2.15.svg");
 	public static final File IMAGE_2_16_SVG = new File(MOLECULE_DIR, "image.g.2.16.svg");
 	public static final File IMAGE_2_18_SVG = new File(MOLECULE_DIR, "image.g.2.18.svg");
 	public static final File IMAGE_2_23_SVG = new File(MOLECULE_DIR, "image.g.2.23.svg");
@@ -278,8 +282,8 @@ public class Fixtures {
 	public static final File IMAGE_5_13_SVG = new File(MOLECULE_DIR, "image.g.5.13.svg");
 	public static final File IMAGE_5_14_SVG = new File(MOLECULE_DIR, "image.g.5.14.svg");
 	public static final File IMAGE_02_00100_65_SVG = new File(MOLECULE_DIR, "02.00100.g.6.5.svg");
-	
-// ==================================================	
+
+	//==================================================	
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
@@ -300,7 +304,8 @@ public class Fixtures {
 		return svgElement;
 	}
 	
-	/** page numbered from ONE
+	/** 
+	 * Page numbered from ONE
 	 * 
 	 * @param file
 	 * @param page
@@ -309,7 +314,7 @@ public class Fixtures {
 	public static SVGSVG getSVGPageFromPDF(File file, int page) {
 		PDF2SVGConverter converter = new PDF2SVGConverter();
 		converter.run("-outdir target "+file);
-		SVGSVG svgPage = (page < 1 || page > converter.getPageList().size()) ? null : converter.getPageList().get(page-1);
+		SVGSVG svgPage = (page < 1 || page > converter.getPageList().size() ? null : converter.getPageList().get(page - 1));
 		return svgPage;
 	}
 	
@@ -336,9 +341,5 @@ public class Fixtures {
 		List<Chunk> chunkList = Chunk.extractChunks(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@LEAF]"));
 		return chunkList;
 	}
-
-
-
-
 
 }

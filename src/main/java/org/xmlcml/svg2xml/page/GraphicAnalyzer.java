@@ -8,21 +8,22 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 /** Analyzer for a graphic object.
- * 
+ * <p>
  * The object is most likely the graphic part of a figure (the other is the caption).
  * The object may have text, Shapes and Images. Some may be null, but there are normally 
  * Shapes and/or Images.
- * 
+ * <p>
  * Normally reads a chunk (svgElement) and creates analyzers for the components. Can be recursive
  * (i.e. a graphicAnalyzer object can be split unto smaller objects each with a graphics analyzer).
+ * 
  * @author pm286
- *
  */
 public class GraphicAnalyzer extends ChunkAnalyzer {
 
@@ -44,14 +45,15 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		createAnalyzers();
 	}
 
-	/** create GraphicAnalyzer.
+	/** 
+	 * Creates GraphicAnalyzer.
 	 * 
 	 * PageAnalyzer is dummy.
 	 * 
 	 * @param svgChunk
 	 */
 	public GraphicAnalyzer(SVGElement svgChunk) {
-		this(new PageAnalyzer((SVGElement) null), svgChunk);
+		this(new PageAnalyzer((SVGSVG) null), svgChunk);
 	}
 
 	private void createAnalyzers() {
@@ -69,27 +71,28 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		}
 	}
 
-
-	/** convenience method, mainly for tests.
-	 * 
-	 * finds a chunk (using SVGG.createSVGG(file, xPath) and then creates 
-	 * GraphicAnalyzer to analyze it
+	/** 
+	 * Convenience method, mainly for tests.
+	 * <p>
+	 * Finds a chunk (using SVGG.createSVGG(file, xPath) and then creates 
+	 * GraphicAnalyzer to analyze it. TODO
 	 * 
 	 * @param svgFile
-	 * @param xPath to search for chunk (normally <g> containing the graphic)
+	 * @param xPath to search for chunk (normally &lt;g&gt; containing the graphic)
 	 * @return null firs in list; if no chunk found
 	 */
 	public static GraphicAnalyzer createGraphicAnalyzer(File svgFile, String xPath)  {
 		return GraphicAnalyzer.createGraphicAnalyzer(svgFile, xPath, 0);
 	}
 
-	/** convenience method, mainly for tests.
-	 * 
-	 * finds a chunk (using SVGG.createSVGG(file, xPath) and then creates 
-	 * GraphicAnalyzer to analyze it
+	/** 
+	 * Convenience method, mainly for tests.
+	 * <p>
+	 * Finds a chunk (using SVGG.createSVGG(file, xPath) and then creates 
+	 * GraphicAnalyzer to analyze it. TODO
 	 * 
 	 * @param svgFile
-	 * @param xPath to search for chunk (normally <g> containing the graphic)ounts from zero)
+	 * @param xPath to search for chunk (normally &lt;g&gt; containing the graphic)ounts from zero)
 	 * @param index result in list (c
 	 * @return null if no chunk found
 	 */
@@ -97,19 +100,16 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		SVGG chunk = SVGG.createSVGGChunk(svgFile, xPath, index);
 		GraphicAnalyzer graphicAnalyzer = null;
 		if (chunk != null) {
-			PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGElement) null);
+			PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG) null);
 			graphicAnalyzer = new GraphicAnalyzer(pageAnalyzer, chunk);
 		}
 		return graphicAnalyzer;
 	}
 	
-	
-
-	/** create TextAnalyzer for given orientation.
-	 * 
-	 * extracts the characters with given orientation and prepares for TextStructurer.
-	 * 
-	 * 
+	/** 
+	 * Create TextAnalyzer for given orientation.
+	 * <p>
+	 * Extracts the characters with given orientation and prepares for TextStructurer.
 	 * 
 	 * @param textOrientation
 	 * @return
@@ -130,10 +130,11 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		return textAnalyzer;
 	}
 
-	/** create TextStructurer for given orientation.
+	/** 
+	 * Create TextStructurer for given orientation.
 	 * 
-	 * create a textAnalyzer and then the textStructurer primed with the 
-	 * characters for that orientation
+	 * Create a textAnalyzer and then the TextStructurer primed with the 
+	 * characters for that orientation.
 	 * 
 	 * @param graphicAnalyzer
 	 * @param textOrientation
@@ -143,8 +144,6 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		TextAnalyzer textAnalyzer = this.createTextAnalyzer(textOrientation);
 		return textAnalyzer == null ? null : new TextStructurer(textAnalyzer);
 	}
-
-	
 
 	public ImageAnalyzer getImageAnalyzer() {
 		return imageAnalyzer;
@@ -197,7 +196,5 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	public List<SVGText> getRot3Pi2TextCharacters() {
 		return (textAnalyzer == null) ? new ArrayList<SVGText>() : textAnalyzer.getRot3Pi2TextCharacters();
 	}
-
-
 
 }

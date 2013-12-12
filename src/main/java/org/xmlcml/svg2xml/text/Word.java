@@ -22,12 +22,13 @@ public class Word {
 		
 	}
 
-	/** create word from characters in svgText.
-	 * 
-	 * mainly for testing purposes. Is unlikely to provide valid coordinates
+	/** 
+	 * Creates Word from characters in svgText.
+	 * <p>
+	 * Mainly for testing purposes. Is unlikely to provide valid coordinates
 	 * for characters.
-	 * 
-	 * splits svgText into characters.
+	 * <p>
+	 * Splits svgText into characters.
 	 * 
 	 * @param svgText
 	 */
@@ -96,6 +97,11 @@ public class Word {
 		return textList.get(0).getX();
 	}
 
+	/** 
+	 * Gets end point of string, including width of last character.
+	 * 
+	 * @return
+	 */
 	public Double getEndX() {
 		SVGText endText = textList.get(textList.size() - 1);
 		Double x = endText == null ? null : endText.getX();
@@ -127,9 +133,10 @@ public class Word {
 		return i;
 	}
 
-	/** creates a list of Words split at spaces.
-	 * 
-	 * <p>If no spaces, returns this.</p>
+	/** 
+	 * Creates a list of Words split at spaces.
+	 * <p>
+	 * If no spaces, returns this.
 	 * 
 	 * @return
 	 */
@@ -153,16 +160,17 @@ public class Word {
 		return newWordList;
 	}
 
-	/** creates a Phrase of Words from raw word.
+	/** 
+	 * Creates a Phrase of Words from raw Words.
 	 * 
-	 * <p>Some raw Words contain explicit spaces and these can be split into a Phrase.
-	 * If the word has no spaces the the Phrase contains a single Word.</p>
+	 * <p>Some raw Words contain explicit spaces and these can be split and recombined into a Phrase.
+	 * If the word has no spaces then the Phrase contains a single Word.</p>
 	 * 
 	 * @return
 	 */
 	public Phrase createPhrase() {
 		Phrase phrase = new Phrase();
-		List<Word> splitWords = this.splitAtSpaces();
+		List<Word> splitWords = splitAtSpaces();
 		for (Word word : splitWords) {
 			phrase.add(word);
 		}

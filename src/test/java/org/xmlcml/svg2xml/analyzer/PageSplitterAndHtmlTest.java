@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
@@ -65,40 +66,41 @@ public class PageSplitterAndHtmlTest {
 		}
 	}
 	
-//	@Test
-//	public void testTransformChunksToXMLAndAnalyzeText0() {
-//		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
-//		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-//		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(0));
-//		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-//		Assert.assertEquals("lines0 ", 1, textLines.size());
-//		TextLine textLine = textLines.get(0);
-//		Element element = textLine.createHtmlLine();
-//		Assert.assertEquals("lines0 ", "380", element.getValue());
-//	}
-//	
-//	@Test
-//	public void testTransformChunksToXMLAndAnalyzeText1() {
-//		testSingleLineInChunk(1, "G. Moad, E. Rizzardo and S. H. Thang");
-//	}
-//
-//	@Test
-//	public void testTransformChunksToXMLAndAnalyzeText4() {
-//		testSingleLineInChunk(4, "Scheme 1.");
-//	}
-//	
-//	@Test
-//	public void testTransformChunksToXMLAndAnalyzeText6() {
-//		testSingleLineInChunk(6, "Scheme 2. Reversible deactivation.");
-//	}
-	
-//	@Test
-//	public void testTransformChunksToXMLAndAnalyzeText8() {
-//		testSingleLineInChunk(8, "Scheme 3. Reversible chain transfer.");
-//	}
+	/*@Test
+	public void testTransformChunksToXMLAndAnalyzeText0() {
+		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(0));
+		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+		Assert.assertEquals("lines0 ", 1, textLines.size());
+		TextLine textLine = textLines.get(0);
+		Element element = textLine.createHtmlLine();
+		Assert.assertEquals("lines0 ", "380", element.getValue());
+	}
 	
 	@Test
-	@Ignore // needs revisiting
+	public void testTransformChunksToXMLAndAnalyzeText1() {
+		testSingleLineInChunk(1, "G. Moad, E. Rizzardo and S. H. Thang");
+	}
+
+	@Test
+	public void testTransformChunksToXMLAndAnalyzeText4() {
+		testSingleLineInChunk(4, "Scheme 1.");
+	}
+	
+	@Test
+	public void testTransformChunksToXMLAndAnalyzeText6() {
+		testSingleLineInChunk(6, "Scheme 2. Reversible deactivation.");
+	}
+	
+	@Test
+	public void testTransformChunksToXMLAndAnalyzeText8() {
+		testSingleLineInChunk(8, "Scheme 3. Reversible chain transfer.");
+	}*/
+	
+	@Test
+	@Ignore
+	//Needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple2() {
 		Element ref = XMLUtil.parseXML(
                 "<div xmlns='http://www.w3.org/1999/xhtml'>\n"+
@@ -120,7 +122,8 @@ public class PageSplitterAndHtmlTest {
 	}
 	
 	@Test
-	@Ignore // needs revisiting
+	@Ignore 
+	//Needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple3() {
 		Element ref = XMLUtil.parseXML("<p xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<span style='font-size:7.0px;font-family:Helvetica;'>Monomer</span>" +
@@ -129,7 +132,8 @@ public class PageSplitterAndHtmlTest {
 	}
 	
 	@Test
-	@Ignore // needs revisiting
+	@Ignore
+	//Needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple5() {
 		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
@@ -217,8 +221,8 @@ public class PageSplitterAndHtmlTest {
 	}
 	
 
-	/** graph annotations (vertical text not yet treated)
-	 * 
+	/** 
+	 * Graph annotations (vertical text not yet treated)
 	 */
 	@Test
 	@Ignore
@@ -271,11 +275,12 @@ public class PageSplitterAndHtmlTest {
 		testMultipleLineInMixedChunk(9, 18, ref);
 	}
 
-	/** figure caption
-	 * 
+	/** 
+	 * Figure caption
 	 */
 	@Test
-	@Ignore // needs revisiting
+	@Ignore
+	//Needs revisiting
 	public void testTransformChunksToXMLAndAnalyzeTextLinesinMultiple10() {
 		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
@@ -302,8 +307,8 @@ public class PageSplitterAndHtmlTest {
 		testMultipleLineInMixedChunk(10, 3, ref);
 	}
 	
-	/** figure caption
-	 * 
+	/** 
+	 * Figure caption
 	 */
 	@Test
 	@Ignore
@@ -360,8 +365,8 @@ public class PageSplitterAndHtmlTest {
 		testMultipleLineInMixedChunk(11, 37, ref);
 	}
 
-	/** figure caption
-	 * 
+	/** 
+	 * Figure caption
 	 */
 	@Test
 	@Ignore
@@ -419,8 +424,8 @@ public class PageSplitterAndHtmlTest {
 		testMultipleLineInMixedChunk(12, 38, ref);
 	}
 	
-	/** figure caption
-	 * 
+	/** 
+	 * Figure caption
 	 */
 	@Test
 	@Ignore
@@ -570,19 +575,19 @@ public class PageSplitterAndHtmlTest {
 	}
 	
 
-// ====================================================================
+	//====================================================================
 	
-//	private void testSingleLineInChunk(int chunk, String expected) {
-//		// note this has been split already
-//		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
-//		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-//		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(chunk));
-//		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-//		Assert.assertEquals("line"+chunk, 1, textLines.size());
-//		TextLine textLine = textLines.get(0);
-//		Element element = textLine.createHtmlLine();
-//		Assert.assertEquals("line"+chunk, expected, element.getValue());
-//	}
+	/*private void testSingleLineInChunk(int chunk, String expected) {
+		// note this has been split already
+		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+		TextAnalyzerX textAnalyzer = (TextAnalyzerX) AbstractAnalyzer.createSpecificAnalyzer(gList.get(chunk));
+		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+		Assert.assertEquals("line"+chunk, 1, textLines.size());
+		TextLine textLine = textLines.get(0);
+		Element element = textLine.createHtmlLine();
+		Assert.assertEquals("line"+chunk, expected, element.getValue());
+	}*/
 
 	private void testMultipleLineInMixedChunk(int chunk, int nlines, Element ref) {
 		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
@@ -590,33 +595,37 @@ public class PageSplitterAndHtmlTest {
 	}
 
 	public static void analyzeChunkInSVGPage(int chunk, int nlines, Element ref, Element svg) {
-			List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-			SVGElement g = gList.get(chunk);
-	//		g.debug("GGG");
-			PageAnalyzer pageAnalyzer = new PageAnalyzer(g);
-			MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
-			LOG.trace("MixedAnalyzer "+mixedAnalyzer);
-			TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
-			LOG.trace("TextAnalyzer "+textAnalyzer);
-			List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-			for (TextLine textLine : textLines) {
-				LOG.trace(textLine);
-			}
-			Assert.assertEquals("lines"+chunk, nlines, textLines.size());
-	//		Element element = textAnalyzer.createHtmlDivWithParas();
-			Element element = textAnalyzer.getTextStructurer().createHtmlElement();
-			LOG.trace(ref.toXML()+"\n\n"+element.toXML());
-			JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
-			try {
-				Nodes nodes = element.query(".//@style");
-				for (int i = 0; i < nodes.size(); i++) {
-					nodes.get(i).detach();
-				}
-				SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+		SVGElement g = gList.get(chunk);
+		//g.debug("GGG");
+		if (!(g instanceof SVGG)) {
+			throw new RuntimeException("BUG: g should be SVGG");
 		}
+		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG)g);
+		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
+		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
+		TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
+		LOG.trace("TextAnalyzer "+textAnalyzer);
+		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+		for (TextLine textLine : textLines) {
+			LOG.trace(textLine);
+		}
+		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
+		//Element element = textAnalyzer.createHtmlDivWithParas();
+		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
+		LOG.trace(ref.toXML()+"\n\n"+element.toXML());
+		JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
+		try {
+			Nodes nodes = element.query(".//@style");
+			for (int i = 0; i < nodes.size(); i++) {
+				nodes.get(i).detach();
+			}
+			File file = new File("target/");
+			file.mkdirs();
+			SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	
 }

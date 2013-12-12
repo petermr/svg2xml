@@ -55,30 +55,26 @@ import org.xmlcml.xml.XMLUtil;
 /**
  * Processes a page.
  * <p>
- * normally called by an iteration over pages from PDFAnalyzer.
- * main routine is splitChunksAnnotateAndCreatePage()
- *   this creates whitespace-separated chunks and binds each to a ChunkAnalyzer.
- *   the ChunkAnalyzer is specialized as (say)
- *   <ul>
- *     <li>FigureAnalyzer</li>
- *     <li> ImageAnalyzer</li>
- *     <li> ShapeAnalyzer</li>
- *     <li> MixedAnalyzer</li>
- *     <li> TextAnalyzer</li>
- *     </ul>
- *       these analyzers may output files (especially FigureAnalyzer) but most output is 
- *       reserved until later.
- * </p>
- * 
+ * Normally called by an iteration over pages from PDFAnalyzer.
+ * <p>
+ * Main routine is splitChunksAnnotateAndCreatePage(). This creates whitespace-separated chunks and binds each to a ChunkAnalyzer. The ChunkAnalyzer is specialized as (say)
+ * <ul>
+ *   <li>FigureAnalyzer</li>
+ *   <li>ImageAnalyzer</li>
+ *   <li>ShapeAnalyzer</li>
+ *   <li>MixedAnalyzer</li>
+ *   <li>TextAnalyzer</li>
+ * </ul>
+ * These analyzers may output files (especially FigureAnalyzer) but most output is reserved until later..
+ * <p>
  * Optionally (but normally) components are then output with
  * <code>
  *       PDFAnalyzer 		pdfIo.outputFiles(getPdfOptions()); // move this to PageAnalyzer
- *       </code>
- *       Each ChunkAnalyzer is bound to a corresponding AbstractContainer (e.g. PathContainer)
- *       each of which has a createHtmlElement().
+ * </code>
+ * <p>
+ * Each ChunkAnalyzer is bound to a corresponding AbstractContainer (e.g. PathContainer) each of which has a createHtmlElement().
  *       
  * @author pm286
- *
  */
 public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
@@ -98,20 +94,18 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	private PDFAnalyzer pdfAnalyzer;
 	private PDFIndex pdfIndex;  // maybe remove later
 
-	/** main routine to analyze page
-		 * 
-		 */
+	/** 
+	 * Main routine to analyze page
+	 */
 	protected List<AbstractContainer> abstractContainerList;
 
 	private PageAnalyzer() {
 		pageIo = new PageIO();
 	}	
 	
-	public PageAnalyzer(SVGElement svgElement) {
+	public PageAnalyzer(SVGSVG svg) {
 		this();
-		if (svgElement instanceof SVGSVG) {
-			pageIo.setSvgInPage((SVGSVG) svgElement);
-		}
+		pageIo.setSvgInPage(svg);
 	}
 
 	public PageAnalyzer(SVGSVG svgPage, PDFAnalyzer pdfAnalyzer) {
@@ -183,10 +177,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
 
 	/**
-	 * Main routine creating ChunkAnalyzers from SVGGs.
-	 * 
-	 * split into chunks by whitespace
-	 * then normalize all paths with Path2ShapeConverter. Do this for each
+	 * Main routine, which creates ChunkAnalyzers from SVGGs.
+	 * <p>
+	 * Splits into chunks by whitespace then normalizes all paths with Path2ShapeConverter. Does this for each
 	 * chunk to avoid problems with widely distributed elements.
 	 */
 	public void splitChunksAndCreatePage() {
@@ -197,9 +190,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
 			String chunkId = this.getHumanPageNumber()+"."+ichunk;
-			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
+			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
 			path2ShapeConverter.convertPathsToShapes(gChunk);
-			SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
+			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
 			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
 			if (!(chunkAnalyzer instanceof TextAnalyzer)) {
 				LOG.trace(chunkAnalyzer);
@@ -227,10 +220,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				rawList.add(z);
 			}
 		}
-//		boolean isOrdered = isZListOrdered(rawList);
-//		if (!isOrdered) {
-			detachChildrenAndReplaceInZOrder(gChunk, elementByZMap, childElements, rawList);
-//		}
+		//boolean isOrdered = isZListOrdered(rawList);
+		//if (!isOrdered) {
+		detachChildrenAndReplaceInZOrder(gChunk, elementByZMap, childElements, rawList);
+		//}
 	}
 
 	private void detachChildrenAndReplaceInZOrder(SVGG gChunk, Map<Integer, SVGElement> elementByZMap,
@@ -240,10 +233,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		}
 		Collections.sort(rawList);
 		for (Integer z : rawList) {
-//			System.out.print(z+" ");
+			//System.out.print(z+" ");
 			gChunk.appendChild(elementByZMap.get(z));
 		}
-//		System.out.println();
+		//System.out.println();
 	}
 
 	private boolean isZListOrdered(List<Integer> rawList) {
@@ -257,7 +250,8 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return isOrdered;
 	}
 
-	/** decides whether chunk is Text, Path, Image or Mixed
+	/** 
+	 * Decides whether chunk is Text, Path, Image or Mixed
 	 * 
 	 * @param gChunk
 	 * @return analyzer suited to type (e.g. TextAnalyzer)
@@ -361,7 +355,8 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return pageIo.getHumanPageNumber();
 	}
 
-	/** (constant) title for this analyzer
+	/** 
+	 * (Constant) title for this analyzer
 	 * 
 	 * @return title (default null)
 	 */
@@ -382,7 +377,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	/**
-	 * <title stroke="black" stroke-width="1.0">char: 981; name: null; f: Symbol; fn: PHHOAK+Symbol; e: Dictionary</title>
+	 * &lt;title stroke="black" stroke-width="1.0"&gt;char: 981; name: null; f: Symbol; fn: PHHOAK+Symbol; e: Dictionary&lt;/title&gt;
 	 * @param svg
 	 */
 	private void processNonUnicodeCharactersInTitles() {
@@ -419,11 +414,11 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 	
 	private List<SVGElement> createWhitespaceChunkList() {
-//		pageIo.readRawSVGPageIfNecessary();
+		//pageIo.readRawSVGPageIfNecessary();
 		processNonUnicodeCharactersInTitles();
 		List<Chunk> chunkList = createWhitespaceSeparatedChunks();
 		// wrong place for this
-//		WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
+		//WhitespaceChunkerAnalyzerX.drawBoxes(chunkList, "red", "yellow", 0.5);
 		List<SVGElement> gList = SVGG.generateElementList(pageIo.getRawSVGPage(), "svg:g/svg:g/svg:g[@edge='YMIN']");
 		return gList;
 	}
@@ -511,8 +506,8 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	private static void replaceSpansByTextChildren(HtmlElement div) {
-//		String xpath = "//*[local-name()='span' and count(text()) = 1  and count(*) = 0]";
-//		replaceNodesWithChildren(div, xpath);
+		//String xpath = "//*[local-name()='span' and count(text()) = 1  and count(*) = 0]";
+		//replaceNodesWithChildren(div, xpath);
 		String xpath = ".//*[local-name()='span' and count(text()) = 1  and count(*) = 0]/text()";
 		replaceParentsWithNodes(div, xpath);
 	}
@@ -601,14 +596,14 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public void outputChunks() {
 		ensureAbstractContainerList();
 		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
-//		SYSOUT.println(".......................");
+		//SYSOUT.println(".......................");
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			SVGG chunk = abstractContainer.getSVGChunk();
 			String chunkId = chunk.getId();
 			LOG.trace("Chunk "+chunk.toXML());
 			File file = new File(pageIo.createChunkFilename(chunkId));
-			SVGSVG.wrapAndWriteAsSVG(chunk, file);
-//			PageIO.outputFile(chunk, file);
+			//SVGSVG.wrapAndWriteAsSVG(chunk, file);
+			//PageIO.outputFile(chunk, file);
 			LOG.trace(abstractContainer.getClass() + " " + chunkId);
 		}
 	}
@@ -616,7 +611,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public void outputImages() {
 		ensureAbstractContainerList();
 		List<AbstractContainer> abstractContainerList = this.getAbstractContainerList();
-//		SYSOUT.println(".......................");
+		//SYSOUT.println(".......................");
 		for (AbstractContainer abstractContainer : abstractContainerList) {
 			SVGG chunk = abstractContainer.getSVGChunk();
 			String chunkId = chunk.getId();
@@ -731,6 +726,14 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return pageAnalyzer;
 	}
 
+	public static PageAnalyzer createAndAnalyze(SVGSVG svg, Integer pageCounter) {
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(svg);
+		pageAnalyzer.setMachinePageNumber(pageCounter);
+		pageAnalyzer.splitChunksAndCreatePage();
+		LOG.trace(pageAnalyzer.getPageIO().toString());
+		return pageAnalyzer;
+	}
+
 	public void outputHtmlRunningText() {
 		HtmlElement div = this.createRunningHtml();
 		div.setId(String.valueOf(pageIo.getHumanPageNumber()));
@@ -740,7 +743,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		// PageIO.outputFile(div, file);
 	}
 
-	private HtmlElement createRunningHtml() {
+	public HtmlElement createRunningHtml() {
 		runningTextHtmlElement = new HtmlDiv();
 		ensureAbstractContainerList();
 		for (AbstractContainer abstractContainer : abstractContainerList) {

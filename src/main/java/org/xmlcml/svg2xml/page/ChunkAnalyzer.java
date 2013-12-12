@@ -12,16 +12,18 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 
-/** superclass of raw components of PDFPage SVG.
- * 
+/** 
+ * Superclass of raw components of PDFPage SVG.
+ * <p>
  * Components are:
- *  FigureAnalyzer, ImageAnalyzer, ShapeAnalyzer, MixedAnalyzer, TextAnalyzer
- *  
- *  Each component can access the PageAnalyzer , and through that the PDFAnalyzer
- *  for the document. Most analyzers have an AbstractContainer which processes the raw
- *  SVG.
+ * <p>
+ * FigureAnalyzer, ImageAnalyzer, ShapeAnalyzer, MixedAnalyzer, TextAnalyzer.
+ * <p>
+ * Each component can access the PageAnalyzer, and through that the PDFAnalyzer
+ * for the document. Most analyzers have an AbstractContainer which processes the raw
+ * SVG.
+ * 
  * @author pm286
- *
  */
 public abstract class ChunkAnalyzer {
 	
@@ -80,19 +82,19 @@ public abstract class ChunkAnalyzer {
 
 	public ChunkId getChunkId() {
 		if (chunkId == null) {
-//			String id = (svgg == null) ? null : svgg.getId();
-//			String id = (svgElement == null) ? null : svgElement.getId();
-//			if (id == null) {
+			//String id = (svgg == null) ? null : svgg.getId();
+			//String id = (svgElement == null) ? null : svgElement.getId();
+			//if (id == null) {
 			String id = null;
 			if (svgChunk != null) {
 				id = svgChunk.getId();
 				if (id == null) {
 					Nodes idNodes = svgChunk.query("ancestor::*/@id");
 					id = (idNodes.size() == 0) ? null : idNodes.get(0).getValue();
-//						SYSOUT.println(svgElement.toXML());
+					//SYSOUT.println(svgElement.toXML());
 				}
 			}
-//			}
+			//}
 			chunkId = (id == null) ? null : new ChunkId(id);
 		}
 		return chunkId;

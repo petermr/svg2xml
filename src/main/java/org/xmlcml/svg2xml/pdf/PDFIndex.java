@@ -59,7 +59,7 @@ import com.google.common.collect.Multimap;
  */
 public class PDFIndex {
 
-	private static final String WHITESPACE = "[\n\r\u0085\u2028\u2029]";
+	private static final String WHITESPACE = "[\n\r\u0085\u2028\u2029]";
 	private static final String DUPLICATE = "duplicate";
 	public final static Logger LOG = Logger.getLogger(PDFIndex.class);
 
@@ -334,7 +334,7 @@ public class PDFIndex {
 	 */
 	void addToindexes(SVGG gOut) {
 		String content = gOut.getValue();
-		content.replaceAll(WHITESPACE, " ");
+		content.replaceAll(WHITESPACE, " ");
 		ChunkId id = new ChunkId(gOut.getId());
 		svgElementByIdMap.put(id, gOut);
 		indexByBoundingBox(gOut, id);

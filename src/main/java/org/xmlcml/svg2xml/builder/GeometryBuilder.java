@@ -6,15 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
-import org.xmlcml.graphics.svg.SVGPolygon;
-import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.builder.HigherPrimitives;
-import org.xmlcml.graphics.svg.builder.JoinManager;
-import org.xmlcml.graphics.svg.builder.Joinable;
-import org.xmlcml.graphics.svg.builder.JoinableText;
-import org.xmlcml.graphics.svg.builder.Junction;
-import org.xmlcml.graphics.svg.builder.SimpleBuilder;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
@@ -22,6 +14,8 @@ import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.RawWords;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.Word;
+import org.xmlcml.svgbuilder.geom.Junction;
+import org.xmlcml.svgbuilder.geom.SimpleBuilder;
 
 /**
  * Builds higher-level primitives from SVGPaths, SVGLines, etc. to create SVG objects 
@@ -45,7 +39,7 @@ import org.xmlcml.svg2xml.text.Word;
  * <h3>Strategy</h3>
  * 
  * UPDATE: 2013-10-23Split into GeometryBuilder and "SimpleBuilder" as it doesn't deal with Words (which
- * require TextStructurer.) it's possible the whole higher-level primitive stuff should be removed to another
+ * require TextStructurer). It's possible the whole higher-level primitive stuff should be removed to another
  * project.
  * 
  * @author pm286
@@ -105,7 +99,7 @@ public class GeometryBuilder extends SimpleBuilder {
 
 	private TextStructurer createTextStructurerWithRotation() {
 		wordList = new ArrayList<Word>();
-		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(this.getSVGRoot());
+		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(getSVGRoot());
 		textAnalyzer.setTextList(textList);
 		textStructurer = textAnalyzer.getTextStructurer();
 		if (textOrientation != null) {

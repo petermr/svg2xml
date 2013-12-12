@@ -62,6 +62,8 @@ public class GeometryBuilderTest {
 		List<SVGPolyline> polylineList = geometryBuilder.getRawPrimitives().getPolylineList();
 		List<SVGPath> pathList = geometryBuilder.getRawPrimitives().getPathList();
 		Assert.assertEquals("paths", 36, pathList.size());
+		File file = new File("target/");
+		file.mkdirs();
 		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
 		//Assert.assertEquals("shapes", 0, shapeList.size());
 		Assert.assertEquals("lines", 6, lineList.size());
