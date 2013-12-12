@@ -325,6 +325,4 @@ public class PageIO {
 		return imageMimeType ;
 	}
 
-
-
 }
