@@ -25,16 +25,23 @@ import org.xmlcml.svg2xml.Fixtures;
  * @author pm286
  *
  */
-@Ignore
-// FIXME _ think the raw material (rounded lines) causes problems and we should have simpler tests
+
+//FIXME think the raw material (rounded lines) causes problems and we should have simpler tests
 public class GeometryBuilderTest {
 
 	private final static Logger LOG = Logger.getLogger(GeometryBuilderTest.class);
 	public static final Angle MAX_ANGLE = new Angle(0.12, Units.RADIANS);
 	public static final Double MAX_WIDTH = 2.0;
 
+	@Test
+	public void testWords() {
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.IMAGE_2_11_SVG, "bloom-203-6-page3small.svg")));
+		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());
+		Assert.assertEquals("paths", 36, pathList.size());
+	}
 
 	@Test
+	@Ignore
 	public void testPaths() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
 				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
@@ -43,6 +50,7 @@ public class GeometryBuilderTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testShape() {
 		SVGElement svg = SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg"));
 		GeometryBuilder geometryBuilder = new GeometryBuilder(svg);

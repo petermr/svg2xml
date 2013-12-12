@@ -166,12 +166,12 @@ public class PageIO {
 	}
 	
 	String createPageRootWithHumanNumber() {
-		return PAGE+(machinePageNumber+1);
+		return PAGE + (machinePageNumber + 1);
 	}
 
 	public void setMachinePageNumber(int pageNumber) {
-		this.machinePageNumber = pageNumber;
-		this.setHumanPageNumber(machinePageNumber + 1);
+		machinePageNumber = pageNumber;
+		setHumanPageNumber(machinePageNumber + 1);
 	}
 
 	public void setSvgInPage(SVGSVG svgPage) {
@@ -206,12 +206,12 @@ public class PageIO {
 			try {
 				SVGUtil.debug(
 						finalSVGPage, new FileOutputStream(new File("target/"+pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
-			} catch (Exception e) {throw(new RuntimeException(e));}
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 	
-	/*
-	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(" whitespaceChunkList "+(whitespaceSVGChunkList == null ? null : whitespaceSVGChunkList.size())+"; ");
@@ -322,7 +322,7 @@ public class PageIO {
 	}
 
 	public String getImageMimeType() {
-		return this.imageMimeType ;
+		return imageMimeType ;
 	}
 
 

@@ -80,31 +80,34 @@ public class PDFAnalyzer {
 		pdfIo.setFileRoot(fileRoot);
 	}
 	
-	/** a main entry routine
-	 * 
-	 * if name ends with ".pdf" then treat as single file else directory
-	 * if name starts with "http://" treat as URL of single PDF file
-	 * 
-	 * first creates SVG, then analyzes them
+	/** 
+	 * A main entry routine
+	 * <p>
+	 * If name ends with ".pdf" then treat as single file else directory
+	 * <p>
+	 * If name starts with "http://" treat as URL of single PDF file
+	 * <p>
+	 * First creates SVGs, then analyzes them
 	 * 
 	 * @param name file or directory
 	 */
 	public void analyzePDFs(String name) {
 		if (name == null) {
-			throw new RuntimeException("file/s must not be null");
+			throw new RuntimeException("File/s must not be null");
 		} else if (name.endsWith(SVG2XMLConstantsX.DOT_PDF)) {
 			if (name.startsWith(PDFAnalyzerIO.HTTP)) {
-				this.analyzePDFURL(name);
+				analyzePDFURL(name);
 			} else {
-				this.analyzePDFFile(new File(name));
+				analyzePDFFile(new File(name));
 			}
 		} else {
 			File file = new File(name);
-			this.readFilenamesAndAnalyzePDFs(file);
+			readFilenamesAndAnalyzePDFs(file);
 		}
 	}
 
-	/** read filenames from file
+	/** 
+	 * Reads filenames from file
 	 * 
 	 * @param file
 	 */
@@ -289,28 +292,31 @@ public class PDFAnalyzer {
 	}
 
 	/**
-	mvn exec:java -Dexec.mainClass="org.xmlcml.svg2xml.analyzer.PDFAnalyzer" 
-	    -Dexec.args="src/test/resources/pdfs/bmc"
-		 * @param args
-		 */
-		public static void main(String[] args) {
-			if (args.length == 0) {
-				SYSOUT.println("PDFAnalyzer <inputFile(s)>");
-				SYSOUT.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
-						" -Dexec.args=\"src/test/resources/pdfs/bmc/1471-2180-11-174.pdf\"");
-				SYSOUT.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
-				SYSOUT.println("");
-				SYSOUT.println("input can be:");
-				SYSOUT.println("    (a) single PDF file as above (must end with \".pdf\")");
-				SYSOUT.println("    (b) directory containing one or more *.pdf");
-				SYSOUT.println("    (c) list of *.pdf files (relative to '.' or absolute)");
-				SYSOUT.println("    (d) URL (must start with http:// or https://) - NYI");
-				System.exit(0);
-			} else {
-				PDFAnalyzer analyzer = new PDFAnalyzer();
-				analyzer.analyzePDFs(args[0]); 
-			}
+	 * Example usage:
+	 * <p>
+	 * mvn exec:java -Dexec.mainClass="org.xmlcml.svg2xml.analyzer.PDFAnalyzer" 
+	 * -Dexec.args="src/test/resources/pdfs/bmc"
+	 *
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			SYSOUT.println("PDFAnalyzer <inputFile(s)>");
+			SYSOUT.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
+					" -Dexec.args=\"src/test/resources/pdfs/bmc/1471-2180-11-174.pdf\"");
+			SYSOUT.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
+			SYSOUT.println("");
+			SYSOUT.println("input can be:");
+			SYSOUT.println("    (a) single PDF file as above (must end with \".pdf\")");
+			SYSOUT.println("    (b) directory containing one or more *.pdf");
+			SYSOUT.println("    (c) list of *.pdf files (relative to '.' or absolute)");
+			SYSOUT.println("    (d) URL (must start with http:// or https://) - NYI");
+			System.exit(0);
+		} else {
+			PDFAnalyzer analyzer = new PDFAnalyzer();
+			analyzer.analyzePDFs(args[0]); 
 		}
+	}
 
 	public int getDecimalPlaces() {
 		return PageIO.DECIMAL_PLACES;

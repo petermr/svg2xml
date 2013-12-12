@@ -71,7 +71,7 @@ public class GeometryBuilder extends SimpleBuilder {
 	}
 	
 	private void init() {
-		this.textAnalyzer = new TextAnalyzer((PageAnalyzer) null);
+		textAnalyzer = new TextAnalyzer((PageAnalyzer) null);
 	}
 
 	public List<Word> getWordList() {
@@ -150,12 +150,8 @@ public class GeometryBuilder extends SimpleBuilder {
 	
 	@Override
 	protected void createJoinableList() {
-		List<Joinable> joinableList = JoinManager.makeJoinableList(higherPrimitives.getLineList());
-		joinableList.addAll(higherPrimitives.getTramLineList());
-
-		
-		
-		higherPrimitives.addJoinableList(joinableList);
+		super.createJoinableList();
+		//TODO words
 	}
 
 	/*public List<Junction> getRawJunctionList() {
