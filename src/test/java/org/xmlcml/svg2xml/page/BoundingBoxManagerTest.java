@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.tools;
+package org.xmlcml.svg2xml.page;
 
 import java.util.List;
 
