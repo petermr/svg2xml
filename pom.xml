@@ -127,7 +127,7 @@
 				<configuration>
 					<!-- Parallel running of test cases -->
 					<parallel>classes</parallel>
-					<useUnlimitedThreads>false</useUnlimitedThreads>
+					<threadCount>1</threadCount>
 				</configuration>
 			</plugin>
 
