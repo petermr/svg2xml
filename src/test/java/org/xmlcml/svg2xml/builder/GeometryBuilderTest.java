@@ -16,14 +16,6 @@ import org.xmlcml.graphics.svg.SVGPolygon;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.builder.JoinManager;
-import org.xmlcml.graphics.svg.builder.Joinable;
-import org.xmlcml.graphics.svg.builder.JoinableText;
-import org.xmlcml.graphics.svg.builder.Junction;
-import org.xmlcml.graphics.svg.builder.SimpleBuilder;
-import org.xmlcml.graphics.svg.builder.TramLine;
-import org.xmlcml.graphics.svg.builder.TramLineManager;
 import org.xmlcml.svg2xml.Fixtures;
 
 /** test reading molecules
