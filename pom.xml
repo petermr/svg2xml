@@ -61,7 +61,7 @@
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.xmlcml</groupId>
+			<groupId>org.xml-cml</groupId>
 			<artifactId>svgbuilder</artifactId>
 			<version>0.1-SNAPSHOT</version>
 
