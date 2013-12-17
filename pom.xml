@@ -41,27 +41,13 @@
 	</repositories>
 
 	<dependencies>
-		<!-- this shouldn't be needed - check transitive dependencies -->
-		<!--  
-		<dependency>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>euclid-dev</artifactId>
-			<version>1.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.xml-cml</groupId>
-			<artifactId>cmlxom</artifactId>
-			<version>3.2-SNAPSHOT</version>
-		</dependency>
-		-->
 		<dependency>
 			<groupId>org.xml-cml</groupId>
 			<artifactId>pdf2svg-dev</artifactId>
 			<version>0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.xmlcml</groupId>
+			<groupId>org.xml-cml</groupId>
 			<artifactId>svgbuilder</artifactId>
 			<version>0.1-SNAPSHOT</version>
 
@@ -106,40 +92,11 @@
 		</resources>
 
 		<plugins>
-			<!-- Use java 1.6 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.5.1</version>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-					<optimize>true</optimize>
-					<argLine>-Xmx1024m</argLine>
-					<meminitial>1024m</meminitial>
-					<maxmem>2024m</maxmem>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.5</version>
-				<configuration>
-					<argLine>-Xmx1024m </argLine>
-					<includes>
-						<include>**/*Test.*</include>
-					</includes>
-				</configuration>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<!-- Parallel running of test cases -->
-					<parallel>classes</parallel>
-					<useUnlimitedThreads>true</useUnlimitedThreads>
+					<threadCount>1</threadCount>
 				</configuration>
 			</plugin>
 

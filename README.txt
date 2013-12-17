@@ -50,7 +50,7 @@ This should create classes and a standalone jar
 
 ==Running==
 Current usage is still being developed: It is likely to be
-mvn -exec:java -Dexec.mainClass="org.xmlcml.svg2xml.analyzer.PDFAnalyzer"
+mvn exec:java -Dexec.mainClass="org.xmlcml.svg2xml.analyzer.PDFAnalyzer"
     -Dexec.args="<args>"
 or    
 java -jar svg2xml.jar <args>  //name of jar may have revno
