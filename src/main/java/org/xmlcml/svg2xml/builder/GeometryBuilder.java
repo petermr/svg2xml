@@ -73,9 +73,10 @@ public class GeometryBuilder extends SimpleBuilder {
 		return wordList;
 	}
 	
-	/** gets list of space-separated words.
-	 * 
-	 * should probably move elsewhere for more general use.
+	/** 
+	 * Gets list of space-separated words.
+	 * <p>
+	 * Should probably move elsewhere for more general use.
 	 * 
 	 * @return
 	 */

@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -49,20 +50,20 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPageAnalyzer8() {
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(TextFixtures.createSVG(TextFixtures.BMC_312MULT_8_SVG), null);
-//		PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
+		//PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
 		pageAnalyzer.splitChunksAndCreatePage();
-//		pageAnalyzer.analyze();
-//		List<AbstractContainer> containerList = pageAnalyzer.getPageAnalyzerContainerList();
-//		Assert.assertNotNull("containerList", containerList);
-//		for (AbstractContainer container : containerList) {
-//			LOG.trace(container.toString());
-//		}
+		/*pageAnalyzer.analyze();
+		List<AbstractContainer> containerList = pageAnalyzer.getPageAnalyzerContainerList();
+		Assert.assertNotNull("containerList", containerList);
+		for (AbstractContainer container : containerList) {
+			LOG.trace(container.toString());
+		}*/
 	}
 
 
 	@Before
 	public void createSVGFixtures() {
-//		PDFAnalyzer.createSVG(Fixtures.BMCINDIR, Fixtures.BMCSVGDIR, BMC_GEOTABLE);
+		//PDFAnalyzer.createSVG(Fixtures.BMCINDIR, Fixtures.BMCSVGDIR, BMC_GEOTABLE);
 	}
 	
 	@Test
@@ -205,10 +206,10 @@ public class PageAnalyzerTest {
 					actual);
 	}
 	
-	@Test
-	/** note this has wrongly elided 's'
-	 * 
+	/** 
+	 * Note this has wrongly elided 's'
 	 */
+	@Test
 	public void testPage2Html3_3() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.SVG_MULTIPLE_2_3_3_SVG);
 		LOG.trace(SVGElement.readAndCreateSVG(Fixtures.SVG_MULTIPLE_2_3_3_SVG).toXML());
@@ -221,10 +222,10 @@ public class PageAnalyzerTest {
 				actual);
 	}
 
-	@Test
-	/** note this has wrongly elided 's'
-	 * 
+	/** 
+	 * Note this has wrongly elided 's'
 	 */
+	@Test
 	public void testPage2Html3() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
@@ -295,9 +296,10 @@ public class PageAnalyzerTest {
 	}
 	
 	@Test
+	@Ignore
 	public void testSVGBug() {
 		SVGElement svgElement = SVGElement.readAndCreateSVG(new File("src/test/resources/svg/Shukla/page8.svg"));
-//		analyzeChunkInSVGPage((SVGElement) svgElement.getChildElements().get(5), "chunk", "src/test/resources/org/xmlcml/svg2xml/svg/Shukla/out", "results");
+		//analyzeChunkInSVGPage((SVGElement) svgElement.getChildElements().get(5), "chunk", "src/test/resources/org/xmlcml/svg2xml/svg/Shukla/out", "results");
 	}
 	
 	@Test
@@ -381,8 +383,6 @@ public class PageAnalyzerTest {
 		pageAnalyzer.writeFinalSVGPageToFinalDirectory();
 	}
 
-	
-
 	//================================================================
 	
 	//====================================================================
@@ -449,13 +449,11 @@ public class PageAnalyzerTest {
 					PDFAnalyzer analyzer = new PDFAnalyzer();
 					analyzer.setSVGTopDir(svgDir);
 					analyzer.setOutputTopDir(outDir);
-//					analyzer.setSkipFile(skipFile);
+					//analyzer.setSkipFile(skipFile);
 					analyzer.analyzePDFFile(file);
 				}
 			}
 		}
 	}
-	
-	
 
 }

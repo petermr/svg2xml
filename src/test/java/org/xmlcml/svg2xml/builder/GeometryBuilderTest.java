@@ -18,12 +18,12 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.svg2xml.Fixtures;
 
-/** test reading molecules
- * 
+/** 
+ * Test reading of molecules.
+ * <p>
  * Reads SVG and uses heuristics to create chemistry.
  * 
  * @author pm286
- *
  */
 
 //FIXME think the raw material (rounded lines) causes problems and we should have simpler tests
@@ -34,6 +34,7 @@ public class GeometryBuilderTest {
 	public static final Double MAX_WIDTH = 2.0;
 
 	@Test
+	@Ignore
 	public void testWords() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.IMAGE_2_11_SVG, "bloom-203-6-page3small.svg")));
 		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());

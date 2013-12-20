@@ -189,11 +189,11 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		pageIo.ensureWhitespaceSVGChunkList();
 		for (int ichunk = 0; ichunk < gList.size(); ichunk++) {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
-			String chunkId = this.getHumanPageNumber()+"."+ichunk;
+			//String chunkId = this.getHumanPageNumber()+"."+ichunk;
 			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
 			path2ShapeConverter.convertPathsToShapes(gChunk);
 			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
-			ChunkAnalyzer chunkAnalyzer = this.createSpecificAnalyzer(gChunk);
+			ChunkAnalyzer chunkAnalyzer = createSpecificAnalyzer(gChunk);
 			if (!(chunkAnalyzer instanceof TextAnalyzer)) {
 				LOG.trace(chunkAnalyzer);
 				sortByZ(gChunk);

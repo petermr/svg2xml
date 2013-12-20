@@ -26,20 +26,20 @@ import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
 import com.google.common.collect.Multimap;
 
-/** process a complete document.
- * 
- * may be called standalone or in an iteration from DocumentListAnalyzer
- * 
- * uses PDFAnalyzerIO as helper to manage the IO variables.
- * uses PDFAnalyzerOptions as helper to manage the processing options.
- * 
- * creates List<PageAnalyzer> as a result of processing all pages
- * 
- * intermediate results may be stored in directory created for each document.
- * collects conversion to HTML as  runningTextElement;
+/** 
+ * Process a complete document.
+ * <p>
+ * May be called standalone or in an iteration from DocumentListAnalyzer.
+ * <p>
+ * Uses PDFAnalyzerIO as helper to manage the IO variables. Uses PDFAnalyzerOptions as helper to manage the processing options.
+ * <p>
+ * Creates List&lt;PageAnalyzer&gt; as a result of processing all pages.
+ * <p>
+ * Intermediate results may be stored in directory created for each document.
+ * <p>
+ * Collects conversion to HTML as runningTextElement.
  * 
  * @author pm286
- *
  */
 
 public class PDFAnalyzer {
@@ -282,7 +282,6 @@ public class PDFAnalyzer {
 			LOG.debug("Skipping SVG");
 		}
 	}
-
 
 	private void ensurePDFIndex() {
 		if (pdfIndex == null) {

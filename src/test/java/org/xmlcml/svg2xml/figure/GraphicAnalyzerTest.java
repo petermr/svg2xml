@@ -24,7 +24,7 @@ public class GraphicAnalyzerTest {
 	
 	@Test
 	public void failingTestForFigureMargins() {
-		FigureGraphic f = new FigureGraphic(new FigureAnalyzer(new PageAnalyzer(SVGElement.readAndCreateSVG(Fixtures.FIGURE_PAGE_3_SVG))));
+		FigureGraphic f = new FigureGraphic(new FigureAnalyzer(new PageAnalyzer(Fixtures.FIGURE_PAGE_3_SVG)));
 		f.createImageFromComponents("target/margins.png");
 	}
 	
@@ -40,7 +40,6 @@ public class GraphicAnalyzerTest {
 		Assert.assertEquals("shapeList", 183, graphicAnalyzer.getShapeAnalyzer().getShapeList().size());
 		Assert.assertEquals("textList", 2168, graphicAnalyzer.getTextAnalyzer().getTextCharacters().size());
 	}
-	
 	
 	@Test
 	public void testTextOrientation() {
@@ -69,11 +68,12 @@ public class GraphicAnalyzerTest {
 		Assert.assertEquals("textListIrreg", 0, graphicAnalyzer.getRotIrregularTextAnalyzer().getTextCharacters().size());
 	}
 	
-	@Test
-	/** extracts all horizontal text.
-	 * 
+	/** 
+	 * Extracts all horizontal text.
+	 * <p>
 	 * Test probably fragile.
 	 */
+	@Test
 	public void testRot0Analyzer() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
 		TextAnalyzer textAnalyzer = graphicAnalyzer.getRot0TextAnalyzer();
@@ -87,11 +87,12 @@ public class GraphicAnalyzerTest {
 
 	}
 	
-	@Test
-	/** extracts all vertical text.
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Extracts all vertical text.
+	 * <p>
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testRotPi2Analyzer() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g", 2);
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, "target/page3pi2.svg", "target/page3pi2.html", "page3pi2",
@@ -100,11 +101,12 @@ public class GraphicAnalyzerTest {
 				" 'core Corvoidea'  Passer- Sylvi- Muscicap-oidea oidea oidea Passerida </div>"	);
 	}
 	
-	@Test
-	/** extracts all horizontal text.
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Extracts all horizontal text.
+	 * <p>
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testTreeGraphics() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.TREE_G_8_2_SVG,  "./svg:g");
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "target/tree.svg", "target/tree.html", "tree",
@@ -114,11 +116,10 @@ public class GraphicAnalyzerTest {
 				"  Hla M  Hpi M 100  Ssy L 99  Ssy M  Nle L 95  Nle M  Human L  Human M 0.005 </div>");
 	}
 	
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testMathsGraphics72() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_7_2_SVG,  "./svg:g");
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, "target/g72.svg", "target/g72.html", "html",
@@ -130,22 +131,20 @@ public class GraphicAnalyzerTest {
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Sampling  Diversif cation rate (r)  frequency </div>");
 	}
 	
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testMathsGraphicsPi2() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_7_2_SVG,  "./svg:g");
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, "target/g72pi2.svg", "target/g72pi2.html", "g72pi2",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Sampling  Diversif cation rate (r)  frequency </div>");
 	}
 	
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testHistogram() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.HISTOGRAM_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "histogram", 
@@ -161,22 +160,20 @@ public class GraphicAnalyzerTest {
 	}
 
 
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testXAxis() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.XAXIS_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "xaxis",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">0 2 4 6 8 10 12 14 Time (Myr) </div>");
 	}
 	
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testMultiple72() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MULTIPLE_G_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "multiple72",
@@ -185,11 +182,10 @@ public class GraphicAnalyzerTest {
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>Nucleotide diversity (</b> S <b>)  of L and M opsin genes (x 10</b> <sup><b>-2</b></sup> <b>)</b> </div>");
 	}
 	
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testMaths66() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_6_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "maths66",
@@ -198,11 +194,10 @@ public class GraphicAnalyzerTest {
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.51.01.52.0 </div>");
 	}
 	
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testMaths68() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_8_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "maths68",
@@ -211,11 +206,10 @@ public class GraphicAnalyzerTest {
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.40.60.81.01.21.4 0.40.60.81.01.21.4 Extinction rate ( μ ) </div>");
 		}
 	
-	@Test
-	/** .
-	 * 
-	 * Test probably fragile as Html method may develop.
+	/** 
+	 * Test probably fragile as HTML method may develop.
 	 */
+	@Test
 	public void testMultiple92() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MULTIPLE_G_9_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "multiple92",
@@ -224,11 +218,10 @@ public class GraphicAnalyzerTest {
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\" />");
 	}
 	
-	@Test
-	/** .
-	 * 
+	/** 
 	 * Single Double axis plot
 	 */
+	@Test
 	public void testScatterplotRed() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOTRED_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "scatterplotred",
@@ -239,13 +232,12 @@ public class GraphicAnalyzerTest {
 	}
 	
 	
-	@Test
-	/** .
-	 * 
+	/** 
 	 * Single Double axis plot with more types of point
-	 * 
-	 * This has corrupted greek letters
+	 * <p>
+	 * This has corrupted Greek letters
 	 */
+	@Test
 	public void testMulticolourScatterplot() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOT_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "scatterplot",
@@ -254,15 +246,14 @@ public class GraphicAnalyzerTest {
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>dN of </b> Ε <b><i>-tub </i></b> </div>");
 	}
 	
-	@Test
-	/** .
-	 * 
+	/** 
 	 * Five Double axis plot with more types of point
-	 * 
+	 * <p>
 	 * The results are not intuitive as they are sorted by Y so read across the page
-	 * 
-	 * This has corrupted greek letters
+	 * <p>
+	 * This has corrupted Greek letters
 	 */
+	@Test
 	public void test5Scatterplots() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "scatterplot5",
@@ -279,8 +270,8 @@ public class GraphicAnalyzerTest {
 				" <b>p-distance of intron within </b> <b><i>EF-1</i></b> Δ <sup>null</sup> <p /><b>dS of </b> Ε <b><i>-tub </i></b> </div>");
 	}
 	
+	//=============================================
 	
-	// =============================================
 	private static void testSVGandHTML(GraphicAnalyzer graphicAnalyzer, TextOrientation textOrientation, 
 			String svgFilename, String htmlFilename, String assertMsg, String refHtml) {
 		Assert.assertNotNull("non-null graphicsAnalyzer", graphicAnalyzer);
@@ -292,8 +283,5 @@ public class GraphicAnalyzerTest {
 			Assert.assertEquals(assertMsg, refHtml, htmlElement.toXML());
 		}
 	}
-
-
-
 
 }
