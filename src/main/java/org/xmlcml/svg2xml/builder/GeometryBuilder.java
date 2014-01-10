@@ -144,13 +144,13 @@ public class GeometryBuilder extends SimpleBuilder {
 		return pathList;
 	}
 
-	public List<Junction> getRawJunctionList() {
-		return higherPrimitives == null ? null : higherPrimitives.getRawJunctionList();
-	}
-
-	public List<Junction> getMergedJunctionList() {
-		return higherPrimitives == null ? null : higherPrimitives.getMergedJunctionList();
-	}
+//	public List<Junction> getRawJunctionList() {
+//		return higherPrimitives == null ? null : higherPrimitives.getRawJunctionList();
+//	}
+//
+//	public List<Junction> getMergedJunctionList() {
+//		return higherPrimitives == null ? null : higherPrimitives.getMergedJunctionList();
+//	}
 
 	public List<SVGPolygon> getPolygonList() {
 		return rawPrimitives.getPolygonList();

@@ -42,37 +42,37 @@ public class GeometryBuilderTest {
 		Assert.assertEquals("paths", 36, pathList.size());
 	}
 	
-	@Test
-	public void testShape() {
-		SVGElement svg = SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg"));
-		GeometryBuilder geometryBuilder = new GeometryBuilder(svg);
-		geometryBuilder.extractPlotComponents();
-		List<SVGPolygon> polygonList = geometryBuilder.getPolygonList();
-		List<SVGLine> lineList = geometryBuilder.getSingleLineList();
-		List<SVGShape> shapeList = geometryBuilder.getCurrentShapeList();
-		List<SVGPolyline> polylineList = geometryBuilder.getPolylineList();
-		List<SVGPath> pathList = geometryBuilder.getPathList();
-		Assert.assertEquals("paths", 36, pathList.size());
-		File file = new File("target/");
-		file.mkdirs();
-		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
-		Assert.assertEquals("shapes", 0, shapeList.size());
-		Assert.assertEquals("lines", 6, lineList.size());
-		for (SVGLine line : lineList) {
-			LOG.debug("line: "+line);
-		}
-		Assert.assertEquals("polylines", 19, polylineList.size());
-		for (SVGPolyline polyline : polylineList) {
-			polyline.format(2);
-			LOG.debug("polyLine: "+polyline.size()+" "+polyline.getBoundingBox().getXRange().getRange()+"/"+polyline.getBoundingBox().getYRange().getRange());
-		}
-		System.out.println();
-		Assert.assertEquals("polygons", 11, polygonList.size());
-		for (SVGPolygon polygon : polygonList) {
-			polygon.format(2);
-			LOG.debug("polygon: "+polygon.size()+" "+polygon.getBoundingBox().getXRange().getRange()+"/"+polygon.getBoundingBox().getYRange().getRange());
-		}
-	}
+//	@Test
+//	public void testShape() {
+//		SVGElement svg = SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg"));
+//		GeometryBuilder geometryBuilder = new GeometryBuilder(svg);
+//		geometryBuilder.extractPlotComponents();
+//		List<SVGPolygon> polygonList = geometryBuilder.getPolygonList();
+//		List<SVGLine> lineList = geometryBuilder.getSingleLineList();
+//		List<SVGShape> shapeList = geometryBuilder.getCurrentShapeList();
+//		List<SVGPolyline> polylineList = geometryBuilder.getPolylineList();
+//		List<SVGPath> pathList = geometryBuilder.getPathList();
+//		Assert.assertEquals("paths", 36, pathList.size());
+//		File file = new File("target/");
+//		file.mkdirs();
+//		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
+//		Assert.assertEquals("shapes", 0, shapeList.size());
+//		Assert.assertEquals("lines", 6, lineList.size());
+//		for (SVGLine line : lineList) {
+//			LOG.debug("line: "+line);
+//		}
+//		Assert.assertEquals("polylines", 19, polylineList.size());
+//		for (SVGPolyline polyline : polylineList) {
+//			polyline.format(2);
+//			LOG.debug("polyLine: "+polyline.size()+" "+polyline.getBoundingBox().getXRange().getRange()+"/"+polyline.getBoundingBox().getYRange().getRange());
+//		}
+//		System.out.println();
+//		Assert.assertEquals("polygons", 11, polygonList.size());
+//		for (SVGPolygon polygon : polygonList) {
+//			polygon.format(2);
+//			LOG.debug("polygon: "+polygon.size()+" "+polygon.getBoundingBox().getXRange().getRange()+"/"+polygon.getBoundingBox().getYRange().getRange());
+//		}
+//	}
 
 	
 
