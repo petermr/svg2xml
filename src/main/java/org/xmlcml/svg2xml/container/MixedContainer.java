@@ -95,11 +95,11 @@ public class MixedContainer extends AbstractContainer {
 	@Override
 	public HtmlElement createHtmlElement() {
 		return super.createFigureHtmlElement();
-//		HtmlDiv divElement = new HtmlDiv();
-//		HtmlP p = new HtmlP();
-//		p.appendChild("DIV NYI");
-//		divElement.appendChild(p);
-//		return divElement;
+		//HtmlDiv divElement = new HtmlDiv();
+		//HtmlP p = new HtmlP();
+		//p.appendChild("DIV NYI");
+		//divElement.appendChild(p);
+		//return divElement;
 	}
 	
 	@Override

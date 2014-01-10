@@ -42,7 +42,6 @@ public class GeometryBuilderTest {
 	}
 
 	@Test
-	@Ignore
 	public void testPaths() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
 				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));

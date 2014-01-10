@@ -14,7 +14,6 @@ import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.RawWords;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.Word;
-import org.xmlcml.svgbuilder.geom.Junction;
 import org.xmlcml.svgbuilder.geom.SimpleBuilder;
 
 /**
@@ -143,13 +142,13 @@ public class GeometryBuilder extends SimpleBuilder {
 		return pathList;
 	}
 	
-	@Override
+	/*@Override
 	protected void createJoinableList() {
 		super.createJoinableList();
 		//TODO words
 	}
 
-	/*public List<Junction> getRawJunctionList() {
+	public List<Junction> getRawJunctionList() {
 		return higherPrimitives == null ? null : higherPrimitives.getRawJunctionList();
 	}
 
