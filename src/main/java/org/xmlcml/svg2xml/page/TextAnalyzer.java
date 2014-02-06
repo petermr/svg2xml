@@ -27,14 +27,15 @@ import org.xmlcml.svg2xml.text.TextStructurer;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 
-/** attempts to assemble characters into meaningful text
+/** 
+ * Attempts to assemble characters into meaningful text
  * 
  * @author pm286
- *
  */
 public class TextAnalyzer extends ChunkAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(TextAnalyzer.class);
+	
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
@@ -64,7 +65,6 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	
 	public static Double TEXT_EPS = 1.0;
 
-
 	private TextLine rawCharacterList;
 	private Map<Integer, TextLine> characterByXCoordMap;
 	private SVGElement svgParent;
@@ -77,7 +77,9 @@ public class TextAnalyzer extends ChunkAnalyzer {
     private TextAnalyzer rot3Pi2TextAnalyzer = null;
     private TextAnalyzer rotIrregularTextAnalyzer = null;
 	
-	/** refactored container */
+	/** 
+	 * Refactored container 
+	 * */
 	private TextStructurer textStructurer;
 	
 	public TextAnalyzer(PageAnalyzer pageAnalyzer) {
@@ -260,7 +262,8 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		this.textStructurer = textStructurer;
 	}
 
-	/** counter is container counter
+	/** 
+	 * Counter is container counter
 	 * 
 	 * @param analyzerX
 	 * @param suffix

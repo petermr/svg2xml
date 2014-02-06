@@ -83,12 +83,12 @@ public class MixedContainer extends AbstractContainer {
 			textAnalyzerX = new TextAnalyzer(pageAnalyzer);
 			textAnalyzerX.setTextList(characterList);
 			List<TextLine> textLineList = getTextAnalyzer().getTextLines();
-			textStructurer = new TextStructurer((TextAnalyzer)null);
+			textStructurer = new TextStructurer((TextAnalyzer) null);
 			textStructurer.setTextLines(textLineList);
 			List<ScriptLine> scriptList = textStructurer.getScriptedLineList();
 			scriptContainer = new ScriptContainer(pageAnalyzer);
 			scriptContainer.add(scriptList);
-			this.add(scriptContainer);
+			add(scriptContainer);
 		}
 	}
 

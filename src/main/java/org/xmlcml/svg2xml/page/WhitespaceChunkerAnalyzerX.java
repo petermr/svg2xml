@@ -19,27 +19,29 @@ import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.paths.Chunk;
 
 /**
- * page-oriented
- * 
- * slices the page up into chunks using continuous whitespace. 
+ * Page-oriented.
+ * <p>
+ * Slices the page up into chunks using continuous whitespace. 
  * Can then recurse. Most obvious strategy is:
- * 1 slice Y (i.e. horizontal borders)
- * 2 slice X on results of 1
- * 3 slice Y on results of 2
+ * <ul>
+ * <li>1 slice Y (i.e. horizontal borders)</li>
+ * <li>2 slice X on results of 1</li>
+ * <li>3 slice Y on results of 2</li>
+ * </ul>
+ * Determine types of chunk after this and apply different strategies.
+ * <p>
+ * Analyze(control) is the only meaningful public routine and by default will analyze:
+ * <ul>
+ * <li>Text</li>
+ * <li>Paths (transforming to rect, line, polyline, circle)</li>
+ * <li>Figures</li>
+ * <li>Tables</li>
+ * </ul>
+ * Each of these has a special analyzer (TextAnalyzer, etc.).
+ * <p>
+ * PageChunkSplitter communicates upwards through currentPage.
  * 
- * determine types of chunk after this and apply different strategies
- * 
- * analyze(control) is the only meaningful public routine and by default will analyze
- * * text
- * * paths (transforming to rect, line, polyline, circle)
- * * figures
- * * tables
- * 
- * each of these has a special analyzer (TextAnalyzer, etc.)
- * 
- * pageChunkSplitter communicates upwards through currentPage
  * @author pm286
- *
  */
 public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	private static final Logger LOG = Logger.getLogger(WhitespaceChunkerAnalyzerX.class);
@@ -127,7 +129,8 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 		}
 	}
 
-	/** splits topChunk into subchunks (altering topChunk)
+	/** 
+	 * Splits topChunk into subchunks (altering topChunk)
 	 * 
 	 * @param topChunk
 	 * @return
@@ -135,13 +138,13 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	// FIXME add variable levels
 	public List<Chunk> splitByWhitespace(SVGElement elementToBeChunked) {
 		Chunk topChunk = new Chunk(elementToBeChunked);
-//		topChunk.debug("PRE"+topChunk.getParent());
+		//topChunk.debug("PRE"+topChunk.getParent());
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
-		LOG.trace("descendants0: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
+		LOG.trace("descendants0: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis() - time0));
 		topChunk.setBoundingBoxCacheForSelfAndDescendants(true);
-		LOG.trace("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis()-time0));
-//		pageEditorX.getSVGPage().appendChild(topChunk);
+		LOG.trace("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis() - time0));
+		//pageEditorX.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
 		LOG.trace(String.valueOf(splitterParams.get(0).width)+"; "+String.valueOf(splitterParams.get(1).width)+"; "+String.valueOf(splitterParams.get(2).width)+"; ");
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
@@ -157,7 +160,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 			}
 		}
 		removeEmptyChunks(topChunk);
-//		topChunk.debug("TOP");
+		//topChunk.debug("TOP");
 		removeChildren(elementToBeChunked);
 		moveChildrenFromChunkToElement(elementToBeChunked, topChunk);
 		return subSubSubChunkList;

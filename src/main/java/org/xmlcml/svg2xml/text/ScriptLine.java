@@ -18,13 +18,14 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-/** holds one or more TextLines in a chunk
- * bounding boxes of textLines overlap
+/** 
+ * Holds one or more TextLines in a chunk
+ * <p>
+ * Bounding boxes of textLines overlap
+ * 
  * @author pm286
- *
  */
 public class ScriptLine implements Iterable<TextLine> {
-
 
 	private final static Logger LOG = Logger.getLogger(ScriptLine.class);
 	
@@ -35,10 +36,10 @@ public class ScriptLine implements Iterable<TextLine> {
 	public static final String SUP = "sup";
 	public static final String SUSCRIPT = "suscript";
 
-//	private static final Double SPACEFACTOR = 0.12;// 
-	// FIXME
-//	private static final Double SPACEFACTOR = TextLine.DEFAULT_SPACE_FACTOR;
-	// space appears to be ca .29 * fontSize so take half this
+	//private static final Double SPACEFACTOR = 0.12;// 
+	//FIXME
+	//private static final Double SPACEFACTOR = TextLine.DEFAULT_SPACE_FACTOR;
+	//space appears to be ca .29 * fontSize so take half this
 	private static final Double SPACEFACTOR = 0.15; 
 	public static final String TERM = "  %%%%\n";
 
@@ -47,7 +48,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	private static final Double RIGHT_INDENT_MIN = 5.;
 	
 	protected List<TextLine> textLineList = null;
-	private TextStructurer textStructurer;
+	protected TextStructurer textStructurer;
 	private int largestLine;
 	private StyleSpans styleSpans;
 	private String textContentWithSpaces;
@@ -77,7 +78,8 @@ public class ScriptLine implements Iterable<TextLine> {
 		return textLineList.get(i);
 	}
 
-	/** generate ScriptLines by splitting into groups based around the commonest font size
+	/** 
+	 * Generate ScriptLines by splitting into groups based around the commonest font size
 	 * 
 	 * @param textStructurer
 	 * @return
@@ -92,7 +94,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			Integer groupStart = 0;
 			Double lastY = null;
 			for (int serial = 0; serial < textLineList.size(); serial++) {
-				TextLine textLine = this.get(serial);
+				TextLine textLine = get(serial);
 				Double currentY = textLine.getYCoord();
 				if (textStructurer.isCommonestFontSize(textLine)) {
 					if (lastCommonestFontSizeSerial != null) {
@@ -102,7 +104,7 @@ public class ScriptLine implements Iterable<TextLine> {
 							packageAsGroup(groupStart, lastCommonestFontSizeSerial, splitArray);
 							groupStart = serial;
 						} else if (delta == 2) {
-							TextLine midLine = this.textLineList.get(serial - 1);
+							TextLine midLine = textLineList.get(serial - 1);
 							Double midY = midLine.getYCoord();
 							if (midY == null || lastY == null || currentY == null) {
 								LOG.trace("null "+midY+" / "+currentY + " / "+lastY);
@@ -116,7 +118,7 @@ public class ScriptLine implements Iterable<TextLine> {
 						} else if (delta == 3) {
 							// assume subscript and then superscript
 							packageAsGroup(groupStart, serial - 2, splitArray);
-							groupStart = serial-1;
+							groupStart = serial - 1;
 						} else {
 							reportErrorOrMaths(splitArray);
 						}
@@ -129,9 +131,9 @@ public class ScriptLine implements Iterable<TextLine> {
 					lastCommonestFontSizeSerial = serial;
 					lastY = textLineList.get(serial).getYCoord();
 					// last line of group?
-					if (serial == textLineList.size()-1) {
-						packageAsGroup(groupStart, serial, splitArray);
-					}
+				}
+				if (serial == textLineList.size() - 1) {
+					packageAsGroup(groupStart, serial, splitArray);
 				}
 			}
 		}
@@ -174,15 +176,15 @@ public class ScriptLine implements Iterable<TextLine> {
 	
 	public String summaryString() {
 		StringBuilder sb = new StringBuilder("");
-		List<ScriptWord> scriptWordList = this.getScriptWordList();
+		List<ScriptWord> scriptWordList = getScriptWordList();
 		int i = 0;
 		for (ScriptWord word : scriptWordList) {
 			if (i++ > 0 ) sb.append(" ");
 			sb.append(word.summaryString());
 		}
-//		for (TextLine textLine : textLineList) {
-//			sb.append(SVG2XMLUtil.trimText(30, textLine.getSpacedLineString())+"");
-//		}
+		/*for (TextLine textLine : textLineList) {
+			sb.append(SVG2XMLUtil.trimText(30, textLine.getSpacedLineString())+"");
+		}*/
 		sb.append("\n");
 		return sb.toString();
 	}
@@ -198,15 +200,14 @@ public class ScriptLine implements Iterable<TextLine> {
 		return sb.toString();
 	}
 	
-	
 	public List<TextLine> createSuscriptTextLineList() {
 		List<TextLine> outputTextLineList = null;
 		TextLine superscript = null;
 		TextLine middleLine = null;
 		TextLine subscript = null;
-		if (this.textLineList.size() == 1) {
+		if (textLineList.size() == 1) {
 			middleLine = textLineList.get(0);
-		} else if (this.textLineList.size() == 2) {
+		} else if (textLineList.size() == 2) {
 			TextLine text0 = textLineList.get(0);
 			TextLine text1 = textLineList.get(1);
 			if (!textStructurer.isCommonestFontSize(text0) && !textStructurer.isCommonestFontSize(text1)) {
@@ -265,11 +266,13 @@ public class ScriptLine implements Iterable<TextLine> {
 		return outputTextLineList;
 	}
 
-	/** NYI */
+	/** 
+	 * NYI 
+	 */
 	private ScriptLine reportErrorOrMathsSuscript() {
 		LOG.trace("Suscript problem: Maths or table? "+textLineList.size());
 		ScriptLine group = new ScriptLine(textStructurer);
-//	    splitArray.add(group);
+		//splitArray.add(group);
 
 		for (TextLine textLine : textLineList) {
 			LOG.trace("text "+textLine);
@@ -279,7 +282,7 @@ public class ScriptLine implements Iterable<TextLine> {
 	
 	private ScriptLine reportErrorOrMaths(List<ScriptLine> splitArray) {
 		LOG.trace("Maths or table? "+textLineList.size());
-//		TextLineGroup group = new TextLineGroup();
+		//TextLineGroup group = new TextLineGroup();
 		ScriptLine group = null;
 	    splitArray.add(group);
 	    splitArray.add(null);
@@ -290,7 +293,8 @@ public class ScriptLine implements Iterable<TextLine> {
 		return group;
 	}
 	
-	/** preparation for HTML
+	/** 
+	 * Preparation for HTML
 	 * 
 	 * @return
 	 */
@@ -300,11 +304,11 @@ public class ScriptLine implements Iterable<TextLine> {
 			textLineList.add(null);
 			return textLineList;
 		}
-		List<SVGText> middleChars = middleLine == null ? null : middleLine.getCharacterList();
+		List<SVGText> middleChars = (middleLine == null ? null : middleLine.getCharacterList());
 		Integer thisIndex = 0;
-		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.getCharacterList();
+		List<SVGText> superChars = (superscript == null ? new ArrayList<SVGText>() : superscript.getCharacterList());
 		Integer superIndex = 0;
-		List<SVGText> subChars = (subscript == null) ? new ArrayList<SVGText>() : subscript.getCharacterList();
+		List<SVGText> subChars = (subscript == null ? new ArrayList<SVGText>() : subscript.getCharacterList());
 		Integer subIndex = 0;
 		TextLine textLine = null;
 		while (true) {
@@ -342,7 +346,7 @@ public class ScriptLine implements Iterable<TextLine> {
 
 	public HtmlElement createHtmlElement() {
 		if (htmlElement == null) {
-			List<TextLine> lineList = this.createSuscriptTextLineList();
+			List<TextLine> lineList = createSuscriptTextLineList();
 			htmlElement = TextLine.createHtmlElement(lineList);
 			SVG2XMLUtil.removeStyles(htmlElement);
 		}
@@ -389,16 +393,27 @@ public class ScriptLine implements Iterable<TextLine> {
 		String s = getLargestLine().toString();
 		return s.substring(0, Math.min(20, s.length()));
 	}
+	
+	public String toUnderscoreAndCaretString() {
+		List<TextLine> parts = createSuscriptTextLineList();
+		String result = "";
+		for (TextLine part : parts) {
+			String character = "";
+			if (part.getSuscript() == Suscript.SUB) {
+				character = "_";
+			} else if (part.getSuscript() == Suscript.SUP) {
+				character = "^";
+			}
+			result = result + character + part.getLineContent() + character;
+		}
+		return result;
+	}
 
-	/** currently only used in PDFIndex - is it required?
-	 * 
-	 * @return
-	 */
 	public List<ScriptWord> getScriptWordList() {
 		List<ScriptWord> scriptWordList = new ArrayList<ScriptWord>();
-		RealRangeArray rangeArray = this.getWordRangeArray();
+		RealRangeArray rangeArray = getWordRangeArray();
 		LOG.trace("WA "+rangeArray);
-		List<SVGText> characters = this.getSVGTextCharacters();
+		List<SVGText> characters = getSVGTextCharacters();
 		int rangeCounter = 0;
 		int nlines = textLineList.size();
 		IntArray lineCounterArray = new IntArray(nlines);
@@ -406,14 +421,14 @@ public class ScriptLine implements Iterable<TextLine> {
 		ScriptWord word = null;
 		while (true) {
 			SVGText character = null;
-			RealRange currentRange = (rangeCounter >= rangeArray.size()) ? null : rangeArray.get(rangeCounter);
+			RealRange currentRange = (rangeCounter >= rangeArray.size() ? null : rangeArray.get(rangeCounter));
 			Double lowestX = 9999999.;
 			Integer lowestLine = null;
 			SVGText lowestCharacter = null;
 			for (int iline = 0; iline < textLineList.size(); iline++) {
 				TextLine textLine = textLineList.get(iline);
 				int lineCounter = lineCounterArray.elementAt(iline);
-				character = (lineCounter >= textLine.size()) ? null : textLine.get(lineCounter);
+				character = (lineCounter >= textLine.size() ? null : textLine.get(lineCounter));
 				if (character != null) {
 					double x = character.getX();
 					if (x < lowestX) {
@@ -423,7 +438,7 @@ public class ScriptLine implements Iterable<TextLine> {
 					}
 				}
 			}
-			LOG.trace((lowestCharacter == null) ? "null" : "["+lowestCharacter.getValue()+"_"+lowestCharacter.getX()+"/"+lowestX+"/"+lowestLine);
+			LOG.trace((lowestCharacter == null ? "null" : "[" + lowestCharacter.getValue() + "_"+lowestCharacter.getX() + "/"+lowestX + "/"+lowestLine));
 			if (currentRange == null || lowestX <= currentRange.getMax()) {
 				if (word == null) {
 					word = new ScriptWord(nlines);
@@ -432,28 +447,31 @@ public class ScriptLine implements Iterable<TextLine> {
 				if (character == null) {
 					break;
 				}
-				word.add(character, lowestLine);
+				word.add(lowestCharacter, lowestLine);
 				lineCounterArray.incrementElementAt(lowestLine);
 			} else {
 				word = null;
 				rangeCounter++;
-				currentRange = (rangeCounter >= rangeArray.size()) ? null : rangeArray.get(rangeCounter);
+				currentRange = (rangeCounter >= rangeArray.size() ? null : rangeArray.get(rangeCounter));
 			}
-			if (lowestLine == null && character == null) break;
+			if (lowestLine == null && character == null) {
+				break;
+			}
 		}
 		return scriptWordList;
 	}
 
 	public RealRangeArray getWordRangeArray() {
-		Double fontSize = this.getMeanFontSize();
+		Double fontSize = getMeanFontSize();
 		if (fontSize == null) {
 			fontSize = 8.0; // just in case
 		}
 		RealRangeArray wordRangeArray = new RealRangeArray();
-		List<SVGText> characters = this.getSVGTextCharacters();
+		List<SVGText> characters = getSVGTextCharacters();
 		for (SVGText character : characters) {
 			wordRangeArray.add(character.getBoundingBox().getXRange());
 		}
+		wordRangeArray.sort();
 		wordRangeArray.extendRangesBy(X_CHARACTER_TOL);
 		wordRangeArray.sortAndRemoveOverlapping();
 		return wordRangeArray;
@@ -476,7 +494,7 @@ public class ScriptLine implements Iterable<TextLine> {
 			Stack<SVGText> characterStack = new Stack<SVGText>();
 			characterStackList.add(characterStack);
 			TextLine textLine = textLineList.get(i);
-			for (int j = textLine.size()-1; j >= 0; j--) {
+			for (int j = textLine.size() - 1; j >= 0; j--) {
 				SVGText character = textLine.get(j);
 				characterStack.push(character);
 			}
@@ -507,20 +525,22 @@ public class ScriptLine implements Iterable<TextLine> {
 	}
 
 	// FIXME move to StyleSpanContainer
-	/** creates spans whenever any of the following change
-	 * bold
-	 * italic
-	 * fontSize
-	 * yCoord
-	 * fontName
-	 * stroke
+	/** 
+	 * Creates spans whenever any of the following change:
+	 * <p>
+	 * Bold, 
+	 * italic, 
+	 * fontSize, 
+	 * yCoord, 
+	 * fontName, 
+	 * stroke, 
 	 * fill
 	 * @return
 	 */
 	public StyleSpans getStyleSpans() {
 		if (styleSpans == null) {
 			styleSpans = new StyleSpans();
-	//		List<SVGText> characters = getSVGTextCharacters();
+			//List<SVGText> characters = getSVGTextCharacters();
 			List<SVGText> characters = getSortedCharacters();
 			StyleSpan currentSpan = null;
 			boolean inBold = false;

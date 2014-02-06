@@ -12,14 +12,13 @@ import org.xmlcml.euclid.Util;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-/** a list of Words.
+/** 
+ * A list of Words.
  * 
  * Normally a subcomponent of TextLine. RawWords are the initial list of words.
  * They may or may not turn into Phrases.
  * 
- * 
  * @author pm286
- *
  */
 public class RawWords implements Iterable<Word> {
 
@@ -55,7 +54,7 @@ public class RawWords implements Iterable<Word> {
 	public RealArray getInterWordWhitePixels() {
 		RealArray separationArray = new RealArray();
 		for (int i = 1; i < wordList.size(); i++) {
-			Word word0 = wordList.get(i-1);
+			Word word0 = wordList.get(i - 1);
 			Word word = wordList.get(i);
 			double separation = Util.format(word0.getSeparationBetween(word), 3);
 			separationArray.addElement(separation);
@@ -66,7 +65,7 @@ public class RawWords implements Iterable<Word> {
 	public RealArray getInterWordWhiteEnSpaces() {
 		RealArray spaceCountArray = new RealArray();
 		for (int i = 1; i < wordList.size(); i++) {
-			Word word0 = wordList.get(i-1);
+			Word word0 = wordList.get(i - 1);
 			Word word = wordList.get(i);
 			double spaceCount = Util.format(word0.getSpaceCountBetween(word), 3);
 			spaceCountArray.addElement(spaceCount);
@@ -108,7 +107,8 @@ public class RawWords implements Iterable<Word> {
 		return wordList.get(wordList.size() - 1);
 	}
 	
-	/** start of first word.
+	/** 
+	 * Start of first word.
 	 * 
 	 * @return
 	 */
@@ -116,7 +116,8 @@ public class RawWords implements Iterable<Word> {
 		return get(0).getStartX();
 	}
 	
-	/** middle coordinate (average of startX and endX. 
+	/** 
+	 * Middle coordinate (average of startX and endX). 
 .	 * 
 	 * @return
 	 */
@@ -124,7 +125,8 @@ public class RawWords implements Iterable<Word> {
 		return (getStartX() + getEndX()) / 2.;
 	}
 	
-	/** end of last word.
+	/** 
+	 * End of last word.
 	 * 
 	 * @return
 	 */
@@ -132,7 +134,8 @@ public class RawWords implements Iterable<Word> {
 		return getLastWord().getEndX();
 	}
 
-	/** start of first word.
+	/** 
+	 * Start of first word.
 	 * 
 	 * @return
 	 */
@@ -140,8 +143,9 @@ public class RawWords implements Iterable<Word> {
 		return wordList.get(0).getStartX();
 	}
 	
-	/** translates words into integers if possible.
-
+	/** 
+	 * Translates words into integers if possible.
+	 * 
 	 * @return null if translation impossible
 	 */
 	public IntArray translateToIntArray() {
@@ -157,9 +161,10 @@ public class RawWords implements Iterable<Word> {
 		return intArray;
 	}
 
-	/** translates words into numbers if possible.
-
-	 * doesn't yet deal with superscripts.
+	/** 
+	 * Translates words into numbers if possible.
+	 * <p>
+	 * Doesn't yet deal with superscripts.
 	 * 
 	 * @return null if translation impossible
 	 */
@@ -176,12 +181,11 @@ public class RawWords implements Iterable<Word> {
 		return realArray;
 	}
 
-	/** some PDFs have explicit space characters, which are eliminated.
-	 * 
+	/** 
+	 * Some PDFs have explicit space characters, which are eliminated.
 	 * <p>
 	 * Multiple spaces are treated as single. Hopefully we'll deal with 
 	 * multiple spaces later if they matter.
-	 * </p>
 	 * 
 	 * @return new RawWords 
 	 */

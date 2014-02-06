@@ -11,16 +11,15 @@ import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Util;
 
-/** a list of Words.
+/** 
+ * A list of Words.
  * 
  * Normally a subcomponent of TextLine. Phrases are separated by large whitespace (Blank)
  * (more than normal inter-word spacing which is normally 1). A Phrase normally contains
  * a list of Words. There are no implied linguistic semantics (a Phrase could be several
  * numbers).
  * 
- * 
  * @author pm286
- *
  */
 public class Phrase  extends LineChunk implements Iterable<Word> {
 	
@@ -29,7 +28,7 @@ public class Phrase  extends LineChunk implements Iterable<Word> {
 	private List<Word> wordList;
 
 	public Phrase() {
-		this.wordList = new ArrayList<Word>();
+		wordList = new ArrayList<Word>();
 	}
 
 	public void add(Word word) {
@@ -63,7 +62,7 @@ public class Phrase  extends LineChunk implements Iterable<Word> {
 	public RealArray getInterWordWhiteEnSpaces() {
 		RealArray spaceCountArray = new RealArray();
 		for (int i = 1; i < wordList.size(); i++) {
-			Word word0 = wordList.get(i-1);
+			Word word0 = wordList.get(i - 1);
 			Word word = wordList.get(i);
 			double spaceCount = Util.format(word0.getSpaceCountBetween(word), 3);
 			spaceCountArray.addElement(spaceCount);

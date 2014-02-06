@@ -175,11 +175,11 @@ public class PageIO {
 	}
 
 	public void setSvgInPage(SVGSVG svgPage) {
-		this.rawSVGPage = svgPage;
+		rawSVGPage = svgPage;
 	}
 
 	public void setSvgOutPage(SVGSVG svgPage) {
-		this.finalSVGPage= svgPage;
+		finalSVGPage= svgPage;
 	}
 
 	public void ensureWhitespaceSVGChunkList() {

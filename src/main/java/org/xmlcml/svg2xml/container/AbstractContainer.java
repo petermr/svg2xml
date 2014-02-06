@@ -116,12 +116,12 @@ public abstract class AbstractContainer {
 	
 	private void ensureContainerList() {
 		if (containerList == null) {
-			this.containerList = new ArrayList<AbstractContainer>();
+			containerList = new ArrayList<AbstractContainer>();
 		}
 	}
 	
 	public void add(AbstractContainer abstractContainer) {
-		this.ensureContainerList();
+		ensureContainerList();
 		containerList.add(abstractContainer);
 	}
 	
@@ -238,12 +238,12 @@ public abstract class AbstractContainer {
 		}
 		if (figureNumber != null) {
 			type = ContainerType.FIGURE;
-			LOG.trace("Figure: "+figureNumber+" "+this.getClass());
+			LOG.trace("Figure: "+figureNumber+" "+getClass());
 			figureElement = processFigure();
 		}
 		if (type == null) {
-			Real2Range r2r = this.svgChunk.getBoundingBox();
-			RealRange yRange = r2r == null ? null : r2r.getYRange();
+			Real2Range r2r = svgChunk.getBoundingBox();
+			RealRange yRange = (r2r == null ? null : r2r.getYRange());
 			if (yRange != null) {
 				if (yRange.getMax() < HEADER_MAX) {
 					type = ContainerType.HEADER;
@@ -363,15 +363,15 @@ public abstract class AbstractContainer {
 	}
 	
 	public ChunkAnalyzer getChunkAnalyzer() {
-		return this.chunkAnalyzer;
+		return chunkAnalyzer;
 	}
 
 	protected HtmlElement createFigureHtmlElement() {
 		htmlElement = null;
 		if (svgChunk != null) {
-			this.createNewHtmlElement();
+			createNewHtmlElement();
 			ChunkId chunkId = getChunkId();
-			String id = chunkId == null ? String.valueOf(System.currentTimeMillis()) : chunkId.toString();
+			String id = (chunkId == null ? String.valueOf(System.currentTimeMillis()) : chunkId.toString());
 			String imageName = pageAnalyzer.getPageIO().createImageFilename(id);
 			String svgName = pageAnalyzer.getPageIO().createSvgFilename(id);
 			HtmlDiv div = FigureGraphic.createHtmlImgDivElement(imageName, "20%");

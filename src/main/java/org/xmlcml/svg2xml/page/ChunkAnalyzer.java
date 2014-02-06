@@ -54,7 +54,7 @@ public abstract class ChunkAnalyzer {
 	}
 
 	public List<AbstractContainer> createContainers() {
-		throw new RuntimeException("Override for: "+this.getClass());
+		throw new RuntimeException("Override for: "+getClass());
 	}
 
 	protected void ensureAbstractContainerList() {

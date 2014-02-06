@@ -169,7 +169,7 @@ public abstract class FigureComponent {
 
 	public void setSVGContainer(SVGG svgContainer) {
 		this.svgContainer = svgContainer;
-		boundingBox = svgContainer == null ? null : svgContainer.getBoundingBox();
+		boundingBox = (svgContainer == null ? null : svgContainer.getBoundingBox());
 	}
 
 

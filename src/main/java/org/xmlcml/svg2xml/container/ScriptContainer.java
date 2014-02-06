@@ -100,7 +100,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 				htmlElement.setId(svgChunk.getId());
 				boundingBox = svgChunk.getBoundingBox();
 			}
-			RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
+			RealRange xRange = (boundingBox == null ? null : boundingBox.getXRange());
 			ScriptLine lastLine = null;
 			for (ScriptLine scriptLine : scriptLineList) {
 				if (scriptLine != null) {

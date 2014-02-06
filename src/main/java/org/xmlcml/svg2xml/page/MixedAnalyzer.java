@@ -64,14 +64,14 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	
 	public List<SVGShape> getShapeList() {
 		if (shapeList == null) {
-			shapeList = (shapeAnalyzer == null) ? null : shapeAnalyzer.getShapeList();
+			shapeList = (shapeAnalyzer == null ? null : shapeAnalyzer.getShapeList());
 		}
 		return shapeList;
 	}
 	
 	public List<SVGText> getTextList() {
 		if (textList == null) {
-			textList = (textAnalyzer == null) ? null : textAnalyzer.getTextCharacters();
+			textList = (textAnalyzer == null ? null : textAnalyzer.getTextCharacters());
 		}
 		return textList;
 	}
@@ -283,13 +283,13 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	@Override
 	public List<AbstractContainer> createContainers() {
 		MixedContainer mixedContainer = new MixedContainer(pageAnalyzer);
-		if (this.removeFrameBoxFromShapeList()) {
+		if (removeFrameBoxFromShapeList()) {
 			mixedContainer.setBox(true);
 		}
-		mixedContainer.setChunkId(this.getChunkId());
-		mixedContainer.addImageList(this.getImageList());
-		mixedContainer.addShapeList(this.getShapeList());
-		mixedContainer.addTextList(this.getTextList());
+		mixedContainer.setChunkId(getChunkId());
+		mixedContainer.addImageList(getImageList());
+		mixedContainer.addShapeList(getShapeList());
+		mixedContainer.addTextList(getTextList());
 		ensureAbstractContainerList();
 		abstractContainerList.add(mixedContainer);
 		return abstractContainerList;

@@ -186,7 +186,9 @@ public class PDFAnalyzerIO {
 
 	public void outputFiles(PDFAnalyzerOptions options) {
 		for (PageAnalyzer pageAnalyzer : pdfAnalyzer.getPageAnalyzerList()) {
-			if (options.summarize) pageAnalyzer.summaryContainers();
+			if (options.summarize) {
+				pageAnalyzer.summaryContainers();
+			}
 			if (options.outputChunks) {
 				pageAnalyzer.outputChunks();
 			}
