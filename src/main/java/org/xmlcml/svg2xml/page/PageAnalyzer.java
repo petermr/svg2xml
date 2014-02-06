@@ -208,14 +208,14 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	private void sortByZ(SVGG gChunk) {
-		Map<Integer, SVGElement> elementByZMap = new HashMap<Integer, SVGElement>();
-		List<SVGElement> childElements =SVGUtil.getQuerySVGElements(gChunk, "./*");
+		Map<Double, SVGElement> elementByZMap = new HashMap<Double, SVGElement>();
+		List<SVGElement> childElements = SVGUtil.getQuerySVGElements(gChunk, "./*");
 		LOG.trace("child: "+childElements.size());
-		List<Integer> rawList = new ArrayList<Integer>();
+		List<Double> rawList = new ArrayList<Double>();
 		for (SVGElement svgElement : childElements) {
 			Attribute attribute = SVGUtil.getSVGXAttributeAttribute(svgElement, SVG2XMLConstantsX.Z);
 			if (attribute != null) {
-				Integer z = new Integer(attribute.getValue());
+				Double z = new Double(attribute.getValue());
 				elementByZMap.put(z, svgElement);
 				rawList.add(z);
 			}
@@ -226,13 +226,13 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		//}
 	}
 
-	private void detachChildrenAndReplaceInZOrder(SVGG gChunk, Map<Integer, SVGElement> elementByZMap,
-			List<SVGElement> childElements, List<Integer> rawList) {
+	private void detachChildrenAndReplaceInZOrder(SVGG gChunk, Map<Double, SVGElement> elementByZMap,
+			List<SVGElement> childElements, List<Double> rawList) {
 		for (SVGElement childElement : childElements) {
 			childElement.detach();
 		}
 		Collections.sort(rawList);
-		for (Integer z : rawList) {
+		for (Double z : rawList) {
 			//System.out.print(z+" ");
 			gChunk.appendChild(elementByZMap.get(z));
 		}
@@ -264,19 +264,19 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		List<SVGImage> imageList = SVGImage.extractSelfAndDescendantImages(gChunk);
 		LOG.trace("text: "+textList.size()+" shapeList: "+shapeList.size()+" imageList: "+imageList.size());
 		String id = gChunk.getId();
-		ChunkId chunkId = id == null ? null : new ChunkId(id);
+		ChunkId chunkId = (id == null ? null : new ChunkId(id));
 		if (textList.size() != 0 && (shapeList.size() == 0 && imageList.size() == 0)) {
 			analyzer = new TextAnalyzer(textList, this);
 		} else if (shapeList.size() != 0 && (textList.size() == 0 && imageList.size() == 0)) {			
-			analyzer = this.createShapeAnalyzer(shapeList);
+			analyzer = createShapeAnalyzer(shapeList);
 		} else if (imageList.size() != 0 && (textList.size() == 0 && shapeList.size() == 0)) {
-			analyzer = this.createImageAnalyzer(imageList);
+			analyzer = createImageAnalyzer(imageList);
 		} else {
 			analyzer = new MixedAnalyzer(this);
 			ChunkAnalyzer childAnalyzer = null;
 			MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) analyzer;
 			if (imageList.size() != 0) {
-				childAnalyzer = this.createImageAnalyzer(imageList);
+				childAnalyzer = createImageAnalyzer(imageList);
 				mixedAnalyzer.add(childAnalyzer);
 				childAnalyzer.setChunkId(chunkId, 1);
 			}
@@ -286,7 +286,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				childAnalyzer.setChunkId(chunkId, 2);
 			}
 			if (shapeList.size() != 0) {
-				childAnalyzer = this.createShapeAnalyzer(shapeList);
+				childAnalyzer = createShapeAnalyzer(shapeList);
 				mixedAnalyzer.add(childAnalyzer);
 				childAnalyzer.setChunkId(chunkId, 3);
 			}
@@ -735,7 +735,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	public void outputHtmlRunningText() {
-		HtmlElement div = this.createRunningHtml();
+		HtmlElement div = createRunningHtml();
 		div.setId(String.valueOf(pageIo.getHumanPageNumber()));
 		SYSOUT.print("<"+div.getId()+">");
 		File file = PageIO.createHtmlFile(pageIo.getFinalSVGDocumentDir(), ContainerType.TEXT, div.getId());
