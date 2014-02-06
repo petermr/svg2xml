@@ -6,21 +6,23 @@ import java.util.List;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 
-/** a word in a ScriptLine
+/** 
+ * A word in a ScriptLine
  * 
  * @author pm286
- *
  */
 public class ScriptWord extends ScriptLine {
 	
 	private List<String> characterList;
 
 	public ScriptWord(int nLines) {
-		super(new TextStructurer((TextAnalyzer)null));
+		super(new TextStructurer((TextAnalyzer) null));
 		textLineList = new ArrayList<TextLine>();
 		for (int i = 0; i < nLines; i++) {
 			textLineList.add(new TextLine());
 		}
+		textStructurer.setTextLines(textLineList);
+		textStructurer.setTextCharacters(new ArrayList<SVGText>());
 	}
 	
 	public void add(SVGText character, int line) {
@@ -29,6 +31,7 @@ public class ScriptWord extends ScriptLine {
 			textLineList.get(line).add(character);
 		}
 		characterList.add(character.getText());
+		textStructurer.getTextList().add(character);
 	}
 	
 	private void ensureCharacterList() {

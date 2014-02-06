@@ -40,20 +40,20 @@ import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 
-/** holds text lines in order
+/** 
+ * Holds text lines in order
  * to simplify TextAnalyzer
  * 
  * @author pm286
- *
  */
 public class TextStructurer {
 
 	private static final Logger LOG = Logger.getLogger(TextStructurer.class);
 
-	/** used for splitting between lineGroups
+	/** 
+	 * Used for splitting between lineGroups
 	 * 
 	 * @author pm286
-	 *
 	 */
 	public enum Splitter {
 		BOLD,
@@ -63,7 +63,9 @@ public class TextStructurer {
 	
 	Pattern NUMBER_ITEM_PATTERN = Pattern.compile("^\\s*[\\[\\(]?\\s*(\\d+)\\s*\\.?[\\]\\)]?\\.?\\s*.*");
 	
-	/** default ratio for "isLargerThan" */
+	/** 
+	 * Default ratio for "isLargerThan"
+	 * */
 	public static final double LARGER_FONT_SIZE_RATIO = 1.02;
 
 	private static final double Y_EPS = 0.5; // line can wobble 
@@ -110,8 +112,11 @@ public class TextStructurer {
 		this(new TextAnalyzer((List<SVGText>) null, (PageAnalyzer) null));
 	}
 	
-	/** this COPIES the lines in the textAnalyzer
-	 * this may not be a good idea
+	/** 
+	 * This COPIES the lines in the textAnalyzer
+	 * <p>
+	 * This may not be a good idea
+	 * <p>
 	 * @param textAnalyzer to copy lines from
 	 */
 	public TextStructurer(TextAnalyzer textAnalyzer) {
@@ -125,11 +130,11 @@ public class TextStructurer {
 	}
 
 	public TextStructurer(List<SVGText> textList) {
-		this(new TextAnalyzer(textList, (PageAnalyzer)null));
+		this(new TextAnalyzer(textList, (PageAnalyzer) null));
 	}
 
 	private void transformIfNotHorizontalOrientation() {
-		this.textOrientation = textAnalyzer.getTextOrientation();
+		textOrientation = textAnalyzer.getTextOrientation();
 		if (!TextOrientation.ANY.equals(textOrientation) && 
 			!TextOrientation.ROT_0.equals(textOrientation) &&
 			rawCharacters.size() > 0) {
@@ -150,8 +155,6 @@ public class TextStructurer {
 	public SVGSVG getDebugSVG() {
 		return SVGUtil.createSVGSVG(rawCharacters);
 	}
-
-
 	
 	public static TextStructurer createTextStructurer(File svgFile) {
 		return createTextStructurer(svgFile, null);
@@ -190,7 +193,7 @@ public class TextStructurer {
 	}
 	
 	public Integer getSerialNumber(TextLine textLine) {
-		return (textLineSerialMap == null) ? null : textLineSerialMap.get(textLine);
+		return (textLineSerialMap == null ? null : textLineSerialMap.get(textLine));
 	}
 	
 
@@ -224,8 +227,6 @@ public class TextStructurer {
 			}
 		}
 	}
-
-
 	
 	public Set<TextCoordinate> getFontSizeContainerSet() {
 		Set<TextCoordinate> fontSizeContainerSet = new HashSet<TextCoordinate>();
@@ -310,8 +311,8 @@ public class TextStructurer {
 		Map<Double, Integer> fontCountMap = new HashMap<Double, Integer>();
 		for (TextLine textLine : textLineList) {
 			Double fontSize = textLine.getFontSize();
-			Integer ntext = textLine.getCharacterList().size();
 			if (fontSize != null) {
+				Integer ntext = textLine.getCharacterList().size();
 				Integer sum = fontCountMap.get(fontSize);
 				if (sum == null) {
 					sum = ntext;
@@ -526,12 +527,14 @@ public class TextStructurer {
 		return textLineCoordinateArray;
 	}
 
-	/** finds maximum indent of lines
-	 * must be at least 2 lines
-	 * currently does not check for capitals, etc.
-	 * 
+	/** 
+	 * Finds maximum indent of lines
+	 * <p>
+	 * Must be at least 2 lines
+	 * <p>
+	 * Currently does not check for capitals, etc.
 	 */
-	public Double getMaxiumumRightIndent() {
+	public Double getMaximumRightIndent() {
 		Double indent = null;
 		Double xRight = null;
 		if (textLineList != null && textLineList.size() > 1) {
@@ -548,6 +551,20 @@ public class TextStructurer {
 			}
 		}
 		return indent;
+	}
+
+	/** 
+	 * Finds maximum indent of lines
+	 * <p>
+	 * Must be at least 2 lines
+	 * <p>
+	 * Currently does not check for capitals, etc.
+	 * 
+	 * @deprecated use getMaximumRightIndent()
+	 */
+	@Deprecated
+	public Double getMaxiumumRightIndent() {
+		return getMaximumRightIndent();
 	}
 
 	public TextLineSet getTextLineSetByFontSize(double fontSize) {
@@ -570,8 +587,8 @@ public class TextStructurer {
 	public List<TextLine> getCommonestFontSizeTextLineList() {
 		if (commonestFontSizeTextLineList == null) {
 			TextCoordinate commonestFontSize = getCommonestFontSize();
-			Double commonestFontSizeValue = (commonestFontSize == null) ?
-					null : commonestFontSize.getDouble();
+			Double commonestFontSizeValue = (commonestFontSize == null ?
+					null : commonestFontSize.getDouble());
 			commonestFontSizeTextLineList = new ArrayList<TextLine>();
 			for (TextLine textLine : textLineList) {
 				Double fontSize = textLine.getCommonestFontSize();
@@ -606,8 +623,8 @@ public class TextStructurer {
 		LOG.trace("ScriptedLineList "+scriptedLineList.size());
 		return scriptedLineList;
 	}
-
-	public List<Real2Range> getTextLineChunkBoxesAndInitialiScriptLineList() {
+	
+	public List<Real2Range> getTextLineChunkBoxesAndInitialScriptLineList() {
 		if (textLineChunkBoxes == null) {
 			List<TextLine> textLineList = getLinesInIncreasingY();
 			textLineList = mergeLinesWithSameY(textLineList, Y_EPS);
@@ -641,12 +658,19 @@ public class TextStructurer {
 		return textLineChunkBoxes;
 	}
 
+	/**
+	 * @deprecated Use getTextLineChunkBoxesAndInitialScriptLineList().
+	 */
+	public List<Real2Range> getTextLineChunkBoxesAndInitialiScriptLineList() {
+		return getTextLineChunkBoxesAndInitialScriptLineList();
+	}
+
 	private List<TextLine> mergeLinesWithSameY(List<TextLine> textLineList, Double yEps) {
 		List<TextLine> newTextLineList = new ArrayList<TextLine>();
 		TextLine lastTextLine = null;
 		Double lastY = null;
 		for (TextLine textLine : textLineList) {
-			Double y = (textLine == null) ? null : textLine.getYCoord();
+			Double y = (textLine == null ? null : textLine.getYCoord());
 			// lines with same Y?
 			if (lastTextLine != null && Real.isEqual(lastY, y, yEps)) {
 				lastTextLine.merge(textLine);
@@ -687,7 +711,7 @@ public class TextStructurer {
 
 	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, TextAnalyzer textAnalyzer) {
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
-		textStructurer.createLinesSortedInXThenY(textCharacters, textAnalyzer);
+		//textStructurer.createLinesSortedInXThenY(textCharacters, textAnalyzer);
 		return textStructurer;
 	}
 
@@ -697,9 +721,9 @@ public class TextStructurer {
 		for (TextLine textLine : textLineList) {
 			LOG.trace("TL "+textLine);
 		}
-//		if (false) {
-//			textAnalyzer.setTextCharacters(textCharacters);
-//		}
+		/*if (false) {
+			textAnalyzer.setTextCharacters(textCharacters);
+		}*/
 		textAnalyzer.setTextStructurer(this);
 	}
 	
@@ -723,15 +747,17 @@ public class TextStructurer {
 	}
 
 	private void ensureTextAnalyzer() {
-		if (this.textAnalyzer == null) {
-			this.textAnalyzer = new TextAnalyzer((PageAnalyzer)null);
+		if (textAnalyzer == null) {
+			textAnalyzer = new TextAnalyzer((PageAnalyzer) null);
 		}
 	}
 
-	/** finds maximum indent of lines
-	 * must be at least 2 lines
-	 * currently does not check for capitals, etc.
-	 * 
+	/** 
+	 * Finds maximum indent of lines
+	 * <p>
+	 * Must be at least 2 lines
+	 * <p>
+	 * Currently does not check for capitals, etc.
 	 */
 	public Double getMaximumLeftIndentForLargestFont() {
 		Double indent = null;
@@ -756,10 +782,12 @@ public class TextStructurer {
 		return indent;
 	}
 
-	/** finds maximum indent of lines
-	 * must be at least 2 lines
-	 * currently does not check for capitals, etc.
-	 * 
+	/** 
+	 * Finds maximum indent of lines
+	 * <p>
+	 * Must be at least 2 lines
+	 * <p>
+	 * Currently does not check for capitals, etc.
 	 */
 	public static Double getMaximumLeftIndent(List<TextLine> textLineList) {
 		Double indent = null;
@@ -795,37 +823,37 @@ public class TextStructurer {
 			return textAnalyzer;
 	}
 
-//	private static void mergeParas(HtmlP pCurrent, HtmlP pNext) {
-//		Elements currentChildren = pCurrent.getChildElements();
-//		if (currentChildren.size() > 0) {
-//			HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
-//			HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
-//			Elements nextChildren = pNext.getChildElements();
-//			HtmlElement firstNext = nextChildren.size() == 0 ? null : (HtmlElement) nextChildren.get(0);
-//			HtmlSpan nextFirstSpan = (firstNext != null && firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
-//			int nextCounter = 0;
-//			// merge texts
-//			if (currentLastSpan != null && nextFirstSpan != null) {
-//				String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
-//				LOG.trace("Merged "+mergedText);
-//				lastCurrent.setValue(mergedText);
-//				nextCounter = 1;
-//			}
-//			//merge next line's children
-//			for (int i = nextCounter; i < nextChildren.size(); i++) {
-//				pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
-//			}
-//		}
-//	}
+	/*private static void mergeParas(HtmlP pCurrent, HtmlP pNext) {
+		Elements currentChildren = pCurrent.getChildElements();
+		if (currentChildren.size() > 0) {
+			HtmlElement lastCurrent = (HtmlElement) currentChildren.get(currentChildren.size() - 1);
+			HtmlSpan currentLastSpan = (lastCurrent instanceof HtmlSpan) ? (HtmlSpan) lastCurrent : null;
+			Elements nextChildren = pNext.getChildElements();
+			HtmlElement firstNext = nextChildren.size() == 0 ? null : (HtmlElement) nextChildren.get(0);
+			HtmlSpan nextFirstSpan = (firstNext != null && firstNext instanceof HtmlSpan) ? (HtmlSpan) firstNext : null;
+			int nextCounter = 0;
+			// merge texts
+			if (currentLastSpan != null && nextFirstSpan != null) {
+				String mergedText = mergeLineText(currentLastSpan.getValue(), nextFirstSpan.getValue());
+				LOG.trace("Merged "+mergedText);
+				lastCurrent.setValue(mergedText);
+				nextCounter = 1;
+			}
+			//merge next line's children
+			for (int i = nextCounter; i < nextChildren.size(); i++) {
+				pCurrent.appendChild(HtmlElement.create(nextChildren.get(i)));
+			}
+		}
+	}
 
-//	private static String mergeLineText(String last, String next) {
-//		//merge hyphen minus
-//		if (last.endsWith("-")) {
-//			return last.substring(0, last.length()-1) + next;
-//		} else {
-//			return last + " " + next;
-//		}
-//	}
+	private static String mergeLineText(String last, String next) {
+		//merge hyphen minus
+		if (last.endsWith("-")) {
+			return last.substring(0, last.length()-1) + next;
+		} else {
+			return last + " " + next;
+		}
+	}*/
 
 	public boolean endsWithRaggedLine() {
 		return createdHtmlElement != null &&
@@ -862,12 +890,12 @@ public class TextStructurer {
 	}
 
 	public boolean isCommonestFontSize(TextLine textLine) {
-		this.getCommonestFontSizeTextLineList();
+		getCommonestFontSizeTextLineList();
 		return textLine != null && commonestFontSizeTextLineList.contains(textLine);
 	}
 
 	public boolean isCommonestFontSize(ScriptLine textLineGroup) {
-		this.getCommonestFontSizeTextLineList();
+		getCommonestFontSizeTextLineList();
 		TextLine largestLine = textLineGroup.getLargestLine();
 		return textLineGroup != null && commonestFontSizeTextLineList.contains(largestLine);
 	}
@@ -891,8 +919,11 @@ public class TextStructurer {
 	}
 
 	
-	/** split after line where font size changes to/from bigger than commonest
-	 * dangerous if there are sub or superscripts (use splitGroupBiggerThanCommonest)
+	/** 
+	 * Split after line where font size changes to / from bigger than commonest
+	 * <p>
+	 * Dangerous if there are sub- or superscripts (use splitGroupBiggerThanCommonest)
+	 * 
 	 * @return
 	 */
 	public IntArray splitBiggerThanCommonest() {
@@ -919,7 +950,8 @@ public class TextStructurer {
 	}
 
 	
-	/** split after textLineGroup where font size changes to/from bigger than commonest
+	/** 
+	 * Split after textLineGroup where font size changes to / from bigger than commonest
 	 * 
 	 * @return
 	 */
@@ -947,9 +979,12 @@ public class TextStructurer {
 		return splitArray;
 	}
 
-	/** split the textStructurer after the lines in array.
-	 * if null or size() == 0, returns list with 'this'. so a returned list of size 0
+	/** 
+	 * Split the textStructurer after the lines in array.
+	 * <p>
+	 * If null or size() == 0, returns list with 'this', so a returned list of size 0
 	 * effectively does nothing
+	 * 
 	 * @param afterLineGroups if null or size() == 0, returns list with 'this';
 	 * @return
 	 */
@@ -1008,8 +1043,11 @@ public class TextStructurer {
 		throw new RuntimeException("Unknown splitter: "+splitter);
 	}
 
-	/** splits bold line(s) from succeeeding ones.
-	 * may trap smaller headers - must catch this later
+	/** 
+	 * Splits bold line(s) from succeeding ones.
+	 * <p>
+	 * May trap smaller headers - must catch this later
+	 * 
 	 * @return
 	 */
 	public List<TextStructurer> splitOnFontBoldChange(int maxFlip) {
@@ -1018,7 +1056,9 @@ public class TextStructurer {
 		return splitIntoList(splitter);
 	}
 	
-	/** splits line(s) on fontSize.
+	/** 
+	 * Splits line(s) on fontSize.
+	 * 
 	 * @return
 	 */
 	public List<TextStructurer> splitOnFontSizeChange(int maxFlip) {
@@ -1026,7 +1066,9 @@ public class TextStructurer {
 		return splitIntoList(splitter);
 	}
 
-	/** splits line(s) on fontFamily.
+	/** 
+	 * Splits line(s) on fontFamily.
+	 * 
 	 * @return
 	 */
 	public List<TextStructurer> splitOnFontFamilyChange(int maxFlip) {
@@ -1034,7 +1076,9 @@ public class TextStructurer {
 		return splitIntoList(splitter);
 	}
 
-	/** splits line(s) on fontSize.
+	/** 
+	 * Splits line(s) on fontSize.
+	 * 
 	 * @return
 	 */
 	public IntArray getSplitArrayForFontWeightChange(int maxFlip) {
@@ -1063,7 +1107,9 @@ public class TextStructurer {
 	}
 	
 	
-	/** splits line(s) on fontSize.
+	/** 
+	 * Splits line(s) on fontSize.
+	 * 
 	 * @return
 	 */
 	public IntArray getSplitArrayForFontSizeChange(int maxFlip) {
@@ -1087,7 +1133,9 @@ public class TextStructurer {
 		return splitArray;
 	}
 	
-	/** splits line(s) on fontSize.
+	/** 
+	 * Splits line(s) on fontSize.
+	 * 
 	 * @return
 	 */
 	public IntArray getSplitArrayForFontFamilyChange(int maxFlip) {
@@ -1103,7 +1151,9 @@ public class TextStructurer {
 				} else if (!fontFamily.equals(currentFontFamily)) {
 					splitArray.addElement(i - 1);
 					currentFontFamily = fontFamily;
-					if (nFlip++ >= maxFlip) break;
+					if (nFlip++ >= maxFlip) {
+						break;
+					}
 				}
 			}
 		}
@@ -1113,7 +1163,7 @@ public class TextStructurer {
 	private List<TextStructurer> splitIntoList(IntArray splitter) {
 		List<TextStructurer> splitList = null;
 		if (splitter != null && splitter.size() != 0) {
-			splitList = this.splitLineGroupsAfter(splitter);
+			splitList = splitLineGroupsAfter(splitter);
 		}  else {
 			splitList = new ArrayList<TextStructurer>();
 			splitList.add(this);
@@ -1121,40 +1171,41 @@ public class TextStructurer {
 		return splitList;
 	}
 
-//	private SVGG oldCreateSVGGChunk() {
-//		SVGG g = new SVGG();
-//		for (TextLine textLine : textLineList) {
-//			for (SVGText text : textLine) {
-//				g.appendChild(new SVGText(text));
-//			}
-//		}
-//		return g;
-//	}
+	/*private SVGG oldCreateSVGGChunk() {
+		SVGG g = new SVGG();
+		for (TextLine textLine : textLineList) {
+			for (SVGText text : textLine) {
+				g.appendChild(new SVGText(text));
+			}
+		}
+		return g;
+	}*/
 
-//	/** attempts to split into numbered list by line starts.
-//	 * 
-//	 * @return
-//	 */
-//	private List<TextStructurer> splitNumberedList() {
-//		getScriptedLineList();
-//		List<TextStructurer> splitLineGroups = new ArrayList<TextStructurer>();
-//		int last = 0;
-//		for (int i = 0; i < scriptedLineList.size(); i++) {
-//			ScriptLine tlg = scriptedLineList.get(i);
-//			String value = tlg.getRawValue();
-//			LOG.trace(value);
-//			Matcher matcher = NUMBER_ITEM_PATTERN.matcher(value);
-//			if (matcher.matches()) {
-//				Integer serial = Integer.parseInt(matcher.group(1));
-//				LOG.trace(">> "+serial);
-//				addTextLineGroups(splitLineGroups, last, i);
-//				last = i;
-//				LOG.trace("split: "+i);
-//			}
-//		}
-//		addTextLineGroups(splitLineGroups, last, scriptedLineList.size());
-//		return splitLineGroups;
-//	}
+	/* 
+	 * Attempts to split into numbered list by line starts.
+	 * 
+	 * @return
+	 */
+	/*private List<TextStructurer> splitNumberedList() {
+		getScriptedLineList();
+		List<TextStructurer> splitLineGroups = new ArrayList<TextStructurer>();
+		int last = 0;
+		for (int i = 0; i < scriptedLineList.size(); i++) {
+			ScriptLine tlg = scriptedLineList.get(i);
+			String value = tlg.getRawValue();
+			LOG.trace(value);
+			Matcher matcher = NUMBER_ITEM_PATTERN.matcher(value);
+			if (matcher.matches()) {
+				Integer serial = Integer.parseInt(matcher.group(1));
+				LOG.trace(">> "+serial);
+				addTextLineGroups(splitLineGroups, last, i);
+				last = i;
+				LOG.trace("split: "+i);
+			}
+		}
+		addTextLineGroups(splitLineGroups, last, scriptedLineList.size());
+		return splitLineGroups;
+	}*/
 
 	private void addTextLineGroups(List<TextStructurer> splitLineGroups, int last, int next) {
 		if (next > last) {
@@ -1241,8 +1292,8 @@ public class TextStructurer {
 		return sb.toString();
 	}
 
-	/** detach every character in rawCharacters.
-	 * 
+	/** 
+	 * Detach every character in rawCharacters.
 	 */
 	public void detachCharacters() {
 		for (SVGText character : rawCharacters) {
@@ -1250,8 +1301,8 @@ public class TextStructurer {
 		}
 	}
 
-	/** create list of Phrases from textLines
-	 * 
+	/** 
+	 * Create list of Phrases from textLines
 	 */
 	public List<RawWords> createRawWordsList() {
 		if (rawWordsList == null) {
@@ -1284,9 +1335,10 @@ public class TextStructurer {
 		return null;
 	}
 
-	/** convenience method for reading a page and extracting a line.
-	 * 
-	 * <p>Perhaps mainly used in test.</p>
+	/** 
+	 * Convenience method for reading a page and extracting a line.
+	 * <p>
+	 * Perhaps mainly used in test.
 	 * 
 	 * @param svgFile
 	 * @return
@@ -1299,12 +1351,20 @@ public class TextStructurer {
 		return textLines.get(lineNumber);
 	}
 
-//	public void setTextList(List<SVGText> textList) {
-//		this.textList = textList;
-//	}
-//
+	/*public void setTextList(List<SVGText> textList) {
+		this.textList = textList;
+	}*/
+	
+	public List<SVGText> getTextList() {
+		getTextAnalyzer();
+		if (textAnalyzer != null) {
+			return textAnalyzer.getTextCharacters();	
+		}
+		return null;
+	}
+	
 	public void setTextCharacters(List<SVGText> textList) {
-		this.getTextAnalyzer();
+		getTextAnalyzer();
 		if (textAnalyzer != null) {
 			textAnalyzer.setTextList(textList);	
 		}

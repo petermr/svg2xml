@@ -4,6 +4,8 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -38,12 +40,12 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
 
-/** holds a list of characters, normally in a horizontal line
- * 
- * exclusively used by TextAnalyzer
+/** 
+ * Holds a list of characters, normally in a horizontal line
+ * <p>
+ * Exclusively used by TextAnalyzer
  * 
  * @author pm286
- *
  */
 public class TextLine implements Iterable<SVGText> {
 
@@ -118,10 +120,8 @@ public class TextLine implements Iterable<SVGText> {
 		textList.addAll(texts);
 	}
 
-	/**
-	 * 
-	 */
 	public TextLine() {
+		
 	}
 
 	public static List<TextLine> createSortedTextLineList(Element el) {
@@ -132,8 +132,8 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	/**
-	 * split the list into smaller lists whenever there is a change
-	 * in fontSize, physicalStyle or yCoord. This is heuristic and may need finer tuning
+	 * Splits the list into smaller lists whenever there is a change
+	 * in fontSize, physicalStyle or yCoord. This is a heuristic and may need finer tuning.
 	 * 
 	 * @return
 	 */
@@ -146,9 +146,7 @@ public class TextLine implements Iterable<SVGText> {
 				SVGText text = textList.get(i);
 				Double fontSize = text.getFontSize();
 				LOG.trace("fontSize "+fontSize);
-				if (i == 0 
-//						|| LineAttributesHaveChanged(lastFontSize, lastYCoord, lastPhysicalStyle, fontSize, yCoord, physicalStyle)
-					) {
+				if (i == 0) {//|| LineAttributesHaveChanged(lastFontSize, lastYCoord, lastPhysicalStyle, fontSize, yCoord, physicalStyle)) {
 					charList = new TextLine(this.textAnalyzerX);
 					getSubLines().add(charList);
 				}
@@ -168,15 +166,15 @@ public class TextLine implements Iterable<SVGText> {
 	}
 
 	private void normalize() {
-		this.getFontSize();
-		this.getYCoord();
-		this.getLineContent();
-//		LOG.trace("words "+((wordSequence == null) ? "null" :  wordSequence.size()));
+		getFontSize();
+		getYCoord();
+		getLineContent();
+		//LOG.trace("words "+((wordSequence == null) ? "null" :  wordSequence.size()));
 	}
 	
-	/** returns the common value of fontSize or null
+	/** 
+	 * Returns the common value of fontSize or null
 	 * if there is any variation
-	 * 
 	 */
 	public Double getFontSize() {
 		Double fs = null;
@@ -192,9 +190,9 @@ public class TextLine implements Iterable<SVGText> {
 		return fs;
 	}
 
-	/** returns the common value of fontFamily
+	/** 
+	 * Returns the common value of fontFamily or null
 	 * if there is any variation
-	 * 
 	 */
 	public String getFontFamily() {
 		String family = null;
@@ -236,17 +234,20 @@ public class TextLine implements Iterable<SVGText> {
 	public Set<TextCoordinate> getFontSizeContainerSet() {
 		if (fontSizeContainerSet == null) {
 			fontSizeContainerSet = new HashSet<TextCoordinate>();
-			for (int i = 0; i < textList.size(); i++) {
-				SVGElement text = textList.get(i);
-				TextCoordinate fontSize = new TextCoordinate(text.getFontSize());
-				fontSizeContainerSet.add(fontSize);
+			if (textList != null) {
+				for (int i = 0; i < textList.size(); i++) {
+					SVGElement text = textList.get(i);
+					TextCoordinate fontSize = new TextCoordinate(text.getFontSize());
+					fontSizeContainerSet.add(fontSize);
+				}
 			}
 		}
 		LOG.trace("FSSET "+fontSizeContainerSet);
 		return fontSizeContainerSet;
 	}
 	
-	/** returns the common value of yCoord or null
+	/** 
+	 * Returns the common value of yCoord or null
 	 * if there is any variation
 	 */
 	public Double getYCoord() {
@@ -299,7 +300,6 @@ public class TextLine implements Iterable<SVGText> {
 		}
 	}
 
-	
 	private void ensureCharacterList() {
 		if (textList == null) {
 			textList = new ArrayList<SVGText>();
@@ -331,17 +331,14 @@ public class TextLine implements Iterable<SVGText> {
 		for (int x : xArray) {
 			newCharacterList.add(lineByXCoordMap.get(x));
 		}
-		this.textList = newCharacterList;
+		textList = newCharacterList;
 		getFontSize();
 		getYCoord();
-//		getSinglePhysicalStyle();
+		//getSinglePhysicalStyle();
 		getLineContent();
 		splitLineByCharacterAttributes();
 	}
 	
-	/** 
-	 * @return
-	 */
 	String getLineContent() {
 		if (lineContent == null) {
 			StringBuilder sb = new StringBuilder();
@@ -371,11 +368,10 @@ public class TextLine implements Iterable<SVGText> {
 				s += "   "+splitList+"\n";
 			}
 		} else {
-			
 			s = "chars: "+textList.size() +
 				" Y: "+yCoord+
 				" fontSize: "+fontSize+
-//				" physicalStyle: "+physicalStyle+
+				//" physicalStyle: "+physicalStyle+
 				" >>"+getLineContent();
 		}
 		return s;
@@ -393,13 +389,15 @@ public class TextLine implements Iterable<SVGText> {
 		return sb.toString();
 	}
 	
-	/** uses space factor (default .3 at present)
+	/** 
+	 * Uses space factor (default .3 at present)
 	 */
 	public void insertSpaces() {
 		insertSpaces(spaceFactor);
 	}
 	
-	/** computes inter-char gaps. If >= computed width of space adds ONE space
+	/** 
+	 * Computes inter-char gaps. If >= computed width of space adds ONE space
 	 * later routines can calculate exact number of spaces if wished
 	 * this is essentially a word break detector and marker
 	 */
@@ -852,14 +850,14 @@ public class TextLine implements Iterable<SVGText> {
 
 	public Double getFirstXCoordinate() {
 		getBoundingBox();
-		RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
-		return xRange == null ? null : xRange.getMin();
+		RealRange xRange = (boundingBox == null ? null : boundingBox.getXRange());
+		return (xRange == null ? null : xRange.getMin());
 	}
 
 	public Double getLastXCoordinate() {
 		getBoundingBox();
-		RealRange xRange = boundingBox == null ? null : boundingBox.getXRange();
-		return xRange == null ? null : xRange.getMax();
+		RealRange xRange = (boundingBox == null ? null : boundingBox.getXRange());
+		return (xRange == null ? null : xRange.getMax());
 	}
 
 	public String getRawValue() {
@@ -872,16 +870,20 @@ public class TextLine implements Iterable<SVGText> {
 		return sb.toString();
 	}
 
-	/** merges two lines (at present only characters from second one)
+	/**
+	 * Merges two lines (at present only characters from second one)
+	 * <p>
 	 * Used when two lines have same Y-coord but have been split into two parts
+	 * <p>
+	 * Mean and communal properties are probably rubbish (maybe should be nulled?)
 	 * 
-	 * mean and communal properties are probably rubbish (maybe should be null'ed?)
 	 * @param textLine
 	 */
 	public void merge(TextLine textLine) {
 		for (SVGText character : textLine.textList) {
-			this.textList.add(character);
+			textList.add(character);
 		}
+		sortLineByX();
 	}
 
 	public Double getCommonestFontSize() {
@@ -908,16 +910,19 @@ public class TextLine implements Iterable<SVGText> {
 	private Multiset<Double> getFontSizeMultiset() {
 		if (fontSizeMultiset == null) {
 			fontSizeMultiset = HashMultiset.create();
-			for (int i = 0; i < textList.size(); i++) {
-				SVGElement text = textList.get(i);
-				Double size = text.getFontSize();
-				fontSizeMultiset.add(size);
+			if (textList != null) {
+				for (int i = 0; i < textList.size(); i++) {
+					SVGElement text = textList.get(i);
+					Double size = text.getFontSize();
+					fontSizeMultiset.add(size);
+				}
 			}
 		}
 		return fontSizeMultiset;
 	}
 
-	/** gets raw list of words (no Phrases yet).
+	/** 
+	 * Gets raw list of words (no Phrases yet).
 	 * 
 	 * @return
 	 */
@@ -976,7 +981,7 @@ public class TextLine implements Iterable<SVGText> {
 
 	public List<Phrase> createPhraseList() {
 		List<Phrase> phraseList = new ArrayList<Phrase>();
-		RawWords rawWords = this.getRawWords();
+		RawWords rawWords = getRawWords();
 		for (Word word : rawWords) {
 			Phrase phrase = word.createPhrase();
 			phraseList.add(phrase);

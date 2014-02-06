@@ -14,7 +14,7 @@ public class Word {
 
 	private final static Logger LOG = Logger.getLogger(Word.class);
 	
-	List<SVGText> textList;
+	List<SVGText> texts;
 	private Real2Range boundingBox;
 	private boolean guessWidth = true;
 	
@@ -46,18 +46,34 @@ public class Word {
 
 	public void setTextList(List<SVGText> textList) {
 		for (SVGText text : textList) {
-			this.add(text);
+			add(text);
 		}
+	}
+
+	public Real2 getCentrePointOfFirstCharacter() {
+		return texts.get(0).getCentrePointOfFirstCharacter();
+	}
+
+	public Real2 getCentrePointOfLastCharacter() {
+		return texts.get(texts.size() - 1).getCentrePointOfFirstCharacter();
+	}
+
+	public Double getRadiusOfFirstCharacter() {
+		return texts.get(0).getRadiusOfFirstCharacter();
+	}
+
+	public Double getRadiusOfLastCharacter() {
+		return texts.get(texts.size() - 1).getRadiusOfFirstCharacter();
 	}
 
 	public void add(SVGText text) {
 		ensureTextList();
-		textList.add(text);
+		texts.add(text);
 	}
 
 	private void ensureTextList() {
-		if (textList == null) {
-			textList = new ArrayList<SVGText>();
+		if (texts == null) {
+			texts = new ArrayList<SVGText>();
 		}
 	}
 	
@@ -67,34 +83,34 @@ public class Word {
 
 	public String getValue() {
 		StringBuilder sb = new StringBuilder();
-		for (SVGText text : textList) {
+		for (SVGText text : texts) {
 			sb.append(text.getValue());
 		}
 		return sb.toString();
 	}
 
 	public Double getSpaceCountBetween(Word followingWord) {
-		SVGText char0 = this.get(this.getCharacterCount() - 1);
+		SVGText char0 = get(getCharacterCount() - 1);
 		SVGText char1 = followingWord.get(0);
 		return char0.getEnSpaceCount(char1);
 	}
 
 	public Double getSeparationBetween(Word followingWord) {
-		SVGText char0 = this.get(this.getCharacterCount() - 1);
+		SVGText char0 = get(getCharacterCount() - 1);
 		SVGText char1 = followingWord.get(0);
 		return char0.getSeparation(char1);
 	}
 
 	public Integer getCharacterCount() {
-		return textList.size();
+		return texts.size();
 	}
 
 	public SVGText get(int index) {
-		return textList.get(index);
+		return texts.get(index);
 	}
 
 	public Double getStartX() {
-		return textList.get(0).getX();
+		return texts.get(0).getX();
 	}
 
 	/** 
@@ -103,10 +119,10 @@ public class Word {
 	 * @return
 	 */
 	public Double getEndX() {
-		SVGText endText = textList.get(textList.size() - 1);
-		Double x = endText == null ? null : endText.getX();
-		Double w =  endText == null ? null : endText.getScaledWidth(guessWidth );
-		return x == null || w == null ? null : x + w;
+		SVGText endText = texts.get(texts.size() - 1);
+		Double x = (endText == null ? null : endText.getX());
+		Double w =  (endText == null ? null : endText.getScaledWidth(guessWidth));
+		return (x == null || w == null ? null : x + w);
 	}
 
 	public Double getMidX() {
@@ -143,7 +159,7 @@ public class Word {
 	List<Word> splitAtSpaces() {
 		List<Word> newWordList = new ArrayList<Word>();
 		Word newWord = null;
-		for (SVGText text : textList) {
+		for (SVGText text : texts) {
 			String value = text.getValue();
 			LOG.trace(value);
 			//is it a space?
@@ -181,7 +197,7 @@ public class Word {
 		if (boundingBox == null){
 			boundingBox = new Real2Range();
 			RealRange xrange = new RealRange(getStartX(), getEndX());
-			RealRange yrange = textList.get(0).getBoundingBox().getYRange();
+			RealRange yrange = texts.get(0).getBoundingBox().getYRange();
 			boundingBox = new Real2Range(xrange, yrange);
 		}
 		return boundingBox;
@@ -193,7 +209,7 @@ public class Word {
 	}
 	
 	public Real2 getXY() {
-		return (textList.size() == 0) ? null : textList.get(0).getXY();
+		return (texts.size() == 0) ? null : texts.get(0).getXY();
 	}
 
 	public static List<Real2Range> createBBoxList(List<Word> wordList) {
@@ -203,4 +219,5 @@ public class Word {
 		}
 		return bboxList;
 	}
+	
 }
