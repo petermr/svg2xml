@@ -90,11 +90,12 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	}
 
 	public void setSplitterParams(SplitterParams[] spParams) {
-		this.splitterParams = Arrays.asList(spParams);
+		splitterParams = Arrays.asList(spParams);
 	}
 	
-	/** the main analysis routine
-	 * includes text, paths, figures, tables
+	/** 
+	 * The main analysis routine.
+	 * Includes text, paths, figures and tables.
 	 */
 	public List<Chunk> splitByWhitespaceAndLabelLeafNodes(SVGElement svgElement) {
 		List<Chunk> chunkList = splitByWhitespace(svgElement);
@@ -112,10 +113,10 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 				chunk.addAttribute(new Attribute(LEAF, "1"));
 			}
 		}
-//		List<SVGElement> topChunks = SVGUtil.getQuerySVGElements(to, "svg:g[@id='"+TOP_CHUNK+"']");
-//		if (topChunks.size() != 1) {
-//			throw new RuntimeException("Should be ONE top chunk");
-//		}
+		//List<SVGElement> topChunks = SVGUtil.getQuerySVGElements(to, "svg:g[@id='"+TOP_CHUNK+"']");
+		//if (topChunks.size() != 1) {
+		//	throw new RuntimeException("Should be ONE top chunk");
+		//}
 		labelXYMINDescendants(topChunk, "chunk0");
 	}
 	
@@ -149,15 +150,26 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 		LOG.trace(String.valueOf(splitterParams.get(0).width)+"; "+String.valueOf(splitterParams.get(1).width)+"; "+String.valueOf(splitterParams.get(2).width)+"; ");
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
-		List<Chunk> subSubSubChunkList = null;
+		//List<Chunk> subSubSubChunkList = null;
+		List<Chunk> subSubSubChunkList = new ArrayList<Chunk>();
 		for (Chunk subChunk : subChunkList) {
 			List<Chunk> cc = subChunk.splitIntoChunks(splitterParams.get(1).width, splitterParams.get(1).boxEdge);
-			subSubChunkList.addAll(cc);
-			subSubSubChunkList = new ArrayList<Chunk>();
-			for (Chunk subSubChunk : subSubChunkList) {
-				cc = subSubChunk.splitIntoChunks(splitterParams.get(2).width, splitterParams.get(2).boxEdge);
-				subSubSubChunkList.addAll(cc);
+			int chunksWithOnlyText = 0;
+			for (Chunk c : cc) {
+				if (c.isTextChunk()) {
+					chunksWithOnlyText++;
+				}
 			}
+			if (cc.size() - chunksWithOnlyText > 1) {
+				subSubChunkList.addAll(subChunk.splitIntoChunks(Double.MAX_VALUE, splitterParams.get(1).boxEdge));
+			} else {
+				subSubChunkList.addAll(cc);
+			}
+		}
+		for (Chunk subSubChunk : subSubChunkList) {
+			List<Chunk> cc = subSubChunk.splitIntoChunks(subSubChunk.isTextChunk() ? splitterParams.get(2).width : Double.MAX_VALUE, splitterParams.get(2).boxEdge);
+			//List<Chunk> cc = subSubChunk.splitIntoChunks(splitterParams.get(2).width, splitterParams.get(2).boxEdge);
+			subSubSubChunkList.addAll(cc);
 		}
 		removeEmptyChunks(topChunk);
 		//topChunk.debug("TOP");
@@ -193,7 +205,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 			for (SVGG chunk : chunkList) {
 				Real2Range bbox = chunk.getBoundingBox();
 				if (bbox != null) {
-					SVGRect rect = new SVGRect( bbox);
+					SVGRect rect = new SVGRect(bbox);
 					rect.setStroke(stroke);
 					rect.setFill(fill);
 					rect.setStrokeWidth(0.9);
