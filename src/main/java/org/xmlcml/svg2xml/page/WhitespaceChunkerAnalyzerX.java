@@ -60,8 +60,8 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	
 	// empirical borderwidths
 	// Y0, X0, Y1, X1...
-	private static double YSEP_0 = 10.;
-	private static Double YSEP_1 = 5.;
+	private static double YSEP_0 = 10.0;
+	private static Double YSEP_1 = 6.0;
 	private static Double XSEP_0 = 10.0;
 	
 	private List<Chunk> finalChunkList;
@@ -149,12 +149,13 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 		topChunk.setId(TOP_CHUNK);
 		LOG.trace(String.valueOf(splitterParams.get(0).width)+"; "+String.valueOf(splitterParams.get(1).width)+"; "+String.valueOf(splitterParams.get(2).width)+"; ");
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
+		List<Chunk> finalSubChunks = mergeAdjacentDiagramChunks(subChunkList);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
 		//List<Chunk> subSubSubChunkList = null;
 		List<Chunk> subSubSubChunkList = new ArrayList<Chunk>();
-		for (Chunk subChunk : subChunkList) {
-			List<Chunk> cc = subChunk.splitIntoChunks(splitterParams.get(1).width, splitterParams.get(1).boxEdge);
-			int chunksWithOnlyText = 0;
+		for (Chunk subChunk : finalSubChunks) {
+			List<Chunk> subSubChunks = subChunk.splitIntoChunks(splitterParams.get(1).width, splitterParams.get(1).boxEdge);
+			/*int chunksWithOnlyText = 0;
 			for (Chunk c : cc) {
 				if (c.isTextChunk()) {
 					chunksWithOnlyText++;
@@ -162,20 +163,54 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 			}
 			if (cc.size() - chunksWithOnlyText > 1) {
 				subSubChunkList.addAll(subChunk.splitIntoChunks(Double.MAX_VALUE, splitterParams.get(1).boxEdge));
-			} else {
-				subSubChunkList.addAll(cc);
-			}
+			} else {*/
+			List<Chunk> finalSubSubChunks = mergeAdjacentDiagramChunks(subSubChunks);
+			subSubChunkList.addAll(finalSubSubChunks);
+			//}
 		}
 		for (Chunk subSubChunk : subSubChunkList) {
-			List<Chunk> cc = subSubChunk.splitIntoChunks(subSubChunk.isTextChunk() ? splitterParams.get(2).width : Double.MAX_VALUE, splitterParams.get(2).boxEdge);
-			//List<Chunk> cc = subSubChunk.splitIntoChunks(splitterParams.get(2).width, splitterParams.get(2).boxEdge);
-			subSubSubChunkList.addAll(cc);
+			//List<Chunk> cc = subSubChunk.splitIntoChunks(subSubChunk.isTextChunk() ? splitterParams.get(2).width : Double.MAX_VALUE, splitterParams.get(2).boxEdge);
+			List<Chunk> subSubSubChunks = subSubChunk.splitIntoChunks(splitterParams.get(2).width, splitterParams.get(2).boxEdge);
+			List<Chunk> finalSubSubSubChunks = mergeAdjacentDiagramChunks(subSubSubChunks);
+			subSubSubChunkList.addAll(finalSubSubSubChunks);
 		}
 		removeEmptyChunks(topChunk);
 		//topChunk.debug("TOP");
 		removeChildren(elementToBeChunked);
 		moveChildrenFromChunkToElement(elementToBeChunked, topChunk);
 		return subSubSubChunkList;
+	}
+
+	private List<Chunk> mergeAdjacentDiagramChunks(List<Chunk> chunks) {
+		List<Chunk> finalChunks = new ArrayList<Chunk>();
+		Chunk currentChunk = null;
+		for (Chunk c : chunks) {
+			if (currentChunk == null) {
+				currentChunk = new Chunk(c);
+				c.getParent().appendChild(currentChunk);
+				currentChunk.createElementListAndCalculateBoundingBoxes();
+			} else {
+				if (c.isTextChunk()) {
+					finalChunks.add(currentChunk);
+					currentChunk = new Chunk(c);
+					c.getParent().appendChild(currentChunk);
+					currentChunk.createElementListAndCalculateBoundingBoxes();
+				} else {
+					if (currentChunk.isTextChunk()) {
+						finalChunks.add(currentChunk);
+						currentChunk = new Chunk(c);
+						c.getParent().appendChild(currentChunk);
+						currentChunk.createElementListAndCalculateBoundingBoxes();
+					} else {
+						currentChunk.copyAttributesAndChildrenFromSVGElement(c);
+						currentChunk.createElementListAndCalculateBoundingBoxes();
+					}
+				}
+			}
+			c.detach();
+		}
+		finalChunks.add(currentChunk);
+		return finalChunks;
 	}
 
 	private void moveChildrenFromChunkToElement(SVGElement elementToBeChunked, Chunk topChunk) {

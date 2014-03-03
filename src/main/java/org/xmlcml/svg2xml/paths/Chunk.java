@@ -27,11 +27,11 @@ import org.xmlcml.svg2xml.page.PageIO;
 
 /**
  * Chunk tags an SVG container (svg:g or svg:svg) as a chunk. 
- * chunks can be created by construction from an existing container where
- * the attributes and children are transferred to the chunk
- * it adds an attribute svgx:role="chunk" and a number of chuck-specific methods
+ * Chunks can be created by construction from an existing container where
+ * the attributes and children are transferred to the chunk.
+ * It adds an attribute svgx:role="chunk" and a number of chuck-specific methods.
+ * 
  * @author pm286
- *
  */
 public class Chunk extends SVGG {
 	
@@ -57,17 +57,17 @@ public class Chunk extends SVGG {
 		if (!(svgElement instanceof SVGG || svgElement instanceof SVGSVG)) {
 			throw new RuntimeException("svgChunk must be svg:g or svg:svg");
 		}
-		this.originalSVGElement = svgElement;
+		originalSVGElement = svgElement;
 		copyAttributesAndChildrenFromSVGElement(svgElement);
 	}
 
 	void writeTo(File outputDir, String type, int i) throws IOException  {
-		throw new RuntimeException("NYI");
+		throw new RuntimeException("Method Chunk.writeTo() not yet implemented");
 	}
 
 	public void createElementListAndCalculateBoundingBoxes() {
 		createElementListAndCalculateBoundingBoxes(this);
-		this.boundingBox = null;
+		boundingBox = null;
 	}
 
 	void createElementListAndCalculateBoundingBoxes(SVGElement element) {
@@ -107,12 +107,13 @@ public class Chunk extends SVGG {
 	
 	public List<Chunk> splitIntoChunks(Double chunkWidth, BoxEdge edge) {
 		getDescendantSVGElementListWithoutDefsDescendants();
+		removeEmptyTexts();
 		ensureEmptyBoxList(edge);
 		SVGUtil.setBoundingBoxCached(descendantSVGElementList, true);
 		Long time0 = System.currentTimeMillis();
 		descendantSVGElementList = BoundingBoxManager.getElementsSortedByEdge(descendantSVGElementList, edge);
 		LOG.trace("sort edge: "+edge);
-		addTerminatingEmptyBox(1.5*chunkWidth, edge);
+		addTerminatingEmptyBox(1.5 * chunkWidth, edge);
 		List<Chunk> chunkList = new ArrayList<Chunk>();
 		if (emptyBoxList == null) {
 			return chunkList;
@@ -135,11 +136,11 @@ public class Chunk extends SVGG {
 				if (newChunk == null) {
 					newChunk = makeChunk(chunkWidth, edge, PageIO.DECIMAL_PLACES, count);
 					chunkList.add(newChunk);
-					this.appendChild(newChunk);
+					appendChild(newChunk);
 				}
 				newChunk.addSVGElement(element);
-				element = elementIterator.hasNext() ? elementIterator.next() : null;
-				LOG.trace("addChunk/element: "+(System.currentTimeMillis()-time0));
+				element = (elementIterator.hasNext() ? elementIterator.next() : null);
+				LOG.trace("addChunk/element: "+(System.currentTimeMillis() - time0));
 			} else {
 				box = null;
 				newChunk = null; // ?
@@ -157,12 +158,25 @@ public class Chunk extends SVGG {
 		LOG.trace("emptyBoxCount "+emptyBoxList.size());
 		checkAndDebugEmptyBoxes();
 		LOG.trace("======");
-		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis()-time0));
+		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis() - time0));
 		for (Chunk chunk0 : chunkList) {
 			chunk0.setBoundingBoxAttribute(PageIO.DECIMAL_PLACES);
 		}
-		LOG.trace("reformat chunkList: "+chunkList.size()+"/"+(System.currentTimeMillis()-time0));
+		LOG.trace("reformat chunkList: "+chunkList.size()+"/"+(System.currentTimeMillis() - time0));
 		return chunkList;
+	}
+
+	private void removeEmptyTexts() {
+		Iterator<SVGElement> it = descendantSVGElementList.iterator();
+		while (it.hasNext()) {
+			SVGElement i = it.next();
+			if (i instanceof SVGText) {
+				if (((SVGText) i).getText() == null || ((SVGText) i).getText().equals("") || ((SVGText) i).getText().equals(" ")) {
+					i.detach();
+					it.remove();
+				}
+			}
+		}
 	}
 
 	private void checkAndDebugEmptyBoxes() {
@@ -178,7 +192,7 @@ public class Chunk extends SVGG {
 		Real2Range bbox = null;
 		double cc;
 		if (descendantSVGElementList.size() > 0) {
-			SVGElement lastElement = descendantSVGElementList.get(descendantSVGElementList.size()-1);
+			SVGElement lastElement = descendantSVGElementList.get(descendantSVGElementList.size() - 1);
 			Real2Range lastR2R = lastElement.getBoundingBox();
 			if (BoxEdge.YMIN.equals(edge)) {
 				cc = lastR2R.getYMax();
@@ -210,7 +224,7 @@ public class Chunk extends SVGG {
 
 	private boolean boxLargeEnough(Double chunkWidth, BoxEdge edge, Real2Range emptyBox) {
 		RealRange rr = getRange(emptyBox, edge);
-		return (rr == null) ? false : rr.getRange() >= chunkWidth;
+		return (rr == null ? false : rr.getRange() >= chunkWidth);
 	}
 
 	public void copyAttributesAndChildrenFromSVGElement(SVGElement g) {
@@ -219,10 +233,10 @@ public class Chunk extends SVGG {
 		for (int i = 0; i < gcopyChildren.size(); i++) {
 			Element child = gcopyChildren.get(i);
 			child.detach();
-			this.appendChild(child);
+			appendChild(child);
 		}
-		this.copyAttributes(g);
-//		this.setChunkStyleValue(this.getChunkStyleName());
+		copyAttributes(g);
+		//this.setChunkStyleValue(this.getChunkStyleName());
 	}
 	
 	private RealRange getRange(Real2Range box, BoxEdge edge) {
@@ -260,15 +274,15 @@ public class Chunk extends SVGG {
 				lags = elemCoord < boxCoord;
 			}
 		}
-		return (lags == null) ? false : lags;
+		return (lags == null ? false : lags);
 	}
 
 	private void addSVGElement(SVGElement element) {
 		ensureDescendantList();
 		descendantSVGElementList.add(element);
-		if (this.getParent() != null) {
+		if (getParent() != null) {
 			element.detach();
-			this.appendChild(element);
+			appendChild(element);
 		}
 		ensureBoundingBoxManager();
 		boundingBoxManager.add(element.getBoundingBox());
@@ -285,12 +299,11 @@ public class Chunk extends SVGG {
 		for (SVGElement element : descendantSVGElementList) {
 			element.setBoundingBoxCached(cached);
 		}
-		LOG.trace("set cache "+(System.currentTimeMillis()-time0));
+		LOG.trace("set cache "+(System.currentTimeMillis() - time0));
 	}
 	
 	private Chunk makeChunk(Double chunkWidth, BoxEdge edge, Integer decimalPlaces, int count) {
-		Chunk chunk;
-		chunk = new Chunk();
+		Chunk chunk = new Chunk();
 		chunk.setBoundingBoxCached(true);
 		chunk.setBoundingBoxAttribute(decimalPlaces);
 		chunk.addAttribute(new Attribute("edge", String.valueOf(edge)));
@@ -308,7 +321,7 @@ public class Chunk extends SVGG {
 	
 	public Boolean isTextChunk() {
 		ensureDescendantSVGClassSet();
-		return descendantSVGClassSet != null && descendantSVGClassSet.size() == 1 && descendantSVGClassSet.contains(SVGText.class);
+		return (descendantSVGClassSet != null && descendantSVGClassSet.size() == 1 && descendantSVGClassSet.contains(SVGText.class));
 	}
 
 	private void ensureDescendantSVGClassSet() {
@@ -319,7 +332,6 @@ public class Chunk extends SVGG {
 	}
 
 	public String getStringValue() {
-		
 		StringBuilder sb = new StringBuilder();
 		for (SVGElement line : descendantSVGElementList) {
 			sb.append(line.getValue()+"\n");
@@ -338,8 +350,8 @@ public class Chunk extends SVGG {
 		}
 	}
 
-
-	/** makes a new list composed of the Chunks in the list
+	/** 
+	 * Makes a new list composed of the Chunks in the list
 	 * 
 	 * @param elements
 	 * @return
