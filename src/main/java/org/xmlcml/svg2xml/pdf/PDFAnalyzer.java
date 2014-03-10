@@ -2,8 +2,10 @@ package org.xmlcml.svg2xml.pdf;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +16,8 @@ import java.util.Map;
 
 import nu.xom.Element;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlDiv;
@@ -186,11 +190,32 @@ public class PDFAnalyzer {
 
 
 	public void analyzeRawSVGPagesWithPageAnalyzers() {
-		// this does not output anything 
+		// this does not output anything
 		pageAnalyzerList = createAndFillPageAnalyzers();
 		// this outputs files
 		pdfIo.outputFiles(getPdfOptions());
 		createIndexesAndRemoveDuplicates();
+
+		try {
+			FileUtils.copyDirectory(pdfIo.getRawSVGPageDirectory(),
+					pdfIo.getExistingOutputDocumentDir(), new FileFilter() {
+
+						@Override
+						public boolean accept(File pathname) {
+
+							return ("png".equals(FilenameUtils
+									.getExtension(pathname.getName())));
+
+						}
+
+					});
+
+		} catch (IOException e) {
+
+			throw new RuntimeException(e);
+
+		}
+
 	}
 
 	private void debugContainers() {
