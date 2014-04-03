@@ -80,6 +80,10 @@ public class PDFAnalyzer {
 		pdfIo.setOutputTopDir(outDir);
 	}
 	
+	public File getOutputTopDir() {
+		return pdfIo.getOutputTopDir();
+	}
+	
 	public void setFileRoot(String fileRoot) {
 		pdfIo.setFileRoot(fileRoot);
 	}
@@ -188,34 +192,22 @@ public class PDFAnalyzer {
 		}
 	}
 
-
 	public void analyzeRawSVGPagesWithPageAnalyzers() {
 		// this does not output anything
 		pageAnalyzerList = createAndFillPageAnalyzers();
 		// this outputs files
 		pdfIo.outputFiles(getPdfOptions());
 		createIndexesAndRemoveDuplicates();
-
 		try {
-			FileUtils.copyDirectory(pdfIo.getRawSVGPageDirectory(),
-					pdfIo.getExistingOutputDocumentDir(), new FileFilter() {
-
-						@Override
-						public boolean accept(File pathname) {
-
-							return ("png".equals(FilenameUtils
-									.getExtension(pathname.getName())));
-
-						}
-
-					});
-
+			FileUtils.copyDirectory(pdfIo.getRawSVGPageDirectory(), pdfIo.getExistingOutputDocumentDir(), new FileFilter() {
+				@Override
+				public boolean accept(File pathname) {
+					return ("png".equals(FilenameUtils.getExtension(pathname.getName())));
+				}
+			});
 		} catch (IOException e) {
-
 			throw new RuntimeException(e);
-
 		}
-
 	}
 
 	private void debugContainers() {
@@ -298,7 +290,7 @@ public class PDFAnalyzer {
 
 	public void createSVGFilesfromPDF(PDF2SVGConverter converter, String inputName) {
 		File svgDocumentDir = pdfIo.getRawSVGDirectory();
-		File[] files = (svgDocumentDir == null) ? null : svgDocumentDir.listFiles();
+		File[] files = (svgDocumentDir == null ? null : svgDocumentDir.listFiles());
 		if (!svgDocumentDir.exists() || files == null || files.length == 0) {
 			svgDocumentDir.mkdirs();
 			LOG.debug("running "+inputName+" to "+svgDocumentDir.toString());
