@@ -18,10 +18,10 @@ import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.util.NameComparator;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
-/** class to deal with IO from PDFAnalyzer
+/** 
+ * Class to deal with IO from PDFAnalyzer
  * 
  * @author pm286
- *
  */
 public class PDFAnalyzerIO {
 	
@@ -36,17 +36,29 @@ public class PDFAnalyzerIO {
 
 	private File inFile;
 	private String inputName;
-	/** bar/foo.pdf =>> foo as fileRoot */
+	/** 
+	 * bar/foo.pdf =>> foo as fileRoot
+	 */
 	String fileRoot;
-	/** top of where rawSVGFiles are kept , e.g. target/svg */
+	/** 
+	 * Top of where rawSVGFiles are kept, e.g. target/svg
+	 */
 	private File svgTopDir = SVG_DIR;
-	/** directory where raw SVG are kept, e.g. target/svg/foo/ */
+	/** 
+	 * Directory where raw SVG are kept, e.g. target/svg/foo/
+	 */
 	private File rawSvgDirectory;
-	/** top of where outputFiles are kept , e.g. target/output */
+	/** 
+	 * Top of where outputFiles are kept , e.g. target/output
+	 */
 	private File outputTopDir = OUTPUT_DIR;
-	/** directory where output are kept, e.g. target/svg/foo/ */
+	/** 
+	 * Directory where output are kept, e.g. target/svg/foo/
+	 */
 	File outputDocumentDir;
-	/** directory where html are kept, e.g. target/svg/foo/html/ or target/svg/foo/ */
+	/** 
+	 * Directory where html are kept, e.g. target/svg/foo/html/ or target/svg/foo/
+	 */
 	private File htmlDir;
 	
 	private PDFAnalyzer pdfAnalyzer;
@@ -61,6 +73,10 @@ public class PDFAnalyzerIO {
 	
 	public void setOutputTopDir(File outDir) {
 		this.outputTopDir = outDir;
+	}
+	
+	public File getOutputTopDir() {
+		return outputTopDir;
 	}
 	
 	public void setFileRoot(String fileRoot) {
@@ -84,8 +100,8 @@ public class PDFAnalyzerIO {
 	}
 
 	public void setPDFURL(String name) {
-		this.setInputName(name);
-		this.setFileRoot(name.substring(0, name.length() - SVG2XMLConstantsX.DOT_PDF.length()));
+		setInputName(name);
+		setFileRoot(name.substring(0, name.length() - SVG2XMLConstantsX.DOT_PDF.length()));
 		if (fileRoot.startsWith(HTTP)) {
 			fileRoot = fileRoot.substring(fileRoot.indexOf("//")+2);
 			fileRoot = fileRoot.substring(fileRoot.indexOf("/")+1);
@@ -108,7 +124,7 @@ public class PDFAnalyzerIO {
 	}
 
 	public String createHttpInputName(String inputName) {
-		String inputName1 = inputName.substring(inputName.lastIndexOf("/")+1);
+		String inputName1 = inputName.substring(inputName.lastIndexOf("/") + 1);
 		if (inputName1.toLowerCase().endsWith(DOT_PDF)) {
 			inputName = inputName1.substring(0, inputName1.length()-DOT_PDF.length());
 		}
@@ -148,7 +164,7 @@ public class PDFAnalyzerIO {
 	}
 	 
 	public void createHTMLDir() {
-		 this.htmlDir = new File(outputTopDir, fileRoot);
+		 htmlDir = new File(outputTopDir, fileRoot);
 	}
 	
 	public File getExistingOutputDocumentDir() {
