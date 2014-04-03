@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -253,6 +254,7 @@ public class GraphicAnalyzerTest {
 	 * <p>
 	 * This has corrupted Greek letters
 	 */
+        @Ignore
 	@Test
 	public void test5Scatterplots() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g");
