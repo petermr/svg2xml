@@ -41,7 +41,7 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	
 	public GraphicAnalyzer(PageAnalyzer pageAnalyzer, SVGElement svgChunk) {
 		super(pageAnalyzer);
-		this.setSVGChunk(svgChunk);
+		setSVGChunk(svgChunk);
 		createAnalyzers();
 	}
 
@@ -58,15 +58,15 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 
 	private void createAnalyzers() {
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgChunk);
-		if (textList != null && textList.size() >0) {
+		if (textList != null && textList.size() > 0) {
 			textAnalyzer = new TextAnalyzer(textList, pageAnalyzer);
 		}
 		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgChunk);
-		if (shapeList != null && shapeList.size() >0) {
+		if (shapeList != null && shapeList.size() > 0) {
 			shapeAnalyzer = new ShapeAnalyzer(shapeList, pageAnalyzer);
 		}
 		List<SVGImage> imageList = SVGImage.extractSelfAndDescendantImages(svgChunk);
-		if (imageList != null && imageList.size() >0) {
+		if (imageList != null && imageList.size() > 0) {
 			imageAnalyzer = new ImageAnalyzer(imageList, pageAnalyzer);
 		}
 	}
@@ -75,11 +75,11 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	 * Convenience method, mainly for tests.
 	 * <p>
 	 * Finds a chunk (using SVGG.createSVGG(file, xPath) and then creates 
-	 * GraphicAnalyzer to analyze it. TODO
+	 * GraphicAnalyzer to analyze it. TODO something.
 	 * 
 	 * @param svgFile
 	 * @param xPath to search for chunk (normally &lt;g&gt; containing the graphic)
-	 * @return null firs in list; if no chunk found
+	 * @return null first in list; if no chunk found
 	 */
 	public static GraphicAnalyzer createGraphicAnalyzer(File svgFile, String xPath)  {
 		return GraphicAnalyzer.createGraphicAnalyzer(svgFile, xPath, 0);
@@ -88,19 +88,19 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	/** 
 	 * Convenience method, mainly for tests.
 	 * <p>
-	 * Finds a chunk (using SVGG.createSVGG(file, xPath) and then creates 
-	 * GraphicAnalyzer to analyze it. TODO
+	 * Finds a chunk (using SVGG.createSVGG(file, xPath)) and then creates 
+	 * GraphicAnalyzer to analyze it. TODO something.
 	 * 
 	 * @param svgFile
-	 * @param xPath to search for chunk (normally &lt;g&gt; containing the graphic)ounts from zero)
-	 * @param index result in list (c
+	 * @param xPath to search for chunk (normally &lt;g&gt; containing the graphic)
+	 * @param index result in list (counts from zero)
 	 * @return null if no chunk found
 	 */
 	public static GraphicAnalyzer createGraphicAnalyzer(File svgFile, String xPath, int index)  {
 		SVGG chunk = SVGG.createSVGGChunk(svgFile, xPath, index);
 		GraphicAnalyzer graphicAnalyzer = null;
 		if (chunk != null) {
-			PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG) null);
+			PageAnalyzer pageAnalyzer = new PageAnalyzer(svgFile);
 			graphicAnalyzer = new GraphicAnalyzer(pageAnalyzer, chunk);
 		}
 		return graphicAnalyzer;
@@ -117,13 +117,13 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	public TextAnalyzer createTextAnalyzer(TextOrientation textOrientation) {
 		TextAnalyzer textAnalyzer = null;
 		if (TextOrientation.ROT_0.equals(textOrientation)) {
-			textAnalyzer = this.getRot0TextAnalyzer();
+			textAnalyzer = getRot0TextAnalyzer();
 		} else if (TextOrientation.ROT_PI2.equals(textOrientation)) {
-			textAnalyzer = this.getRotPi2TextAnalyzer();
+			textAnalyzer = getRotPi2TextAnalyzer();
 		} else if (TextOrientation.ROT_PI.equals(textOrientation)) {
-			textAnalyzer = this.getRotPiTextAnalyzer();
+			textAnalyzer = getRotPiTextAnalyzer();
 		} else if (TextOrientation.ROT_3PI2.equals(textOrientation)) {
-			textAnalyzer = this.getRot3Pi2TextAnalyzer();
+			textAnalyzer = getRot3Pi2TextAnalyzer();
 		} else {
 			
 		}
@@ -141,8 +141,8 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	 * @return null if unknown orientation
 	 */
 	public  TextStructurer createTextStructurer(TextOrientation textOrientation) {
-		TextAnalyzer textAnalyzer = this.createTextAnalyzer(textOrientation);
-		return textAnalyzer == null ? null : new TextStructurer(textAnalyzer);
+		TextAnalyzer textAnalyzer = createTextAnalyzer(textOrientation);
+		return (textAnalyzer == null ? null : new TextStructurer(textAnalyzer));
 	}
 
 	public ImageAnalyzer getImageAnalyzer() {
@@ -158,15 +158,15 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	}
 
 	public TextAnalyzer getRot0TextAnalyzer() {
-		return textAnalyzer == null ? null : textAnalyzer.getRot0TextAnalyzer();
+		return (textAnalyzer == null ? null : textAnalyzer.getRot0TextAnalyzer());
 	}
 
 	public TextAnalyzer getRotPi2TextAnalyzer() {
-		return textAnalyzer == null ? null : textAnalyzer.getRotPi2TextAnalyzer();
+		return (textAnalyzer == null ? null : textAnalyzer.getRotPi2TextAnalyzer());
 	}
 
 	public TextAnalyzer getRotPiTextAnalyzer() {
-		return textAnalyzer == null ? null : textAnalyzer.getRotPiTextAnalyzer();
+		return (textAnalyzer == null ? null : textAnalyzer.getRotPiTextAnalyzer());
 	}
 
 	public TextAnalyzer getRot3Pi2TextAnalyzer() {
