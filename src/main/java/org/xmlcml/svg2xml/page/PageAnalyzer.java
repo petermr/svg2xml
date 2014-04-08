@@ -106,6 +106,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	public PageAnalyzer(SVGSVG svg) {
 		this();
 		pageIo.setSvgInPage(svg);
+		tidySVGPage();
 	}
 
 	public PageAnalyzer(SVGSVG svgPage, PDFAnalyzer pdfAnalyzer) {
@@ -119,10 +120,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		this();
 		SVGSVG svgPage = convertLongHref(svgPageFile);
 		pageIo.setSvgInPage(svgPage);
-		tidySvgPage();
+		tidySVGPage();
 	}
 
-	private void tidySvgPage() {
+	private void tidySVGPage() {
 		SVGElement svgPage = pageIo.getRawSVGPage();
 		removeClipPathsDefs(svgPage);
 		removeClipPathAttributes(svgPage);
@@ -131,8 +132,10 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
 	private void numberElements() {
 		SVGElement svgPage = pageIo.getRawSVGPage();
-		for (int i = 0; i < svgPage.getChildElements().size(); i++) {
-			SVGUtil.setSVGXAttribute((SVGElement) svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
+		if (svgPage != null) {
+			for (int i = 0; i < svgPage.getChildElements().size(); i++) {
+				SVGUtil.setSVGXAttribute((SVGElement) svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
+			}
 		}
 	}
 
@@ -144,9 +147,11 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	private void removeClipPathAttributes(SVGElement svgPage) {
-		Nodes clipPathAttributes = svgPage.query("./*/@clip-path");
-		for (int i = 0; i < clipPathAttributes.size(); i++) {
-			clipPathAttributes.get(i).detach();
+		if (svgPage != null) {
+			Nodes clipPathAttributes = svgPage.query("./*/@clip-path");
+			for (int i = 0; i < clipPathAttributes.size(); i++) {
+				clipPathAttributes.get(i).detach();
+			}
 		}
 	}
 
@@ -166,7 +171,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			String content = FileUtils.readFileToString(svgPageFile, "UTF-8");
 			long size = FileUtils.sizeOf(svgPageFile);
 			if (size > BIG_SVG_FILE) {
-				ImageConverter cleaner = new ImageConverter();
+				ImageConverter cleaner = new ImageConverter();//TODO not used
 			}
 			svgPage = (SVGSVG) SVGElement.readAndCreateSVG(XMLUtil.parseXML(content));
 		} catch (IOException e) {
@@ -191,7 +196,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
 			//String chunkId = this.getHumanPageNumber()+"."+ichunk;
 			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
-			path2ShapeConverter.convertPathsToShapes(gChunk);
+			path2ShapeConverter.convertPathsToShapes(gChunk);//TODO does everything every time
 			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
 			ChunkAnalyzer chunkAnalyzer = createSpecificAnalyzer(gChunk);
 			if (!(chunkAnalyzer instanceof TextAnalyzer)) {
@@ -326,7 +331,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (AbstractContainer newContainer : newContainerList) {
 			newContainer.setChunkAnalyzer(pageChunkAnalyzer);
 			ChunkId chunkId = new ChunkId(pageIo.getHumanPageNumber(), aggregatedContainerCount);
-			newContainer.setChunkId(chunkId); 
+			newContainer.setChunkId(chunkId);
 			abstractContainerList.add(newContainer);
 			SVGG gChunk = newContainer.createSVGGChunk();
 			gChunk.setId(chunkId.toString());
@@ -621,9 +626,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				List<SVGImage> imageList = imageAnalyzer.getImageList();
 				outputImageFiles(chunkId, imageAnalyzer, imageList);
 				LOG.debug("ImageAnalyzer needs writing: "+chunkId);
-			} else if(chunkAnalyzer instanceof FigureAnalyzer) {
+			} else if (chunkAnalyzer instanceof FigureAnalyzer) {
 				throw new RuntimeException("FigureAnalyzer needs writing: "+chunkId);
-			} else if(chunkAnalyzer instanceof MixedAnalyzer) {
+			} else if (chunkAnalyzer instanceof MixedAnalyzer) {
 				MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) chunkAnalyzer;
 				ImageAnalyzer imageAnalyzer = mixedAnalyzer.getImageAnalyzer();
 				if (imageAnalyzer != null) {
