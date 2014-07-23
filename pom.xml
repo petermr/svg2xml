@@ -12,7 +12,7 @@
 	</parent>
 
 	<groupId>org.xml-cml</groupId>
-	<artifactId>svg2xml-dev</artifactId>
+	<artifactId>svg2xml</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<name>AMI2-SVGPlus</name>
 	<description>Takes SVG from PDF2SVG and analyzes the domain-independent semantics</description>
