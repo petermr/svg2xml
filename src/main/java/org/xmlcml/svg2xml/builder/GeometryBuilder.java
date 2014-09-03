@@ -53,11 +53,6 @@ public class GeometryBuilder extends SimpleBuilder {
 	private TextOrientation textOrientation;
 	private TextAnalyzer textAnalyzer;
 
-	public GeometryBuilder() {
-		super();
-		init();
-	}
-
 	public GeometryBuilder(SVGElement svgElement) {
 		super(svgElement);
 		init();
@@ -134,7 +129,7 @@ public class GeometryBuilder extends SimpleBuilder {
 
 	public HtmlElement createHtmlElement() {
 		textStructurer = createTextStructurerWithRotation();
-		return textStructurer == null ? null : textStructurer.createHtmlElement();
+		return (textStructurer == null ? null : textStructurer.createHtmlElement());
 	}
 
 	public List<SVGPath> createArraysFromPaths() {
