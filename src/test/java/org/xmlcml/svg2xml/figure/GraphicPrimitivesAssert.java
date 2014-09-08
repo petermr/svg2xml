@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.figure;
 
 import java.util.Set;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 /** support library for testing Figures/Plots.
  * 

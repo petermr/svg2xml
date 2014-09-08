@@ -2,9 +2,7 @@ package org.xmlcml.svg2xml.util;
 
 import java.text.Normalizer;
 
-import junit.framework.Assert;
-
-import org.apache.pdfbox.pdmodel.interactive.viewerpreferences.PDViewerPreferences.NON_FULL_SCREEN_PAGE_MODE;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class NormalizeTest {

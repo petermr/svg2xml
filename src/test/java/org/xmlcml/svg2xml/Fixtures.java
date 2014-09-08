@@ -1,11 +1,9 @@
 package org.xmlcml.svg2xml;
 
 import java.io.File;
-import java.io.InputStream;
 import java.util.List;
 
 import nu.xom.Builder;
-import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;

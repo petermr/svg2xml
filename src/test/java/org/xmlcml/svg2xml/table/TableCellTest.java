@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.table;
 
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;

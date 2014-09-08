@@ -1,7 +1,5 @@
 package org.xmlcml.svg2xml.page;
 
-import junit.framework.Assert;
-
 import nu.xom.Element;
 
 import org.apache.log4j.Logger;

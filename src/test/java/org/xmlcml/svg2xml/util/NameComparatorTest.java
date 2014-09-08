@@ -1,6 +1,6 @@
 package org.xmlcml.svg2xml.util;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Test;
 

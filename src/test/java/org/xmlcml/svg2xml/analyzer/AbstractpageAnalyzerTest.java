@@ -1,6 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import nu.xom.Element;
 
 import org.junit.Test;

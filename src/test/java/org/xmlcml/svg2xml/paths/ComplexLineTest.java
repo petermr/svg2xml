@@ -1,11 +1,9 @@
 package org.xmlcml.svg2xml.paths;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +11,6 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
@@ -21,7 +18,6 @@ import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
 import org.xmlcml.svg2xml.paths.ComplexLine.Direction;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.paths.ComplexLine.SideOrientation;
-import org.xmlcml.svg2xml.util.GraphUtil;
 
 public class ComplexLineTest {
 

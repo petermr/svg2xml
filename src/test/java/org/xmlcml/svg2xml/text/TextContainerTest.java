@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.text;
 
 import java.util.List;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;

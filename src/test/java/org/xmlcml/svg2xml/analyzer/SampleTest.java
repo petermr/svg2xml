@@ -1,8 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.junit.Ignore;

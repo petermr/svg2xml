@@ -1,15 +1,13 @@
 package org.xmlcml.svg2xml.util;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.svg2xml.text.FontStyleTestDead;
 
 public class TextFlattenerTest {
 
