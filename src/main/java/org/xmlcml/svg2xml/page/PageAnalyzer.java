@@ -373,7 +373,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		if (analyzerX == null) {
 			throw new RuntimeException("Null analyzer");
 		}
-		List<SVGElement> gList = SVGUtil.getQuerySVGElements(gOrig, ".//svg:g");
+		List<SVGElement> gList = SVGUtil.getQuerySVGElements(gOrig, "*");//.//svg:g");
 		SVGG gOut = analyzerX.createChunkFromList(gList);
 		gOut.setId(chunkId.toString());
 		XMLUtil.copyAttributes(gOrig, gOut);
@@ -645,7 +645,11 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	private void outputImageFiles(String chunkId, ImageAnalyzer imageAnalyzer,
 			List<SVGImage> imageList) {
 		if (imageList.size() == 1) {
-			outputImageFile(chunkId, imageList.get(0));
+			try {
+				outputImageFile(chunkId, imageList.get(0));
+			} catch (RuntimeException e) {
+				
+			}
 		} else {
 			// enumerate images with extra digits
 			int imageCount = imageList.size();
@@ -657,7 +661,11 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				} else {
 					String fileId = chunkId+"."+(i+1);
 					LOG.trace("output image: "+fileId);
-					outputImageFile(fileId, image);
+					try {
+						outputImageFile(fileId, image);
+					} catch (RuntimeException e) {
+						
+					}
 				}
 			}
 		}
