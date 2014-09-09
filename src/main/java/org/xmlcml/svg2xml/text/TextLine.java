@@ -359,6 +359,7 @@ public class TextLine implements Iterable<SVGText> {
 
 	public String toString() {
 		String s;
+		ensureCharacterList();
 		if (getSubLines() != null && getSubLines().size() > 1) {
 			s = "split: \n";
 			for (TextLine splitList : getSubLines()) {
@@ -904,7 +905,7 @@ public class TextLine implements Iterable<SVGText> {
 		return commonestSize;
 	}
 	
-	private Multiset<Double> getFontSizeMultiset() {
+	Multiset<Double> getFontSizeMultiset() {
 		if (fontSizeMultiset == null) {
 			fontSizeMultiset = HashMultiset.create();
 			if (textList != null) {
