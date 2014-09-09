@@ -365,7 +365,7 @@ public class TextLine implements Iterable<SVGText> {
 				s += "   "+splitList+"\n";
 			}
 		} else {
-			s = "chars: "+textList.size() +
+			s = "chars: "+((textList == null) ? "null" : textList.size()) +
 				" Y: "+yCoord+
 				" fontSize: "+fontSize+
 				//" physicalStyle: "+physicalStyle+
