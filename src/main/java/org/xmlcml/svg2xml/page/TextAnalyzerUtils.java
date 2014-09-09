@@ -132,7 +132,11 @@ public class TextAnalyzerUtils {
 	 */
 	public static Integer getScaledYCoord(SVGText text) {
 		Double y = text.getY();
-		return (y == null) ? null : (int) Math.round((y*Y_SCALE));
+		return (y == null ? null : getScaledYCoord(y));
+	}
+	
+	public static Integer getScaledYCoord(Double d) {
+		return (int) Math.round((d * Y_SCALE));
 	}
 
 	private static final double Y_SCALE = 10;
