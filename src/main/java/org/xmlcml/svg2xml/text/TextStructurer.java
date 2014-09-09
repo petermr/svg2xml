@@ -635,7 +635,7 @@ public class TextStructurer {
 			initialScriptLineList = new ArrayList<ScriptLine>();
 			for (TextLine textLine : textLineList) {
 				Real2Range bbox0 = textLine.getBoundingBox();
-				LOG.trace("TL>> "+textLine.getLineString());
+				LOG.trace("TL >> "+textLine.getLineString());
 				if (bbox == null) {
 					bbox = bbox0;
 					scriptLine = new ScriptLine(this);
