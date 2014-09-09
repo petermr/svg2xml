@@ -236,7 +236,7 @@ public class PageAnalyzerTest {
 				" ) [25]. In the present study, we focused on gibbons (Family Hylobatidae), com-monly known as the lesser apes, for which normal tri-chromacy is reported" +
 				" [30]. Gibbons occur in Asia and are the most diverse and speciose of all living apes [31], mak-ing them an ideal group with which to assess the range" +
 				" of L/M opsin genetic variation. We examined the nucleotide variation of both the L and M opsin genes by sequencing the 3.6~3.9-kb genomic region" +
-				" encompassing exon 3 to exon 5 from individuals in five species and three genera of gibbons. </div>",
+				" encompassing exon 3 to exon 5 from individuals in five species and three genera of gibbons. <p /></div>",
 				actual);
 	}
 
