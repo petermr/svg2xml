@@ -129,7 +129,7 @@ public class ColumnMaps {
 		startTabCountFilter = getTabFilter(startXSortedByCount);
 		startTabWithHighestCountList = getTabsWithHighestCount(startTabCountFilter, startXSortedByCount);
 		debug("start", startTabWithHighestCountList);
-		Integer midTabCountFilter = getTabFilter(startXSortedByCount);
+		Integer midTabCountFilter = getTabFilter(midXSortedByCount);
 		midTabWithHighestCountList = getTabsWithHighestCount(midTabCountFilter, midXSortedByCount);
 		debug("mid", midTabWithHighestCountList);
 		endTabCountFilter = getTabFilter(endXSortedByCount);
@@ -160,13 +160,16 @@ public class ColumnMaps {
 			LOG.trace(startX+" "+midX+" "+endX);
 			if (lessThanEqual(startX, midX) && lessThanEqual(startX, endX)) {
 				tab = new Tab("S", startEntry);
-				startXSortedByCoordinate.remove(0);
+				//startXSortedByCoordinate.remove(0);
+				startXList.remove(0);
 			} else if (lessThanEqual(midX, startX) && lessThanEqual(midX, endX)) {
 				tab = new Tab("M", midEntry);
-				midXSortedByCoordinate.remove(0);
+				//midXSortedByCoordinate.remove(0);
+				midXList.remove(0);
 			} else if (lessThanEqual(endX, startX) && lessThanEqual(endX, midX)) {
 				tab = new Tab("E", endEntry);
-				endXSortedByCoordinate.remove(0);
+				//endXSortedByCoordinate.remove(0);
+				endXList.remove(0);
 			} else {
 				LOG.debug("FINISHED");
 				break;
