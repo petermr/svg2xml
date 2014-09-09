@@ -29,12 +29,14 @@ public class ScriptContainerTest {
 	private static final String[] STRINGS = {}; 
 	public final static Logger LOG = Logger.getLogger(ScriptContainerTest.class);
 	
+	String lineSeparator = System.getProperty("line.separator");
+	
 	@Test
 	public void test3WordContainer() {
 		TextStructurer textContainer = 
 				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_1SA_SVG);
 		Assert.assertEquals("1a", 
-				"TextStructurer: 1chars: 9 Y: 39.615 fontSize: 7.97 >>Page6of14\n",
+				"TextStructurer: 1" + lineSeparator + "chars: 9 Y: 39.615 fontSize: 7.97 >>Page6of14" + lineSeparator,
 				textContainer.toString());
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);

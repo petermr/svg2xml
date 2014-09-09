@@ -1295,14 +1295,14 @@ public class TextStructurer {
 	}
 
 	public String toString() {
-		String LineSeparator = System.getProperty("line.separator");
+		String lineSeparator = System.getProperty("line.separator");
 		StringBuilder sb = new StringBuilder();
 		if (textLineList == null) {
 			sb.append("null");
 		} else {
-			sb.append("TextStructurer: "+ textLineList.size() + LineSeparator);
+			sb.append("TextStructurer: "+ textLineList.size() + lineSeparator);
 			for (TextLine textLine : textLineList) {
-				sb.append(textLine.toString()+"\n");
+				sb.append(textLine.toString() + lineSeparator);
 			}
 		}
 		return sb.toString();
