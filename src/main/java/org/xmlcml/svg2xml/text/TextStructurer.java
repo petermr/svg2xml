@@ -1280,11 +1280,12 @@ public class TextStructurer {
 	}
 
 	public String toString() {
+		String LineSeparator = System.getProperty("line.separator");
 		StringBuilder sb = new StringBuilder();
 		if (textLineList == null) {
 			sb.append("null");
 		} else {
-			sb.append("TextStructurer: "+ textLineList.size());
+			sb.append("TextStructurer: "+ textLineList.size() + LineSeparator);
 			for (TextLine textLine : textLineList) {
 				sb.append(textLine.toString()+"\n");
 			}
