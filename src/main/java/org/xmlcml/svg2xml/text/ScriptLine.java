@@ -399,6 +399,9 @@ public class ScriptLine implements Iterable<TextLine> {
 		String result = "";
 		for (TextLine part : parts) {
 			String character = "";
+			if (part == null) {
+				continue;
+			}
 			if (part.getSuscript() == Suscript.SUB) {
 				character = "_";
 			} else if (part.getSuscript() == Suscript.SUP) {
@@ -422,10 +425,10 @@ public class ScriptLine implements Iterable<TextLine> {
 		while (true) {
 			SVGText character = null;
 			RealRange currentRange = (rangeCounter >= rangeArray.size() ? null : rangeArray.get(rangeCounter));
-			Double lowestX = 9999999.;
+			Double lowestX = Double.MAX_VALUE;//9999999.0;
 			Integer lowestLine = null;
 			SVGText lowestCharacter = null;
-			for (int iline = 0; iline < textLineList.size(); iline++) {
+			for (int iline = 0; iline < nlines; iline++) {
 				TextLine textLine = textLineList.get(iline);
 				int lineCounter = lineCounterArray.elementAt(iline);
 				character = (lineCounter >= textLine.size() ? null : textLine.get(lineCounter));
@@ -444,15 +447,15 @@ public class ScriptLine implements Iterable<TextLine> {
 					word = new ScriptWord(nlines);
 					scriptWordList.add(word);
 				}
-				if (character == null) {
+				/*if (character == null) {
 					break;
-				}
+				}*/
 				word.add(lowestCharacter, lowestLine);
 				lineCounterArray.incrementElementAt(lowestLine);
 			} else {
 				word = null;
 				rangeCounter++;
-				currentRange = (rangeCounter >= rangeArray.size() ? null : rangeArray.get(rangeCounter));
+				//currentRange = (rangeCounter >= rangeArray.size() ? null : rangeArray.get(rangeCounter));
 			}
 			if (lowestLine == null && character == null) {
 				break;
