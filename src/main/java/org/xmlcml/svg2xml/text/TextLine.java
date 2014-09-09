@@ -54,9 +54,6 @@ public class TextLine implements Iterable<SVGText> {
 	private static final String SERIF = "Serif";
 	private final static Logger LOG = Logger.getLogger(TextLine.class);
 	private final static PrintStream SYSOUT = System.out;
-	static { 
-		LOG.setLevel(Level.DEBUG);
-	}
 
 	private static final double ITALIC = -0.18;
 	private static final double BOLD = 0.25;
