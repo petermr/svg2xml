@@ -320,6 +320,18 @@ public class TextStructurer {
 					sum += ntext;
 				}
 				fontCountMap.put(fontSize, sum);
+			} else {
+				Multiset<Double> sizes = textLine.getFontSizeMultiset();
+				for (Entry<Double> size : sizes.entrySet()) {
+					Integer ntext = size.getCount();
+					Integer sum = fontCountMap.get(size.getElement());
+					if (sum == null) {
+						sum = ntext;
+					} else {
+						sum += ntext;
+					}
+					fontCountMap.put(size.getElement(), sum);
+				}
 			}
 		}
 		getCommonestFontSize(fontCountMap);
@@ -574,7 +586,7 @@ public class TextStructurer {
 	}
 
 	public List<ScriptLine> getInitialScriptLineList() {
-		getTextLineChunkBoxesAndInitialiScriptLineList();
+		getTextLineChunkBoxesAndInitialScriptLineList();
 		return initialScriptLineList;
 	}
 
@@ -671,6 +683,9 @@ public class TextStructurer {
 		Double lastY = null;
 		for (TextLine textLine : textLineList) {
 			Double y = (textLine == null ? null : textLine.getYCoord());
+			if (y == null) {
+				y = textLine.getSVGTextCharacters().get(0).getY();
+			}
 			// lines with same Y?
 			if (lastTextLine != null && Real.isEqual(lastY, y, yEps)) {
 				lastTextLine.merge(textLine);
@@ -936,7 +951,7 @@ public class TextStructurer {
 			Double fontSizeB = textLineB.getFontSize();
 			if (fontSizeA != null && fontSizeB != null) {
 				double ratioAB = fontSizeA / fontSizeB;
-				// line increases beyond commonest size?
+				//Line increases beyond commonest size?
 				if (Real.isEqual(fontSizeA, commonestFontSize, 0.01) 
 						&& ratioAB < 1./LARGER_FONT_SIZE_RATIO) {
 					splitArray.addElement(i);
