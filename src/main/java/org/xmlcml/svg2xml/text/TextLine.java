@@ -339,22 +339,31 @@ public class TextLine implements Iterable<SVGText> {
 	String getLineContent() {
 		if (lineContent == null) {
 			StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < textList.size(); i++) {
-				SVGText text = textList.get(i);
-				String ch = text.getText();
-				sb.append(ch);
+
+			if (textList != null) {
+				for (int i = 0; i < textList.size(); i++) {
+					SVGText text = textList.get(i);
+					String ch = text.getText();
+					sb.append(ch);
+				}
 			}
 			lineContent = sb.toString();
+
 		}
-		LOG.trace("lineContent: "+lineContent);
+		LOG.trace("lineContent: " + lineContent);
 		return lineContent;
 	}
 
 	public boolean isBold() {
-		for (SVGText character : textList) {
-			if (!character.isBold()) return false;
+		if (textList != null) {
+			for (SVGText character : textList) {
+				if (!character.isBold())
+					return false;
+			}
+			return true;
 		}
-		return true;
+		return false;
+
 	}
 
 	public String toString() {
@@ -366,7 +375,7 @@ public class TextLine implements Iterable<SVGText> {
 				s += "   "+splitList+"\n";
 			}
 		} else {
-			s = "chars: "+textList.size() +
+			s = "chars: "+((textList == null) ? "null" : textList.size()) +
 				" Y: "+yCoord+
 				" fontSize: "+fontSize+
 				//" physicalStyle: "+physicalStyle+
