@@ -156,7 +156,7 @@ public class GraphicAnalyzerTest {
 	private void testExtractionOfTextWithTextStructurer(GraphicAnalyzer graphicAnalyzer,
 			TextOrientation textOrientation, String root, String refHtml) {
 		String root1 = root + "_"+textOrientation.toString().toLowerCase();
-		testSVGandHTML(graphicAnalyzer, textOrientation, "target/"+root1+".svg",  "target/"+root1+".html", root1, refHtml);
+		testSVGandHTML(graphicAnalyzer, textOrientation, "target/"+root1+".svg", "target/"+root1+".html", root1, refHtml);
 	}
 
 
@@ -189,9 +189,9 @@ public class GraphicAnalyzerTest {
 	public void testMaths66() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_6_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "maths66",
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\">AB </div>");
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\">A B </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "maths66",
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.51.01.52.0 </div>");
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.5 1.0 1.5 2.0 </div>");
 	}
 	
 	/** 
@@ -201,9 +201,9 @@ public class GraphicAnalyzerTest {
 	public void testMaths68() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_8_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, "maths68",
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\">255075100 Taxon sampling (%) </div>");
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\">25 50 75 100 Taxon sampling (%) </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "maths68",
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.40.60.81.01.21.4 0.40.60.81.01.21.4 Extinction rate ( μ ) </div>");
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Speciation rate ( λ ) 0.4 0.6 0.8 1.0 1.2 1.4 0.4 0.6 0.8 1.0 1.2 1.4 Extinction rate ( μ ) </div>");
 		}
 	
 	/** 
