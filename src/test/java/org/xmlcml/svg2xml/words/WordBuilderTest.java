@@ -34,15 +34,15 @@ public class WordBuilderTest {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2a.svg")));
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
-		Assert.assertEquals("words", 126, wordList.size());
+		Assert.assertEquals("words", 130, wordList.size());
 		Assert.assertEquals("words",  "[Luscinia  , *, Ficedula, *, Turdus, *, Mimus, *, Sturnus, *, 0.5, Troglodytes, *, Sitta, "
 				+ "Regulus, Zosterops, 0.77, *, 0.66, Leiothrix, 0.93, Phylloscopus, Pycnonotus, *, Donacobius, *, Acrocephalus, "
 				+ "0.73, 0.83, Hirundo, Parus, *, Icterus, *, Dendroica, *, Emberiza, *, Serinus, *, 0.71, Motacilla, *, 0.91, "
 				+ "Lonchura, Nectarinia, *, Promerops, Petroica, *, Eopsaltria, Ptiloris, *, Paradisaea, *, Manucodia, *, Pica, *, *, "
 				+ "Corvus, *, Cyanocorax, *, Dicrurus, Rhipidura, *, Vireo, 0.72 a, 5, *, Cyclarhis, 4, *, *, Oriolus, 3, c, Coracina, 0.78, "
-				+ "Toxorhamphus, 0.84, *, 6, Cnemophilus, b 0.94, Philesturnus, Orthonyx, *, Pomatostomus, 0.5, Lichenostomus, b*, 2, "
+				+ "Toxorhamphus, 0.84, *, 6, Cnemophilus, b 0.94, Philesturnus, Orthonyx, *, Pomatostomus, 0.5, Lichenostomus, b, *, 2, "
 				+ "Amytornis #, *, Gerygone, Ailuroedus, *, *, Sericulus, a, 2, Menura, Tyrannus, *, Myiarchus, *, *, Camptostoma, *, "
-				+ "Onychorhynchus, *, 1b, Manacus, *, *, Hypocnemis, *, *, Phlegopsis, 1a, Pitta, Acanthisitta, ab, 12]", 
+				+ "Onychorhynchus, *, 1, b, Manacus, *, *, Hypocnemis, *, *, Phlegopsis, 1a, Pitta, Acanthisitta, a, b, 1, 2]", 
 				wordList.toString());
 	}
 	
