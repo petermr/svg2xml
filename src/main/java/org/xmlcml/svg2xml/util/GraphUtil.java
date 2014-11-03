@@ -205,7 +205,7 @@ public class GraphUtil {
 	public static Double parseDouble(String value) {
 		Double d = null;
 		try {
-			d = new Double(value);
+			d = Double.valueOf(value);
 		} catch (Exception e) {
 			// deliberate
 		}

@@ -220,7 +220,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		for (SVGElement svgElement : childElements) {
 			Attribute attribute = SVGUtil.getSVGXAttributeAttribute(svgElement, SVG2XMLConstantsX.Z);
 			if (attribute != null) {
-				Double z = new Double(attribute.getValue());
+				Double z = Double.valueOf(attribute.getValue());
 				elementByZMap.put(z, svgElement);
 				rawList.add(z);
 			}

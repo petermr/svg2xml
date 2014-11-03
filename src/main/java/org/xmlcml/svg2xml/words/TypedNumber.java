@@ -143,7 +143,7 @@ public class TypedNumber {
 	private void createDouble(String value) {
 		if (number == null) {
 			try {
-				Double dubble = new Double(value);
+				Double dubble = Double.valueOf(value);
 				number = dubble;
 				dataType = XMLConstants.XSD_DOUBLE;
 			} catch (Exception e1) {

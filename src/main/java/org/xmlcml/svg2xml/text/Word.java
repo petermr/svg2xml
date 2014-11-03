@@ -132,7 +132,7 @@ public class Word {
 	public Double translateToDouble() {
 		Double d = null;
 		try {
-			d = new Double(toString());
+			d = Double.valueOf(toString());
 		} catch (NumberFormatException e) {
 			// cannot translate
 		}
