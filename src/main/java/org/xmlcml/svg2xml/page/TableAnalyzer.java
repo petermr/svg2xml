@@ -13,7 +13,6 @@ import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.graphics.svg.path.Path2ShapeConverter;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.table.TableTable;
 
@@ -45,7 +44,7 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 
 	public void analyze() {
 		List<SVGShape> shapeList = shapeAnalyzer.getShapeList();
-		shapeList = Path2ShapeConverter.removeDuplicateShapes(shapeList);
+		shapeList = SVGUtil.removeDuplicateShapes(shapeList);
 		List<SVGText> textList = textAnalyzer.getTextCharacters();
 //		pathBox = SVGUtil.createBoundingBox(pathList);
 //		RealRange pathBoxXRange = pathBox.getXRange();

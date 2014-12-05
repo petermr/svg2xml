@@ -17,7 +17,6 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.graphics.svg.path.Path2ShapeConverter;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlElement;
@@ -109,7 +108,7 @@ public class TableTable extends TableChunk {
 		
 	private RealRangeArray createVerticalMaskFromPaths() {
 	
-		this.shapeList = Path2ShapeConverter.removeDuplicateShapes(shapeList);
+		this.shapeList = SVGUtil.removeDuplicateShapes(shapeList);
 		this.pathBox = SVGUtil.createBoundingBox(shapeList);
 		totalBox = totalBox.plus(pathBox);
 		// because some "lines" (e.g. in BMC) are multiple paths. This is a mess and needs more 
