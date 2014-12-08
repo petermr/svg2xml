@@ -32,7 +32,6 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.image.ImageConverter;
-import org.xmlcml.graphics.svg.path.Path2ShapeConverter;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
@@ -188,7 +187,6 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 * chunk to avoid problems with widely distributed elements.
 	 */
 	public void splitChunksAndCreatePage() {
-		Path2ShapeConverter path2ShapeConverter = new Path2ShapeConverter();
  		List<SVGElement> gList = createWhitespaceChunkList();
 		pageIo.setSvgOutPage(pageIo.createBlankSVGOutPageWithNumberAndSize());
 		pageIo.ensureWhitespaceSVGChunkList();
@@ -196,7 +194,6 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			SVGG gChunk = (SVGG) gList.get(ichunk);
 			//String chunkId = this.getHumanPageNumber()+"."+ichunk;
 			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".A.svg"));
-			path2ShapeConverter.convertPathsToShapes(gChunk);//TODO does everything every time
 			//SVGSVG.wrapAndWriteAsSVG(gChunk, new File("target/chunk."+chunkId+".C.svg"));
 			ChunkAnalyzer chunkAnalyzer = createSpecificAnalyzer(gChunk);
 			if (!(chunkAnalyzer instanceof TextAnalyzer)) {
