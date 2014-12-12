@@ -163,7 +163,7 @@ public class PDFAnalyzerTest {
 		analyzePDF("../pdfs/plosone/journal.pone.0077058.pdf"); // 
 	}
 
-	private void analyzePDF(String filename) {
+	public static void analyzePDF(String filename) {
 		File file = new File(filename);
 		if (file.exists() && !file.isDirectory()) {
 			new PDFAnalyzer().analyzePDFFile(file);
