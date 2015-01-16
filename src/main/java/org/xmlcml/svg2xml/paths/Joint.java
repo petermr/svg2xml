@@ -10,6 +10,7 @@ import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 import org.xmlcml.svg2xml.paths.ComplexLine.SideOrientation;
 import org.xmlcml.graphics.svg.SVGLine;
 
+@Deprecated // moved to SVG
 public class Joint implements Comparable<Joint> {
 	
 	protected Real2 point;

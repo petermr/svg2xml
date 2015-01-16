@@ -16,6 +16,7 @@ import org.xmlcml.svg2xml.paths.ComplexLine;
 import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
 
 
+@Deprecated // moved to SVGß
 public class BoundingBoxManager {
 
 	private final static Logger LOG = Logger.getLogger(BoundingBoxManager.class);

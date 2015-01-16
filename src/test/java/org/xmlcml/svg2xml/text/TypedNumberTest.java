@@ -4,15 +4,14 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
-
 import org.junit.Test;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.words.TypedNumber;
-import org.xmlcml.svg2xml.words.TypedNumberList;
+import org.xmlcml.graphics.svg.words.TypedNumber;
+import org.xmlcml.graphics.svg.words.TypedNumberList;
 import org.xmlcml.xml.XMLConstants;
 
 public class TypedNumberTest {

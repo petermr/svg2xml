@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.paths;
 
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.xmlcml.graphics.svg.SVGLine;
  * @author pm286
  *
  */
+@Deprecated // moved to SVG
 public class ComplexLine {
 
 	private final static Logger LOG = Logger.getLogger(ComplexLine.class);

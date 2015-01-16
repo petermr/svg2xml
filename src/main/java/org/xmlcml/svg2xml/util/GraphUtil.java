@@ -26,6 +26,7 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.page.BoundingBoxManager;
 import org.xmlcml.xml.XMLConstants;
 
+@Deprecated // use SVG
 public class GraphUtil {
 	private final static Logger LOG = Logger.getLogger(GraphUtil.class);
 	

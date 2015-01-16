@@ -1,6 +1,5 @@
 package org.xmlcml.svg2xml.page;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -151,20 +150,20 @@ public class TextAnalyzerUtils {
 		return charactersByY;
 	}
 
-
-	public static List<Chunk> castToChunks(List<SVGElement> chunkElements) {
-		List<Chunk> chunks = new ArrayList<Chunk>();
-		for (SVGElement chunkElement : chunkElements) {
-			Chunk chunk = null;
-			if (!(chunkElement instanceof Chunk)) {
-				chunk = Chunk.createAndReplace(chunkElement);
-			} else {
-				chunk = (Chunk) chunkElement;
-			}
-			chunks.add(chunk);
-		}
-		return chunks;
-	}
+//
+//	public static List<Chunk> castToChunks(List<SVGElement> chunkElements) {
+//		List<Chunk> chunks = new ArrayList<Chunk>();
+//		for (SVGElement chunkElement : chunkElements) {
+//			Chunk chunk = null;
+//			if (!(chunkElement instanceof Chunk)) {
+//				chunk = Chunk.createAndReplace(chunkElement);
+//			} else {
+//				chunk = (Chunk) chunkElement;
+//			}
+//			chunks.add(chunk);
+//		}
+//		return chunks;
+//	}
 
 
 }
