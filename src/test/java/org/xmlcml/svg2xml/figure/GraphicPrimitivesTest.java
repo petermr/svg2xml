@@ -8,9 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Assert;
-
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Util;
@@ -24,13 +23,13 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine.CombType;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine.LineOrientation;
+import org.xmlcml.graphics.svg.linestuff.Joint;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
-import org.xmlcml.svg2xml.paths.ComplexLine;
-import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
-import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svg2xml.paths.Joint;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class GraphicPrimitivesTest {

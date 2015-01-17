@@ -7,7 +7,7 @@ import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine.LineOrientation;
 
 /** support routines for building Axis for tests.
  * 

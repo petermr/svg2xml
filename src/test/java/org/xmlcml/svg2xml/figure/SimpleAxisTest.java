@@ -3,7 +3,7 @@ package org.xmlcml.svg2xml.figure;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine.LineOrientation;
 
 public class SimpleAxisTest {
 

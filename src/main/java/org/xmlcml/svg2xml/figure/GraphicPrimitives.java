@@ -21,10 +21,10 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.paths.ComplexLine;
-import org.xmlcml.svg2xml.paths.ComplexLine.CombType;
-import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
-import org.xmlcml.svg2xml.paths.Joint;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine.CombType;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine.LineOrientation;
+import org.xmlcml.graphics.svg.linestuff.Joint;
 
 public class GraphicPrimitives {
 

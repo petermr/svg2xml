@@ -12,8 +12,8 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.svg2xml.paths.ComplexLine;
-import org.xmlcml.svg2xml.paths.ComplexLine.LineOrientation;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine;
+import org.xmlcml.graphics.svg.linestuff.ComplexLine.LineOrientation;
 
 
 @Deprecated // moved to SVGß
