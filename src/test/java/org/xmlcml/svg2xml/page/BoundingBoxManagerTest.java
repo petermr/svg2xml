@@ -2,14 +2,11 @@ package org.xmlcml.svg2xml.page;
 
 import java.util.List;
 
-
 import org.junit.Assert;
-
 import org.junit.Test;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
-import org.xmlcml.svg2xml.page.BoundingBoxManager;
-import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
+import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager.BoxEdge;
 
 /** tests BoundingBoxManager which manages a list of Bounding boxes
  * 

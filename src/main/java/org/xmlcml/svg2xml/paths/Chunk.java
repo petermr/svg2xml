@@ -20,9 +20,9 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager;
+import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager.BoxEdge;
 import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
-import org.xmlcml.svg2xml.page.BoundingBoxManager;
-import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.page.PageIO;
 
 /**
