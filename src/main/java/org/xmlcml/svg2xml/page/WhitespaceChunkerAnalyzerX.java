@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.page;
 
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +14,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
+import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.paths.Chunk;
 
 /**

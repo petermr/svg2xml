@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.page;
 
-import org.xmlcml.svg2xml.page.BoundingBoxManager.BoxEdge;
+import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager.BoxEdge;
+
 
 
 public class SplitterParams {
