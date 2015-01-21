@@ -207,7 +207,7 @@ public class PageIO {
 				File target = new File("target/");
 				target.mkdirs();
 				File svgFile = new File(target, pageRoot+SVG2XMLConstantsX.DOT_SVG);
-				LOG.debug("Path: "+svgFile.getAbsolutePath());
+				LOG.trace("Path: "+svgFile.getAbsolutePath());
 				SVGUtil.debug(
 						finalSVGPage, new FileOutputStream(svgFile), 1);
 			} catch (Exception e) {

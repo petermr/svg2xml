@@ -189,9 +189,9 @@ public class PageAnalyzerTest {
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		int i = 0;
 		for (AbstractContainer container : containerList) {
-			Fixtures.HTML_MULTIPLE312_DIR.mkdirs();
+			new File("target/junk/").mkdirs();
 			SVGUtil.debug(container.createHtmlElement(), 
-					new FileOutputStream(new File(Fixtures.HTML_MULTIPLE312_DIR, "page2."+(i++)+".html")), 1);
+				new FileOutputStream(new File("target/junk/page2."+(i++)+".html")), 1);
 		}
 	}
 	
