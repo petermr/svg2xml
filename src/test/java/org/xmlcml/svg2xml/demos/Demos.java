@@ -5,8 +5,9 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzerTest;
 public class Demos {
 
 	public static void main(String[] args) {
-			ebola1();
+//			ebola1();
 //			astro1();
+			plot1();
 
 	}
 
@@ -18,4 +19,10 @@ public class Demos {
 	private static void astro1() {
 		PDFAnalyzerTest.analyzePDF(("demos/astro/0004-637X_778_1_1.pdf")); 
 	}
+	
+	private static void plot1() {
+		PDFAnalyzerTest.analyzePDF(("demos/plot/22649_Sada_2012-1.pdf")); 
+//		analyzePDFFile
+	}
+	
 }

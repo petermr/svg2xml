@@ -5,12 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<!-- changed project -->
+<!--
 	<parent>
 		<groupId>uk.ac.cam.ch.wwmm</groupId>
 		<artifactId>wwmm-parent</artifactId>
 		<version>5-SNAPSHOT</version>
 	</parent>
-
+-->
 	<groupId>org.xml-cml</groupId>
 	<artifactId>svg2xml</artifactId>
 	<version>0.1-SNAPSHOT</version>
@@ -51,12 +52,14 @@
 			<version>0.1-SNAPSHOT</version>
 
 		</dependency>
+<!--
 
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
 		</dependency>
+-->
 
 		<!-- test -->
 		<dependency>
@@ -66,13 +69,14 @@
 			<scope>test</scope>
 		</dependency>
 
+<!--
 		<dependency>
 			<groupId>org.xml-cml</groupId>
 			<artifactId>euclid-testutil</artifactId>
 			<version>1.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-
+-->
 		<dependency>
 			<version>1.1-SNAPSHOT</version>
 			<groupId>org.xml-cml</groupId>
