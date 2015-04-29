@@ -42,7 +42,6 @@ public class RawWords implements Iterable<Word> {
 		return wordList.get(index);
 	}
 	
-	@Override
 	public Iterator<Word> iterator() {
 		return wordList.iterator();
 	}

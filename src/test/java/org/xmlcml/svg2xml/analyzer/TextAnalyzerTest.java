@@ -85,6 +85,7 @@ public class TextAnalyzerTest {
 	 * does not detect spaces
 	 * 
 	 */
+
 	public void getTextLinesParaSuscriptTest() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		textStructurer.getLinesInIncreasingY();
@@ -126,7 +127,7 @@ public class TextAnalyzerTest {
 		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795mgL h .",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
-			"by theArrhenius equation k =k exp(− E /RT), where E is the",
+			"by theArrhenius equation k =k exp(��� E /RT), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
@@ -136,7 +137,7 @@ public class TextAnalyzerTest {
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
 			"5"+" "+MINUS+" "+"1",
-			"1.11×10 Jmol .",
+			"1.11��10 Jmol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
 			"micellesolutioniscontrolledbydifferentfactors.Thereactionat"
@@ -159,7 +160,7 @@ public class TextAnalyzerTest {
 		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"Thetemperaturedependenceoftherateconstantsisdescribed",
-			"by theArrhenius equation k =k exp(− E /RT), where E is the",
+			"by theArrhenius equation k =k exp(��� E /RT), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
@@ -169,7 +170,7 @@ public class TextAnalyzerTest {
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
 			"5"+" "+MINUS+" "+"1",
-			"1.11×10 Jmol .",
+			"1.11��10 Jmol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
 			"micellesolutioniscontrolledbydifferentfactors.Thereactionat"
@@ -194,7 +195,7 @@ public class TextAnalyzerTest {
 		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"The temperature dependence of the rate constants is described",
-			"by the Arrhenius equation k = k exp(− E /RT ), where E is the",
+			"by the Arrhenius equation k = k exp(��� E /RT ), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
@@ -204,7 +205,7 @@ public class TextAnalyzerTest {
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
 			"5"+" "+MINUS+" "+"1",
-			"1.11 × 10 J mol .",
+			"1.11 �� 10 J mol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
 			"micelle solution is controlled by different factors. The reaction at"
@@ -230,7 +231,7 @@ public class TextAnalyzerTest {
 		    new String[]{String.valueOf(MINUS)+" "+"1"+" "+MINUS+" "+"1",
 			"The rate constant is 0.61795 mg L h .",
 			"The temperature dependence of the rate constants is described",
-			"by the Arrhenius equation k = k exp(− E /RT ), where E is the",
+			"by the Arrhenius equation k = k exp(��� E /RT ), where E is the",
 			"0 a a",
 			"activation energy. Taking the natural logarithm of this equa-",
 			"tion and combining the k values obtained for the reaction at",
@@ -240,7 +241,7 @@ public class TextAnalyzerTest {
 			"peratures. Therefore, the calculated activation energy (E ) is",
 			"a",
 			"5"+" "+MINUS+" "+"1",
-			"1.11 × 10 J mol .",
+			"1.11 �� 10 J mol .",
 			"The above analysis seems to indicate that in different reac-",
 			"tion temperature ranges the solvothermal reaction in the reverse",
 			"micelle solution is controlled by different factors. The reaction at"
@@ -509,12 +510,12 @@ public class TextAnalyzerTest {
 //				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
 //"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The rate constant is 0.61795 mg L</span>" +
 //"<sup>" +
-//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
+//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>��� </span>" +
 //"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
 //"</sup>" +
 //"<span style='font-size:9.465px;font-family:TimesNewRoman;'>h</span>" +
 //"<sup>" +
-//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>− </span>" +
+//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>��� </span>" +
 //"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
 //"</sup>" +
 //"<span style='font-size:9.465px;font-family:TimesNewRoman;'>.</span>" +
@@ -853,7 +854,7 @@ public class TextAnalyzerTest {
 //				"<span style=\"font-size:9.465px;font-family:TimesNewRoman;\">.</span></p>",
 				textLineHtml.toXML());
 	}
-//	<p xmlns="http://www.w3.org/1999/xhtml"><span>The rate constant is 0.61795 mg L</span><sup><span>− </span><span>1</span></sup><span>h</span><sup><span>− </span><span>1</span></sup><span>.</span></p>	
+//	<p xmlns="http://www.w3.org/1999/xhtml"><span>The rate constant is 0.61795 mg L</span><sup><span>��� </span><span>1</span></sup><span>h</span><sup><span>��� </span><span>1</span></sup><span>.</span></p>	
 	
 //	@Test
 //	public void testCreateTextListHtmlDiv() {

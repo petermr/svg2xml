@@ -4,14 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import org.junit.Assert;
 import nu.xom.Element;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.cml.testutil.JumboTestUtils;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -20,9 +19,9 @@ import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PageAnalyzerTest;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.testutil.TestUtils;
 import org.xmlcml.xml.XMLUtil;
 
 public class PageSplitterAndHtmlTest {
@@ -300,7 +299,7 @@ public class PageSplitterAndHtmlTest {
 				"<span style='font-size:8.468px;font-style:bold;font-family:TimesNewRoman;' />" +
 				"<span style='font-size:8.468px;font-family:TimesNewRoman;'>conversion</span>" +
 				"<span style='font-size:8.468px;font-style:bold;font-family:TimesNewRoman;' />" +
-				"<span style='font-size:8.468px;font-family:TimesNewRoman;'>for a conventional radical polymerization with constant rate of initiation (– – –) and a living radical polymerization ( ).</span>" +
+				"<span style='font-size:8.468px;font-family:TimesNewRoman;'>for a conventional radical polymerization with constant rate of initiation (��� ��� ���) and a living radical polymerization ( ).</span>" +
 				"</p>" +
 				"</div>" +
 				"");
@@ -325,7 +324,7 @@ public class PageSplitterAndHtmlTest {
 				"</sup>" +
 				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>Radical polymerization is a chain reaction. The chains are initiated by radicals (formed from an initiator) adding to monomer. Chain propagation then involves the sequential addition of monomer units to the radical (P</span>" +
 				"<sup>" +
-				"<span style='font-size:7.472px;font-family:Times-Roman;'>•</span>" +
+				"<span style='font-size:7.472px;font-family:Times-Roman;'>���</span>" +
 				"</sup>" +
 				"<sub>" +
 				"<span style='font-size:7.472px;font-style:italic;font-family:TimesNewRoman;'>n</span>" +
@@ -338,7 +337,7 @@ public class PageSplitterAndHtmlTest {
 				"<span style='font-size:7.472px;color:red;font-family:MTSYN;'>"+(char)8722+" </span>" +
 				"<span style='font-size:7.472px;font-family:TimesNewRoman;'>7</span>" +
 				"</sup>" +
-				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>M, and individual chains grow for 5–10 s before terminating. Chains are continuously formed, propagate, and are terminated by radical–radical reaction. The molecular weight of chains formed in the early stages of polymerization is high and will reduce with conversion because of monomer depletion (Fig. 1). The breadth of the molecular-weight distribution and polydispersity is governed by statistical factors. The polydispersity, expressed in terms of the ratio of weight to number average molecular weights,</span>" +
+				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>M, and individual chains grow for 5���10 s before terminating. Chains are continuously formed, propagate, and are terminated by radical���radical reaction. The molecular weight of chains formed in the early stages of polymerization is high and will reduce with conversion because of monomer depletion (Fig. 1). The breadth of the molecular-weight distribution and polydispersity is governed by statistical factors. The polydispersity, expressed in terms of the ratio of weight to number average molecular weights,</span>" +
 				"<sup>" +
 				"<span style='font-size:7.472px;color:red;font-family:MTSYN;'>"+(char)8727+"</span>" +
 				"</sup>" +
@@ -374,9 +373,9 @@ public class PageSplitterAndHtmlTest {
 		Element ref = XMLUtil.parseXML("" +
 				"<div xmlns='http://www.w3.org/1999/xhtml'>" +
 				"<p>" +
-				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>free radicals to undergo radical–radical termination means that, for the case of radical polymerization, all chains cannot be simultaneously active. To confer living character on a radical polymerization, it is necessary to suppress or render insignificant all processes that terminate chains irreversibly. Thus, living radical polymerization only becomes possible in the presence of reagents that react with the propagating radicals (P</span>" +
+				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>free radicals to undergo radical���radical termination means that, for the case of radical polymerization, all chains cannot be simultaneously active. To confer living character on a radical polymerization, it is necessary to suppress or render insignificant all processes that terminate chains irreversibly. Thus, living radical polymerization only becomes possible in the presence of reagents that react with the propagating radicals (P</span>" +
 				"<sup>" +
-				"<span style='font-size:7.472px;font-family:Times-Roman;'>•</span>" +
+				"<span style='font-size:7.472px;font-family:Times-Roman;'>���</span>" +
 				"</sup>" +
 				"<sub>" +
 				"<span style='font-size:7.472px;font-style:italic;font-family:TimesNewRoman;'>n</span>" +
@@ -405,7 +404,7 @@ public class PageSplitterAndHtmlTest {
 				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>2).</span>" +
 				"</p>" +
 				"<p>" +
-				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>The living radical polymerization techniques that have recently received greatest attention are nitroxide-mediated polymerization (NMP), atom-transfer radical polymerization (ATRP), and reversible addition–fragmentation chain transfer (RAFT). The NMP technique was devised in our laboratories in the early 1980s,</span>" +
+				"<span style='font-size:9.963px;font-family:TimesNewRoman;'>The living radical polymerization techniques that have recently received greatest attention are nitroxide-mediated polymerization (NMP), atom-transfer radical polymerization (ATRP), and reversible addition���fragmentation chain transfer (RAFT). The NMP technique was devised in our laboratories in the early 1980s,</span>" +
 				"<sup>" +
 				"<span style='font-size:7.472px;font-family:TimesNewRoman;'>[10]</span>" +
 				"</sup>" +
@@ -614,7 +613,7 @@ public class PageSplitterAndHtmlTest {
 		//Element element = textAnalyzer.createHtmlDivWithParas();
 		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
 		LOG.trace(ref.toXML()+"\n\n"+element.toXML());
-		JumboTestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
+		TestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
 		try {
 			Nodes nodes = element.query(".//@style");
 			for (int i = 0; i < nodes.size(); i++) {

@@ -200,7 +200,6 @@ public class PDFAnalyzer {
 		createIndexesAndRemoveDuplicates();
 		try {
 			FileUtils.copyDirectory(pdfIo.getRawSVGPageDirectory(), pdfIo.getExistingOutputDocumentDir(), new FileFilter() {
-				@Override
 				public boolean accept(File pathname) {
 					return ("png".equals(FilenameUtils.getExtension(pathname.getName())));
 				}

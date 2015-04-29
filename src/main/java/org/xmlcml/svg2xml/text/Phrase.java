@@ -39,7 +39,6 @@ public class Phrase  extends LineChunk implements Iterable<Word> {
 		return wordList.get(index);
 	}
 	
-	@Override
 	public Iterator<Word> iterator() {
 		return wordList.iterator();
 	}

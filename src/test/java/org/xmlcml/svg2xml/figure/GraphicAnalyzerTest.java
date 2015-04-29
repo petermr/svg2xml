@@ -266,9 +266,9 @@ public class GraphicAnalyzerTest {
 				" 0.20   0.10   0.10   0.00   0.00   0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.05   <p />" +
 				"<b>dN of  </b> <b><i>-tub  </i></b> <b>dN of  </b> <b><i>-tub </i></b> </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, "scatterplot5", 
-				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>dS of </b> <b><i>EF-1</i></b> Δ null <p /><b>dN of </b>" +
-				" Ε <b><i>-tub </i></b> <b>p-distance of rDNA cluster </b>" +
-				" <b>p-distance of intron within </b> <b><i>EF-1</i></b> Δ <sup>null</sup> <p /><b>dS of </b> Ε <b><i>-tub </i></b> </div>");
+				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>dS of </b> <b><i>EF-1</i></b> μ null <p /><b>dN of </b>" +
+				" μ <b><i>-tub </i></b> <b>p-distance of rDNA cluster </b>" +
+				" <b>p-distance of intron within </b> <b><i>EF-1</i></b> μ <sup>null</sup> <p /><b>dS of </b> μ <b><i>-tub </i></b> </div>");
 	}
 	
 	//=============================================
