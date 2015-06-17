@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlMenuSystem;
@@ -26,6 +27,7 @@ import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 public class PDFAnalyzerIO {
 	
 	private static final Logger LOG = Logger.getLogger(PDFAnalyzerIO.class);
+	static {LOG.setLevel(Level.DEBUG);}
 
 	public static final File TARGET_DIR = new File("target");
 	public static final File OUTPUT_DIR = new File(TARGET_DIR, "output");
@@ -60,7 +62,9 @@ public class PDFAnalyzerIO {
 	 * Directory where html are kept, e.g. target/svg/foo/html/ or target/svg/foo/
 	 */
 	private File htmlDir;
-	
+
+//	private File finalSvgDirectory;
+
 	private PDFAnalyzer pdfAnalyzer;
 
 	public PDFAnalyzerIO(PDFAnalyzer pdfAnalyzer) {
@@ -95,6 +99,18 @@ public class PDFAnalyzerIO {
 		return rawSvgDirectory;
 	}
 	
+	public void setRawSVGDirectory(File svgDir) {
+		rawSvgDirectory = svgDir;
+	}
+	
+//	public void setFinalSVGDirectory(File svgDir) {
+//		finalSvgDirectory = svgDir;
+//	}
+//	
+//	public File getFinalSVGDirectory() {
+//		return finalSvgDirectory;
+//	}
+	
 	public String getInputName() {
 		return inputName;
 	}
@@ -108,7 +124,7 @@ public class PDFAnalyzerIO {
 			LOG.debug("fileroot "+fileRoot);
 		}
 		rawSvgDirectory = new File(svgTopDir, fileRoot);
-		LOG.debug("svgDocument "+rawSvgDirectory);
+		LOG.debug("raw svgDocument "+rawSvgDirectory);
 		outputDocumentDir = new File(outputTopDir, fileRoot);
 		outputDocumentDir.mkdirs();
 		fileRoot = "";
@@ -220,7 +236,8 @@ public class PDFAnalyzerIO {
 				pageAnalyzer.outputHtmlRunningText();
 			}
 			if (options.outputAnnotatedSvgPages) {
-				pageAnalyzer.writeFinalSVGPageToFinalDirectory();
+				pageAnalyzer.writeRawSVGPageToRawDirectory();
+//				pageAnalyzer.writeFinalSVGPageToFinalDirectory();
 			}
 		}
 		if (options.outputRunningText) {

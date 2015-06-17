@@ -7,7 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nu.xom.Element;
+import nu.xom.Node;
+import nu.xom.Text;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
@@ -24,6 +27,8 @@ import org.xmlcml.xml.XMLUtil;
 public class PageIO {
 
 	private static final Logger LOG = Logger.getLogger(PageIO.class);
+	static {LOG.setLevel(Level.DEBUG);}
+	
 	private static final double WIDTH = 600.0;
 	private static final double HEIGHT = 800.0;
 	public static final String PAGE = "page";
@@ -139,14 +144,14 @@ public class PageIO {
 		return finalSVGPage;
 	}
 
-	void writeRawSVGPageToFinalDirectory() {
+	void writeRawSVGPageToRawDirectory() {
 		try {
 			String pageRoot = createPageRootWithHumanNumber();
 			finalSVGDocumentDir.mkdirs();
 			String id = rawSVGPage.getId();
 			LOG.trace("ID "+id);
 			SVGUtil.debug(
-				rawSVGPage, new FileOutputStream(new File(finalSVGDocumentDir, pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
+				rawSVGPage, new FileOutputStream(new File(rawSVGDocumentDir, pageRoot+SVG2XMLConstantsX.DOT_SVG)), 1);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -166,7 +171,9 @@ public class PageIO {
 	}
 	
 	String createPageRootWithHumanNumber() {
-		return PAGE + (machinePageNumber + 1);
+		String page = PAGE + (machinePageNumber + 1);
+		LOG.trace("Page "+page);
+		return page;
 	}
 
 	public void setMachinePageNumber(int pageNumber) {
@@ -204,16 +211,19 @@ public class PageIO {
 		if (pdfAnalyzer.getPdfOptions().isOutputAnnotatedSvgPages()) {
 			String pageRoot = createPageRootWithHumanNumber();
 			try {
-				File target = new File("target/");
-				target.mkdirs();
-				File svgFile = new File(target, pageRoot+SVG2XMLConstantsX.DOT_SVG);
-				LOG.trace("Path: "+svgFile.getAbsolutePath());
-				SVGUtil.debug(
-						finalSVGPage, new FileOutputStream(svgFile), 1);
+				File outputDir = (rawSVGDocumentDir == null) ? createFixmeDir() : rawSVGDocumentDir;
+				outputDir.mkdirs();
+				File svgFile = new File(outputDir, pageRoot+SVG2XMLConstantsX.DOT_SVG);
+				LOG.debug("Path: "+svgFile.getAbsolutePath());
+				SVGUtil.debug(finalSVGPage, new FileOutputStream(svgFile), 1);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
+	}
+
+	private File createFixmeDir() {
+		return new File("target/fixme/");
 	}
 	
 	public String toString() {
@@ -237,19 +247,22 @@ public class PageIO {
 	}
 
 	public String createChunkFilename(String chunkId) {
-		return createFilename(CHUNK, chunkId, DOT_SVG);
+		return createFilename(rawSVGDocumentDir, CHUNK, chunkId, DOT_SVG);
 	}
 
 	public String createImageFilename(String chunkId) {
-		return createFilename(IMAGE, chunkId, DOT_PNG);
+		return createFilename(rawSVGDocumentDir, IMAGE, chunkId, DOT_PNG);
 	}
 	
 	public String createSvgFilename(String chunkId) {
-		return createFilename(IMAGE, chunkId, DOT_SVG);
+		File baseFile = (rawSVGDocumentDir == null) ? createFixmeDir() : rawSVGDocumentDir;
+		String filename = createFilename(baseFile, IMAGE, chunkId, DOT_SVG);
+		LOG.debug("generated filename "+filename);
+		return filename;
 	}
 	
-	private String createFilename(String root, String id, String suffix) {
-		File file = new File(finalSVGDocumentDir, IMAGE+"."+id+suffix);
+	private String createFilename(File baseFile, String root, String id, String suffix) {
+		File file = new File(baseFile, root+"."+id+suffix);
 		return file.getPath().replaceAll("\\\\", "/");
 	}
 	
@@ -321,7 +334,12 @@ public class PageIO {
 
 	public static void copyChildElementsFromTo(HtmlElement fromElement, HtmlElement toElement) {
 		for (int i = 0; i < fromElement.getChildCount(); i++) {
-			toElement.appendChild(fromElement.getChild(i).copy());
+			Node child = fromElement.getChild(i);
+			if (child instanceof Text) {
+				toElement.appendChild(child.copy());
+			} else {
+				toElement.appendChild(HtmlElement.create((Element)child));
+			}
 		}
 	}
 

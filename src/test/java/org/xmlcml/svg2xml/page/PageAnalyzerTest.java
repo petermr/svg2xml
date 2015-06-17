@@ -374,6 +374,7 @@ public class PageAnalyzerTest {
 	@Test
 	public void testOutput(){
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(new File("src/test/resources/svg/mdpi/metabolites-02-00039-page2.svg"));
+		pageAnalyzer.getPageIO().setRawSVGDocumentDir(new File("target/mdpi/test/"));
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		MixedContainer mixedContainer10 = (MixedContainer) containerList.get(7);
 		SVGElement chunk10 = mixedContainer10.getChunkAnalyzer().getSVGChunk();

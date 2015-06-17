@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.junit.Assert;
-
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2Range;
@@ -862,7 +861,7 @@ public class TextAnalyzerTest {
 //		List<ScriptLine> textLineGroupList = textStructurer.getScriptedLineList();
 //		HtmlElement divElement = TextStructurer.createHtmlDiv(textLineGroupList);
 //		Element ref = XMLUtil.parseQuietlyToDocument(new File("src/test/resources/org/xmlcml/svg2xml/analyzer/textLineGroup0.html")).getRootElement();
-//		JumboTestUtils.assertEqualsCanonically("html", ref, divElement, true);
+//		CMLXOMTestUtils.assertEqualsCanonically("html", ref, divElement, true);
 //	}
 	
 

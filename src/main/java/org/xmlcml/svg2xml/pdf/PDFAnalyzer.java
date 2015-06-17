@@ -18,6 +18,7 @@ import nu.xom.Element;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlDiv;
@@ -49,6 +50,7 @@ import com.google.common.collect.Multimap;
 public class PDFAnalyzer {
 
 	private final static Logger LOG = Logger.getLogger(PDFAnalyzer.class);
+	static {LOG.setLevel(Level.DEBUG);}
 	
 	final static PrintStream SYSOUT = System.out;
 	public static final String Z_CHUNK = "z_";
@@ -59,9 +61,9 @@ public class PDFAnalyzer {
 	// created by analyzing pages
 	private List<PageAnalyzer> pageAnalyzerList;
 	private PDFAnalyzerOptions pdfOptions;
-
 	private HtmlElement runningTextElement;
 
+	
 	public PDFAnalyzer() {
 		pdfIo = new PDFAnalyzerIO(this);
 		setPdfOptions(new PDFAnalyzerOptions(this));
@@ -242,9 +244,11 @@ public class PDFAnalyzer {
 	
 	public List<PageAnalyzer> createAndFillPageAnalyzers(List<SVGSVG> svgList) {
 		ensurePageAnalyzerList();
+		File rawSVGDirectory = this.pdfIo.getRawSVGDirectory();
+		LOG.debug("raw svg "+rawSVGDirectory);
 		for (int pageCounter = 0; pageCounter < svgList.size(); pageCounter++) {
 			SYSOUT.print(pageCounter+"~");
-			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(svgList.get(pageCounter), pageCounter);
+			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(svgList.get(pageCounter), pageCounter, rawSVGDirectory);
 			pageAnalyzerList.add(pageAnalyzer);
 		}
 		return pageAnalyzerList;

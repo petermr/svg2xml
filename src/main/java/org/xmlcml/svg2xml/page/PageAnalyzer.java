@@ -580,8 +580,8 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 
-	public void writeRawSVGPageToFinalDirectory() {
-		pageIo.writeRawSVGPageToFinalDirectory();
+	public void writeRawSVGPageToRawDirectory() {
+		pageIo.writeRawSVGPageToRawDirectory();
 	}
 
 	public int getMachinePageNumber() {
@@ -738,6 +738,16 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
 	public static PageAnalyzer createAndAnalyze(SVGSVG svg, Integer pageCounter) {
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svg);
+		pageAnalyzer.setMachinePageNumber(pageCounter);
+		pageAnalyzer.splitChunksAndCreatePage();
+		LOG.trace(pageAnalyzer.getPageIO().toString());
+		return pageAnalyzer;
+	}
+
+	public static PageAnalyzer createAndAnalyze(SVGSVG svg, Integer pageCounter, File rawSvgDirectory) {
+		LOG.debug("new page generator");
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(svg);
+		pageAnalyzer.setRawSVGDocumentDir(rawSvgDirectory);
 		pageAnalyzer.setMachinePageNumber(pageCounter);
 		pageAnalyzer.splitChunksAndCreatePage();
 		LOG.trace(pageAnalyzer.getPageIO().toString());

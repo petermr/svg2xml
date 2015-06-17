@@ -58,8 +58,10 @@ public class FigureGraphic extends FigureComponent {
 			
 			HiddenGraphics hg = createHiddenGraphics();
 			try {
-				LOG.trace("PNG "+pngName);
-				hg.write(SVGImage.IMAGE_PNG, new File(pngName));
+				LOG.debug("PNG "+pngName);
+				File pngFile = new File(pngName);
+				pngFile.getParentFile().mkdirs();
+				hg.write(SVGImage.IMAGE_PNG, pngFile);
 			} catch (IOException e) {
 				throw new RuntimeException("Cannot write image", e);
 			}
