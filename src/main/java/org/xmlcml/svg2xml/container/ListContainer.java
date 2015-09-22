@@ -119,7 +119,7 @@ public class ListContainer extends AbstractContainer {
 						addFirstNumericItem(multiScriptLine, leadingInteger);
 					} else if (currentBullet == null && bullet != null) {
 						addFirstBulletedItem(multiScriptLine, bullet);
-					} else if (leadingInteger != null) {
+					} else if (leadingInteger != null && currentInteger != null) {
 						int delta = leadingInteger - currentInteger;
 					    if (delta == 1) {
 					    	numberedItemList.add(multiScriptLine);

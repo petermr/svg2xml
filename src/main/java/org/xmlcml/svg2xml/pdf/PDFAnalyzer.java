@@ -299,7 +299,7 @@ public class PDFAnalyzer {
 			LOG.debug("running "+inputName+" to "+svgDocumentDir.toString());
 			converter.run("-outdir", svgDocumentDir.toString(), inputName );
 		} else {
-			LOG.debug("Skipping SVG");
+			LOG.debug("Skipping SVG because files in ("+svgDocumentDir+") already exist: "+files.length);
 		}
 	}
 
