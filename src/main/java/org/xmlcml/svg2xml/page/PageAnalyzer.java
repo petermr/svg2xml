@@ -236,7 +236,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		Collections.sort(rawList);
 		for (Double z : rawList) {
 			//System.out.print(z+" ");
-			gChunk.appendChild(elementByZMap.get(z));
+			Element element = elementByZMap.get(z);
+			element.detach();
+			gChunk.appendChild(element);
 		}
 		//System.out.println();
 	}

@@ -7,7 +7,8 @@ public class Demos {
 	public static void main(String[] args) {
 //			ebola1();
 //			astro1();
-			plot1();
+//			plot1();
+			PDFAnalyzerTest.analyzePDF("demos/gandhi/sample.pdf"); 
 
 	}
 

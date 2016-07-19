@@ -20,6 +20,10 @@ public class PDFAnalyzerTest {
 	}
 
 
+	/** this is better with PDFAnalyzer.main(String[] )
+	 * 
+	 * @param filename
+	 */
 	public static void analyzePDF(String filename) {
 		File file = new File(filename);
 		if (file.exists() && !file.isDirectory()) {

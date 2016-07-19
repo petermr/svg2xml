@@ -340,7 +340,7 @@ public class PDFAnalyzer {
 	public static void main(String[] args) {
 		if (args.length == 0) {
 			SYSOUT.println("PDFAnalyzer <inputFile(s)>");
-			SYSOUT.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.analyzer.PDFAnalyzer\" " +
+			SYSOUT.println("mvn exec:java -Dexec.mainClass=\"org.xmlcml.svg2xml.pdf.PDFAnalyzer\" " +
 					" -Dexec.args=\"src/test/resources/pdfs/bmc/1471-2180-11-174.pdf\"");
 			SYSOUT.println("OR java org.xmlcml.svg2xml.analyzer.PDFAnalyzer src/test/resources/pdfs/bmc/1471-2180-11-174.pdf");
 			SYSOUT.println("");
