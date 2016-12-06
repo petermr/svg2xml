@@ -186,6 +186,8 @@ public class RawWords implements Iterable<Word> {
 	 * Multiple spaces are treated as single. Hopefully we'll deal with 
 	 * multiple spaces later if they matter.
 	 * 
+	 * PROBABLY BUGGY
+	 * 
 	 * @return new RawWords 
 	 */
 	public List<Phrase> createPhrases() {
@@ -197,12 +199,36 @@ public class RawWords implements Iterable<Word> {
 		return phraseList;
 	}
 	
+	/** 
+	 * 
+	 */
+	public PhraseList createPhraseList() {
+		PhraseList phraseList = new PhraseList();
+		Phrase phrase = null;
+		for (int i = 0; i < wordList.size(); i++) {
+			if (phrase == null) {
+				phrase = new Phrase();
+				phraseList.add(phrase);
+			}
+			Word word = wordList.get(i);
+			phrase.add(word);
+			Double spaceCount = (i == wordList.size() - 1) ? 0 : word.getSpaceCountBetween(wordList.get(i + 1));
+			if (spaceCount > 1) {
+				phrase = null;
+			}
+		}
+//		if (phrase != null) {
+//			phrase.add(wordList.get(wordList.size() - 1));
+//		}
+		return phraseList;
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
 		for (int i = 0; i < wordList.size() - 1; i++) {
 			Word word = wordList.get(i);
-			sb.append("("+word.toString()+")");
+			sb.append(""+word.toString()+"");
 			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
 			for (int j = 0; j < spaceCount; j++) {
 				sb.append(".");

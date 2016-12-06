@@ -114,7 +114,7 @@ public class RawWordsTest {
 		RawWords rawWords = textStructurer.createRawWordsList().get(0);
 		Word word = rawWords.get(0);
 		Phrase phrase = word.createPhrase();
-		Assert.assertEquals("phrase", "{(Phenotypic).(tarsus).((mm))}", phrase.toString());
+		Assert.assertEquals("phrase", "{Phenotypic tarsus (mm)}", phrase.toString());
 		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phrase.getPrintableString());
 		List<Word> wordList = phrase.getWordList();
 		Assert.assertEquals("phrase", 3, wordList.size());
@@ -127,12 +127,12 @@ public class RawWordsTest {
 	public void testPhrase1() {
 		TextLine textLine = Fixtures.BERICHT_PAGE6_34_TEXTLINE;
 		RawWords rawWords = textLine.getRawWords();
-		Assert.assertEquals("rawSpaces", "{(Total Topf 1)...........................(231).....(343).....(453).....(491)}",
+		Assert.assertEquals("rawSpaces", "{Total Topf 1...........................231.....343.....453.....(491)}",
 				rawWords.toString());
 		Word word0 = rawWords.get(0);
 		Assert.assertEquals("word0", "Total Topf 1", word0.toString());
 		Phrase phrase0 = word0.createPhrase();
-		Assert.assertEquals("phrase", "{(Total).(Topf).(1)}", phrase0.toString());
+		Assert.assertEquals("phrase", "{Total Topf 1}", phrase0.toString());
 		Assert.assertEquals("phrase", "Total Topf 1", phrase0.getPrintableString());
 		Assert.assertEquals("word1", "231", rawWords.get(1).createPhrase().getPrintableString());
 		Assert.assertEquals("word1", "343", rawWords.get(2).createPhrase().getPrintableString());

@@ -10,15 +10,21 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGText;
 
-public class Word {
+public class Word extends LineChunk {
 
 	private final static Logger LOG = Logger.getLogger(Word.class);
+
+	public final static String TAG = "word";
 	
+//	public static String SPACE_SYMBOL = "_";
+	public static String SPACE_SYMBOL = " ";
+
 	List<SVGText> texts;
 	private Real2Range boundingBox;
 	private boolean guessWidth = true;
 	
 	public Word() {
+		super(TAG);
 		
 	}
 
@@ -78,10 +84,10 @@ public class Word {
 	}
 	
 	public String toString() {
-		return getValue();
+		return getStringValue();
 	}
 
-	public String getValue() {
+	public String getStringValue() {
 		StringBuilder sb = new StringBuilder();
 		for (SVGText text : texts) {
 			sb.append(text.getValue());
@@ -219,5 +225,21 @@ public class Word {
 		}
 		return bboxList;
 	}
+	
+	public Double getFontSize() {
+		Double f = null;
+		if (texts.size() > 0) {
+			f = texts.get(0).getFontSize();
+			for (int i = 1; i < texts.size(); i++) {
+				Double ff = texts.get(i).getFontSize();
+				if (ff != null) {
+					f = Math.max(f,  ff);
+				}
+			}
+		}
+		return f;
+	}
+
+
 	
 }

@@ -15,7 +15,7 @@ public class PhraseTest {
 		List<Phrase> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 1, phraseList.size());
 		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phraseList.get(0).getPrintableString());
-		Assert.assertEquals("phrase", "{(Phenotypic).(tarsus).((mm))}", phraseList.get(0).toString());
+		Assert.assertEquals("phrase", "{Phenotypic tarsus (mm)}", phraseList.get(0).toString());
 	}
 	
 	@Test
@@ -24,7 +24,7 @@ public class PhraseTest {
 		List<Phrase> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 5, phraseList.size());
 		Assert.assertEquals("phrase", "Total Topf 1", phraseList.get(0).getPrintableString());
-		Assert.assertEquals("phrase", "{(Total).(Topf).(1)}", phraseList.get(0).toString());
+		Assert.assertEquals("phrase", "{Total Topf 1}", phraseList.get(0).toString());
 		Assert.assertEquals("phrase1", "231", phraseList.get(1).getPrintableString());
 		Assert.assertEquals("phrase2", "343", phraseList.get(2).getPrintableString());
 		Assert.assertEquals("phrase3", "453", phraseList.get(3).getPrintableString());

@@ -1,11 +1,11 @@
 package org.xmlcml.svg2xml.table;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
-import org.junit.Assert;
-
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
@@ -20,6 +20,8 @@ public class TableBodyTest {
 
 	private final static Logger LOG = Logger.getLogger(TableBodyTest.class);
 	
+	private final static String TABLE = "target/table";
+
 	@Test
 	public void dummy() {
 		LOG.debug("TableBodyChunkTest NYI");
@@ -118,7 +120,8 @@ public class TableBodyTest {
 		HtmlTable table = (HtmlTable) tableBody.createHtmlElement();
 		table.setBorder(1);
 		try {
-			FileOutputStream fos = new FileOutputStream("target/table.html");
+			new File(TABLE+"/bmc174").mkdirs();
+			FileOutputStream fos = new FileOutputStream(TABLE+"/bmc174/table1.html");
 			SVGUtil.debug(table, fos, 1);
 		} catch (Exception e) {
 			throw new RuntimeException(e);

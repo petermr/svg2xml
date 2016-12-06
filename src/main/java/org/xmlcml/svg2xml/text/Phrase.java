@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntArray;
+import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
@@ -21,13 +22,16 @@ import org.xmlcml.euclid.Util;
  * 
  * @author pm286
  */
-public class Phrase  extends LineChunk implements Iterable<Word> {
+public class Phrase extends LineChunk implements Iterable<Word> {
 	
 	private static final Logger LOG = Logger.getLogger(Phrase.class);
+	
+	public final static String TAG = "phrase";
 	
 	private List<Word> wordList;
 
 	public Phrase() {
+		super(Phrase.TAG);
 		wordList = new ArrayList<Word>();
 	}
 
@@ -207,7 +211,7 @@ public class Phrase  extends LineChunk implements Iterable<Word> {
 		return blank;
 	}
 
-	private Real2Range getBoundingBox() {
+	public Real2Range getBoundingBox() {
 		Word word0 = wordList.get(0);
 		Word wordN = wordList.get(wordList.size() - 1);
 		Real2Range bbox = new Real2Range(new RealRange(word0.getStartX(), wordN.getEndX()), word0.getYRange().plus(wordN.getYRange()));
@@ -217,18 +221,42 @@ public class Phrase  extends LineChunk implements Iterable<Word> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
-		for (int i = 0; i < wordList.size() - 1; i++) {
-			Word word = wordList.get(i);
-			sb.append("("+word.toString()+")");
-			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
-			for (int j = 0; j < spaceCount; j++) {
-				sb.append(".");
-			}
-		}
-		sb.append("("+wordList.get(wordList.size() - 1).toString()+")");
-//		sb.append("["+this.getBoundingBox()+"]");
+		sb.append(getStringValue());
 		sb.append("}");
 		return sb.toString();
 	}
+
+	public String getStringValue() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < wordList.size() - 1; i++) {
+			Word word = wordList.get(i);
+			sb.append(""+word.toString()+"");
+			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
+			for (int j = 0; j < spaceCount; j++) {
+				sb.append(Word.SPACE_SYMBOL);
+			}
+		}
+		sb.append(""+wordList.get(wordList.size() - 1).toString()+"");
+		return sb.toString();
+	}
+
+	public IntRange getIntRange() {
+		return new IntRange((int)getFirstX(), (int)getEndX());
+	}
+
+	public Double getFontSize() {
+		Double f = null;
+		if (wordList.size() > 0) {
+			f = wordList.get(0).getFontSize();
+			for (int i = 1; i < wordList.size(); i++) {
+				Double ff = wordList.get(i).getFontSize();
+				if (ff != null) {
+					f = Math.max(f,  ff);
+				}
+			}
+		}
+		return f;
+	}
+
 
 }

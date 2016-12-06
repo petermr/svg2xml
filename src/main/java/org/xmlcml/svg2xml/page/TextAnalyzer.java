@@ -20,6 +20,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.text.FontNormalizer;
 import org.xmlcml.svg2xml.text.TextCoordinate;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -76,6 +77,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
     private TextAnalyzer rotPiTextAnalyzer = null;
     private TextAnalyzer rot3Pi2TextAnalyzer = null;
     private TextAnalyzer rotIrregularTextAnalyzer = null;
+    private FontNormalizer fontNormalizer;
 	
 	/** 
 	 * Refactored container 
@@ -192,8 +194,25 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	
 	public void setTextList(List<SVGText> textCharacters) {
 		this.textCharacters = textCharacters;
+		normalizeText();
 	}
 	
+	/** normalizes fontWeights and probably more
+	 * 
+	 */
+	private void normalizeText() {
+		ensureFontNormalizer();
+	}
+
+	/** includes FontNormalizer.getDefaultNormalizer() by default.
+	 * 
+	 */
+	private void ensureFontNormalizer() {
+		if (fontNormalizer == null) {
+			fontNormalizer = FontNormalizer.getDefaultNormalizer();
+		}
+	}
+
 	public void addCharacter(SVGText character){
 		ensureTextCharacters();
 		textCharacters.add(character);

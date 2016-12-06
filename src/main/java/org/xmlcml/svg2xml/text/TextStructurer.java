@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.File;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,6 +15,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
+import org.xmlcml.euclid.IntRangeArray;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
@@ -107,6 +107,10 @@ public class TextStructurer {
 	private TextOrientation textOrientation;
 
 	private List<RawWords> rawWordsList;
+	private PhraseListList phraseListList;
+	private TableStructurer tableStructurer;
+	private List<TextLine> subscriptLineList;
+	private List<TextLine> superscriptLineList;
 
 	public TextStructurer() {
 		this(new TextAnalyzer((List<SVGText>) null, (PageAnalyzer) null));
@@ -708,7 +712,7 @@ public class TextStructurer {
 	}
 
 	public static TextStructurer createTextStructurerWithSortedLines(File svgFile, PageAnalyzer pageAnalyzer) {
-		SVGElement svgChunk = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
+		SVGElement svgChunk = SVGElement.readAndCreateSVG(svgFile);
 		return createTextStructurerWithSortedLines(pageAnalyzer, svgChunk);
 	}
 
@@ -1348,6 +1352,7 @@ public class TextStructurer {
 
 	public List<TabbedTextLine> createTabbedLineList() {
 		getTextLineList();
+		// FIXME
 		return null;
 	}
 
@@ -1385,5 +1390,67 @@ public class TextStructurer {
 			textAnalyzer.setTextList(textList);	
 		}
 	}
+
+	public PhraseListList createPhraseListListFromWords() {
+		List<RawWords> rawWordsList = this.createRawWordsList();
+		phraseListList = new PhraseListList();
+		for (RawWords rawWords : rawWordsList) {
+			PhraseList phraseList = rawWords.createPhraseList();
+			phraseListList.add(phraseList);
+		}
+		return phraseListList;
+	}
+
+	public TableStructurer createTableStructurer() {
+		createPhraseListListFromWords();
+		tableStructurer = new TableStructurer(phraseListList);
+		tableStructurer.setTextStructurer(this);
+		tableStructurer.createRulerList();
+		return tableStructurer;
+	}
+
+	public PhraseListList getPhraseListList() {
+		return phraseListList;
+	}
+
+	/** assumes sorted lines
+	 */
+	public void extractSuscripts() {
+		List<TextLine> textLineList = getTextLineList();
+		subscriptLineList = new ArrayList<TextLine>();
+		superscriptLineList = new ArrayList<TextLine>();
+		for (int i = 0; i < textLineList.size(); i++) {
+			TextLine thisLine = textLineList.get(i);
+			double thisSize = thisLine.getFontSize();
+			double thisY = thisLine.getYCoord();
+			double thisTop = thisY - thisSize;
+			if (i > 0) {
+				TextLine previousLine =textLineList.get(i - 1);
+				double previousSize = previousLine.getFontSize();
+				double belowTop = thisTop - previousLine.getYCoord();
+				if (previousSize / thisSize < 0.9 && belowTop < -2) {
+					superscriptLineList.add(previousLine);
+				}
+			}
+			if (i < textLineList.size() - 1) {
+				TextLine nextLine = textLineList.get(i + 1);
+				double nextSize = nextLine.getFontSize();
+				double aboveBottom = thisY - (nextLine.getYCoord() - nextSize); 
+				if (nextSize / thisSize < 0.9 && aboveBottom > 2) {
+					subscriptLineList.add(nextLine);
+				}
+			}
+			
+		}
+	}
+
+	public List<TextLine> getSuperscriptLineList() {
+		return superscriptLineList;
+	}
+
+	public List<TextLine> getSubscriptLineList() {
+		return subscriptLineList;
+	}
+
 
 }

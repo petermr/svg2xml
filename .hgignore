@@ -4,5 +4,8 @@ syntax: regexp
 ^\.classpath$
 ^\.hgignore~$
 ^target/
+^demos/
+^tables/
 ^nonPublic/
+src/test/resources/pdfs/
 ^svg/suspect_ol2015972_si_002/
