@@ -11,6 +11,11 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Util;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Element;
 
 /** 
  * A list of Words.
@@ -28,34 +33,48 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	
 	public final static String TAG = "phrase";
 	
-	private List<Word> wordList;
+	private List<Word> childWordList;
 
 	public Phrase() {
-		super(Phrase.TAG);
-		wordList = new ArrayList<Word>();
+		super();
+		this.setClassName(TAG);
 	}
 
-	public void add(Word word) {
-		wordList.add(word);
+	public Phrase(Phrase phrase) {
+		super(phrase);
+		// TODO Auto-generated constructor stub
+	}
+
+	public Phrase(SVGG g) {
+		super(g);
+	}
+
+	public void add(SVGElement word) {
+//		word.detach();
+		this.appendChild(word);
 	}
 	
 	public Word get(int index) {
-		return wordList.get(index);
+		getOrCreateWordList();
+		return childWordList.get(index);
 	}
 	
 	public Iterator<Word> iterator() {
-		return wordList.iterator();
+		getOrCreateWordList();
+		return childWordList.iterator();
 	}
 	
 	public int size() {
-		return wordList.size();
+		getOrCreateWordList();
+		return childWordList.size();
 	}
 
 	public RealArray getInterWordWhitePixels() {
+		getOrCreateWordList();
 		RealArray separationArray = new RealArray();
-		for (int i = 1; i < wordList.size(); i++) {
-			Word word0 = wordList.get(i-1);
-			Word word = wordList.get(i);
+		for (int i = 1; i < childWordList.size(); i++) {
+			Word word0 = childWordList.get(i-1);
+			Word word = childWordList.get(i);
 			double separation = Util.format(word0.getSeparationBetween(word), 3);
 			separationArray.addElement(separation);
 		}
@@ -63,10 +82,11 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 
 	public RealArray getInterWordWhiteEnSpaces() {
+		getOrCreateWordList();
 		RealArray spaceCountArray = new RealArray();
-		for (int i = 1; i < wordList.size(); i++) {
-			Word word0 = wordList.get(i - 1);
-			Word word = wordList.get(i);
+		for (int i = 1; i < childWordList.size(); i++) {
+			Word word0 = childWordList.get(i - 1);
+			Word word = childWordList.get(i);
 			double spaceCount = Util.format(word0.getSpaceCountBetween(word), 3);
 			spaceCountArray.addElement(spaceCount);
 		}
@@ -74,9 +94,10 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 
 	public RealArray getStartXArray() {
+		getOrCreateWordList();
 		RealArray startArray = new RealArray();
-		for (int i = 0; i < wordList.size(); i++) {
-			Word word = wordList.get(i);
+		for (int i = 0; i < childWordList.size(); i++) {
+			Word word = childWordList.get(i);
 			double start = Util.format(word.getStartX(), 3);
 			startArray.addElement(start);
 		}
@@ -84,9 +105,10 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 	
 	public RealArray getMidXArray() {
+		getOrCreateWordList();
 		RealArray startArray = new RealArray();
-		for (int i = 0; i < wordList.size(); i++) {
-			Word word = wordList.get(i);
+		for (int i = 0; i < childWordList.size(); i++) {
+			Word word = childWordList.get(i);
 			double end = Util.format(word.getMidX(), 3);
 			startArray.addElement(end);
 		}
@@ -94,9 +116,10 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 	
 	public RealArray getEndXArray() {
+		getOrCreateWordList();
 		RealArray startArray = new RealArray();
-		for (int i = 0; i < wordList.size(); i++) {
-			Word word = wordList.get(i);
+		for (int i = 0; i < childWordList.size(); i++) {
+			Word word = childWordList.get(i);
 			double end = Util.format(word.getEndX(), 3);
 			startArray.addElement(end);
 		}
@@ -104,7 +127,8 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 
 	public Word getLastWord() {
-		return wordList.get(wordList.size() - 1);
+		getOrCreateWordList();
+		return childWordList.get(childWordList.size() - 1);
 	}
 	
 	/** start of first word.
@@ -136,7 +160,8 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	 * @return
 	 */
 	public double getStartX() {
-		return wordList.get(0).getStartX();
+		getOrCreateWordList();
+		return childWordList.get(0).getStartX();
 	}
 	
 	/** translates words into integers if possible.
@@ -144,8 +169,9 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	 * @return null if translation impossible
 	 */
 	public IntArray translateToIntArray() {
+		getOrCreateWordList();
 		IntArray intArray = new IntArray();
-		for (Word word : wordList) {
+		for (Word word : childWordList) {
 			Integer i = word.translateToInteger();
 			if (i == null) {
 				intArray = null;
@@ -163,8 +189,9 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	 * @return null if translation impossible
 	 */
 	public RealArray translateToRealArray() {
+		getOrCreateWordList();
 		RealArray realArray = new RealArray();
-		for (Word word : wordList) {
+		for (Word word : childWordList) {
 			Double d = word.translateToDouble();
 			if (d == null) {
 				realArray = null;
@@ -175,21 +202,29 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		return realArray;
 	}
 
-	public List<Word> getWordList() {
-		return wordList;
+	public List<Word> getOrCreateWordList() {
+		if (childWordList == null) {
+			List<Element> wordChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+Word.TAG+"']");
+			childWordList = new ArrayList<Word>();
+			for (Element child : wordChildren) {
+				childWordList.add(new Word((SVGG)child));
+			}
+		}
+		return childWordList;
 	}
 
 	public String getPrintableString() {
+		getOrCreateWordList();
 		StringBuilder sb = new StringBuilder("");
-		for (int i = 0; i < wordList.size() - 1; i++) {
-			Word word = wordList.get(i);
+		for (int i = 0; i < childWordList.size() - 1; i++) {
+			Word word = childWordList.get(i);
 			sb.append(word.toString());
-			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
+			Double spaceCount = word.getSpaceCountBetween(childWordList.get(i + 1));
 			for (int j = 0; j < spaceCount; j++) {
 				sb.append(" ");
 			}
 		}
-		sb.append(wordList.get(wordList.size() - 1).toString());
+		sb.append(childWordList.get(childWordList.size() - 1).toString());
 		return sb.toString();
 	}
 
@@ -212,9 +247,14 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 
 	public Real2Range getBoundingBox() {
-		Word word0 = wordList.get(0);
-		Word wordN = wordList.get(wordList.size() - 1);
-		Real2Range bbox = new Real2Range(new RealRange(word0.getStartX(), wordN.getEndX()), word0.getYRange().plus(wordN.getYRange()));
+		getOrCreateWordList();
+		Word word0 = childWordList.get(0);
+		Word wordN = childWordList.get(childWordList.size() - 1);
+		RealRange xRange = word0.getStartX() == null || wordN.getEndX() == null ?
+				null : new RealRange(word0.getStartX(), wordN.getEndX());
+		RealRange yRange = word0.getYRange().plus(wordN.getYRange());
+		Real2Range bbox = (word0 == null || wordN == null) ? null :
+			new Real2Range(xRange, yRange);
 		return bbox;
 	}
 
@@ -227,16 +267,18 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 
 	public String getStringValue() {
+		getOrCreateWordList();
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < wordList.size() - 1; i++) {
-			Word word = wordList.get(i);
-			sb.append(""+word.toString()+"");
-			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
+		for (int i = 0; i < childWordList.size() - 1; i++) {
+			Word word = childWordList.get(i);
+			sb.append(""+word.getStringValue()+"");
+			Double spaceCount = word.getSpaceCountBetween(childWordList.get(i + 1));
 			for (int j = 0; j < spaceCount; j++) {
 				sb.append(Word.SPACE_SYMBOL);
 			}
 		}
-		sb.append(""+wordList.get(wordList.size() - 1).toString()+"");
+		sb.append(""+childWordList.get(childWordList.size() - 1).toString()+"");
+		this.setStringValueAttribute(sb.toString());
 		return sb.toString();
 	}
 
@@ -245,17 +287,27 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 
 	public Double getFontSize() {
+		getOrCreateWordList();
 		Double f = null;
-		if (wordList.size() > 0) {
-			f = wordList.get(0).getFontSize();
-			for (int i = 1; i < wordList.size(); i++) {
-				Double ff = wordList.get(i).getFontSize();
+		if (childWordList.size() > 0) {
+			f = childWordList.get(0).getFontSize();
+			for (int i = 1; i < childWordList.size(); i++) {
+				Double ff = childWordList.get(i).getFontSize();
 				if (ff != null) {
 					f = Math.max(f,  ff);
 				}
 			}
 		}
 		return f;
+	}
+
+	public Element copyElement() {
+		getOrCreateWordList();
+		Element element = (Element) this.copy();
+		for (Word word : childWordList) {
+			element.appendChild(word.copyElement());
+		}
+		return element;
 	}
 
 

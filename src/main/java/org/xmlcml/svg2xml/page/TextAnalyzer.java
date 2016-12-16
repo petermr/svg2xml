@@ -292,7 +292,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	@Override
 	public List<AbstractContainer> createContainers() {
 		TextStructurer textStructurer1 = this.getTextStructurer();
-		textStructurer1.getScriptedLineList();
+		textStructurer1.getScriptedLineListForCommonestFont();
 		List<TextStructurer> splitList = textStructurer1.splitOnFontBoldChange(-1);
 		List<TextStructurer> textStructurerList = splitList;
 		LOG.trace(" split LIST "+textStructurerList.size());
@@ -310,8 +310,8 @@ public class TextAnalyzer extends ChunkAnalyzer {
 
 	private void splitBoldHeaderOnFontSize(List<TextStructurer> textStructurerList) {
 		TextStructurer textStructurer0 = textStructurerList.get(0);
-		if (textStructurer0.getScriptedLineList().size() > 1) {
-			textStructurer0.getScriptedLineList();
+		if (textStructurer0.getScriptedLineListForCommonestFont().size() > 1) {
+			textStructurer0.getScriptedLineListForCommonestFont();
 			List<TextStructurer> splitList = textStructurer0.splitOnFontSizeChange(999);
 			List<TextStructurer> fontSplitList = splitList;
 			if (fontSplitList.size() > 1) {

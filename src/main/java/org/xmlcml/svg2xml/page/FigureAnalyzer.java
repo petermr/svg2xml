@@ -65,7 +65,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 
 	public HtmlDiv createHtmlFigure() {
 		String id = String.valueOf(getChunkId());
-		List<ScriptLine> scriptLineList = textAnalyzer.getTextStructurer().getScriptedLineList(); 
+		List<ScriptLine> scriptLineList = textAnalyzer.getTextStructurer().getScriptedLineListForCommonestFont(); 
 		Double yCoordinateOfCaption = iterateThroughLinesToFindCaption(scriptLineList);
 		if (yCoordinateOfCaption != null) {
 			createCaptionAndGraphic(id, yCoordinateOfCaption);

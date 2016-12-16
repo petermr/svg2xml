@@ -11,6 +11,7 @@ public class Prototypes {
 //		carnosic();
 //		funnel();
 		clinical();
+//		stats();
 	}
 	
 	private static void carnosic() {
@@ -36,17 +37,30 @@ public class Prototypes {
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/BLK_JPR52758.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/BLK_SAM55371.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/BMC73226.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/BMJ312529.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/BMJBollard312268.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/ELS_Petaja2009.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/EVJ62903.pdf");               // no SVG extracted
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/LANCET16302844.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/LB_HV_Romanowski2011_1.pdf"); // no SVG extracted
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/LPW_Reisinger2007.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/LWW61463.pdf");               // no SVG extracted
+		PDFAnalyzerTest.analyzePDF("demos/clinical/NATUREsrep29540.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/NEJMOA1411321.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/OUP_PH3.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/PLOS57170.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/SPR57530.pdf");               // no tables extracted
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/SPR68755.pdf");
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/WK_Vesikari2015.pdf");        // no SVG extracted
 //		PDFAnalyzerTest.analyzePDF("demos/clinical/Wiley44386.pdf");
+	}
+
+	private static void stats() {
+		PDFAnalyzerTest.analyzePDF("demos/stats/AA_Kranke2000.pdf");
+		PDFAnalyzerTest.analyzePDF("demos/stats/APA_Nuijten2015.pdf");
+		PDFAnalyzerTest.analyzePDF("demos/stats/ELSS0022103115300123.pdf");
+		PDFAnalyzerTest.analyzePDF("demos/stats/MJA_Nath2006.pdf");
+		PDFAnalyzerTest.analyzePDF("demos/stats/TEX_Ausloos2016.pdf");
 	}
 
 }

@@ -211,10 +211,16 @@ public class RawWords implements Iterable<Word> {
 				phraseList.add(phrase);
 			}
 			Word word = wordList.get(i);
-			phrase.add(word);
-			Double spaceCount = (i == wordList.size() - 1) ? 0 : word.getSpaceCountBetween(wordList.get(i + 1));
-			if (spaceCount > 1) {
-				phrase = null;
+			if (word == null) {
+				LOG.debug("null");
+			} else {
+				phrase.add(new Word(word));
+				Word wordii = (i < wordList.size() - 1) ? wordList.get(i + 1) : null;
+				Double spaceCount = word.getSpaceCountBetween(wordii);
+				spaceCount = (i == wordList.size() - 1) ? new Double(0) : spaceCount;
+				if (spaceCount == null || spaceCount > 1) {
+					phrase = null;
+				}
 			}
 		}
 //		if (phrase != null) {
@@ -230,11 +236,13 @@ public class RawWords implements Iterable<Word> {
 			Word word = wordList.get(i);
 			sb.append(""+word.toString()+"");
 			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
-			for (int j = 0; j < spaceCount; j++) {
-				sb.append(".");
+			if (spaceCount != null) {
+				for (int j = 0; j < spaceCount; j++) {
+					sb.append(".");
+				}
 			}
 		}
-		sb.append("("+wordList.get(wordList.size() - 1).toString()+")");
+		sb.append(wordList.get(wordList.size() - 1).toString());
 		sb.append("}");
 		return sb.toString();
 	}

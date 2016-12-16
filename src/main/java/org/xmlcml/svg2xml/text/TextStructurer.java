@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
-import org.xmlcml.euclid.IntRangeArray;
 import org.xmlcml.euclid.Real;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
@@ -109,8 +109,11 @@ public class TextStructurer {
 	private List<RawWords> rawWordsList;
 	private PhraseListList phraseListList;
 	private TableStructurer tableStructurer;
+	private FlowStructurer flowStructurer;
 	private List<TextLine> subscriptLineList;
 	private List<TextLine> superscriptLineList;
+
+	private List<TextBox> textBoxList;
 
 	public TextStructurer() {
 		this(new TextAnalyzer((List<SVGText>) null, (PageAnalyzer) null));
@@ -617,12 +620,9 @@ public class TextStructurer {
 		return commonestFontSizeTextLineList;
 	}
 
-	public List<ScriptLine> getScriptedLineList() {
+	public List<ScriptLine> getScriptedLineListForCommonestFont() {
 		if (scriptedLineList == null) {
 			commonestFontSizeTextLineList = getCommonestFontSizeTextLineList();
-			for (TextLine textLine : commonestFontSizeTextLineList) {
-				LOG.trace("COMMONTL "+textLine);
-			}
 			initialScriptLineList = getInitialScriptLineList();
 			scriptedLineList = new ArrayList<ScriptLine>();
 			int i = 0;
@@ -975,7 +975,7 @@ public class TextStructurer {
 	 * @return
 	 */
 	public IntArray splitGroupBiggerThanCommonest() {
-		getScriptedLineList();
+		getScriptedLineListForCommonestFont();
 		Double commonestFontSize = this.getCommonestFontSize().getDouble();
 		IntArray splitArray = new IntArray();
 		for (int i = 0; i < scriptedLineList.size() - 1; i++) {
@@ -1008,7 +1008,7 @@ public class TextStructurer {
 	 * @return
 	 */
 	public List<TextStructurer> splitLineGroupsAfter(IntArray afterLineGroups) {
-		getScriptedLineList();
+		getScriptedLineListForCommonestFont();
 		List<TextStructurer> textStructurerList = new ArrayList<TextStructurer>();
 		if (afterLineGroups == null || afterLineGroups.size() == 0) {
 			textStructurerList.add(this);
@@ -1030,7 +1030,7 @@ public class TextStructurer {
 	}
 
 	private TextStructurer createTextStructurerFromTextLineGroups(int startLineGroup, int lineGroupNumber) {
-		getScriptedLineList();
+		getScriptedLineListForCommonestFont();
 		TextStructurer textStructurer = new TextStructurer((TextAnalyzer)null);
 		textStructurer.textAnalyzer = this.textAnalyzer;
 		for (int iGroup = startLineGroup; iGroup <= lineGroupNumber; iGroup++) {
@@ -1101,7 +1101,7 @@ public class TextStructurer {
 	 * @return
 	 */
 	public IntArray getSplitArrayForFontWeightChange(int maxFlip) {
-		getScriptedLineList();
+		getScriptedLineListForCommonestFont();
 		Boolean currentBold = null;
 		IntArray splitArray = new IntArray();
 		if (scriptedLineList.size() > 0) {
@@ -1133,7 +1133,7 @@ public class TextStructurer {
 	 */
 	public IntArray getSplitArrayForFontSizeChange(int maxFlip) {
 		double EPS = 0.01;
-		getScriptedLineList();
+		getScriptedLineListForCommonestFont();
 		Double currentFontSize = null;
 		IntArray splitArray = new IntArray();
 		if (scriptedLineList.size() > 0) {
@@ -1158,7 +1158,7 @@ public class TextStructurer {
 	 * @return
 	 */
 	public IntArray getSplitArrayForFontFamilyChange(int maxFlip) {
-		getScriptedLineList();
+		getScriptedLineListForCommonestFont();
 		String currentFontFamily = null;
 		IntArray splitArray = new IntArray();
 		if (scriptedLineList.size() > 0) {
@@ -1324,7 +1324,7 @@ public class TextStructurer {
 	/** 
 	 * Create list of Phrases from textLines
 	 */
-	public List<RawWords> createRawWordsList() {
+	public List<RawWords> createRawWordsListFromTextLineList() {
 		if (rawWordsList == null) {
 			rawWordsList = new ArrayList<RawWords>();
 			getLinesInIncreasingY();
@@ -1343,7 +1343,7 @@ public class TextStructurer {
 
 	public List<Tab> createSingleTabList() {
 		getTextLineList();
-		createRawWordsList();
+		createRawWordsListFromTextLineList();
 		ColumnMaps columnMaps = new ColumnMaps(this);
 		columnMaps.getTabs();
 		List<Tab> tabList = columnMaps.createSingleTabList();
@@ -1392,7 +1392,7 @@ public class TextStructurer {
 	}
 
 	public PhraseListList createPhraseListListFromWords() {
-		List<RawWords> rawWordsList = this.createRawWordsList();
+		List<RawWords> rawWordsList = this.createRawWordsListFromTextLineList();
 		phraseListList = new PhraseListList();
 		for (RawWords rawWords : rawWordsList) {
 			PhraseList phraseList = rawWords.createPhraseList();
@@ -1409,13 +1409,20 @@ public class TextStructurer {
 		return tableStructurer;
 	}
 
+	public FlowStructurer createFlowStructurer(PhraseListList phraseListList) {
+//		createPhraseListListFromWords();
+		flowStructurer = new FlowStructurer(phraseListList);
+		flowStructurer.setTextStructurer(this);
+		return flowStructurer;
+	}
+
 	public PhraseListList getPhraseListList() {
 		return phraseListList;
 	}
 
 	/** assumes sorted lines
 	 */
-	public void extractSuscripts() {
+	public void extractAndApplySuscripts() {
 		List<TextLine> textLineList = getTextLineList();
 		subscriptLineList = new ArrayList<TextLine>();
 		superscriptLineList = new ArrayList<TextLine>();
@@ -1430,6 +1437,7 @@ public class TextStructurer {
 				double belowTop = thisTop - previousLine.getYCoord();
 				if (previousSize / thisSize < 0.9 && belowTop < -2) {
 					superscriptLineList.add(previousLine);
+					thisLine.setSuperscriptLine(previousLine);
 				}
 			}
 			if (i < textLineList.size() - 1) {
@@ -1438,9 +1446,9 @@ public class TextStructurer {
 				double aboveBottom = thisY - (nextLine.getYCoord() - nextSize); 
 				if (nextSize / thisSize < 0.9 && aboveBottom > 2) {
 					subscriptLineList.add(nextLine);
+					thisLine.setSubscriptLine(nextLine);
 				}
 			}
-			
 		}
 	}
 
@@ -1450,6 +1458,34 @@ public class TextStructurer {
 
 	public List<TextLine> getSubscriptLineList() {
 		return subscriptLineList;
+	}
+
+	public List<TextBox> createTextBoxList(PhraseListList phraseListList, Real2 xMargins, Real2 yMargins) {
+		textBoxList = new ArrayList<TextBox>();
+		for (int i = 0; i < phraseListList.size(); i++) {
+			PhraseList phraseList = phraseListList.get(i);
+			for (int j = 0; j < phraseList.size(); j++) {
+				Phrase phrase = phraseList.get(j);
+				Real2Range phraseBox = phrase.getBoundingBox();
+				phraseBox = phraseBox.getReal2RangeExtendedInX(xMargins.x, xMargins.y).getReal2RangeExtendedInY(yMargins.x, yMargins.y);
+				int ibox = -1;
+				for (int k = 0; k < textBoxList.size(); k++) {
+					TextBox textBox = textBoxList.get(k);
+					Real2Range bboxi = textBox.getBoundingBox(); 
+					Real2Range intersect = phraseBox.intersectionWith(bboxi);
+					if (!SVGUtil.isNullReal2Range(intersect)) {
+						textBox.add(new Phrase(phrase));
+						ibox = k;
+						break;
+					}
+				}
+				if (ibox == -1) {
+					TextBox textBox = new TextBox(phrase);
+					textBoxList.add(textBox);
+				}
+			}
+		}
+		return textBoxList;
 	}
 
 

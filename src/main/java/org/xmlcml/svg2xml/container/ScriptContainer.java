@@ -78,7 +78,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 			LOG.trace("TLSC "+textLine);
 		}
 		ScriptContainer scriptContainer = new ScriptContainer(pageAnalyzer);
-		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineList();
+		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineListForCommonestFont();
 		for (ScriptLine scriptLine : scriptedLineList) {
 			LOG.trace("SCL "+scriptLine);
 		}

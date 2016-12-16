@@ -805,7 +805,7 @@ public class TextAnalyzerTest {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
 		List<ScriptLine> textLineChunkList  = textStructurer.getInitialScriptLineList();
 		Assert.assertEquals("TextLines ", 10, textLineChunkList.size());
-		List<ScriptLine> separated = textStructurer.getScriptedLineList();
+		List<ScriptLine> separated = textStructurer.getScriptedLineListForCommonestFont();
 		Assert.assertEquals("split", 11, separated.size());
 		for (ScriptLine group : separated) {
 			LOG.trace(group);
@@ -815,7 +815,7 @@ public class TextAnalyzerTest {
 	@Test
 	public void testCreateTextListLines0() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		ScriptLine group0 = textStructurer.getScriptedLineList().get(0);
+		ScriptLine group0 = textStructurer.getScriptedLineListForCommonestFont().get(0);
 		Assert.assertEquals("group0", 2, group0.size());
 		List<TextLine> textLineList = group0.createSuscriptTextLineList();
 		Assert.assertEquals("group0", 5, textLineList.size());
@@ -825,7 +825,7 @@ public class TextAnalyzerTest {
 	public void testCreateTextListLinesAll() {
 		int[] groupSize = new int[]{5,1,7,1,1,7,3,5,1,1,1};
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		List<ScriptLine> groupList = textStructurer.getScriptedLineList();
+		List<ScriptLine> groupList = textStructurer.getScriptedLineListForCommonestFont();
 		Assert.assertEquals("groups", 11, groupList.size());
 		int i = 0;
 		for (ScriptLine group : groupList) {
@@ -838,7 +838,7 @@ public class TextAnalyzerTest {
 	@Test
 	public void testCreateTextListHtml0() {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-		ScriptLine group0 = textStructurer.getScriptedLineList().get(0);
+		ScriptLine group0 = textStructurer.getScriptedLineListForCommonestFont().get(0);
 		HtmlElement textLineHtml = group0.createHtmlElement();
 		Assert.assertEquals("group0", 
 				"<p xmlns=\"http://www.w3.org/1999/xhtml\"><span>The rate constant is 0.61795 mg L</span><sup><span>− </span>" +

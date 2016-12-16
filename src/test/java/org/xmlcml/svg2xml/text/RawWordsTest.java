@@ -111,12 +111,12 @@ public class RawWordsTest {
 		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(
 						Fixtures.RAWWORDS_SVG, (PageAnalyzer) null);
-		RawWords rawWords = textStructurer.createRawWordsList().get(0);
+		RawWords rawWords = textStructurer.createRawWordsListFromTextLineList().get(0);
 		Word word = rawWords.get(0);
 		Phrase phrase = word.createPhrase();
 		Assert.assertEquals("phrase", "{Phenotypic tarsus (mm)}", phrase.toString());
 		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phrase.getPrintableString());
-		List<Word> wordList = phrase.getWordList();
+		List<Word> wordList = phrase.getOrCreateWordList();
 		Assert.assertEquals("phrase", 3, wordList.size());
 		Assert.assertEquals("word0", "Phenotypic", wordList.get(0).toString());
 		Assert.assertEquals("word1", "tarsus", wordList.get(1).toString());
@@ -127,7 +127,7 @@ public class RawWordsTest {
 	public void testPhrase1() {
 		TextLine textLine = Fixtures.BERICHT_PAGE6_34_TEXTLINE;
 		RawWords rawWords = textLine.getRawWords();
-		Assert.assertEquals("rawSpaces", "{Total Topf 1...........................231.....343.....453.....(491)}",
+		Assert.assertEquals("rawSpaces", "{Total Topf 1...........................231.....343.....453.....491}",
 				rawWords.toString());
 		Word word0 = rawWords.get(0);
 		Assert.assertEquals("word0", "Total Topf 1", word0.toString());

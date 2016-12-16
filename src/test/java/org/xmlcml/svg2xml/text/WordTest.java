@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Util;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
@@ -17,7 +18,7 @@ public class WordTest {
 	public static Word WORD1 = RawWordsTest.RAW_WORDS.get(1);
 	public static Word WORD2 = RawWordsTest.RAW_WORDS.get(2);
 	
-	Word word1 = TextLineTest.PAGE_TEXT_LINE.getRawWords().get(1);
+	SVGElement word1 = TextLineTest.PAGE_TEXT_LINE.getRawWords().get(1);
 
 	@Test
 	public void testGetWordAndSpaces() {
@@ -65,7 +66,7 @@ public class WordTest {
 		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(
 						Fixtures.RAWWORDS_SVG, (PageAnalyzer) null);
-		List<RawWords> rawWordsList = textStructurer.createRawWordsList();
+		List<RawWords> rawWordsList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("rawWordsList", 1, rawWordsList.size());
 		RawWords rawWords = rawWordsList.get(0);
 		Assert.assertEquals("rawWords", 1, rawWords.size());

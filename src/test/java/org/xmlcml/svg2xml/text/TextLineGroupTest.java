@@ -18,7 +18,7 @@ public class TextLineGroupTest {
 	public void testTextStructurerGroupWeight() {
 		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
-		List<ScriptLine> textLineGroupList = textStructurer.getScriptedLineList();
+		List<ScriptLine> textLineGroupList = textStructurer.getScriptedLineListForCommonestFont();
 		Assert.assertTrue("header", textLineGroupList.get(0).isBold());
 		Assert.assertFalse("header", textLineGroupList.get(1).isBold());
 		Assert.assertFalse("header", textLineGroupList.get(15).isBold());
@@ -33,10 +33,10 @@ public class TextLineGroupTest {
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
 		Assert.assertEquals("commonest size", 9.76, textStructurer
 				.getCommonestFontSize().getDouble(), 0.001);
-		ScriptLine textLineGroup0 = textStructurer.getScriptedLineList().get(0);
+		ScriptLine textLineGroup0 = textStructurer.getScriptedLineListForCommonestFont().get(0);
 		Assert.assertFalse("not commonest size",
 				textStructurer.isCommonestFontSize(textLineGroup0));
-		ScriptLine textLineGroup1 = textStructurer.getScriptedLineList().get(1);
+		ScriptLine textLineGroup1 = textStructurer.getScriptedLineListForCommonestFont().get(1);
 		LOG.trace("textLine1 " + textLineGroup1);
 		Assert.assertTrue("commonest Font Size",
 				textStructurer.isCommonestFontSize(textLineGroup1));
@@ -238,7 +238,7 @@ public class TextLineGroupTest {
 				"TextStructurer: 1" + lineSeparator + "chars: 10 Y: 464.578 fontSize: 10.261 >>Background" + lineSeparator, 
 				splitList.get(0).toString());
 		TextStructurer split1 = splitList.get(1);
-		List<ScriptLine> split1GroupList = split1.getScriptedLineList();
+		List<ScriptLine> split1GroupList = split1.getScriptedLineListForCommonestFont();
 		Assert.assertEquals("split1", 15, split1GroupList.size());
 		Assert.assertEquals("split1.0", 
 				"Somephenotypicvariationarisesfromrandomnessin  %%%%\n", 
@@ -254,7 +254,7 @@ public class TextLineGroupTest {
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_9_3_SVG);
 		List<TextStructurer> splitList = textStructurer.splitOnFontBoldChange(0);
 		Assert.assertEquals("split", 2, splitList.size());
-		List<ScriptLine> split0GroupList = splitList.get(0).getScriptedLineList();
+		List<ScriptLine> split0GroupList = splitList.get(0).getScriptedLineListForCommonestFont();
 		Assert.assertEquals("split0.0", 
 				"Methods  %%%%\n", 
 				split0GroupList.get(0).toString());
@@ -262,7 +262,7 @@ public class TextLineGroupTest {
 				"Bacterialstrains  %%%%\n", 
 				split0GroupList.get(1).toString());
 		TextStructurer split1 = splitList.get(1);
-		List<ScriptLine> split1GroupList = split1.getScriptedLineList();
+		List<ScriptLine> split1GroupList = split1.getScriptedLineListForCommonestFont();
 		Assert.assertEquals("split1", 3, split1GroupList.size());
 		Assert.assertEquals("split1.0", 
 				"Allbacteriaandphagestrainsusedinthisstudyarelisted  %%%%\n",
@@ -300,11 +300,11 @@ public class TextLineGroupTest {
 		LOG.trace(header);
 		List<TextStructurer> headers = header.splitOnFontSizeChange(0);
 		Assert.assertEquals("headers", 2, headers.size());
-		List<ScriptLine> header0 = headers.get(0).getScriptedLineList();
+		List<ScriptLine> header0 = headers.get(0).getScriptedLineListForCommonestFont();
 		Assert.assertEquals("header0", 
 				"[Methods"+TERM+"]", 
 				header0.toString());
-		List<ScriptLine> header1 = headers.get(1).getScriptedLineList();
+		List<ScriptLine> header1 = headers.get(1).getScriptedLineListForCommonestFont();
 		Assert.assertEquals("header1", 
 				"[Bacterialstrains  %%%%\n]", 
 				header1.toString());

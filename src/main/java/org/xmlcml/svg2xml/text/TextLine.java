@@ -86,6 +86,8 @@ public class TextLine implements Iterable<SVGText> {
 	private Set<String> fontFamilySet;
 	private Multiset<String> fontFamilyMultiset;
 	private Multiset<Double> fontSizeMultiset;
+	private TextLine superscriptLine;
+	private TextLine subscriptLine;
 
 	private void resetWhenLineContentChanged() {
 		textList = null;
@@ -939,7 +941,7 @@ public class TextLine implements Iterable<SVGText> {
 		Word word = new Word();
 		rawWords.add(word);
 		for (int i = 0; i < ntext; i++) {
-			SVGText text = textList.get(i);
+			SVGText text = new SVGText(textList.get(i));
 			word.add(text);
 			if (i < ntext - 1)  {
 				SVGText nextText = textList.get(i + 1);
@@ -950,6 +952,7 @@ public class TextLine implements Iterable<SVGText> {
 				}
 			}
 		}
+//		word.pullUpChildAttributes();
 		return rawWords;
 	}
 
@@ -1008,5 +1011,13 @@ public class TextLine implements Iterable<SVGText> {
 			lineChunkList.add(phrase);
 		}
 		return lineChunkList;
+	}
+
+	public void setSuperscriptLine(TextLine previousLine) {
+		this.superscriptLine = previousLine;
+	}
+
+	public void setSubscriptLine(TextLine nextLine) {
+		this.subscriptLine = nextLine;
 	}
 }

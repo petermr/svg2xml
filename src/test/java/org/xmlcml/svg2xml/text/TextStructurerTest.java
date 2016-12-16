@@ -156,8 +156,8 @@ public class TextStructurerTest {
 		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(
 						Fixtures.IMAGE_2_11_HO_SVG, (PageAnalyzer) null);
-		List<RawWords> wordList = textStructurer.createRawWordsList();
-		Assert.assertEquals("ho", "{(HO)}", wordList.get(0).toString());
+		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
+		Assert.assertEquals("ho", "{HO}", wordList.get(0).toString());
 	}
 	
 	@Test
@@ -165,11 +165,11 @@ public class TextStructurerTest {
 		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(
 						Fixtures.IMAGE_2_11_NO2_SVG, (PageAnalyzer) null);
-		List<RawWords> wordList = textStructurer.createRawWordsList();
+		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("no2", 2, wordList.size());
-		Assert.assertEquals("no", "{(NO)}", wordList.get(0).toString());
+		Assert.assertEquals("no", "{NO}", wordList.get(0).toString());
 		Assert.assertEquals("xy", "(299.7,525.78)", wordList.get(0).get(0).getXY().toString());
-		Assert.assertEquals("no", "{(2)}", wordList.get(1).toString());
+		Assert.assertEquals("no", "{2}", wordList.get(1).toString());
 		Assert.assertEquals("xys", "(312.42,527.7)", wordList.get(1).get(0).getXY().toString());
 	}
 	
@@ -178,11 +178,11 @@ public class TextStructurerTest {
 		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(
 						Fixtures.IMAGE_2_11_SVG, (PageAnalyzer) null);
-		List<RawWords> wordList = textStructurer.createRawWordsList();
+		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("2.11", 3, wordList.size());
-		Assert.assertEquals("1", "{HO........(NO)}", wordList.get(0).toString());
-		Assert.assertEquals("2", "{(2)}", wordList.get(1).toString());
-		Assert.assertEquals("2", "{(O)}", wordList.get(2).toString());
+		Assert.assertEquals("1", "{HO........NO}", wordList.get(0).toString());
+		Assert.assertEquals("2", "{2}", wordList.get(1).toString());
+		Assert.assertEquals("2", "{O}", wordList.get(2).toString());
 	}
 	
 	
@@ -192,14 +192,14 @@ public class TextStructurerTest {
 				TextStructurer.createTextStructurerWithSortedLines(
 						Fixtures.IMAGE_2_15_SVG, (PageAnalyzer) null);
 		
-		List<RawWords> wordList = textStructurer.createRawWordsList();
+		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("words", 6, wordList.size());
-		Assert.assertEquals("0", "{(O)}", wordList.get(0).toString());
-		Assert.assertEquals("1", "{(N)}", wordList.get(1).toString());
-		Assert.assertEquals("2", "{(H)}", wordList.get(2).toString());
-		Assert.assertEquals("3", "{(H)}", wordList.get(3).toString());
-		Assert.assertEquals("4", "{OH..(O)}", wordList.get(4).toString());
-		Assert.assertEquals("5", "{Cyclopiazonic.(acid)}", wordList.get(5).toString());
+		Assert.assertEquals("0", "{O}", wordList.get(0).toString());
+		Assert.assertEquals("1", "{N}", wordList.get(1).toString());
+		Assert.assertEquals("2", "{H}", wordList.get(2).toString());
+		Assert.assertEquals("3", "{H}", wordList.get(3).toString());
+		Assert.assertEquals("4", "{OH..O}", wordList.get(4).toString());
+		Assert.assertEquals("5", "{Cyclopiazonic.acid}", wordList.get(5).toString());
 	}
 
 

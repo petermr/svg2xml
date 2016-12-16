@@ -83,7 +83,7 @@ public class GeometryBuilder extends SimpleBuilder {
 	}
 
 	private void extractWordList() {
-		List<RawWords> rawWordsList = textStructurer.createRawWordsList();
+		List<RawWords> rawWordsList = textStructurer.createRawWordsListFromTextLineList();
 		for (RawWords rawWords : rawWordsList) {
 			List<Word> rwordList = rawWords.getWordList();
 			for (Word word :rwordList) {

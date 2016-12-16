@@ -235,6 +235,8 @@ public class Fixtures {
 	public static final File SCATTERPLOT_7_2_SVG = new File(Fixtures.FIGURE_DIR, "scatterplot.g.7.2.svg");
 	public static final File SCATTERPLOTRED_7_2_SVG = new File(Fixtures.FIGURE_DIR, "scatterplotred.g.7.2.svg");
 
+	public static final File FLOW_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/flow");
+
 	// this uses outline fonts for graphics...
 	public final static String GRAPHIC_TEXT_ROOT = "insect-1471-2148-11-315";
 	public static final File GRAPHIC_TEXT_315_PDF = new File(PDFS_BMC_DIR, GRAPHIC_TEXT_ROOT+".pdf");
