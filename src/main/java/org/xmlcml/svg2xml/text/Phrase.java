@@ -5,8 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
@@ -50,7 +52,6 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	}
 
 	public void add(SVGElement word) {
-//		word.detach();
 		this.appendChild(word);
 	}
 	
@@ -308,6 +309,22 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 			element.appendChild(word.copyElement());
 		}
 		return element;
+	}
+
+	public void rotateAll(Real2 centreOfRotation, Angle angle) {
+		getOrCreateWordList();
+		for (Word word : childWordList) {
+			word.rotateAll(centreOfRotation, angle);
+			LOG.debug("W: "+word.hashCode()+"/"+word.toXML());
+		}
+		updateChildWordList();
+		return;
+	}
+	
+	public void updateChildWordList() {
+		for (int i = 0; i < childWordList.size(); i++) {
+			this.replaceChild(this.getChildElements().get(i), childWordList.get(i));
+		}
 	}
 
 

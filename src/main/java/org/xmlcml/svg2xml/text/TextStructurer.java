@@ -1488,5 +1488,11 @@ public class TextStructurer {
 		return textBoxList;
 	}
 
+	public void rotateAsBlock(Real2 xy, Angle angle) {
+		for (TextLine textLine : textLineList) {
+			textLine.rotate(xy, angle);
+		}
+	}
+
 
 }

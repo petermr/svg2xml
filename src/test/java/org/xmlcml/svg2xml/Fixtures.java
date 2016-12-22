@@ -283,6 +283,8 @@ public class Fixtures {
 	public static final File IMAGE_5_14_SVG = new File(MOLECULE_DIR, "image.g.5.14.svg");
 	public static final File IMAGE_02_00100_65_SVG = new File(MOLECULE_DIR, "02.00100.g.6.5.svg");
 
+	public static final File PLOT_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/plot");
+
 	//==================================================	
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {

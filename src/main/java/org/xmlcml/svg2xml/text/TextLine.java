@@ -18,11 +18,13 @@ import nu.xom.Element;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -1019,5 +1021,13 @@ public class TextLine implements Iterable<SVGText> {
 
 	public void setSubscriptLine(TextLine nextLine) {
 		this.subscriptLine = nextLine;
+	}
+	
+	public void rotate(Real2 xy, Angle angle) {
+		for (int i = 0; i < textList.size(); i++) {
+			SVGText text = textList.get(i);
+			Transform2 t2 = Transform2.getRotationAboutPoint(angle, xy);
+			text.setTransform(t2);
+		}
 	}
 }

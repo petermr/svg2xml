@@ -21,7 +21,7 @@ public class SimpleAxisTest {
 		horizontalAxis.setLabelFontSize(20.);
 		horizontalAxis.setLabel("Horizontal Axis");
 		svg.appendChild(horizontalAxis.createAxis());
-		SVGUtil.debug(svg, "target/xaxis.svg", 1);
+		SVGUtil.debug(svg, "target/axes/xaxis.svg", 1);
 		
 		svg = new SVGSVG();
 		SimpleAxis verticalAxis = new SimpleAxis(LineOrientation.VERTICAL);
@@ -37,12 +37,12 @@ public class SimpleAxisTest {
 		verticalAxis.setRotateLabel(true);
 		verticalAxis.setRotateVerticalCharacters(true);
 		svg.appendChild(verticalAxis.createAxis());
-		SVGUtil.debug(svg, "target/yaxis.svg", 1);
+		SVGUtil.debug(svg, "target/axes/yaxis.svg", 1);
 		
 		svg = new SVGSVG();
 		svg.appendChild(verticalAxis.createAxis());
 		svg.appendChild(horizontalAxis.createAxis());
-		SVGUtil.debug(svg, "target/xyaxis.svg", 1);
+		SVGUtil.debug(svg, "target/axes/xyaxis.svg", 1);
 	}
 
 }

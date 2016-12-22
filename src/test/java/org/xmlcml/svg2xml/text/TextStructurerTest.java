@@ -1,27 +1,23 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.euclid.Angle;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.html.HtmlHtml;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
-import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.Multiset;
 
@@ -202,6 +198,35 @@ public class TextStructurerTest {
 		Assert.assertEquals("5", "{Cyclopiazonic.acid}", wordList.get(5).toString());
 	}
 
+	@Test
+	public void testRotatePhrases() {
+
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						new File(Fixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg"), (PageAnalyzer) null);
+		PhraseListList phraseListList = textStructurer.createPhraseListListFromWords();
+		phraseListList.rotateAll(new Real2(200., 200.), new Angle(-1.0 * Math.PI / 2));
+		SVGG g = new SVGG();
+		g.appendChild(phraseListList.copy());
+		SVGSVG.wrapAndWriteAsSVG(g, new File("target/text/phrasesRotate.svg"));
+	}
+
+	@Test
+	public void testRotateTextLines() {
+
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(
+						Fixtures.RAWWORDS_SVG, (PageAnalyzer) null);
+		textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
+		List<TextLine> textLineList = textStructurer.getTextLineList();
+		SVGG g = new SVGG();
+		for (TextLine textLine : textLineList) {
+			for (SVGText character : textLine.getSVGTextCharacters()) {
+				g.appendChild(character.copy());
+			}
+		}
+		SVGSVG.wrapAndWriteAsSVG(g, new File("target/text/textLinesRotate.svg"));
+	}
 
 
 }

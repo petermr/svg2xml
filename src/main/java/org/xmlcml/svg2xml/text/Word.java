@@ -9,9 +9,11 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
@@ -338,6 +340,20 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 				}
 			}
 		}
+	}
+
+	public void rotateAll(Real2 centreOfRotation, Angle angle) {
+		getOrCreateChildTextList();
+		for (SVGText text : childTextList) {
+			Transform2 t2 = Transform2.getRotationAboutPoint(angle, centreOfRotation);
+			Transform2 oldT2 = text.getTransform();
+			if (oldT2 != null) {
+				t2 = t2.concatenate(oldT2);
+			}
+			text.setTransform(t2);
+			LOG.debug("T: "+text.toXML());
+		}
+		return;
 	}
 	
 }

@@ -78,9 +78,9 @@ public class SimpleAxis {
 					double x = midPoint.getX();
 					double y = midPoint.getY() - ylen /2.0;
 					double ydelta = ylen / label.length();
-					int start = (rotateVerticalCharacters) ? label.length() : 0;
-					int end = (rotateVerticalCharacters) ? 0 : label.length();
-					int sign = (rotateVerticalCharacters) ? -1 : 1;  
+//					int start = (rotateVerticalCharacters) ? label.length() : 0;
+//					int end = (rotateVerticalCharacters) ? 0 : label.length();
+//					int sign = (rotateVerticalCharacters) ? -1 : 1;  
 					for (int i = 0; i < label.length(); i++) {
 						Real2 xy = new Real2(x - verticalLabelOffset  * labelFontSize , y + i * ydelta /* * sign*/);
 						int charIndex = (rotateVerticalCharacters) ? label.length() - i - 1 : i;
