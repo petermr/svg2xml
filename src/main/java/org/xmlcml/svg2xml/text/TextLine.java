@@ -1030,4 +1030,10 @@ public class TextLine implements Iterable<SVGText> {
 			text.setTransform(t2);
 		}
 	}
+
+	public void formatTransform(int nplaces) {
+		for (SVGText text : textList) {
+			text.formatTransform(nplaces);
+		}
+	}
 }

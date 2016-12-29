@@ -1,5 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -53,6 +54,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 
 	public String getStringValue() {
+		getOrCreateChildPhraseList();
 		StringBuilder sb = new StringBuilder();
 		for (PhraseList phraseList : phraseListList) {
 			sb.append(""+phraseList.getStringValue()+"//");
@@ -184,7 +186,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		getOrCreateChildPhraseList();
 		for (PhraseList phraseList : phraseListList) {
 			phraseList.rotateAll(centreOfRotation, angle);
-			LOG.debug("PL: "+phraseList.toXML());
+			LOG.trace("PL: "+phraseList.toXML());
 		}
 		updatePhraseListList();
 	}
@@ -194,6 +196,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 			this.replaceChild(this.getChildElements().get(i), phraseListList.get(i));
 		}
 	}
+
 
 
 }

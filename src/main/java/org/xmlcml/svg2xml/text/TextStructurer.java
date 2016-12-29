@@ -716,8 +716,12 @@ public class TextStructurer {
 		return createTextStructurerWithSortedLines(pageAnalyzer, svgChunk);
 	}
 
+	public static TextStructurer createTextStructurerWithSortedLines(SVGElement svgChunk) {
+		return TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, svgChunk);
+	}
+
 	public static TextStructurer createTextStructurerWithSortedLines(PageAnalyzer pageAnalyzer,
-			SVGElement svgChunk) {
+				SVGElement svgChunk) {
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
 		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters, pageAnalyzer);
 		textStructurer.setSvgChunk(svgChunk);
@@ -1491,6 +1495,12 @@ public class TextStructurer {
 	public void rotateAsBlock(Real2 xy, Angle angle) {
 		for (TextLine textLine : textLineList) {
 			textLine.rotate(xy, angle);
+		}
+	}
+
+	public void formatTextLineTransforms(int nplaces) {
+		for (TextLine textLine : textLineList) {
+			textLine.formatTransform(nplaces);
 		}
 	}
 

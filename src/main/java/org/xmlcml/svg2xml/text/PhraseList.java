@@ -67,7 +67,8 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 			List<Element> phraseChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+Phrase.TAG+"']");
 			childPhraseList = new ArrayList<Phrase>();
 			for (Element child : phraseChildren) {
-				childPhraseList.add(new Phrase((SVGG)child));
+//				childPhraseList.add(new Phrase((SVGG)child));
+				childPhraseList.add((Phrase)child);
 			}
 		}
 		return childPhraseList;
@@ -134,7 +135,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		getOrCreateChildPhraseList();
 		for (Phrase phrase : childPhraseList) {
 			phrase.rotateAll(centreOfRotation, angle);
-			LOG.debug("P: "+phrase.toXML());
+			LOG.trace("P: "+phrase.toXML());
 		}
 		updateChildPhraseList();
 	}

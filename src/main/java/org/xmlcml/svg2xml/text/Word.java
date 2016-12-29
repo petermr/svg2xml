@@ -30,7 +30,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public final static String TAG = "word";
 	public static String SPACE_SYMBOL = " ";
 
-	List<SVGText> childTextList;
+	private List<SVGText> childTextList;
 	private boolean guessWidth = true;
 	
 	public Word() {
@@ -129,6 +129,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 			sb.append(text.getValue());
 		}
 		this.setStringValueAttribute(sb.toString());
+		LOG.trace("W "+this.toXML());
 		return sb.toString();
 	}
 
@@ -351,7 +352,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 				t2 = t2.concatenate(oldT2);
 			}
 			text.setTransform(t2);
-			LOG.debug("T: "+text.toXML());
+			LOG.trace("T: "+text.toXML());
 		}
 		return;
 	}

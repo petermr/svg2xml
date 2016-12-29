@@ -208,7 +208,8 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 			List<Element> wordChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+Word.TAG+"']");
 			childWordList = new ArrayList<Word>();
 			for (Element child : wordChildren) {
-				childWordList.add(new Word((SVGG)child));
+//				childWordList.add(new Word((SVGG)child));
+				childWordList.add((Word)child);
 			}
 		}
 		return childWordList;
@@ -315,7 +316,7 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		getOrCreateWordList();
 		for (Word word : childWordList) {
 			word.rotateAll(centreOfRotation, angle);
-			LOG.debug("W: "+word.hashCode()+"/"+word.toXML());
+			LOG.trace("W: "+word.hashCode()+"/"+word.toXML());
 		}
 		updateChildWordList();
 		return;
