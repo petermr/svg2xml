@@ -15,6 +15,11 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.html.HtmlB;
+import org.xmlcml.html.HtmlBr;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlI;
+import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
@@ -32,9 +37,13 @@ import nu.xom.Element;
 public class Phrase extends LineChunk implements Iterable<Word> {
 	
 	private static final Logger LOG = Logger.getLogger(Phrase.class);
-	
 	public final static String TAG = "phrase";
-	
+
+	public static final Phrase NULL = new Phrase();
+	static {
+		NULL.add(new Word(Word.NULL));
+	};
+
 	private List<Word> childWordList;
 
 	public Phrase() {
@@ -136,15 +145,20 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	 * 
 	 * @return
 	 */
-	public double getFirstX() {
-		return get(0).getStartX();
+	public Double getFirstX() {
+		Word word = get(0);
+		if (word == null) {
+			return 0.0;
+		} else {
+			return word.getStartX();
+		}
 	}
 	
 	/** middle coordinate (average of startX and endX. 
 .	 * 
 	 * @return
 	 */
-	public double getMidX() {
+	public Double getMidX() {
 		return (getStartX() + getEndX()) / 2.;
 	}
 	
@@ -152,7 +166,7 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	 * 
 	 * @return
 	 */
-	public double getEndX() {
+	public Double getEndX() {
 		return getLastWord().getEndX();
 	}
 
@@ -160,7 +174,7 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	 * 
 	 * @return
 	 */
-	public double getStartX() {
+	public Double getStartX() {
 		getOrCreateWordList();
 		return childWordList.get(0).getStartX();
 	}
@@ -208,8 +222,9 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 			List<Element> wordChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+Word.TAG+"']");
 			childWordList = new ArrayList<Word>();
 			for (Element child : wordChildren) {
-//				childWordList.add(new Word((SVGG)child));
-				childWordList.add((Word)child);
+				// FIXME
+				childWordList.add(new Word((SVGG)child));
+//				childWordList.add((Word)child);
 			}
 		}
 		return childWordList;
@@ -273,10 +288,12 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < childWordList.size() - 1; i++) {
 			Word word = childWordList.get(i);
-			sb.append(""+word.getStringValue()+"");
+			sb.append(word.getStringValue());
 			Double spaceCount = word.getSpaceCountBetween(childWordList.get(i + 1));
-			for (int j = 0; j < spaceCount; j++) {
-				sb.append(Word.SPACE_SYMBOL);
+			if (spaceCount != null) {
+				for (int j = 0; j < spaceCount; j++) {
+					sb.append(Word.SPACE_SYMBOL);
+				}
 			}
 		}
 		sb.append(""+childWordList.get(childWordList.size() - 1).toString()+"");
@@ -284,8 +301,53 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		return sb.toString();
 	}
 
+	public HtmlSpan getSpanValue() {
+		getOrCreateWordList();
+		HtmlSpan phraseSpan = new HtmlSpan();
+		for (int i = 0; i < childWordList.size() - 1; i++) {
+			Word word = childWordList.get(i);
+			HtmlElement wordSpan = addStyledWord(phraseSpan, word);
+			Double spaceCount = word.getSpaceCountBetween(childWordList.get(i + 1));
+			if (spaceCount != null) {
+				for (int j = 0; j < spaceCount; j++) {
+					wordSpan.appendChild(new HtmlBr());
+				}
+			}
+		}
+		addStyledWord(phraseSpan, childWordList.get(childWordList.size() - 1));
+		return phraseSpan;
+	}
+
+	private HtmlElement addStyledWord(HtmlSpan phraseSpan, Word word) {
+		HtmlElement wordSpan = new HtmlSpan();
+		phraseSpan.appendChild(wordSpan);
+		addStyles(word, wordSpan);
+		return wordSpan;
+	}
+
+	private void addStyles(Word word, HtmlElement wordSpan) {
+		String bold = word.getFontWeight();
+		if (FontWeight.BOLD.toString().equalsIgnoreCase(bold)) {
+			HtmlB b = new HtmlB();
+			wordSpan.appendChild(b);
+			wordSpan = b;
+		}
+		String style = word.getFontStyle();
+		if (FontStyle.ITALIC.toString().equalsIgnoreCase(style)) {
+			HtmlI it = new HtmlI();
+			wordSpan.appendChild(it);
+			wordSpan = it;
+		}
+		String value = word.getStringValue();
+		wordSpan.appendChild(value);
+	}
+
 	public IntRange getIntRange() {
-		return new IntRange((int)getFirstX(), (int)getEndX());
+		return new IntRange((int)(double)getFirstX(), (int)(double)getEndX());
+	}
+	
+	public Real2 getXY() {
+		return this.getBoundingBox().getCorners()[0];
 	}
 
 	public Double getFontSize() {

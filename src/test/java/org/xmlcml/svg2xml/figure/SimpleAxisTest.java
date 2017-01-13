@@ -1,5 +1,8 @@
 package org.xmlcml.svg2xml.figure;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -12,7 +15,7 @@ public class SimpleAxisTest {
 	 * mainly for test/education.
 	 */
 	@Test
-	public void testSimpleAxis() {
+	public void testSimpleAxis() throws Exception {
 		SVGSVG svg = new SVGSVG();
 		SimpleAxis horizontalAxis = new SimpleAxis(LineOrientation.HORIZONTAL);
 		horizontalAxis.setAxisMin(100.);
@@ -21,7 +24,9 @@ public class SimpleAxisTest {
 		horizontalAxis.setLabelFontSize(20.);
 		horizontalAxis.setLabel("Horizontal Axis");
 		svg.appendChild(horizontalAxis.createAxis());
-		SVGUtil.debug(svg, "target/axes/xaxis.svg", 1);
+		File axes = new File("target/axes/");
+		axes.mkdirs();
+		SVGUtil.debug(svg, new FileOutputStream(new File(axes, "xaxis.svg")), 1);
 		
 		svg = new SVGSVG();
 		SimpleAxis verticalAxis = new SimpleAxis(LineOrientation.VERTICAL);

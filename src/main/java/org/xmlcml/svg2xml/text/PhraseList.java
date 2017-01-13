@@ -8,6 +8,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
+import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
@@ -23,6 +24,11 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	}
 	
 	public final static String TAG = "phraseList";
+	public static final PhraseList NULL = new PhraseList();
+	static {
+		NULL.add(new Phrase(Phrase.NULL));
+	};
+	
 	// this is not exposed
 	private List<Phrase> childPhraseList; 
 
@@ -40,10 +46,6 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return childPhraseList.iterator();
 	}
 	
-	public String toString() {
-		return this.toXML();
-	}
-
 	public void add(Phrase phrase) {
 		this.appendChild(phrase);
 	}
@@ -52,7 +54,10 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		getOrCreateChildPhraseList();
 		IntArray leftMargins = new IntArray();
 		for (Phrase phrase : childPhraseList) {
-			leftMargins.addElement((int) phrase.getFirstX());
+			Double firstX = phrase.getFirstX();
+			if (firstX != null) {
+				leftMargins.addElement((int)(double) firstX);
+			}
 		}
 		return leftMargins;
 	}
@@ -67,8 +72,9 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 			List<Element> phraseChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+Phrase.TAG+"']");
 			childPhraseList = new ArrayList<Phrase>();
 			for (Element child : phraseChildren) {
-//				childPhraseList.add(new Phrase((SVGG)child));
-				childPhraseList.add((Phrase)child);
+				// FIXME 
+				childPhraseList.add(new Phrase((SVGG)child));
+//				childPhraseList.add((Phrase)child);
 			}
 		}
 		return childPhraseList;
@@ -94,6 +100,12 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return bboxTotal;
 				
 	}
+	
+	public Real2 getXY() {
+		return this.getBoundingBox().getCorners()[0];
+	}
+
+
 	
 	public Double getFontSize() {
 		getOrCreateChildPhraseList();
@@ -146,5 +158,21 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return /*this.getClass().getSimpleName()+": "+*/ /*this.getXY()+": "+*/ this.getStringValue();
+	}
+
+	public PhraseList extractIncludedLists(IntRange tableSpan) {
+		PhraseList includedPhraseList = new PhraseList();
+		for (Phrase phrase : this) {
+			if (tableSpan.includes(phrase.getIntRange())) {
+				includedPhraseList.add(new Phrase(phrase));
+			} else {
+				LOG.debug("excluded phrase by tableSpan: "+phrase);
+			}
+		}
+		return includedPhraseList;
+	}
 
 }

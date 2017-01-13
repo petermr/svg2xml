@@ -72,7 +72,6 @@ public class SVG2XMLCharacter /*extends SVGElement*/ implements Comparable {
 		int result = -1;
 		if (object instanceof SVG2XMLCharacter) {
 			SVG2XMLCharacter objChar = (SVG2XMLCharacter) object; 
-			LOG.debug("XX "+object);
 			result = unicodePoint.compareTo(objChar.unicodePoint); 
 		}
 		return result;

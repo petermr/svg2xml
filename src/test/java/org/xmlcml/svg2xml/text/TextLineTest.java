@@ -46,7 +46,7 @@ public class TextLineTest {
 		public final static SVGElement PAGE_CHUNK = SVGElement.readAndCreateSVG(PAGE_ELEMENT);
 		
 		public final static TextStructurer PAGE_TEXT_STRUCTURER = 
-				TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, PAGE_CHUNK);
+				TextStructurer.createTextStructurerWithSortedLines(PAGE_CHUNK);
 		public final static TextLine PAGE_TEXT_LINE = PAGE_TEXT_STRUCTURER.getLinesInIncreasingY().get(0);
 				
 
@@ -67,7 +67,7 @@ public class TextLineTest {
 		public final static SVGElement PAGE_CHUNK1 = SVGElement.readAndCreateSVG(PAGE_ELEMENT1);
 		
 		public final static TextStructurer PAGE_TEXT_STRUCTURER1 = 
-				TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, PAGE_CHUNK1);
+				TextStructurer.createTextStructurerWithSortedLines(PAGE_CHUNK1);
 		public final static TextLine PAGE_TEXT_LINE1 = PAGE_TEXT_STRUCTURER1.getLinesInIncreasingY().get(0);
 				
 		public static final String PAGE_STRING2 =
@@ -100,7 +100,7 @@ public class TextLineTest {
 		public final static Element PAGE_ELEMENT2 = XMLUtil.parseXML(PAGE_STRING2);
 		public final static SVGElement PAGE_CHUNK2 = SVGElement.readAndCreateSVG(PAGE_ELEMENT2);
 		public final static TextStructurer PAGE_TEXT_STRUCTURER2 = 
-				TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, PAGE_CHUNK2);
+				TextStructurer.createTextStructurerWithSortedLines(PAGE_CHUNK2);
 		public final static TextLine PAGE_TEXT_LINE2 = PAGE_TEXT_STRUCTURER2.getTextLineList().get(0);
 		
 

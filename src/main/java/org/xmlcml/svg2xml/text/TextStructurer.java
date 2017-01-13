@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.File;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,12 +28,14 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.flow.FlowStructurer;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.pdf.ChunkId;
+import org.xmlcml.svg2xml.table.TableStructurer;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
@@ -59,7 +62,9 @@ public class TextStructurer {
 		BOLD,
 		FONTSIZE,
 		FONTFAMILY,
-	};
+	}
+
+	public static Normalizer.Form NORMALIZE_FORM = Normalizer.Form.NFKC;
 	
 	Pattern NUMBER_ITEM_PATTERN = Pattern.compile("^\\s*[\\[\\(]?\\s*(\\d+)\\s*\\.?[\\]\\)]?\\.?\\s*.*");
 	
@@ -116,7 +121,7 @@ public class TextStructurer {
 	private List<TextBox> textBoxList;
 
 	public TextStructurer() {
-		this(new TextAnalyzer((List<SVGText>) null, (PageAnalyzer) null));
+		this(new TextAnalyzer((List<SVGText>) null));
 	}
 	
 	/** 
@@ -708,22 +713,17 @@ public class TextStructurer {
 	}
 
 	public static TextStructurer createTextStructurerWithSortedLines(File svgFile) {
-		return TextStructurer.createTextStructurerWithSortedLines(svgFile, (PageAnalyzer) null);
-	}
-
-	public static TextStructurer createTextStructurerWithSortedLines(File svgFile, PageAnalyzer pageAnalyzer) {
 		SVGElement svgChunk = SVGElement.readAndCreateSVG(svgFile);
-		return createTextStructurerWithSortedLines(pageAnalyzer, svgChunk);
+		return createTextStructurerWithSortedLines(svgChunk);
 	}
 
 	public static TextStructurer createTextStructurerWithSortedLines(SVGElement svgChunk) {
-		return TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, svgChunk);
-	}
-
-	public static TextStructurer createTextStructurerWithSortedLines(PageAnalyzer pageAnalyzer,
-				SVGElement svgChunk) {
+		boolean normalized = TextUtil.normalize(svgChunk, NORMALIZE_FORM);
+//		if (normalized) {
+//			LOG.debug("normalized: "+svgChunk.toXML());
+//		}
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
-		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters, pageAnalyzer);
+		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
 		textStructurer.setSvgChunk(svgChunk);
 		return textStructurer;
 	}
@@ -750,8 +750,8 @@ public class TextStructurer {
 		textAnalyzer.setTextStructurer(this);
 	}
 	
-	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, PageAnalyzer pageAnalyzer) {
-		TextAnalyzer textAnalyzer = new TextAnalyzer(pageAnalyzer);
+	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters/*, PageAnalyzer pageAnalyzer*/) {
+		TextAnalyzer textAnalyzer = new TextAnalyzer();
 		textAnalyzer.setTextList(textCharacters);
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		// the next two lines may be unnecessary
@@ -1369,9 +1369,7 @@ public class TextStructurer {
 	 * @return
 	 */
 	public static TextLine createTextLine(File svgFile, int lineNumber) {
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						svgFile, (PageAnalyzer) null);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgFile);
 		List<TextLine> textLines = textStructurer.getLinesInIncreasingY();
 		return textLines.get(lineNumber);
 	}
@@ -1421,6 +1419,9 @@ public class TextStructurer {
 	}
 
 	public PhraseListList getPhraseListList() {
+		if (phraseListList == null) {
+			createPhraseListListFromWords();
+		}
 		return phraseListList;
 	}
 

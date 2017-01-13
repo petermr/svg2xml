@@ -84,6 +84,9 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	 * */
 	private TextStructurer textStructurer;
 	
+	public TextAnalyzer() {
+		this((PageAnalyzer)null);
+	}
 	public TextAnalyzer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
 	}

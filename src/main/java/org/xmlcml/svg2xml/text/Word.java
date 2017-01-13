@@ -17,6 +17,8 @@ import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.StyleBundle;
+import org.xmlcml.graphics.svg.GraphicsElement.FontStyle;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
 import org.xmlcml.xml.XMLUtil;
 
@@ -30,6 +32,15 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public final static String TAG = "word";
 	public static String SPACE_SYMBOL = " ";
 
+	public static final Word NULL = new Word();
+	static {
+		NULL.childTextList = new ArrayList<SVGText>();
+		SVGText text = new SVGText(new Real2(0.0, 0.0), "NULL");
+		text.setFontSize(10.0);
+		NULL.childTextList.add(text);
+	};
+
+
 	private List<SVGText> childTextList;
 	private boolean guessWidth = true;
 	
@@ -41,7 +52,9 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 
 	public Word(SVGG g) {
 		super(g);
-		// TODO Auto-generated constructor stub
+		if (Word.TAG.equals(g.getSVGClassName())) {
+			LOG.trace("need to create subclassed Word constructor");
+		}
 	}
 
 	/** 
@@ -87,6 +100,8 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 			List<Element> textChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGText.TAG+"']");
 			childTextList = new ArrayList<SVGText>();
 			for (Element child : textChildren) {
+				SVGText childText = new SVGText(child);
+				String s = child.getValue();
 				childTextList.add((SVGText)child);
 			}
 		}
@@ -157,7 +172,13 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 
 	public Double getStartX() {
 		getOrCreateChildTextList();
-		return childTextList.size() == 0 ? null : childTextList.get(0).getX();
+		if (childTextList == null || childTextList.size() == 0) {
+			return null;
+		} else if (childTextList.get(0) == null) {
+			return null;
+		} else {
+			return childTextList.get(0).getX();
+		}
 	}
 
 	/** 
@@ -285,6 +306,54 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		}
 		return f;
 	}
+	
+	/**
+	 * @return the font style
+	 */
+	public String getFontStyle() {
+		getOrCreateChildTextList();
+		String style = null;
+		if (childTextList.size() > 0) {
+			style = childTextList.get(0).getFontStyle();
+			for (int i = 1; i < childTextList.size(); i++) {
+				String style1 = childTextList.get(i).getFontStyle();
+				if (style1 != null) {
+					if (!style1.equals(style)) {
+						LOG.debug("changed style in word from "+style+"=>"+style1+"/"+this.getStringValue());
+						style = FontStyle.NORMAL.toString();
+						break;
+					}
+				}
+			}
+		}
+		this.setFontStyle(style);
+		return style;
+	}
+
+	/**
+	 * @return the font weight
+	 */
+	public String getFontWeight() {
+		getOrCreateChildTextList();
+		String weight = null;
+		if (childTextList.size() > 0) {
+			weight = childTextList.get(0).getFontWeight();
+			for (int i = 1; i < childTextList.size(); i++) {
+				String weight1 = childTextList.get(i).getFontWeight();
+				if (weight1 != null) {
+					if (!weight1.equals(weight)) {
+						LOG.debug("changed weight in word from "+weight+"=>"+weight1+"/"+this.getStringValue());
+						weight = FontWeight.NORMAL.toString();
+						break;
+					}
+				}
+			}
+		}
+		this.setFontWeight(weight);
+		return weight;
+	}
+
+
 
 	public Element copyElement() {
 		getOrCreateChildTextList();

@@ -248,13 +248,13 @@ public class Fixtures {
 	public static final File LINEPLOTS_327_PDF = new File(PDFS_BMC_DIR, LINEPLOTS_ROOT+".pdf");
 
 	public static final File TABLE_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/table");
+	public static final File TABLE_PDF_DIR = new File(TABLE_DIR, "pdf");
 	public static final File DK_PAGE1_SVG = new File(Fixtures.TABLE_DIR, "dk.page1.svg");
 	public static final File BERICHT_PAGE6_SVG = new File(Fixtures.TABLE_DIR, "bericht.page6.svg");
 	public static final File BERICHT_PAGE22_SVG = new File(Fixtures.TABLE_DIR, "bericht.page22.svg");
 
 	public static final TextStructurer BERICHT_PAGE6_TXTSTR = 
-			TextStructurer.createTextStructurerWithSortedLines(
-					Fixtures.BERICHT_PAGE6_SVG, (PageAnalyzer) null);
+			TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
 	public final static List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
 	public final static TextLine BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 

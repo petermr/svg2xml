@@ -64,8 +64,7 @@ public class WordTest {
 	@Test
 	public void testSplitWords() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.RAWWORDS_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.RAWWORDS_SVG);
 		List<RawWords> rawWordsList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("rawWordsList", 1, rawWordsList.size());
 		RawWords rawWords = rawWordsList.get(0);

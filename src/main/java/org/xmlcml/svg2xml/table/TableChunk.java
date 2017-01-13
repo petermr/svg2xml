@@ -223,7 +223,7 @@ public class TableChunk {
 
 	protected HtmlElement createHtmlThroughTextStructurer() {
 		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters, (PageAnalyzer)null);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters);
 		HtmlElement htmlElement = textStructurer.createHtmlElement();
 		return htmlElement;
 	}

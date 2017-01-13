@@ -22,21 +22,21 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.flow.FlowStructurer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.text.FlowStructurer;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextBox;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class PlotStructurerTest {
 	
-	private static final String OUTFILE_SVG = "plot.svg";
 	public static final Logger LOG = Logger.getLogger(PlotStructurerTest.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
 
-	private File OUT_ROOT_TOP = new File("target/plots/");
+	public static final String OUTFILE_SVG = "plot.svg";
+	private static File OUT_ROOT_TOP = new File("target/plots/");
 
 	@Test
 	public void testTEX10Paths() throws IOException {
@@ -133,23 +133,126 @@ public class PlotStructurerTest {
 		createPlots(outRoot, 22);
 	}
 
-	@Test
-	public void testSAGE_Funnel() throws IOException {
-		String outRoot = "sageFunnel";
-		createPaths(
-			new File(Fixtures.PLOT_DIR, "SAGE_Sbarra_funnel.g.11.0.svg"),
-			outRoot
-		);
-		createPlots(outRoot, 0);
-	}
+//	@Test
+//	public void testBakker_Funnel() throws IOException {
+//		String outRoot = "bakkerFunnel";
+//		createPaths(
+//			new File("demos", "funnel/bakker2014-page11.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	/** glyph-based characters
+//	 * problems with points
+//	 * 
+//	 * @throws IOException
+//	 */
+//	public void testBooth_Funnel() throws IOException {
+//		String outRoot = "boothFunnel";
+//		createPaths(
+//			new File("demos", "funnel/booth2010-page18.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	/** glyph-based characters
+//	 * 
+//	 * @throws IOException
+//	 */
+//	public void testCalvin_Funnel() throws IOException {
+//		String outRoot = "calvinFunnel";
+//		createPaths(
+//			new File("demos", "funnel/calvin2011-page12.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	/** glyph-based characters
+//	 * 
+//	 * @throws IOException
+//	 */
+//	public void testChoi_Funnel() throws IOException {
+//		String outRoot = "choiFunnel";
+//		createPaths(
+//			new File("demos", "funnel/choi2012-page5.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	/** 
+//	 * 
+//	 * @throws IOException
+//	 */
+//	public void testDong_Funnel() throws IOException {
+//		String outRoot = "dongFunnel";
+//		createPaths(
+//			new File("demos", "funnel/dong2009-page4.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	/** 
+//	 * 
+//	 * @throws IOException
+//	 */
+//	public void testKerr_Funnel() throws IOException {
+//		String outRoot = "kerrFunnel";
+//		createPaths(
+//			new File("demos", "funnel/kerr2012-page5.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	/** 
+//	 * 
+//	 * @throws IOException
+//	 */
+//	public void testNair_Funnel() throws IOException {
+//		String outRoot = "nairFunnel";
+//		createPaths(
+//			new File("demos", "funnel/nair2014-page4.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	public void testRogers1_Funnel() throws IOException {
+//		String outRoot = "rogers1Funnel";
+//		createPaths(
+//			new File("demos", "funnel/rogers2009-page44.svg/"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
+//
+//	@Test
+//	public void testSAGE_Funnel() throws IOException {
+//		String outRoot = "sageFunnel";
+//		createPaths(
+//			new File(Fixtures.PLOT_DIR, "SAGE_Sbarra_funnel.g.11.0.svg"),
+//			outRoot
+//		);
+//		createPlots(outRoot, 0);
+//	}
 
-	
 	// =======================
 	
 	private void createFlow(File inputFile, String outRoot) throws IOException {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(
-				inputFile, (PageAnalyzer) null);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
 		PhraseListList phraseListList = textStructurer.createPhraseListListFromWords();
 		
@@ -193,10 +296,9 @@ public class PlotStructurerTest {
 		
 	}
 	
-	private void createPaths(File inputFile, String outRoot) throws IOException {
+	public static void createPaths(File inputFile, String outRoot) throws IOException {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(
-				inputFile, (PageAnalyzer) null);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
 		PhraseListList phraseListList = textStructurer.createPhraseListListFromWords();
 		
@@ -241,7 +343,7 @@ public class PlotStructurerTest {
 		
 	}
 	
-	private void createPlots(String outRoot, int arrowCount) throws FileNotFoundException {
+	public static void createPlots(String outRoot, int arrowCount) throws FileNotFoundException {
 		OUT_ROOT_TOP.mkdirs();
 		File outfile = new File(OUT_ROOT_TOP, outRoot+"/plot.svg");
 		SVGG g = (SVGG) SVGElement.readAndCreateSVG(outfile).getChildElements().get(0);

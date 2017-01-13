@@ -109,8 +109,7 @@ public class RawWordsTest {
 	@Test
 	public void testPhrase() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.RAWWORDS_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.RAWWORDS_SVG);
 		RawWords rawWords = textStructurer.createRawWordsListFromTextLineList().get(0);
 		Word word = rawWords.get(0);
 		Phrase phrase = word.createPhrase();

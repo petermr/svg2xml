@@ -128,7 +128,7 @@ public class TextLine implements Iterable<SVGText> {
 	public static List<TextLine> createSortedTextLineList(Element el) {
 		SVGElement g = SVGElement.readAndCreateSVG(el);
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines((PageAnalyzer) null, g);
+				TextStructurer.createTextStructurerWithSortedLines(g);
 		return textStructurer.getTextLineList();
 	}
 
@@ -954,6 +954,9 @@ public class TextLine implements Iterable<SVGText> {
 				}
 			}
 		}
+		String style = word.getFontStyle();
+		String weight = word.getFontWeight();
+//		LOG.debug("weight "+weight+"; style: "+style);
 //		word.pullUpChildAttributes();
 		return rawWords;
 	}

@@ -536,8 +536,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
 //		SVGSVG svgPage = new SVGSVG();
 //		svgPage.appendChild(svgg);
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(file);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
 		List<TextLine> textLineList = textStructurer.getTextLineList();
 		for (TextLine textLine : textLineList) {
 			LOG.trace("L> "+String.valueOf(textLine));

@@ -1,8 +1,10 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,12 +24,13 @@ import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTd;
 import org.xmlcml.html.HtmlTr;
+import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
+import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.TableStructurer;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.xml.XMLUtil;
@@ -61,6 +64,7 @@ public class TableStructurerTest {
 	private static final String TEX_AUSLOOS2016_G_5_1_SVG = "TEX_Ausloos2016.g.5.1.svg";
 
 	private static final String WILEY44386_G_4_1_SVG = "Wiley44386.g.4.1.svg";
+	private static final File TABLE_OUT_DIR = new File("target/table");
 
 	@Test
 	@Ignore // rotated table
@@ -527,15 +531,71 @@ public class TableStructurerTest {
 		testSuscripts(inputFile, superscript, subscript);
 	}
 
+	@Test
+	public void testJoinTables() {
+		// 1092 - Table 4
+		String root = "els_1092";
+		File outDir = new File(TABLE_OUT_DIR, root+"/");
+		File pdfIn = new File(Fixtures.TABLE_PDF_DIR, root+".pdf");
+		outDir.mkdirs();
+		String[] args = {"-outdir", outDir.toString(), pdfIn.toString()};
+		PDFAnalyzer.main(args);
+
+	}
 	
+	// ----------------------
+	@Test
+	public void testELSTableRangesArray() throws IOException {
+		File inputFile = new File(Fixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
+		String outRoot = "els_Petaja2009.ranges";
+//		"{0, 3}/{3, 3}/{3, 4}/{4, 10}/{11, 13}"
+		IntRangeArray rangesArray = new IntRangeArray(
+				Arrays.asList(
+						new IntRange[]{
+								new IntRange(0, 3),
+								new IntRange(3, 3),
+								new IntRange(3, 4),
+								new IntRange(4, 10),
+								new IntRange(11, 13),
+				})
+		);
+
+		createDualTables(
+			inputFile,
+			rangesArray,
+			2.5,
+			outRoot
+		);
+		int horizontalRulerCount = 3;
+		TableStructurer tableStructurer = testHorizontalRulers(inputFile, outRoot, horizontalRulerCount);
+	}
+
+	@Test
+	@Ignore // throws null RangeArray
+	// FIXME
+	public void testELSTableAuto() throws IOException {
+		File inputFile = new File(Fixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
+		IntRangeArray rangesArray = null;
+		String outRoot = "els_Petaja2009.auto";
+
+		createDualTables(
+			inputFile,
+			rangesArray,
+			2.5,
+			outRoot
+		);
+		int horizontalRulerCount = 3;
+		TableStructurer tableStructurer = testHorizontalRulers(inputFile, outRoot, horizontalRulerCount);
+	}
+
+
 	
 	// =======================
 	
 	private TableStructurer testHorizontalRulers(File inputFile, String outputRoot, int horizontalRulerCount) {
 		File outputSVGFile = new File("target/table/"+outputRoot+"Horizontal.svg");
 
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(
-				inputFile, (PageAnalyzer) null);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
 		List<HorizontalRuler> rulerList = tableStructurer.getHorizontalRulerList();
 		Assert.assertEquals(horizontalRulerCount, rulerList.size());		
@@ -553,7 +613,12 @@ public class TableStructurerTest {
 
 	private void createDualTables(File inputFile, String rangesS, double scale, String outRoot) throws IOException {
 		IntRangeArray rangesArray = makeRangeArrayFromString(rangesS);
-		HtmlHtml html = createHtmlWithTable(inputFile, rangesArray);
+		createDualTables(inputFile, rangesArray, scale, outRoot);
+	}
+
+	private void createDualTables(File inputFile, IntRangeArray rangesArray, double scale, String outRoot)
+			throws IOException, FileNotFoundException {
+		HtmlHtml html = TableStructurer.createHtmlWithTable(inputFile, rangesArray);
 		XMLUtil.debug(html, new FileOutputStream("target/table/"+outRoot+".html"), 1);
 		SVGElement svg = createSVGPanel(inputFile, scale);
 		HtmlTable twinTable = new HtmlTable();
@@ -595,26 +660,6 @@ public class TableStructurerTest {
 		return rangesArray;
 	}
 	
-	private HtmlHtml createHtmlWithTable(File inputFile, IntRangeArray rangeArray) {
-		IntRange[] intRanges = new IntRange[rangeArray.size()];
-		for (int i = 0; i < rangeArray.size(); i++) {
-			intRanges[i] = rangeArray.get(i);
-		}
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(
-				inputFile, (PageAnalyzer) null);
-		
-		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineListForCommonestFont();
-		for (ScriptLine scriptLine : scriptedLineList) {
-			TextLine textLine0 = scriptLine.getTextLineList().get(0);
-//			System.out.println("scriptLine: "+scriptLine.createHtmlElement().toXML()+"{"+textLine0.getRawValue()+"}");
-		}
-		
-		TableStructurer tableStructurer = textStructurer.createTableStructurer();
-		tableStructurer.setRanges(intRanges);
-		HtmlHtml html = tableStructurer.getHtmlWithTable();
-		return html;
-	}
-	
 	private void debugLines(List<SVGLine> lineList) {
 		SVGG g = new SVGG();
 		for (SVGLine line : lineList) {
@@ -624,8 +669,7 @@ public class TableStructurerTest {
 	}
 
 	private void testSuscripts(File inputFile, int superscript, int subscript) {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(
-			inputFile, (PageAnalyzer) null);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		textStructurer.extractAndApplySuscripts();
 		List<TextLine> superList = textStructurer.getSuperscriptLineList();
 		for (TextLine supersc : superList) {

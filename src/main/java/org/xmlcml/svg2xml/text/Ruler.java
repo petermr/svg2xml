@@ -22,6 +22,7 @@ public abstract class Ruler extends LineChunk {
 	
 	public final static String TAG = "ruler";
 	
+	/** dangerous - remove */
 	private SVGLine svgLine;
 	private List<SVGLine> svgLineList;
 
@@ -53,6 +54,15 @@ public abstract class Ruler extends LineChunk {
 	public SVGLine getSVGLine() {
 		return svgLine;
 	}
+
+	public List<SVGLine> getSVGLineList() {
+		return svgLineList;
+	}
+	public void setSVGLineList(List<SVGLine> lineList) {
+		this.svgLineList = lineList;
+	}
+
+
 
 	public static void formatStrokeWidth(List<? extends Ruler> rulerList, int d) {
 		for (Ruler ruler : rulerList) {
@@ -91,12 +101,26 @@ public abstract class Ruler extends LineChunk {
 	@Override
 	public String toString() {
 		String s = "";
+		getAllSVGLineList();
 		if (svgLine != null) {
-			s += svgLine.toString();
+			s += toString(svgLine);
 		} else {
-			s += svgLineList.toString();
+			for (SVGLine line : svgLineList) {
+				s += toString(svgLine)+";";
+			}
 		}
-		return s;
+		return /*this.getClass().getSimpleName()*/ /*+": "+*/ /*this.getXY()+": " +*/s;
+	}
+
+	protected String toString(SVGLine svgLine) {
+		List<SVGLine> allLineList = getAllSVGLineList();
+		StringBuilder sb = new StringBuilder(allLineList.size()+": ");
+		for (SVGLine line : allLineList) {
+			sb.append(line.getXY(0));
+			sb.append(line.getXY(1));
+			sb.append("("+Util.format(line.getStrokeWidth(), 2)+")\n");
+		}
+		return sb.toString();
 	}
 
 	public Double getLength() {
@@ -117,6 +141,11 @@ public abstract class Ruler extends LineChunk {
 
 	public Element copyElement() {
 		Element element = (Element) this.copy();
+		addLinesAsChildren(element);
+		return element;
+	}
+
+	private void addLinesAsChildren(Element element) {
 		if (svgLine != null) {
 			element.appendChild(svgLine.copy());
 		} else if (svgLineList != null) {
@@ -124,7 +153,19 @@ public abstract class Ruler extends LineChunk {
 				element.appendChild(line);
 			}
 		}
-		return element;
 	}
+	
+	public List<SVGLine> getAllSVGLineList() {
+		List<SVGLine> childLineList = new ArrayList<SVGLine>();
+		if (svgLine != null) {
+			childLineList.add(svgLine);
+		}
+		if (svgLineList != null) {
+			childLineList.addAll(svgLineList);
+		}
+		return childLineList;
+	}
+	
+
 
 }

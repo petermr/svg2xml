@@ -1,6 +1,5 @@
 package org.xmlcml.svg2xml.text;
 
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,23 +12,20 @@ import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlTd;
-import org.xmlcml.html.HtmlTh;
-import org.xmlcml.html.HtmlTr;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
 
 public class PhraseListList extends SVGG implements Iterable<PhraseList> {
-	private static final Logger LOG = Logger.getLogger(PhraseListList.class);
-	private static final int EPS = 5;
-	private List<PhraseList> phraseListList;
+	public static final Logger LOG = Logger.getLogger(PhraseListList.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
 	public final static String TAG = "phraseListList";
+	private static final int EPS = 5;
+
+	private List<PhraseList> childPhraseListList;
 
 	public PhraseListList() {
 		super();
@@ -38,25 +34,25 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	
 	public Iterator<PhraseList> iterator() {
 		getOrCreateChildPhraseList();
-		return phraseListList.iterator();
+		return childPhraseListList.iterator();
 	}
 
-	private List<PhraseList> getOrCreateChildPhraseList() {
-		if (phraseListList == null) {
+	public List<PhraseList> getOrCreateChildPhraseList() {
+		if (childPhraseListList == null) {
 			List<Element> phraseChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+PhraseList.TAG+"']");
-			phraseListList = new ArrayList<PhraseList>();
+			childPhraseListList = new ArrayList<PhraseList>();
 			for (Element child : phraseChildren) {
 				PhraseList phraseList = (PhraseList)child;
-				phraseListList.add(phraseList);
+				childPhraseListList.add(phraseList);
 			}
 		}
-		return phraseListList;
+		return childPhraseListList;
 	}
 
 	public String getStringValue() {
 		getOrCreateChildPhraseList();
 		StringBuilder sb = new StringBuilder();
-		for (PhraseList phraseList : phraseListList) {
+		for (PhraseList phraseList : childPhraseListList) {
 			sb.append(""+phraseList.getStringValue()+"//");
 		}
 		this.setStringValueAttribute(sb.toString());
@@ -65,19 +61,19 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 
 	public void add(PhraseList phraseList) {
 		this.appendChild(phraseList);
-		phraseListList = null;
+		childPhraseListList = null;
 		getOrCreateChildPhraseList();
 	}
 
 	public PhraseList get(int i) {
 		getOrCreateChildPhraseList();
-		return phraseListList.get(i);
+		return childPhraseListList.get(i);
 	}
 	
 	public List<IntArray> getLeftMarginsList() {
 		getOrCreateChildPhraseList();
 		List<IntArray> leftMarginsList = new ArrayList<IntArray>();
-		for (PhraseList phraseList : phraseListList) {
+		for (PhraseList phraseList : childPhraseListList) {
 			IntArray leftMargins = phraseList.getLeftMargins();
 			leftMarginsList.add(leftMargins);
 		}
@@ -91,7 +87,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	public int getMaxColumns() {
 		getOrCreateChildPhraseList();
 		int maxColumns = 0;
-		for (PhraseList phraseList : phraseListList) {
+		for (PhraseList phraseList : childPhraseListList) {
 			maxColumns = Math.max(maxColumns, phraseList.size());
 		}
 		return maxColumns;
@@ -104,7 +100,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		for (int i = 0; i < maxColumns; i++) {
 			columnRanges.add(i, null);
 		}
-		for (PhraseList phraseList : phraseListList) {
+		for (PhraseList phraseList : childPhraseListList) {
 			if (phraseList.size() == maxColumns) {
 				for (int i = 0; i < phraseList.size(); i++) {
 					Phrase phrase = phraseList.get(i);
@@ -124,7 +120,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		List<IntRange> bestColumnRanges = getBestColumnRanges();
 		List<IntRange> bestWhitespaces = new ArrayList<IntRange>();
 		if (maxColumns > 0) {
-			bestWhitespaces.add(new IntRange(bestColumnRanges.get(0).getMin() - EPS, bestColumnRanges.get(0).getMin() - EPS));
+			bestWhitespaces.add(new IntRange(bestColumnRanges.get(0).getMin() - EPS, bestColumnRanges.get(0).getMax() - EPS));
 			for (int i = 1; i < maxColumns; i++) {
 				IntRange whitespace = new IntRange(bestColumnRanges.get(i - 1).getMax(), bestColumnRanges.get(i).getMax());
 				bestWhitespaces.add(whitespace);
@@ -133,50 +129,32 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		return bestWhitespaces;
 	}
 	
-	public HtmlTr createTableRow(PhraseList phraseList, Class clazz) {
-		getOrCreateChildPhraseList();
-		int maxColumns = getMaxColumns();
-		List<IntRange> bestWhitespaces = getBestWhitespaceList();
-		HtmlTr row = new HtmlTr();
-		int iPhrase = 0;
-		for (int icol = 0; icol < maxColumns; icol++) {
-			HtmlElement cell = (clazz.equals(HtmlTh.class)) ? new HtmlTh() : new HtmlTd();
-			row.appendChild(cell);
-			Phrase phrase = phraseList.get(iPhrase);
-			int nextPhraseX = (int) phrase.getFirstX();
-			if (icol >= bestWhitespaces.size() - 1 || nextPhraseX < bestWhitespaces.get(icol + 1).getMin()) {
-				cell.appendChild(phrase.getStringValue());
-				if (++iPhrase >= phraseList.size()) {
-					break;
-				};
+	/** find rightmostWhitespace range which includes start of phrase.
+	 * 
+	 */
+	public int getRightmostEnclosingWhitespace(List<IntRange> bestWhitespaces, Phrase phrase) {
+		for (int i = bestWhitespaces.size() - 1; i >= 0; i--) {
+			IntRange range = bestWhitespaces.get(i);
+			int phraseX = (int)(double) phrase.getStartX();
+			if (range.contains(phraseX)) {
+				return i;
 			}
 		}
-		return row;
-	}
-	
-	public List<HtmlTr> createBodyTableRows(int start, int end, Class clazz) {
-		getOrCreateChildPhraseList();
-		List<HtmlTr> rows = new ArrayList<HtmlTr>();
-		for (int i = start; i <= end; i++) {
-			PhraseList phraseList = phraseListList.get(i);
-			HtmlTr row = createTableRow(phraseList, clazz);
-			rows.add(row);
-		}
-		return rows;
+		return -1;
 	}
 
 	public int size() {
 		getOrCreateChildPhraseList();
-		return phraseListList.size();
+		return childPhraseListList.size();
 	}
 
 	public Real2Range getBoundingBox() {
 		getOrCreateChildPhraseList();
 		Real2Range bbox = null;
-		if (phraseListList.size() > 0) {
-			bbox = phraseListList.get(0).getBoundingBox();
-			for (int i = 1; i < phraseListList.size(); i++) {
-				bbox = bbox.plus(phraseListList.get(i).getBoundingBox());
+		if (childPhraseListList.size() > 0) {
+			bbox = childPhraseListList.get(0).getBoundingBox();
+			for (int i = 1; i < childPhraseListList.size(); i++) {
+				bbox = bbox.plus(childPhraseListList.get(i).getBoundingBox());
 			}
 		}
 		return bbox;
@@ -184,7 +162,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 
 	public void rotateAll(Real2 centreOfRotation, Angle angle) {
 		getOrCreateChildPhraseList();
-		for (PhraseList phraseList : phraseListList) {
+		for (PhraseList phraseList : childPhraseListList) {
 			phraseList.rotateAll(centreOfRotation, angle);
 			LOG.trace("PL: "+phraseList.toXML());
 		}
@@ -192,9 +170,13 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 	
 	public void updatePhraseListList() {
-		for (int i = 0; i < phraseListList.size(); i++) {
-			this.replaceChild(this.getChildElements().get(i), phraseListList.get(i));
+		for (int i = 0; i < childPhraseListList.size(); i++) {
+			this.replaceChild(this.getChildElements().get(i), childPhraseListList.get(i));
 		}
+	}
+
+	public Real2 getXY() {
+		return this.getBoundingBox().getCorners()[0];
 	}
 
 

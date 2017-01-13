@@ -129,8 +129,7 @@ public class TextStructurerTest {
 	@Ignore // fails
 	public void testFullTables() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.BERICHT_PAGE6_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
 		List<TabbedTextLine> tabbedTextLineList = textStructurer.createTabbedLineList();
 //		Assert.assertNotNull(tabbedTextLineList);
 //		for (int i = 0; i < tabbedTextLineList.size(); i++) {
@@ -143,8 +142,7 @@ public class TextStructurerTest {
 	@Ignore
 	public void testWordListCollection() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.BERICHT_PAGE6_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
 		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY();
 		for (int i = 0; i < textLineList.size(); i++) {
 			System.out.println(">"+i+"> "+textLineList.get(i));
@@ -155,8 +153,7 @@ public class TextStructurerTest {
 	@Test
 	public void testHOText() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.IMAGE_2_11_HO_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_11_HO_SVG);
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("ho", "{HO}", wordList.get(0).toString());
 	}
@@ -164,8 +161,7 @@ public class TextStructurerTest {
 	@Test
 	public void testSubscriptedText() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.IMAGE_2_11_NO2_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_11_NO2_SVG);
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("no2", 2, wordList.size());
 		Assert.assertEquals("no", "{NO}", wordList.get(0).toString());
@@ -177,8 +173,7 @@ public class TextStructurerTest {
 	@Test
 	public void test2_11() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.IMAGE_2_11_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_11_SVG);
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("2.11", 3, wordList.size());
 		Assert.assertEquals("1", "{HO........NO}", wordList.get(0).toString());
@@ -190,8 +185,7 @@ public class TextStructurerTest {
 	@Test
 	public void test2_15() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.IMAGE_2_15_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_15_SVG);
 		
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("words", 6, wordList.size());
@@ -424,7 +418,7 @@ public class TextStructurerTest {
 				"Speciation rate (λ)",
 				"0.4 0.6 0.8 1.0 1.2 1.4",
 				"4 . .",
-				"0. 0.6 0 8 1 0 1.2 1.4",
+				"0. 0.6 08 10 1.2 1.4",
 				"Extinction rate (μ)",
 				};
 
@@ -752,8 +746,8 @@ public class TextStructurerTest {
 		String totalStringValue = ""
 				+ "- //p //Luscinia   //(Muscicapidae) //a //* //Ficedula //c //* //i //c a //(Turdidae) //Turdus //s //* //e //u //"
 				+ "(Mimidae) //Mimus //d //i //* //M o //Sturnus (Sturnidae) //* //0.5 //(Troglodytidae) //Certhi- //Troglodytes //"
-				+ "* //oidea //Sitta (Sittidae) //Regulus //(Regulidae) //Zosterops (Zosteropidae) //0.77 //* //0.66 //(Timaliidae) //"
-				+ "Leiothrix //a //0.93 //- //d //Phylloscopus (Phylloscopidae) //i a //i //r //v //e //l //Pycnonotus //(Pycnonotidae) //"
+				+ "* //oidea //Sitta (Sittidae) //Regulus //(Regulidae) //Zosterops(Zosteropidae) //0.77 //* //0.66 //(Timaliidae) //"
+				+ "Leiothrix //a //0.93 //- //d //Phylloscopus(Phylloscopidae) //i a //i //r //v //e //l //Pycnonotus //(Pycnonotidae) //"
 				+ "e //d //y //i //* //s //(Donacobiidae) //Donacobius //S o //s //* //(Acrocephalidae) //Acrocephalus //a //0.73 //0.83 //"
 				+ "P //Hirundo //(Hirundinidae) //(Paridae) //Parus //* //Icterus (Icteridae) //* //Dendroica //(Parulidae) //- //* //r //"
 				+ "(Emberizidae) //Emberiza //e //* //a //s //(Fringillidae) //Serinus //e //* //s //0.71 //d //a //i //Motacilla //"
@@ -775,7 +769,7 @@ public class TextStructurerTest {
 				"Luscinia",
 				"(Muscicapidae)",
 				"Ficedula",
-				"Phylloscopus (Phylloscopidae)",
+				"Phylloscopus(Phylloscopidae)",
 				"Icterus (Icteridae)",
 				"Philesturnus (Callaeidae) ",
 				"Acanthisitta (Acanthisittidae)"
@@ -811,8 +805,7 @@ public class TextStructurerTest {
 	public void testRotateTextLines() {
 
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(
-						Fixtures.RAWWORDS_SVG, (PageAnalyzer) null);
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.RAWWORDS_SVG);
 		textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
 		textStructurer.formatTextLineTransforms(5);
 		List<TextLine> textLineList = textStructurer.getTextLineList();

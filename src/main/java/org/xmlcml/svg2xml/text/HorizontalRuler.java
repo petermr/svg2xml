@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGLine;
 
@@ -34,6 +35,7 @@ public class HorizontalRuler extends Ruler {
 			lastLine = i == 0 ? null : lines.get(i - 1);
 			Double lastY = lastLine == null ? null : lastLine.getMidPoint().getY();
 			SVGLine line = lines.get(i);
+			LOG.trace("-----> "+line.toXML());
 			HorizontalRuler ruler = new HorizontalRuler(line);
 			double y = line.getMidPoint().getY();
 			if (lastY != null && Real.isEqual(y,  lastY, EPS)) {
@@ -45,6 +47,8 @@ public class HorizontalRuler extends Ruler {
 		}
 		return rulerList;
 	}
-
-
+	public IntRange getIntRange() {
+		return new IntRange(getBoundingBox().getXRange());
+	}
+	
 }
