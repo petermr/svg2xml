@@ -65,6 +65,7 @@ public class TableStructurer {
 	// the fontSize-independent with of an indented space 
 	public static final double SPACE_WIDTH = 1.0;
 	public static final String LEADING_SPACE = "~";
+	
 
 	private PhraseListList phraseListList;
 	private int maxColumns;
@@ -81,7 +82,7 @@ public class TableStructurer {
 	private TextStructurer textStructurer;
 	private List<HorizontalRuler> horizontalRulerList;
 	private List<SVGElement> horizontalElementList;
-	private List<VerticalRuler> verticalRulerList;
+	private List<VerticalRuler> verticalRulerListNew;
 	private Real2Range bboxRuler;
 	private Map<String, SVGElement> horizontalElementByCode;
 	private String rowCodes;
@@ -364,8 +365,8 @@ public class TableStructurer {
 		
 		List<SVGLine> lineList = extractLines(shapeList, Line2.YAXIS);
 		lineList = removeShortLines(lineList, 1.0);
-		verticalRulerList = VerticalRuler.createFromSVGList(lineList);
-		verticalRulerList.sort(new Comparator<Ruler>() {
+		verticalRulerListNew = VerticalRuler.createFromSVGList(lineList);
+		verticalRulerListNew.sort(new Comparator<Ruler>() {
 			public int compare(Ruler r1, Ruler r2) {
 				Double x1 = r1 == null ? null :  r1.getX();
 				Double x2 = r2 == null ? null :  r2.getX();
