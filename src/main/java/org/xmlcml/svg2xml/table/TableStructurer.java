@@ -28,7 +28,6 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlHead;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlStyle;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTbody;
