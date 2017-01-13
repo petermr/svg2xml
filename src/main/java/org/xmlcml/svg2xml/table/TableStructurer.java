@@ -39,6 +39,7 @@ import org.xmlcml.html.HtmlTr;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.LineChunk;
+import org.xmlcml.svg2xml.text.NewVerticalRuler;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
@@ -46,7 +47,6 @@ import org.xmlcml.svg2xml.text.Ruler;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
-import org.xmlcml.svg2xml.text.VerticalRulerNew;
 
 import nu.xom.Attribute;
 import nu.xom.Node;
@@ -82,7 +82,7 @@ public class TableStructurer {
 	private TextStructurer textStructurer;
 	private List<HorizontalRuler> horizontalRulerList;
 	private List<SVGElement> horizontalElementList;
-	private List<VerticalRulerNew> verticalRulerListNew;
+	private List<NewVerticalRuler> verticalRulerListNew;
 	private Real2Range bboxRuler;
 	private Map<String, SVGElement> horizontalElementByCode;
 	private String rowCodes;
@@ -135,7 +135,6 @@ public class TableStructurer {
 				titleSB.append(phraseListList.get(i));
 			}
 		} else if (tableSectionList != null) {
-//			TableSection titleSection =tableSectionList.get(TableSection.TableSectionType.TITLE);
 			TableSection titleSection =tableSectionList.get(0);
 			List<HorizontalElement> horizontalList = titleSection.getHorizontalElementList();
 			titleSB.append(tableTitle.getTitle());
@@ -349,7 +348,7 @@ public class TableStructurer {
 	public void createRulerList() {
 		createHorizontalRectsList();
 		createHorizontalRulerList();
-		createVerticalRulerList();
+//		createVerticalRulerList();
 	}
 	
 	public List<SVGRect> createHorizontalRectsList() {
@@ -360,22 +359,22 @@ public class TableStructurer {
 		return rectList;
 	}
 
-	public List<HorizontalRuler> createVerticalRulerList() {
-		List<SVGShape> shapeList = makeShapes();
-		
-		List<SVGLine> lineList = extractLines(shapeList, Line2.YAXIS);
-		lineList = removeShortLines(lineList, 1.0);
-		verticalRulerListNew = VerticalRulerNew.createFromSVGList(lineList);
-		verticalRulerListNew.sort(new Comparator<Ruler>() {
-			public int compare(Ruler r1, Ruler r2) {
-				Double x1 = r1 == null ? null :  r1.getX();
-				Double x2 = r2 == null ? null :  r2.getX();
-				return (x1 == null || x2 == null) ? -1 : (int)(x1 - x2); // compare X coords
-			}
-		});
-		Ruler.formatStrokeWidth(horizontalRulerList, 1);
-		return horizontalRulerList;
-	}
+//	public List<HorizontalRuler> createVerticalRulerList() {
+//		List<SVGShape> shapeList = makeShapes();
+//		
+//		List<SVGLine> lineList = extractLines(shapeList, Line2.YAXIS);
+//		lineList = removeShortLines(lineList, 1.0);
+//		verticalRulerListNew = NewVerticalRuler.createFromSVGList(lineList);
+//		verticalRulerListNew.sort(new Comparator<Ruler>() {
+//			public int compare(Ruler r1, Ruler r2) {
+//				Double x1 = r1 == null ? null :  r1.getX();
+//				Double x2 = r2 == null ? null :  r2.getX();
+//				return (x1 == null || x2 == null) ? -1 : (int)(x1 - x2); // compare X coords
+//			}
+//		});
+//		Ruler.formatStrokeWidth(horizontalRulerList, 1);
+//		return horizontalRulerList;
+//	}
 
 	public List<HorizontalRuler> createHorizontalRulerList() {
 		List<SVGShape> shapeList = makeShapes();
