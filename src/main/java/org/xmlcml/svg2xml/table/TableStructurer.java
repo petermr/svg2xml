@@ -46,7 +46,7 @@ import org.xmlcml.svg2xml.text.Ruler;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
-import org.xmlcml.svg2xml.text.VerticalRuler;
+import org.xmlcml.svg2xml.text.VerticalRulerNew;
 
 import nu.xom.Attribute;
 import nu.xom.Node;
@@ -82,7 +82,7 @@ public class TableStructurer {
 	private TextStructurer textStructurer;
 	private List<HorizontalRuler> horizontalRulerList;
 	private List<SVGElement> horizontalElementList;
-	private List<VerticalRuler> verticalRulerListNew;
+	private List<VerticalRulerNew> verticalRulerListNew;
 	private Real2Range bboxRuler;
 	private Map<String, SVGElement> horizontalElementByCode;
 	private String rowCodes;
@@ -365,7 +365,7 @@ public class TableStructurer {
 		
 		List<SVGLine> lineList = extractLines(shapeList, Line2.YAXIS);
 		lineList = removeShortLines(lineList, 1.0);
-		verticalRulerListNew = VerticalRuler.createFromSVGList(lineList);
+		verticalRulerListNew = VerticalRulerNew.createFromSVGList(lineList);
 		verticalRulerListNew.sort(new Comparator<Ruler>() {
 			public int compare(Ruler r1, Ruler r2) {
 				Double x1 = r1 == null ? null :  r1.getX();
