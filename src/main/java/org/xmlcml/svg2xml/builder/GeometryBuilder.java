@@ -8,7 +8,6 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.RawWords;

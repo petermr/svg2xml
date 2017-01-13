@@ -356,16 +356,6 @@ public class TableStructurer {
 		
 		List<SVGRect> rectList = extractRects(shapeList);
 		
-//		lineList = removeShortLines(lineList, 1.0);
-//		verticalRulerList = VerticalRuler.createFromSVGList(lineList);
-//		verticalRulerList.sort(new Comparator<Ruler>() {
-//			public int compare(Ruler r1, Ruler r2) {
-//				Double x1 = r1 == null ? null :  r1.getX();
-//				Double x2 = r2 == null ? null :  r2.getX();
-//				return (x1 == null || x2 == null) ? -1 : (int)(x1 - x2); // compare X coords
-//			}
-//		});
-//		Ruler.formatStrokeWidth(rectList, 1);
 		return rectList;
 	}
 
