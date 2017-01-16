@@ -45,13 +45,15 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	};
 
 	private List<Word> childWordList;
+	private boolean superscript;
+	private boolean subscript;
 
 	public Phrase() {
 		super();
 		this.setClassName(TAG);
 	}
 
-	public Phrase(Phrase phrase) {
+	public Phrase(LineChunk phrase) {
 		super(phrase);
 		// TODO Auto-generated constructor stub
 	}
@@ -286,6 +288,8 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	public String getStringValue() {
 		getOrCreateWordList();
 		StringBuilder sb = new StringBuilder();
+		if (superscript) sb.append("^{");
+		if (subscript) sb.append("_{");
 		for (int i = 0; i < childWordList.size() - 1; i++) {
 			Word word = childWordList.get(i);
 			sb.append(word.getStringValue());
@@ -297,6 +301,8 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 			}
 		}
 		sb.append(""+childWordList.get(childWordList.size() - 1).toString()+"");
+		if (superscript) sb.append("}");
+		if (subscript) sb.append("}");
 		this.setStringValueAttribute(sb.toString());
 		return sb.toString();
 	}
@@ -346,10 +352,6 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		return new IntRange((int)(double)getFirstX(), (int)(double)getEndX());
 	}
 	
-	public Real2 getXY() {
-		return this.getBoundingBox().getCorners()[0];
-	}
-
 	public Double getFontSize() {
 		getOrCreateWordList();
 		Double f = null;
@@ -390,5 +392,15 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		}
 	}
 
+	public void setSuperscript(boolean superscript) {
+		this.superscript = superscript;
+		this.subscript = false;
+	}
+
+	public void setSubscript(boolean subscript) {
+		this.subscript = subscript;
+		this.superscript = false;
+	}
+	
 
 }

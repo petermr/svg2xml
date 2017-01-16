@@ -31,28 +31,28 @@ public class Prototypes {
 	private static void clinical() {
 //		new PDF2SVGConverter().run("-logger", "-infofiles", "-logglyphs", "-outdir", "target/funnel", "../pdf2svg/demos/sage/Sbarra-454-74.pdf");
 		PDFAnalyzerTest.analyzePDF("demos/clinical/ACR65481.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/ADA_PH1.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/AHA_PH2.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/AMA_Dobson2013_1.pdf");  // has vectors
-		PDFAnalyzerTest.analyzePDF("demos/clinical/BLK_JPR52758.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/BLK_SAM55371.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/BMC73226.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/BMJ312529.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/BMJBollard312268.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/ELS_Petaja2009.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/EVJ62903.pdf");               // no SVG extracted
-		PDFAnalyzerTest.analyzePDF("demos/clinical/LANCET16302844.pdf");   // has vectors
-		PDFAnalyzerTest.analyzePDF("demos/clinical/LB_HV_Romanowski2011_1.pdf"); // no SVG extracted
-		PDFAnalyzerTest.analyzePDF("demos/clinical/LPW_Reisinger2007.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/LWW61463.pdf");               // no SVG extracted
-		PDFAnalyzerTest.analyzePDF("demos/clinical/NATUREsrep29540.pdf");  // no vectors
-		PDFAnalyzerTest.analyzePDF("demos/clinical/NEJMOA1411321.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/OUP_PH3.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/PLOS57170.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/SPR57530.pdf");               // no tables extracted
-		PDFAnalyzerTest.analyzePDF("demos/clinical/SPR68755.pdf");
-		PDFAnalyzerTest.analyzePDF("demos/clinical/WK_Vesikari2015.pdf");        // no SVG extracted
-		PDFAnalyzerTest.analyzePDF("demos/clinical/Wiley44386.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/ADA_PH1.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/AHA_PH2.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/AMA_Dobson2013_1.pdf");  // has vectors
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/BLK_JPR52758.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/BLK_SAM55371.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/BMC73226.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/BMJ312529.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/BMJBollard312268.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/ELS_Petaja2009.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/EVJ62903.pdf");               // no SVG extracted
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/LANCET16302844.pdf");   // has vectors
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/LB_HV_Romanowski2011_1.pdf"); // no SVG extracted
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/LPW_Reisinger2007.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/LWW61463.pdf");               // no SVG extracted
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/NATUREsrep29540.pdf");  // no vectors
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/NEJMOA1411321.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/OUP_PH3.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/PLOS57170.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/SPR57530.pdf");               // no tables extracted
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/SPR68755.pdf");
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/WK_Vesikari2015.pdf");        // no SVG extracted
+//		PDFAnalyzerTest.analyzePDF("demos/clinical/Wiley44386.pdf");
 	}
 
 	private static void stats() {

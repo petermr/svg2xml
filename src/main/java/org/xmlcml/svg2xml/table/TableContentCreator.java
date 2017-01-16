@@ -10,6 +10,12 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
+import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
@@ -30,14 +36,17 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private List<HorizontalRuler> rulerList;
 	private List<TableSection> tableSectionList;
 	private IntRangeArray rangesArray;
-
 	private TableTitle tableTitle;
-
 	private boolean addIndents;
 
 	public TableContentCreator() {
 	}
 
+	/** scans whole file for all tableTitles.
+	 * 
+	 * @param svgChunkFiles
+	 * @return list of titles;
+	 */
 	public List<TableTitle> findTableTitles(List<File> svgChunkFiles) {
 		List<TableTitle> tableTitleList = new ArrayList<TableTitle>();
 		for (File svgChunkFile : svgChunkFiles) {
@@ -45,7 +54,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			PhraseListList phraseListList = textStructurer.getPhraseListList();
 			phraseListList.format(3);
 			String value = phraseListList.getStringValue();
-			List<String> titleList = findChunksWithTitlePattern(value);
+			List<String> titleList = findTitlesWithPattern(value);
 			for (int i = 0; i < titleList.size(); i++) {
 				TableTitle tableTitle = new TableTitle(titleList.get(i), svgChunkFile.getName());
 				tableTitleList.add(tableTitle);
@@ -54,7 +63,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return tableTitleList;
 	}
 
-	private List<String> findChunksWithTitlePattern(String value) {
+	private List<String> findTitlesWithPattern(String value) {
 		Matcher matcher = TABLE_N.matcher(value);
 		List<String> titleList = new ArrayList<String>();
 		int start = 0;
@@ -127,7 +136,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	public void createSectionsAndRangesArray() {
 		List<HorizontalElement> horizontalList = getHorizontalList();
-		int iRow = search(tableTitle.getTitle());
+		int iRow = tableTitle == null ? 0 : search(tableTitle.getTitle());
 		if (iRow == -1) {
 			LOG.error("Cannot find title: "+tableTitle);
 		} else {
@@ -136,27 +145,28 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			IntRange tableSpan = fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
 			LOG.debug("Table Span "+tableSpan);
 			this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
-			this.createRangesArray(tableSectionList);
+			this.createPhraseRangesArray();
 		}
 	}
 	
-	private IntRangeArray createRangesArray(List<TableSection> tableSectionList) {
+	private IntRangeArray createPhraseRangesArray() {
 		rangesArray = new IntRangeArray();
 		int length = 0;
 		for (TableSection tableSectionX : tableSectionList) {
 			int phraseListCount = tableSectionX.getPhraseListCount();
-//			LOG.debug(">>"+phraseListCount);
 			IntRange intRange = new IntRange(length, length + phraseListCount);
 			length += phraseListCount;
 			rangesArray.add(intRange);
 		}
+		LOG.trace("rangesArray "+rangesArray);
 		return rangesArray;
 	}
 
-	public void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRuler> fullRulerList,
+	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRuler> fullRulerList,
 			IntRange tableSpan) {
 		int section = 0;
 		TableSection tableSection = null;
+		LOG.trace("start at row: "+iRow);
 		for (int j = iRow; j < horizontalList.size(); j++) {
 			HorizontalElement element = horizontalList.get(j);
 			HorizontalRuler ruler = (element instanceof HorizontalRuler) ? 
@@ -167,15 +177,22 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				if (section < TableSectionType.values().length - 1) {
 					section++;
 				}
-			} else if (element instanceof PhraseList) {
+			}
+			if (element instanceof PhraseList) {
 				PhraseList newPhraseList = ((PhraseList) element).extractIncludedLists(tableSpan);
 				if (newPhraseList.size() > 0) {
 					tableSection.add(newPhraseList);
 				}
 				
 			} else if (element instanceof HorizontalRuler) {
-				tableSection.add(element);
+				// dont add Ruler if first element (e.g sectioning ruler)
+				if (tableSection.getHorizontalElementList().size() > 0) {
+					tableSection.add(element);
+				}
 			}
+		}
+		for (TableSection tableSection2 : tableSectionList) {
+			LOG.trace(">ts>"+tableSection2);
 		}
 	}
 
@@ -205,8 +222,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
 		createSectionsAndRangesArray();
-		List<TableSection> sectionList = getTableSectionList();
-		HtmlHtml html = TableStructurer.createHtmlWithTable(inputFile, sectionList, tableTitle);
+		HtmlHtml html = tableStructurer.createHtmlWithTable(inputFile, tableSectionList, tableTitle);
 		return html;
 	}
 
@@ -217,6 +233,35 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public void setAddIndents(boolean add) {
 		this.addIndents = add;
 	}
+
+	public SVGElement createMarkedSections(
+			String[] colors,
+			double[] opacity) {
+		// write SVG
+		SVGElement markedChunk = getTextStructurer().getSVGChunk();
+		SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
+		Transform2 t2 = firstG.getTransform();
+		SVGG g = new SVGG();
+		markedChunk.appendChild(g);
+		TableStructurer tableStructurer = getTableStructurer();
+		g.appendChild(plotBox(tableStructurer.getTitleBBox(), colors[0], opacity[0]));
+		g.appendChild(plotBox(tableStructurer.getHeaderBBox(), colors[1], opacity[1]));
+		g.appendChild(plotBox(tableStructurer.getBodyBBox(), colors[2], opacity[2]));
+		g.appendChild(plotBox(tableStructurer.getFooterBBox(), colors[3], opacity[3]));
+		g.setTransform(t2);
+		return markedChunk;
+	}
+
+	public SVGRect plotBox(Real2Range titleBBox, String fill, double opacity) {
+		SVGRect plotRect = SVGRect.createFromReal2Range(titleBBox);
+		if (plotRect == null) {
+			plotRect = new SVGRect(new Real2(0.0, 0.0), new Real2(200., 30.));
+		}
+		plotRect.setFill(fill);
+		plotRect.setOpacity(opacity);
+		return plotRect;
+	}
+
 
 
 }

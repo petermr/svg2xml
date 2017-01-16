@@ -41,7 +41,7 @@ public class TextBox extends SVGG {
 		add(phraseList);
 	}
 
-	public TextBox(Phrase phrase) {
+	public TextBox(LineChunk phrase) {
 		this();
 		add(phrase);
 		SVGSVG.wrapAndWriteAsSVG(this, new File("target/flow/textBox1.svg"));
@@ -65,7 +65,7 @@ public class TextBox extends SVGG {
 	}
 
 
-	public void add(Phrase phrase) {
+	public void add(LineChunk phrase) {
 		PhraseList phraseList = new PhraseList();
 		phraseList.add(new Phrase(phrase));
 		add(phraseList);

@@ -89,7 +89,6 @@ public class PageLayoutAnalyzer {
 		Stack<HorizontalRuler> horizontalRulerListStack = new Stack<HorizontalRuler>();
 		horizontalRulerList = tableStructurer.getHorizontalRulerList(true, 1.0);
 		for (HorizontalRuler ruler : horizontalRulerList) {
-			LOG.trace("RULER: "+ruler.getBoundingBox()+"; children "+ruler.getAllSVGLineList().size()/*+"/"+ruler.toXML()*/);
 			horizontalRulerListStack.push(ruler);
 		}
 		addStacksToHorizontalListInYOrder(phraseListStack, horizontalRulerListStack);
@@ -241,6 +240,14 @@ public class PageLayoutAnalyzer {
 			}
 		}
 		return xArray;
+	}
+
+	public TextStructurer getTextStructurer() {
+		return textStructurer;
+	}
+
+	public TableStructurer getTableStructurer() {
+		return tableStructurer;
 	}
 
 }

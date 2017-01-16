@@ -20,6 +20,7 @@ import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
 import org.xmlcml.html.HtmlBr;
 import org.xmlcml.html.HtmlCaption;
@@ -73,11 +74,11 @@ public class TableStructurer {
 	private String title;
 	private HtmlTable htmlTable;
 	private HtmlHtml html;
-	private IntRange titleRange;
-	private IntRange preHeadRange;
-	private IntRange headerRange;
-	private IntRange bodyRange;
-	private IntRange footerRange;
+	private IntRange deprecatedTitleRange;
+	private IntRange deprecatedPreHeadRange;
+	private IntRange deprecaetedHeaderRange;
+	private IntRange deprecatedBodyRange;
+	private IntRange deprecatedFooterRange;
 	private HtmlTbody tableBody;
 	private TextStructurer textStructurer;
 	private List<HorizontalRuler> horizontalRulerList;
@@ -89,6 +90,10 @@ public class TableStructurer {
 	private double minRulerSpacingY = 5.; // below this counts as wide line
 	private List<TableSection> tableSectionList;
 	private TableTitle tableTitle;
+	private BoundingBoxManager headerBBoxManager;
+	private BoundingBoxManager titleBBoxManager;
+	private BoundingBoxManager bodyBBoxManager;
+	private BoundingBoxManager footerBBoxManager;
 
 	
 	public TableStructurer(PhraseListList phraseListList) {
@@ -119,29 +124,44 @@ public class TableStructurer {
 		setFooterRange(footerRange);
 	}
 
-	public void setTitleRange(IntRange range) {titleRange = range;}
-	public void setPreHeadRange(IntRange range) {preHeadRange = range;}
-	public void setHeaderRange(IntRange range) {headerRange = range;}
-	public IntRange setBodyRange(IntRange range) {return bodyRange = range;}
-	public void setFooterRange(IntRange range) {footerRange = range;}
+	public void setTitleRange(IntRange range) {deprecatedTitleRange = range;}
+	public void setPreHeadRange(IntRange range) {deprecatedPreHeadRange = range;}
+	public void setHeaderRange(IntRange range) {deprecaetedHeaderRange = range;}
+	public IntRange setBodyRange(IntRange range) {return deprecatedBodyRange = range;}
+	public void setFooterRange(IntRange range) {deprecatedFooterRange = range;}
 
+	public Real2Range getTitleBBox() {return titleBBoxManager.getTotalBox();}
+	public Real2Range getHeaderBBox() {return headerBBoxManager.getTotalBox();}
+	public Real2Range getBodyBBox() {return bodyBBoxManager.getTotalBox();}
+	public Real2Range getFooterBBox() {return footerBBoxManager.getTotalBox();}
+	
 	public String createTitle() {
 		StringBuilder titleSB = new StringBuilder();
-		if (tableTitle != null) {
-			titleSB.append(tableTitle.getTitle()+" ");
-		}
-		if (titleRange != null) {
-			for (int i = titleRange.getMin(); i < titleRange.getMax(); i++) {
+		titleBBoxManager = new BoundingBoxManager();
+		if (deprecatedTitleRange != null) {
+			for (int i = deprecatedTitleRange.getMin(); i < deprecatedTitleRange.getMax(); i++) {
 				titleSB.append(phraseListList.get(i));
+				titleBBoxManager.add(phraseListList.get(i).getBoundingBox());
 			}
 		} else if (tableSectionList != null) {
-			TableSection titleSection =tableSectionList.get(0);
+			TableSection titleSection = tableSectionList.get(0);
 			List<HorizontalElement> horizontalList = titleSection.getHorizontalElementList();
-			titleSB.append(tableTitle.getTitle());
-			for (int i = 0; i < horizontalList.size(); i++) {
-				titleSB.append((PhraseList)horizontalList.get(i));
+			LOG.debug("HR ***"+horizontalList.size());
+			if (tableTitle != null) {
+				titleSB.append(tableTitle.getTitle());
 			}
+			for (int i = 0; i < horizontalList.size(); i++) {
+				SVGElement horizontal = (SVGElement) horizontalList.get(i);
+				titleSB.append(horizontal);
+				Real2Range bbox = horizontal.getBoundingBox();
+//				LOG.trace("BB "+bbox.format(2)+"/"+((PhraseList)horizontalList.get(i)).getStringValue());
+				titleBBoxManager.add(bbox);
+			}
+		} else {
+			LOG.debug("NO table sections");
+			return "Null title";
 		}
+		
 		title = titleSB.toString();
 		return title;
 	}
@@ -195,8 +215,9 @@ public class TableStructurer {
 	public HtmlTable createHtmlTable() {
 		htmlTable = new HtmlTable();
 		addTitle();
-		addHead();
+		addHtmlHead();
 		addFooter();
+		addHeader();
 		createBody();
 		html.appendChild(createFirefoxWarning());
 		
@@ -213,14 +234,14 @@ public class TableStructurer {
 
 	private void createBody() {
 		tableBody = new HtmlTbody();
-		addPreHeader(tableBody);
-		addAndCompressHeader(tableBody);
+//		addPreHeader(tableBody);
+//		addAndCompressHeader(tableBody);  // this adds the Th
 		addBody(tableBody);
 	}
 
 	private void addPreHeader(HtmlTbody tableBody) {
-		if (preHeadRange != null) {
-			List<HtmlTr> rows0 = this.createBodyTableRows(preHeadRange.getMin(), preHeadRange.getMax(), HtmlTh.class);
+		if (deprecatedPreHeadRange != null) {
+			List<HtmlTr> rows0 = this.createBodyTableRows(deprecatedPreHeadRange.getMin(), deprecatedPreHeadRange.getMax(), HtmlTh.class);
 			for (HtmlTr row : rows0) {
 				tableBody.appendChild(row);
 			}
@@ -242,9 +263,9 @@ public class TableStructurer {
 			}
 			maxColumns = phraseListList.getMaxColumns();
 			rows1 = createBodyTableRows(0, phraseListList.size() - 1, HtmlTd.class);
-		} else if (headerRange != null) {
+		} else if (deprecaetedHeaderRange != null) {
 			rows1 = createBodyTableRows( 
-					headerRange.getMin(), headerRange.getMax(), HtmlTh.class);
+					deprecaetedHeaderRange.getMin(), deprecaetedHeaderRange.getMax(), HtmlTh.class);
 			// project cells into StringBuilder array
 		}
 		List<StringBuilder> sbList = new ArrayList<StringBuilder>();
@@ -273,9 +294,10 @@ public class TableStructurer {
 
 	private void addBody(HtmlTbody tableBody) {
 		List<HtmlTr> rows = null;
-		if (bodyRange != null) {
-			rows = createBodyTableRows(bodyRange.getMin(), bodyRange.getMax(), HtmlTd.class);
+		if (deprecatedBodyRange != null) {
+			rows = createBodyTableRows(deprecatedBodyRange.getMin(), deprecatedBodyRange.getMax(), HtmlTd.class);
 		} else {
+			bodyBBoxManager = new BoundingBoxManager();
 			if (tableSectionList == null) {
 				LOG.error("no body");
 			} else {
@@ -285,6 +307,7 @@ public class TableStructurer {
 					TableSection bodySection = tableSectionList.get(2);
 					PhraseListList phraseListList= new PhraseListList();
 					for (HorizontalElement element : bodySection.getHorizontalElementList()) {
+						bodyBBoxManager.add(((SVGElement)element).getBoundingBox());
 						if (element instanceof PhraseList) {
 							phraseListList.add((PhraseList) element);
 						} else {
@@ -295,6 +318,12 @@ public class TableStructurer {
 			}
 			rows = createBodyTableRows(0, phraseListList.size() - 1, HtmlTd.class);
 		}
+		HtmlTr row1 = new HtmlTr();
+		HtmlTd td = new HtmlTd();
+		row1.appendChild(td);
+		td.appendChild("BODY FOLLOWS");
+		tableBody.appendChild(row1);
+		
 		for (HtmlTr row : rows) {
 			tableBody.appendChild(row);
 		}
@@ -302,7 +331,7 @@ public class TableStructurer {
 
 	}
 
-	private void addHead() {
+	private void addHtmlHead() {
 		HtmlThead thead = new HtmlThead();
 		htmlTable.appendChild(thead);
 	}
@@ -314,6 +343,21 @@ public class TableStructurer {
 		htmlTable.appendChild(caption);
 	}
 
+	private void addHeader() {
+		headerBBoxManager = new BoundingBoxManager();
+		if (tableSectionList != null && tableSectionList.size() > 1) {
+			TableSection headerSection =tableSectionList.get(1);
+			for (HorizontalElement element : headerSection.getHorizontalElementList()) {
+				headerBBoxManager.add(((SVGElement)element).getBoundingBox());
+				if (element instanceof HorizontalRuler) {
+				} else {
+					PhraseList phraseList = (PhraseList) element;
+					LOG.trace(">TH>"+phraseList.getStringValue());
+				}
+			}
+		}
+	}
+
 	private void addFooter() {
 		HtmlTfoot foot = new HtmlTfoot();
 		htmlTable.appendChild(foot);
@@ -323,16 +367,18 @@ public class TableStructurer {
 		HtmlTd footTd = new HtmlTd();
 		footRow.appendChild(footTd);
 		footTd.addAttribute(new Attribute("colspan", String.valueOf(maxColumns)));
-		if (footerRange != null) {
-			for (int i = footerRange.getMin(); i < footerRange.getMax(); i++) {
+		if (deprecatedFooterRange != null) {
+			for (int i = deprecatedFooterRange.getMin(); i < deprecatedFooterRange.getMax(); i++) {
 				PhraseList phraseList = phraseListList.get(i);
 				footTd.appendChild(phraseList.toString());
 				footTd.appendChild(new HtmlBr());
 			}
 		} else {
+			footerBBoxManager = new BoundingBoxManager();
 			if (tableSectionList != null && tableSectionList.size() > 3) {
 				TableSection footerSection =tableSectionList.get(3);
 				for (HorizontalElement element : footerSection.getHorizontalElementList()) {
+					footerBBoxManager.add(((SVGElement)element).getBoundingBox());
 					if (element instanceof HorizontalRuler) {
 						LOG.debug("HRULER in footer");
 					} else {
@@ -380,7 +426,7 @@ public class TableStructurer {
 		List<SVGShape> shapeList = makeShapes();
 		
 		List<SVGLine> lineList = extractLines(shapeList, Line2.XAXIS);
-		LOG.trace("lines: "+lineList.size());
+		LOG.debug("lines: "+lineList.size());
 		lineList = removeShortLines(lineList, 1.0);
 		horizontalRulerList = HorizontalRuler.createFromSVGList(lineList);
 		horizontalRulerList.sort(new Comparator<Ruler>() {
@@ -486,18 +532,6 @@ public class TableStructurer {
 				if (horizontalRuler.getSVGLine() != null) {
 					LOG.trace(horizontalRuler.toXML());
 					addRuler(newRulerList, horizontalRuler);
-				} else {
-					List<SVGLine> lineList = horizontalRuler.getSVGLineList();
-					if (lineList != null && lineList.size() > 0) {
-						for (SVGLine line : lineList) {
-//							LOG.trace(line.toXML());
-						}
-						List<SVGLine> lineList1 = SVGLine.mergeParallelLines(lineList, eps);
-						if (lineList1.size() != lineList.size()) {
-							horizontalRuler.setSVGLineList(lineList1);
-						}
-						addRuler(newRulerList, horizontalRuler);
-					}
 				}
 			}
 			horizontalRulerList = newRulerList;
@@ -688,18 +722,25 @@ public class TableStructurer {
 		return html;
 	}
 	
-	public static HtmlHtml createHtmlWithTable(File inputFile, List<TableSection> tableSectionList, TableTitle tableTitle) {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+	/** this is messy code.
+	 * 
+	 * @param inputFile
+	 * @param tableSectionList
+	 * @param tableTitle
+	 * @return
+	 */
+	public HtmlHtml createHtmlWithTable(File inputFile, List<TableSection> tableSectionList, TableTitle tableTitle) {
+		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		
 		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineListForCommonestFont();
 		for (ScriptLine scriptLine : scriptedLineList) {
 			TextLine textLine0 = scriptLine.getTextLineList().get(0);
 		}
 		
-		TableStructurer tableStructurer = textStructurer.createTableStructurer();
-		tableStructurer.setTableTitle(tableTitle);
-		tableStructurer.setSections(tableSectionList);
-		HtmlHtml html = tableStructurer.getHtmlWithTable();
+//		TableStructurer tableStructurer = textStructurer.createTableStructurer();
+		this.setTableTitle(tableTitle);
+		this.setSections(tableSectionList);
+		HtmlHtml html = this.getHtmlWithTable();
 		return html;
 	}
 
@@ -709,7 +750,7 @@ public class TableStructurer {
 
 	private void setSections(List<TableSection> tableSectionList) {
 		this.tableSectionList = tableSectionList;
-		LOG.warn("table section NYI");
+		LOG.warn("FIXME: table section NYI - not sure what it is doing but it's probably important");
 	}
 
 	private void analyzeTableRow(PhraseList phraseList, int iRow) {
@@ -780,6 +821,27 @@ public class TableStructurer {
 			columnManagerList.get(i).debug();
 		}
 	}
+
+	public BoundingBoxManager getHeaderBBoxManager() {
+		return headerBBoxManager;
+	}
+
+	public BoundingBoxManager getTitleBBoxManager() {
+		return titleBBoxManager;
+	}
+
+	public BoundingBoxManager getBodyBBoxManager() {
+		return bodyBBoxManager;
+	}
+
+	public BoundingBoxManager getFooterBBoxManager() {
+		return footerBBoxManager;
+	}
+
+	public List<TableSection> getTableSectionList() {
+		return tableSectionList;
+	}
+	
 	
 
 

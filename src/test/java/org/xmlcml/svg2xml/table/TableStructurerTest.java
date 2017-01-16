@@ -590,7 +590,7 @@ public class TableStructurerTest {
 	// =======================
 	
 	private TableStructurer testHorizontalRulers(File inputFile, String outputRoot, int horizontalRulerCount) {
-		File outputSVGFile = new File("target/table/"+outputRoot+"Horizontal.svg");
+		File outputSVGFile = new File("target/table/"+outputRoot+"/horizontal.svg");
 
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
@@ -616,7 +616,9 @@ public class TableStructurerTest {
 	private void createDualTables(File inputFile, IntRangeArray rangesArray, double scale, String outRoot)
 			throws IOException, FileNotFoundException {
 		HtmlHtml html = TableStructurer.createHtmlWithTable(inputFile, rangesArray);
-		XMLUtil.debug(html, new FileOutputStream("target/table/"+outRoot+".html"), 1);
+		File outputDir = new File("target/table/"+"new/"+outRoot+"/");
+		outputDir.mkdirs();
+		XMLUtil.debug(html, new FileOutputStream(new File(outputDir, "table.html")), 1);
 		SVGElement svg = createSVGPanel(inputFile, scale);
 		HtmlTable twinTable = new HtmlTable();
 		HtmlTr tr = new HtmlTr();
@@ -627,7 +629,7 @@ public class TableStructurerTest {
 		HtmlTd rtd = new HtmlTd();
 		tr.appendChild(rtd);
 		rtd.appendChild(html);
-		XMLUtil.debug(twinTable, new FileOutputStream("target/table/"+outRoot+"Total.html"), 1);
+		XMLUtil.debug(twinTable, new FileOutputStream(new File(outputDir, "totalTable.html")), 1);
 	}
 
 	private SVGElement createSVGPanel(File inputFile, double scale) {
@@ -669,12 +671,12 @@ public class TableStructurerTest {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		textStructurer.extractAndApplySuscripts();
 		List<TextLine> superList = textStructurer.getSuperscriptLineList();
-		for (TextLine supersc : superList) {
-			System.out.println("^^"+supersc);
-		}
-		for (TextLine sub : textStructurer.getSubscriptLineList()) {
-			System.out.println("vv"+sub);
-		}
+//		for (TextLine supersc : superList) {
+//			System.out.println("^^"+supersc);
+//		}
+//		for (TextLine sub : textStructurer.getSubscriptLineList()) {
+//			System.out.println("vv"+sub);
+//		}
 		Assert.assertEquals("super", superscript, textStructurer.getSuperscriptLineList().size());
 		Assert.assertEquals("sub", subscript, textStructurer.getSubscriptLineList().size());
 		

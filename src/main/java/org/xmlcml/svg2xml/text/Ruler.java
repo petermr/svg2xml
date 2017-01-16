@@ -22,10 +22,6 @@ public abstract class Ruler extends LineChunk {
 	
 	public final static String TAG = "ruler";
 	
-	/** dangerous - remove */
-	private SVGLine svgLine;
-	private List<SVGLine> svgLineList;
-
 	public Ruler() {
 		super();
 		this.setClassName(TAG);
@@ -33,36 +29,18 @@ public abstract class Ruler extends LineChunk {
 
 	public Ruler(SVGLine line) {
 		this();
-		this.svgLine = line;
+		this.appendChild(line.copy());
 	}
 
-	protected void add(Ruler ruler) {
-		if (svgLineList == null) {
-			svgLineList = new ArrayList<SVGLine>();
-			svgLineList.add(svgLine);
-			svgLineList.add(ruler.svgLine);
-			svgLine = null;
-		} else if (svgLineList != null) {
-			svgLineList.add(ruler.svgLine);
-		}
-	}
 
 	public Real2 getMidPoint() {
+		SVGLine svgLine = getSVGLine();
 		return svgLine == null ? null : svgLine.getMidPoint();
 	}
 
 	public SVGLine getSVGLine() {
-		return svgLine;
+		return (SVGLine) this.getChildElements().get(0);
 	}
-
-	public List<SVGLine> getSVGLineList() {
-		return svgLineList;
-	}
-	public void setSVGLineList(List<SVGLine> lineList) {
-		this.svgLineList = lineList;
-	}
-
-
 
 	public static void formatStrokeWidth(List<? extends Ruler> rulerList, int d) {
 		for (Ruler ruler : rulerList) {
@@ -71,56 +49,25 @@ public abstract class Ruler extends LineChunk {
 	}
 
 	private void formatStrokeWidth(int d) {
+		SVGLine svgLine = getSVGLine();
 		if (svgLine != null) {
 			svgLine.setStrokeWidth(Util.format(svgLine.getStrokeWidth(), d));
-		} else if (svgLineList != null) {
-			for (SVGLine line : svgLineList) {
-				line.format(d);
-			}
 		}
 	}
 	
 	public Real2Range getBoundingBox() {
-		Real2Range bbox = null;
-		if (svgLine != null) {
-			bbox = svgLine.getBoundingBox();
-		} else if (svgLineList != null) {
-			Real2Range bboxTotal = null;
-			for (SVGLine line : svgLineList) {
-				if (bboxTotal == null) {
-					bboxTotal = line.getBoundingBox();
-				} else {
-					bboxTotal.plus(bbox);
-				}
-			}
-			bbox = bboxTotal;
-		}
-		return bbox;
+		SVGLine svgLine = getSVGLine();
+		return (svgLine == null) ? null : svgLine.getBoundingBox();
 	}
 	
 	@Override
 	public String toString() {
 		String s = "";
-		getAllSVGLineList();
-		if (svgLine != null) {
-			s += toString(svgLine);
-		} else {
-			for (SVGLine line : svgLineList) {
-				s += toString(svgLine)+";";
-			}
+		SVGLine svgLine = getSVGLine();
+		if (svgLine != null) { 
+			s += svgLine.toString();
 		}
-		return /*this.getClass().getSimpleName()*/ /*+": "+*/ /*this.getXY()+": " +*/s;
-	}
-
-	protected String toString(SVGLine svgLine) {
-		List<SVGLine> allLineList = getAllSVGLineList();
-		StringBuilder sb = new StringBuilder(allLineList.size()+": ");
-		for (SVGLine line : allLineList) {
-			sb.append(line.getXY(0));
-			sb.append(line.getXY(1));
-			sb.append("("+Util.format(line.getStrokeWidth(), 2)+")\n");
-		}
-		return sb.toString();
+		return s;
 	}
 
 	public Double getLength() {
@@ -130,42 +77,17 @@ public abstract class Ruler extends LineChunk {
 
 	public Double getY() {
 		Double d = null;
+		SVGLine svgLine = getSVGLine();
 		if (svgLine != null) {
 			d = svgLine.getMidPoint().getY();
-		} else {
-			Real2Range bbox = this.getBoundingBox();
-			d = bbox == null ? null : bbox.getYMax();
 		}
 		return d;
 	}
 
 	public Element copyElement() {
 		Element element = (Element) this.copy();
-		addLinesAsChildren(element);
 		return element;
 	}
-
-	private void addLinesAsChildren(Element element) {
-		if (svgLine != null) {
-			element.appendChild(svgLine.copy());
-		} else if (svgLineList != null) {
-			for (SVGLine line : svgLineList) {
-				element.appendChild(line);
-			}
-		}
-	}
-	
-	public List<SVGLine> getAllSVGLineList() {
-		List<SVGLine> childLineList = new ArrayList<SVGLine>();
-		if (svgLine != null) {
-			childLineList.add(svgLine);
-		}
-		if (svgLineList != null) {
-			childLineList.addAll(svgLineList);
-		}
-		return childLineList;
-	}
-	
 
 
 }

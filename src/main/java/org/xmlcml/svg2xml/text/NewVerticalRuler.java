@@ -6,10 +6,9 @@ import java.util.List;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGLine;
 
-public class VerticalRuler extends Ruler {
+public class NewVerticalRuler extends Ruler {
 
-
-	public VerticalRuler(SVGLine line) {
+	public NewVerticalRuler(SVGLine line) {
 		super(line);
 	}
 
@@ -18,22 +17,22 @@ public class VerticalRuler extends Ruler {
 	 * @param lines
 	 * @return
 	 */
-	public static List<VerticalRuler> createFromSVGList(List<SVGLine> lines) {
-		List<VerticalRuler> rulerList = new ArrayList<VerticalRuler>();
+	public static List<NewVerticalRuler> createFromSVGList(List<SVGLine> lines) {
+		List<NewVerticalRuler> rulerList = new ArrayList<NewVerticalRuler>();
 		SVGLine lastLine = null;
-		VerticalRuler lastRuler = null;
+		NewVerticalRuler lastRuler = null;
 		for (int i = 0; i < lines.size(); i++) {
 			lastLine = i == 0 ? null : lines.get(i - 1);
 			Double lastX = lastLine == null ? null : lastLine.getMidPoint().getX();
 			SVGLine line = lines.get(i);
-			VerticalRuler ruler = new VerticalRuler(line);
+			NewVerticalRuler ruler = new NewVerticalRuler(line);
 			double x = line.getMidPoint().getX();
-			if (lastX != null && Real.isEqual(x,  lastX, EPS)) {
-				lastRuler.add(ruler);
-			} else {
+//			if (lastX != null && Real.isEqual(x,  lastX, EPS)) {
+//				lastRuler.add(ruler);
+//			} else {
 				lastRuler = ruler;
 				rulerList.add(lastRuler);
-			}
+//			}
 		}
 		return rulerList;
 	}

@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.xmlcml.euclid.IntRange;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
+import org.xmlcml.svg2xml.text.PhraseListList;
 
 /** holds sections such as title, header, body, footer
  * 
@@ -36,6 +37,8 @@ public class TableSection {
 
 	private TableSectionType type;
 	private List<HorizontalElement> horizontalElementList;
+	private List<Phrase> phrases;
+//	private PhraseListList phraseListList;
 
 	public TableSection(TableSectionType type) {
 		this.type = type;
@@ -75,10 +78,31 @@ public class TableSection {
 	public String toString() {
 		StringBuilder sb = new StringBuilder(type+": ");
 		sb.append(horizontalElementList.size()+"\n");
-		if (horizontalElementList.size() > 0) {
-			sb.append(String.valueOf(horizontalElementList.get(0))+"...\n");
-			sb.append(String.valueOf("..."+horizontalElementList.get(horizontalElementList.size()-1))+"\n");
+//		if (horizontalElementList.size() > 0) {
+//			sb.append(String.valueOf(horizontalElementList.get(0))+"...\n");
+//			sb.append(String.valueOf("..."+horizontalElementList.get(horizontalElementList.size()-1))+"\n");
+//		}
+		for (int i = 0; i < horizontalElementList.size(); i++) {
+			HorizontalElement horizontalElement = horizontalElementList.get(i);
+			String s = String.valueOf(horizontalElement+"\n");
+			sb.append(s);
 		}
 		return sb.toString();
 	}
+	
+	public List<Phrase> getOrCreatePhrases() {
+		if (phrases == null) {
+			phrases = new ArrayList<Phrase>();
+			for (HorizontalElement element : this.getHorizontalElementList()) {
+				if (element instanceof PhraseList) {
+					PhraseList phraseList = (PhraseList) element;
+					for (int i = 0; i < phraseList.size(); i++) {
+						phrases.add(phraseList.get(i));
+					}
+				}
+			}
+		}
+		return phrases;
+	}
+
 }

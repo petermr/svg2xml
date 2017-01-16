@@ -37,13 +37,8 @@ public class HorizontalRuler extends Ruler {
 			SVGLine line = lines.get(i);
 			LOG.trace("-----> "+line.toXML());
 			HorizontalRuler ruler = new HorizontalRuler(line);
-			double y = line.getMidPoint().getY();
-			if (lastY != null && Real.isEqual(y,  lastY, EPS)) {
-				lastRuler.add(ruler);
-			} else {
-				lastRuler = ruler;
-				rulerList.add(lastRuler);
-			}
+			lastRuler = ruler;
+			rulerList.add(lastRuler);
 		}
 		return rulerList;
 	}

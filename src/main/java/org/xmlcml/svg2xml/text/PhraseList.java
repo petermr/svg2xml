@@ -2,7 +2,10 @@ package org.xmlcml.svg2xml.text;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.Stack;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -126,7 +129,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 //		return (Element) this.copy();
 		getOrCreateChildPhraseList();
 		Element element = (Element) this.copy();
-		for (Phrase phrase : childPhraseList) {
+		for (LineChunk phrase : childPhraseList) {
 			element.appendChild(phrase.copyElement());
 		}
 		return element;
@@ -169,10 +172,100 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 			if (tableSpan.includes(phrase.getIntRange())) {
 				includedPhraseList.add(new Phrase(phrase));
 			} else {
-				LOG.debug("excluded phrase by tableSpan: "+phrase);
+				LOG.trace("excluded phrase by tableSpan: "+phrase);
 			}
 		}
 		return includedPhraseList;
 	}
+
+	public void mergeByXCoord(PhraseList otherPhraseList) {
+		Queue<Phrase> otherQueue = otherPhraseList.getPhraseQueue();
+		Queue<Phrase> thisQueue = this.getPhraseQueue();
+		Phrase thisPhrase = thisQueue.isEmpty() ? null : thisQueue.remove();
+		Phrase otherPhrase = otherQueue.isEmpty() ? null : otherQueue.remove();
+		List<Phrase> newPhraseList = new ArrayList<Phrase>();
+		while (thisPhrase != null || otherPhrase != null) {
+			if (thisPhrase == null && !thisQueue.isEmpty()) {
+				thisPhrase = thisQueue.remove();
+			}
+			if (otherPhrase == null && !otherQueue.isEmpty()) {
+				otherPhrase = otherQueue.remove();
+			}
+			if (thisPhrase == null && otherPhrase != null) {
+				newPhraseList.add(otherPhrase);
+				otherPhrase = null;
+			} else if (otherPhrase == null && thisPhrase != null) {
+				newPhraseList.add(thisPhrase);
+				thisPhrase = null;
+			} else if (thisPhrase.getX() < otherPhrase.getX()) {
+				newPhraseList.add(thisPhrase);
+				thisPhrase = null;
+			} else {
+				newPhraseList.add(otherPhrase);
+				otherPhrase = null;
+			}
+		}
+		this.childPhraseList = newPhraseList;
+	}
+
+	public Queue<Phrase> getPhraseQueue() {
+		Queue<Phrase> phraseQueue = new LinkedList<Phrase>();
+		for (Phrase phrase : this) {
+			phraseQueue.add(phrase);
+		}
+		return phraseQueue;
+	}
+
+	private void addSuperscript(Phrase superPhrase) {
+		for (int index = 0; index <= this.size(); index++) {
+			LineChunk phrase1 = (index == 0) ? null : this.get(index - 1);
+			LineChunk phrase2 = index == this.size() ? null : this.get(index);
+			if (canHaveSuperscript(phrase1, superPhrase, phrase2)) {
+				this.insertSuperscript(index, superPhrase);
+				break;
+			}
+		}
+	}
+
+	public void insertSuperscript(int index, Phrase superPhrase) {
+		this.childPhraseList.add(index, superPhrase);
+		superPhrase.setSuperscript(true);
+	}
+	
+	public boolean canHaveSuperscript(LineChunk phrase1, Phrase superPhrase, LineChunk phrase2) {
+		boolean overlap = false;
+		Real2Range bbox1 = phrase1 == null ? null : phrase1.getOrCreateBoundingBox().format(1).getReal2RangeExtendedInX(0.0, 1.0);
+		Real2Range bbox2 = phrase2 == null ? null : phrase2.getOrCreateBoundingBox().format(1).getReal2RangeExtendedInX(0.0, 1.0);
+		Real2Range superBBox = superPhrase.getOrCreateBoundingBox().format(1).getReal2RangeExtendedInX(1.0, 0.0);
+		Real2Range over1 = bbox1 == null ? null : bbox1.intersectionWith(superBBox);
+		Real2Range over2 = bbox2 == null ? null : bbox2.intersectionWith(superBBox);
+		if ((phrase1 == null || over1 != null) ||
+			(phrase2 == null || over2 != null)) {			
+//		Double x1 = bbox1.getXMin();
+//		Double x2 = bbox2.getXMin();
+//		Double superX = superBBox.getXMin();
+//		if ()
+//		Real2Range over = firstBBox == null ? new Real2Range() : firstBBox.intersectionWith(superBBox);
+//		LOG.debug(">ov>"+firstBBox+" / "+superBBox+" / "+over);
+//		if ((thisX == null || (over != null && thisX < superX)) {
+			LOG.debug("OVER "+this.getStringValue()+" / "+superPhrase.getStringValue());
+			overlap = true;
+		}
+		return overlap;
+	}
+
+	public void setSuperscript(boolean b) {
+		for (Phrase phrase : this) {
+			phrase.setSuperscript(b);
+		}
+	}
+
+	public void setSubscript(boolean b) {
+		for (Phrase phrase : this) {
+			phrase.setSubscript(b);
+		}
+	}
+
+
 
 }
