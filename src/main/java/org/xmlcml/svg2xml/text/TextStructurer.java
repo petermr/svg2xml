@@ -723,6 +723,7 @@ public class TextStructurer {
 //			LOG.debug("normalized: "+svgChunk.toXML());
 //		}
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
+		LOG.trace(">txt>"+textCharacters.size());
 		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
 		textStructurer.setSvgChunk(svgChunk);
 		return textStructurer;
@@ -750,16 +751,16 @@ public class TextStructurer {
 		textAnalyzer.setTextStructurer(this);
 	}
 	
-	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters/*, PageAnalyzer pageAnalyzer*/) {
+	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters) {
 		TextAnalyzer textAnalyzer = new TextAnalyzer();
 		textAnalyzer.setTextList(textCharacters);
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		// the next two lines may be unnecessary
 		textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY(); 
-		for (TextLine textLine : textLineList) {
-			LOG.trace("TLY "+textLine);
-		}
+//		for (TextLine textLine : textLineList) {
+//			LOG.debug("TLY "+textLine);
+//		}
 		textAnalyzer.setTextStructurer(textStructurer);
 		return textStructurer;
 	}

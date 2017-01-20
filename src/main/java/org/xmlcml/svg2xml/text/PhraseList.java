@@ -53,6 +53,12 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		this.appendChild(phrase);
 	}
 
+	protected List<? extends LineChunk> getChildChunks() {
+		getOrCreateChildPhraseList();
+		return childPhraseList;
+	}
+
+
 	public IntArray getLeftMargins() {
 		getOrCreateChildPhraseList();
 		IntArray leftMargins = new IntArray();
@@ -70,7 +76,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return i < 0 || i >= size() ? null : childPhraseList.get(i);
 	}
 
-	private List<Phrase> getOrCreateChildPhraseList() {
+	public List<Phrase> getOrCreateChildPhraseList() {
 		if (childPhraseList == null) {
 			List<Element> phraseChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+Phrase.TAG+"']");
 			childPhraseList = new ArrayList<Phrase>();
@@ -105,7 +111,8 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	}
 	
 	public Real2 getXY() {
-		return this.getBoundingBox().getCorners()[0];
+		Real2Range bbox = this.getBoundingBox();
+		return bbox == null ? null : bbox.getCorners()[0];
 	}
 
 

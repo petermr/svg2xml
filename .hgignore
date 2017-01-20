@@ -9,3 +9,5 @@ syntax: regexp
 ^nonPublic/
 src/test/resources/pdfs/
 ^svg/suspect_ol2015972_si_002/
+src/test/resources/org/xmlcml/svg2xml/table/pdf/fala
+

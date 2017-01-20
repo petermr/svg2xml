@@ -1,12 +1,22 @@
 package org.xmlcml.svg2xml.table;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
+import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealArray;
+import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.svg2xml.text.Phrase;
+import org.xmlcml.svg2xml.text.Word;
+import org.xmlcml.svg2xml.util.GraphPlot;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -17,10 +27,30 @@ public class ColumnManager {
 		LOG.setLevel(Level.DEBUG);
 	}
 
+	public final static Comparator<ColumnManager> X_COMPARATOR;
+	static {
+		X_COMPARATOR = new Comparator<ColumnManager>() {
+			public int compare(ColumnManager colManager1, ColumnManager colManager2 ) {
+				if (colManager1 == null || colManager2 == null) {
+					throw new RuntimeException("Null ColumnManager/s");
+				}
+				Integer x1 = colManager1.getEnclosingRange().getMin();
+				Integer x2 = colManager2.getEnclosingRange().getMin();
+				return x1 - x2;
+			}
+		};
+	}
 	private IntRange enclosingRange;
 	private Multiset<Integer> startXMultiset;
 	private Multiset<Integer> endXMultiset;
-	private List<Phrase> columnPhraseList;
+	private List<Phrase> columnPhrases;
+	private int yPointer = -1;
+	private double epsilon = 0.3; // compares y values
+	private RealArray xMinArray;
+	private RealArray xMaxArray;
+	private Double xMin;
+	private RealArray indentArray;
+	private Double xMax;
 
 	public ColumnManager() {
 	}
@@ -30,9 +60,17 @@ public class ColumnManager {
 			this.enclosingRange = enclosingRange;
 		} else {
 			if (!this.enclosingRange.equals(enclosingRange)) {
-				LOG.warn("new EnclosingRange: "+this.enclosingRange+"=>"+enclosingRange);
+				LOG.trace("new EnclosingRange: "+this.enclosingRange+"=>"+enclosingRange);
 //				this.enclosingRange = enclosingRange;
 			}
+		}
+	}
+
+	public void addEnclosingRange(IntRange enclosingRange) {
+		if (this.enclosingRange == null) {
+			this.enclosingRange = enclosingRange;
+		} else {
+			this.enclosingRange = this.enclosingRange.plus(enclosingRange);
 		}
 	}
 
@@ -69,19 +107,175 @@ public class ColumnManager {
 	}
 
 	public void addPhrase(Phrase phrase) {
-		ensureColumnPhraseList();
-		columnPhraseList.add(phrase);
-	}
-
-	private void ensureColumnPhraseList() {
-		if (columnPhraseList == null) {
-			columnPhraseList = new ArrayList<Phrase>();
+		if (phrase != null) {
+			getOrCreateColumnPhrases();
+			columnPhrases.add(phrase);
+			addRange(phrase.getIntRange());
+		} else {
+			LOG.trace("adding Null phrase; ignored");
 		}
 	}
 
+	private void addRange(IntRange intRange) {
+		if (enclosingRange == null) {
+			enclosingRange = intRange;
+		} else {
+			enclosingRange = enclosingRange.plus(intRange);
+		}
+	}
+
+	List<Phrase> getOrCreateColumnPhrases() {
+		if (columnPhrases == null) {
+			columnPhrases = new ArrayList<Phrase>();
+		}
+		return columnPhrases;
+	}
+
 	public Phrase getPhrase(int iRow) {
-		ensureColumnPhraseList();
-		return (iRow < 0 || iRow >= columnPhraseList.size()) ? null : columnPhraseList.get(iRow);
+		getOrCreateColumnPhrases();
+		return (iRow < 0 || iRow >= columnPhrases.size()) ? null : columnPhrases.get(iRow);
+	}
+
+	public IntRange getEnclosingRange() {
+		return enclosingRange;
+	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		if (columnPhrases != null) sb.append(String.valueOf(columnPhrases)+"\n");
+		if (enclosingRange != null) sb.append(String.valueOf(enclosingRange)+"\n");
+		if (startXMultiset != null) sb.append(String.valueOf(startXMultiset)+"\n");
+		if (endXMultiset != null) sb.append(String.valueOf(endXMultiset)+"\n");
+		return sb.toString();
+	}
+
+	public String getStringValue() {
+		StringBuilder sb = new StringBuilder();
+		for (Phrase phrase : columnPhrases) {
+			sb.append(phrase.getStringValue()+" // ");
+		}
+		return sb.toString();
+	}
+
+	public void resetYPointer() {
+		yPointer = 0;
+	}
+
+	/** 
+	 * 
+	 * @return if no phrase, return -1
+	 */
+	public double getPointerYCoord() {
+		double y = -1;
+		if (yPointer < columnPhrases.size()) {
+			Phrase phrase = columnPhrases.get(yPointer);
+			if (phrase != null) {
+				Double yy = phrase.getY();
+				if (yy != null) {
+					y = yy;
+				}
+			}
+		}
+		return y;
+	}
+
+	public int getYPointer() {
+		return yPointer;
+	}
+
+	private void addEmptyCell(Real2Range bbox, double fontSize) {
+		Word emptyWord = new Word(Word.SPACE);
+		Real2 xy = bbox.getCorners()[0];
+		emptyWord.setXY(xy);
+		Phrase emptyPhrase = new Phrase(emptyWord);
+		SVGRect plotBox = GraphPlot.plotBox(bbox, "green", 0.1);
+		emptyPhrase.appendChild(plotBox);
+		columnPhrases.add(yPointer, emptyPhrase);
+	}
+
+	/** 
+	 * 
+	 * @param y
+	 */
+	public void addCell(Real2Range bbox, double fontSize) {
+		double y = bbox.getYMax();
+		double x = enclosingRange.getMin();
+		if (yPointer >= columnPhrases.size()) {
+			addEmptyCell(bbox, fontSize);
+		} else {
+			Phrase phrase = columnPhrases.get(yPointer);
+			Double ycell = phrase.getY();
+			if (ycell == null) {
+				LOG.debug("Null cell: "+phrase.getStringValue()+phrase.toXML());
+			}
+			if (ycell - y > epsilon) {
+				addEmptyCell(bbox, fontSize);
+			} else {
+				// cell is already there
+			}
+		}
+		yPointer++;
+	}
+
+	public SVGG createCellBoxes(String[] colors, double[] opacity) {
+		SVGG g = new SVGG();
+		for (int i = 0; i < columnPhrases.size(); i++) {
+			Real2Range phraseBox = columnPhrases.get(i).getBoundingBox();
+			String title = columnPhrases.get(i).getStringValue();
+			SVGTitle svgTitle = new SVGTitle(title);
+			SVGRect plotBox = GraphPlot.plotBox(phraseBox, colors[1], opacity[1]);
+			plotBox.appendChild(svgTitle);
+//			LOG.debug(plotBox.toXML());
+			g.appendChild(plotBox);
+		}
+		return g;
+	}
+	
+	public RealArray getOrCreateIndentArray() {
+		getOrCreateXMinXMaxArray();
+		indentArray = new RealArray(xMinArray);
+		indentArray = indentArray.plus(-xMin);
+		indentArray.format(2);
+		return indentArray;
+	}
+
+	private RealArray getOrCreateXMinXMaxArray() {
+		if (xMinArray == null || xMaxArray == null) {
+			xMinArray = new RealArray();
+			xMaxArray = new RealArray();
+			for (int i = 0; i < columnPhrases.size(); i++) {
+				Phrase phrase = columnPhrases.get(i);
+				double x = phrase.getX();
+				xMinArray.addElement(x);
+				double xMax = phrase.getEndX();
+				xMaxArray.addElement(x);
+			}
+			xMin = xMinArray.smallestElement();
+			xMax = xMinArray.largestElement();
+			// correct for missing values
+			correctForMissingValues();
+			xMin = xMinArray.smallestElement();
+			xMax = xMinArray.largestElement();
+		}
+		return xMinArray;
+	}
+
+	private void correctForMissingValues() {
+		for (int i = 0; i < columnPhrases.size(); i++) {
+			Phrase phrase = columnPhrases.get(i);
+			String value = phrase.getStringValue();
+			if (value == null || value.trim().length() == 0) {
+				xMinArray.setElementAt(i, xMax);
+			}
+		}
+	}
+
+	public double getMaxIndent() {
+		return xMax;
+	}
+
+	public double getMinIndent() {
+		return xMin;
 	}
 
 }

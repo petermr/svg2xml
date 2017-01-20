@@ -89,5 +89,9 @@ public abstract class Ruler extends LineChunk {
 		return element;
 	}
 
+	protected List<? extends LineChunk> getChildChunks() {
+		return new ArrayList<LineChunk>();
+	}
+
 
 }

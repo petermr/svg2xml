@@ -10,12 +10,9 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
@@ -24,6 +21,7 @@ import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.util.GraphPlot;
 
 public class TableContentCreator extends PageLayoutAnalyzer {
 
@@ -38,6 +36,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private IntRangeArray rangesArray;
 	private TableTitle tableTitle;
 	private boolean addIndents;
+	private TableTitleSection tableTitleSection;
+	private TableHeaderSection tableHeader;
+	private TableBodySection tableBody;
+	private TableFooterSection tableFooter;
 
 	public TableContentCreator() {
 	}
@@ -85,16 +87,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			HorizontalElement horizontalElement = horizontalList.get(i);
 			if (horizontalElement instanceof PhraseList) {
 				String value = ((PhraseList)horizontalElement).getStringValue().trim();
-//				if (value.equals(title)) {
-//				LOG.debug(value);
 				if (value.startsWith(title)) {
 					titleIndex = i;
-					LOG.debug("title["+value+"]");
+					LOG.trace("title["+value+"]");
 					break;
 				}
 			}
 		}
-		LOG.debug(title+"/"+titleIndex+"/");
+		LOG.trace(title+"/"+titleIndex+"/");
 		return titleIndex;
 	}
 
@@ -115,17 +115,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		List<HorizontalRuler> followingRulerList = new ArrayList<HorizontalRuler>();
 		for (int i = startRow; i < horizontalList.size(); i++) {
 			HorizontalElement horizontalElement = horizontalList.get(i);
-			LOG.trace(">>"+horizontalElement);
 			if (horizontalElement instanceof HorizontalRuler) {
 				HorizontalRuler thisRuler = (HorizontalRuler) horizontalElement;
-				LOG.trace("adding "+thisRuler);
 				IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange());
 				if (firstRuler == null) {
 					firstRuler = thisRuler;
 					firstRange = thisRange;
-					LOG.trace("first "+firstRange);
 				} else if (!thisRange.isEqualTo(firstRange)) {
-					LOG.debug("skipped range: "+thisRange+" vs "+firstRange);
+					LOG.trace("skipped range: "+thisRange+" vs "+firstRange);
 					continue;
 				}
 				followingRulerList.add(thisRuler);
@@ -142,10 +139,12 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		} else {
 			List<HorizontalRuler> fullRulerList = getFullRulers(iRow);
 			tableSectionList = new ArrayList<TableSection>();
-			IntRange tableSpan = fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
-			LOG.debug("Table Span "+tableSpan);
-			this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
-			this.createPhraseRangesArray();
+			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
+			LOG.trace("Table Span "+tableSpan);
+			if (tableSpan != null) {
+				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
+				this.createPhraseRangesArray();
+			}
 		}
 	}
 	
@@ -166,7 +165,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			IntRange tableSpan) {
 		int section = 0;
 		TableSection tableSection = null;
-		LOG.trace("start at row: "+iRow);
+		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
 			HorizontalElement element = horizontalList.get(j);
 			HorizontalRuler ruler = (element instanceof HorizontalRuler) ? 
@@ -239,29 +238,115 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			double[] opacity) {
 		// write SVG
 		SVGElement markedChunk = getTextStructurer().getSVGChunk();
-		SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
-		Transform2 t2 = firstG.getTransform();
 		SVGG g = new SVGG();
 		markedChunk.appendChild(g);
 		TableStructurer tableStructurer = getTableStructurer();
-		g.appendChild(plotBox(tableStructurer.getTitleBBox(), colors[0], opacity[0]));
-		g.appendChild(plotBox(tableStructurer.getHeaderBBox(), colors[1], opacity[1]));
-		g.appendChild(plotBox(tableStructurer.getBodyBBox(), colors[2], opacity[2]));
-		g.appendChild(plotBox(tableStructurer.getFooterBBox(), colors[3], opacity[3]));
-		g.setTransform(t2);
+		g.appendChild(GraphPlot.plotBox(tableStructurer.getTitleBBox(), colors[0], opacity[0]));
+		g.appendChild(GraphPlot.plotBox(tableStructurer.getHeaderBBox(), colors[1], opacity[1]));
+		g.appendChild(GraphPlot.plotBox(tableStructurer.getBodyBBox(), colors[2], opacity[2]));
+		g.appendChild(GraphPlot.plotBox(tableStructurer.getFooterBBox(), colors[3], opacity[3]));
+		TableContentCreator.shiftToOrigin(markedChunk, g);
 		return markedChunk;
 	}
 
-	public SVGRect plotBox(Real2Range titleBBox, String fill, double opacity) {
-		SVGRect plotRect = SVGRect.createFromReal2Range(titleBBox);
-		if (plotRect == null) {
-			plotRect = new SVGRect(new Real2(0.0, 0.0), new Real2(200., 30.));
-		}
-		plotRect.setFill(fill);
-		plotRect.setOpacity(opacity);
-		return plotRect;
+	public static void shiftToOrigin(SVGElement markedChunk, SVGG g) {
+		SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
+		Transform2 t2 = firstG.getTransform();
+		g.setTransform(t2);
 	}
 
+	public TableTitleSection getTableTitle() {
+		if (tableTitleSection == null) {
+			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
+			if (tableSectionList.size() > 0) {
+				tableTitleSection = new TableTitleSection(tableSectionList.get(0));
+			}
+		}
+		return tableTitleSection;
+	}
+
+	public TableHeaderSection getTableHeader() {
+		if (tableHeader == null) {
+			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
+			if (tableSectionList.size() >= 2) {
+				tableHeader = new TableHeaderSection(tableSectionList.get(1));
+			}
+		}
+		return tableHeader;
+	}
+
+	public TableBodySection getTableBody() {
+		if (tableBody == null) {
+			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
+			if (tableSectionList.size() >= 3) {
+				tableBody = new TableBodySection(tableSectionList.get(2));
+			}
+		}
+		return tableBody;
+	}
+
+	public TableFooterSection getTableFooter() {
+		if (tableFooter == null) {
+			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
+			if (tableSectionList.size() >= 4) {
+				tableFooter = new TableFooterSection(tableSectionList.get(3));
+			}
+		}
+		return tableFooter;
+	}
+
+	public SVGElement getSVGChunk() {
+		return textStructurer.getSVGChunk();
+	}
+
+	public SVGElement annotateAreas(File inputFile) {
+		createHTMLFromSVG(inputFile);
+		SVGElement svgChunk = createMarkedSections(
+				new String[] {"yellow", "red", "cyan", "blue"},
+				new double[] {0.2, 0.2, 0.2, 0.2}
+			);
+		TableTitleSection tableTitle = getTableTitle();
+		if (tableTitle == null) {
+			LOG.warn("no table title");
+		} else {
+			svgChunk = tableTitle.createMarkedContent(
+					(SVGElement) svgChunk.copy(),
+					new String[] {"yellow", "yellow"}, 
+					new double[] {0.2, 0.2}
+					);
+		}
+		TableHeaderSection tableHeader = getTableHeader();
+		if (tableHeader == null) {
+			LOG.warn("no table header");
+		} else {
+			tableHeader.createHeaderRowsAndColumnGroups();
+			svgChunk = tableHeader.createMarkedSections(
+					(SVGElement) svgChunk.copy(),
+					new String[] {"blue", "green"}, 
+					new double[] {0.2, 0.2}
+					);
+		}
+		TableBodySection tableBody = getTableBody();
+		if (tableBody == null) {
+			LOG.warn("no table body");
+		} else {
+			tableBody.createHeaderRowsAndColumnGroups();
+			svgChunk = tableBody.createMarkedSections(
+					(SVGElement) svgChunk.copy(),
+					new String[] {"yellow", "red"}, 
+					new double[] {0.2, 0.2}
+					);
+		}
+		TableFooterSection tableFooter = getTableFooter();
+		if (tableFooter != null) {
+			svgChunk = tableFooter.createMarkedContent(
+					(SVGElement) svgChunk.copy(),
+					new String[] {"blue", "blue"}, 
+					new double[] {0.2, 0.2}
+					);
+		}
+		return svgChunk;
+	}
 
 
 }

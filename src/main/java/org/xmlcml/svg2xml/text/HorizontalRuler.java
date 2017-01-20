@@ -17,6 +17,9 @@ public class HorizontalRuler extends Ruler {
 		LOG.setLevel(Level.DEBUG);
 	}
 
+	/** allowed misalignment for "same Y"*/
+	public static final double Y_TOLERANCE = 2.0;
+	
 	private List<Word> wordList;
 
 	public HorizontalRuler(SVGLine line) {

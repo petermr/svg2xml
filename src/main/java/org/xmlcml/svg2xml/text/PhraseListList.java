@@ -76,6 +76,12 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		return childPhraseListList.get(i);
 	}
 	
+	protected List<? extends LineChunk> getChildChunks() {
+		getOrCreateChildPhraseList();
+		return childPhraseListList;
+	}
+
+
 	public List<IntArray> getLeftMarginsList() {
 		getOrCreateChildPhraseList();
 		List<IntArray> leftMarginsList = new ArrayList<IntArray>();

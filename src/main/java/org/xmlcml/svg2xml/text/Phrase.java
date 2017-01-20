@@ -36,7 +36,7 @@ import nu.xom.Element;
  */
 public class Phrase extends LineChunk implements Iterable<Word> {
 	
-	private static final Logger LOG = Logger.getLogger(Phrase.class);
+	static final Logger LOG = Logger.getLogger(Phrase.class);
 	public final static String TAG = "phrase";
 
 	public static final Phrase NULL = new Phrase();
@@ -58,9 +58,22 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		// TODO Auto-generated constructor stub
 	}
 
+	public Phrase(Word word) {
+		this();
+		this.appendChild(word.copy());
+		getOrCreateWordList();
+		childWordList.add(word);
+	}
+
 	public Phrase(SVGG g) {
 		super(g);
 	}
+
+//	public Phrase(String string, Real2 xy) {
+//		childWordList = new ArrayList<Word>();
+//		Word word = new Word(string, xy);
+//		childWordList.add(word);
+//	}
 
 	public void add(SVGElement word) {
 		this.appendChild(word);
@@ -267,6 +280,9 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 
 	public Real2Range getBoundingBox() {
 		getOrCreateWordList();
+		if (childWordList.size() == 0) {
+			return null;
+		}
 		Word word0 = childWordList.get(0);
 		Word wordN = childWordList.get(childWordList.size() - 1);
 		RealRange xRange = word0.getStartX() == null || wordN.getEndX() == null ?
@@ -300,7 +316,9 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 				}
 			}
 		}
-		sb.append(""+childWordList.get(childWordList.size() - 1).toString()+"");
+		if (childWordList.size() > 0) {
+			sb.append(""+childWordList.get(childWordList.size() - 1).toString()+"");
+		}
 		if (superscript) sb.append("}");
 		if (subscript) sb.append("}");
 		this.setStringValueAttribute(sb.toString());
@@ -352,19 +370,9 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		return new IntRange((int)(double)getFirstX(), (int)(double)getEndX());
 	}
 	
-	public Double getFontSize() {
+	protected List<? extends LineChunk> getChildChunks() {
 		getOrCreateWordList();
-		Double f = null;
-		if (childWordList.size() > 0) {
-			f = childWordList.get(0).getFontSize();
-			for (int i = 1; i < childWordList.size(); i++) {
-				Double ff = childWordList.get(i).getFontSize();
-				if (ff != null) {
-					f = Math.max(f,  ff);
-				}
-			}
-		}
-		return f;
+		return childWordList;
 	}
 
 	public Element copyElement() {

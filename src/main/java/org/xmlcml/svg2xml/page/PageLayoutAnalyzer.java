@@ -73,9 +73,11 @@ public class PageLayoutAnalyzer {
 	}
 	
 	public void createContent(File inputFile) {
+		LOG.debug(inputFile.getAbsolutePath());
 		this.inputFile = inputFile;
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		phraseListList = textStructurer.getPhraseListList();
+		LOG.debug("reading ... "+phraseListList.toXML());
 		tableStructurer = textStructurer.createTableStructurer();
 		phraseListList.format(3);
 		createOrderedHorizontalList();
@@ -99,7 +101,8 @@ public class PageLayoutAnalyzer {
 		horizontalList = new ArrayList<HorizontalElement>();
 		PhraseList currentPhraseList = null;
 		HorizontalRuler currentRuler = null;
-		while (!phraseListStack.isEmpty() || !horizontalRulerListStack.isEmpty()) {
+		while (!phraseListStack.isEmpty() || !horizontalRulerListStack.isEmpty() ||
+				currentPhraseList != null || currentRuler != null) {
 			if (!phraseListStack.isEmpty() && currentPhraseList == null) {
 				currentPhraseList = phraseListStack.pop();
 			}
@@ -117,11 +120,14 @@ public class PageLayoutAnalyzer {
 					currentRuler = null;
 				}
 			} else if (currentPhraseList != null) {
+				LOG.trace("added phrase "+currentPhraseList.getStringValue());
 				horizontalList.add(currentPhraseList);
 				currentPhraseList = null;
 			} else if (currentRuler != null) {
 				horizontalList.add((HorizontalElement)currentRuler);
 				currentRuler = null;
+			} else {
+				LOG.trace("stacks empty");
 			}
 		}
 		Collections.reverse(horizontalList);
@@ -131,35 +137,6 @@ public class PageLayoutAnalyzer {
 		return horizontalList;
 	}
 
-//	public Map<String, File> findTableTitles(List<File> svgChunkFiles) {
-//		Map<String, File> svgChunkByTitle = new HashMap<String, File>();
-//		for (File svgChunkFile : svgChunkFiles) {
-//			TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgChunkFile);
-//			PhraseListList phraseListList = textStructurer.getPhraseListList();
-//			phraseListList.format(3);
-//			String value = phraseListList.getStringValue();
-//			Matcher matcher = TABLE_N.matcher(value);
-//			List<String> titleList = new ArrayList<String>();
-//			int start = 0;
-//			while (matcher.find(start)) {
-//				start = matcher.end();
-//				String title = matcher.group(1);
-//				if (matcher.group(2) != null) {
-//					title += "c";
-//				}
-//				if (titleList.contains(title)) {
-//					LOG.warn("Duplicate title: "+title);
-//					title += "*";
-//				}
-//				titleList.add(title);
-//			}
-//			for (int i = 0; i < titleList.size(); i++) {
-//				String title = titleList.get(i);
-//				svgChunkByTitle.put(title, svgChunkFile);
-//			}
-//		}
-//		return svgChunkByTitle;
-//	}
 
 	public void analyzeXRangeExtents(File inputFile) {
 		createContent(inputFile);
@@ -172,10 +149,8 @@ public class PageLayoutAnalyzer {
 			xRangeEndSet.add(xRange.getMax() / round * round);
 			if (includeRulers && horizontalElement instanceof HorizontalRuler ||
 				includePhrases && horizontalElement instanceof PhraseList) {
-//				System.out.println(((SVGElement)horizontalElement).toString());
 				if (xRange.getRange() >= xRangeRangeMin) {
 					xRangeSet.add(xRange);
-					System.out.println(xRange);
 				}
 			}
 		}

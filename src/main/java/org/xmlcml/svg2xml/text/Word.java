@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.text;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -17,8 +18,6 @@ import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.StyleBundle;
-import org.xmlcml.graphics.svg.GraphicsElement.FontStyle;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
 import org.xmlcml.xml.XMLUtil;
 
@@ -34,15 +33,26 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 
 	public static final Word NULL = new Word();
 	static {
-		NULL.childTextList = new ArrayList<SVGText>();
-		SVGText text = new SVGText(new Real2(0.0, 0.0), "NULL");
+		createWord(NULL, "NULL");
+	};
+
+	public static final Word SPACE = new Word();
+	static {
+		createWord(SPACE, " ");
+	}
+
+	private static void createWord(Word word, String content) {
+		word.childTextList = new ArrayList<SVGText>();
+		SVGText text = new SVGText(new Real2(0.0, 0.0), content);
 		text.setFontSize(10.0);
-		NULL.childTextList.add(text);
+		word.appendChild(text);
+		word.childTextList.add(text);
 	};
 
 
 	private List<SVGText> childTextList;
 	private boolean guessWidth = true;
+	private List<? extends LineChunk> lineChunkListForFonts;
 	
 	public Word() {
 		super();
@@ -55,6 +65,16 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		if (Word.TAG.equals(g.getSVGClassName())) {
 			LOG.trace("need to create subclassed Word constructor");
 		}
+	}
+
+	public Word(Word word) {
+		super(word);
+		XMLUtil.copyAttributesFromTo(word, this);
+		if (word.childTextList != null) {
+			this.childTextList = new ArrayList<SVGText>();
+			childTextList.addAll(word.childTextList);
+		}
+		guessWidth = word.guessWidth;
 	}
 
 	/** 
@@ -88,6 +108,10 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		for (SVGText text : textList) {
 			add(text);
 		}
+	}
+	
+	protected List<? extends LineChunk> getChildChunks() {
+		throw new RuntimeException("Not applicable");
 	}
 
 	public Real2 getCentrePointOfFirstCharacter() {
@@ -328,6 +352,50 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		}
 		this.setFontStyle(style);
 		return style;
+	}
+
+	/**
+	 * @return the font family
+	 */
+	public String getFontFamily() {
+		getOrCreateChildTextList();
+		String family = null;
+		if (childTextList.size() > 0) {
+			family = childTextList.get(0).getFontFamily();
+			for (int i = 1; i < childTextList.size(); i++) {
+				String family1 = childTextList.get(i).getFontFamily();
+				if (family1 != null) {
+					if (!family1.equals(family)) {
+						LOG.debug("changed family in word from "+family+"=>"+family1+"/"+this.getStringValue());
+						break;
+					}
+				}
+			}
+		}
+		this.setFontFamily(family);
+		return family;
+	}
+
+	/**
+	 * @return the font family
+	 */
+	public String getSVGXFontName() {
+		getOrCreateChildTextList();
+		String fontName = null;
+		if (childTextList.size() > 0) {
+			fontName = childTextList.get(0).getSVGXFontName();
+			for (int i = 1; i < childTextList.size(); i++) {
+				String fontName1 = childTextList.get(i).getSVGXFontName();
+				if (fontName1 != null) {
+					if (!fontName1.equals(fontName)) {
+						LOG.debug("changed fontName in word from "+fontName+"=>"+fontName1+"/"+this.getStringValue());
+						break;
+					}
+				}
+			}
+		}
+		this.setFontFamily(fontName);
+		return fontName;
 	}
 
 	/**

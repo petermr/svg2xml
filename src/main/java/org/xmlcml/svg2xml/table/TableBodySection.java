@@ -1,0 +1,199 @@
+package org.xmlcml.svg2xml.table;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.xmlcml.euclid.IntRange;
+import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealArray;
+import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.util.MultisetUtil;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGTitle;
+import org.xmlcml.svg2xml.text.Phrase;
+import org.xmlcml.svg2xml.util.GraphPlot;
+
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Multiset;
+import com.google.common.collect.Multiset.Entry;
+
+/** manages the table header, including trying to sort out the column spanning
+ * 
+ * @author pm286
+ *
+ */
+public class TableBodySection extends TableSection {
+	static final Logger LOG = Logger.getLogger(TableBodySection.class);
+	static {
+		LOG.setLevel(Level.DEBUG);
+	}
+
+	private List<RealRange> indentRangeArray;
+	private ColumnManager columnManager0;
+	
+	public TableBodySection() {
+		super(TableSectionType.BODY);
+	}
+	
+	public TableBodySection(TableSection tableSection) {
+		super(tableSection);
+	}
+	
+	public void createHeaderRowsAndColumnGroups() {
+		getOrCreatePhrases();
+		createSortedColumnManagerListFromUnassignedPhrases(phrases);
+		alignColumns();
+		createIndentArray();
+	}
+
+	private List<RealRange> createIndentArray() {
+		if (columnManagerList == null || columnManagerList.size() == 0) {
+			return new ArrayList<RealRange>();
+		}
+		columnManager0 = columnManagerList.get(0);
+		indentRangeArray = new ArrayList<RealRange>();
+		RealArray indentArray = columnManager0.getOrCreateIndentArray();
+		boolean inIndent = false;
+		double startRange = 0;
+		double endRange = 0;
+		Phrase phrasei = null;
+		for (int i = 0; i < indentArray.size(); i++) {
+			phrasei = columnManager0.getPhrase(i);
+			double xIndent = indentArray.get(i);
+			// FIXME simple single indent ATM 
+			if (xIndent > epsilon) {
+				if (!inIndent) {
+					startRange = phrasei.getY();
+				}
+				endRange = phrasei.getY();
+				inIndent = true;
+				LOG.debug("indent "+phrasei.getY()+"/"+phrasei.getStringValue());
+			} else {
+				LOG.debug("unindent "+phrasei.getStringValue());
+				endRange = phrasei.getY();
+				if (inIndent) {
+					RealRange range = new RealRange(startRange, endRange);
+					LOG.debug("range "+range);
+					indentRangeArray.add(range);
+				}
+				inIndent = false;
+			}
+		}
+		if (inIndent) {
+			endRange = boundingBox.getYMax();
+			indentRangeArray.add(new RealRange(startRange, endRange));
+		}
+		return indentRangeArray;
+	}
+
+	private void alignColumns() {
+		double fontSize = 8.0;
+		double lastY = boundingBox == null ? 0.0 : boundingBox.getYMin();
+		for (int i = 0; i < columnManagerList.size(); i++) {
+			columnManagerList.get(i).resetYPointer();
+		}
+		RealArray yCoordArray = getYCoordinatesForPhrases();
+		for (int j = 0; j < yCoordArray.size(); j++) {
+			double y = yCoordArray.elementAt(j);
+			RealRange yRange = new RealRange(lastY, y);
+			for (int i = 0; i < columnManagerList.size(); i++) {
+				ColumnManager columnManager = columnManagerList.get(i);
+				RealRange xRange = new RealRange(columnManager.getEnclosingRange());
+				columnManager.addCell(new Real2Range(xRange, yRange), fontSize);
+			}
+			lastY = y;
+		}
+		for (int i = 0; i < columnManagerList.size(); i++) {
+			/*RealArray indentArray = */columnManagerList.get(i).getOrCreateIndentArray();
+//			LOG.debug("indent "+indentArray.format(0));
+		}
+	}
+
+	private RealArray getYCoordinatesForPhrases() {
+		RealArray yCoordArray = new RealArray();
+		Multiset<Double> yCoordSet = HashMultiset.create();
+		for (int i = 0; i < phrases.size(); i++) {
+			yCoordSet.add(phrases.get(i).getY());
+		}
+		Iterable<Entry<Double>> yCoords = MultisetUtil.getDoubleEntriesSortedByValue(yCoordSet);
+		for (Entry<Double> yCoord : yCoords) {
+			yCoordArray.addElement(yCoord.getElement());
+		}
+		return yCoordArray;
+	}
+
+	public SVGElement createMarkedSections(
+			SVGElement svgChunk,
+			String[] colors,
+			double[] opacity) {
+		// write SVG
+		SVGG g;
+		g = createSubtableBoxesAndShiftToOrigin(svgChunk, colors, opacity);
+		svgChunk.appendChild(g);
+		g = createColumnBoxesAndShiftToOrigin(svgChunk, colors, opacity);
+		svgChunk.appendChild(g);
+		g = createCellBoxesAndShiftToOrigin(svgChunk, colors, opacity);
+		svgChunk.appendChild(g);
+		return svgChunk;
+	}
+
+	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+		SVGG g = new SVGG();
+		if (boundingBox == null) {
+			LOG.warn("no bounding box");
+		} else {
+			for (int i = 0; i < columnManagerList.size(); i++) {
+				ColumnManager columnManager = columnManagerList.get(i);
+				Real2Range colManagerBox = new Real2Range(new RealRange(columnManager.getEnclosingRange()), boundingBox.getYRange());
+				String title = columnManager.getStringValue();
+				SVGTitle svgTitle = new SVGTitle(title);
+				SVGRect plotBox = GraphPlot.plotBox(colManagerBox, colors[1], opacity[1]);
+				plotBox.appendChild(svgTitle);
+				g.appendChild(plotBox);
+			}
+			TableContentCreator.shiftToOrigin(svgChunk, g);
+		}
+		return g;
+	}
+	
+	private SVGG createCellBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+		SVGG g = new SVGG();
+		if (boundingBox == null) {
+			LOG.warn("no bounding box");
+		} else {
+			for (int i = 0; i < columnManagerList.size(); i++) {
+				ColumnManager columnManager = columnManagerList.get(i);
+				SVGG gg = columnManager.createCellBoxes(colors, opacity);
+				g.appendChild(gg);
+			}
+			TableContentCreator.shiftToOrigin(svgChunk, g);
+		}
+		return g;
+	}
+	
+	private SVGG createSubtableBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+		SVGG g = new SVGG();
+		if (boundingBox == null) {
+			LOG.warn("no bounding box");
+		} else {
+			// for a single indent
+			double xIndent = columnManager0.getMinIndent() - columnManager0.getMaxIndent();
+			RealRange xRange = boundingBox.getXRange();
+			xRange.extendLowerEndBy(xIndent);
+			for (int i = 0; i < indentRangeArray.size(); i++) {
+				Real2Range subTable = new Real2Range(xRange, indentRangeArray.get(i));
+				SVGRect plotBox = GraphPlot.plotBox(subTable, colors[i % colors.length], opacity[i % opacity.length]);
+				g.appendChild(plotBox);
+			}
+			TableContentCreator.shiftToOrigin(svgChunk, g);
+		}
+		return g;
+	}
+	
+	
+
+}

@@ -1,5 +1,7 @@
 package org.xmlcml.svg2xml.text;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
@@ -27,5 +29,9 @@ public class Blank extends LineChunk {
 	public Element copyElement() {
 		return (Element) this.copy();
 	}
-	
+
+	protected List<? extends LineChunk> getChildChunks() {
+		throw new RuntimeException("not applicable");
+	}
+
 }

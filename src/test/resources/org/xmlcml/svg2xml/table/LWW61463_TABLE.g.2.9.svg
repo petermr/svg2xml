@@ -233,10 +233,4 @@
 
    </g>
   </g>
-  <g transform="matrix(1.0,0.0,0.0,1.0,-24.636,-631.625)">
-   <rect stroke="black" stroke-width="1.0" x="99.636" y="634.125" width="171.72599999999997" height="9.0" fill="yellow" opacity="0.2"/>
-   <rect stroke="black" stroke-width="1.0" x="99.636" y="649.625" width="346.90200000000004" height="23.5" fill="red" opacity="0.2"/>
-   <rect stroke="black" stroke-width="1.0" x="99.636" y="679.125" width="360.01599999999996" height="30.0" fill="cyan" opacity="0.2"/>
-   <rect stroke="black" stroke-width="1.0" x="0.0" y="0.0" width="200.0" height="30.0" fill="blue" opacity="0.2"/>
-  </g>
 </svg>

@@ -143,10 +143,9 @@ public class TableStructurer {
 				titleSB.append(phraseListList.get(i));
 				titleBBoxManager.add(phraseListList.get(i).getBoundingBox());
 			}
-		} else if (tableSectionList != null) {
+		} else if (tableSectionList != null && tableSectionList.size() > 0) {
 			TableSection titleSection = tableSectionList.get(0);
 			List<HorizontalElement> horizontalList = titleSection.getHorizontalElementList();
-			LOG.debug("HR ***"+horizontalList.size());
 			if (tableTitle != null) {
 				titleSB.append(tableTitle.getTitle());
 			}
@@ -380,7 +379,7 @@ public class TableStructurer {
 				for (HorizontalElement element : footerSection.getHorizontalElementList()) {
 					footerBBoxManager.add(((SVGElement)element).getBoundingBox());
 					if (element instanceof HorizontalRuler) {
-						LOG.debug("HRULER in footer");
+						LOG.trace("HRULER in footer");
 					} else {
 						PhraseList phraseList = (PhraseList) element;
 						footTd.appendChild(phraseList.toString());
@@ -426,7 +425,6 @@ public class TableStructurer {
 		List<SVGShape> shapeList = makeShapes();
 		
 		List<SVGLine> lineList = extractLines(shapeList, Line2.XAXIS);
-		LOG.debug("lines: "+lineList.size());
 		lineList = removeShortLines(lineList, 1.0);
 		horizontalRulerList = HorizontalRuler.createFromSVGList(lineList);
 		horizontalRulerList.sort(new Comparator<Ruler>() {
@@ -750,7 +748,6 @@ public class TableStructurer {
 
 	private void setSections(List<TableSection> tableSectionList) {
 		this.tableSectionList = tableSectionList;
-		LOG.warn("FIXME: table section NYI - not sure what it is doing but it's probably important");
 	}
 
 	private void analyzeTableRow(PhraseList phraseList, int iRow) {
