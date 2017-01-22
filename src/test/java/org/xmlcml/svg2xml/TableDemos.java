@@ -364,7 +364,7 @@ createHTML(LB_DIR, roots);
 		
 	}
 
-	private void assertRowsColumns(File htmlFile, int rowCount, int colCount) {
+	public static void assertRowsColumns(File htmlFile, int rowCount, int colCount) {
 		Assert.assertTrue(""+htmlFile, htmlFile.exists());
 		HtmlTable htmlTable = (HtmlTable) HtmlElement.create(XMLUtil.getQueryElements(XMLUtil.parseQuietlyToDocument(htmlFile), 
 				".//*[local-name()='table']").get(0));
@@ -391,47 +391,51 @@ createHTML(LB_DIR, roots);
 
 	// ==============================================
 	
-	private void createHTML(File svgDir, String[] roots) {
+	public static void createHTML(File svgDir, String[] roots) {
 		for (int r = 0; r < roots.length; r++) {			
 			String root = roots[r];
-			LOG.debug("====>"+root+"<===");
-			List<File> svgChunkFiles = filterChunkFiles(svgDir, root);
-			TableContentCreator tableContentCreator = new TableContentCreator();
-			List<TableTitle> tableTitleList = tableContentCreator.findTableTitles(svgChunkFiles);
-			for (int i = 0; i < tableTitleList.size(); i++) {
-				TableTitle tableTitle = tableTitleList.get(i);
-				LOG.debug("======================"+tableTitle.getChunkName()+"========================");
-				File inputFile = new File(svgDir, root+"/"+tableTitle.getChunkName());
-				tableContentCreator = new TableContentCreator(); //refresh to make sure
-				tableContentCreator.setTableTitle(tableTitle);
-				HtmlHtml html = tableContentCreator.createHTMLFromSVG( inputFile);
-				String outroot = "target/table/"+"old/"+root+"/"+tableTitle.getTitle().replaceAll("\\s", "")+
-						"."+tableTitle.getChunkName().replaceAll("\\.svg", "");
-				if (html == null) {
-					LOG.error("Cannot create table: "+tableTitle);
-				} else {
-					File outfile = new File(outroot+".html");
-					LOG.debug("writing: "+outfile);
-					try {
-						XMLUtil.debug(html, outfile, 1);
-					} catch (IOException e) {
-						LOG.error("Cannot write file: "+outfile+" ("+e+")");
-					}
-				}
-				SVGElement markedChunk = tableContentCreator.createMarkedSections(
-					new String[] {"yellow", "red", "cyan", "blue"},
-					new double[] {0.2, 0.2, 0.2, 0.2}
-				);
-				SVGSVG.wrapAndWriteAsSVG(markedChunk, new File(outroot+".svg"));
+			createHTML(svgDir, root);
+		}
+	}
+
+	public static void createHTML(File svgDir, String root) {
+		LOG.debug("====>"+root+"<===");
+		List<File> svgChunkFiles = filterChunkFiles(svgDir, root);
+		TableContentCreator tableContentCreator = new TableContentCreator();
+		List<TableTitle> tableTitleList = tableContentCreator.findTableTitles(svgChunkFiles);
+		for (int i = 0; i < tableTitleList.size(); i++) {
+			TableTitle tableTitle = tableTitleList.get(i);
+			LOG.debug("======================"+tableTitle.getChunkName()+"========================");
+			File inputFile = new File(svgDir, root+"/"+tableTitle.getChunkName());
+			tableContentCreator = new TableContentCreator(); //refresh to make sure
+			tableContentCreator.setTableTitle(tableTitle);
+			HtmlHtml html = tableContentCreator.createHTMLFromSVG( inputFile);
+			String outroot = "target/table/"+"old/"+root+"/"+tableTitle.getTitle().replaceAll("\\s", "")+
+					"."+tableTitle.getChunkName().replaceAll("\\.svg", "");
+			writeFile(tableTitle, html, outroot);
+			SVGElement markedChunk = tableContentCreator.createMarkedSections(
+				new String[] {"yellow", "red", "cyan", "blue"},
+				new double[] {0.2, 0.2, 0.2, 0.2}
+			);
+			SVGSVG.wrapAndWriteAsSVG(markedChunk, new File(outroot+".svg"));
+		}
+	}
+
+	public static void writeFile(TableTitle tableTitle, HtmlHtml html, String outroot) {
+		if (html == null) {
+			LOG.error("Cannot create table: "+tableTitle);
+		} else {
+			File outfile = new File(outroot+".html");
+			LOG.debug("writing: "+outfile);
+			try {
+				XMLUtil.debug(html, outfile, 1);
+			} catch (IOException e) {
+				LOG.error("Cannot write file: "+outfile+" ("+e+")");
 			}
 		}
 	}
 
-	
-
-	// ==========================================
-	
-	private List<File> filterChunkFiles(File svgDir, String root) {
+	private static List<File> filterChunkFiles(File svgDir, String root) {
 		File inputDir = new File(svgDir, root+"/");
 		LOG.debug("analysing directory: "+inputDir);
 		List<File> svgChunkFiles = new ArrayList<File>(FileUtils.listFiles(inputDir, new String[] {"svg"},  true));

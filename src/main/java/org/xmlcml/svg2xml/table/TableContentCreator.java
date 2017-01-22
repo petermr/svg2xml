@@ -250,9 +250,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	public static void shiftToOrigin(SVGElement markedChunk, SVGG g) {
-		SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
-		Transform2 t2 = firstG.getTransform();
-		g.setTransform(t2);
+		SVGG gg = null;
+		SVGElement svgElement =  (SVGElement) markedChunk.getChildElements().get(0);
+		if (svgElement instanceof SVGG) {
+			SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
+			Transform2 t2 = firstG.getTransform();
+			g.setTransform(t2);
+		}
 	}
 
 	public TableTitleSection getTableTitle() {

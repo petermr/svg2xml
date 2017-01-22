@@ -440,13 +440,9 @@ public class TableStructurer {
 
 	private List<SVGShape> makeShapes() {
 		SVGElement svgChunk = textStructurer.getSVGChunk();
-		List<SVGPath> pathList = SVGPath.extractSelfAndDescendantPaths(svgChunk);
-		LOG.trace("paths "+pathList.size());
-		Path2ShapeConverter converter = new Path2ShapeConverter(pathList);
-		List<SVGShape> shapeList = converter.convertPathsToShapes(pathList);
-		return shapeList;
+		return SVGUtil.makeShapes(svgChunk);
 	}
-	
+
 	public static List<SVGRect> extractRects(List<SVGShape> shapeList) {
 		List<SVGRect> rectList = new ArrayList<SVGRect>();
 		for (SVGShape shape : shapeList) {

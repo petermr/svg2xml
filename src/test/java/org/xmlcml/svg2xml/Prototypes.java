@@ -1,17 +1,26 @@
 package org.xmlcml.svg2xml;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzerTest;
 
 public class Prototypes {
+	private static final Logger LOG = Logger.getLogger(Prototypes.class);
+	static {
+		LOG.setLevel(Level.DEBUG);
+	}
 
 	public static void main(String[] args) {
 //		carnosic();
 //		funnel();
-		clinical();
+//		clinical();
 //		stats();
+		UCL();
 	}
 	
 	private static void carnosic() {
@@ -25,6 +34,16 @@ public class Prototypes {
 	private static void funnel() {
 //		new PDF2SVGConverter().run("-logger", "-infofiles", "-logglyphs", "-outdir", "target/funnel", "../pdf2svg/demos/sage/Sbarra-454-74.pdf");
 		PDFAnalyzerTest.analyzePDF("../pdf2svg/demos/sage/Sbarra-454-74.pdf");
+	
+	}
+
+	private static void UCL() {
+		File uclDir = new File(Fixtures.TABLE_PDF_DIR, "fala/fala25/");
+		List<File> pdfFiles = new ArrayList<File>(FileUtils.listFiles(uclDir, new String[]{"pdf"}, true));
+		LOG.debug(pdfFiles.size());
+		for (File pdfFile : pdfFiles) {
+			PDFAnalyzerTest.analyzePDF(pdfFile.toString());
+		}
 	
 	}
 
