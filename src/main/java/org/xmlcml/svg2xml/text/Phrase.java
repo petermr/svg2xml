@@ -284,11 +284,22 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 			return null;
 		}
 		Word word0 = childWordList.get(0);
+		if (word0 == null) {
+			return null;
+		}
 		Word wordN = childWordList.get(childWordList.size() - 1);
-		RealRange xRange = word0.getStartX() == null || wordN.getEndX() == null ?
-				null : new RealRange(word0.getStartX(), wordN.getEndX());
-		RealRange yRange = word0.getYRange().plus(wordN.getYRange());
-		Real2Range bbox = (word0 == null || wordN == null) ? null :
+		RealRange xRange = null;
+		if (wordN != null) {
+			if (word0.getStartX() != null && wordN.getEndX() != null) {
+				xRange = new RealRange(word0.getStartX(), wordN.getEndX());
+			}
+		}
+		if (word0.getYRange() == null) {
+			return null;
+		}
+		RealRange yRange = wordN == null || wordN.getYRange() == null ? 
+				word0.getYRange() : word0.getYRange().plus(wordN.getYRange());
+		Real2Range bbox = xRange == null || yRange == null ? null :
 			new Real2Range(xRange, yRange);
 		return bbox;
 	}

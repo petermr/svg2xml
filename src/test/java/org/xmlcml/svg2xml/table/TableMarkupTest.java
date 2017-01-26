@@ -37,10 +37,10 @@ public class TableMarkupTest {
 		ColumnGroup columnGroup = columnGroupList.get(0);
 		Assert.assertEquals("colgs", 1, columnGroup.getPhrases().size());
 		Assert.assertEquals("colg 0", "5 h Preservation", columnGroup.getPhrases().get(0).getStringValue());
-		Assert.assertEquals("colg 0", "line: from((183.426,661.875)) to((291.628,661.875)) v((108.202,0.0))", columnGroup.getRuler().toString());
+		Assert.assertEquals("colg 0", "line: from((182.0,661.875)) to((293.0,661.875)) v((111.0,0.0))", columnGroup.getRuler().toString());
 		columnGroup = columnGroupList.get(1);
 		Assert.assertEquals("colg 1", "20 h Preservation", columnGroup.getPhrases().get(0).getStringValue());
-		Assert.assertEquals("colg 1", "line: from((315.886,661.875)) to((459.634,661.875)) v((143.748,0.0))", columnGroup.getRuler().toString());
+		Assert.assertEquals("colg 1", "line: from((314.0,661.875)) to((461.0,661.875)) v((147.0,0.0))", columnGroup.getRuler().toString());
 	}
 	
 	@Test
@@ -156,7 +156,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasBMJ() {
 		String root = "BMJ312529";
 		String filename = ".g.4.1.svg";
-		annotateAndOutput(root, filename, 13, 1);
+		annotateAndOutput(root, filename, 11, 13);
 	}
 
 	@Test
@@ -164,7 +164,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasELS2() {
 		String root = "ELS2";
 		String filename = ".g.4.17.svg";
-		annotateAndOutput(root, filename, 4, 0);
+		annotateAndOutput(root, filename, 3, 4);
 	}
 
 	@Test
@@ -172,7 +172,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasELSPetaja() {
 		String root = "ELSPetaja";
 		String filename = ".g.4.3.svg";
-		annotateAndOutput(root, filename, 3, 1);
+		annotateAndOutput(root, filename, 2, 3);
 	}
 
 	@Test
@@ -180,7 +180,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasLANCET() {
 		String root = "LANCET";
 		String filename = ".g.6.3.svg";
-		annotateAndOutput(root, filename, 1, -1);
+		annotateAndOutput(root, filename, 5, -1);
 	}
 
 	@Test
@@ -204,7 +204,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasNEJMOA() {
 		String root = "NEJMOA";
 		String filename = ".g.4.1.svg";
-		annotateAndOutput(root, filename, 2, -1);
+		annotateAndOutput(root, filename, 6, 1);
 	}
 	
 	@Test
@@ -212,7 +212,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasNATURE6() {
 		String root = "NATURE";
 		String filename = ".g.6.0.svg";
-		annotateAndOutput(root, filename, 0, 1);
+		annotateAndOutput(root, filename, 5, 1);
 	}
 	
 	@Test

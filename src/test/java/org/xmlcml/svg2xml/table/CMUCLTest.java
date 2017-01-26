@@ -57,6 +57,19 @@ public class CMUCLTest {
 	}
 	
 	@Test
+	public void testInformaRotated() {
+		String root = "Informa_ExpOpinInvestDrugsRot";
+		markupAndOutput(root);
+	}
+	
+	@Test
+	public void testNature() {
+		String root = "Nature_EurJClinNutrit";
+		markupAndOutput(root);
+	}
+	
+	
+	@Test
 	public void testAllTables() {
 		File[] dirs = CMUCL0.listFiles();
 		for (File dir : dirs) {

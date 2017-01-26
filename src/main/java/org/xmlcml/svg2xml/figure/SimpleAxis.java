@@ -4,6 +4,7 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGText;
@@ -62,7 +63,7 @@ public class SimpleAxis {
 				startPoint = new Real2(tick.getXY(0));
 			}
 			g.appendChild(tick);
-			SVGText tickLabel = createTickLabel(tick, currentTickLabelPos);
+			SVGElement tickLabel = createTickLabel(tick, currentTickLabelPos);
 			g.appendChild(tickLabel);
 			currentPos += stepDelta;
 			currentTickLabelPos += tickLabelDelta;
@@ -99,7 +100,7 @@ public class SimpleAxis {
 				labelStart = midPoint.subtract(new Real2(fontSizeFactor * stringLength / 2., -3.*tickLen));
 			}
 			if (!rotateVerticalLabel) {
-				SVGText labelText = new SVGText(labelStart, label);
+				SVGElement labelText = new SVGText(labelStart, label);
 				labelText.setFontSize(labelFontSize);
 				g.appendChild(labelText);
 			}
@@ -154,8 +155,8 @@ public class SimpleAxis {
 		return axisMax;
 	}
 
-	private SVGText createTickLabel(SVGLine tick, Double currentLabel) {
-		SVGText text = null;
+	private SVGElement createTickLabel(SVGLine tick, Double currentLabel) {
+		SVGElement text = null;
 		Real2 pos0 = tick.getXY(0);
 		Real2 pos1 = tick.getXY(1);
 		Real2 offset = pos1.subtract(pos0);

@@ -3,11 +3,8 @@ package org.xmlcml.svg2xml.page;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Stack;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
@@ -16,6 +13,7 @@ import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.table.TableStructurer;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
@@ -53,9 +51,8 @@ public class PageLayoutAnalyzer {
 	private boolean includeRulers;
 	private boolean includePhrases;
 	private int xRangeRangeMin; // to exclude ticks on diagrams
-
-
 	private File inputFile;
+	private boolean rotatable = false;
 
 	public PageLayoutAnalyzer() {
 		setDefaults();
@@ -76,6 +73,15 @@ public class PageLayoutAnalyzer {
 		LOG.debug(inputFile.getAbsolutePath());
 		this.inputFile = inputFile;
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		SVGElement chunk = textStructurer.getSVGChunk();
+		if (rotatable  && textStructurer.hasAntiClockwiseCharacters()) {
+			SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/debug/preRot.svg"));
+			chunk = textStructurer.rotateClockwise();
+			SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/debug/postRot.svg"));
+			TextStructurer textStructurer1 = TextStructurer.createTextStructurerWithSortedLines(chunk);
+			textStructurer = textStructurer1;
+		}
+
 		phraseListList = textStructurer.getPhraseListList();
 		LOG.debug("reading ... "+phraseListList.toXML());
 		tableStructurer = textStructurer.createTableStructurer();
@@ -113,24 +119,33 @@ public class PageLayoutAnalyzer {
 				Double rulerY = currentRuler.getY();
 				Double phraseListY = currentPhraseList.getXY().getY();
 				if (rulerY < phraseListY) {
-					horizontalList.add(currentPhraseList);
+					addPhraseList(currentPhraseList);
 					currentPhraseList = null;
 				} else {
-					horizontalList.add((HorizontalElement)currentRuler);
+					addRuler(currentRuler);
 					currentRuler = null;
 				}
 			} else if (currentPhraseList != null) {
-				LOG.trace("added phrase "+currentPhraseList.getStringValue());
-				horizontalList.add(currentPhraseList);
+				addPhraseList(currentPhraseList);
 				currentPhraseList = null;
 			} else if (currentRuler != null) {
-				horizontalList.add((HorizontalElement)currentRuler);
+				addRuler(currentRuler);
 				currentRuler = null;
 			} else {
 				LOG.trace("stacks empty");
 			}
 		}
 		Collections.reverse(horizontalList);
+	}
+
+	private void addRuler(HorizontalRuler currentRuler) {
+		horizontalList.add((HorizontalElement)currentRuler);
+		LOG.debug("phrase: "+currentRuler.getStringValue()+"/"+currentRuler.getY());
+	}
+
+	private void addPhraseList(PhraseList currentPhraseList) {
+		horizontalList.add(currentPhraseList);
+		LOG.debug("phrase: "+currentPhraseList.getStringValue()+"/"+currentPhraseList.getY());
 	}
 
 	public List<HorizontalElement> getHorizontalList() {
@@ -224,5 +239,15 @@ public class PageLayoutAnalyzer {
 	public TableStructurer getTableStructurer() {
 		return tableStructurer;
 	}
+	
+	public boolean isRotatable() {
+		return rotatable;
+	}
+
+	public void setRotatable(boolean rotatable) {
+		this.rotatable = rotatable;
+	}
+
+
 
 }

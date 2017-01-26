@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGTSpan;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.words.TypedNumber;
@@ -178,7 +179,7 @@ public class TypedNumberTest {
 	public void testCreateNumberFromText3() {
 		SVGText text = new SVGText();
 		text.appendChild(new SVGTSpan(new Real2(1.0, 2.0), "1.23x10"));
-		SVGText tSpan = new SVGTSpan(new Real2(11.0, 2.0), "4");
+		SVGElement tSpan = new SVGTSpan(new Real2(11.0, 2.0), "4");
 		text.appendChild(tSpan);
 		TypedNumber typedNumber = TypedNumber.createFromText(text);
 		Assert.assertNull("typedNumber", typedNumber);
@@ -186,7 +187,7 @@ public class TypedNumberTest {
 	
 	@Test
 	public void testCreateNumberFromText4() {
-		SVGText text = new SVGText();
+		SVGElement text = new SVGText();
 //		text.appendChild(new SVGTSpan(new Real2(1.0, 2.0), "1.23x10"));
 //		SVGText tSpan = new SVGTSpan(new Real2(11.0, 2.0), "4");
 //		SubSupAnalyzer.markSubSup(SubSup.SUPERSCRIPT, tSpan);

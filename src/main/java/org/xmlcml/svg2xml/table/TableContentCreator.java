@@ -10,9 +10,12 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
+import org.xmlcml.euclid.Real;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
@@ -24,6 +27,7 @@ import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 public class TableContentCreator extends PageLayoutAnalyzer {
+
 
 	private static final Logger LOG = Logger.getLogger(TableContentCreator.class);
 	static {
@@ -40,7 +44,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private TableHeaderSection tableHeader;
 	private TableBodySection tableBody;
 	private TableFooterSection tableFooter;
-
+	
 	public TableContentCreator() {
 	}
 
@@ -113,11 +117,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		HorizontalRuler firstRuler = null;
 		IntRange firstRange = null;
 		List<HorizontalRuler> followingRulerList = new ArrayList<HorizontalRuler>();
+		IntRange previousRange = null;
 		for (int i = startRow; i < horizontalList.size(); i++) {
 			HorizontalElement horizontalElement = horizontalList.get(i);
 			if (horizontalElement instanceof HorizontalRuler) {
 				HorizontalRuler thisRuler = (HorizontalRuler) horizontalElement;
 				IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange());
+				LOG.debug("*****************"+thisRange+"/"+thisRuler.getSVGLine().getXY(0).getY());
 				if (firstRuler == null) {
 					firstRuler = thisRuler;
 					firstRange = thisRange;
@@ -134,6 +140,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public void createSectionsAndRangesArray() {
 		List<HorizontalElement> horizontalList = getHorizontalList();
 		int iRow = tableTitle == null ? 0 : search(tableTitle.getTitle());
+//		FIXME
+//		mergeOverlappingRulersWithSameYInHorizontalElements(iRow);
 		if (iRow == -1) {
 			LOG.error("Cannot find title: "+tableTitle);
 		} else {
@@ -190,9 +198,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				}
 			}
 		}
+		LOG.debug("============");
 		for (TableSection tableSection2 : tableSectionList) {
-			LOG.trace(">ts>"+tableSection2);
+			LOG.debug("-------->tableSect>"+tableSection2);
 		}
+		LOG.debug("============");
 	}
 
 	public IntRangeArray getRangesArray() {

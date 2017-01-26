@@ -27,7 +27,7 @@ public class TextUtil {
 	 * @param s
 	 * @return
 	 */
-	public static SVGText normalize(String s) {
+	public static SVGElement normalize(String s) {
 		if (!Normalizer.isNormalized(s, Normalizer.Form.NFKC)) {
 //			SVGElement parent = (SVGElement) child.getParent();
 //			int index = parent.indexOf(child);

@@ -102,7 +102,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 			Real2Range bbox = phrase.getBoundingBox();
 			if (i == 0) {
 				bboxTotal = bbox;
-			} else {
+			} else if (bboxTotal != null) {
 				bboxTotal = bboxTotal.plus(bbox);
 			}
 		}

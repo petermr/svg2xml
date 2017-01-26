@@ -14,7 +14,6 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
-import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
@@ -87,7 +86,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	 * 
 	 * @param svgText
 	 */
-	public static Word createTestWord(SVGText svgText) {
+	public static Word createTestWord(SVGElement svgText) {
 		Word word = new Word();
 		List<SVGText> textList = new ArrayList<SVGText>();
 		String value = svgText.getValue();
@@ -124,7 +123,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 			List<Element> textChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGText.TAG+"']");
 			childTextList = new ArrayList<SVGText>();
 			for (Element child : textChildren) {
-				SVGText childText = new SVGText(child);
+				SVGElement childText = new SVGText(child);
 				String s = child.getValue();
 				childTextList.add((SVGText)child);
 			}
@@ -164,7 +163,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public String getStringValue() {
 		getOrCreateChildTextList();
 		StringBuilder sb = new StringBuilder();
-		for (SVGText text : childTextList) {
+		for (SVGElement text : childTextList) {
 			sb.append(text.getValue());
 		}
 		this.setStringValueAttribute(sb.toString());
@@ -426,7 +425,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public Element copyElement() {
 		getOrCreateChildTextList();
 		Element element = (Element) this.copy();
-		for (SVGText text : childTextList) {
+		for (SVGElement text : childTextList) {
 			element.appendChild(text.copy());
 		}
 		return element;
@@ -483,12 +482,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public void rotateAll(Real2 centreOfRotation, Angle angle) {
 		getOrCreateChildTextList();
 		for (SVGText text : childTextList) {
-			Transform2 t2 = Transform2.getRotationAboutPoint(angle, centreOfRotation);
-			Transform2 oldT2 = text.getTransform();
-			if (oldT2 != null) {
-				t2 = t2.concatenate(oldT2);
-			}
-			text.setTransform(t2);
+			text.rotateAndAlsoUpdateTransforms(centreOfRotation, angle);
 			LOG.trace("T: "+text.toXML());
 		}
 		return;

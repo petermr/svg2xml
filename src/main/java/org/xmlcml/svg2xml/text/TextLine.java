@@ -979,7 +979,7 @@ public class TextLine implements Iterable<SVGText> {
 
 	public List<String> getValueList() {
 		List<String> valueList = new ArrayList<String>();
-		for (SVGText text : textList) {
+		for (SVGElement text : textList) {
 			valueList.add(text.getValue());
 		}
 		return valueList;

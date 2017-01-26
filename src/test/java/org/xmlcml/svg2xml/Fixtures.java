@@ -106,7 +106,7 @@ public class Fixtures {
 	//Text stuff	
 	public static final File TEXT_DIR = new File(SVG2XML_DIR+"text/");
 	public static final File RAWWORDS_SVG = new File(Fixtures.TEXT_DIR, "rawwords.svg");
-	public static final TextLine RAWWORDS_TEXT_LINE = TextStructurer.createTextLine(Fixtures.RAWWORDS_SVG, 0);
+//	public static final TextLine RAWWORDS_TEXT_LINE = TextStructurer.createTextLine(Fixtures.RAWWORDS_SVG, 0);
 
 	//Whole paper	
 	public static final File PDFS_BMC_DIR = new File(PDFS_DIR, "bmc/");
@@ -252,11 +252,6 @@ public class Fixtures {
 	public static final File DK_PAGE1_SVG = new File(Fixtures.TABLE_DIR, "dk.page1.svg");
 	public static final File BERICHT_PAGE6_SVG = new File(Fixtures.TABLE_DIR, "bericht.page6.svg");
 	public static final File BERICHT_PAGE22_SVG = new File(Fixtures.TABLE_DIR, "bericht.page22.svg");
-
-	public static final TextStructurer BERICHT_PAGE6_TXTSTR = 
-			TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
-	public final static List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
-	public final static TextLine BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 
 	public static final File BUILDER_DIR = new File(SVG2XML_DIR, "builder");
 

@@ -47,7 +47,7 @@ public class PhytoTest {
 			pdfAnalyzer.setOutputTopDir(outDir);
 			pdfAnalyzer.analyzePDFFile(pdfFile);
 			new PDFAnalyzer().analyzePDFFile(pdfFile);
-			// results should be in outDir but arent...
+			// results should be in outDir but aren't...
 			try {
 				FileUtils.copyDirectory(wrongOutDir, outDir);
 				FileUtils.deleteDirectory(wrongOutDir);

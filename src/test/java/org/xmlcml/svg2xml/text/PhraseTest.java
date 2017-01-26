@@ -3,11 +3,21 @@ package org.xmlcml.svg2xml.text;
 import java.util.List;
 
 import org.junit.Assert;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 
 public class PhraseTest {
+
+	private TextLine BERICHT_PAGE6_34_TEXTLINE = null;
+
+	@Before
+	public void setup() {
+		TextStructurer BERICHT_PAGE6_TXTSTR = 
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
+		List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
+		BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
+	}
 
 	@Test
 	public void testPhraseList() {
@@ -20,7 +30,7 @@ public class PhraseTest {
 	
 	@Test
 	public void testPhraseList1() {
-		TextLine textLine = Fixtures.BERICHT_PAGE6_34_TEXTLINE;
+		TextLine textLine = BERICHT_PAGE6_34_TEXTLINE;
 		List<Phrase> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 5, phraseList.size());
 		Assert.assertEquals("phrase", "Total Topf 1", phraseList.get(0).getPrintableString());

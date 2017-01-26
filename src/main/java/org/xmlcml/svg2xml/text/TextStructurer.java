@@ -22,8 +22,11 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.svg.SVGDefs;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
@@ -36,6 +39,7 @@ import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.page.TextAnalyzerUtils;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.table.TableStructurer;
+import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
@@ -119,6 +123,8 @@ public class TextStructurer {
 	private List<TextLine> superscriptLineList;
 
 	private List<TextBox> textBoxList;
+
+	private boolean rotatable;
 
 	public TextStructurer() {
 		this(new TextAnalyzer((List<SVGText>) null));
@@ -719,13 +725,34 @@ public class TextStructurer {
 
 	public static TextStructurer createTextStructurerWithSortedLines(SVGElement svgChunk) {
 		boolean normalized = TextUtil.normalize(svgChunk, NORMALIZE_FORM);
-//		if (normalized) {
-//			LOG.debug("normalized: "+svgChunk.toXML());
-//		}
+		SVGDefs.removeDefs(svgChunk);
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
-		LOG.trace(">txt>"+textCharacters.size());
+//		List<SVGText> rotatedChars = SVGText.getRotatedElements(textCharacters, new Angle(Math.PI/2.), 0.0001);
+//		LOG.debug("PI2 "+rotatedChars.size());
+//	    rotatedChars = SVGText.getRotatedElements(textCharacters, new Angle(0), 0.0001);
+//		LOG.debug("000 "+rotatedChars.size());
+//		LOG.debug(">txt>"+textCharacters.size());
+//		for (SVGText charx : rotatedChars) {
+//			LOG.debug(">>"+charx);
+//		}
 		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
+//		if (rotatedChars.size() > 0) {
+//			LOG.debug("ROTATED");
+//			textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
+//			textStructurer.formatTextLineTransforms(5);
+////			textStructurer.getCharacterList();
+//			List<TextLine> textLineList = textStructurer.getTextLineList();
+//			SVGG g = new SVGG();
+//			for (TextLine textLine : textLineList) {
+//				LOG.debug("textLine "+textLine);
+//				for (SVGText character : textLine.getSVGTextCharacters()) {
+//					g.appendChild(character.copy());
+//				}
+//			}
+//			SVGSVG.wrapAndWriteAsSVG(g, new File(Fixtures.TARGET, "/test/textLinesRotate.svg"));
+//		}
 		textStructurer.setSvgChunk(svgChunk);
+		textStructurer.createPhraseListListFromWords();
 		return textStructurer;
 	}
 
@@ -1321,7 +1348,7 @@ public class TextStructurer {
 	 * Detach every character in rawCharacters.
 	 */
 	public void detachCharacters() {
-		for (SVGText character : rawCharacters) {
+		for (SVGElement character : rawCharacters) {
 			character.detach();
 		}
 	}
@@ -1419,6 +1446,9 @@ public class TextStructurer {
 		return flowStructurer;
 	}
 
+	/**
+	 * @return
+	 */
 	public PhraseListList getPhraseListList() {
 		if (phraseListList == null) {
 			createPhraseListListFromWords();
@@ -1506,5 +1536,67 @@ public class TextStructurer {
 		}
 	}
 
+	public List<SVGText> getRotatedCharacters(Angle angle, double eps) {
+		List<SVGText> characterList = getCharacterList();
+		return SVGText.getRotatedElements(characterList, angle, eps);
+	}
+
+	public List<SVGText> getCharacterList() {
+		List<SVGText> allTextList = new ArrayList<SVGText>();
+		for (TextLine textLine : textLineList) {
+			List<SVGText> textList = textLine.getSVGTextCharacters();
+			allTextList.addAll(textList);
+		}
+		return allTextList;
+	}
+
+	public SVGG createChunkFromVerticalText(Real2 rotCentre, Angle rotAngle) {
+		SVGG g = new SVGG();
+		if (phraseListList != null) {
+			phraseListList.rotateAll(rotCentre, rotAngle);
+			phraseListList.formatTransformRecursively(5);
+			List<SVGText> textList = SVGText.extractSelfAndDescendantTextsWithSpecificAngle(phraseListList, new Angle(0.0), 0.001);
+			g = new SVGG();
+			for (SVGText text : textList) {
+				text.applyTransformAttributeAndRemove();
+				g.appendChild(new SVGText(text));
+			}
+		}
+		return g;
+	}
+
+	public SVGG createChunkFromVerticalText(Angle angle) {
+		Real2 centre = svgChunk.getCentreForClockwise90Rotation();
+		return createChunkFromVerticalText(centre, angle);
+	}
+
+	public SVGElement rotateClockwise() {
+		SVGG rotatedVerticalText = createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
+		TableStructurer tableStructurer = createTableStructurer();
+		SVGElement chunk = getSVGChunk();
+		Angle angle = new Angle(-1.0 * Math.PI / 2);
+		List<SVGShape> shapeList = tableStructurer.getOrCreateShapeList();
+		SVGElement.rotateAndAlsoUpdateTransforms(shapeList, chunk.getCentreForClockwise90Rotation(), angle);
+		chunk.removeChildren();
+		XMLUtil.transferChildren(rotatedVerticalText, chunk);
+		for (SVGShape shape : shapeList) {
+			shape.detach();
+			chunk.appendChild(shape);
+		}
+		return chunk;
+	}
+
+	public boolean hasAntiClockwiseCharacters() {
+		return getRotatedCharacters(new Angle(Math.PI / 2.0), 0.0001).size() > 0;
+	}
+
+	public void setRotatable(boolean b) {
+		this.rotatable = b;
+	}
+
+	public boolean isRotatable() {
+		return rotatable;
+	}
+	
 
 }

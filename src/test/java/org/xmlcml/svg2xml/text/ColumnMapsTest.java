@@ -1,15 +1,28 @@
 package org.xmlcml.svg2xml.text;
 
-import org.junit.Assert;
+import java.util.List;
 
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.svg2xml.Fixtures;
 
 public class ColumnMapsTest {
 
+	private TextLine BERICHT_PAGE6_34_TEXTLINE = null;
+
+	@Before
+	public void setup() {
+		TextStructurer BERICHT_PAGE6_TXTSTR = 
+				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
+		List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
+		BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
+	}
+	
+	
 	@Test
 	public void testTextLine() {
-		TextLine textLine = Fixtures.BERICHT_PAGE6_34_TEXTLINE;
+		TextLine textLine = BERICHT_PAGE6_34_TEXTLINE;
 		Assert.assertEquals("textline", "chars: 24 Y: 536.4 fontSize: 10.193 >>Total Topf 1231343453491", textLine.toString());
 		RawWords rawWords = textLine.getRawWords();
 		Assert.assertEquals("raw", 5, rawWords.size());

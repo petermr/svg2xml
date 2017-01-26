@@ -12,16 +12,16 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
 import org.xmlcml.euclid.Line2;
+import org.xmlcml.euclid.Real;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager;
-import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
 import org.xmlcml.html.HtmlBr;
 import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlDiv;
@@ -58,6 +58,7 @@ public class TableStructurer {
 		LOG.setLevel(Level.DEBUG);
 	}
 
+	private static final double PIXEL_GAP = 1.5;
 	private static final String EMPTY_CHILD = "";
 	private static final String WIDE = "w";
 	private static final String LONG = "b";
@@ -94,6 +95,8 @@ public class TableStructurer {
 	private BoundingBoxManager titleBBoxManager;
 	private BoundingBoxManager bodyBBoxManager;
 	private BoundingBoxManager footerBBoxManager;
+	private double yTolerance = 0.2;
+	private List<SVGShape> shapeList;
 
 	
 	public TableStructurer(PhraseListList phraseListList) {
@@ -398,7 +401,6 @@ public class TableStructurer {
 	
 	public List<SVGRect> createHorizontalRectsList() {
 		List<SVGShape> shapeList = makeShapes();
-		
 		List<SVGRect> rectList = extractRects(shapeList);
 		
 		return rectList;
@@ -422,8 +424,8 @@ public class TableStructurer {
 //	}
 
 	public List<HorizontalRuler> createHorizontalRulerList() {
-		List<SVGShape> shapeList = makeShapes();
-		
+		SVGElement svgChunk = textStructurer.getSVGChunk();
+		shapeList = makeShapes();
 		List<SVGLine> lineList = extractLines(shapeList, Line2.XAXIS);
 		lineList = removeShortLines(lineList, 1.0);
 		horizontalRulerList = HorizontalRuler.createFromSVGList(lineList);
@@ -519,18 +521,30 @@ public class TableStructurer {
 	 * @return
 	 */
 	public List<HorizontalRuler> getHorizontalRulerList(boolean merge, double eps) {
+		LOG.debug("====HRuler===");
 		if (horizontalRulerList != null && merge) {
-			List<HorizontalRuler> newRulerList = new ArrayList<HorizontalRuler>();
-			for (int i = 0; i < horizontalRulerList.size(); i++) {
-				HorizontalRuler horizontalRuler = horizontalRulerList.get(i);
-				if (horizontalRuler.getSVGLine() != null) {
-					LOG.trace(horizontalRuler.toXML());
-					addRuler(newRulerList, horizontalRuler);
-				}
-			}
-			horizontalRulerList = newRulerList;
+			horizontalRulerList = addRulerOrCombineVerticalOverlaps();
+			horizontalRulerList = joinHorizontallyTouchingRulers1();
 		}
 		return horizontalRulerList;
+	}
+
+	private void debug(List<HorizontalRuler> horizontalRulerList) {
+		LOG.debug("PRE");
+		for (HorizontalRuler horizontalRuler : horizontalRulerList) {
+			LOG.debug("PRE-RULER "+horizontalRuler.toXML());
+		}
+	}
+
+	private List<HorizontalRuler> addRulerOrCombineVerticalOverlaps() {
+		List<HorizontalRuler> newRulerList = new ArrayList<HorizontalRuler>();
+		for (int i = 0; i < horizontalRulerList.size(); i++) {
+			HorizontalRuler horizontalRuler = horizontalRulerList.get(i);
+			if (horizontalRuler.getSVGLine() != null) {
+				addRulerOrCombineVerticalOverlaps(newRulerList, horizontalRuler);
+			}
+		}
+		return newRulerList;
 	}
 
 	/** if ruler is far from previous one, add it to list.
@@ -539,7 +553,7 @@ public class TableStructurer {
 	 * @param horizontalRuler
 	 * @return
 	 */
-	private void addRuler(List<HorizontalRuler> newRulerList, HorizontalRuler horizontalRuler) {
+	private void addRulerOrCombineVerticalOverlaps(List<HorizontalRuler> newRulerList, HorizontalRuler horizontalRuler) {
 		boolean multipleRuler = true;
 		if (newRulerList.size() > 0) {
 			HorizontalRuler lastRuler = newRulerList.get(newRulerList.size() -1);
@@ -549,7 +563,10 @@ public class TableStructurer {
 			// if tramlines, record width and skip addition
 			if (deltaY < minRulerSpacingY // close together
 					&& lastXRange.compareTo(thisXRange) == 0) { // equal spans
-				lastRuler.setWidth(deltaY);
+				double width = lastRuler == null || lastRuler.getWidth() == null ? deltaY : Math.max(deltaY, lastRuler.getWidth());
+				width = horizontalRuler == null || horizontalRuler.getWidth() == null ? width : Math.max(width, horizontalRuler.getWidth());
+				lastRuler.setWidth(width);
+				LOG.debug("COMPRESSED: ");
 				multipleRuler = false;
 			} 
 		}
@@ -557,6 +574,54 @@ public class TableStructurer {
 			newRulerList.add(horizontalRuler);
 		}
 	}
+
+	/** join all overlapping rulers on same line
+	 * 
+	 * @param startRow
+	 * @return
+	 */
+	private List<HorizontalRuler> joinHorizontallyTouchingRulers1() {
+		List<HorizontalRuler> rulerList = new ArrayList<HorizontalRuler>();
+		IntRange previousRange = null;
+		double previousY = Double.NaN;
+		SVGLine line = null;
+		for (int i = 0; i < horizontalRulerList.size(); i++) {
+			HorizontalRuler thisRuler = (HorizontalRuler) horizontalRulerList.get(i);
+			line = thisRuler.getSVGLine();
+			double thisY = line.getXY(0).getY();
+			IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange().getRangeExtendedBy(PIXEL_GAP, PIXEL_GAP));
+			if (previousRange != null &&
+				Real.isEqual(thisY, previousY, yTolerance) && previousRange.intersectsWith(thisRange)) {
+					previousRange = previousRange.plus(thisRange);
+					LOG.debug("JOIN");
+			} else if (previousRange != null) {
+				HorizontalRuler newRuler = createRuler(previousRange, line, previousY);
+				rulerList.add(newRuler);
+				previousRange = thisRange;
+			} else {
+				previousRange = thisRange;					
+			}
+			previousY = thisY;
+		}
+		if (previousRange != null) {
+			HorizontalRuler newRuler = createRuler(previousRange, line, previousY);
+			rulerList.add(newRuler);
+		}
+		for (HorizontalElement ruler : rulerList) {
+			LOG.debug("RULER: "+ruler);
+		}
+		horizontalRulerList = rulerList;
+		return horizontalRulerList;
+	}
+	
+	private HorizontalRuler createRuler(IntRange previousRange, SVGLine line, double y) {
+		SVGLine newLine = new SVGLine(line);
+		newLine.setXY(new Real2(previousRange.getMin(), y), 0);
+		newLine.setXY(new Real2(previousRange.getMax(), y), 1);
+		HorizontalRuler ruler = new HorizontalRuler(newLine);
+		return ruler;
+	}
+
 
 	public void mergeRulersAndTextIntoShapeList() {
 		phraseListList = textStructurer.getPhraseListList();
@@ -833,6 +898,13 @@ public class TableStructurer {
 
 	public List<TableSection> getTableSectionList() {
 		return tableSectionList;
+	}
+
+	public List<SVGShape> getOrCreateShapeList() {
+		if (shapeList == null) {
+			shapeList = makeShapes();
+		}
+		return shapeList;
 	}
 	
 	
