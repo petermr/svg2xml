@@ -14,6 +14,7 @@ import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.svg2xml.table.TableGrid;
 import org.xmlcml.svg2xml.table.TableStructurer;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
@@ -86,7 +87,11 @@ public class PageLayoutAnalyzer {
 		LOG.debug("reading ... "+phraseListList.toXML());
 		tableStructurer = textStructurer.createTableStructurer();
 		phraseListList.format(3);
-		createOrderedHorizontalList();
+		TableGrid tableGrid = tableStructurer.createGrid();
+			
+		if (tableGrid == null) {
+			createOrderedHorizontalList();
+		}
 	}
 
 	private List<HorizontalElement> createOrderedHorizontalList() {
@@ -140,12 +145,12 @@ public class PageLayoutAnalyzer {
 
 	private void addRuler(HorizontalRuler currentRuler) {
 		horizontalList.add((HorizontalElement)currentRuler);
-		LOG.debug("phrase: "+currentRuler.getStringValue()+"/"+currentRuler.getY());
+		LOG.trace("phrase: "+currentRuler.getStringValue()+"/"+currentRuler.getY());
 	}
 
 	private void addPhraseList(PhraseList currentPhraseList) {
 		horizontalList.add(currentPhraseList);
-		LOG.debug("phrase: "+currentPhraseList.getStringValue()+"/"+currentPhraseList.getY());
+		LOG.trace("phrase: "+currentPhraseList.getStringValue()+"/"+currentPhraseList.getY());
 	}
 
 	public List<HorizontalElement> getHorizontalList() {

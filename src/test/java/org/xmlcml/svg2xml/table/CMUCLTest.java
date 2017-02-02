@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,10 +12,8 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGDefs;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -30,7 +29,7 @@ import com.google.common.collect.Multiset;
 
 public class CMUCLTest {
 
-	private static final Logger LOG = Logger.getLogger(CMUCLTest.class);
+	public static final Logger LOG = Logger.getLogger(CMUCLTest.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
@@ -53,19 +52,32 @@ public class CMUCLTest {
 	@Test
 	public void testBMCMarkup() {
 		String root = "BMC_Medicine";
-		markupAndOutput(root);
+		markupAndOutputTables(root);
 	}
 	
 	@Test
 	public void testInformaRotated() {
 		String root = "Informa_ExpOpinInvestDrugsRot";
-		markupAndOutput(root);
+		markupAndOutputTables(root);
+	}
+	
+	@Test
+	/** need to hack the boxes */
+	public void testLancet() {
+		String root = "TheLancet_1";
+		markupAndOutputTables(root);
 	}
 	
 	@Test
 	public void testNature() {
 		String root = "Nature_EurJClinNutrit";
-		markupAndOutput(root);
+		markupAndOutputTables(root);
+	}
+	
+	@Test
+	public void Nature_SciRep_1() {
+		String root = "Nature_SciRep_1";
+		markupAndOutputTables(root);
 	}
 	
 	
@@ -81,7 +93,7 @@ public class CMUCLTest {
 	public void testAllMarkup() {
 		File[] dirs = CMUCL0.listFiles();
 		for (File dir : dirs) {
-			markupAndOutput(dir.getName());
+			markupAndOutputTables(dir.getName());
 		}
 	}
 
@@ -105,17 +117,14 @@ public class CMUCLTest {
 		}
 	}
 
-	private static void markupAndOutput(String root/*, String filename, int nHeaderCols, int nBodyCols*/) {
+	private static void markupAndOutputTables(String root/*, String filename, int nHeaderCols, int nBodyCols*/) {
 		File inDir = new File(CMUCL0, root+"/");
 		File outDir = new File(CMUCL_OUT_DIR, root+"/");
 		List<File> inputFiles = new ArrayList<File>
 		(FileUtils.listFiles(inDir, new WildcardFileFilter("table*.svg") , TrueFileFilter.INSTANCE));
 		for (File inputFile : inputFiles) {
-			File outputFile = new File(outDir, inputFile.getName()+".html");
 			TableContentCreator tableContentCreator = new TableContentCreator(); 
-			LOG.debug("reading "+inputFile);
-			SVGElement svgChunk = tableContentCreator.annotateAreas(inputFile);
-			SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
+			tableContentCreator.markupAndOutputTable(inputFile, outDir);
 		}
 	}
 

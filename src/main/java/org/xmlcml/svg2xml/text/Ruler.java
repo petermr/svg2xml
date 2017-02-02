@@ -10,6 +10,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGShape;
 
 import nu.xom.Element;
 
@@ -21,6 +22,8 @@ public abstract class Ruler extends LineChunk {
 	}
 	
 	public final static String TAG = "ruler";
+	
+	protected static double epsilon = 0.01;
 	
 	public Ruler() {
 		super();
@@ -63,7 +66,7 @@ public abstract class Ruler extends LineChunk {
 	@Override
 	public String toString() {
 		String s = "";
-		SVGLine svgLine = getSVGLine();
+		SVGShape svgLine = getSVGLine();
 		if (svgLine != null) { 
 			s += svgLine.toString();
 		}

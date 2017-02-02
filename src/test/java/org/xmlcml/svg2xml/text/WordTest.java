@@ -2,15 +2,13 @@ package org.xmlcml.svg2xml.text;
 
 import java.util.List;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 
 public class WordTest {
 
@@ -23,9 +21,9 @@ public class WordTest {
 	@Test
 	public void testGetWordAndSpaces() {
 		Double spaces = Util.format(WORD0.getSpaceCountBetween(WORD1), 3);
-		Assert.assertEquals("spaces", 0.596, spaces);
+		Assert.assertEquals("spaces", 0.596, (double)spaces, 0.001);
 		spaces = Util.format(WORD0.getSpaceCountBetween(WORD2), 3);
-		Assert.assertEquals("spaces", 2.122, spaces);
+		Assert.assertEquals("spaces", 2.122, (double)spaces, 0.001);
 	}
 	
 	@Test
@@ -50,8 +48,8 @@ public class WordTest {
 
 	@Test
 	public void testGetDistance() {
-		Assert.assertEquals("to word 1", 2.614, Util.format(WORD0.getSeparationBetween(WORD1), 3));
-		Assert.assertEquals("to word 2", 9.301, Util.format(WORD0.getSeparationBetween(WORD2), 3));
+		Assert.assertEquals("to word 1", 2.614, Util.format(WORD0.getSeparationBetween(WORD1), 3), 0.001);
+		Assert.assertEquals("to word 2", 9.301, Util.format(WORD0.getSeparationBetween(WORD2), 3), 0.001);
 	}
 	
 	@Test

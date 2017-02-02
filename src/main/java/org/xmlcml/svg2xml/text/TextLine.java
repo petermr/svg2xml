@@ -61,8 +61,8 @@ public class TextLine implements Iterable<SVGText> {
 	private static final double BOLD = 0.25;
 	private static final double EPS = 0.05;
 	private static final double COORD_EPS = 0.0001;
-	private static final SVGElement SUP = new SVGText(new Real2(0., 0.), "SUP");
-	private static final SVGElement SUB = new SVGText(new Real2(0., 0.), "SUB");
+//	private static final SVGElement SUP = new SVGText(new Real2(0., 0.), "SUP");
+//	private static final SVGElement SUB = new SVGText(new Real2(0., 0.), "SUB");
 	private static final Double FONT_Y_FACTOR = 0.5;
 	
 	private List<SVGText> textList;

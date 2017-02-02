@@ -2,7 +2,6 @@ package org.xmlcml.svg2xml.table;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +15,12 @@ import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGMarker;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager;
@@ -40,7 +42,6 @@ import org.xmlcml.html.HtmlTr;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.LineChunk;
-import org.xmlcml.svg2xml.text.NewVerticalRuler;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
@@ -48,6 +49,7 @@ import org.xmlcml.svg2xml.text.Ruler;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.VerticalRuler;
 
 import nu.xom.Attribute;
 import nu.xom.Node;
@@ -84,7 +86,7 @@ public class TableStructurer {
 	private TextStructurer textStructurer;
 	private List<HorizontalRuler> horizontalRulerList;
 	private List<SVGElement> horizontalElementList;
-	private List<NewVerticalRuler> verticalRulerListNew;
+	private List<VerticalRuler> verticalRulerList;
 	private Real2Range bboxRuler;
 	private Map<String, SVGElement> horizontalElementByCode;
 	private String rowCodes;
@@ -97,6 +99,8 @@ public class TableStructurer {
 	private BoundingBoxManager footerBBoxManager;
 	private double yTolerance = 0.2;
 	private List<SVGShape> shapeList;
+	private boolean hasZeroDimensionalShapes = false;
+	private TableGrid tableGrid;
 
 	
 	public TableStructurer(PhraseListList phraseListList) {
@@ -259,8 +263,8 @@ public class TableStructurer {
 				if (element instanceof PhraseList) {
 					phraseListList.add((PhraseList) element);
 				} else {
-					LOG.warn("HORIZONTAL RULER NOT CODED");
-					phraseListList.add(new PhraseList(PhraseList.NULL));
+					throw new RuntimeException("HORIZONTAL RULER NOT CODED");
+//					phraseListList.add(new PhraseList(PhraseList.NULL));
 				}
 			}
 			maxColumns = phraseListList.getMaxColumns();
@@ -394,56 +398,73 @@ public class TableStructurer {
 	}
 	
 	public void createRulerList() {
+		getOrCreateShapeList();
+		SVGG g = new SVGG();
+		int i = 0; 
+		String[] color = {"red", "green", "blue", "yellow", "cyan", "magenta", "black"};
+		for (SVGShape shape : shapeList) {
+			SVGShape shapeNew = (SVGShape) shape.copy();
+			shapeNew.setFill(color[i++ % color.length]);
+			shapeNew.setOpacity(0.1);
+			g.appendChild(shapeNew);
+		}
+		SVGSVG.wrapAndWriteAsSVG(g, new File("target/debug/shapes"+(int)(100*Math.random())+".svg"));
 		createHorizontalRectsList();
-		createHorizontalRulerList();
-//		createVerticalRulerList();
+		getOrCreateHorizontalRulerList();
+		getOrCreateVerticalRulerList();
 	}
 	
 	public List<SVGRect> createHorizontalRectsList() {
-		List<SVGShape> shapeList = makeShapes();
+		getOrCreateShapeList();
 		List<SVGRect> rectList = extractRects(shapeList);
 		
 		return rectList;
 	}
 
-//	public List<HorizontalRuler> createVerticalRulerList() {
-//		List<SVGShape> shapeList = makeShapes();
-//		
-//		List<SVGLine> lineList = extractLines(shapeList, Line2.YAXIS);
-//		lineList = removeShortLines(lineList, 1.0);
-//		verticalRulerListNew = NewVerticalRuler.createFromSVGList(lineList);
-//		verticalRulerListNew.sort(new Comparator<Ruler>() {
-//			public int compare(Ruler r1, Ruler r2) {
-//				Double x1 = r1 == null ? null :  r1.getX();
-//				Double x2 = r2 == null ? null :  r2.getX();
-//				return (x1 == null || x2 == null) ? -1 : (int)(x1 - x2); // compare X coords
-//			}
-//		});
-//		Ruler.formatStrokeWidth(horizontalRulerList, 1);
-//		return horizontalRulerList;
-//	}
+	public List<VerticalRuler> getOrCreateVerticalRulerList() {
+		if (verticalRulerList == null) {
+			getOrCreateShapeList();
+			List<SVGLine> lineList = extractLines(shapeList, Line2.YAXIS);
+			lineList = removeShortLines(lineList, 1.0);
+			verticalRulerList = VerticalRuler.createSortedRulersFromSVGList(lineList);
+			Ruler.formatStrokeWidth(verticalRulerList, 1);
+		}
+		return verticalRulerList;
+	}
 
-	public List<HorizontalRuler> createHorizontalRulerList() {
-		SVGElement svgChunk = textStructurer.getSVGChunk();
-		shapeList = makeShapes();
-		List<SVGLine> lineList = extractLines(shapeList, Line2.XAXIS);
-		lineList = removeShortLines(lineList, 1.0);
-		horizontalRulerList = HorizontalRuler.createFromSVGList(lineList);
-		horizontalRulerList.sort(new Comparator<Ruler>() {
-			public int compare(Ruler r1, Ruler r2) {
-				Double y1 = r1 == null ? null :  r1.getY();
-				Double y2 = r2 == null ? null :  r2.getY();
-				return (y1 == null || y2 == null) ? -1 : (int)(y1 - y2); // compare Y coords
-			}
-		});
-		Ruler.formatStrokeWidth(horizontalRulerList, 1);
+	public List<HorizontalRuler> getOrCreateHorizontalRulerList() {
+		if (horizontalRulerList == null) {
+			shapeList = getOrCreateShapeList();
+			List<SVGLine> lineList = extractLines(shapeList, Line2.XAXIS);
+			lineList = removeShortLines(lineList, 1.0);
+			horizontalRulerList = HorizontalRuler.createSortedRulersFromSVGList(lineList);
+			Ruler.formatStrokeWidth(horizontalRulerList, 1);
+		}
 		return horizontalRulerList;
 	}
 
-	private List<SVGShape> makeShapes() {
-		SVGElement svgChunk = textStructurer.getSVGChunk();
-		return SVGUtil.makeShapes(svgChunk);
+	public List<SVGShape> getOrCreateShapeList() {
+		if (shapeList == null) {
+			SVGElement svgChunk = textStructurer.getSVGChunk();
+			shapeList = SVGUtil.makeShapes(svgChunk);
+			SVGElement.format(shapeList, 3);
+			addMarkersToZeroDimensionalShapes();
+			if (hasZeroDimensionalShapes) {
+				SVGSVG.wrapAndWriteAsSVG(shapeList, new File("target/shapes/zero.svg"));
+			}
+		}
+		return shapeList;
 	}
+
+	private void addMarkersToZeroDimensionalShapes() {
+		for (SVGShape shape : shapeList) {
+			if (shape.isZeroDimensional()) {
+//				shape.setMarkerEndRef(SVGMarker.ZEROLINE);
+				this.hasZeroDimensionalShapes = true;
+			}
+		}
+	}
+
 
 	public static List<SVGRect> extractRects(List<SVGShape> shapeList) {
 		List<SVGRect> rectList = new ArrayList<SVGRect>();
@@ -487,8 +508,8 @@ public class TableStructurer {
 
 	private static void addAxiallyAlignedLineToList(Line2 axis, List<SVGLine> lineList, SVGLine line) {
 		if (axis == null || 
-				(line.isHorizontal(SVGLine.EPS) && axis.equals(Line2.XAXIS)) ||
-				(line.isVertical(SVGLine.EPS) && axis.equals(Line2.YAXIS))) {
+				(line.isHorizontal(SVGShape.EPS) && axis.equals(Line2.XAXIS)) ||
+				(line.isVertical(SVGShape.EPS) && axis.equals(Line2.YAXIS))) {
 			lineList.add(line);
 		}
 	}
@@ -593,7 +614,7 @@ public class TableStructurer {
 			if (previousRange != null &&
 				Real.isEqual(thisY, previousY, yTolerance) && previousRange.intersectsWith(thisRange)) {
 					previousRange = previousRange.plus(thisRange);
-					LOG.debug("JOIN");
+					LOG.trace("Joint touching horizontal rulers");
 			} else if (previousRange != null) {
 				HorizontalRuler newRuler = createRuler(previousRange, line, previousY);
 				rulerList.add(newRuler);
@@ -608,7 +629,7 @@ public class TableStructurer {
 			rulerList.add(newRuler);
 		}
 		for (HorizontalElement ruler : rulerList) {
-			LOG.debug("RULER: "+ruler);
+			LOG.trace("RULER: "+ruler);
 		}
 		horizontalRulerList = rulerList;
 		return horizontalRulerList;
@@ -900,14 +921,18 @@ public class TableStructurer {
 		return tableSectionList;
 	}
 
-	public List<SVGShape> getOrCreateShapeList() {
-		if (shapeList == null) {
-			shapeList = makeShapes();
+	public TableGrid createGrid() {
+		if (tableGrid == null) {
+			getOrCreateHorizontalRulerList();
+			getOrCreateVerticalRulerList();
+			if (verticalRulerList.size() > 0 && horizontalRulerList.size() > 0) {
+				TableGridFactory tableGridFactory = new TableGridFactory(horizontalRulerList, verticalRulerList);
+				tableGrid = tableGridFactory.getOrCreateTableGrid();
+			}
 		}
-		return shapeList;
+		return tableGrid;
 	}
-	
-	
+
 
 
 }

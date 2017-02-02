@@ -30,6 +30,7 @@ public class FlowStructurer {
 		Path2ShapeConverter converter = new Path2ShapeConverter(pathList);
 		converter.setSplitPolyLines(true);
 		List<SVGShape> shapeList = converter.convertPathsToShapes(pathList);
+		
 		return shapeList;
 	}
 	

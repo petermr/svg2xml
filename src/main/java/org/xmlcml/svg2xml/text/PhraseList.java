@@ -27,10 +27,10 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	}
 	
 	public final static String TAG = "phraseList";
-	public static final PhraseList NULL = new PhraseList();
-	static {
-		NULL.add(new Phrase(Phrase.NULL));
-	};
+//	public static final PhraseList NULL = new PhraseList();
+//	static {
+//		NULL.add(new Phrase(Phrase.NULL));
+//	};
 	
 	// this is not exposed
 	private List<Phrase> childPhraseList; 

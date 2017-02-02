@@ -619,9 +619,11 @@ public class ScriptLine implements Iterable<TextLine> {
 	}
 
 	private void insertComputedSpace(StyleSpan currentSpan, Double lastX, Double y) {
-		SVGText space = new SVGText();
-		space.setText(" ");
-		space.setXY(new Real2(lastX, y));
+		Real2 xy = new Real2(lastX, y);
+		if (new Real2(0., 0.).isEqualTo(xy, 0.0000001)) {
+			throw new RuntimeException("Suspicious spave at "+xy);
+		}
+		SVGText space = new SVGText(xy, " ");
 		currentSpan.addCharacter(space);
 	}
 

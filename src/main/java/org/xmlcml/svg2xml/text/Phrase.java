@@ -39,10 +39,10 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	static final Logger LOG = Logger.getLogger(Phrase.class);
 	public final static String TAG = "phrase";
 
-	public static final Phrase NULL = new Phrase();
-	static {
-		NULL.add(new Word(Word.NULL));
-	};
+//	public static final Phrase NULL = new Phrase();
+//	static {
+//		NULL.add(new Word(Word.NULL));
+//	};
 
 	private List<Word> childWordList;
 	private boolean superscript;

@@ -30,22 +30,24 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public final static String TAG = "word";
 	public static String SPACE_SYMBOL = " ";
 
-	public static final Word NULL = new Word();
-	static {
-		createWord(NULL, "NULL");
-	};
+//	public static final Word NULL = new Word();
+//	static {
+//		createWord(NULL, "NULL");
+//	};
+//
+//	public static final Word SPACE = new Word();
+//	static {
+//		createWord(SPACE, " ");
+//	}
 
-	public static final Word SPACE = new Word();
-	static {
-		createWord(SPACE, " ");
-	}
-
-	private static void createWord(Word word, String content) {
+	public static Word createEmptyWord(Real2 xy, double fontSize) {
+		Word word = new Word();
 		word.childTextList = new ArrayList<SVGText>();
-		SVGText text = new SVGText(new Real2(0.0, 0.0), content);
-		text.setFontSize(10.0);
+		SVGText text = new SVGText(xy, Word.SPACE_SYMBOL);
+		text.setFontSize(fontSize);
 		word.appendChild(text);
 		word.childTextList.add(text);
+		return word;
 	};
 
 
@@ -91,7 +93,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		List<SVGText> textList = new ArrayList<SVGText>();
 		String value = svgText.getValue();
 		for (int i = 0; i < value.length(); i++) {
-			Real2 r2 = new Real2();
+			Real2 r2 = new Real2(0.001, 0.001);
 			textList.add(new SVGText(r2, String.valueOf(value.charAt(i))));
 		}
 		word.setTextList(textList);

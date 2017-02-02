@@ -1,6 +1,8 @@
 package org.xmlcml.svg2xml.text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Level;
@@ -25,28 +27,61 @@ public class HorizontalRuler extends Ruler {
 	public HorizontalRuler(SVGLine line) {
 		super(line);
 	}
-	/** requires sorted lines.
+	
+	/** creates sorted lines.
 	 * 
 	 * @param lines
 	 * @return
 	 */
-	public static List<HorizontalRuler> createFromSVGList(List<SVGLine> lines) {
+	public static List<HorizontalRuler> createSortedRulersFromSVGList(List<SVGLine> lines) {
 		List<HorizontalRuler> rulerList = new ArrayList<HorizontalRuler>();
-		SVGLine lastLine = null;
-		HorizontalRuler lastRuler = null;
 		for (int i = 0; i < lines.size(); i++) {
-			lastLine = i == 0 ? null : lines.get(i - 1);
-			Double lastY = lastLine == null ? null : lastLine.getMidPoint().getY();
 			SVGLine line = lines.get(i);
-			LOG.trace("-----> "+line.toXML());
-			HorizontalRuler ruler = new HorizontalRuler(line);
-			lastRuler = ruler;
-			rulerList.add(lastRuler);
+			if (line.isHorizontal(epsilon)) {
+				HorizontalRuler ruler = new HorizontalRuler(line);
+				rulerList.add(ruler);
+			}
 		}
+		Collections.sort(rulerList, new HorizontalRulerComparator());
 		return rulerList;
 	}
+	
+
+//	/** sorts lines
+//	 * 
+//	 * @param lines
+//	 * @return
+//	 */
+//	public static List<HorizontalRuler> createFromSVGList(List<SVGLine> lines) {
+//		List<HorizontalRuler> horizontalList = createSortedRulersFromSVGList(lines);
+//		List<HorizontalRuler> rulerList = new ArrayList<HorizontalRuler>();
+//		HorizontalRuler lastRuler = null;
+//		for (int i = 0; i < horizontalList.size(); i++) {
+//			lastRuler = i == 0 ? null : horizontalList.get(i - 1);
+//			Double lastY = lastRuler == null ? null : lastRuler.getMidPoint().getY();
+//			Horizontal line = lines.get(i);
+//			LOG.trace("-----> "+line.toXML());
+//			HorizontalRuler ruler = new HorizontalRuler(line);
+//			lastRuler = ruler;
+//			rulerList.add(lastRuler);
+//		}
+//		return rulerList;
+//	}
+	
 	public IntRange getIntRange() {
 		return new IntRange(getBoundingBox().getXRange());
 	}
 	
+}
+class HorizontalRulerComparator implements Comparator<HorizontalRuler> {
+
+	public int compare(HorizontalRuler hr1, HorizontalRuler hr2) {
+		if (hr1 == null || hr2 == null || hr1.getIntRange() == null || hr2.getIntRange() == null) {
+			return 0;
+		}
+		if (hr1.getY() < hr2.getY()) return -1;
+		if (hr1.getY() > hr2.getY()) return 1;
+		return hr1.getIntRange().getMin() - hr2.getIntRange().getMin();
+	}
+
 }

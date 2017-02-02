@@ -67,7 +67,7 @@ public class GeometryBuilderTest {
 		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
 		//Assert.assertEquals("shapes", 0, shapeList.size());
 		Assert.assertEquals("lines", 6, lineList.size());
-		for (SVGLine line : lineList) {
+		for (SVGShape line : lineList) {
 			LOG.debug("line: "+line);
 		}
 		Assert.assertEquals("polylines", 19, polylineList.size());

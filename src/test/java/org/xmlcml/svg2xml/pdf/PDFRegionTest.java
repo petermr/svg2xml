@@ -40,9 +40,9 @@ public class PDFRegionTest {
 		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(pageSVG);
 		Assert.assertEquals(2,  rects.size());
 		extractAndDrawRect(svgElements1, rects.get(0), new File("target/extract/page5.1.svg"), 
-				"((36.1,565.8),(472.7,754.4))", 1128, true);
+				"((36.1,565.8),(472.7,754.4))", 1127, true);
 		extractAndDrawRect(svgElements1, rects.get(1), new File("target/extract/page5.2.svg"), 
-				"((42.8,292.7),(48.4,398.7))", 698, true);
+				"((42.8,292.7),(48.4,398.7))", 697, true);
 	}
 
 	private void extractAndDrawRect(List<SVGElement> svgElements1, SVGRect rect0, File file, 

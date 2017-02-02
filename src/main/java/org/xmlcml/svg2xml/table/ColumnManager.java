@@ -184,9 +184,8 @@ public class ColumnManager {
 	}
 
 	private void addEmptyCell(Real2Range bbox, double fontSize) {
-		Word emptyWord = new Word(Word.SPACE);
 		Real2 xy = bbox.getCorners()[0];
-		emptyWord.setXY(xy);
+		Word emptyWord = Word.createEmptyWord(xy, fontSize);
 		Phrase emptyPhrase = new Phrase(emptyWord);
 		SVGRect plotBox = GraphPlot.plotBox(bbox, "green", 0.1);
 		emptyPhrase.appendChild(plotBox);
@@ -221,6 +220,9 @@ public class ColumnManager {
 		SVGG g = new SVGG();
 		for (int i = 0; i < columnPhrases.size(); i++) {
 			Real2Range phraseBox = columnPhrases.get(i).getBoundingBox();
+			if (phraseBox.getYMin() < 0) {
+				LOG.error("FIXME box: "+phraseBox);
+			}
 			String title = columnPhrases.get(i).getStringValue();
 			SVGTitle svgTitle = new SVGTitle(title);
 			SVGRect plotBox = GraphPlot.plotBox(phraseBox, colors[1], opacity[1]);

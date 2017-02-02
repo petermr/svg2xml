@@ -16,6 +16,7 @@ import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
@@ -28,6 +29,9 @@ import org.xmlcml.svg2xml.util.GraphPlot;
 
 public class TableContentCreator extends PageLayoutAnalyzer {
 
+
+	static final String DOT_ANNOT_SVG = ".annot.svg";
+	private static final String DOT_PNG = ".png";
 
 	private static final Logger LOG = Logger.getLogger(TableContentCreator.class);
 	static {
@@ -56,17 +60,21 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public List<TableTitle> findTableTitles(List<File> svgChunkFiles) {
 		List<TableTitle> tableTitleList = new ArrayList<TableTitle>();
 		for (File svgChunkFile : svgChunkFiles) {
-			TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgChunkFile);
-			PhraseListList phraseListList = textStructurer.getPhraseListList();
-			phraseListList.format(3);
-			String value = phraseListList.getStringValue();
-			List<String> titleList = findTitlesWithPattern(value);
-			for (int i = 0; i < titleList.size(); i++) {
-				TableTitle tableTitle = new TableTitle(titleList.get(i), svgChunkFile.getName());
-				tableTitleList.add(tableTitle);
-			}
+			findTableTitle(tableTitleList, svgChunkFile);
 		}
 		return tableTitleList;
+	}
+
+	private void findTableTitle(List<TableTitle> tableTitleList, File svgChunkFile) {
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgChunkFile);
+		PhraseListList phraseListList = textStructurer.getPhraseListList();
+		phraseListList.format(3);
+		String value = phraseListList.getStringValue();
+		List<String> titleList = findTitlesWithPattern(value);
+		for (int i = 0; i < titleList.size(); i++) {
+			TableTitle tableTitle = new TableTitle(titleList.get(i), svgChunkFile.getName());
+			tableTitleList.add(tableTitle);
+		}
 	}
 
 	private List<String> findTitlesWithPattern(String value) {
@@ -360,6 +368,15 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					);
 		}
 		return svgChunk;
+	}
+
+	public void markupAndOutputTable(File inputFile, File outDir) {
+		String outRoot = inputFile.getName();
+		outRoot = outRoot.substring(0, outRoot.length() - DOT_PNG.length());
+		File outputFile = new File(outDir, outRoot+DOT_ANNOT_SVG);
+		LOG.debug("reading "+inputFile);
+		SVGElement svgChunk = annotateAreas(inputFile);
+		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 	}
 
 
