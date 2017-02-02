@@ -1,0 +1,1173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600.0" height="800.0" stroke="none" stroke-width="0.0" xmlns="http://www.w3.org/2000/svg" xmlns:svgx="http://www.xml-cml.org/schema/svgx">
+ <defs id="defs1">
+  <clipPath id="clipPath122">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M156.382 150.349 L156.382 152.266 L156.382 154.183 L201.954 154.183 L201.954 152.266 L201.954 150.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath77">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M230.914 196.957 L230.914 198.874 L230.914 200.791 L282.543 200.791 L282.543 198.874 L282.543 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath58">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M374.621 148.774 L374.621 163.974 L378.456 163.974 L378.456 148.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath64">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 179.457 L178.986 181.374 L178.986 183.291 L231.614 183.291 L231.614 181.374 L231.614 179.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath94">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 180.774 L177.669 199.474 L181.503 199.474 L181.503 180.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath57">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M327.459 146.957 L327.459 148.874 L327.459 150.791 L377.039 150.791 L377.039 148.874 L377.039 146.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath47">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 148.774 L76.083 163.974 L79.917 163.974 L79.917 148.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath41">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M179.486 129.457 L179.486 131.374 L179.486 133.291 L282.543 133.291 L282.543 131.374 L282.543 129.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath103">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 198.774 L76.083 215.083 L78.0 214.124 L79.917 213.165 L79.917 198.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath126">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M113.699 151.666 L113.699 170.266 L117.534 170.266 L117.534 151.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath81">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M327.459 196.957 L327.459 198.874 L327.459 200.791 L377.747 200.791 L376.789 198.874 L375.83 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath83">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M275.486 130.164 L273.568 131.124 L271.651 132.083 L271.651 148.974 L275.486 148.974 L275.486 130.164 Z"/>
+  </clipPath>
+  <clipPath id="clipPath43">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M282.343 129.457 L282.343 131.374 L282.343 133.291 L375.83 133.291 L376.789 131.374 L377.747 129.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath25">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 149.166 L76.083 164.366 L79.917 164.366 L79.917 149.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath87">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M228.352 146.957 L228.352 148.874 L228.352 150.791 L274.068 150.791 L274.068 148.874 L274.068 146.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath80">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M374.621 181.274 L374.621 198.165 L376.539 199.124 L378.456 200.083 L378.456 181.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath45">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 148.274 L177.669 164.474 L181.503 164.474 L181.503 148.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath49">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M229.097 148.374 L229.097 164.474 L232.932 164.474 L232.932 148.374 Z"/>
+  </clipPath>
+  <clipPath id="clipPath23">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 148.666 L177.669 164.866 L181.503 164.866 L181.503 148.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath1">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M0.0 0.0 L612.0 0.0 L612.0 792.0 L0.0 792.0 L0.0 0.0 Z"/>
+  </clipPath>
+  <clipPath id="clipPath129">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M155.065 151.666 L155.065 170.266 L158.9 170.266 L158.9 151.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath11">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M523.917 16.791 L522.0 17.75 L520.082 18.709 L520.082 73.291 L522.0 74.25 L523.917 75.209 L523.917 16.791 Z"/>
+  </clipPath>
+  <clipPath id="clipPath95">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 196.957 L77.5 198.874 L77.5 200.791 L180.186 200.791 L180.186 198.874 L180.186 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath110">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 118.557 L76.083 137.366 L79.917 137.366 L79.917 120.475 L78.0 119.516 L76.083 118.557 Z"/>
+  </clipPath>
+  <clipPath id="clipPath37">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.791 129.457 L77.75 131.374 L78.709 133.291 L179.686 133.291 L179.686 131.374 L179.686 129.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath4">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M36.49 18.49 L36.49 73.51 L89.644 73.51 L89.644 18.49 Z"/>
+  </clipPath>
+  <clipPath id="clipPath69">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M374.621 163.774 L374.621 181.474 L378.456 181.474 L378.456 163.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath82">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M179.486 129.457 L179.486 131.374 L179.486 133.291 L272.86 133.291 L273.818 131.374 L274.777 129.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath88">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M271.651 148.774 L271.651 163.974 L275.486 163.974 L275.486 148.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath35">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M361.167 164.166 L361.167 178.557 L363.085 179.516 L365.002 180.475 L365.002 164.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath61">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 179.457 L77.5 181.374 L77.5 183.291 L180.186 183.291 L180.186 181.374 L180.186 179.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath125">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M200.754 150.349 L200.754 152.266 L200.754 154.183 L250.755 154.183 L250.755 152.266 L250.755 150.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath67">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M325.642 163.274 L325.642 181.974 L329.476 181.974 L329.476 163.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath93">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M227.852 179.457 L227.852 181.374 L227.852 183.291 L274.068 183.291 L274.068 181.374 L274.068 179.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath98">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 196.957 L178.986 198.874 L178.986 200.791 L229.052 200.791 L229.052 198.874 L229.052 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath121">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M199.437 136.766 L199.437 152.866 L203.271 152.866 L203.271 136.766 Z"/>
+  </clipPath>
+  <clipPath id="clipPath6">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M34.791 16.082 L35.75 18.0 L36.709 19.917 L90.234 19.917 L90.234 18.0 L90.234 16.082 Z"/>
+  </clipPath>
+  <clipPath id="clipPath105">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M179.486 211.957 L179.486 213.874 L179.486 215.791 L228.552 215.791 L228.552 213.874 L228.552 211.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath89">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M227.852 161.957 L227.852 163.874 L227.852 165.791 L274.068 165.791 L274.068 163.874 L274.068 161.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath62">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 163.774 L76.083 181.474 L79.917 181.474 L79.917 163.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath130">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M115.516 167.849 L115.516 169.766 L115.516 171.683 L157.082 171.683 L157.082 169.766 L157.082 167.849 Z"/>
+  </clipPath>
+  <clipPath id="clipPath74">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M229.097 180.774 L229.097 199.374 L232.932 199.374 L232.932 180.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath108">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.791 117.849 L77.75 119.766 L78.709 121.683 L157.082 121.683 L157.082 119.766 L157.082 117.849 Z"/>
+  </clipPath>
+  <clipPath id="clipPath22">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M281.843 147.349 L281.843 149.266 L281.843 151.183 L363.585 151.183 L363.585 149.266 L363.585 147.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath115">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 150.349 L77.5 152.266 L77.5 154.183 L116.216 154.183 L116.216 152.266 L116.216 150.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath78">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M325.642 180.774 L325.642 199.374 L329.476 199.374 L329.476 180.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath50">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 161.957 L178.986 163.874 L178.986 165.791 L231.614 165.791 L231.614 163.874 L231.614 161.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath24">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 162.349 L77.5 164.266 L77.5 166.183 L180.186 166.183 L180.186 164.266 L180.186 162.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath114">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M113.699 136.766 L113.699 152.866 L117.534 152.866 L117.534 136.766 Z"/>
+  </clipPath>
+  <clipPath id="clipPath3">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M90.0 692.083 L90.0 693.75 L90.0 695.417 L234.0 695.417 L234.0 693.75 L234.0 692.083 Z"/>
+  </clipPath>
+  <clipPath id="clipPath65">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M280.525 163.274 L280.525 181.974 L284.36 181.974 L284.36 163.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath107">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M228.352 211.957 L228.352 213.874 L228.352 215.791 L274.777 215.791 L273.818 213.874 L272.86 211.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath128">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 152.166 L76.083 170.975 L78.0 170.016 L79.917 169.057 L79.917 152.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath30">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 163.666 L177.669 179.766 L181.503 179.766 L181.503 163.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath46">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 161.957 L77.5 163.874 L77.5 165.791 L180.186 165.791 L180.186 163.874 L180.186 161.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath109">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M155.065 119.266 L155.065 137.866 L158.9 137.866 L158.9 119.266 Z"/>
+  </clipPath>
+  <clipPath id="clipPath71">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 180.774 L177.669 199.374 L181.503 199.374 L181.503 180.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath85">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M226.535 148.374 L226.535 164.474 L230.369 164.474 L230.369 148.374 Z"/>
+  </clipPath>
+  <clipPath id="clipPath5">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M90.624 18.49 L90.624 73.51 L521.51 73.51 L521.51 18.49 Z"/>
+  </clipPath>
+  <clipPath id="clipPath55">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M325.642 148.374 L325.642 164.474 L329.476 164.474 L329.476 148.374 Z"/>
+  </clipPath>
+  <clipPath id="clipPath75">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M179.486 196.957 L179.486 198.874 L179.486 200.791 L231.114 200.791 L231.114 198.874 L231.114 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath9">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M34.083 16.791 L34.083 75.209 L36.0 74.25 L37.917 73.291 L37.917 18.709 L36.0 17.75 L34.083 16.791 Z"/>
+  </clipPath>
+  <clipPath id="clipPath42">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M280.525 130.874 L280.525 149.474 L284.36 149.474 L284.36 130.874 Z"/>
+  </clipPath>
+  <clipPath id="clipPath124">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M248.338 137.166 L248.338 152.366 L252.173 152.366 L252.173 137.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath13">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.791 129.848 L77.75 131.766 L78.709 133.683 L179.686 133.683 L179.686 131.766 L179.686 129.848 Z"/>
+  </clipPath>
+  <clipPath id="clipPath131">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M199.437 151.666 L199.437 170.266 L203.271 170.266 L203.271 151.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath51">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M230.914 146.957 L230.914 148.874 L230.914 150.791 L283.043 150.791 L283.043 148.874 L283.043 146.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath117">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M115.516 135.349 L115.516 137.266 L115.516 139.183 L157.582 139.183 L157.582 137.266 L157.582 135.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath86">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 161.957 L178.986 163.874 L178.986 165.791 L229.052 165.791 L229.052 163.874 L229.052 161.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath118">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M155.065 136.666 L155.065 152.866 L158.9 152.866 L158.9 136.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath113">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 135.349 L77.5 137.266 L77.5 139.183 L115.716 139.183 L115.716 137.266 L115.716 135.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath32">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 164.166 L76.083 180.475 L78.0 179.516 L79.917 178.557 L79.917 164.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath52">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M280.525 148.274 L280.525 164.474 L284.36 164.474 L284.36 148.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath76">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M280.525 180.774 L280.525 199.374 L284.36 199.374 L284.36 180.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath120">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M156.382 135.349 L156.382 137.266 L156.382 139.183 L201.454 139.183 L201.454 137.266 L201.454 135.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath7">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M88.216 17.5 L88.216 74.5 L92.051 74.5 L92.051 17.5 Z"/>
+  </clipPath>
+  <clipPath id="clipPath21">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M365.002 130.556 L363.085 131.516 L361.167 132.475 L361.167 149.366 L365.002 149.366 L365.002 130.556 Z"/>
+  </clipPath>
+  <clipPath id="clipPath53">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M230.414 161.957 L230.414 163.874 L230.414 165.791 L283.043 165.791 L283.043 163.874 L283.043 161.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath132">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M156.882 167.849 L156.882 169.766 L156.882 171.683 L201.454 171.683 L201.454 169.766 L201.454 167.849 Z"/>
+  </clipPath>
+  <clipPath id="clipPath40">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 130.164 L76.083 148.974 L79.917 148.974 L79.917 132.083 L78.0 131.124 L76.083 130.164 Z"/>
+  </clipPath>
+  <clipPath id="clipPath79">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M282.343 196.957 L282.343 198.874 L282.343 200.791 L327.659 200.791 L327.659 198.874 L327.659 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath26">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M280.525 148.666 L280.525 164.866 L284.36 164.866 L284.36 148.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath36">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M282.343 177.349 L282.343 179.266 L282.343 181.183 L364.293 181.183 L363.335 179.266 L362.376 177.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath96">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 181.274 L76.083 198.974 L79.917 198.974 L79.917 181.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath19">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 147.349 L178.986 149.266 L178.986 151.183 L283.043 151.183 L283.043 149.266 L283.043 147.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath84">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 146.957 L178.986 148.874 L178.986 150.791 L228.552 150.791 L228.552 148.874 L228.552 146.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath134">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M201.254 167.849 L201.254 169.766 L201.254 171.683 L251.464 171.683 L250.505 169.766 L249.547 167.849 Z"/>
+  </clipPath>
+  <clipPath id="clipPath8">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M36.709 72.083 L35.75 74.0 L34.791 75.917 L90.234 75.917 L90.234 74.0 L90.234 72.083 Z"/>
+  </clipPath>
+  <clipPath id="clipPath66">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M230.414 179.457 L230.414 181.374 L230.414 183.291 L283.043 183.291 L283.043 181.374 L283.043 179.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath27">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 162.349 L178.986 164.266 L178.986 166.183 L283.043 166.183 L283.043 164.266 L283.043 162.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath18">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M280.525 131.266 L280.525 149.866 L284.36 149.866 L284.36 131.266 Z"/>
+  </clipPath>
+  <clipPath id="clipPath12">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M90.034 72.083 L90.034 74.0 L90.034 75.917 L523.208 75.917 L522.25 74.0 L521.291 72.083 Z"/>
+  </clipPath>
+  <clipPath id="clipPath33">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M280.525 163.666 L280.525 179.766 L284.36 179.766 L284.36 163.666 Z"/>
+  </clipPath>
+  <clipPath id="clipPath91">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 179.457 L178.986 181.374 L178.986 183.291 L229.052 183.291 L229.052 181.374 L229.052 179.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath102">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M78.709 211.957 L77.75 213.874 L76.791 215.791 L179.686 215.791 L179.686 213.874 L179.686 211.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath29">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M281.843 162.349 L281.843 164.266 L281.843 166.183 L363.585 166.183 L363.585 164.266 L363.585 162.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath16">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 130.556 L76.083 149.366 L79.917 149.366 L79.917 132.475 L78.0 131.516 L76.083 130.556 Z"/>
+  </clipPath>
+  <clipPath id="clipPath59">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M326.959 161.957 L326.959 163.874 L326.959 165.791 L377.039 165.791 L377.039 163.874 L377.039 161.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath20">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M282.343 129.848 L282.343 131.766 L282.343 133.683 L362.376 133.683 L363.335 131.766 L364.293 129.848 Z"/>
+  </clipPath>
+  <clipPath id="clipPath100">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M227.852 196.957 L227.852 198.874 L227.852 200.791 L274.068 200.791 L274.068 198.874 L274.068 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath56">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M281.843 161.957 L281.843 163.874 L281.843 165.791 L328.159 165.791 L328.159 163.874 L328.159 161.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath31">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M78.709 177.349 L77.75 179.266 L76.791 181.183 L179.686 181.183 L179.686 179.266 L179.686 177.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath14">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 131.266 L177.669 149.866 L181.503 149.866 L181.503 131.266 Z"/>
+  </clipPath>
+  <clipPath id="clipPath112">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M252.173 118.557 L250.255 119.516 L248.338 120.475 L248.338 137.366 L252.173 137.366 L252.173 118.557 Z"/>
+  </clipPath>
+  <clipPath id="clipPath90">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M226.535 163.274 L226.535 181.974 L230.369 181.974 L230.369 163.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath111">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M156.882 117.849 L156.882 119.766 L156.882 121.683 L249.547 121.683 L250.505 119.766 L251.464 117.849 Z"/>
+  </clipPath>
+  <clipPath id="clipPath127">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M78.709 167.849 L77.75 169.766 L76.791 171.683 L115.716 171.683 L115.716 169.766 L115.716 167.849 Z"/>
+  </clipPath>
+  <clipPath id="clipPath28">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M361.167 149.166 L361.167 164.366 L365.002 164.366 L365.002 149.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath123">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M201.254 135.349 L201.254 137.266 L201.254 139.183 L250.755 139.183 L250.755 137.266 L250.755 135.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath10">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M90.034 16.082 L90.034 18.0 L90.034 19.917 L521.291 19.917 L522.25 18.0 L523.208 16.082 Z"/>
+  </clipPath>
+  <clipPath id="clipPath68">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M281.843 179.457 L281.843 181.374 L281.843 183.291 L328.159 183.291 L328.159 181.374 L328.159 179.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath101">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 198.274 L177.669 214.374 L181.503 214.374 L181.503 198.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath119">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M115.016 150.349 L115.016 152.266 L115.016 154.183 L157.582 154.183 L157.582 152.266 L157.582 150.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath39">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 146.957 L77.5 148.874 L77.5 150.791 L180.186 150.791 L180.186 148.874 L180.186 146.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath60">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 163.274 L177.669 181.974 L181.503 181.974 L181.503 163.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath34">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M179.486 177.349 L179.486 179.266 L179.486 181.183 L282.543 181.183 L282.543 179.266 L282.543 177.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath72">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M78.709 196.957 L77.75 198.874 L76.791 200.791 L179.686 200.791 L179.686 198.874 L179.686 196.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath99">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M271.651 181.274 L271.651 198.974 L275.486 198.974 L275.486 181.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath133">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M248.338 152.166 L248.338 169.057 L250.255 170.016 L252.173 170.975 L252.173 152.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath48">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M178.986 146.957 L178.986 148.874 L178.986 150.791 L231.114 150.791 L231.114 148.874 L231.114 146.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath54">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M281.843 146.957 L281.843 148.874 L281.843 150.791 L327.659 150.791 L327.659 148.874 L327.659 146.957 Z"/>
+  </clipPath>
+  <clipPath id="clipPath73">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 181.274 L76.083 200.083 L78.0 199.124 L79.917 198.165 L79.917 181.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath15">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M77.5 147.349 L77.5 149.266 L77.5 151.183 L180.186 151.183 L180.186 149.266 L180.186 147.349 Z"/>
+  </clipPath>
+  <clipPath id="clipPath2">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M150.0 550.583 L150.0 552.25 L150.0 553.917 L462.0 553.917 L462.0 552.25 L462.0 550.583 Z"/>
+  </clipPath>
+  <clipPath id="clipPath70">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M326.959 179.457 L326.959 181.374 L326.959 183.291 L377.039 183.291 L377.039 181.374 L377.039 179.457 Z"/>
+  </clipPath>
+  <clipPath id="clipPath97">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M226.535 180.774 L226.535 199.474 L230.369 199.474 L230.369 180.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath92">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M271.651 163.774 L271.651 181.474 L275.486 181.474 L275.486 163.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath17">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M179.486 129.848 L179.486 131.766 L179.486 133.683 L282.543 133.683 L282.543 131.766 L282.543 129.848 Z"/>
+  </clipPath>
+  <clipPath id="clipPath104">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M226.535 198.274 L226.535 214.374 L230.369 214.374 L230.369 198.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath106">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M271.651 198.774 L271.651 213.165 L273.568 214.124 L275.486 215.083 L275.486 198.774 Z"/>
+  </clipPath>
+  <clipPath id="clipPath63">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M229.097 163.274 L229.097 181.974 L232.932 181.974 L232.932 163.274 Z"/>
+  </clipPath>
+  <clipPath id="clipPath116">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M76.083 137.166 L76.083 152.366 L79.917 152.366 L79.917 137.166 Z"/>
+  </clipPath>
+  <clipPath id="clipPath44">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M378.456 130.164 L376.539 131.124 L374.621 132.083 L374.621 148.974 L378.456 148.974 L378.456 130.164 Z"/>
+  </clipPath>
+  <clipPath id="clipPath38">
+   <path stroke="black" stroke-width="0.5" fill="none" d="M177.669 130.874 L177.669 149.474 L181.503 149.474 L181.503 130.874 Z"/>
+  </clipPath>
+ </defs>
+ <path stroke="black" clip-path="url(#clipPath1)" fill="#b5c7de" stroke-width="0.0" d="M18.0 36.0 L36.0 36.0 L36.0 720.0 L18.0 720.0 Z"/>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="722.0" transform="matrix(0.0,1.0,-1.0,0.0,131.54297,84.45703)" x="23.543" y="108.0" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">N</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,140.20697,93.12103)" x="23.543" y="116.664" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">I</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="722.0" transform="matrix(0.0,1.0,-1.0,0.0,143.54297,96.45703)" x="23.543" y="120.0" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">H</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,152.20697,105.12103)" x="23.543" y="128.664" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">-</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,156.20294,109.117)" x="23.543" y="132.66" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,164.20697,117.12103)" x="23.543" y="140.664" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,172.211,125.12506)" x="23.543" y="148.668" font-size="12.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,175.547,128.46106)" x="23.543" y="152.004" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,183.55096,136.46503)" x="23.543" y="160.008" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,190.22296,143.13702)" x="23.543" y="166.68" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,193.55896,146.47302)" x="23.543" y="170.016" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,200.23096,153.14502)" x="23.543" y="176.688" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,206.90295,159.81702)" x="23.543" y="183.36" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,210.89899,163.81305)" x="23.543" y="187.356" font-size="12.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="833.0" transform="matrix(0.0,1.0,-1.0,0.0,214.23499,167.14905)" x="23.543" y="190.692" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,224.23096,177.14502)" x="23.543" y="200.688" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,230.90295,183.81702)" x="23.543" y="207.36" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,237.57495,190.48901)" x="23.543" y="214.032" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="500.0" transform="matrix(0.0,1.0,-1.0,0.0,244.24695,197.16101)" x="23.543" y="220.704" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="500.0" transform="matrix(0.0,1.0,-1.0,0.0,250.24695,203.16101)" x="23.543" y="226.704" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,256.24695,209.16101)" x="23.543" y="232.704" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="222.0" transform="matrix(0.0,1.0,-1.0,0.0,260.24298,213.15704)" x="23.543" y="236.7" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,262.90698,215.82104)" x="23.543" y="239.364" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">p</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,269.57898,222.49304)" x="23.543" y="246.036" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="722.0" transform="matrix(0.0,1.0,-1.0,0.0,344.91498,297.82904)" x="23.543" y="321.372" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">N</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,353.57898,306.49304)" x="23.543" y="330.036" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">I</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="722.0" transform="matrix(0.0,1.0,-1.0,0.0,356.91498,309.82904)" x="23.543" y="333.372" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">H</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,365.57898,318.49304)" x="23.543" y="342.036" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">-</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,369.57495,322.48901)" x="23.543" y="346.032" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,377.57898,330.49304)" x="23.543" y="354.036" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,385.58295,338.49701)" x="23.543" y="362.04" font-size="12.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,388.91898,341.83304)" x="23.543" y="365.376" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,396.92297,349.83704)" x="23.543" y="373.38" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,403.59497,356.50903)" x="23.543" y="380.052" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,406.93097,359.84503)" x="23.543" y="383.388" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,413.60297,366.51703)" x="23.543" y="390.06" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,420.27496,373.18903)" x="23.543" y="396.732" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,424.27097,377.18503)" x="23.543" y="400.728" font-size="12.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="833.0" transform="matrix(0.0,1.0,-1.0,0.0,427.60696,380.52103)" x="23.543" y="404.064" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,437.60297,390.51703)" x="23.543" y="414.06" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,444.27496,397.18903)" x="23.543" y="420.732" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,450.94696,403.86102)" x="23.543" y="427.404" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="500.0" transform="matrix(0.0,1.0,-1.0,0.0,457.61896,410.53302)" x="23.543" y="434.076" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="500.0" transform="matrix(0.0,1.0,-1.0,0.0,463.61896,416.53302)" x="23.543" y="440.076" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,469.61896,422.53302)" x="23.543" y="446.076" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="222.0" transform="matrix(0.0,1.0,-1.0,0.0,473.61496,426.52902)" x="23.543" y="450.072" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,476.27896,429.19302)" x="23.543" y="452.736" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">p</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,482.95096,435.86502)" x="23.543" y="459.408" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="722.0" transform="matrix(0.0,1.0,-1.0,0.0,558.28699,511.20105)" x="23.543" y="534.744" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">N</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,566.95093,519.86499)" x="23.543" y="543.408" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">I</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="722.0" transform="matrix(0.0,1.0,-1.0,0.0,570.28699,523.20105)" x="23.543" y="546.744" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">H</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,578.95093,531.86499)" x="23.543" y="555.408" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">-</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,582.94696,535.86102)" x="23.543" y="559.404" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,590.95093,543.86499)" x="23.543" y="567.408" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,598.95496,551.86902)" x="23.543" y="575.412" font-size="12.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="667.0" transform="matrix(0.0,1.0,-1.0,0.0,602.29095,555.20502)" x="23.543" y="578.748" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,610.29492,563.20898)" x="23.543" y="586.752" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,616.96692,569.88098)" x="23.543" y="593.424" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,620.30298,573.21704)" x="23.543" y="596.76" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,626.97498,579.88904)" x="23.543" y="603.432" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,633.64697,586.56104)" x="23.543" y="610.104" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,637.64294,590.55701)" x="23.543" y="614.1" font-size="12.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="833.0" transform="matrix(0.0,1.0,-1.0,0.0,640.97894,593.89301)" x="23.543" y="617.436" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,650.97491,603.88898)" x="23.543" y="627.432" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,657.64691,610.56097)" x="23.543" y="634.104" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,664.31891,617.23297)" x="23.543" y="640.776" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="500.0" transform="matrix(0.0,1.0,-1.0,0.0,670.99091,623.90497)" x="23.543" y="647.448" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="500.0" transform="matrix(0.0,1.0,-1.0,0.0,676.99091,629.90497)" x="23.543" y="653.448" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="333.0" transform="matrix(0.0,1.0,-1.0,0.0,682.99091,635.90497)" x="23.543" y="659.448" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="222.0" transform="matrix(0.0,1.0,-1.0,0.0,686.98688,639.90094)" x="23.543" y="663.444" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="556.0" transform="matrix(0.0,1.0,-1.0,0.0,689.65088,642.56494)" x="23.543" y="666.108" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">p</text>
+ <text stroke="none" fill="#000066" clip-path="url(#clipPath1)" svgx:fontName="ArialMT" svgx:width="278.0" transform="matrix(0.0,1.0,-1.0,0.0,696.32288,649.23694)" x="23.543" y="672.78" font-size="12.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="78.0" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">V</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="83.776" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="87.776" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="90.0" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">z</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="93.552" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="95.552" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="99.104" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="101.328" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="103.328" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="106.88" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="109.104" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="556.0" x="500.449" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="504.897" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="508.449" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="512.449" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="516.001" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="518.001" y="44.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">9</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="Arial-BoldMT" svgx:width="611.0" x="281.249" y="87.593" font-size="9.0" font-family="TimesNewRoman" font-weight="bold">T</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="Arial-BoldMT" svgx:width="722.0" x="286.748" y="87.593" font-size="9.0" font-family="TimesNewRoman" font-weight="bold">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="Arial-BoldMT" svgx:width="722.0" x="293.246" y="87.593" font-size="9.0" font-family="TimesNewRoman" font-weight="bold">B</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="Arial-BoldMT" svgx:width="611.0" x="299.744" y="87.593" font-size="9.0" font-family="TimesNewRoman" font-weight="bold">L</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="Arial-BoldMT" svgx:width="667.0" x="305.243" y="87.593" font-size="9.0" font-family="TimesNewRoman" font-weight="bold">E</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="Arial-BoldMT" svgx:width="278.0" x="311.246" y="87.593" font-size="9.0" font-family="TimesNewRoman" font-weight="bold"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="Arial-BoldMT" svgx:width="556.0" x="313.748" y="87.593" font-size="9.0" font-family="TimesNewRoman" font-weight="bold">4</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="78.0" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="556.0" x="86.89" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="92.45" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="99.67" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="102.17" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="106.61" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="111.61" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="119.39" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="122.17" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="127.17" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="129.95" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="133.84" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="136.62" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="139.95" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="144.39" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="147.17" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="149.95" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="154.95" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="159.95" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="162.45" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="166.89" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="169.67" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="172.45" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="176.89" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="180.22" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="184.11" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="186.61" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">K</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="564.0" x="193.82" y="103.27" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">+</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="198.332" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">-</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="201.662" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="205.552" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="208.332" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="211.112" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="218.892" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="223.892" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="226.672" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="231.112" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="233.892" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="238.332" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="243.332" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="245.832" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="253.052" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="260.272" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="262.772" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="266.102" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="270.542" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="273.322" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="277.762" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="282.202" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="286.092" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="290.532" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="293.032" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="296.362" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="299.692" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="304.692" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="312.472" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="314.972" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="318.862" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="321.642" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="324.972" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="327.752" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="332.192" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="334.972" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="339.412" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="342.192" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="344.692" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="348.582" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="353.582" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="357.472" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">p</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="362.472" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="366.912" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="371.912" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="375.802" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="378.582" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="383.582" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="388.582" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="392.472" y="106.603" font-size="10.0" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="394.953" y="103.27" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="722.0" x="85.005" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="722.0" x="90.42" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="250.0" x="95.835" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="97.71" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="101.04" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="104.37" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="106.455" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="109.785" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="389.0" x="113.535" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="116.452" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="250.0" x="119.782" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="121.657" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">v</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="125.407" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="128.737" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="130.822" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="134.572" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="137.902" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="333.0" x="139.987" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="142.485" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">y</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldItalicMT" svgx:width="500.0" x="146.228" y="129.394" font-size="7.5" font-family="TimesNewRoman" font-weight="bold" font-style="italic">b</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="833.0" x="162.482" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="168.73" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="172.48" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="556.0" x="176.23" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="180.4" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="333.0" x="182.485" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="556.0" x="184.982" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="556.0" x="189.152" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="193.322" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="250.0" x="196.652" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="198.527" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="333.0" x="202.277" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="250.0" x="204.775" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="722.0" x="206.65" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="722.0" x="212.065" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="250.0" x="217.48" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="219.355" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="222.685" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="226.015" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="228.1" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="231.43" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="389.0" x="235.18" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="238.097" y="131.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldItalicMT" svgx:width="444.0" x="241.427" y="129.394" font-size="7.5" font-family="TimesNewRoman" font-weight="bold" font-style="italic">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="389.0" x="87.64" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="90.558" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="94.308" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="96.393" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="556.0" x="98.478" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="102.648" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="944.0" x="127.761" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="611.0" x="134.841" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="722.0" x="139.424" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="389.0" x="170.0" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="500.0" x="172.918" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="176.668" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="278.0" x="178.753" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="556.0" x="180.838" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="444.0" x="185.008" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="944.0" x="217.266" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="611.0" x="224.346" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-BoldMT" svgx:width="722.0" x="228.929" y="146.894" font-size="7.5" font-family="TimesNewRoman" font-weight="bold">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="83.5" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="87.25" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="89.125" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">9</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="92.875" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="549.0" svgx:charName="plusminus" svgx:charCode="177" svgx:hexCode="b1" x="94.75" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&#177;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="98.868" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="100.743" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="104.493" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="106.368" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">2</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="121.116" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">2</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="124.866" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="126.741" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="130.491" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="549.0" svgx:charName="plusminus" svgx:charCode="177" svgx:hexCode="b1" x="132.366" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&#177;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="136.484" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="138.359" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="142.109" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="143.984" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">2</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="147.732" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">*</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="171.485" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">6</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="175.235" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="549.0" svgx:charName="plusminus" svgx:charCode="177" svgx:hexCode="b1" x="177.11" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&#177;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="181.228" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="183.103" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">1</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="214.372" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">1</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="218.122" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">4</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="221.872" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="549.0" svgx:charName="plusminus" svgx:charCode="177" svgx:hexCode="b1" x="223.747" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&#177;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="227.864" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="229.739" y="164.394" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">2</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="233.488" y="161.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">*</text>
+ <path fill="none" clip-path="url(#clipPath108)" stroke="#000000" stroke-width="0.0" d="M77.5 119.766 L157.082 119.766 "/>
+ <path fill="none" clip-path="url(#clipPath109)" stroke="#000000" stroke-width="0.0" d="M156.982 119.266 L156.982 137.866 "/>
+ <path fill="none" clip-path="url(#clipPath110)" stroke="#000000" stroke-width="0.0" d="M78.0 137.366 L78.0 119.266 "/>
+ <path fill="none" clip-path="url(#clipPath111)" stroke="#000000" stroke-width="0.0" d="M156.882 119.766 L250.755 119.766 "/>
+ <path fill="none" clip-path="url(#clipPath112)" stroke="#000000" stroke-width="0.0" d="M250.255 119.266 L250.255 137.366 "/>
+ <path fill="none" clip-path="url(#clipPath113)" stroke="#000000" stroke-width="0.0" d="M77.5 137.266 L115.716 137.266 "/>
+ <path fill="none" clip-path="url(#clipPath114)" stroke="#000000" stroke-width="0.0" d="M115.616 136.766 L115.616 152.866 "/>
+ <path fill="none" clip-path="url(#clipPath115)" stroke="#000000" stroke-width="0.0" d="M116.216 152.266 L77.5 152.266 "/>
+ <path fill="none" clip-path="url(#clipPath116)" stroke="#000000" stroke-width="0.0" d="M78.0 152.366 L78.0 137.166 "/>
+ <path fill="none" clip-path="url(#clipPath117)" stroke="#000000" stroke-width="0.0" d="M115.516 137.266 L157.582 137.266 "/>
+ <path fill="none" clip-path="url(#clipPath118)" stroke="#000000" stroke-width="0.0" d="M156.982 136.666 L156.982 152.866 "/>
+ <path fill="none" clip-path="url(#clipPath119)" stroke="#000000" stroke-width="0.0" d="M157.582 152.266 L115.016 152.266 "/>
+ <path fill="none" clip-path="url(#clipPath120)" stroke="#000000" stroke-width="0.0" d="M156.382 137.266 L201.454 137.266 "/>
+ <path fill="none" clip-path="url(#clipPath121)" stroke="#000000" stroke-width="0.0" d="M201.354 136.766 L201.354 152.866 "/>
+ <path fill="none" clip-path="url(#clipPath122)" stroke="#000000" stroke-width="0.0" d="M201.954 152.266 L156.382 152.266 "/>
+ <path fill="none" clip-path="url(#clipPath123)" stroke="#000000" stroke-width="0.0" d="M201.254 137.266 L250.755 137.266 "/>
+ <path fill="none" clip-path="url(#clipPath124)" stroke="#000000" stroke-width="0.0" d="M250.255 137.166 L250.255 152.366 "/>
+ <path fill="none" clip-path="url(#clipPath125)" stroke="#000000" stroke-width="0.0" d="M250.755 152.266 L200.754 152.266 "/>
+ <path fill="none" clip-path="url(#clipPath126)" stroke="#000000" stroke-width="0.0" d="M115.616 151.666 L115.616 170.266 "/>
+ <path fill="none" clip-path="url(#clipPath127)" stroke="#000000" stroke-width="0.0" d="M115.716 169.766 L77.5 169.766 "/>
+ <path fill="none" clip-path="url(#clipPath128)" stroke="#000000" stroke-width="0.0" d="M78.0 170.266 L78.0 152.166 "/>
+ <path fill="none" clip-path="url(#clipPath129)" stroke="#000000" stroke-width="0.0" d="M156.982 151.666 L156.982 170.266 "/>
+ <path fill="none" clip-path="url(#clipPath130)" stroke="#000000" stroke-width="0.0" d="M157.082 169.766 L115.516 169.766 "/>
+ <path fill="none" clip-path="url(#clipPath131)" stroke="#000000" stroke-width="0.0" d="M201.354 151.666 L201.354 170.266 "/>
+ <path fill="none" clip-path="url(#clipPath132)" stroke="#000000" stroke-width="0.0" d="M201.454 169.766 L156.882 169.766 "/>
+ <path fill="none" clip-path="url(#clipPath133)" stroke="#000000" stroke-width="0.0" d="M250.255 152.166 L250.255 170.266 "/>
+ <path fill="none" clip-path="url(#clipPath134)" stroke="#000000" stroke-width="0.0" d="M250.755 169.766 L201.254 169.766 "/>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="78.0" y="181.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="667.0" x="81.75" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">R</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="86.753" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="90.083" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="92.168" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="95.085" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="96.96" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="99.458" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="102.788" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="106.118" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="109.448" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="111.533" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">v</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="115.283" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="118.613" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="122.363" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="124.238" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="127.568" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="129.443" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="132.36" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="134.445" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="138.195" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="141.945" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="144.03" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="147.36" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="149.235" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="152.565" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="156.315" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="162.15" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="164.235" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="167.985" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="170.07" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="172.988" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="175.073" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="177.57" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="180.9" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="182.985" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="185.07" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="188.82" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="192.57" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="194.445" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="198.195" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="200.693" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="202.568" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="556.0" x="209.235" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="213.405" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="218.82" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="220.695" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">(</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="223.193" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">4</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="226.943" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="230.693" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="232.568" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="238.403" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="242.153" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">/</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="244.238" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">k</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="247.988" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="251.738" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">,</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="253.613" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="255.488" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="258.405" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="260.28" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="263.61" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="265.485" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">)</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="267.983" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="269.858" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="273.608" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="276.105" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="277.98" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="280.898" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="284.228" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="286.313" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="288.398" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="292.148" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="295.478" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="297.353" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">v</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="301.103" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="304.433" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="308.183" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="310.267" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="313.597" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="315.682" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="319.012" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="320.887" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">(</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="323.385" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">1</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="327.135" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="329.01" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="334.845" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="336.93" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">/</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="339.015" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">k</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="342.765" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="346.515" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">,</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="348.39" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="350.265" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="353.182" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="355.057" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="358.387" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="360.262" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">)</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="362.76" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="364.635" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="367.965" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="371.715" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="375.465" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="377.34" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">w</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="382.755" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="386.085" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="388.582" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="391.912" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="393.787" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">k</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="397.537" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="399.622" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="401.707" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="403.792" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="407.122" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="410.872" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="412.747" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">1</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="416.497" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="418.372" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="422.122" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="423.997" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="426.082" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="429.412" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="431.497" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="434.827" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="437.325" y="186.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="78.0" y="200.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">b</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="81.75" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="88.418" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="91.748" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="95.078" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="98.828" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="549.0" svgx:charName="plusminus" svgx:charCode="177" svgx:hexCode="b1" x="100.703" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&#177;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="104.82" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="556.0" x="106.695" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">S</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="611.0" x="110.865" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">E</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="115.448" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="122.115" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="123.99" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="127.74" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="130.238" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="132.113" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="137.528" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="142.943" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="144.818" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="147.315" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="150.645" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="152.73" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="156.06" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="159.39" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="162.308" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="165.638" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="167.513" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">v</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="171.263" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="174.593" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="176.678" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="180.428" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="183.758" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="185.843" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="187.928" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">y</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="191.678" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="193.553" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="195.638" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="199.388" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="201.263" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="205.013" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="208.763" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="210.848" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="212.933" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="215.85" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="217.725" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="221.475" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="223.973" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="225.848" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="229.598" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="235.433" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="239.183" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="241.268" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="243.143" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="246.893" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="249.39" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="251.265" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="256.68" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="262.095" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">/</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="264.18" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">(</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="266.678" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="269.595" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="564.0" svgx:charName="multiply" svgx:charCode="215" svgx:hexCode="d7" x="271.47" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&#215;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="275.7" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="277.575" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="280.493" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="282.578" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="285.075" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="287.16" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="290.49" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="292.575" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="295.905" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="297.99" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="299.865" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="303.615" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="305.49" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">w</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="310.905" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="314.235" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="316.32" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="318.195" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">w</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="323.61" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="326.94" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="329.025" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="332.775" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="336.525" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="338.61" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">)</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="341.107" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">,</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="342.982" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="344.857" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">N</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="350.272" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="564.0" x="352.147" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">=</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="356.377" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="358.252" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">3</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="362.002" y="205.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="444.0" x="78.0" y="219.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="81.329" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="87.996" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="91.326" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="94.656" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="98.406" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="549.0" svgx:charName="plusminus" svgx:charCode="177" svgx:hexCode="b1" x="100.281" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&#177;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="104.399" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="556.0" x="106.274" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">S</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="611.0" x="110.444" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">E</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="115.026" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="121.694" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="123.569" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="127.319" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="129.816" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="131.691" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="137.106" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="142.521" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="144.396" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="146.894" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="150.224" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="152.309" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="155.639" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="158.969" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="161.886" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="165.216" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="167.091" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="172.926" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="176.256" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="180.006" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="183.756" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="185.841" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="187.926" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="191.676" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="195.426" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="198.756" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="200.631" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="202.716" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="206.466" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="208.341" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="212.091" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="215.841" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="217.926" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="220.011" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="222.929" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="224.804" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="228.554" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="231.051" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="232.926" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="236.676" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="242.511" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="246.261" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="248.346" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="250.221" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="253.971" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="256.469" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="258.344" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="263.759" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="269.174" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">/</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="271.259" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="274.176" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="276.261" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="278.759" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="280.844" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="284.174" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="286.259" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="289.589" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="291.674" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="293.549" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="297.299" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="299.174" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">w</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="304.589" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="307.919" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="310.004" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="311.879" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">w</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="317.294" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="320.624" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="322.709" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="326.459" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="330.209" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="332.294" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">,</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="334.169" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="336.044" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">N</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="341.459" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="564.0" x="343.334" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">=</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="347.564" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="349.439" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">3</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="353.189" y="224.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="78.0" y="238.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">*</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="81.75" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">I</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="84.248" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="87.998" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="91.748" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="93.833" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="97.163" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="100.493" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="102.578" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="105.908" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="108.825" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="110.7" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="114.03" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="115.905" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="118.823" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="120.908" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="124.238" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="126.323" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="128.408" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="131.325" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="133.41" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="135.495" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="138.825" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="142.155" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="144.24" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="146.115" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="149.865" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="151.95" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="154.448" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">f</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="156.945" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="160.275" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="162.773" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="166.103" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="169.853" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="173.183" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="176.513" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">,</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="178.388" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="611.0" x="180.242" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="184.824" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="564.0" x="186.699" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">&lt;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="190.929" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="192.804" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="196.554" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="198.429" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="202.179" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">5</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="205.929" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="207.804" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">v</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="211.554" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="213.639" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="216.969" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="218.844" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="222.174" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="278.0" x="224.045" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal" font-style="italic">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="226.129" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">-</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="228.626" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="230.711" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="234.041" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="236.959" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="239.044" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">,</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="240.919" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="242.794" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">b</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="246.544" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="249.874" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="251.959" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">w</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="257.374" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="260.704" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="264.034" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="267.784" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="269.659" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="272.576" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="275.906" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="277.991" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="280.076" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="283.826" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="287.156" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="289.031" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="292.361" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="296.111" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="299.861" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="301.736" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="556.0" x="308.404" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="312.574" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">D</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="317.989" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">-</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="320.486" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="322.571" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="325.069" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="328.399" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="331.729" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="333.814" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="337.144" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="340.894" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="342.769" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">g</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="346.519" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="349.016" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="352.766" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="356.516" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">p</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="360.266" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="363.184" y="243.894" font-size="7.5" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="611.0" x="161.463" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="166.351" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="170.351" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="250.0" x="174.351" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="667.0" x="176.351" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">N</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="250.0" x="181.687" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="556.0" x="183.687" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">Y</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="250.0" x="188.135" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="611.0" x="190.135" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="444.0" x="195.023" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="198.575" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="202.575" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">d</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="250.0" x="206.575" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="500.0" x="208.575" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">S</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="444.0" x="212.575" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPS-ItalicMT" svgx:width="278.0" x="216.127" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal" font-style="italic">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="218.346" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">.</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="220.346" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="222.346" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">A</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="228.122" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="232.122" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="234.346" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">h</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="238.346" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="242.346" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="245.01" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="778.0" x="247.01" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">m</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="253.234" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="256.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="260.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">u</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="389.0" x="264.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">s</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="267.898" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="271.45" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="274.114" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="276.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">p</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="280.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="282.562" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">;</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="284.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="286.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="290.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">v</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="294.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="297.89" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="300.114" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="302.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">a</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="305.89" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">b</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="309.89" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">l</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="312.114" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="315.666" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="317.666" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">i</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="319.89" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">n</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="323.89" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="556.0" x="325.89" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">P</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="889.0" x="330.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">M</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="667.0" x="337.45" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">C</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="342.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="344.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">2</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="348.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="352.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">0</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="356.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">9</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="360.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="722.0" x="362.786" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">O</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="368.562" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">c</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="278.0" x="372.114" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">t</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="374.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">o</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="378.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">b</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="444.0" x="382.338" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">e</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="333.0" x="385.89" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">r</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="388.554" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal"> </text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="500.0" x="390.554" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">1</text>
+ <text stroke="none" fill="#000000" clip-path="url(#clipPath1)" svgx:fontName="TimesNewRomanPSMT" svgx:width="250.0" x="394.554" y="721.4" font-size="8.0" font-family="TimesNewRoman" font-weight="normal">.</text>
+</svg>

@@ -12,6 +12,7 @@ import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGDefs;
 import org.xmlcml.graphics.svg.SVGG;
@@ -39,6 +40,8 @@ public class CMUCLTest {
 
 	@Test
 	public void testBMC() {
+		Assert.assertTrue("tables should exist", Fixtures.TABLE_DIR.exists());
+		Assert.assertTrue("CMUCL0 should exist", CMUCL0.exists());
 		String root = "BMC_Medicine";
 		extractTables(root);
 	}

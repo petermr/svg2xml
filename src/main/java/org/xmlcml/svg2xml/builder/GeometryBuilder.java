@@ -13,7 +13,7 @@ import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.RawWords;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.Word;
-import org.xmlcml.svgbuilder.geom.SimpleBuilder;
+//import org.xmlcml.svgbuilder.geom.SimpleBuilder;
 
 /**
  * Builds higher-level primitives from SVGPaths, SVGLines, etc. to create SVG objects 
