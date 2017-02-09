@@ -16,7 +16,7 @@ import org.xmlcml.graphics.svg.SVGText;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-public class SVG2XMLCharacter /*extends SVGElement*/ implements Comparable {
+public class SVG2XMLCharacter /*extends SVGElement*/ implements Comparable<Object> {
 	
 	
 

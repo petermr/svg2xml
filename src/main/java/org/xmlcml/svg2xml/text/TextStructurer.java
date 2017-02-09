@@ -1435,7 +1435,7 @@ public class TextStructurer {
 		createPhraseListListFromWords();
 		tableStructurer = new TableStructurer(phraseListList);
 		tableStructurer.setTextStructurer(this);
-		tableStructurer.createRulerList();
+		tableStructurer.analyzeShapeList();
 		return tableStructurer;
 	}
 
@@ -1597,6 +1597,12 @@ public class TextStructurer {
 	public boolean isRotatable() {
 		return rotatable;
 	}
-	
+
+	public void condenseSuscripts() {
+		int size = phraseListList.size();
+		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
+		suscriptEditor.mergeAll();
+	}
+
 
 }

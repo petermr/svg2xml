@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -18,6 +17,9 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlSpan;
+import org.xmlcml.html.HtmlSub;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
@@ -30,16 +32,10 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public final static String TAG = "word";
 	public static String SPACE_SYMBOL = " ";
 
-//	public static final Word NULL = new Word();
-//	static {
-//		createWord(NULL, "NULL");
-//	};
-//
-//	public static final Word SPACE = new Word();
-//	static {
-//		createWord(SPACE, " ");
-//	}
-
+	private List<SVGText> childTextList;
+	private boolean guessWidth = true;
+	private List<? extends LineChunk> lineChunkListForFonts;
+	
 	public static Word createEmptyWord(Real2 xy, double fontSize) {
 		Word word = new Word();
 		word.childTextList = new ArrayList<SVGText>();
@@ -51,10 +47,6 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	};
 
 
-	private List<SVGText> childTextList;
-	private boolean guessWidth = true;
-	private List<? extends LineChunk> lineChunkListForFonts;
-	
 	public Word() {
 		super();
 		this.setClassName(TAG);
@@ -77,6 +69,12 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		}
 		guessWidth = word.guessWidth;
 	}
+
+	public Word(SVGText text) {
+		this();
+		this.add(text);
+	}
+
 
 	/** 
 	 * Creates Word from characters in svgText.
@@ -489,5 +487,20 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		}
 		return;
 	}
+	
+	public HtmlElement toHtml() {
+		HtmlSpan span = new HtmlSpan();
+		span.setClassAttribute("word");
+		if (this.hasSubscript()) {
+			HtmlSub sub = new HtmlSub();
+			span.appendChild(sub);
+			sub.appendChild(this.getStringValue());
+		} else {
+			span.appendChild(this.getStringValue());
+		}
+		return span;
+	}
+
+
 	
 }

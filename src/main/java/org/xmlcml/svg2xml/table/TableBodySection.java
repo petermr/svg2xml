@@ -27,6 +27,9 @@ import com.google.common.collect.Multiset.Entry;
  *
  */
 public class TableBodySection extends TableSection {
+	static final String BODY_CELL_BOXES = "body.cellBoxes";
+	private static final String BODY_COLUMN_BOXES = "body.columnBoxes";
+	private static final String BODY_SUBTABLE_BOXES = "body.subtableBoxes";
 	static final Logger LOG = Logger.getLogger(TableBodySection.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -63,6 +66,10 @@ public class TableBodySection extends TableSection {
 		Phrase phrasei = null;
 		for (int i = 0; i < indentArray.size(); i++) {
 			phrasei = columnManager0.getPhrase(i);
+			if (phrasei.getStringValue().trim().length() == 0) {
+				LOG.debug("EMPTY phrase");
+				continue;
+			}
 			double xIndent = indentArray.get(i);
 			// FIXME simple single indent ATM 
 			if (xIndent > epsilon) {
@@ -71,9 +78,9 @@ public class TableBodySection extends TableSection {
 				}
 				endRange = phrasei.getY();
 				inIndent = true;
-				LOG.debug("indent "+phrasei.getY()+"/"+phrasei.getStringValue());
+				LOG.trace("indent "+phrasei.getY()+"/"+phrasei.getStringValue());
 			} else {
-				LOG.debug("unindent "+phrasei.getStringValue());
+				LOG.trace("unindent "+phrasei.getStringValue());
 				endRange = phrasei.getY();
 				if (inIndent) {
 					RealRange range = new RealRange(startRange, endRange);
@@ -143,13 +150,14 @@ public class TableBodySection extends TableSection {
 
 	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
+		g.setClassName(BODY_COLUMN_BOXES);
 		if (boundingBox == null) {
 			LOG.warn("no bounding box");
 		} else {
 			for (int i = 0; i < columnManagerList.size(); i++) {
 				ColumnManager columnManager = columnManagerList.get(i);
 				Real2Range colManagerBox = new Real2Range(new RealRange(columnManager.getEnclosingRange()), boundingBox.getYRange());
-				String title = columnManager.getStringValue();
+				String title = "BODYCOLUMN: "+i+"/"+columnManager.getStringValue();
 				SVGTitle svgTitle = new SVGTitle(title);
 				SVGRect plotBox = GraphPlot.plotBox(colManagerBox, colors[1], opacity[1]);
 				plotBox.appendChild(svgTitle);
@@ -162,12 +170,13 @@ public class TableBodySection extends TableSection {
 	
 	private SVGG createCellBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
+		g.setClassName(BODY_CELL_BOXES);
 		if (boundingBox == null) {
 			LOG.warn("no bounding box");
 		} else {
-			for (int i = 0; i < columnManagerList.size(); i++) {
-				ColumnManager columnManager = columnManagerList.get(i);
-				SVGG gg = columnManager.createCellBoxes(colors, opacity);
+			for (int icol = 0; icol < columnManagerList.size(); icol++) {
+				ColumnManager columnManager = columnManagerList.get(icol);
+				SVGG gg = columnManager.createCellBoxes(icol, colors, opacity);
 				g.appendChild(gg);
 			}
 			TableContentCreator.shiftToOrigin(svgChunk, g);
@@ -177,17 +186,20 @@ public class TableBodySection extends TableSection {
 	
 	private SVGG createSubtableBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
+		g.setClassName(BODY_SUBTABLE_BOXES);
 		if (boundingBox == null) {
 			LOG.warn("no bounding box");
 		} else {
 			// for a single indent
-			double xIndent = columnManager0.getMinIndent() - columnManager0.getMaxIndent();
-			RealRange xRange = boundingBox.getXRange();
-			xRange.extendLowerEndBy(xIndent);
-			for (int i = 0; i < indentRangeArray.size(); i++) {
-				Real2Range subTable = new Real2Range(xRange, indentRangeArray.get(i));
-				SVGRect plotBox = GraphPlot.plotBox(subTable, colors[i % colors.length], opacity[i % opacity.length]);
-				g.appendChild(plotBox);
+			if (columnManager0 != null) {
+				double xIndent = columnManager0.getMinIndent() - columnManager0.getMaxIndent();
+				RealRange xRange = boundingBox.getXRange();
+				xRange.extendLowerEndBy(xIndent);
+				for (int i = 0; i < indentRangeArray.size(); i++) {
+					Real2Range subTable = new Real2Range(xRange, indentRangeArray.get(i));
+					SVGRect plotBox = GraphPlot.plotBox(subTable, colors[i % colors.length], opacity[i % opacity.length]);
+					g.appendChild(plotBox);
+				}
 			}
 			TableContentCreator.shiftToOrigin(svgChunk, g);
 		}

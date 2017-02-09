@@ -14,13 +14,16 @@ import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.table.TableGrid;
 import org.xmlcml.svg2xml.table.TableStructurer;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
+import org.xmlcml.svg2xml.text.SuscriptEditor;
 import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -55,6 +58,9 @@ public class PageLayoutAnalyzer {
 	private File inputFile;
 	private boolean rotatable = false;
 
+
+	private boolean omitWhitespace = true;
+
 	public PageLayoutAnalyzer() {
 		setDefaults();
 	}
@@ -62,6 +68,7 @@ public class PageLayoutAnalyzer {
 	private void setDefaults() {
 		xRangeRangeMin = 50;
 		ensureXRangeSets();
+		omitWhitespace = true;
 	}
 
 	private void ensureXRangeSets() {
@@ -75,6 +82,7 @@ public class PageLayoutAnalyzer {
 		this.inputFile = inputFile;
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		SVGElement chunk = textStructurer.getSVGChunk();
+		cleanChunk(chunk);
 		if (rotatable  && textStructurer.hasAntiClockwiseCharacters()) {
 			SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/debug/preRot.svg"));
 			chunk = textStructurer.rotateClockwise();
@@ -85,12 +93,30 @@ public class PageLayoutAnalyzer {
 
 		phraseListList = textStructurer.getPhraseListList();
 		LOG.debug("reading ... "+phraseListList.toXML());
-		tableStructurer = textStructurer.createTableStructurer();
+		textStructurer.condenseSuscripts();
 		phraseListList.format(3);
+		tableStructurer = textStructurer.createTableStructurer();
 		TableGrid tableGrid = tableStructurer.createGrid();
 			
 		if (tableGrid == null) {
 			createOrderedHorizontalList();
+		}
+	}
+
+	private void cleanChunk(SVGElement chunk) {
+		if (omitWhitespace) {
+			detachWhitespaceTexts(chunk);
+		}
+	}
+
+	private void detachWhitespaceTexts(SVGElement chunk) {
+		List<SVGText> spaceList = SVGText.extractSelfAndDescendantTexts(chunk);
+		for (SVGText text : spaceList) {
+			String textS = text.getText();
+			if (textS == null || textS.trim().length() == 0) {
+				text.detach();
+				LOG.debug("Deleted whitespace");
+			}
 		}
 	}
 

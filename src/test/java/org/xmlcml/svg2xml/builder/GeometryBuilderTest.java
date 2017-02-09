@@ -1,22 +1,8 @@
 package org.xmlcml.svg2xml.builder;
 
-import java.io.File;
-import java.util.List;
-
 import org.apache.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Angle.Units;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.graphics.svg.SVGPath;
-import org.xmlcml.graphics.svg.SVGPolygon;
-import org.xmlcml.graphics.svg.SVGPolyline;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.svg2xml.Fixtures;
 
 /** 
  * Test reading of molecules.

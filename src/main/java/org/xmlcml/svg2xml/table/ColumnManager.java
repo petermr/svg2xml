@@ -34,9 +34,9 @@ public class ColumnManager {
 				if (colManager1 == null || colManager2 == null) {
 					throw new RuntimeException("Null ColumnManager/s");
 				}
-				Integer x1 = colManager1.getEnclosingRange().getMin();
-				Integer x2 = colManager2.getEnclosingRange().getMin();
-				return x1 - x2;
+				IntRange range1 = colManager1.getEnclosingRange();
+				IntRange range2 = colManager2.getEnclosingRange();
+				return (range1 == null || range2 == null) ? 0 : range1.getMin() - range2.getMin();
 			}
 		};
 	}
@@ -107,12 +107,12 @@ public class ColumnManager {
 	}
 
 	public void addPhrase(Phrase phrase) {
-		if (phrase != null) {
+		if (phrase != null && phrase.getStringValue().trim().length() != 0) {
 			getOrCreateColumnPhrases();
 			columnPhrases.add(phrase);
 			addRange(phrase.getIntRange());
 		} else {
-			LOG.trace("adding Null phrase; ignored");
+			LOG.trace("adding Null/empty phrase; ignored");
 		}
 	}
 
@@ -216,19 +216,25 @@ public class ColumnManager {
 		yPointer++;
 	}
 
-	public SVGG createCellBoxes(String[] colors, double[] opacity) {
+	public SVGG createCellBoxes(int colno, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		for (int i = 0; i < columnPhrases.size(); i++) {
-			Real2Range phraseBox = columnPhrases.get(i).getBoundingBox();
+		g.setClassName("col"+"."+colno);
+		for (int iPhrase = 0; iPhrase < columnPhrases.size(); iPhrase++) {
+			Real2Range phraseBox = columnPhrases.get(iPhrase).getBoundingBox();
 			if (phraseBox.getYMin() < 0) {
 				LOG.error("FIXME box: "+phraseBox);
 			}
-			String title = columnPhrases.get(i).getStringValue();
-			SVGTitle svgTitle = new SVGTitle(title);
-			SVGRect plotBox = GraphPlot.plotBox(phraseBox, colors[1], opacity[1]);
-			plotBox.appendChild(svgTitle);
-//			LOG.debug(plotBox.toXML());
-			g.appendChild(plotBox);
+			String iPhraseS = columnPhrases.get(iPhrase).getStringValue();
+			if (iPhraseS == null || iPhraseS.trim().length() == 0) {
+				LOG.warn("empty phrase); possible problem");
+			} else {
+				String title = colno+"."+iPhrase+"/"+columnPhrases.get(iPhrase).getStringValue();
+				SVGTitle svgTitle = new SVGTitle(title);
+				SVGRect plotBox = GraphPlot.plotBox(phraseBox, colors[1], opacity[1]);
+				plotBox.setClassName("cell"+"."+colno+"."+iPhrase);
+				plotBox.appendChild(svgTitle);
+				g.appendChild(plotBox);
+			}
 		}
 		return g;
 	}

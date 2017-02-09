@@ -14,10 +14,11 @@ import org.xmlcml.euclid.Line2;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.graphics.svg.SVGMarker;
 import org.xmlcml.graphics.svg.SVGPolyline;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -101,6 +102,10 @@ public class TableStructurer {
 	private List<SVGShape> shapeList;
 	private boolean hasZeroDimensionalShapes = false;
 	private TableGrid tableGrid;
+	private double epsilon = 0.01;
+	private List<SVGRect> spanningRects;
+	private SVGRect outerRect;
+	private List<SVGRect> rectList;
 
 	
 	public TableStructurer(PhraseListList phraseListList) {
@@ -397,28 +402,79 @@ public class TableStructurer {
 		}
 	}
 	
-	public void createRulerList() {
+	public void analyzeShapeList() {
 		getOrCreateShapeList();
+		removeOuterBox();
+		debugShapesGraphically();
+		createPotentialHorizontalSeparators();
+		getOrCreateVerticalRulerList();
+	}
+
+	private void debugShapesGraphically() {
 		SVGG g = new SVGG();
 		int i = 0; 
 		String[] color = {"red", "green", "blue", "yellow", "cyan", "magenta", "black"};
 		for (SVGShape shape : shapeList) {
 			SVGShape shapeNew = (SVGShape) shape.copy();
 			shapeNew.setFill(color[i++ % color.length]);
+			shapeNew.setFill("none");
+			shapeNew.setStroke("black");
+			shapeNew.setStrokeWidth(2.);
 			shapeNew.setOpacity(0.1);
 			g.appendChild(shapeNew);
 		}
 		SVGSVG.wrapAndWriteAsSVG(g, new File("target/debug/shapes"+(int)(100*Math.random())+".svg"));
-		createHorizontalRectsList();
-		getOrCreateHorizontalRulerList();
-		getOrCreateVerticalRulerList();
+	}
+
+	private void removeOuterBox() {
+		Real2Range bbox = SVGElement.createBoundingBox(shapeList);
+		RealRange xRange = bbox.getXRange();
+		RealRange yRange = bbox.getYRange();
+		List<SVGRect> horizontalSpanRects = new ArrayList<SVGRect>();
+		List<SVGRect> verticalSpanRects = new ArrayList<SVGRect>();
+		for (SVGShape shape : shapeList) {
+			if (shape instanceof SVGRect) {
+				SVGRect rect = (SVGRect) shape;
+				RealRange xRange1 = rect.getRealRange(Direction.HORIZONTAL);
+				RealRange yRange1 = rect.getRealRange(Direction.VERTICAL);
+				if (xRange.isEqualTo(xRange1, epsilon)) {
+					horizontalSpanRects.add(rect);
+				} else {
+					if (yRange.isEqualTo(yRange1, epsilon)) {
+						verticalSpanRects.add(rect);
+					}
+				}				
+			}
+		}
+		
+		spanningRects = findAllSpanningRects(horizontalSpanRects, verticalSpanRects, epsilon);
+		if (spanningRects.size() == 1) {
+			outerRect = spanningRects.get(0);
+			Real2Range bbox1 = outerRect.getBoundingBox();
+			if (bbox1.isEqualTo(bbox, epsilon)) {
+				if (shapeList.remove(outerRect)) {
+					LOG.debug("removed outerRect: "+outerRect.toXML());
+				} else {
+					LOG.debug("failed to remove outerRect "+outerRect.hashCode());
+				}
+			}
+		} 
 	}
 	
-	public List<SVGRect> createHorizontalRectsList() {
+	private static List<SVGRect> findAllSpanningRects(List<SVGRect> horizontalSpanRects, List<SVGRect> verticalSpanRects, double epsilon) {
+		List<SVGRect> allSpanRects = new ArrayList<SVGRect>();
+		allSpanRects.addAll(verticalSpanRects);
+		allSpanRects.addAll(horizontalSpanRects);
+		SVGShape.eliminateGeometricalDuplicates(allSpanRects, epsilon);
+		return allSpanRects;
+	}
+
+	public void createPotentialHorizontalSeparators() {
 		getOrCreateShapeList();
-		List<SVGRect> rectList = extractRects(shapeList);
+		rectList = extractRects(shapeList);
+		getOrCreateHorizontalRulerList();
 		
-		return rectList;
+		
 	}
 
 	public List<VerticalRuler> getOrCreateVerticalRulerList() {
@@ -452,6 +508,7 @@ public class TableStructurer {
 			if (hasZeroDimensionalShapes) {
 				SVGSVG.wrapAndWriteAsSVG(shapeList, new File("target/shapes/zero.svg"));
 			}
+			SVGShape.eliminateGeometricalDuplicates(shapeList, epsilon);
 		}
 		return shapeList;
 	}
@@ -861,7 +918,7 @@ public class TableStructurer {
 		}
 	}
 
-	public HtmlTr createTableRow(PhraseList phraseList, int iRow, Class clazz) {
+	public HtmlTr createTableRow(PhraseList phraseList, int iRow, Class<?> clazz) {
 		phraseListList.getOrCreateChildPhraseList();
 		ensureColumnManagers();
 		HtmlTr row = new HtmlTr();
@@ -877,7 +934,7 @@ public class TableStructurer {
 		return row;
 	}
 
-	public List<HtmlTr> createBodyTableRows(int startRow, int endRow, Class clazz) {
+	public List<HtmlTr> createBodyTableRows(int startRow, int endRow, Class<?> clazz) {
 		phraseListList.getOrCreateChildPhraseList();
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
 		// find margins

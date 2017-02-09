@@ -8,7 +8,6 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
-import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGLine;
 
 public class HorizontalRuler extends Ruler {

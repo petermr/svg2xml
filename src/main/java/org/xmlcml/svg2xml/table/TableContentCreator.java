@@ -1,6 +1,8 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,14 +12,20 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
-import org.xmlcml.euclid.Real;
-import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGTitle;
+import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.html.HtmlBody;
+import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlHtml;
+import org.xmlcml.html.HtmlTable;
+import org.xmlcml.html.HtmlTd;
+import org.xmlcml.html.HtmlTh;
+import org.xmlcml.html.HtmlTr;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 import org.xmlcml.svg2xml.text.HorizontalElement;
@@ -26,18 +34,25 @@ import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.GraphPlot;
+import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Attribute;
 
 public class TableContentCreator extends PageLayoutAnalyzer {
 
-
-	static final String DOT_ANNOT_SVG = ".annot.svg";
-	private static final String DOT_PNG = ".png";
 
 	private static final Logger LOG = Logger.getLogger(TableContentCreator.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
+	
 	public final static Pattern TABLE_N = Pattern.compile("(T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(?:\\(cont(inued)?\\.?\\))?\\s*)");
+	private static final String TABLE_FOOTER = "table.footer";
+	private static final String TABLE_BODY = "table.body";
+	private static final String TABLE_HEADER = "table.header";
+	private static final String TABLE_TITLE = "table.title";
+	static final String DOT_ANNOT_SVG = ".annot.svg";
+	private static final String DOT_PNG = ".png";
 
 	private List<HorizontalRuler> rulerList;
 	private List<TableSection> tableSectionList;
@@ -131,7 +146,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			if (horizontalElement instanceof HorizontalRuler) {
 				HorizontalRuler thisRuler = (HorizontalRuler) horizontalElement;
 				IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange());
-				LOG.debug("*****************"+thisRange+"/"+thisRuler.getSVGLine().getXY(0).getY());
+//				LOG.debug("*****************"+thisRange+"/"+thisRuler.getSVGLine().getXY(0).getY());
 				if (firstRuler == null) {
 					firstRuler = thisRuler;
 					firstRange = thisRange;
@@ -206,11 +221,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				}
 			}
 		}
-		LOG.debug("============");
-		for (TableSection tableSection2 : tableSectionList) {
-			LOG.debug("-------->tableSect>"+tableSection2);
-		}
-		LOG.debug("============");
+//		LOG.debug("============");
+//		for (TableSection tableSection2 : tableSectionList) {
+//			LOG.debug("-------->tableSect>"+tableSection2);
+//		}
+//		LOG.debug("============");
 	}
 
 	public IntRangeArray getRangesArray() {
@@ -257,12 +272,26 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		// write SVG
 		SVGElement markedChunk = getTextStructurer().getSVGChunk();
 		SVGG g = new SVGG();
+		g.setClassName("sections");
 		markedChunk.appendChild(g);
 		TableStructurer tableStructurer = getTableStructurer();
-		g.appendChild(GraphPlot.plotBox(tableStructurer.getTitleBBox(), colors[0], opacity[0]));
-		g.appendChild(GraphPlot.plotBox(tableStructurer.getHeaderBBox(), colors[1], opacity[1]));
-		g.appendChild(GraphPlot.plotBox(tableStructurer.getBodyBBox(), colors[2], opacity[2]));
-		g.appendChild(GraphPlot.plotBox(tableStructurer.getFooterBBox(), colors[3], opacity[3]));
+		SVGRect plotBox;
+		plotBox = GraphPlot.plotBox(tableStructurer.getTitleBBox(), colors[0], opacity[0]);
+		plotBox.setClassName(TABLE_TITLE);
+		plotBox.appendChild(new SVGTitle(TABLE_TITLE));
+		g.appendChild(plotBox);
+		plotBox = GraphPlot.plotBox(tableStructurer.getHeaderBBox(), colors[1], opacity[1]);
+		plotBox.setClassName(TABLE_HEADER);
+		plotBox.appendChild(new SVGTitle(TABLE_HEADER));
+		g.appendChild(plotBox);
+		plotBox = GraphPlot.plotBox(tableStructurer.getBodyBBox(), colors[2], opacity[2]);
+		plotBox.setClassName(TABLE_BODY);
+		plotBox.appendChild(new SVGTitle(TABLE_BODY));
+		g.appendChild(plotBox);
+		plotBox = GraphPlot.plotBox(tableStructurer.getFooterBBox(), colors[3], opacity[3]);
+		plotBox.setClassName(TABLE_FOOTER);
+		plotBox.appendChild(new SVGTitle(TABLE_FOOTER));
+		g.appendChild(plotBox);
 		TableContentCreator.shiftToOrigin(markedChunk, g);
 		return markedChunk;
 	}
@@ -378,6 +407,91 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		SVGElement svgChunk = annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 	}
+
+	/** create HTML from annot.svg
+	 * 
+	 * @param annotSvgFile
+	 * @param outDir
+	 * @throws IOException 
+	 */
+	public void createHTML(File annotSvgFile, File outDir) throws IOException {
+		SVGElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(annotSvgFile));
+		HtmlHtml html = new HtmlHtml();
+		HtmlBody body = new HtmlBody();
+		html.appendChild(body);
+		HtmlTable table = new HtmlTable();
+		table.addAttribute(new Attribute("style", "border: 1px solid black;"));
+		body.appendChild(table);
+		
+		addCaption(svgElement, table);
+		addHeader(svgElement, table);
+		addBody(svgElement, table);
+		XMLUtil.debug(html, new File(outDir, annotSvgFile.getName()+".html"), 1);
+		
+		
+	}
+
+	private void addHeader(SVGElement svgElement, HtmlTable table) {
+		HtmlTr tr = new HtmlTr();
+		table.appendChild(tr);
+		SVGElement g = (SVGElement) XMLUtil.getSingleElement(svgElement, 
+				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
+		if (g != null) {
+			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
+			for (int i = 0; i < rects.size(); i++) {
+				String title = rects.get(i).getValue();   // messy but has to be rewritten
+				title = title.replace(" //", "");
+				HtmlTh th = new HtmlTh();
+				th.addAttribute(new Attribute("style", "border: 1px solid black;"));
+				th.appendChild(title.substring(title.indexOf("/")+1));
+				tr.appendChild(th);
+			}
+		}
+	}
+
+	private void addBody(SVGElement svgElement, HtmlTable table) {
+		SVGElement g = (SVGElement) XMLUtil.getSingleElement(svgElement, 
+				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
+		if (g != null) {
+			List<SVGG> gs = SVGG.extractSelfAndDescendantGs(g);
+			List<List<SVGRect>> rectListList = new ArrayList<List<SVGRect>>();
+			for (int i = 0; i < gs.size(); i++) {
+				List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(gs.get(i));
+				rectListList.add(rects);
+			}
+			if (rectListList.size() > 0) {
+				for (int irow = 0; irow < rectListList.get(0).size(); irow++) {
+					HtmlTr tr = new HtmlTr();
+					table.appendChild(tr);
+					for (int jcol = 0; jcol < rectListList.size(); jcol++) {
+						List<SVGRect> rectjList = rectListList.get(jcol);
+						if (irow >= rectjList.size()) {
+							LOG.warn("row index out of range "+irow);;
+						} else {
+							SVGRect rectij = rectjList.get(irow);
+							HtmlTd td = new HtmlTd();
+							td.addAttribute(new Attribute("style", "border: 1px solid black;"));
+							tr.appendChild(td);
+							String value = rectij.getValue();
+							td.appendChild(value.substring(value.indexOf("/")+1));
+						}
+					}
+				}
+			}
+		}	
+	}
+
+	private void addCaption(SVGElement svgElement, HtmlTable table) {
+		HtmlCaption caption = new HtmlCaption();
+		String captionS = XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
+		if (captionS !=null) {
+			int idx = captionS.indexOf("//");
+			captionS = idx == -1 ? captionS : captionS.substring(idx + 2);
+	//		caption.appendChild(captionS.substring(captionS.indexOf("//")+2));
+			table.appendChild(caption);
+		}
+	}
+
 
 
 }

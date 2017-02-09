@@ -391,7 +391,7 @@ public class PageAnalyzerTest {
 	//====================================================================
 	
 	//TODO sort out count checking once a decent chunking algorithm has been written
-	private void checkAbstractContainers(Class[] classes,
+	private void checkAbstractContainers(Class<?>[] classes,
 			List<AbstractContainer> containerList) {
 		Assert.assertNotNull(containerList);
 		/*try {

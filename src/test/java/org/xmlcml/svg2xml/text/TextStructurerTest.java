@@ -243,7 +243,10 @@ public class TextStructurerTest {
 		SVGG rotatedVerticalText = textStructurer2.createChunkFromVerticalText(new Real2(200., 200.), new Angle(-1.0 * Math.PI / 2));
 		LOG.debug("rot text "+rotatedVerticalText.toXML());
 //		LOG.error("FAILS");
-		if (1 == 1) return;
+		if (1 == 1) {
+			LOG.warn("aborting as tests not finished");
+			return;
+		};
 //		Assert.assertEquals(19, SVGText.extractSelfAndDescendantTexts(rotatedVerticalText).size());
 
 		File outFile = new File(OUTPUT_TEXT_DIR, "rotatedVerticalText.svg");

@@ -2,12 +2,20 @@ package org.xmlcml.svg2xml.text;
 
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xmlcml.euclid.Real2;
+import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
 
 public class PhraseTest {
+	private static final Logger LOG = Logger.getLogger(PhraseTest.class);
+	static {
+		LOG.setLevel(Level.DEBUG);
+	}
 
 	private TextLine BERICHT_PAGE6_34_TEXTLINE = null;
 
@@ -41,5 +49,15 @@ public class PhraseTest {
 		Assert.assertEquals("phrase4", "491", phraseList.get(4).getPrintableString());
 	}
 	
+	@Test
+	public void testGetWordList() {
+		SVGText t11 = new SVGText(new Real2(25., 16.), "+");
+		t11.setFontSize(8.0);
+		Word w11 = new Word(t11);
+		Phrase p11 = new Phrase(w11);
+		LOG.debug(""+p11.getOrCreateBoundingBox());
+		List<Word> wordList = p11.getOrCreateWordList();
+		Assert.assertEquals(1, wordList.size());
+	}
 
 }

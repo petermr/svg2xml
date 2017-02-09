@@ -24,6 +24,8 @@ import org.xmlcml.svg2xml.util.GraphPlot;
  *
  */
 public class TableHeaderSection extends TableSection {
+	private static final String HEADER_BOXES = "header.boxes";
+	static final String HEADER_COLUMN_BOXES = "header.columnBoxes";
 	static final Logger LOG = Logger.getLogger(TableHeaderSection.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -102,21 +104,25 @@ public class TableHeaderSection extends TableSection {
 
 	private SVGG createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
+		g.setClassName(HEADER_COLUMN_BOXES);
 		if (boundingBox == null) {
 			LOG.warn("no bounding box");
 		} else {
 			RealRange yRange = boundingBox.getYRange();
 			for (int i = 0; i < columnManagerList.size(); i++) {
 				ColumnManager columnManager = columnManagerList.get(i);
-				RealRange xRange = new RealRange(columnManager.getEnclosingRange());
-				ColumnGroup colGroup = nearestCoveringColumnGroup(xRange);
-				RealRange yRange1 = colGroup == null ? yRange : 
-					new RealRange(colGroup.getBoundingBox().getYRange().getMax(), yRange.getMax());
-				String title = columnManager.getStringValue();
-				SVGTitle svgTitle = new SVGTitle(title);
-				SVGRect plotBox = GraphPlot.plotBox(new Real2Range(xRange, yRange1), colors[1], opacity[1]);
-				plotBox.appendChild(svgTitle);
-				g.appendChild(plotBox);
+				IntRange range = columnManager.getEnclosingRange();
+				if (range != null) {
+					RealRange xRange = new RealRange(range);
+					ColumnGroup colGroup = nearestCoveringColumnGroup(xRange);
+					RealRange yRange1 = colGroup == null ? yRange : 
+						new RealRange(colGroup.getBoundingBox().getYRange().getMax(), yRange.getMax());
+					String title = "HEADERCOLUMN: "+i+"/"+columnManager.getStringValue();
+					SVGTitle svgTitle = new SVGTitle(title);
+					SVGRect plotBox = GraphPlot.plotBox(new Real2Range(xRange, yRange1), colors[1], opacity[1]);
+					plotBox.appendChild(svgTitle);
+					g.appendChild(plotBox);
+				}
 			}
 			TableContentCreator.shiftToOrigin(svgChunk, g);
 		}
@@ -144,11 +150,16 @@ public class TableHeaderSection extends TableSection {
 
 	private SVGG createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
+		g.setClassName(HEADER_BOXES);
 		for (int i = 0; i < headerRowList.size(); i++) {
 			HeaderRow headerRow = headerRowList.get(i);
 			for (ColumnGroup columnGroup : headerRow.getOrCreateColumnGroupList()) {
 				Real2Range bbox = columnGroup.getBoundingBox();
-				g.appendChild(GraphPlot.plotBox(bbox, colors[1], opacity[1]));
+				SVGRect plotBox = GraphPlot.plotBox(bbox, colors[1], opacity[1]);
+				String title = "HEADERBOX: "+i;
+				SVGTitle svgTitle = new SVGTitle(title);
+				plotBox.appendChild(svgTitle);
+				g.appendChild(plotBox);
 			}
 		}
 		TableContentCreator.shiftToOrigin(svgChunk, g);

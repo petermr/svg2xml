@@ -20,8 +20,10 @@ import org.xmlcml.html.HtmlBr;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
 import org.xmlcml.html.HtmlSpan;
+import org.xmlcml.html.HtmlSub;
 import org.xmlcml.xml.XMLUtil;
 
+import nu.xom.Attribute;
 import nu.xom.Element;
 
 /** 
@@ -39,15 +41,13 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	static final Logger LOG = Logger.getLogger(Phrase.class);
 	public final static String TAG = "phrase";
 
-//	public static final Phrase NULL = new Phrase();
-//	static {
-//		NULL.add(new Word(Word.NULL));
-//	};
-
+	private static final String SUB_START = "_{";
+	private static final String SUPER_START = "^{";
+	private static final String SUB_END = "}";
+	private static final String SUPER_END = "}";
+	
 	private List<Word> childWordList;
-	private boolean superscript;
-	private boolean subscript;
-
+	
 	public Phrase() {
 		super();
 		this.setClassName(TAG);
@@ -55,25 +55,18 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 
 	public Phrase(LineChunk phrase) {
 		super(phrase);
-		// TODO Auto-generated constructor stub
 	}
 
 	public Phrase(Word word) {
 		this();
 		this.appendChild(word.copy());
 		getOrCreateWordList();
-		childWordList.add(word);
+//		childWordList.add(word);
 	}
 
 	public Phrase(SVGG g) {
 		super(g);
 	}
-
-//	public Phrase(String string, Real2 xy) {
-//		childWordList = new ArrayList<Word>();
-//		Word word = new Word(string, xy);
-//		childWordList.add(word);
-//	}
 
 	public void add(SVGElement word) {
 		this.appendChild(word);
@@ -308,15 +301,19 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
 		sb.append(getStringValue());
-		sb.append("}");
+		sb.append(SUPER_END);
 		return sb.toString();
 	}
 
 	public String getStringValue() {
 		getOrCreateWordList();
 		StringBuilder sb = new StringBuilder();
-		if (superscript) sb.append("^{");
-		if (subscript) sb.append("_{");
+		if (hasSuperscript()) {
+			sb.append(SUPER_START);
+		}
+		if (hasSubscript()) {
+			sb.append(SUB_START);
+		}
 		for (int i = 0; i < childWordList.size() - 1; i++) {
 			Word word = childWordList.get(i);
 			sb.append(word.getStringValue());
@@ -330,8 +327,13 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		if (childWordList.size() > 0) {
 			sb.append(""+childWordList.get(childWordList.size() - 1).toString()+"");
 		}
-		if (superscript) sb.append("}");
-		if (subscript) sb.append("}");
+		if (hasSuperscript()) {
+			sb.append(SUPER_END);
+		}
+		if (hasSubscript()) {
+			sb.append(SUB_END);
+			LOG.debug("SUB: "+sb.toString());
+		}
 		this.setStringValueAttribute(sb.toString());
 		return sb.toString();
 	}
@@ -410,16 +412,26 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 			this.replaceChild(this.getChildElements().get(i), childWordList.get(i));
 		}
 	}
-
-	public void setSuperscript(boolean superscript) {
-		this.superscript = superscript;
-		this.subscript = false;
-	}
-
-	public void setSubscript(boolean subscript) {
-		this.subscript = subscript;
-		this.superscript = false;
-	}
 	
+	public HtmlElement toHtml() {
+		HtmlElement span = new HtmlSpan();
+		span.setClassAttribute("phrase");
+		if (hasSubscript()) {
+			HtmlSub sub = new HtmlSub();
+			span.appendChild(sub);
+			span = sub;
+		}
+		for (Word word : this) {
+			HtmlElement el = span;
+//			if (word.hasSubscript()) {
+//				HtmlSub sub = new HtmlSub();
+//				span.appendChild(sub);
+//				sub.appendChild(word.toHtml());
+//			}
+			el.appendChild(word.toHtml());
+		}
+		return span;
+	}
+
 
 }

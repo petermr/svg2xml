@@ -11,6 +11,7 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.svg2xml.text.LineChunk;
 import org.xmlcml.svg2xml.text.Phrase;
+import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 import com.google.common.collect.HashMultiset;
@@ -22,6 +23,7 @@ import com.google.common.collect.Multiset;
  *
  */
 public class TableFooterSection extends TableSection {
+	private static final String FOOTER_TITLE = "footer.title";
 	static final Logger LOG = Logger.getLogger(TableFooterSection.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -46,11 +48,12 @@ public class TableFooterSection extends TableSection {
 	
 	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
+		g.setClassName(FOOTER_TITLE);
 		if (boundingBox == null) {
 			LOG.warn("no bounding box");
 		} else {
-			String title = this.getFontInfo()+" //" +this.getStringValue();
-			SVGTitle svgTitle = new SVGTitle(title);
+			String title = FOOTER_TITLE+": "+this.getFontInfo()+" //" +this.getStringValue();
+			SVGTitle svgTitle = new SVGTitle("footer: "+title);
 			SVGRect plotBox = GraphPlot.plotBox(boundingBox, colors[1], opacity[1]);
 			plotBox.appendChild(svgTitle);
 			g.appendChild(plotBox);
@@ -59,26 +62,6 @@ public class TableFooterSection extends TableSection {
 		return g;
 	}
 
-//	private String getFontInfo() {
-//		List<Phrase> phrases = this.getOrCreatePhrases();
-//		Multiset<Double> fontSizeSet = HashMultiset.create();
-//		Multiset<String> fontFamilySet = HashMultiset.create();
-//		Multiset<String> fontWeightSet = HashMultiset.create();
-//		Multiset<String> fontStyleSet = HashMultiset.create();
-//		for (LineChunk phrase : phrases) {
-//			fontSizeSet.add(phrase.getFontSize());
-//			fontFamilySet.add(String.valueOf(phrase.getFontFamily()));
-//			fontWeightSet.add(String.valueOf(phrase.getFontWeight()));
-//			fontStyleSet.add(String.valueOf(phrase.getFontStyle()));
-//		}
-//		StringBuilder sb = new StringBuilder();
-//		sb.append("{"+MultisetUtil.getEntriesSortedByCount(fontFamilySet).toString()+"}");
-//		sb.append("{"+MultisetUtil.getDoubleEntriesSortedByCount(fontSizeSet).toString()+"}");
-//		sb.append("{"+MultisetUtil.getEntriesSortedByCount(fontWeightSet).toString()+"}");
-//		sb.append("{"+MultisetUtil.getEntriesSortedByCount(fontStyleSet).toString()+"}");
-//		LOG.debug(sb.toString());
-//		return sb.toString();
-//	}
 	
 
 

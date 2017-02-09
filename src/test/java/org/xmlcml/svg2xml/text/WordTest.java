@@ -2,15 +2,24 @@ package org.xmlcml.svg2xml.text;
 
 import java.util.List;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.eclipse.jetty.util.log.Log;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
 
 public class WordTest {
+	private static final Logger LOG = Logger.getLogger(WordTest.class);
+
+	static {
+		LOG.setLevel(Level.DEBUG);
+	}
 
 	public static Word WORD0 = RawWordsTest.RAW_WORDS.get(0);
 	public static Word WORD1 = RawWordsTest.RAW_WORDS.get(1);
@@ -75,5 +84,14 @@ public class WordTest {
 		Assert.assertEquals("word1", "tarsus", splitWords.get(1).toString());
 		Assert.assertEquals("word2", "(mm)", splitWords.get(2).toString());
 	}
-
+	
+	@Test
+	public void testCreateWord() {
+		SVGText t1 = new SVGText(new Real2(10., 20.), "H");
+		t1.setFontSize(8.0);
+		Word w1 = new Word(t1);
+		Real2Range bbox = w1.getBoundingBox();
+		bbox = bbox.format(3);
+		Assert.assertEquals("((10.0,15.879),(12.0,20.0))",  bbox.toString());
+	}
 }

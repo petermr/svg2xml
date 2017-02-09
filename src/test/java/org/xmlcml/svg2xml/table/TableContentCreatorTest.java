@@ -17,13 +17,14 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -36,12 +37,14 @@ import org.xmlcml.html.HtmlTd;
 import org.xmlcml.html.HtmlTr;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.text.PhraseListList;
+import org.xmlcml.svg2xml.text.SuscriptEditor;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
 
 
-@Ignore
+//@Ignore
 public class TableContentCreatorTest {
 	
 	static final Logger LOG = Logger.getLogger(TableContentCreatorTest.class);
@@ -52,6 +55,7 @@ public class TableContentCreatorTest {
 	private static final String BORDER = "border";
 	private static final String VERTICAL_ALIGN_TOP = "vertical-align:top";
 	private static final double IMG_XSCALE = 700.0;
+	private static final File CM_UCL_DIR = new File("../../cm-ucl");
 
 	@Test
 	public void testSimple1() {
@@ -100,13 +104,140 @@ public class TableContentCreatorTest {
 		tableContentCreator.markupAndOutputTable(inputFile, outDir);
 	}
 	
+	
+	// box	10.1016_S0140-6736(16)31461-1/
+	// not yet solved
 	@Test
+	public void testBox1() {
+		File inputFile = new File(Fixtures.TABLE_DIR, "box/table1.svg");
+		File outDir = new File("target/table/box/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.markupAndOutputTable(inputFile, outDir);
+	}
+	
+	@Test
+	// 	10.1016_j.pain.2014.09.020
+	public void testGlueTables() {
+		File inputFile1 = new File(Fixtures.TABLE_DIR, "glue/table3.svg");
+		File inputFile1cont = new File(Fixtures.TABLE_DIR, "glue/table3cont.svg");
+		File inputFile1annot = new File(Fixtures.TABLE_DIR, "glue/table3.svg");
+		File inputFile1annotcont = new File(Fixtures.TABLE_DIR, "glue/table3cont.svg");
+		File outDir = new File("target/table/glue/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
+	}
+
+	@Test
+	/** simple rectangular Table.
+	 * No subtables or split columns
+	 * @throws IOException
+	 */
+	public void testSimple2Html() throws IOException {
+//		cm-ucl/corpus-oa-pmr/10.1016_j.pain.2014.09.033/pdftable/table1.annot.svg
+		File inputFile1 = new File(Fixtures.TABLE_DIR, "html/simple/10.1016_j.pain.2014.09.033.annot.svg");
+//		10.1016_j.jadohealth.2016.10.001/pdftable/table3.annot.svg
+//		File inputFile1 = new File(Fixtures.TABLE_DIR, "html/table3.annot.svg");
+		File outDir = new File("target/table/html/simple");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.createHTML(inputFile1, outDir);
+	}
+	
+	@Test
+	@Ignore
+	// spurious SVGText with whitespace content
+	public void testWhitespaceProblem() {
+		File inputFile = new File(Fixtures.TABLE_DIR, "whitespace/table1.svg");
+		File outDir = new File("target/table/whitespace/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.markupAndOutputTable(inputFile, outDir);
+	}
+
+	@Test
+	/** indents.
+	 * No subscripts or split columns
+	 * @throws IOException
+	 */
+	public void testIndents() throws IOException {
+//		cm-ucl/corpus-oa-pmr/10.1186_1471-2431-13-190/pdftable/table1.annot.svg
+		File inputFile1 = new File(Fixtures.TABLE_DIR, "indent/10.1186_1471-2431-13-190.annot.svg");
+		File outDir = new File("target/table/indent/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.createHTML(inputFile1, outDir);
+	}
+	
+	@Test
+	/** split column/s
+	 * No subscripts or indents
+	 * @throws IOException
+	 */
+	public void testSplitColumn() throws IOException {
+//		cm-ucl/corpus-oa-pmr/1	10.1179_1743132815Y.0000000050/pdftable/table5.annot.svg
+		File inputFile1 = new File(Fixtures.TABLE_DIR, "splitcol/10.1179_1743132815Y.0000000050.annot.svg");
+		File outDir = new File("target/table/splitcol/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.createHTML(inputFile1, outDir);
+	}
+	
+	@Test
+	/** subscript
+	 * No split columns or indents
+	 * complex suscripts in Footer - not yet resolved
+	 * @throws IOException
+	 */
+	public void testSuscriptSVG() throws IOException {
+//		cm-ucl/corpus-oa-pmr/10.1371_journal.pbio.1000481/pdftable/table1.annot.svg
+		File inputFile1 = new File(Fixtures.TABLE_DIR, "suscript/10.1371_journal.pbio.1000481.svg");
+		File outDir = new File("target/table/suscript/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
+		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getTableFooter().getOrCreatePhraseLists());
+		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
+		suscriptEditor.mergeAll();
+		LOG.debug("PLL"+phraseListList);
+	}
+	
+	@Test
+	/** subscript
+	 * No split columns or indents
+	 * isolated superscripts
+	 * @throws IOException
+	 */
+	public void testSuscriptSVG1() throws IOException {
+		File inputFile1 = new File(Fixtures.TABLE_DIR, "suscript/10.1007_s00213-015-4198-1.svg");
+		File outDir = new File("target/table/suscript/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
+		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getTableFooter().getOrCreatePhraseLists());
+		LOG.debug(phraseListList.toString());
+		Assert.assertEquals(5, phraseListList.size());
+		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
+		suscriptEditor.mergeAll();
+		LOG.debug("PLL"+phraseListList);
+		XMLUtil.debug(phraseListList.toHtml(), new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+".html"), 1);
+	}
+	
+	
+	@Test
+	/** subscript
+	 * No split columns or indents
+	 * @throws IOException
+	 */
+	public void testSuscriptHTML() throws IOException {
+//		cm-ucl/corpus-oa-pmr/10.1371_journal.pbio.1000481/pdftable/table1.annot.svg
+		File inputFile1 = new File(Fixtures.TABLE_DIR, "suscript/10.1371_journal.pbio.1000481.annot.svg");
+		File outDir = new File("target/table/suscript/");
+		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		tableContentCreator.createHTML(inputFile1, outDir);
+	}
+	
+	
 	/** production
 	 * 
 	 */
+	@Test
 	public void testCreateSVGFromPDF() throws IOException {
-		File pdfOrigDir = new File("../cm-ucl/corpus-oa");
-		File pmrDir = new File("../cm-ucl/corpus-oa-pmr");
+		File pdfOrigDir = new File(CM_UCL_DIR, "corpus-oa");
+		File pmrDir = new File(CM_UCL_DIR, "corpus-oa-pmr");
 		pmrDir.mkdirs();
 		File[] pdfDirs = pdfOrigDir.listFiles();
 		for (File pdfDir : pdfDirs) {
@@ -122,7 +253,6 @@ public class TableContentCreatorTest {
 			for (File png : pngs) {
 				if (FileUtils.sizeOf(png) == 0) {
 					png.delete();
-//					LOG.debug("DELETE "+png);
 				} else {
 					try {
 						FileUtils.moveToDirectory(png, pngDir, true);
@@ -135,9 +265,13 @@ public class TableContentCreatorTest {
 	}
 	
 	@Test
+	/** iterates over CProject and marksup tables
+	 * adds visible boxes for detected regions and adds titles
+	 * 
+	 */
 	public void testMarkupTables() {
-		File pmrDir = new File("../cm-ucl/corpus-oa-pmr");
-		File chDir = new File("../cm-ucl/corpus-oa");
+		File pmrDir = new File(CM_UCL_DIR, "corpus-oa-pmr");
+		File chDir = new File(CM_UCL_DIR, "corpus-oa");
 		File[] ctrees = pmrDir.listFiles();
 		for (File ctree : ctrees) {
 			LOG.debug("*************"+ctree+"**************");
@@ -150,17 +284,24 @@ public class TableContentCreatorTest {
 					LOG.debug("============="+svgFile+"=============");
 					TableContentCreator tableContentCreator = new TableContentCreator(); 
 					tableContentCreator.markupAndOutputTable(svgFile, tableDir);
+					String root = FilenameUtils.getBaseName(svgFile.toString());
+					File annotSvg = new File(tableDir, root+TableContentCreator.DOT_ANNOT_SVG);
+					try {
+						tableContentCreator.createHTML(annotSvg, tableDir);
+					} catch (IOException e) {
+						LOG.debug("Cannot write html: "+e);
+					}
 				}
 			}
 		}
-		LOG.debug("end");
 	}
 	
 	@Test
 	public void testCreateDoubleTableHTML() throws IOException {
 		double TD_WIDTH = 500.0;
-		File pmrDir = new File("../cm-ucl/corpus-oa-pmr");
-		File chDir = new File("../cm-ucl/corpus-oa");
+		File pmrDir = new File(CM_UCL_DIR, "corpus-oa-pmr");
+		File chDir = new File(CM_UCL_DIR, "corpus-oa");
+		Assert.assertTrue(pmrDir.getAbsoluteFile().toString()+" exists", pmrDir.exists());
 		File[] ctrees = pmrDir.listFiles();
 		for (File ctree : ctrees) {
 			String root = ctree.getName();
@@ -178,13 +319,7 @@ public class TableContentCreatorTest {
 					BufferedImage image = ImageIO.read(pngFile);
 					int imgWidth = image.getWidth();
 					int imgHeight = image.getHeight();
-					double imgScale = Util.format(IMG_XSCALE / imgWidth, 3);
-//					imgScale = 0.5;
-					double imageXShift = -.5* imgWidth * imgScale;
-//					imageXShift = 0.0;
 					String pngRootSuffix = pngRoot.substring(TABLE.length());
-//					String svgAnnotName = pngRoot+".svg.html";
-					String svgAnnotName1 = pngRoot+TableContentCreator.DOT_ANNOT_SVG;
 					File svgAnnotFile1 = new File(pdfTableDir, pngRoot+TableContentCreator.DOT_ANNOT_SVG);
 					
 					HtmlHtml html = new HtmlHtml();
@@ -208,7 +343,7 @@ public class TableContentCreatorTest {
 	 * 
 	 */
 	public void testCreateTableShow() throws IOException {
-		String root = "../cm-ucl";
+		String root = CM_UCL_DIR.toString();
 		String srcRoot = root+"/corpus-oa-pmr/";
         Path pmrFolder = Paths.get(srcRoot);
         String showRoot = root+"/corpus-oa-pmr-show/";

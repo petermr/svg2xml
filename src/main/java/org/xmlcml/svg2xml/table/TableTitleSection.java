@@ -14,6 +14,7 @@ import org.xmlcml.svg2xml.util.GraphPlot;
  *
  */
 public class TableTitleSection extends TableSection {
+	static final String TITLE_TITLE = "title.title";
 	static final Logger LOG = Logger.getLogger(TableTitleSection.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -38,10 +39,11 @@ public class TableTitleSection extends TableSection {
 	
 	private SVGG createBoxAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
+		g.setClassName(TITLE_TITLE);
 		if (boundingBox == null) {
 			LOG.warn("no bounding box");
 		} else {
-			String title = this.getFontInfo()+" //" +this.getStringValue();
+			String title = "TITLE: "+this.getFontInfo()+" //" +this.getStringValue();
 			SVGTitle svgTitle = new SVGTitle(title);
 			SVGRect plotBox = GraphPlot.plotBox(boundingBox, colors[0], opacity[0]);
 			plotBox.appendChild(svgTitle);

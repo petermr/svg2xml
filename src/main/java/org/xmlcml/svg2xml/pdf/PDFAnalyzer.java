@@ -138,6 +138,7 @@ public class PDFAnalyzer {
 							readAndAnalyzeFile(parentFile, line);
 						}
 					}
+					br.close();
 				} catch (Exception e) {
 					throw new RuntimeException("Cannot read listing file: "+file, e);
 				}

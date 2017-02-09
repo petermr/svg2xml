@@ -13,6 +13,9 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlLi;
+import org.xmlcml.html.HtmlUl;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
@@ -38,6 +41,20 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		this.setClassName(TAG);
 	}
 	
+	public PhraseListList(PhraseListList phraseListList) {
+		this();
+		getOrCreateChildPhraseList();
+		childPhraseListList.addAll(phraseListList.getOrCreateChildPhraseList());
+	}
+
+	public PhraseListList(List<PhraseList> phraseLists) {
+		this();
+		getOrCreateChildPhraseList();
+		for (PhraseList phraseList : phraseLists) {
+			this.add(phraseList);
+		}
+	}
+
 	public Iterator<PhraseList> iterator() {
 		getOrCreateChildPhraseList();
 		return childPhraseListList.iterator();
@@ -73,7 +90,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 
 	public PhraseList get(int i) {
 		getOrCreateChildPhraseList();
-		return childPhraseListList.get(i);
+		return (i < 0 || i >= childPhraseListList.size()) ? null : childPhraseListList.get(i);
 	}
 	
 	protected List<? extends LineChunk> getChildChunks() {
@@ -198,6 +215,19 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		}
 		return remove;
 	}
+	
+	public boolean replace(PhraseList oldPhraseList, PhraseList newPhraseList) {
+		boolean replace = false;
+		if (childPhraseListList != null) {
+			int idx = this.childPhraseListList.indexOf(oldPhraseList);
+			if (idx != -1) {
+				replace = this.childPhraseListList.set(idx, newPhraseList) != null;
+			}
+		}
+		return replace;
+	}
+
+
 
 	/**
 	 * analyses neighbouring PhraseLists to see if the font sizes and Y-coordinates
@@ -256,7 +286,24 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		}
 		return phrases;
 	}
-
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (PhraseList phraseList : this) {
+			sb.append(phraseList.toString()+"\n");
+		}
+		return sb.toString();
+	}
+	
+	public HtmlElement toHtml() {
+		HtmlUl ul = new HtmlUl();
+		for (PhraseList phraseList : this) {
+			HtmlLi li = new HtmlLi();
+			li.appendChild(phraseList.toHtml());
+			ul.appendChild(li);
+		}
+		return ul;
+	}
 
 
 }

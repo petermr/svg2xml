@@ -118,6 +118,11 @@ public class TableSection {
 				if (element instanceof PhraseList) {
 					PhraseList phraseList = (PhraseList) element;
 					for (int i = 0; i < phraseList.size(); i++) {
+						Phrase phrase = phraseList.get(i);
+						if (phrase.getStringValue().trim().length() == 0) {
+							LOG.debug("empty phrase skipped");
+							continue;
+						}
 						phrases.add(phraseList.get(i));
 					}
 				}
@@ -155,7 +160,7 @@ public class TableSection {
 			for (int i = 0; i < columnManagerList.size(); i++) {
 				ColumnManager columnManager = columnManagerList.get(i);
 				IntRange columnManagerRange = columnManager.getEnclosingRange();
-				if (columnManagerRange.intersectsWith(phraseRange)) {
+				if (columnManagerRange != null && columnManagerRange.intersectsWith(phraseRange)) {
 					columnManager.addPhrase(phrase);
 					existingColumnManager = columnManager;
 					break;

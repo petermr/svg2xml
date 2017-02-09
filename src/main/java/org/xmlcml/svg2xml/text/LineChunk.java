@@ -8,17 +8,26 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
 
+import nu.xom.Attribute;
+
 /** chunks in a TextLine such as Phrases and Blanks
  * 
  * @author pm286
  *
  */
 public abstract class LineChunk extends SVGG implements HorizontalElement {
+	private static final String TRUE = "true";
 	private static final Logger LOG = Logger.getLogger(LineChunk.class);
 
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
+
+	private static final String SUPERSCRIPT = "superscript";
+	private static final String SUBSCRIPT = "subscript";
+
+//	protected boolean superscript;
+//	protected boolean subscript;
 
 	public LineChunk() {
 		super();
@@ -119,4 +128,45 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	}
 	
 	protected abstract List<? extends LineChunk> getChildChunks();
+
+	public void setSuperscript(boolean superscript) {
+		if (superscript) {
+			this.addAttribute(new Attribute(SUPERSCRIPT, TRUE));
+		} else {
+			this.removeAttribute(SUPERSCRIPT);
+			this.removeAttribute(SUBSCRIPT);
+		}
+	}
+
+	private void removeAttribute(String attName) {
+		Attribute attribute = this.getAttribute(attName);
+		if (attribute != null) {
+			this.removeAttribute(attribute);
+		}
+	}
+
+	public void setSubscript(boolean subscript) {
+		if (subscript) {
+			this.addAttribute(new Attribute(SUBSCRIPT, TRUE));
+		} else {
+			this.removeAttribute(SUPERSCRIPT);
+			this.removeAttribute(SUBSCRIPT);
+		}
+	}
+	
+	public boolean hasSuperscript() {
+		return TRUE.equals(this.getAttributeValue(SUPERSCRIPT));
+	}
+
+	public boolean hasSubscript() {
+		return TRUE.equals(this.getAttributeValue(SUBSCRIPT));
+	}
+
+	public void setSuscript(SusType susType, boolean onoff) {
+		if (SusType.SUB.equals(susType)) {
+			this.setSubscript(onoff);
+		} else if (SusType.SUPER.equals(susType)) {
+			this.setSuperscript(onoff);
+		}
+	}
 }

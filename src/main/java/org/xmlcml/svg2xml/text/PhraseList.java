@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -15,6 +14,9 @@ import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlLi;
+import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
@@ -262,17 +264,25 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	}
 
 	public void setSuperscript(boolean b) {
-		for (Phrase phrase : this) {
+		for (LineChunk phrase : this) {
 			phrase.setSuperscript(b);
 		}
 	}
 
 	public void setSubscript(boolean b) {
-		for (Phrase phrase : this) {
+		for (LineChunk phrase : this) {
 			phrase.setSubscript(b);
 		}
 	}
 
-
+	public HtmlElement toHtml() {
+		HtmlSpan span = new HtmlSpan();
+//		span.appendChild(this.getStringValue());
+		for (Phrase phrase : this) {
+			span.appendChild(phrase.toHtml().copy());
+//			span.appendChild(phrase.getStringValue());
+		}
+		return span;
+	}
 
 }
