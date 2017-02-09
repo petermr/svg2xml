@@ -148,7 +148,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasAPA_Nuitjen() {
 		String root = "APA_Nuitjen";
 		String filename = ".svg";
-		annotateAndOutput(root, filename, 16, 3);
+		annotateAndOutput(root, filename, 15, 3);
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasBMJ() {
 		String root = "BMJ312529";
 		String filename = ".g.4.1.svg";
-		annotateAndOutput(root, filename, 11, 13);
+		annotateAndOutput(root, filename, 11, 11);
 	}
 
 	@Test

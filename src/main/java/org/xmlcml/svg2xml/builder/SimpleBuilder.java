@@ -67,7 +67,6 @@ import com.google.common.util.concurrent.UncheckedTimeoutException;
 public class SimpleBuilder {
 
 	public class Line2LengthComparator implements Comparator<Line2> {
-		@Override
 		public int compare(Line2 o1, Line2 o2) {
 			return (int) (o1.getLength() - o2.getLength());
 		}

@@ -72,6 +72,7 @@ public class TableDemos {
 	/** iterates over all "image.g.d.d.svg" in directory and identifies those with "Table d"
 	 * 
 	 */
+	@Ignore // files have gone walkabout
 	public void testFindTable() {
 		File svgDir = ELS_DIR;
 		String[] roots = {
@@ -124,6 +125,7 @@ public class TableDemos {
 	}
 	
 	@Test
+	@Ignore // cannot find
 	public void testCreateTables0415() throws IOException {
 		File svgDir = ELS_DIR;
 		String root = "0415";
@@ -201,6 +203,7 @@ public class TableDemos {
 	 *  "image.g.d.d.svg" in directory and identifies those with "Table d"
 	 * 
 	 */
+	@Ignore // cannot find table
 	public void testFindTablesInArticlesELS() {
 		String[] roots = {
 				"0415", 
@@ -233,6 +236,7 @@ public class TableDemos {
 	 *  "image.g.d.d.svg" in directory and identifies those with "Table d"
 	 * 
 	 */
+	@Ignore // missing files
 	public void testFindTablesInArticlesManyPublishers() {
 		String[] roots;
 		
@@ -376,6 +380,7 @@ createHTML(LB_DIR, roots);
 	}
 	
 	@Test
+	@Ignore // missing files
 	public void testTidyHtmlWiley() throws IOException {
 		String root = "Wiley44386";
 		String filename = "image.g.4.1.svg";

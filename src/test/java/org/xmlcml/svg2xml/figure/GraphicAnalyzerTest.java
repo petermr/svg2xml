@@ -91,7 +91,8 @@ public class GraphicAnalyzerTest {
 		TextAnalyzer textAnalyzer = graphicAnalyzer.getRot0TextAnalyzer();
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		HtmlElement htmlElement = textStructurer.createHtmlElement();
-		SVGUtil.debug(htmlElement, TEXT+"/rot0.html", 1);
+		// missing?
+//		SVGUtil.debug(htmlElement, TEXT+"/rot0.html", 1);
 		Assert.assertTrue("horizontal", 
 				htmlElement.toXML().startsWith(
 						"<div xmlns=\"http://www.w3.org/1999/xhtml\"><i>Luscinia  </i>" +

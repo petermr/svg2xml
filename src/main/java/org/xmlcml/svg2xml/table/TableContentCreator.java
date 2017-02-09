@@ -51,7 +51,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private static final String TABLE_BODY = "table.body";
 	private static final String TABLE_HEADER = "table.header";
 	private static final String TABLE_TITLE = "table.title";
-	static final String DOT_ANNOT_SVG = ".annot.svg";
+	public static final String DOT_ANNOT_SVG = ".annot.svg";
 	private static final String DOT_PNG = ".png";
 
 	private List<HorizontalRuler> rulerList;

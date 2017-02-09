@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
@@ -62,6 +63,7 @@ public class LayoutDemos {
 	}
 
 	@Test
+	@Ignore // files are lost?
 	public void analyse0415Table() {
 		String[] fileNames = {
 			"els/0415/image.g.4.4.svg", 
@@ -83,6 +85,7 @@ public class LayoutDemos {
 	}
 
 	@Test
+	@Ignore // files are lost
 	public void analyseAllImageChunks() {
 		String[] roots = {
 				"0415", 
