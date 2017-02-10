@@ -20,7 +20,7 @@ public class SubSuperscriptTest {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		PhraseListList phraseListList = textStructurer.getPhraseListList();
 		phraseListList.applySubAndSuperscripts();
-		LOG.debug(phraseListList.getStringValue());
+		LOG.trace(phraseListList.getStringValue());
 	}
 
 	@Test
@@ -29,6 +29,6 @@ public class SubSuperscriptTest {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		PhraseListList phraseListList = textStructurer.getPhraseListList();
 		phraseListList.applySubAndSuperscripts();
-		LOG.debug(phraseListList.getStringValue());
+		LOG.trace(phraseListList.getStringValue());
 	}
 }

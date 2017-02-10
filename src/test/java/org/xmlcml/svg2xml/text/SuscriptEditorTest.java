@@ -124,7 +124,7 @@ public class SuscriptEditorTest {
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
 		PhraseListList phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
-		LOG.debug(">pp>"+phraseListList);
+		LOG.trace(">pp>"+phraseListList);
 		
 	}
 
@@ -134,7 +134,7 @@ public class SuscriptEditorTest {
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS_SO4);
 		PhraseListList phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
-		LOG.debug(">pp>"+phraseListList);
+		LOG.trace(">pp>"+phraseListList);
 		
 	}
 

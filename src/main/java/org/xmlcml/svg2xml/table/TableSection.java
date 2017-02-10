@@ -120,7 +120,6 @@ public class TableSection {
 					for (int i = 0; i < phraseList.size(); i++) {
 						Phrase phrase = phraseList.get(i);
 						if (phrase.getStringValue().trim().length() == 0) {
-							LOG.debug("empty phrase skipped");
 							continue;
 						}
 						phrases.add(phraseList.get(i));
@@ -150,7 +149,7 @@ public class TableSection {
 
 	protected void createSortedColumnManagerListFromUnassignedPhrases(List<Phrase> currentPhrases) {
 		if (currentPhrases == null) {
-			LOG.warn("no current phrases");
+			LOG.trace("no current phrases");
 			return;
 		}
 		columnManagerList = new ArrayList<ColumnManager>();
@@ -199,7 +198,6 @@ public class TableSection {
 		sb.append("{"+MultisetUtil.getDoubleEntriesSortedByCount(fontSizeSet).toString()+"}");
 		sb.append("{"+MultisetUtil.getEntriesSortedByCount(fontWeightSet).toString()+"}");
 		sb.append("{"+MultisetUtil.getEntriesSortedByCount(fontStyleSet).toString()+"}");
-		LOG.debug(sb.toString());
 		return sb.toString();
 	}
 

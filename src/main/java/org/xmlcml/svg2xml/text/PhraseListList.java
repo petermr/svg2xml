@@ -255,12 +255,12 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 				double fontRatio = fontSize / lastFontSize;
 				deltaY = y - lastY;
 				if (deltaY > 0 && deltaY < fontSize * SUPERSCRIPT_Y_RATIO && fontRatio >= 1.0) {
-					LOG.debug("SUPER "+lastPhraseList.getStringValue()+" => "+phraseList.getStringValue());
+					LOG.trace("SUPER "+lastPhraseList.getStringValue()+" => "+phraseList.getStringValue());
 					lastPhraseList.setSuperscript(true);
 					phraseList.mergeByXCoord(lastPhraseList);
 					removeList.add(lastPhraseList);
 				} else if (deltaY > 0 && deltaY < lastFontSize * SUBSCRIPT_Y_RATIO && fontRatio <= 1.0) {
-					LOG.debug("SUB "+phraseList.getStringValue()+" => "+lastPhraseList.getStringValue());
+					LOG.trace("SUB "+phraseList.getStringValue()+" => "+lastPhraseList.getStringValue());
 					phraseList.setSubscript(true);
 					lastPhraseList.mergeByXCoord(phraseList);
 					removeList.add(phraseList);

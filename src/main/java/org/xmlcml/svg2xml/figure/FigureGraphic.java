@@ -58,7 +58,6 @@ public class FigureGraphic extends FigureComponent {
 			
 			HiddenGraphics hg = createHiddenGraphics();
 			try {
-				LOG.debug("PNG "+pngName);
 				File pngFile = new File(pngName);
 				pngFile.getParentFile().mkdirs();
 				hg.write(SVGImage.IMAGE_PNG, pngFile);

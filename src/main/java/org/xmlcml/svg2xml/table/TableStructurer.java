@@ -169,7 +169,7 @@ public class TableStructurer {
 				titleBBoxManager.add(bbox);
 			}
 		} else {
-			LOG.debug("NO table sections");
+			LOG.trace("NO table sections");
 			return "Null title";
 		}
 		
@@ -453,9 +453,9 @@ public class TableStructurer {
 			Real2Range bbox1 = outerRect.getBoundingBox();
 			if (bbox1.isEqualTo(bbox, epsilon)) {
 				if (shapeList.remove(outerRect)) {
-					LOG.debug("removed outerRect: "+outerRect.toXML());
+					LOG.trace("removed outerRect: "+outerRect.toXML());
 				} else {
-					LOG.debug("failed to remove outerRect "+outerRect.hashCode());
+					LOG.trace("failed to remove outerRect "+outerRect.hashCode());
 				}
 			}
 		} 
@@ -599,7 +599,7 @@ public class TableStructurer {
 	 * @return
 	 */
 	public List<HorizontalRuler> getHorizontalRulerList(boolean merge, double eps) {
-		LOG.debug("====HRuler===");
+		LOG.trace("====HRuler===");
 		if (horizontalRulerList != null && merge) {
 			horizontalRulerList = addRulerOrCombineVerticalOverlaps();
 			horizontalRulerList = joinHorizontallyTouchingRulers1();
@@ -644,7 +644,6 @@ public class TableStructurer {
 				double width = lastRuler == null || lastRuler.getWidth() == null ? deltaY : Math.max(deltaY, lastRuler.getWidth());
 				width = horizontalRuler == null || horizontalRuler.getWidth() == null ? width : Math.max(width, horizontalRuler.getWidth());
 				lastRuler.setWidth(width);
-				LOG.debug("COMPRESSED: ");
 				multipleRuler = false;
 			} 
 		}
@@ -840,7 +839,7 @@ public class TableStructurer {
 			throw new RuntimeException("null RangeArray");
 		}
 		if (rangeArray.size() != 5) {
-			LOG.debug("table too complex: "+rangeArray.size());
+			LOG.warn("table too complex: "+rangeArray.size());
 			return null;
 		}
 		for (int i = 0; i < rangeArray.size(); i++) {

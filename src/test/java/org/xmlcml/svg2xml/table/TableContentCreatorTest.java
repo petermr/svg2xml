@@ -159,7 +159,7 @@ public class TableContentCreatorTest {
 		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getTableFooter().getOrCreatePhraseLists());
 		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
 		suscriptEditor.mergeAll();
-		LOG.debug("PLL"+phraseListList);
+		LOG.trace("PLL"+phraseListList);
 	}
 	
 	@Test
@@ -174,11 +174,11 @@ public class TableContentCreatorTest {
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
 		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getTableFooter().getOrCreatePhraseLists());
-		LOG.debug(phraseListList.toString());
+		LOG.trace(phraseListList.toString());
 		Assert.assertEquals(5, phraseListList.size());
 		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
 		suscriptEditor.mergeAll();
-		LOG.debug("PLL"+phraseListList);
+		LOG.trace("PLL"+phraseListList);
 		XMLUtil.debug(phraseListList.toHtml(), new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+".html"), 1);
 	}
 	

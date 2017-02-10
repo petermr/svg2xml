@@ -80,7 +80,7 @@ public class TextUtil {
 //			double scaledWidth = unscaledWidth * fontSize;
 			String newString = Normalizer.normalize(string, Normalizer.Form.NFKC);
 			if (" ff fi ffi fl ffl ct ".indexOf(" "+newString+" ") == -1) {
-				LOG.debug(">replaced>"+string+"/"+(int)string.charAt(0)+"; by "+newString+"/"+(int)newString.charAt(0));
+				LOG.trace(">replaced>"+string+"/"+(int)string.charAt(0)+"; by "+newString+"/"+(int)newString.charAt(0));
 			}
 			Real2 xy0 = svgText.getXY();
 			int len = newString.length();

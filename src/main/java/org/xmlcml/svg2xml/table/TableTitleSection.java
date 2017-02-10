@@ -41,7 +41,7 @@ public class TableTitleSection extends TableSection {
 		SVGG g = new SVGG();
 		g.setClassName(TITLE_TITLE);
 		if (boundingBox == null) {
-			LOG.warn("no bounding box");
+			LOG.trace("no bounding box");
 		} else {
 			String title = "TITLE: "+this.getFontInfo()+" //" +this.getStringValue();
 			SVGTitle svgTitle = new SVGTitle(title);

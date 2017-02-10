@@ -226,7 +226,7 @@ public class ColumnManager {
 			}
 			String iPhraseS = columnPhrases.get(iPhrase).getStringValue();
 			if (iPhraseS == null || iPhraseS.trim().length() == 0) {
-				LOG.warn("empty phrase); possible problem");
+				LOG.trace("empty phrase; possible problem");
 			} else {
 				String title = colno+"."+iPhrase+"/"+columnPhrases.get(iPhrase).getStringValue();
 				SVGTitle svgTitle = new SVGTitle(title);

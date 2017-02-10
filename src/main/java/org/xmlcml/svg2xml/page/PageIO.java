@@ -214,7 +214,6 @@ public class PageIO {
 				File outputDir = (rawSVGDocumentDir == null) ? createFixmeDir() : rawSVGDocumentDir;
 				outputDir.mkdirs();
 				File svgFile = new File(outputDir, pageRoot+SVG2XMLConstantsX.DOT_SVG);
-				LOG.debug("Path: "+svgFile.getAbsolutePath());
 				SVGUtil.debug(finalSVGPage, new FileOutputStream(svgFile), 1);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
@@ -257,7 +256,7 @@ public class PageIO {
 	public String createSvgFilename(String chunkId) {
 		File baseFile = (rawSVGDocumentDir == null) ? createFixmeDir() : rawSVGDocumentDir;
 		String filename = createFilename(baseFile, IMAGE, chunkId, DOT_SVG);
-		LOG.debug("generated filename "+filename);
+		LOG.trace("generated filename "+filename);
 		return filename;
 	}
 	
@@ -282,7 +281,7 @@ public class PageIO {
 				if (parentFile != null) {
 					file.getParentFile().mkdirs();
 				}
-				LOG.debug("writing to "+file);
+				LOG.trace("writing to "+file);
 				Element elementCopy = (Element) element.copy();
 				SVGSerializer svgSerializer = new SVGSerializer(new FileOutputStream(file));
 				svgSerializer.write(XMLUtil.ensureDocument(elementCopy));

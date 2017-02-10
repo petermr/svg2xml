@@ -148,7 +148,6 @@ public class FlowStructurerTest {
 		}
 		
 		for (SVGShape shape : shapeList) {
-			LOG.debug(shape);
 			if (shape instanceof SVGRect) {
 				shape.setFill("cyan");
 				shape.setOpacity(0.2);

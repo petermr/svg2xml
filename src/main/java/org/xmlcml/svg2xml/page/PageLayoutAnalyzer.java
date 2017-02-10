@@ -78,7 +78,7 @@ public class PageLayoutAnalyzer {
 	}
 	
 	public void createContent(File inputFile) {
-		LOG.debug(inputFile.getAbsolutePath());
+		LOG.trace(inputFile.getAbsolutePath());
 		this.inputFile = inputFile;
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		SVGElement chunk = textStructurer.getSVGChunk();
@@ -92,7 +92,7 @@ public class PageLayoutAnalyzer {
 		}
 
 		phraseListList = textStructurer.getPhraseListList();
-		LOG.debug("reading ... "+phraseListList.toXML());
+		LOG.trace("reading ... "+phraseListList.toXML());
 		textStructurer.condenseSuscripts();
 		phraseListList.format(3);
 		tableStructurer = textStructurer.createTableStructurer();
@@ -115,7 +115,6 @@ public class PageLayoutAnalyzer {
 			String textS = text.getText();
 			if (textS == null || textS.trim().length() == 0) {
 				text.detach();
-				LOG.debug("Deleted whitespace");
 			}
 		}
 	}

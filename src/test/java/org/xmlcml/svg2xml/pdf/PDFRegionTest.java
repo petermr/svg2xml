@@ -49,11 +49,9 @@ public class PDFRegionTest {
 			String bboxRef, int nelems, boolean omitRect) {
 		Real2Range bbox = rect0.getBoundingBox().format(1);
 		Assert.assertEquals(bboxRef, bbox.toString());
-		LOG.debug(bbox);
 		if (omitRect) {
 			bbox = bbox.getReal2RangeExtendedInX(SHRINK, SHRINK);
 			bbox = bbox.getReal2RangeExtendedInY(SHRINK, SHRINK);
-			LOG.debug(bbox);
 		}
 		List<SVGElement> svgElements = SVGUtil.findElementsIntersecting(bbox, svgElements1);
 		Assert.assertEquals(nelems,  svgElements.size());

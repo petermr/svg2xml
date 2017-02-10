@@ -62,7 +62,7 @@ public class ColumnGroup {
 
 	public void add(HorizontalRuler ruler) {
 		if (this.ruler != null) {
-			LOG.warn("Existing ruler will be overwritten");
+//			LOG.warn("Existing ruler will be overwritten");
 		}
 		this.ruler = ruler;
 		Real2Range bbox = ((SVGElement)ruler).getBoundingBox();

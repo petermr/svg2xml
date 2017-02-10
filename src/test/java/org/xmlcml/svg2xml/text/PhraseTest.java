@@ -55,7 +55,7 @@ public class PhraseTest {
 		t11.setFontSize(8.0);
 		Word w11 = new Word(t11);
 		Phrase p11 = new Phrase(w11);
-		LOG.debug(""+p11.getOrCreateBoundingBox());
+		LOG.trace(""+p11.getOrCreateBoundingBox());
 		List<Word> wordList = p11.getOrCreateWordList();
 		Assert.assertEquals(1, wordList.size());
 	}

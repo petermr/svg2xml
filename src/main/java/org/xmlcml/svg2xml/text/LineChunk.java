@@ -26,9 +26,6 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	private static final String SUPERSCRIPT = "superscript";
 	private static final String SUBSCRIPT = "subscript";
 
-//	protected boolean superscript;
-//	protected boolean subscript;
-
 	public LineChunk() {
 		super();
 	}
@@ -69,7 +66,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 				if (s == null) {
 					ss = s;
 				} else if (!s.equals(ss)) {
-					LOG.warn("Font Family changed "+ss+" => "+s);
+					LOG.trace("Font Family changed "+ss+" => "+s);
 				}
 			}
 		}
@@ -86,7 +83,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 				if (s == null) {
 					ss = s;
 				} else if (!s.equals(ss)) {
-					LOG.warn("Font Size changed "+ss+" => "+s);
+					LOG.trace("Font Size changed "+ss+" => "+s);
 				}
 			}
 		}
@@ -103,7 +100,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 				if (s == null) {
 					ss = s;
 				} else if (!s.equals(ss)) {
-					LOG.warn("Font Weight changed "+ss+" => "+s);
+					LOG.trace("Font Weight changed "+ss+" => "+s);
 				}
 			}
 		}
@@ -120,7 +117,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 				if (s == null) {
 					ss = s;
 				} else if (!s.equals(ss)) {
-					LOG.warn("Font Style changed "+ss+" => "+s);
+					LOG.trace("Font Style changed "+ss+" => "+s);
 				}
 			}
 		}

@@ -254,7 +254,7 @@ public class TableMarkupTest {
 		File inputFile = new File(Fixtures.TABLE_DIR, inputFilename);
 		File outputFile = new File("target/table/marked/"+root+"/table"+filename);
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
-		LOG.debug("reading "+inputFilename);
+		LOG.trace("reading "+inputFilename);
 		SVGElement svgChunk = tableContentCreator.annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 		TableHeaderSection tableHeader = tableContentCreator.getTableHeader();

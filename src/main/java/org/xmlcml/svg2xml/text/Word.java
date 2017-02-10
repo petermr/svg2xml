@@ -342,7 +342,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 				String style1 = childTextList.get(i).getFontStyle();
 				if (style1 != null) {
 					if (!style1.equals(style)) {
-						LOG.debug("changed style in word from "+style+"=>"+style1+"/"+this.getStringValue());
+						LOG.trace("changed style in word from "+style+"=>"+style1+"/"+this.getStringValue());
 						style = FontStyle.NORMAL.toString();
 						break;
 					}
@@ -365,7 +365,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 				String family1 = childTextList.get(i).getFontFamily();
 				if (family1 != null) {
 					if (!family1.equals(family)) {
-						LOG.debug("changed family in word from "+family+"=>"+family1+"/"+this.getStringValue());
+						LOG.trace("changed family in word from "+family+"=>"+family1+"/"+this.getStringValue());
 						break;
 					}
 				}
@@ -387,7 +387,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 				String fontName1 = childTextList.get(i).getSVGXFontName();
 				if (fontName1 != null) {
 					if (!fontName1.equals(fontName)) {
-						LOG.debug("changed fontName in word from "+fontName+"=>"+fontName1+"/"+this.getStringValue());
+						LOG.trace("changed fontName in word from "+fontName+"=>"+fontName1+"/"+this.getStringValue());
 						break;
 					}
 				}
@@ -409,7 +409,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 				String weight1 = childTextList.get(i).getFontWeight();
 				if (weight1 != null) {
 					if (!weight1.equals(weight)) {
-						LOG.debug("changed weight in word from "+weight+"=>"+weight1+"/"+this.getStringValue());
+						LOG.trace("changed weight in word from "+weight+"=>"+weight1+"/"+this.getStringValue());
 						weight = FontWeight.NORMAL.toString();
 						break;
 					}

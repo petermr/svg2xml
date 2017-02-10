@@ -241,7 +241,7 @@ public class TextStructurerTest {
 		TextStructurer textStructurer2 = new TextStructurer();
 		textStructurer2.setRotatable(true);
 		SVGG rotatedVerticalText = textStructurer2.createChunkFromVerticalText(new Real2(200., 200.), new Angle(-1.0 * Math.PI / 2));
-		LOG.debug("rot text "+rotatedVerticalText.toXML());
+		LOG.trace("rot text "+rotatedVerticalText.toXML());
 //		LOG.error("FAILS");
 		if (1 == 1) {
 			LOG.warn("aborting as tests not finished");
@@ -833,9 +833,9 @@ public class TextStructurerTest {
 		textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(rotatedFile);
 		textLineList = textStructurer.getTextLineList();
-		LOG.debug("TXT>"+textLineList.size());
+		LOG.trace("TXT>"+textLineList.size());
 		for (TextLine textLine : textLineList) {
-			LOG.debug("LINE: "+textLine);
+			LOG.trace("LINE: "+textLine);
 		}
 		textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
 		textStructurer.formatTextLineTransforms(5);
@@ -847,7 +847,6 @@ public class TextStructurerTest {
 			}
 		}
 		File outputFile1 = new File(OUTPUT_TEXT_DIR, "textLinesRotate1.svg");
-		LOG.debug("SECOND "+outputFile1);
 		SVGSVG.wrapAndWriteAsSVG(g, outputFile1);
 	}
 

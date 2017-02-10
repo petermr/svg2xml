@@ -47,14 +47,14 @@ public class SuscriptEditor {
 	}
 
 	public PhraseList mergeSuscripts(PhraseListList phraseListList, int row0, int row1, SusType susType) {
-		LOG.debug(row0 + " ?? "+row1);
+		LOG.trace(row0 + " ?? "+row1);
 		PhraseList phraseList0 = phraseListList.get(row0);
 		PhraseList phraseList1 = phraseListList.get(row1);
 		return mergeSuscripts(susType, phraseList0, phraseList1);
 	}
 
 	public PhraseList mergeSuscripts(SusType susType, PhraseList phraseList0, PhraseList phraseList1) {
-		LOG.debug("Merging? "+phraseList0+" // "+phraseList1);
+		LOG.trace("Merging? "+phraseList0+" // "+phraseList1);
 		Double y0 = phraseList0.getY();
 		Double y1 = phraseList1.getY();
 		if (y0 == null || y1 == null) {
@@ -64,9 +64,9 @@ public class SuscriptEditor {
 		yDelta = y1 - y0; // always positive
 		double fontRatio01 = phraseList0.getFontSize() / phraseList1.getFontSize();
 		double fontRatio10 = 1.0 / fontRatio01;
-		LOG.debug(yDelta + " || "+fontRatio01);
+		LOG.trace(yDelta + " || "+fontRatio01);
 		PhraseList newPhraseList = null;
-		LOG.debug("metrics ==="+susType+"====> "+yDelta+" / "+phraseList0.getFontSize()+" | "+fontRatio01+" ( "+minSuperFontRatio+ " - "+maxSuperFontRatio+")");
+		LOG.trace("metrics ==="+susType+"====> "+yDelta+" / "+phraseList0.getFontSize()+" | "+fontRatio01+" ( "+minSuperFontRatio+ " - "+maxSuperFontRatio+")");
 		if (SusType.SUPER.equals(susType)) {
 			if (fontRatio01 < minSuperFontRatio || fontRatio01 > maxSuperFontRatio) {
 				return null;
@@ -83,7 +83,7 @@ public class SuscriptEditor {
 				return null;
 			}
 		}
-		LOG.debug(susType+" \n"+phraseList0.getStringValue() + "\n"+phraseList1.getStringValue());
+		LOG.trace(susType+" \n"+phraseList0.getStringValue() + "\n"+phraseList1.getStringValue());
 		int index0 = 0;
 		int index1 = 0;
 		newPhraseList = new PhraseList();
@@ -117,8 +117,8 @@ public class SuscriptEditor {
 				index1++;
 			}
 		}
-		LOG.debug(newPhraseList.toXML());
-		LOG.debug(newPhraseList.getStringValue());
+		LOG.trace(newPhraseList.toXML());
+		LOG.trace(newPhraseList.getStringValue());
 		return newPhraseList;
 	}
 
@@ -128,23 +128,23 @@ public class SuscriptEditor {
 		for (int i = 0; i < size - 1;) {
 			PhraseList phraseList0 = phraseListList.get(i);
 			PhraseList phraseList1 = phraseListList.get(i + 1);
-			LOG.debug("======================================================================\n"
+			LOG.trace("======================================================================\n"
 					+"SUPER "+i+"/"+size+"\n"+phraseList0+"\n"+phraseList1);
 			if (phraseList0.toString().contains("entorhinal")) {
 				int a = 1;
 				int b = a;
 			}
 			if (mergePhraseLists(SusType.SUPER, i, i+1)) {
-				LOG.debug("MERGED SUPER");
+				LOG.trace("MERGED SUPER");
 				size--;
 			} else {
 //				i++;
 			};
 			if (i < size - 1) {
-				LOG.debug("======================================================================\n"
+				LOG.trace("======================================================================\n"
 					+ "SUB "+i+"/"+size+"\n"+phraseListList.get(i)+"\n"+phraseListList.get(i + 1));
 				if (mergePhraseLists(SusType.SUB, i, i + 1)) {
-					LOG.debug("MERGED SUB");
+					LOG.trace("MERGED SUB");
 					size--;
 				}
 //				i++;
@@ -158,7 +158,7 @@ public class SuscriptEditor {
 		boolean merged = false;
 		PhraseList phraseList0 = phraseListList.get(line0);
 		PhraseList phraseList1 = phraseListList.get(line1);
-		LOG.debug(line0+"???"+line1);
+		LOG.trace(line0+"???"+line1);
 		PhraseList newPhraseList = mergeSuscripts(susType, phraseList0, phraseList1);
 		if (newPhraseList != null) {
 			PhraseList mainPhraseList = (SusType.SUPER.equals(susType)) ? phraseList1 : phraseList0;
@@ -168,13 +168,6 @@ public class SuscriptEditor {
 		}
 		return merged;
 	}
-
-//	private Metrics getMetrics(PhraseList phraseList) {
-//		Metrics metrics = new Metrics();
-//		metrics.fontSize = phraseList.getFontSize();
-//		metrics.y = phraseList.getY();
-//		return metrics;
-//	}
 
 	public PhraseListList getPhraseListList() {
 		return phraseListList;
@@ -248,9 +241,3 @@ public class SuscriptEditor {
 		this.maxSuperOffsetRatio = maxSuperOffsetRatio;
 	}
 }
-//class Metrics {
-//
-//	public Double y;
-//	public Double fontSize;
-//	
-//}

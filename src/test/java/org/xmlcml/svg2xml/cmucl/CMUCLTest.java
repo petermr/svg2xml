@@ -140,7 +140,7 @@ public class CMUCLTest {
 			TableContentCreator tableContentCreator = new TableContentCreator();
 			HtmlHtml html = tableContentCreator.createHTMLFromSVG(tableFile);
 			File outfile = new File(outDir, tableFile.getName()+".html");
-			LOG.debug("writing: "+outfile);
+			LOG.trace("writing: "+outfile);
 			try {
 				XMLUtil.debug(html, outfile, 1);
 			} catch (IOException e) {
@@ -184,7 +184,6 @@ public class CMUCLTest {
 				g.appendChild(shape);
 				classSet.add(shape.getClass().getSimpleName());
 			}
-			LOG.debug(root+": "+classSet);
 			SVGSVG.wrapAndWriteAsSVG(g, new File(outDir, root+"/"+fileroot+".shapes.svg"));
 		}
 	}
@@ -338,14 +337,14 @@ public class CMUCLTest {
 		File chDir = new File(CM_UCL_DIR, "corpus-oa");
 		File[] ctrees = pmrDir.listFiles();
 		for (File ctree : ctrees) {
-			LOG.debug("*************"+ctree+"**************");
+			LOG.trace("*************"+ctree+"**************");
 			File svgDir = new File(ctree, "svg/");
 			List<File> svgFiles = new ArrayList<File>(FileUtils.listFiles(svgDir, new String[]{"svg"}, false));
 			File tableDir = new File(ctree, "pdftable/");
 			tableDir.mkdirs();
 			for (File svgFile : svgFiles) {
 				if (svgFile.getName().startsWith("table")) {
-					LOG.debug("============="+svgFile+"=============");
+					LOG.trace("============="+svgFile+"=============");
 					TableContentCreator tableContentCreator = new TableContentCreator(); 
 					tableContentCreator.markupAndOutputTable(svgFile, tableDir);
 					String root = FilenameUtils.getBaseName(svgFile.toString());
@@ -407,7 +406,7 @@ class CopyFileVisitor extends SimpleFileVisitor<Path> {
 		if (fileFile.getName().endsWith(TableContentCreator.DOT_ANNOT_SVG)) {
 			// skip SVG
 			copy = false;
-			LOG.debug("skipped "+file);
+			LOG.trace("skipped "+file);
 		} else if (!targetFile.toFile().exists()) {
 			Files.copy(file, targetFile);
 		}

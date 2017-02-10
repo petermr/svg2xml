@@ -45,7 +45,6 @@ public class TableGridFactory {
 			tableGrid = null;
 			createHorizontalIntRanges();
 			createVerticalIntRanges();
-			LOG.debug("Range: "+horizontalTotalRange+" / "+verticalTotalRange);
 			createSimpleGrid();
 		}
 		return tableGrid;
@@ -58,24 +57,16 @@ public class TableGridFactory {
 		for (Multiset.Entry<IntRange> horizontalEntry : horizontalIntRangeEntryList) {
 			int verticalCount = horizontalEntry.getCount();
 			if (verticalCount != rowCount + 1) { 
-				LOG.debug("non-simple table: horizontal "+horizontalEntry.getElement()+" count("+verticalCount+") should be vertical "+(rowCount + 1));
-				LOG.debug(horizontalEntry);
 				matched = false;
 			}
 		}
 		for (Multiset.Entry<IntRange> verticalEntry : verticalIntRangeEntryList) {
 			int horizontalCount = verticalEntry.getCount();
 			if (horizontalCount != columnCount + 1) { 
-				LOG.debug("non-simple table: vertical "+verticalEntry.getElement()+" count("+horizontalCount+") should be horizontal "+(columnCount + 1));
-				LOG.debug(verticalEntry);
 				matched = false;
 			}
 		}
-		if (!matched) {
-			LOG.debug("horizontal "+horizontalIntRangeEntryList);
-			LOG.debug("vertical "+verticalIntRangeEntryList);
-		}
-		LOG.debug("SIMPLE TABLE: cols ("+columnCount+"), rows ("+rowCount+")");
+		LOG.trace("SIMPLE TABLE: cols ("+columnCount+"), rows ("+rowCount+")");
 	}
 
 	private void createHorizontalIntRanges() {

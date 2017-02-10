@@ -332,7 +332,7 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		}
 		if (hasSubscript()) {
 			sb.append(SUB_END);
-			LOG.debug("SUB: "+sb.toString());
+			LOG.trace("SUB: "+sb.toString());
 		}
 		this.setStringValueAttribute(sb.toString());
 		return sb.toString();

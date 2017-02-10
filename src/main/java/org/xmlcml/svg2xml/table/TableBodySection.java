@@ -67,7 +67,7 @@ public class TableBodySection extends TableSection {
 		for (int i = 0; i < indentArray.size(); i++) {
 			phrasei = columnManager0.getPhrase(i);
 			if (phrasei.getStringValue().trim().length() == 0) {
-				LOG.debug("EMPTY phrase");
+				LOG.trace("EMPTY phrase");
 				continue;
 			}
 			double xIndent = indentArray.get(i);
@@ -84,7 +84,6 @@ public class TableBodySection extends TableSection {
 				endRange = phrasei.getY();
 				if (inIndent) {
 					RealRange range = new RealRange(startRange, endRange);
-					LOG.debug("range "+range);
 					indentRangeArray.add(range);
 				}
 				inIndent = false;
@@ -116,7 +115,6 @@ public class TableBodySection extends TableSection {
 		}
 		for (int i = 0; i < columnManagerList.size(); i++) {
 			/*RealArray indentArray = */columnManagerList.get(i).getOrCreateIndentArray();
-//			LOG.debug("indent "+indentArray.format(0));
 		}
 	}
 
@@ -152,7 +150,7 @@ public class TableBodySection extends TableSection {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_COLUMN_BOXES);
 		if (boundingBox == null) {
-			LOG.warn("no bounding box");
+			LOG.trace("no bounding box");
 		} else {
 			for (int i = 0; i < columnManagerList.size(); i++) {
 				ColumnManager columnManager = columnManagerList.get(i);
@@ -172,7 +170,7 @@ public class TableBodySection extends TableSection {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_CELL_BOXES);
 		if (boundingBox == null) {
-			LOG.warn("no bounding box");
+			LOG.trace("no bounding box");
 		} else {
 			for (int icol = 0; icol < columnManagerList.size(); icol++) {
 				ColumnManager columnManager = columnManagerList.get(icol);
@@ -188,7 +186,7 @@ public class TableBodySection extends TableSection {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_SUBTABLE_BOXES);
 		if (boundingBox == null) {
-			LOG.warn("no bounding box");
+			LOG.trace("no bounding box");
 		} else {
 			// for a single indent
 			if (columnManager0 != null) {

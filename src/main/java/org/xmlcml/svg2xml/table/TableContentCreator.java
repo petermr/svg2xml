@@ -403,7 +403,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		String outRoot = inputFile.getName();
 		outRoot = outRoot.substring(0, outRoot.length() - DOT_PNG.length());
 		File outputFile = new File(outDir, outRoot+DOT_ANNOT_SVG);
-		LOG.debug("reading "+inputFile);
+		LOG.trace("reading "+inputFile);
 		SVGElement svgChunk = annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 	}

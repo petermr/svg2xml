@@ -106,7 +106,7 @@ public class TableHeaderSection extends TableSection {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_COLUMN_BOXES);
 		if (boundingBox == null) {
-			LOG.warn("no bounding box");
+			LOG.trace("no bounding box");
 		} else {
 			RealRange yRange = boundingBox.getYRange();
 			for (int i = 0; i < columnManagerList.size(); i++) {
