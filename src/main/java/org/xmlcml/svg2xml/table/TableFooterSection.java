@@ -50,7 +50,7 @@ public class TableFooterSection extends TableSection {
 		SVGG g = new SVGG();
 		g.setClassName(FOOTER_TITLE);
 		if (boundingBox == null) {
-			LOG.warn("no bounding box");
+			LOG.trace("no bounding box");
 		} else {
 			String title = FOOTER_TITLE+": "+this.getFontInfo()+" //" +this.getStringValue();
 			SVGTitle svgTitle = new SVGTitle("footer: "+title);
