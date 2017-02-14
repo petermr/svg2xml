@@ -20,7 +20,6 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.StyleSpans;
 import org.xmlcml.svg2xml.text.StyleSpansTest;
-import org.xmlcml.svg2xml.text.TextFixtures;
 
 
 public class PageAnalyzerTest {
@@ -34,21 +33,21 @@ public class PageAnalyzerTest {
 	@Test
 	public void test312MULT_8() {
 		String[][][] values ={
-				TextFixtures.BMC_312MULT_8_0_HTML,
-				TextFixtures.BMC_312MULT_8_1_HTML,
-				TextFixtures.BMC_312MULT_8_2_HTML,
+				org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_8_0_HTML,
+				org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_8_1_HTML,
+				org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_8_2_HTML,
 		};
 		File[] files ={
-				TextFixtures.BMC_312MULT_8_0_SVG,
-				TextFixtures.BMC_312MULT_8_1_SVG,
-				TextFixtures.BMC_312MULT_8_2_SVG,
+				org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_8_0_SVG,
+				org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_8_1_SVG,
+				org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_8_2_SVG,
 		};
-		TextFixtures.testSpans(values, files);
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, files);
 	}
 	
 	@Test
 	public void testPageAnalyzer8() {
-		PageAnalyzer pageAnalyzer = new PageAnalyzer(TextFixtures.createSVG(TextFixtures.BMC_312MULT_8_SVG), null);
+		PageAnalyzer pageAnalyzer = new PageAnalyzer(org.xmlcml.svg2xml.text.TextFixtures.createSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_8_SVG), null);
 		//PageAnalyzer pageAnalyzer = new PageAnalyzer(this, pageCounter);
 		pageAnalyzer.splitChunksAndCreatePage();
 		/*pageAnalyzer.analyze();

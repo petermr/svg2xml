@@ -21,7 +21,6 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.ScriptWord;
 import org.xmlcml.svg2xml.text.StyleSpans;
-import org.xmlcml.svg2xml.text.TextFixtures;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 public class ScriptContainerTest {
@@ -34,11 +33,11 @@ public class ScriptContainerTest {
 	@Test
 	public void test3WordContainer() {
 		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_1SA_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		Assert.assertEquals("1a", 
 				"TextStructurer: 1" + lineSeparator + "chars: 9 Y: 39.615 fontSize: 7.97 >>Page6of14" + lineSeparator,
 				textContainer.toString());
-		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(TextFixtures.BMC_312_6_1SA_SVG);
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
 		Assert.assertEquals("1a", "Page6of14", sc.getRawValue());
@@ -47,9 +46,9 @@ public class ScriptContainerTest {
 	
 	@Test
 	public void test4WordContainerScriptList() {
-		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(TextFixtures.BMC_312_6_1SA_SVG);
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_1SA_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
 		List<ScriptLine> scriptList = sc.getScriptLineList();
@@ -59,9 +58,9 @@ public class ScriptContainerTest {
 
 	@Test
 	public void testGet4Words() {
-		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(TextFixtures.BMC_312_6_1SA_SVG);
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_1SA_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
 		List<ScriptLine> scriptLineList = sc.getScriptLineList();
@@ -76,7 +75,7 @@ public class ScriptContainerTest {
 
 	@Test
 	public void testGetTitle() {
-		testScript(TextFixtures.BMC_312_6_0SA_SVG, new String[][] {
+		testScript(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA_SVG, new String[][] {
 				{"Hiwatashi", "et", "al.", "BMC", "Evolutionary", "Biology", "2011,", "11:312"},
 				{"http://www.biomedcentral.com/1471-2148/11/312", },
 				});
@@ -85,14 +84,14 @@ public class ScriptContainerTest {
 	/** this is not right - shouldn't split after slash */
 	@Test
 	public void testBadSlash() {
-		testScript(TextFixtures.BMC_312_6_0SA1_SVG, new String[][] {
+		testScript(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA1_SVG, new String[][] {
 				{"http://www.biomedcentral.com/1471-2148/11/312" }
 				});
 	}
 
 	@Test
 	public void testGetShortPara() {
-		testScript(TextFixtures.BMC_312_6_3SA_SVG, new String[][] {
+		testScript(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_3SA_SVG, new String[][] {
 				{"genes", "in", "the", "exons", "and", "introns", "in", "these", "individuals", "was"},
 				{"essentially", "the", "same", "as", "the", "pattern", "shown", "in", "Figure", "1."}
 		});
@@ -100,7 +99,7 @@ public class ScriptContainerTest {
 
 	@Test
 	public void testGetShortHeading0() {
-		testScript(TextFixtures.BMC_312_6_4SA_SVG, new String[][] {
+		testScript(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_4SA_SVG, new String[][] {
 				{"Nucleotide", "diversity", "of", "L", "and", "M", "opsin", "genes", "within"},
 				{"species"}
 		}
@@ -112,7 +111,7 @@ public class ScriptContainerTest {
 	 * 
 	 */
 	public void testGetLargePara() {
-		testScript(TextFixtures.BMC_312_6_4SB_SVG, new String[][] {
+		testScript(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_4SB_SVG, new String[][] {
 				{"Figure", "2", "summarizes", "the", "nucleotide", "diversity", "of", "the", "L"},
 				{"and", "M", "opsin", "exons", "and", "introns", "and", "of", "the", "neutral", "refer-"},
 				{"ences", "(see", "Additional", "file", "1,", "Tables", "S4", "and", "S5", "for", "the"},
@@ -129,7 +128,7 @@ public class ScriptContainerTest {
 
 	@Test
 	public void testGetLargePara3() {
-		testScript(TextFixtures.BMC_312_6_4SB3_SVG, new String[][] {
+		testScript(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_4SB3_SVG, new String[][] {
 				{"ences", "(see", "Additional", "file", "1,", "Tables", "S4", "and", "S5", "for", "the"},
 		}
 		);
@@ -137,9 +136,9 @@ public class ScriptContainerTest {
 	
 	@Test
 	public void testGetSpans0() {
-		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(TextFixtures.BMC_312_6_0SA0_SVG);
+		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA0_SVG);
 		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_312_6_0SA0_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA0_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
 		List<ScriptLine> scriptLineList = sc.getScriptLineList();
@@ -150,8 +149,8 @@ public class ScriptContainerTest {
 
 	@Test
 	public void testGetSpans() {
-		String[][] values = TextFixtures.BMC_312MULT_1_0_HTML;
-		TextFixtures.testSpans(values, TextFixtures.BMC_312_6_0SA_SVG);
+		String[][] values = org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_0_HTML;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA_SVG);
 	}
 
 	@Test
@@ -190,8 +189,8 @@ public class ScriptContainerTest {
 				{"entire 3.6~3.9-kb region encompassing exon 3 to exon 5"},
 				{"(Table 1)."},
 		};
-		File file = TextFixtures.BMC_312_2_4SC_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_2_4SC_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 
 	@Test
@@ -200,8 +199,8 @@ public class ScriptContainerTest {
 				{"<B>Nucleotide diversity of L and M opsin genes within</B>"},
 				{"<B>species</B>"},
 		};
-		File file = TextFixtures.BMC_312_6_4SA_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_4SA_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -229,8 +228,8 @@ public class ScriptContainerTest {
 	{"9. Chan T, Lee M, Sakmar TP: ", "Introduction of hydroxyl-bearing amino acids"},
 	{"causes bathochromic spectral shifts in rhodopsin. Amino acid"},
 		};
-		File file = TextFixtures.BMC_312_12_7SB_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_12_7SB_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 
 	@Test
@@ -240,8 +239,8 @@ public class ScriptContainerTest {
 	{"Dyah Perwitasari-Farajallah", "3,4", ", Suchinda Malaivijitnond", "5", ", Boripat Siriaroonrat", "6", ", Hiroki Oota", "1,9", ", Shunji Goto", "7,10 ", "and"},
 	{"Shoji Kawamura", "1*"},
 		};
-		File file = TextFixtures.BMC_312_1_4SA_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_1_4SA_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -252,8 +251,8 @@ public class ScriptContainerTest {
 	{"The University of Tokyo, Kashiwa 277-8562, Japan", },
 	{"Full list of author information is available at the end of the article"},
 		};
-		File file = TextFixtures.BMC_312_1_7DA_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_1_7DA_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -263,8 +262,8 @@ public class ScriptContainerTest {
 	{"Commons Attribution License (http://creativecommons.org/licenses/by/2.0), which permits unrestricted use, distribution, and", },
 	{"reproduction in any medium, provided the original work is properly cited.", },
 		};
-		File file = TextFixtures.BMC_312_1_10SA_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_1_10SA_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 	
 	
@@ -273,8 +272,8 @@ public class ScriptContainerTest {
 		String[][] values ={
 	{"<B>Effect of late promoter </B>", "<B><I>p</I></B>", "<B><I>R</I></B>", "<B><I>’</I></B>", "<B>activity</B>"},
 		};
-		File file = TextFixtures.BMC_174_5_3SA_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_174_5_3SA_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
@@ -313,13 +312,13 @@ public class ScriptContainerTest {
 	{"holin proteins in the cell membrane to form holes"},
 	{"immediately if triggered."}, 
 	};
-		File file = TextFixtures.BMC_174_6_3SA_SVG;
-		TextFixtures.testSpans(values, file);
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_174_6_3SA_SVG;
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, file);
 	}
 	
 	@Test
 	public void testGetHTML63() throws Exception {
-		File file = TextFixtures.BMC_174_6_3SA_SVG;
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_174_6_3SA_SVG;
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
 		TextStructurer textContainer = 
 				TextStructurer.createTextStructurerWithSortedLines(file);
@@ -332,14 +331,14 @@ public class ScriptContainerTest {
 
 	@Test
 	public void testReferencesHtml() throws Exception {
-		File file = TextFixtures.BMC_312_12_7SB_SVG;
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_12_7SB_SVG;
 		String outfile = "target/bmc312_12_7sb.html";
 		createHtml(file, outfile);
 	}
 
 	@Test
 	public void testTitleHtml() throws Exception {
-		File file = TextFixtures.BMC_312_6_0SA_SVG;
+		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA_SVG;
 		String outfile = "target/bmc312_6_0sa.html";
 		createHtml(file, outfile);
 	}
@@ -347,21 +346,21 @@ public class ScriptContainerTest {
 	@Test
 	// fails because one textLine is split at gap
 	public void testTitleChemical() throws Exception {
-		File file = TextFixtures.MDPI_27_4_1SA_SVG;
+		File file = org.xmlcml.svg2xml.text.TextFixtures.MDPI_27_4_1SA_SVG;
 		String outfile = "target/mdpi_27_4_1sa.html";
 		createHtml(file, outfile);
 	}
 
 	@Test
 	public void testTitleChemical1() throws Exception {
-		File file = TextFixtures.MDPI_27_4_1SA0_SVG;
+		File file = org.xmlcml.svg2xml.text.TextFixtures.MDPI_27_4_1SA0_SVG;
 		String outfile = "target/mdpi_27_4_1sa0.html";
 		createHtml(file, outfile);
 	}
 
 	@Test
 	public void testAJC() throws Exception {
-		File file = TextFixtures.AJC_01182_2_5SA_SVG;
+		File file = org.xmlcml.svg2xml.text.TextFixtures.AJC_01182_2_5SA_SVG;
 		String outfile = "target/ajc_01182_2_5Sa.html";
 		createHtml(file, outfile);
 	}
@@ -417,33 +416,33 @@ public class ScriptContainerTest {
 	/** ======================= Preparatory for pages =====================*/
 	@Test
 	public void test312MULT_1_0Sa() {
-		TextFixtures.testSpans(TextFixtures.BMC_312MULT_1_0_HTML, TextFixtures.BMC_312MULT_1_0SA_SVG);
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_0_HTML, org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_0SA_SVG);
 	}
 
 	@Test
 	public void test312MULT_1_1Pa() {
-		TextFixtures.testSpans(TextFixtures.BMC_312MULT_1_1_HTML, TextFixtures.BMC_312MULT_1_1PA_SVG);
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_1_HTML, org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_1PA_SVG);
 	}
 
 	@Test
 	public void test312MULT_1_2Da() {
-		TextFixtures.testSpans(TextFixtures.BMC_312MULT_1_2_HTML, TextFixtures.BMC_312MULT_1_2DA_SVG);
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_2_HTML, org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_2DA_SVG);
 	}
 
 
 	@Test
 	public void test312MULT_1() {
 		String[][][] values ={
-			TextFixtures.BMC_312MULT_1_0_HTML,
-			TextFixtures.BMC_312MULT_1_1_HTML,
-			TextFixtures.BMC_312MULT_1_2_HTML,
+			org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_0_HTML,
+			org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_1_HTML,
+			org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_2_HTML,
 		};
 		File[] files = {
-			TextFixtures.BMC_312MULT_1_0SA_SVG,
-			TextFixtures.BMC_312MULT_1_1PA_SVG,
-			TextFixtures.BMC_312MULT_1_2DA_SVG
+			org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_0SA_SVG,
+			org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_1PA_SVG,
+			org.xmlcml.svg2xml.text.TextFixtures.BMC_312MULT_1_2DA_SVG
 		};
-		TextFixtures.testSpans(values, files);
+		org.xmlcml.svg2xml.text.TextFixtures.testSpans(values, files);
 	}
 
 	
