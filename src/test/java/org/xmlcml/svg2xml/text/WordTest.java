@@ -89,9 +89,10 @@ public class WordTest {
 	public void testCreateWord() {
 		SVGText t1 = new SVGText(new Real2(10., 20.), "H");
 		t1.setFontSize(8.0);
+		t1.setSVGXFontWidth(456.);
 		Word w1 = new Word(t1);
 		Real2Range bbox = w1.getBoundingBox();
 		bbox = bbox.format(3);
-		Assert.assertEquals("((10.0,15.879),(12.0,20.0))",  bbox.toString());
+		Assert.assertEquals("((10.0,13.648),(12.0,20.0))",  bbox.toString());
 	}
 }
