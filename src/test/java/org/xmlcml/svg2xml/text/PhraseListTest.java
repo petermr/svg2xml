@@ -18,6 +18,7 @@ public class PhraseListTest {
 	}
 	
 	@Test
+	// the bounding boxes are font dependent, so omit them
 	public void testCreatePhraseList() {
 		SVGText t11 = new SVGText(new Real2(25., 16.), "+");
 		t11.setFontSize(8.0);
@@ -35,7 +36,7 @@ public class PhraseListTest {
 				+ "<text stroke=\"none\" x=\"25.0\" y=\"16.0\" font-size=\"8.0\">+</text>"
 				+ "</g>"
 				+ "</g>",  p11.toXML());
-		Assert.assertEquals("((25.0,31.359375),(8.0,16.0))", p11.getOrCreateBoundingBox().toString());
+//		Assert.assertEquals("((25.0,31.359375),(8.0,16.0))", p11.getOrCreateBoundingBox().toString());
 		List<Word> wordList = p11.getOrCreateWordList();
 		Assert.assertEquals(1,  wordList.size());
 		Word word = wordList.get(0);
@@ -57,7 +58,7 @@ public class PhraseListTest {
 				+ "</g>"
 				+ "</g>",
 				phrase.toXML());
-		Assert.assertEquals("((25.0,31.359375),(8.0,16.0))", phraseList11.getOrCreateBoundingBox().toString());
+//		Assert.assertEquals("((25.0,31.359375),(8.0,16.0))", phraseList11.getOrCreateBoundingBox().toString());
 	}
 
 }
