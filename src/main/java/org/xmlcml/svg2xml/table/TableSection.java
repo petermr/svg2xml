@@ -15,6 +15,7 @@ import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.LineChunk;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
+import org.xmlcml.svg2xml.text.Word;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -136,12 +137,21 @@ public class TableSection {
 			for (HorizontalElement element : this.getHorizontalElementList()) {
 				if (element instanceof PhraseList) {
 					PhraseList phraseList = (PhraseList) element;
+//					debug(phraseList);
 					phraseLists.add(phraseList);
 				}
 			}
 		}
 		return phraseLists;
 	}
+
+//	private void debug(PhraseList phraseList) {
+//		for (Phrase phrase : phraseList) {
+//			for (Word word : phrase) {
+//				LOG.debug("B? "+word.isBold());
+//			}
+//		}
+//	}
 
 	public Real2Range getBoundingBox() {
 		return boundingBox;

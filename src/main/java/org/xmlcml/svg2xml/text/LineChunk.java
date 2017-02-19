@@ -4,9 +4,15 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.html.HtmlB;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlI;
+import org.xmlcml.html.HtmlSub;
+import org.xmlcml.html.HtmlSup;
 
 import nu.xom.Attribute;
 
@@ -16,6 +22,7 @@ import nu.xom.Attribute;
  *
  */
 public abstract class LineChunk extends SVGG implements HorizontalElement {
+	
 	private static final String TRUE = "true";
 	private static final Logger LOG = Logger.getLogger(LineChunk.class);
 
@@ -25,6 +32,10 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 
 	private static final String SUPERSCRIPT = "superscript";
 	private static final String SUBSCRIPT = "subscript";
+	protected static final String SPACE = " ";
+	protected static final double SPACE_OFFSET = 1.0;
+	protected static final String NULL_SPACE = "";
+	protected static final double SPACE_OFFSET1 = -0.5;
 
 	public LineChunk() {
 		super();
@@ -124,6 +135,60 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 		return s;
 	}
 	
+	public String getFill() {
+		String s = null;
+		List<? extends LineChunk> childChunks = getChildChunks();
+		if (childChunks.size() > 0) {
+			s = childChunks.get(0).getFill();
+			for (int i = 1; i < childChunks.size(); i++) {
+				String ss = childChunks.get(i).getFill();
+				if (s == null) {
+					ss = s;
+				} else if (!s.equals(ss)) {
+					LOG.trace("Fill "+ss+" => "+s);
+				}
+			}
+		}
+		return s;
+	}
+	
+	public String getStroke() {
+		String s = null;
+		List<? extends LineChunk> childChunks = getChildChunks();
+		if (childChunks.size() > 0) {
+			s = childChunks.get(0).getStroke();
+			for (int i = 1; i < childChunks.size(); i++) {
+				String ss = childChunks.get(i).getStroke();
+				if (s == null) {
+					ss = s;
+				} else if (!s.equals(ss)) {
+					LOG.trace("Stroke "+ss+" => "+s);
+				}
+			}
+		}
+		return s;
+	}
+	
+	public boolean isBold() {
+		String s = null;
+		List<? extends LineChunk> childChunks = getChildChunks();
+		if (childChunks.size() == 0) return false;
+		for (int i = 0; i < childChunks.size(); i++) {
+			if (!childChunks.get(i).isBold()) return false;
+		}
+		return true;
+	}
+	
+	public boolean isItalic() {
+		String s = null;
+		List<? extends LineChunk> childChunks = getChildChunks();
+		if (childChunks.size() == 0) return false;
+		for (int i = 0; i < childChunks.size(); i++) {
+			if (!childChunks.get(i).isItalic()) return false;
+		}
+		return true;
+	}
+	
 	protected abstract List<? extends LineChunk> getChildChunks();
 
 	public void setSuperscript(boolean superscript) {
@@ -165,5 +230,42 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 		} else if (SusType.SUPER.equals(susType)) {
 			this.setSuperscript(onoff);
 		}
+	}
+
+	protected boolean shouldAddSpaceBefore(LineChunk chunk) {
+		double deltax = Real.normalize(chunk.getOrCreateBoundingBox().getXMin() - getOrCreateBoundingBox().getXMax(), 1);
+		boolean addSpace = false;
+		if (deltax < PhraseList.SPACE_OFFSET1) {
+			addSpace = false;
+		} else if (deltax > PhraseList.SPACE_OFFSET) {
+			addSpace = true;
+		} else {
+			addSpace = false;
+		}
+		return addSpace;
+	}
+
+	protected HtmlElement addSuscriptsAndStyle(HtmlElement span) {
+		if (hasSubscript()) {
+			HtmlSub sub = new HtmlSub();
+			span.appendChild(sub);
+			span = sub;
+		}
+		if (hasSuperscript()) {
+			HtmlSup sup = new HtmlSup();
+			span.appendChild(sup);
+			span = sup;
+		}
+		if (isBold()) {
+			HtmlB b = new HtmlB();
+			span.appendChild(b);
+			span = b;
+		}
+		if (isItalic()) {
+			HtmlI it = new HtmlI();
+			span.appendChild(it);
+			span = it;
+		}
+		return span;
 	}
 }

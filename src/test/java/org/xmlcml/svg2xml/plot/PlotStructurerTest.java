@@ -254,7 +254,7 @@ public class PlotStructurerTest {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
-		PhraseListList phraseListList = textStructurer.createPhraseListListFromWords();
+		PhraseListList phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		
 		Real2 xMargins = new Real2(5.0, 5.0);
 		Real2 yMargins = new Real2(2.0, 2.0);
@@ -300,7 +300,7 @@ public class PlotStructurerTest {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
-		PhraseListList phraseListList = textStructurer.createPhraseListListFromWords();
+		PhraseListList phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		
 		Real2 xMargins = new Real2(5.0, 5.0);
 		Real2 yMargins = new Real2(2.0, 2.0);

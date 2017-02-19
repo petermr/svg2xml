@@ -130,10 +130,10 @@ public class SuscriptEditor {
 			PhraseList phraseList1 = phraseListList.get(i + 1);
 			LOG.trace("======================================================================\n"
 					+"SUPER "+i+"/"+size+"\n"+phraseList0+"\n"+phraseList1);
-			if (phraseList0.toString().contains("entorhinal")) {
-				int a = 1;
-				int b = a;
-			}
+//			if (phraseList0.toString().contains("entorhinal")) {
+//				int a = 1;
+//				int b = a;
+//			}
 			if (mergePhraseLists(SusType.SUPER, i, i+1)) {
 				LOG.trace("MERGED SUPER");
 				size--;
@@ -151,6 +151,7 @@ public class SuscriptEditor {
 			}
 			i++;
 		}
+		LOG.trace("condensed "+phraseListList);
 		return phraseListList;
 	}
 

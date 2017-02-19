@@ -20,10 +20,8 @@ import org.xmlcml.html.HtmlBr;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
 import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.html.HtmlSub;
 import org.xmlcml.xml.XMLUtil;
 
-import nu.xom.Attribute;
 import nu.xom.Element;
 
 /** 
@@ -416,20 +414,19 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	public HtmlElement toHtml() {
 		HtmlElement span = new HtmlSpan();
 		span.setClassAttribute("phrase");
-		if (hasSubscript()) {
-			HtmlSub sub = new HtmlSub();
-			span.appendChild(sub);
-			span = sub;
+		span = addSuscriptsAndStyle(span);
+		Word lastWord = null;
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < childWordList.size(); i++){
+			Word word = new Word(childWordList.get(i));
+			HtmlElement wordElement = word.toHtml();
+			if (i > 0 && lastWord.shouldAddSpaceBefore(word)) {
+				span.appendChild(SPACE);
+			}
+			span.appendChild(wordElement.getValue());
+			lastWord = word;
 		}
-		for (Word word : this) {
-			HtmlElement el = span;
-//			if (word.hasSubscript()) {
-//				HtmlSub sub = new HtmlSub();
-//				span.appendChild(sub);
-//				sub.appendChild(word.toHtml());
-//			}
-			el.appendChild(word.toHtml());
-		}
+		LOG.trace("SPAN" + span.toXML());
 		return span;
 	}
 

@@ -83,7 +83,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 
 	public void add(PhraseList phraseList) {
-		this.appendChild(phraseList);
+		this.appendChild(new PhraseList(phraseList));
 		childPhraseListList = null;
 		getOrCreateChildPhraseList();
 	}

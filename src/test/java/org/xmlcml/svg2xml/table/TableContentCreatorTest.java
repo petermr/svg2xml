@@ -164,22 +164,33 @@ public class TableContentCreatorTest {
 	
 	@Test
 	/** subscript
-	 * No split columns or indents
 	 * isolated superscripts
 	 * @throws IOException
 	 */
 	public void testSuscriptSVG1() throws IOException {
+		// output of PDF2SVG 
 		File inputFile1 = new File(Fixtures.TABLE_DIR, "suscript/10.1007_s00213-015-4198-1.svg");
 		File outDir = new File("target/table/suscript/");
+		// TableContentCreator is the top-level engine for tables
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
+		// annotate the geometric regions of the SVG
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
+		// the key Text component is a list of PhraseLists. This is created independently
+		// of subsequent section/column/row boundaries
 		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getTableFooter().getOrCreatePhraseLists());
 		LOG.trace(phraseListList.toString());
 		Assert.assertEquals(5, phraseListList.size());
+		// Suscript editor works directly on the PhraseListList and incorporates all suscripts at this
+		// stage so we don't have to process later
 		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
+		//merge all suscripts into the PLL
 		suscriptEditor.mergeAll();
-		LOG.trace("PLL"+phraseListList);
-		XMLUtil.debug(phraseListList.toHtml(), new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+".html"), 1);
+		File file = new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+".html");
+		LOG.debug("outfile: "+file);
+		// PLL has an HTML output which can process suscripts and styles
+		// note the HTML must not be indented (0) as otherwise we get spurious whitespaces
+		XMLUtil.debug(phraseListList.toHtml(), file, 0);
+		// the output is the primary initial test
 	}
 	
 	

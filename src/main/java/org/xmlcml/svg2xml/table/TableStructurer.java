@@ -1,6 +1,9 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +33,7 @@ import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlHead;
+import org.xmlcml.html.HtmlHr;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlStyle;
@@ -40,9 +44,9 @@ import org.xmlcml.html.HtmlTfoot;
 import org.xmlcml.html.HtmlTh;
 import org.xmlcml.html.HtmlThead;
 import org.xmlcml.html.HtmlTr;
+import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
-import org.xmlcml.svg2xml.text.LineChunk;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
@@ -51,11 +55,13 @@ import org.xmlcml.svg2xml.text.ScriptLine;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.text.VerticalRuler;
+import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
 import nu.xom.Node;
 
 public class TableStructurer {
+	private static final String XY = "xy";
 	private static final Logger LOG = Logger.getLogger(TableStructurer.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -80,7 +86,7 @@ public class TableStructurer {
 	private HtmlHtml html;
 	private IntRange deprecatedTitleRange;
 	private IntRange deprecatedPreHeadRange;
-	private IntRange deprecaetedHeaderRange;
+	private IntRange deprecatedHeaderRange;
 	private IntRange deprecatedBodyRange;
 	private IntRange deprecatedFooterRange;
 	private HtmlTbody tableBody;
@@ -106,6 +112,8 @@ public class TableStructurer {
 	private List<SVGRect> spanningRects;
 	private SVGRect outerRect;
 	private List<SVGRect> rectList;
+	private HtmlThead thead;
+	private HtmlUl titleUl;
 
 	
 	public TableStructurer(PhraseListList phraseListList) {
@@ -138,7 +146,7 @@ public class TableStructurer {
 
 	public void setTitleRange(IntRange range) {deprecatedTitleRange = range;}
 	public void setPreHeadRange(IntRange range) {deprecatedPreHeadRange = range;}
-	public void setHeaderRange(IntRange range) {deprecaetedHeaderRange = range;}
+	public void setHeaderRange(IntRange range) {deprecatedHeaderRange = range;}
 	public IntRange setBodyRange(IntRange range) {return deprecatedBodyRange = range;}
 	public void setFooterRange(IntRange range) {deprecatedFooterRange = range;}
 
@@ -148,6 +156,7 @@ public class TableStructurer {
 	public Real2Range getFooterBBox() {return footerBBoxManager.getTotalBox();}
 	
 	public String createTitle() {
+		LOG.debug("MAKING TITLE");
 		StringBuilder titleSB = new StringBuilder();
 		titleBBoxManager = new BoundingBoxManager();
 		if (deprecatedTitleRange != null) {
@@ -157,6 +166,14 @@ public class TableStructurer {
 			}
 		} else if (tableSectionList != null && tableSectionList.size() > 0) {
 			TableSection titleSection = tableSectionList.get(0);
+			List<PhraseList> phraseLists = titleSection.getOrCreatePhraseLists();
+			titleUl = PhraseList.getPhraseListUl(phraseLists);
+			try {
+				XMLUtil.debug(titleUl, new FileOutputStream("target/table/debug/title.html"), 1);
+			} catch (Exception e) {
+				// 
+			}
+			
 			List<HorizontalElement> horizontalList = titleSection.getHorizontalElementList();
 			if (tableTitle != null) {
 				titleSB.append(tableTitle.getTitle());
@@ -274,9 +291,9 @@ public class TableStructurer {
 			}
 			maxColumns = phraseListList.getMaxColumns();
 			rows1 = createBodyTableRows(0, phraseListList.size() - 1, HtmlTd.class);
-		} else if (deprecaetedHeaderRange != null) {
+		} else if (deprecatedHeaderRange != null) {
 			rows1 = createBodyTableRows( 
-					deprecaetedHeaderRange.getMin(), deprecaetedHeaderRange.getMax(), HtmlTh.class);
+					deprecatedHeaderRange.getMin(), deprecatedHeaderRange.getMax(), HtmlTh.class);
 			// project cells into StringBuilder array
 		}
 		List<StringBuilder> sbList = new ArrayList<StringBuilder>();
@@ -320,7 +337,7 @@ public class TableStructurer {
 					for (HorizontalElement element : bodySection.getHorizontalElementList()) {
 						bodyBBoxManager.add(((SVGElement)element).getBoundingBox());
 						if (element instanceof PhraseList) {
-							phraseListList.add((PhraseList) element);
+							phraseListList.add(new PhraseList((PhraseList) element));
 						} else {
 							LOG.error("Omitted ruler: "+element);
 						}
@@ -343,7 +360,7 @@ public class TableStructurer {
 	}
 
 	private void addHtmlHead() {
-		HtmlThead thead = new HtmlThead();
+		thead = new HtmlThead();
 		htmlTable.appendChild(thead);
 	}
 
@@ -361,8 +378,25 @@ public class TableStructurer {
 			for (HorizontalElement element : headerSection.getHorizontalElementList()) {
 				headerBBoxManager.add(((SVGElement)element).getBoundingBox());
 				if (element instanceof HorizontalRuler) {
+					Real2 xy = ((HorizontalRuler)element).getXY();
+					HtmlTr tr = new HtmlTr();
+					HtmlTh th = new HtmlTh();
+					tr.appendChild(th);
+					HtmlTd td = new HtmlTd();
+					th.appendChild(td);
+					HtmlHr hr = new HtmlHr();
+					td.appendChild(hr);
+					hr.addAttribute(new Attribute(XY, xy.toString()));
+					hr.setStyle("color:#00ff77;height:2px");
+					thead.appendChild(tr);
 				} else {
 					PhraseList phraseList = (PhraseList) element;
+					List<HtmlTh> thList = phraseList.getThList();
+					HtmlTr tr = new HtmlTr();
+					for (HtmlTh th : thList) {
+						tr.appendChild(th);
+					}
+					thead.appendChild(tr);
 					LOG.trace(">TH>"+phraseList.getStringValue());
 				}
 			}
@@ -740,7 +774,7 @@ public class TableStructurer {
 		for (int i = 0; i < horizontalElementList.size(); i++) {
 			SVGElement horizontalElement = horizontalElementList.get(i);
 			String index = "";
-			if (horizontalElement instanceof LineChunk) {
+			if (horizontalElement instanceof PhraseList) {
 				index = indexLineChunk(maxFont, iPhrase, horizontalElement);
 				iPhrase++;
 			} else if (horizontalElement instanceof SVGLine) {
@@ -794,7 +828,7 @@ public class TableStructurer {
 	private String indexLineChunk(double maxFont, int iPhrase, SVGElement horizontalElement) {
 		String index;
 		index = " P"+iPhrase;
-		LineChunk lineChunk = (LineChunk) horizontalElement;
+		PhraseList lineChunk = (PhraseList) horizontalElement;
 		String f = "";
 		Double ff = lineChunk.getFontSize();
 		if (ff != null) {
@@ -879,6 +913,28 @@ public class TableStructurer {
 		HtmlHtml html = this.getHtmlWithTable();
 		return html;
 	}
+	
+	/** this is messy code.
+	 * 
+	 * @param tableSectionList
+	 * @param tableTitle
+	 * @return
+	 */
+	public HtmlHtml createHtmlWithTable(List<TableSection> tableSectionList, TableTitle tableTitle) {
+//		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+//		
+//		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineListForCommonestFont();
+//		for (ScriptLine scriptLine : scriptedLineList) {
+//			TextLine textLine0 = scriptLine.getTextLineList().get(0);
+//		}
+//		
+////		TableStructurer tableStructurer = textStructurer.createTableStructurer();
+		this.setTableTitle(tableTitle);
+		this.setSections(tableSectionList);
+		HtmlHtml html = this.getHtmlWithTable();
+		return html;
+	}
+
 
 	public void setTableTitle(TableTitle tableTitle) {
 		this.tableTitle = tableTitle;

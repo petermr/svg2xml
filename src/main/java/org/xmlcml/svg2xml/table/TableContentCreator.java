@@ -171,7 +171,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			List<HorizontalRuler> fullRulerList = getFullRulers(iRow);
 			tableSectionList = new ArrayList<TableSection>();
 			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
-			LOG.trace("Table Span "+tableSpan);
+			LOG.debug("Table Span "+tableSpan);
 			if (tableSpan != null) {
 				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
 				this.createPhraseRangesArray();
@@ -188,13 +188,12 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			length += phraseListCount;
 			rangesArray.add(intRange);
 		}
-		LOG.trace("rangesArray "+rangesArray);
+		LOG.debug("rangesArray "+rangesArray);
 		return rangesArray;
 	}
 
 	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRuler> fullRulerList,
 			IntRange tableSpan) {
-		int section = 0;
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
@@ -202,14 +201,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			HorizontalRuler ruler = (element instanceof HorizontalRuler) ? 
 					(HorizontalRuler) element : null;
 			if (tableSection == null || fullRulerList.contains(ruler)) {
-				tableSection = new TableSection(TableSectionType.values()[section]);
+				tableSection = new TableSection(TableSectionType.OTHER);
 				tableSectionList.add(tableSection);
-				if (section < TableSectionType.values().length - 1) {
-					section++;
-				}
 			}
 			if (element instanceof PhraseList) {
-				PhraseList newPhraseList = ((PhraseList) element).extractIncludedLists(tableSpan);
+				PhraseList newPhraseList = (PhraseList) element;
 				if (newPhraseList.size() > 0) {
 					tableSection.add(newPhraseList);
 				}
@@ -221,18 +217,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				}
 			}
 		}
-//		LOG.debug("============");
-//		for (TableSection tableSection2 : tableSectionList) {
-//			LOG.debug("-------->tableSect>"+tableSection2);
-//		}
-//		LOG.debug("============");
+		LOG.debug("sections "+tableSectionList.size());
 	}
 
 	public IntRangeArray getRangesArray() {
 		return rangesArray;
 	}
 
-	public IntRangeArray getRangesArrayWithPseudoHeader() {
+	private IntRangeArray getRangesArrayWithPseudoHeader() {
 		if (rangesArray.size() == 4) {
 			LOG.warn("adding pseudoheader");
 			IntRangeArray newArray = new IntRangeArray();
@@ -254,7 +246,12 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
 		createSectionsAndRangesArray();
-		HtmlHtml html = tableStructurer.createHtmlWithTable(inputFile, tableSectionList, tableTitle);
+		LOG.debug("FIXME");
+		HtmlHtml html = tableStructurer.createHtmlWithTable(tableSectionList, tableTitle);
+		try {
+			XMLUtil.debug(html, new File("target/table/debug/sections.html"), 1);
+		} catch (IOException e) {
+		}
 		return html;
 	}
 
@@ -403,7 +400,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		String outRoot = inputFile.getName();
 		outRoot = outRoot.substring(0, outRoot.length() - DOT_PNG.length());
 		File outputFile = new File(outDir, outRoot+DOT_ANNOT_SVG);
-		LOG.trace("reading "+inputFile);
+		LOG.debug("reading "+inputFile);
 		SVGElement svgChunk = annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 	}

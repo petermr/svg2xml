@@ -16,10 +16,10 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.html.HtmlSub;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
@@ -110,7 +110,7 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	}
 	
 	protected List<? extends LineChunk> getChildChunks() {
-		throw new RuntimeException("Not applicable");
+		return new ArrayList<LineChunk>();
 	}
 
 	public Real2 getCentrePointOfFirstCharacter() {
@@ -420,8 +420,52 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		return weight;
 	}
 
+	/**
+	 * @return the stroke
+	 */
+	public String getStroke() {
+		getOrCreateChildTextList();
+		String stroke = null;
+		if (childTextList.size() > 0) {
+			stroke = childTextList.get(0).getStroke();
+			for (int i = 1; i < childTextList.size(); i++) {
+				String stroke1 = childTextList.get(i).getStroke();
+				if (stroke1 != null) {
+					if (!stroke1.equals(stroke)) {
+						LOG.trace("changed stroke in word from "+stroke+"=>"+stroke1+"/"+this.getStringValue());
+						stroke = null;
+						break;
+					}
+				}
+			}
+		}
+		if (stroke != null) this.setStroke(stroke);
+		return stroke;
+	}
 
-
+	/**
+	 * @return the fill
+	 */
+	public String getFill() {
+		getOrCreateChildTextList();
+		String fill = null;
+		if (childTextList.size() > 0) {
+			fill = childTextList.get(0).getFill();
+			for (int i = 1; i < childTextList.size(); i++) {
+				String fill1 = childTextList.get(i).getFill();
+				if (fill1 != null) {
+					if (!fill1.equals(fill)) {
+						LOG.trace("changed fill in word from "+fill+"=>"+fill1+"/"+this.getStringValue());
+						fill = null;
+						break;
+					}
+				}
+			}
+		}
+		if (fill != null) this.setFill(fill);
+		return fill;
+	}
+	
 	public Element copyElement() {
 		getOrCreateChildTextList();
 		Element element = (Element) this.copy();
@@ -488,19 +532,27 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		return;
 	}
 	
+	/** make a single HtmlSpan.
+	 * 
+	 * @return
+	 */
 	public HtmlElement toHtml() {
-		HtmlSpan span = new HtmlSpan();
+		HtmlElement span = new HtmlSpan();
 		span.setClassAttribute("word");
-		if (this.hasSubscript()) {
-			HtmlSub sub = new HtmlSub();
-			span.appendChild(sub);
-			sub.appendChild(this.getStringValue());
-		} else {
-			span.appendChild(this.getStringValue());
-		}
+		span = addSuscriptsAndStyle(span);
+		String value = this.getStringValue();
+		span.appendChild(value);
 		return span;
 	}
 
-
+	public boolean isBold() {
+		String weight = this.getFontWeight();
+		return StyleBundle.FontWeight.BOLD.toString().equalsIgnoreCase(weight);
+	}
+	
+	public boolean isItalic() {
+		String style = this.getFontStyle();
+		return StyleBundle.FontStyle.ITALIC.toString().equalsIgnoreCase(style);
+	}
 	
 }

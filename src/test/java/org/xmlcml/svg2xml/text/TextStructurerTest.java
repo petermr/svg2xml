@@ -254,7 +254,7 @@ public class TextStructurerTest {
 		
 		// reread and analyze the horizontal (previously vertical) lines;
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(rotatedVerticalText);
-		phraseListList = textStructurer.createPhraseListListFromWords();
+		phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		phraseListList.getStringValue(); // computes if not already known
 		Assert.assertEquals(1, phraseListList.size());
 		Assert.assertEquals("cumulative mortality //", phraseListList.getStringValue());
@@ -897,7 +897,7 @@ public class TextStructurerTest {
 		
 		// reread and analyze the horizontal (previously vertical) lines;
 		TextStructurer textStructurer2 = TextStructurer.createTextStructurerWithSortedLines(rotatedVerticalText);
-		phraseListList = textStructurer2.createPhraseListListFromWords();
+		phraseListList = textStructurer2.getOrCreatePhraseListListFromWords();
 		phraseListList.format(1);
 		phraseListList.getStringValue(); // computes if not already known
 		for (int i = 0; i < phraseListList.size(); i++) {
@@ -935,7 +935,7 @@ public class TextStructurerTest {
 	private PhraseListList getUnrotatedPhrases(File graphTextFile, int phraseListListSize, String totalStringValue) {
 		PhraseListList phraseListList;
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(graphTextFile);
-		phraseListList = textStructurer.createPhraseListListFromWords();
+		phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		Assert.assertNotNull("phraseListList not null", phraseListList);
 		phraseListList.getStringValue(); // computes if not already known
 		Assert.assertEquals("total String value",  totalStringValue, phraseListList.getStringValue());

@@ -1,21 +1,12 @@
 package org.xmlcml.svg2xml.table;
 
-import java.util.List;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.xmlcml.euclid.util.MultisetUtil;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.svg2xml.text.LineChunk;
-import org.xmlcml.svg2xml.text.Phrase;
-import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.util.GraphPlot;
-
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
 
 /** manages the table header, including trying to sort out the column spanning
  * 

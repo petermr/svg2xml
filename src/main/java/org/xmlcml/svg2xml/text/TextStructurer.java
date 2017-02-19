@@ -752,7 +752,7 @@ public class TextStructurer {
 //			SVGSVG.wrapAndWriteAsSVG(g, new File(Fixtures.TARGET, "/test/textLinesRotate.svg"));
 //		}
 		textStructurer.setSvgChunk(svgChunk);
-		textStructurer.createPhraseListListFromWords();
+		textStructurer.getOrCreatePhraseListListFromWords();
 		return textStructurer;
 	}
 
@@ -1421,18 +1421,20 @@ public class TextStructurer {
 		}
 	}
 
-	public PhraseListList createPhraseListListFromWords() {
-		List<RawWords> rawWordsList = this.createRawWordsListFromTextLineList();
-		phraseListList = new PhraseListList();
-		for (RawWords rawWords : rawWordsList) {
-			PhraseList phraseList = rawWords.createPhraseList();
-			phraseListList.add(phraseList);
+	public PhraseListList getOrCreatePhraseListListFromWords() {
+		if (phraseListList == null) {
+			List<RawWords> rawWordsList = this.createRawWordsListFromTextLineList();
+			phraseListList = new PhraseListList();
+			for (RawWords rawWords : rawWordsList) {
+				PhraseList phraseList = rawWords.createPhraseList();
+				phraseListList.add(phraseList);
+			}
 		}
 		return phraseListList;
 	}
 
 	public TableStructurer createTableStructurer() {
-		createPhraseListListFromWords();
+		getOrCreatePhraseListListFromWords();
 		tableStructurer = new TableStructurer(phraseListList);
 		tableStructurer.setTextStructurer(this);
 		tableStructurer.analyzeShapeList();
@@ -1451,7 +1453,7 @@ public class TextStructurer {
 	 */
 	public PhraseListList getPhraseListList() {
 		if (phraseListList == null) {
-			createPhraseListListFromWords();
+			getOrCreatePhraseListListFromWords();
 		}
 		return phraseListList;
 	}

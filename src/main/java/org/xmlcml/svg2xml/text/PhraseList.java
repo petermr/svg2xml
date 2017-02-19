@@ -17,23 +17,22 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlSpan;
+import org.xmlcml.html.HtmlTh;
+import org.xmlcml.html.HtmlUl;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
 
 public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	
+
 	private static final Logger LOG = Logger.getLogger(PhraseList.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
 	public final static String TAG = "phraseList";
-//	public static final PhraseList NULL = new PhraseList();
-//	static {
-//		NULL.add(new Phrase(Phrase.NULL));
-//	};
-	
+
 	// this is not exposed
 	private List<Phrase> childPhraseList; 
 
@@ -85,7 +84,6 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 			for (Element child : phraseChildren) {
 				// FIXME 
 				childPhraseList.add(new Phrase((SVGG)child));
-//				childPhraseList.add((Phrase)child);
 			}
 		}
 		return childPhraseList;
@@ -145,14 +143,24 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	}
 
 	public String getStringValue() {
+		// this needs memoization
 		getOrCreateChildPhraseList();
 		StringBuilder sb = new StringBuilder();
-		for (Phrase phrase : childPhraseList) {
+		LineChunk lastPhrase = null;
+		for (int i = 0; i < childPhraseList.size(); i++) {
+			Phrase phrase = childPhraseList.get(i);
+			if (lastPhrase != null) {
+				if (lastPhrase.shouldAddSpaceBefore(phrase)) {
+					sb.append(SPACE);
+				}
+			}
 			sb.append(phrase.getStringValue());
-			sb.append(" ");
+			lastPhrase = phrase;
 		}
-		this.setStringValueAttribute(sb.toString());
-		return sb.toString();
+		String stringValue = sb.toString();
+		LOG.trace("SV "+stringValue);
+		this.setStringValueAttribute(stringValue);
+		return stringValue;
 	}
 
 	public void rotateAll(Real2 centreOfRotation, Angle angle) {
@@ -172,7 +180,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 
 	@Override
 	public String toString() {
-		return /*this.getClass().getSimpleName()+": "+*/ /*this.getXY()+": "+*/ this.getStringValue();
+		return this.getStringValue();
 	}
 
 	public PhraseList extractIncludedLists(IntRange tableSpan) {
@@ -276,13 +284,51 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	}
 
 	public HtmlElement toHtml() {
-		HtmlSpan span = new HtmlSpan();
-//		span.appendChild(this.getStringValue());
-		for (Phrase phrase : this) {
-			span.appendChild(phrase.toHtml().copy());
-//			span.appendChild(phrase.getStringValue());
+		HtmlElement span = new HtmlSpan();
+		span.setClassAttribute("phraseList");
+		span = addSuscriptsAndStyle(span);
+		Phrase lastPhrase = null;
+		for (int i = 0; i < this.size(); i++) {
+			Phrase phrase = this.get(i);
+			HtmlElement phraseElement = phrase.toHtml();
+			if (i > 0) {
+				if (lastPhrase.shouldAddSpaceBefore(phrase)) {
+					span.appendChild(LineChunk.SPACE);
+				} else {
+				}
+			}
+			if (phraseElement instanceof HtmlSpan) {
+				span.appendChild(phraseElement.getValue());
+			} else {
+				span.appendChild(phraseElement.copy());
+			}
+			lastPhrase = phrase;
 		}
+		LOG.trace("PHRASE_LIST" + span.toXML());
 		return span;
+	}
+
+	public List<HtmlTh> getThList() {
+		List<HtmlTh> thList = new ArrayList<HtmlTh>();
+		if (childPhraseList != null) {
+			for (Phrase phrase : childPhraseList) {
+				HtmlElement element = phrase.toHtml();
+				HtmlTh th = new HtmlTh();
+				th.appendChild(element.copy());
+				thList.add(th);
+			}
+		}
+		return thList;
+	}
+
+	public static HtmlUl getPhraseListUl(List<PhraseList> phraseLists) {
+		HtmlUl ul = new HtmlUl();
+		for (PhraseList phraseList : phraseLists) {
+			HtmlLi li = new HtmlLi();
+			ul.appendChild(li);
+			li.appendChild(phraseList.toHtml().copy());
+		}
+		return ul;
 	}
 
 }
