@@ -233,8 +233,9 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	}
 
 	protected boolean shouldAddSpaceBefore(LineChunk chunk) {
-		double deltax = Real.normalize(chunk.getOrCreateBoundingBox().getXMin() - getOrCreateBoundingBox().getXMax(), 1);
 		boolean addSpace = false;
+		if (chunk == null || chunk.getOrCreateBoundingBox() == null || getOrCreateBoundingBox() == null) return false;
+		double deltax = Real.normalize(chunk.getOrCreateBoundingBox().getXMin() - getOrCreateBoundingBox().getXMax(), 1);
 		if (deltax < PhraseList.SPACE_OFFSET1) {
 			addSpace = false;
 		} else if (deltax > PhraseList.SPACE_OFFSET) {

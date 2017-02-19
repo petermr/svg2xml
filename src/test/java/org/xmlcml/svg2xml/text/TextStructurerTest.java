@@ -209,15 +209,15 @@ public class TextStructurerTest {
 		PhraseListList phraseListList; PhraseList phraseList; Phrase phrase; Word word0, word1;
 		File graphTextFile = new File(Fixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
 		TextStructurer textStructurer;
-		phraseListList = getUnrotatedPhrases(graphTextFile, 36, "HD-73 //1 //antibiotic free diet //0.9 //0.8 //y //t //i //l //0.7 //a //t //r //o //0.6 //m //e //0.5 //v //i //t //a //0.4 //l //u //m //0.3 //u //rifampicin //c //0.2 //diet //0.1 //0 //1 2 3 4 5 //days //");
+		phraseListList = getUnrotatedPhrases(graphTextFile, 36, "HD-73//1//antibiotic free diet//0.9//0.8//y//t//i//l//0.7//a//t//r//o//0.6//m//e//0.5//v//i//t//a//0.4//l//u//m//0.3//u//rifampicin//c//0.2//diet//0.1//0//1 2 3 4 5//days//");
 
 		// horizontal phrases
-		Assert.assertEquals("HD-73 ", phraseListList.get(0).getStringValue());
-		Assert.assertEquals("antibiotic free diet ", phraseListList.get(2).getStringValue());
-		Assert.assertEquals("rifampicin ", phraseListList.get(28).getStringValue());
-		Assert.assertEquals("diet ", phraseListList.get(31).getStringValue());
-		Assert.assertEquals("1 2 3 4 5 ", phraseListList.get(34).getStringValue());
-		Assert.assertEquals("days ", phraseListList.get(35).getStringValue());
+		Assert.assertEquals("HD-73", phraseListList.get(0).getStringValue());
+		Assert.assertEquals("antibiotic free diet", phraseListList.get(2).getStringValue());
+		Assert.assertEquals("rifampicin", phraseListList.get(28).getStringValue());
+		Assert.assertEquals("diet", phraseListList.get(31).getStringValue());
+		Assert.assertEquals("1 2 3 4 5", phraseListList.get(34).getStringValue());
+		Assert.assertEquals("days", phraseListList.get(35).getStringValue());
 		
 		// y-values in ladder with 12.3/12.4 delta
 		int[] phraseIndexes = new int[]{1, 3, 4, 9, 14, 17, 22, 26, 30, 32, 33};
@@ -286,17 +286,17 @@ public class TextStructurerTest {
 		String outputRoot = "blkSam40";
 
 		String totalStringValue = ""
-				+ "HD-73 //1 //antibiotic free diet //"
-				+ "0.9 //0.8 //y //t //i //l //0.7 //a //t //r //o //0.6 //m //e //0.5 //v //i //t //a //0.4 //l //u //m //0.3 //u //"
-				+ "rifampicin //c //0.2 //diet //0.1 //0 //1 2 3 4 5 //days //";
+				+ "HD-73//1//antibiotic free diet//"
+				+ "0.9//0.8//y//t//i//l//0.7//a//t//r//o//0.6//m//e//0.5//v//i//t//a//0.4//l//u//m//0.3//u//"
+				+ "rifampicin//c//0.2//diet//0.1//0//1 2 3 4 5//days//";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
-				"HD-73 ",
-				"antibiotic free diet ",
-				"rifampicin ", 
-				"diet ", 
-				"1 2 3 4 5 ", 
-				"days ",
+				"HD-73",
+				"antibiotic free diet",
+				"rifampicin", 
+				"diet", 
+				"1 2 3 4 5", 
+				"days",
 		};
 		int phraseListListSize = 36;
 		int[] horizontalPhraseIndexes = {0, 2, 28, 31, 34, 35};
@@ -328,9 +328,9 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 19;
 		String totalStringValue = ""
-				+ "  //y //g //c //n //n //i //l //e //p //u //q //m //e //a //r //S f //"
-				+ "0 2 4 6 8 10 12 14 //"
-				+ "Time (Myr) //";
+				+ " //y//g//c//n//n//i//l//e//p//u//q//m//e//a//r//S f//"
+				+ "0 2 4 6 8 10 12 14//"
+				+ "Time (Myr)//";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"0 2 4 6 8 10 12 14",
@@ -366,8 +366,8 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 40;
 		String totalStringValue = ""
-				+ "60 //50 //d //e //s //i //l //i //t //r //40 //e //f //  //s //g //g //e //30 //  //f //o //  //r //e //b //20 //m //u //n //  //l //a //t //10 //o //T //0 //16 17 18 19 //"
-				+ "Phenotypic tarsus (mm) //";
+				+ "60//50//d//e//s//i//l//i//t//r//40//e//f// //s//g//g//e//30// //f//o// //r//e//b//20//m//u//n// //l//a//t//10//o//T//0//16 17 18 19//"
+				+ "Phenotypic tarsus (mm)//";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"16 17 18 19",
@@ -402,10 +402,10 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 58;
 		String totalStringValue = ""
-				+ "4 4 //. //. //1 1 //) //) //λ //μ //( //( //  2 2 //  //. . //e //e //1 1 //t //t //a //a //r //r //  //  //0 0 //"
-				+ ". . //n //n //1 1 //o //o //i //i //t //t //a //c //i //8 8 //. . //n //c //i //0 0 //e //t //x //p //E //S //6 6 //"
-				+ ". . //0 0 //4 4 //. . //0 0 //"
-				+ "25 50 75 100 //Taxon sampling (%) //";
+				+ "4 4//.//.//1 1//)//)//λ//μ//(//(//  2 2// //. .//e//e//1 1//t//t//a//a//r//r// // //0 0//"
+				+ ". .//n//n//1 1//o//o//i//i//t//t//a//c//i//8 8//. .//n//c//i//0 0//e//t//x//p//E//S//6 6//"
+				+ ". .//0 0//4 4//. .//0 0//"
+				+ "25 50 75 100//Taxon sampling (%)//";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"25 50 75 100",
@@ -447,8 +447,8 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 20;
 		String totalStringValue = ""
-				+ "  //0.04   //0.03   //  //b //u //t //- //Ε //  //f //0.02   //o //  //N //d //"
-				+ "0.01   //0.00   //0.00   0.01   0.02   0.03   0.04   0.05   //dN of EF-1Δ  //";
+				+ " //0.04  //0.03  // //b//u//t//-//Ε// //f//0.02  //o// //N//d//"
+				+ "0.01  //0.00  //0.00   0.01   0.02   0.03   0.04   0.05  //dN of EF-1Δ //";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"0.00   0.01   0.02   0.03   0.04   0.05",
@@ -485,15 +485,15 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 133;
 		String totalStringValue = ""
-				+ "B  C  //A  //0.14   //0.50   //0.04   //  //r //e //t //0.12   //s //u //0.40   //l //c //  //0.03   //0.10   //A //"
-				+ "  //  //b //N b //u //u //D //t 0.30   //t //r //0.08   //- //- //  //f //Ε //Ε //  //  //o //f //f //  //0.02   //"
-				+ "o //o //e //  //  //0.06   //c //S //N //0.20   //n //d //d //a //t //s //0.04   //i //d //0.01   //- //0.10   //p //"
-				+ "0.02   //0.00   0.00   //0.00   //0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.05 //"
-				+ "0.00   0.01   0.02   0.03   0.04   0.05   //dN of EF-1Δ  dN of Ε -tub  //dN of Ε -tub  // //D  E  //Δ //0.60   //1 //- //"
-				+ "0.40   //F //E //  //n //0.50   //i //h //t // //i //0.30   //Δ //w //1 //  //- //0.40   //n //F //o //E //r //  //t //"
-				+ "f //n //o //i //  //0.30   //  //0.20   //f //S //o //d //  //e //c //0.20   //n //a //t //0.10   //s //i //d //0.10   //"
-				+ "- //p //0.00   0.00   //0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.05   //"
-				+ "dN of Ε -tub  dN of Ε -tub  //";
+				+ "B  C //A //0.14  //0.50  //0.04  // //r//e//t//0.12  //s//u//0.40  //l//c// //0.03  //0.10  //A//"
+				+ " // //b//N b//u//u//D//t 0.30  //t//r//0.08  //-//-// //f//Ε//Ε// // //o//f//f// //0.02  //"
+				+ "o//o//e// // //0.06  //c//S//N//0.20  //n//d//d//a//t//s//0.04  //i//d//0.01  //-//0.10  //p//"
+				+ "0.02  //0.00   0.00  //0.00  //0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.05//"
+				+ "0.00   0.01   0.02   0.03   0.04   0.05  //dN of EF-1Δ  dN of Ε -tub //dN of Ε -tub ////D  E //Δ//0.60  //1//-//"
+				+ "0.40  //F//E// //n//0.50  //i//h//t////i//0.30  //Δ//w//1// //-//0.40  //n//F//o//E//r// //t//"
+				+ "f//n//o//i// //0.30  // //0.20  //f//S//o//d// //e//c//0.20  //n//a//t//0.10  //s//i//d//0.10  //"
+				+ "-//p//0.00   0.00  //0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.05  //"
+				+ "dN of Ε -tub  dN of Ε -tub //";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"0.00   0.01   0.02   0.03   0.04   0.05   0.00   0.01   0.02   0.03   0.04   0.05 ", // two plots
@@ -541,20 +541,20 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 65;
 		String totalStringValue = ""
-				+ "1) //0.4 //A //1) 2) 3) //2) //  //) //r //( //0.3 //  //e //t //a //r //  //n //o //i //t //"
-				+ "0.2 0.3 0.4 //0 0.1 0.2 0.3 0.4 //0 0.1 //a //0.2 //c //f //i //s //r //e //3) //v //i //D //0.1 //0 //"
-				+ "0 2 4 6 8 10 12 14 //B //  //y //g //c //n //n //i //l //e //p //u //q //m //e //a //r //S f //"
-				+ "0 2 4 6 8 10 12 14 //Time (Myr) //"
+				+ "1)//0.4//A//1) 2) 3)//2)// //)//r//(//0.3// //e//t//a//r// //n//o//i//t//"
+				+ "0.2 0.3 0.4//0 0.1 0.2 0.3 0.4//0 0.1//a//0.2//c//f//i//s//r//e//3)//v//i//D//0.1//0//"
+				+ "0 2 4 6 8 10 12 14//B// //y//g//c//n//n//i//l//e//p//u//q//m//e//a//r//S f//"
+				+ "0 2 4 6 8 10 12 14//Time (Myr)//"
 				+ "Figure 3 Rates-through-time plot. Diversification rates through time resulting from the analysis of 100 "
-				+ "phylogenies simulated under a fivefold //increase in diversification rates. The upper plot (A) shows the "
-				+ "marginal rates for 1 Myr time categories (line) and the 95% highest posterior //density (error bars). "
+				+ "phylogenies simulated under a fivefold//increase in diversification rates. The upper plot (A) shows the "
+				+ "marginal rates for 1 Myr time categories (line) and the 95% highest posterior//density (error bars). "
 				+ "The x-axis represents time (Myr), and the y-axis is the average per-lineage diversification rate (spp/Myr). "
-				+ "The insert displays //three examples of marginal distributions of the diversification rate for three "
-				+ "points along the phylogenies (indicated by arrows on the rates //through time plot): "
+				+ "The insert displays//three examples of marginal distributions of the diversification rate for three "
+				+ "points along the phylogenies (indicated by arrows on the rates//through time plot): "
 				+ "1) close to the tips (2 Mya), 2) at the point of rate shift (5 Mya), and 3) towards to root of the "
-				+ "trees (10 Mya). Note the //bimodal distribution of rates when a rat-shift is found (both the lower "
-				+ "and higher rates are sampled). In the lower plot (B), the frequencies of a //rate shift are proportional "
-				+ "to the probability of a rate shift in that time frame. //";
+				+ "trees (10 Mya). Note the//bimodal distribution of rates when a rat-shift is found (both the lower "
+				+ "and higher rates are sampled). In the lower plot (B), the frequencies of a//rate shift are proportional "
+				+ "to the probability of a rate shift in that time frame.//";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"1) 2) 3)",
@@ -601,76 +601,76 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 488;
 		String totalStringValue = ""
-				+ "ANESTH ANALG LETTERS TO THE EDITOR 1005 //2000;90:1000 –8 //y //t //i //l //8 3 3 3 2 8 6 6 6 8 6 2 8 2 2 6 3 5 8 3 8 //"
-				+ "t //i //4 0 0 0 0 5 6 6 3 4 3 9 4 5 9 3 0 3 5 0 5 //n b //1 1 1 1 0 2 0 1 1 1 1 1 5 9 1 1 1 4 2 1 2 //i //"
-				+ "P //a //2 0 0 0 0 0 0 0 0 2 0 0 0 1 0 0 0 0 0 0 0 //o //. . . . . . . . . . . . . . . . . . . . . //b //J //"
-				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //o //r //p //1 8 8 8 7 8 3 3 1 1 1 5 6 9 5 1 8 3 8 8 8 //"
-				+ "1 1 1 1 1 0 1 2 2 1 2 2 1 0 2 2 1 1 0 1 0 //- - - - - - - - - - - - - - - - - - - - - //0 //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //1 //6 4 4 4 2 7 7 5 7 6 7 6 1 1 6 7 4 1 7 4 7 //"
-				+ "2 3 3 3 8 1 7 1 2 2 2 7 7 7 7 2 3 4 1 3 1 //. . . . . . . . . . . . . . . . . . . . . //"
-				+ "7 7 7 7 1 4 1 2 5 7 5 2 1 2 2 5 7 1 4 7 4 //: //s //t //n //9 5 5 5 4 7 1 9 7 9 7 1 4 8 1 7 5 1 7 5 7 //e //i //"
-				+ "0 1 1 1 1 0 1 1 1 0 1 2 1 0 2 1 1 1 0 1 0 //t //- - - - - - - - - - - - - - - - - - - - - //a //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //9 //p //1 6 6 6 8 0 3 3 3 1 3 8 9 6 8 3 6 6 0 6 0 //"
-				+ "9 1 1 1 1 8 6 4 5 9 5 5 1 4 5 5 1 4 8 1 8 //. . . . . . . . . . . . . . . . . . . . . //n //"
-				+ "3 7 7 7 2 9 3 1 1 3 1 3 8 8 3 1 7 2 9 7 9 //s //e //h //p //c //7 2 2 2 1 5 9 6 4 7 4 7 1 6 7 4 2 9 5 2 5 //u //a //"
-				+ "0 1 1 1 1 0 0 1 1 0 1 1 1 0 1 1 1 0 0 1 0 //d - - - - - - - - - - - - - - - - - - - - - //o //a //r //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //8 //e //1 1 1 1 8 6 2 4 8 1 8 5 6 5 5 8 1 3 6 1 6 //G //h //"
-				+ "5 8 8 8 1 5 3 6 2 5 2 1 3 9 1 2 8 7 5 8 5 //. . . . . . . . . . . . . . . . . . . . . //l //"
-				+ "1 3 3 3 1 1 4 4 2 1 2 2 2 1 2 2 3 2 1 3 1 //m //a //o //c //r //i //f //6 9 9 9 9 4 7 3 1 6 1 4 9 5 4 1 9 7 4 9 4 //"
-				+ "t //0 0 0 0 0 0 0 1 1 0 1 1 0 0 1 1 0 0 0 0 0 //r //- - - - - - - - - - - - - - - - - - - - - //n //e //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //f //7 //e //f //1 6 6 6 0 2 3 4 9 1 9 6 7 5 6 9 6 6 2 6 2 //"
-				+ "d 1 0 0 0 7 6 8 1 6 1 6 8 9 2 8 6 0 8 6 0 6 //u //. . . . . . . . . . . . . . . . . . . . . //I //s //"
-				+ "4 1 1 1 2 1 2 7 1 4 1 5 3 3 5 1 1 1 1 1 1 //l //l //g //i //n //5 7 7 7 7 3 6 0 9 5 9 1 7 4 1 9 7 6 3 7 3 //"
-				+ "w //i //0 0 0 0 0 0 0 1 0 0 0 1 0 0 1 0 0 0 0 0 0 //s //- - - - - - - - - - - - - - - - - - - - - //n //t //i //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //6 //n //9 6 6 6 6 6 6 6 1 9 1 5 8 1 5 1 6 5 6 6 6 //a //e //t //"
-				+ "6 4 4 4 3 0 6 9 9 6 9 9 7 8 9 9 4 4 0 4 0 //i //. . . . . . . . . . . . . . . . . . . . . //t //b //"
-				+ "7 1 1 1 2 1 9 4 5 7 5 6 3 3 6 5 1 7 1 1 1 //a //p //O //n //4 6 6 6 6 3 4 7 7 4 7 8 5 3 8 7 6 4 3 6 3 //f //"
-				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //f //o //- - - - - - - - - - - - - - - - - - - - - //o //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //5 //s //r //3 7 7 7 3 6 8 6 9 3 9 8 3 3 8 9 7 7 6 7 6 //e //e //"
-				+ "5 1 1 1 0 0 5 4 0 5 0 3 9 0 3 0 1 6 0 1 0 //. . . . . . . . . . . . . . . . . . . . . //i //b //"
-				+ "t 9 9 9 9 7 4 1 1 9 9 9 3 1 3 3 9 9 1 4 9 4 //i //m //l //i //u //3 4 4 4 5 3 3 5 5 3 5 6 4 2 6 5 4 3 3 4 3 //n //b //"
-				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //l //a //- - - - - - - - - - - - - - - - - - - - - //a //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //b //c 4 //i //5 8 8 8 5 3 2 5 4 5 4 2 7 4 2 4 8 2 3 8 3 //o //t //"
-				+ "4 3 3 3 0 4 1 6 5 4 5 1 8 5 1 5 3 9 4 3 4 //r . . . . . . . . . . . . . . . . . . . . . //n //"
-				+ "7 2 2 2 6 8 1 1 5 7 5 6 4 1 6 5 2 1 8 2 8 //e //P //d //i //d //2 3 3 3 4 3 3 4 3 2 3 4 3 2 4 3 3 2 3 3 3 //e //e //"
-				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //h //t - - - - - - - - - - - - - - - - - - - - - //t //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //a //3 //s //l //9 8 8 8 8 0 0 7 5 9 5 6 4 7 6 5 8 1 0 8 0 //p //"
-				+ "3 1 1 1 1 4 9 1 1 3 1 5 4 6 5 1 1 0 4 1 4 //u //. . . . . . . . . . . . . . . . . . . . . //u //"
-				+ "c 3 2 2 2 1 8 2 6 1 3 1 3 5 4 3 1 2 1 8 2 8 //o //l //r //a //g //2 3 3 3 5 3 3 3 3 2 3 3 2 2 3 3 3 2 3 3 3 //l //C //"
-				+ "l //0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //- - - - - - - - - - - - - - - - - - - - - //a //"
-				+ "d E E E E E E E E E E E E E E E E E E E E E //2 //n //5 5 5 5 6 2 4 3 2 5 2 2 3 8 2 2 5 1 2 5 2 //n i //"
-				+ "9 4 4 4 5 3 1 9 3 9 3 2 2 3 2 3 4 0 3 4 3 //. . . . . . . . . . . . . . . . . . . . . //a //t //"
-				+ "7 5 5 5 3 3 2 5 6 7 6 5 2 7 5 6 5 2 3 5 3 //a //s //h //t //n //2 3 3 3 7 4 4 3 3 2 3 2 2 2 2 3 3 2 4 3 4 //y //o //"
-				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //t //i //- - - - - - - - - - - - - - - - - - - - - //i //t l //"
-				+ "i E E E E E E E E E E E E E E E E E E E E E //1 //a //1 4 4 4 3 5 1 6 9 1 9 2 7 4 2 9 4 6 5 4 5 //b //c //"
-				+ "6 3 3 3 2 6 8 2 7 6 7 2 3 8 2 7 3 0 6 3 6 //a //. . . . . . . . . . . . . . . . . . . . . //i //b //l //"
-				+ "7 2 2 2 8 3 2 9 5 7 5 1 2 4 1 5 2 1 3 2 3 //o //b //r //u P //2 5 5 5 0 6 6 4 4 2 4 3 3 3 3 4 5 4 6 5 6 //P //"
-				+ "0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 //- - - - - - - - - - - - - - - - - - - - - //"
-				+ "E E E E E E E E E E E E E E E E E E E E E //0 //d //8 9 9 9 9 2 9 1 2 8 2 4 8 1 4 2 9 8 2 9 2 //e //"
-				+ "6 4 4 4 5 7 0 5 8 6 8 4 7 4 4 8 4 3 7 4 7 //. . . . . . . . . . . . . . . . . . . . . //t //"
-				+ "1 5 5 5 2 4 2 7 2 1 2 1 2 7 1 2 5 6 4 5 4 //a //g //i //t //5 //s //4 //6 //e /// //s //3 //v //p //n //u //I //"
-				+ "o //r //5 //e //g //4 //5 //h /// //d //t //3 //e //t //r //n //i //o //p //0 0 0 5 0 2 5 0 0 5 5 0 0 //e //"
-				+ "3 3 3 4 4 2 2 3 2 2 3 3 3 //p //4 //r /// / / / / / / / / / / / / //u //s 2 2 2 3 2 1 1 2 2 2 3 3 3 //t //o //"
-				+ "n //r //e //i //G //t //0 0 0 5 0 0 2 5 0 0 3 6 5 0 0 0 0 0 //a //3 3 3 4 5 4 2 2 3 2 2 2 3 3 3 5 3 5 //"
-				+ "3 //r //p /// / / / / / / / / / / / / / / / / / //e //2 2 2 3 4 2 1 1 2 2 2 2 3 2 2 4 3 4 //l //l //p //"
-				+ "a /// //e //e //5 0 0 0 5 0 0 2 5 5 5 0 3 0 0 5 0 0 0 0 0 //h //2 3 3 3 4 5 4 2 2 2 2 2 2 3 2 2 3 3 5 3 5 //"
-				+ "h //2 //c //c /// / / / / / / / / / / / / / / / / / / / / //a //a //2 2 2 2 3 4 2 1 2 2 2 2 2 2 2 2 3 2 3 3 4 //"
-				+ "d //d //a //a //e //e //5 0 0 0 5 0 0 2 5 5 5 0 4 0 0 5 0 0 0 0 0 //H //2 3 3 3 4 5 4 2 2 2 2 2 2 3 2 2 3 3 5 3 5 //"
-				+ "1 //H /// / / / / / / / / / / / / / / / / / / / / //2 2 2 2 3 4 2 1 1 2 2 2 2 2 2 2 3 3 4 3 4 //f //o //; ; //"
-				+ "d d d d //e //9 9 //: : : : : : : : : : : : //c n n n n //: //9 9 //2 2 3 3 3 3 3 4 4 4 5 5 //a a a a //5 //: : //"
-				+ "9 9 //n //4 4 4 4 4 4 4 4 4 4 4 4 //c c c c //8 ; ; ; ; ; ; ; ; ; ; ; ; //1 1 //1 1 //; //e //0 //S S S S //"
-				+ "5 5 6 6 6 6 6 7 7 7 8 8 //8 8 //7 //; ; l l //7 //9 9 9 9 9 9 9 9 9 9 9 9 //l l l l //d //9 //8 8 //9 1 4 7 //"
-				+ "o o //i //e 9 9 9 9 9 9 9 9 9 9 9 9 //o o o o //i i //9 //9 9 //4 1 2 5 //i i i i //c //1 1 1 1 1 1 1 1 1 1 1 1 //"
-				+ "c //s s //1 //s s s s //9 9 //7 – 2 6 //e e //n //e e e e //n //1 1 //– 7 – – //h h h h h h h h h h h h //e //h h //"
-				+ "g //I //t t t t t t t t t t t t //6 6 0 3 //h h h h //r //l t t //9 //t t t t //s s s s s s s s s s s s //h h //"
-				+ "4 1 2 5 9 2 //s s //e //a //t t //7 //s s s s //e e e e e e e e e e e e //. //f //7 1 2 6 9 3 //e e //s s //"
-				+ "n //: : : : 5 3 //e e e e //a a a a a a a a a a a a //e //1 7 9 2 0 6 4 4 0 2 7 3 4 6 4 //a a //e e //"
-				+ "1 1 2 2 6 – //a a a a //n n n n n n n n n n n n //A 1 8 9 9 5 1 6 1 1 7 9 2 5 4 //R //n n //a a //4 4 4 4 – 6 //"
-				+ "n n n n //; ; ; ; 9 3 3 3 8 8 1 6 – – 2 4 8 1 5 //n n A A A A A A A A A A A A //2 7 //e //A A //h //"
-				+ "7 7 8 8 – – – – – 3 – – 5 9 – – – – – //A A A A //l //t 6 3 //J J J J J J J J J J J J //"
-				+ "9 9 9 9 3 A 7 A 0 7 2 – 0 0 9 2 3 9 0 3 1 : : //J J //s //a a a a //b 9 9 9 9 1 8 9 8 5 5 1 6 0 2 7 8 2 5 4 6 6 //"
-				+ "e //J J //t t t t //n n n n n n n n n n n n r r //1 1 1 1 9 3 3 3 8 3 1 6 1 1 2 4 8 1 5 1 1 //a //c c c c n //"
-				+ "a a a a a a a a a a a a //r r u u //T A A A A A B B C C C C C C C C C C C C E E //";
+				+ "ANESTH ANALG LETTERS TO THE EDITOR 1005//2000;90:1000 –8//y//t//i//l//8 3 3 3 2 8 6 6 6 8 6 2 8 2 2 6 3 5 8 3 8//"
+				+ "t//i//4 0 0 0 0 5 6 6 3 4 3 9 4 5 9 3 0 3 5 0 5//n b//1 1 1 1 0 2 0 1 1 1 1 1 5 9 1 1 1 4 2 1 2//i//"
+				+ "P//a//2 0 0 0 0 0 0 0 0 2 0 0 0 1 0 0 0 0 0 0 0//o//. . . . . . . . . . . . . . . . . . . . .//b//J//"
+				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0//o//r//p//1 8 8 8 7 8 3 3 1 1 1 5 6 9 5 1 8 3 8 8 8//"
+				+ "1 1 1 1 1 0 1 2 2 1 2 2 1 0 2 2 1 1 0 1 0//- - - - - - - - - - - - - - - - - - - - -//0//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//1//6 4 4 4 2 7 7 5 7 6 7 6 1 1 6 7 4 1 7 4 7//"
+				+ "2 3 3 3 8 1 7 1 2 2 2 7 7 7 7 2 3 4 1 3 1//. . . . . . . . . . . . . . . . . . . . .//"
+				+ "7 7 7 7 1 4 1 2 5 7 5 2 1 2 2 5 7 1 4 7 4//://s//t//n//9 5 5 5 4 7 1 9 7 9 7 1 4 8 1 7 5 1 7 5 7//e//i//"
+				+ "0 1 1 1 1 0 1 1 1 0 1 2 1 0 2 1 1 1 0 1 0//t//- - - - - - - - - - - - - - - - - - - - -//a//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//9//p//1 6 6 6 8 0 3 3 3 1 3 8 9 6 8 3 6 6 0 6 0//"
+				+ "9 1 1 1 1 8 6 4 5 9 5 5 1 4 5 5 1 4 8 1 8//. . . . . . . . . . . . . . . . . . . . .//n//"
+				+ "3 7 7 7 2 9 3 1 1 3 1 3 8 8 3 1 7 2 9 7 9//s//e//h//p//c//7 2 2 2 1 5 9 6 4 7 4 7 1 6 7 4 2 9 5 2 5//u//a//"
+				+ "0 1 1 1 1 0 0 1 1 0 1 1 1 0 1 1 1 0 0 1 0//d - - - - - - - - - - - - - - - - - - - - -//o//a//r//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//8//e//1 1 1 1 8 6 2 4 8 1 8 5 6 5 5 8 1 3 6 1 6//G//h//"
+				+ "5 8 8 8 1 5 3 6 2 5 2 1 3 9 1 2 8 7 5 8 5//. . . . . . . . . . . . . . . . . . . . .//l//"
+				+ "1 3 3 3 1 1 4 4 2 1 2 2 2 1 2 2 3 2 1 3 1//m//a//o//c//r//i//f//6 9 9 9 9 4 7 3 1 6 1 4 9 5 4 1 9 7 4 9 4//"
+				+ "t//0 0 0 0 0 0 0 1 1 0 1 1 0 0 1 1 0 0 0 0 0//r//- - - - - - - - - - - - - - - - - - - - -//n//e//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//f//7//e//f//1 6 6 6 0 2 3 4 9 1 9 6 7 5 6 9 6 6 2 6 2//"
+				+ "d 1 0 0 0 7 6 8 1 6 1 6 8 9 2 8 6 0 8 6 0 6//u//. . . . . . . . . . . . . . . . . . . . .//I//s//"
+				+ "4 1 1 1 2 1 2 7 1 4 1 5 3 3 5 1 1 1 1 1 1//l//l//g//i//n//5 7 7 7 7 3 6 0 9 5 9 1 7 4 1 9 7 6 3 7 3//"
+				+ "w//i//0 0 0 0 0 0 0 1 0 0 0 1 0 0 1 0 0 0 0 0 0//s//- - - - - - - - - - - - - - - - - - - - -//n//t//i//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//6//n//9 6 6 6 6 6 6 6 1 9 1 5 8 1 5 1 6 5 6 6 6//a//e//t//"
+				+ "6 4 4 4 3 0 6 9 9 6 9 9 7 8 9 9 4 4 0 4 0//i//. . . . . . . . . . . . . . . . . . . . .//t//b//"
+				+ "7 1 1 1 2 1 9 4 5 7 5 6 3 3 6 5 1 7 1 1 1//a//p//O//n//4 6 6 6 6 3 4 7 7 4 7 8 5 3 8 7 6 4 3 6 3//f//"
+				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0//f//o//- - - - - - - - - - - - - - - - - - - - -//o//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//5//s//r//3 7 7 7 3 6 8 6 9 3 9 8 3 3 8 9 7 7 6 7 6//e//e//"
+				+ "5 1 1 1 0 0 5 4 0 5 0 3 9 0 3 0 1 6 0 1 0//. . . . . . . . . . . . . . . . . . . . .//i//b//"
+				+ "t 9 9 9 9 7 4 1 1 9 9 9 3 1 3 3 9 9 1 4 9 4//i//m//l//i//u//3 4 4 4 5 3 3 5 5 3 5 6 4 2 6 5 4 3 3 4 3//n//b//"
+				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0//l//a//- - - - - - - - - - - - - - - - - - - - -//a//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//b//c 4//i//5 8 8 8 5 3 2 5 4 5 4 2 7 4 2 4 8 2 3 8 3//o//t//"
+				+ "4 3 3 3 0 4 1 6 5 4 5 1 8 5 1 5 3 9 4 3 4//r . . . . . . . . . . . . . . . . . . . . .//n//"
+				+ "7 2 2 2 6 8 1 1 5 7 5 6 4 1 6 5 2 1 8 2 8//e//P//d//i//d//2 3 3 3 4 3 3 4 3 2 3 4 3 2 4 3 3 2 3 3 3//e//e//"
+				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0//h//t - - - - - - - - - - - - - - - - - - - - -//t//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//a//3//s//l//9 8 8 8 8 0 0 7 5 9 5 6 4 7 6 5 8 1 0 8 0//p//"
+				+ "3 1 1 1 1 4 9 1 1 3 1 5 4 6 5 1 1 0 4 1 4//u//. . . . . . . . . . . . . . . . . . . . .//u//"
+				+ "c 3 2 2 2 1 8 2 6 1 3 1 3 5 4 3 1 2 1 8 2 8//o//l//r//a//g//2 3 3 3 5 3 3 3 3 2 3 3 2 2 3 3 3 2 3 3 3//l//C//"
+				+ "l//0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0//- - - - - - - - - - - - - - - - - - - - -//a//"
+				+ "d E E E E E E E E E E E E E E E E E E E E E//2//n//5 5 5 5 6 2 4 3 2 5 2 2 3 8 2 2 5 1 2 5 2//n i//"
+				+ "9 4 4 4 5 3 1 9 3 9 3 2 2 3 2 3 4 0 3 4 3//. . . . . . . . . . . . . . . . . . . . .//a//t//"
+				+ "7 5 5 5 3 3 2 5 6 7 6 5 2 7 5 6 5 2 3 5 3//a//s//h//t//n//2 3 3 3 7 4 4 3 3 2 3 2 2 2 2 3 3 2 4 3 4//y//o//"
+				+ "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0//t//i//- - - - - - - - - - - - - - - - - - - - -//i//t l//"
+				+ "i E E E E E E E E E E E E E E E E E E E E E//1//a//1 4 4 4 3 5 1 6 9 1 9 2 7 4 2 9 4 6 5 4 5//b//c//"
+				+ "6 3 3 3 2 6 8 2 7 6 7 2 3 8 2 7 3 0 6 3 6//a//. . . . . . . . . . . . . . . . . . . . .//i//b//l//"
+				+ "7 2 2 2 8 3 2 9 5 7 5 1 2 4 1 5 2 1 3 2 3//o//b//r//u P//2 5 5 5 0 6 6 4 4 2 4 3 3 3 3 4 5 4 6 5 6//P//"
+				+ "0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0//- - - - - - - - - - - - - - - - - - - - -//"
+				+ "E E E E E E E E E E E E E E E E E E E E E//0//d//8 9 9 9 9 2 9 1 2 8 2 4 8 1 4 2 9 8 2 9 2//e//"
+				+ "6 4 4 4 5 7 0 5 8 6 8 4 7 4 4 8 4 3 7 4 7//. . . . . . . . . . . . . . . . . . . . .//t//"
+				+ "1 5 5 5 2 4 2 7 2 1 2 1 2 7 1 2 5 6 4 5 4//a//g//i//t//5//s//4//6//e/////s//3//v//p//n//u//I//"
+				+ "o//r//5//e//g//4//5//h/////d//t//3//e//t//r//n//i//o//p//0 0 0 5 0 2 5 0 0 5 5 0 0//e//"
+				+ "3 3 3 4 4 2 2 3 2 2 3 3 3//p//4//r/// / / / / / / / / / / / ///u//s 2 2 2 3 2 1 1 2 2 2 3 3 3//t//o//"
+				+ "n//r//e//i//G//t//0 0 0 5 0 0 2 5 0 0 3 6 5 0 0 0 0 0//a//3 3 3 4 5 4 2 2 3 2 2 2 3 3 3 5 3 5//"
+				+ "3//r//p/// / / / / / / / / / / / / / / / / ///e//2 2 2 3 4 2 1 1 2 2 2 2 3 2 2 4 3 4//l//l//p//"
+				+ "a/////e//e//5 0 0 0 5 0 0 2 5 5 5 0 3 0 0 5 0 0 0 0 0//h//2 3 3 3 4 5 4 2 2 2 2 2 2 3 2 2 3 3 5 3 5//"
+				+ "h//2//c//c/// / / / / / / / / / / / / / / / / / / / ///a//a//2 2 2 2 3 4 2 1 2 2 2 2 2 2 2 2 3 2 3 3 4//"
+				+ "d//d//a//a//e//e//5 0 0 0 5 0 0 2 5 5 5 0 4 0 0 5 0 0 0 0 0//H//2 3 3 3 4 5 4 2 2 2 2 2 2 3 2 2 3 3 5 3 5//"
+				+ "1//H/// / / / / / / / / / / / / / / / / / / / ///2 2 2 2 3 4 2 1 1 2 2 2 2 2 2 2 3 3 4 3 4//f//o//; ;//"
+				+ "d d d d//e//9 9//: : : : : : : : : : : ://c n n n n//://9 9//2 2 3 3 3 3 3 4 4 4 5 5//a a a a//5//: ://"
+				+ "9 9//n//4 4 4 4 4 4 4 4 4 4 4 4//c c c c//8 ; ; ; ; ; ; ; ; ; ; ; ;//1 1//1 1//;//e//0//S S S S//"
+				+ "5 5 6 6 6 6 6 7 7 7 8 8//8 8//7//; ; l l//7//9 9 9 9 9 9 9 9 9 9 9 9//l l l l//d//9//8 8//9 1 4 7//"
+				+ "o o//i//e 9 9 9 9 9 9 9 9 9 9 9 9//o o o o//i i//9//9 9//4 1 2 5//i i i i//c//1 1 1 1 1 1 1 1 1 1 1 1//"
+				+ "c//s s//1//s s s s//9 9//7 – 2 6//e e//n//e e e e//n//1 1//– 7 – –//h h h h h h h h h h h h//e//h h//"
+				+ "g//I//t t t t t t t t t t t t//6 6 0 3//h h h h//r//l t t//9//t t t t//s s s s s s s s s s s s//h h//"
+				+ "4 1 2 5 9 2//s s//e//a//t t//7//s s s s//e e e e e e e e e e e e//.//f//7 1 2 6 9 3//e e//s s//"
+				+ "n//: : : : 5 3//e e e e//a a a a a a a a a a a a//e//1 7 9 2 0 6 4 4 0 2 7 3 4 6 4//a a//e e//"
+				+ "1 1 2 2 6 –//a a a a//n n n n n n n n n n n n//A 1 8 9 9 5 1 6 1 1 7 9 2 5 4//R//n n//a a//4 4 4 4 – 6//"
+				+ "n n n n//; ; ; ; 9 3 3 3 8 8 1 6 – – 2 4 8 1 5//n n A A A A A A A A A A A A//2 7//e//A A//h//"
+				+ "7 7 8 8 – – – – – 3 – – 5 9 – – – – –//A A A A//l//t 6 3//J J J J J J J J J J J J//"
+				+ "9 9 9 9 3 A 7 A 0 7 2 – 0 0 9 2 3 9 0 3 1 : ://J J//s//a a a a//b 9 9 9 9 1 8 9 8 5 5 1 6 0 2 7 8 2 5 4 6 6//"
+				+ "e//J J//t t t t//n n n n n n n n n n n n r r//1 1 1 1 9 3 3 3 8 3 1 6 1 1 2 4 8 1 5 1 1//a//c c c c n//"
+				+ "a a a a a a a a a a a a//r r u u//T A A A A A B B C C C C C C C C C C C C E E//";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"ANESTH ANALG LETTERS TO THE EDITOR 1005",
@@ -753,26 +753,26 @@ public class TextStructurerTest {
 
 		int phraseListListSize = 246;
 		String totalStringValue = ""
-				+ "- //p //Luscinia   //(Muscicapidae) //a //* //Ficedula //c //* //i //c a //(Turdidae) //Turdus //s //* //e //u //"
-				+ "(Mimidae) //Mimus //d //i //* //M o //Sturnus (Sturnidae) //* //0.5 //(Troglodytidae) //Certhi- //Troglodytes //"
-				+ "* //oidea //Sitta (Sittidae) //Regulus //(Regulidae) //Zosterops(Zosteropidae) //0.77 //* //0.66 //(Timaliidae) //"
-				+ "Leiothrix //a //0.93 //- //d //Phylloscopus(Phylloscopidae) //i a //i //r //v //e //l //Pycnonotus //(Pycnonotidae) //"
-				+ "e //d //y //i //* //s //(Donacobiidae) //Donacobius //S o //s //* //(Acrocephalidae) //Acrocephalus //a //0.73 //0.83 //"
-				+ "P //Hirundo //(Hirundinidae) //(Paridae) //Parus //* //Icterus (Icteridae) //* //Dendroica //(Parulidae) //- //* //r //"
-				+ "(Emberizidae) //Emberiza //e //* //a //s //(Fringillidae) //Serinus //e //* //s //0.71 //d //a //i //Motacilla //"
-				+ "(Motacillidae) //* //P o //s //0.91 //Lonchura //(Estrildidae) //e //(Nectariniidae) //Nectarinia //n //i //* //"
-				+ "(Promeropidae) //Promerops //c //Petroica //s //(Petroicidae) //* //Eopsaltria //O //Ptiloris //* //"
-				+ "Paradisaea (Paradisaeidae) //* //' //Manucodia //a //* //e //Pica //* //d //* //i //(Corvidae) //Corvus //* //o //"
-				+ "Cyanocorax //v //* //r //(Dicruridae) //o Dicrurus //C //Rhipidura //(Rhipiduridae) //  //* //e //Vireo //r //0.72 a //"
-				+ "(Vireonidae) //5 //* //o //Cyclarhis //4 //* //c //* //' //(Oriolidae) //Oriolus //3 //c //Coracina //(Campephagidae) //"
-				+ "0.78 //Toxorhamphus //(Melanocharitidae) //0.84 //* //6 //(Cnemophilidae) //Cnemophilus //b 0.94 //"
-				+ "Philesturnus (Callaeidae) //Orthonyx //(Orthonychidae) //* //(Pomatostomidae) //Pomatostomus //0.5 //"
-				+ "Lichenostomus (Meliphagidae) //b * //2 //Amytornis # //(Maluridae) //* //(Acanthizidae) //Gerygone //"
-				+ "Ailuroedus //* //(Ptilonorhynchidae) //* //Sericulus //a //2 //Menura //(Menuridae) //Tyrannus //s //* //e //"
-				+ "Myiarchus (Tyrannidae) //* //* //n //Camptostoma //* //i //(Tityridae) //c //Onychorhynchus //* //1 b //s //"
-				+ "(Pipridae) //Manacus //* //* //o //Hypocnemis //b //* //(Thamnophilidae) //* //Phlegopsis //1 a //u //(Pittidae) //"
-				+ "Pitta //S //Acanthisitta (Acanthisittidae) //0.07 //a b //1 2 //3 5 //ambiguous //4 6 //UVS          VS //– //"
-				+ ", VS          UVS //, //";
+				+ "-//p//Luscinia  //(Muscicapidae)//a//*//Ficedula//c//*//i//c a//(Turdidae)//Turdus//s//*//e//u//"
+				+ "(Mimidae)//Mimus//d//i//*//M o//Sturnus (Sturnidae)//*//0.5//(Troglodytidae)//Certhi-//Troglodytes//"
+				+ "*//oidea//Sitta (Sittidae)//Regulus//(Regulidae)//Zosterops(Zosteropidae)//0.77//*//0.66//(Timaliidae)//"
+				+ "Leiothrix//a//0.93//-//d//Phylloscopus(Phylloscopidae)//i a//i//r//v//e//l//Pycnonotus//(Pycnonotidae)//"
+				+ "e//d//y//i//*//s//(Donacobiidae)//Donacobius//S o//s//*//(Acrocephalidae)//Acrocephalus//a//0.73//0.83//"
+				+ "P//Hirundo//(Hirundinidae)//(Paridae)//Parus//*//Icterus (Icteridae)//*//Dendroica//(Parulidae)//-//*//r//"
+				+ "(Emberizidae)//Emberiza//e//*//a//s//(Fringillidae)//Serinus//e//*//s//0.71//d//a//i//Motacilla//"
+				+ "(Motacillidae)//*//P o//s//0.91//Lonchura//(Estrildidae)//e//(Nectariniidae)//Nectarinia//n//i//*//"
+				+ "(Promeropidae)//Promerops//c//Petroica//s//(Petroicidae)//*//Eopsaltria//O//Ptiloris//*//"
+				+ "Paradisaea (Paradisaeidae)//*//'//Manucodia//a//*//e//Pica//*//d//*//i//(Corvidae)//Corvus//*//o//"
+				+ "Cyanocorax//v//*//r//(Dicruridae)//o Dicrurus//C//Rhipidura//(Rhipiduridae)// //*//e//Vireo//r//0.72 a//"
+				+ "(Vireonidae)//5//*//o//Cyclarhis//4//*//c//*//'//(Oriolidae)//Oriolus//3//c//Coracina//(Campephagidae)//"
+				+ "0.78//Toxorhamphus//(Melanocharitidae)//0.84//*//6//(Cnemophilidae)//Cnemophilus//b 0.94//"
+				+ "Philesturnus (Callaeidae)//Orthonyx//(Orthonychidae)//*//(Pomatostomidae)//Pomatostomus//0.5//"
+				+ "Lichenostomus (Meliphagidae)//b *//2//Amytornis #//(Maluridae)//*//(Acanthizidae)//Gerygone//"
+				+ "Ailuroedus//*//(Ptilonorhynchidae)//*//Sericulus//a//2//Menura//(Menuridae)//Tyrannus//s//*//e//"
+				+ "Myiarchus (Tyrannidae)//*//*//n//Camptostoma//*//i//(Tityridae)//c//Onychorhynchus//*//1 b//s//"
+				+ "(Pipridae)//Manacus//*//*//o//Hypocnemis//b//*//(Thamnophilidae)//*//Phlegopsis//1 a//u//(Pittidae)//"
+				+ "Pitta//S//Acanthisitta (Acanthisittidae)//0.07//a b//1 2//3 5//ambiguous//4 6//UVS          VS//–//"
+				+ ", VS          UVS//,//";
 		// horizontal phrases
 		String[] horizontalPhraseValues = {
 				"Luscinia",

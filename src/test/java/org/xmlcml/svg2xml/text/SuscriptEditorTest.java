@@ -98,22 +98,22 @@ public class SuscriptEditorTest {
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
 		PhraseList phraseList01 = suscriptEditor.mergeSuscripts(H3OPLUS, 0, 1, SusType.SUPER);
 		Assert.assertNotNull("01 not null", phraseList01);
-		Assert.assertEquals("H O ^{+} ", phraseList01.toString());
-		Assert.assertEquals("H O ^{+} ", phraseList01.getStringValue());
+		Assert.assertEquals("H O^{+}", phraseList01.toString());
+		Assert.assertEquals("H O^{+}", phraseList01.getStringValue());
 		PhraseList phraseList12 = suscriptEditor.mergeSuscripts(H3OPLUS, 1, 2, SusType.SUB);
 		Assert.assertNotNull("12 not null", phraseList12);
-		Assert.assertEquals("H _{3} O ", phraseList12.toString());
-		Assert.assertEquals("H _{3} O ", phraseList12.getStringValue());
+		Assert.assertEquals("H_{3} O", phraseList12.toString());
+		Assert.assertEquals("H_{3} O", phraseList12.getStringValue());
 
 		PhraseList phraseList012 = suscriptEditor.mergeSuscripts(SusType.SUPER, PLUS, phraseList12);
-		Assert.assertEquals("H _{3} O ^{+} ", phraseList012.toString());
-		Assert.assertEquals("H _{3} O ^{+} ", phraseList012.getStringValue());
+		Assert.assertEquals("H_{3} O^{+}", phraseList012.toString());
+		Assert.assertEquals("H_{3} O^{+}", phraseList012.getStringValue());
 		Assert.assertEquals(""
-			+ "<g xmlns=\"http://www.w3.org/2000/svg\" class=\"phraseList\" string-value=\"H _{3} O ^{+} \">"
+			+ "<g xmlns=\"http://www.w3.org/2000/svg\" class=\"phraseList\" string-value=\"H_{3} O^{+}\">"
 			+ "<g class=\"phrase\" string-value=\"H\"><g class=\"word\"><text stroke=\"none\" x=\"10.0\" y=\"20.0\" font-size=\"8.0\">H</text></g></g>"
 			+ "<g class=\"phrase\" subscript=\"true\" string-value=\"_{3}\"><g class=\"word\"><text stroke=\"none\" x=\"15.0\" y=\"23.0\" font-size=\"6.0\">3</text></g></g>"
 			+ "<g class=\"phrase\" string-value=\"O\"><g class=\"word\"><text stroke=\"none\" x=\"20.0\" y=\"20.0\" font-size=\"8.0\">O</text></g></g>"
-			+ "<g class=\"phrase\" string-value=\"^{+}\" superscript=\"true\"><g class=\"word\"><text stroke=\"none\" x=\"25.0\" y=\"16.0\" font-size=\"6.0\">+</text></g></g>"
+			+ "<g class=\"phrase\" string-value=\"+\" superscript=\"true\"><g class=\"word\"><text stroke=\"none\" x=\"25.0\" y=\"16.0\" font-size=\"6.0\">+</text></g></g>"
 			+ "</g>"
 		, phraseList012.toXML());
 	}

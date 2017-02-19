@@ -228,7 +228,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasSpringer68755() {
 		String root = "Springer68755";
 		String filename = ".g.7.0.svg";
-		annotateAndOutput(root, filename, 7, 7);
+		annotateAndOutput(root, filename, 8, 8);
 	}
 	
 	@Test
