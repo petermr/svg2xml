@@ -135,7 +135,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		int maxColumns = getMaxColumns();
 		IntRangeArray columnRanges = new IntRangeArray();
 		for (int i = 0; i < maxColumns; i++) {
-			columnRanges.set(i, null);
+			columnRanges.set(i, (IntRange)null);
 		}
 		for (PhraseList phraseList : childPhraseListList) {
 			if (phraseList.size() == maxColumns) {

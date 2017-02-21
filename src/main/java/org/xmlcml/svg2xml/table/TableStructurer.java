@@ -307,6 +307,7 @@ public class TableStructurer {
 	
 	private List<HtmlTr> createHeaderRows(TableSection tableHeaderSection) {
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
+		if (tableHeaderSection == null) return rows;
 		PhraseListList headerPhraseListList = new PhraseListList();
 		for (HorizontalElement element : tableHeaderSection.getHorizontalElementList()) {
 			if (element instanceof PhraseList) {
