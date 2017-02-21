@@ -321,14 +321,4 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return thList;
 	}
 
-	public static HtmlUl getPhraseListUl(List<PhraseList> phraseLists) {
-		HtmlUl ul = new HtmlUl();
-		for (PhraseList phraseList : phraseLists) {
-			HtmlLi li = new HtmlLi();
-			ul.appendChild(li);
-			li.appendChild(phraseList.toHtml().copy());
-		}
-		return ul;
-	}
-
 }

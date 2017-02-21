@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.util.log.Log;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
@@ -39,10 +40,10 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	static final Logger LOG = Logger.getLogger(Phrase.class);
 	public final static String TAG = "phrase";
 
-	private static final String SUB_START = "_{";
-	private static final String SUPER_START = "^{";
-	private static final String SUB_END = "}";
-	private static final String SUPER_END = "}";
+	static final String SUB_START = "_{";
+	static final String SUPER_START = "^{";
+	static final String SUB_END = "}";
+	static final String SUPER_END = "}";
 	
 	private List<Word> childWordList;
 	
@@ -66,8 +67,10 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		super(g);
 	}
 
-	public void add(SVGElement word) {
+	public void addWord(Word word) {
 		this.appendChild(word);
+		this.setStringValueAttribute(null);
+		this.childWordList = null;
 	}
 	
 	public Word get(int index) {
@@ -299,7 +302,7 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
 		sb.append(getStringValue());
-		sb.append(SUPER_END);
+		sb.append("}");
 		return sb.toString();
 	}
 
@@ -428,6 +431,22 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		}
 		LOG.trace("SPAN" + span.toXML());
 		return span;
+	}
+
+	/** merges words in phrase into this.
+	 * does not destroy phrase.
+	 * 
+	 * @param phrase
+	 */
+	public void mergePhrase(Phrase phrase) {
+		List<Word> words = phrase.getOrCreateWordList();
+		for (Word word : words) {
+			Word newWord = new Word(word);
+			if (phrase.hasSubscript()) newWord.setSubscript(true);
+			if (phrase.hasSuperscript()) newWord.setSuperscript(true);
+			newWord.setStringValueAttribute((String)null);
+			this.addWord(newWord);
+		}
 	}
 
 

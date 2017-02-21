@@ -1601,7 +1601,6 @@ public class TextStructurer {
 	}
 
 	public void condenseSuscripts() {
-		int size = phraseListList.size();
 		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
 		suscriptEditor.mergeAll();
 	}

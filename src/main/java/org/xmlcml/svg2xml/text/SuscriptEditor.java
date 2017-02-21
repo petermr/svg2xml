@@ -28,6 +28,7 @@ public class SuscriptEditor {
 //	private Metrics metrics0;
 //	private Metrics metrics1;
 	private double yDelta;
+private boolean hasSuscripts;
 	
 	
 	public SuscriptEditor(PhraseListList phraseListList) {
@@ -44,13 +45,6 @@ public class SuscriptEditor {
 		maxSuperFontRatio = 0.8;
 		minSuperOffsetRatio = 0.2;
 		maxSuperOffsetRatio = 0.8;
-	}
-
-	public PhraseList mergeSuscripts(PhraseListList phraseListList, int row0, int row1, SusType susType) {
-		LOG.trace(row0 + " ?? "+row1);
-		PhraseList phraseList0 = phraseListList.get(row0);
-		PhraseList phraseList1 = phraseListList.get(row1);
-		return mergeSuscripts(susType, phraseList0, phraseList1);
 	}
 
 	public PhraseList mergeSuscripts(SusType susType, PhraseList phraseList0, PhraseList phraseList1) {
@@ -84,9 +78,21 @@ public class SuscriptEditor {
 			}
 		}
 		LOG.trace(susType+" \n"+phraseList0.getStringValue() + "\n"+phraseList1.getStringValue());
+		newPhraseList = mergePhraseListsByIncreasingX(susType, phraseList0, phraseList1);
+		if (hasSuscripts) {
+			newPhraseList = joinPhraseComponents(newPhraseList);
+		}
+		LOG.trace(newPhraseList.toXML());
+		LOG.trace(newPhraseList.getStringValue());
+		return newPhraseList;
+	}
+
+	private PhraseList mergePhraseListsByIncreasingX(SusType susType, PhraseList phraseList0, PhraseList phraseList1) {
+		PhraseList newPhraseList;
 		int index0 = 0;
 		int index1 = 0;
 		newPhraseList = new PhraseList();
+		hasSuscripts = false;
 		while (true) {
 			Phrase phrase0 = index0 >= phraseList0.size() ? null : phraseList0.get(index0);
 			Double x0 = phrase0 == null ? null : phrase0.getX();
@@ -94,8 +100,10 @@ public class SuscriptEditor {
 			Double x1 = phrase1 == null ? null : phrase1.getX();
 			if (SusType.SUPER.equals(susType) && phrase0 != null) {
 				phrase0.setSuscript(susType, true);
+				hasSuscripts = true;
 			} else if (SusType.SUB.equals(susType) && phrase1 != null) {
 				phrase1.setSuscript(susType, true);
+				hasSuscripts = true;
 			}
 			if (x0 == null) {
 				if (x1 == null) {
@@ -117,10 +125,36 @@ public class SuscriptEditor {
 				index1++;
 			}
 		}
-		LOG.trace(newPhraseList.toXML());
-		LOG.trace(newPhraseList.getStringValue());
 		return newPhraseList;
 	}
+
+	private PhraseList joinPhraseComponents(PhraseList phraseList) {
+		if (phraseList == null || phraseList.size() < 2) {
+			return phraseList;
+		}
+		Phrase lastPhrase = null;
+		PhraseList newPhraseList = new PhraseList();
+		for (int i = 0; i < phraseList.size(); i++) {
+			Phrase phrase = phraseList.get(i);
+			LOG.trace("PH "+phrase+"/"+phrase.hasSubscript());
+			if (lastPhrase == null) {
+				// 1st phrase
+				lastPhrase = phrase;
+			} else if (!lastPhrase.shouldAddSpaceBefore(phrase)) {
+				lastPhrase.mergePhrase(phrase);
+				LOG.trace("JOIN "+lastPhrase.toXML()+" => "+phrase);
+			} else {
+				newPhraseList.add(new Phrase(lastPhrase));
+				lastPhrase = phrase;
+			}
+		}
+		if (lastPhrase != null) {
+			newPhraseList.add(new Phrase(lastPhrase));
+		}
+		LOG.trace("NEW "+newPhraseList);
+		return newPhraseList;
+	}
+
 
 
 	public PhraseListList mergeAll() {
@@ -130,36 +164,29 @@ public class SuscriptEditor {
 			PhraseList phraseList1 = phraseListList.get(i + 1);
 			LOG.trace("======================================================================\n"
 					+"SUPER "+i+"/"+size+"\n"+phraseList0+"\n"+phraseList1);
-//			if (phraseList0.toString().contains("entorhinal")) {
-//				int a = 1;
-//				int b = a;
-//			}
-			if (mergePhraseLists(SusType.SUPER, i, i+1)) {
+			if (mergePhraseListsVertically(SusType.SUPER, i, i+1)) {
 				LOG.trace("MERGED SUPER");
 				size--;
 			} else {
-//				i++;
 			};
 			if (i < size - 1) {
 				LOG.trace("======================================================================\n"
 					+ "SUB "+i+"/"+size+"\n"+phraseListList.get(i)+"\n"+phraseListList.get(i + 1));
-				if (mergePhraseLists(SusType.SUB, i, i + 1)) {
+				if (mergePhraseListsVertically(SusType.SUB, i, i + 1)) {
 					LOG.trace("MERGED SUB");
 					size--;
 				}
-//				i++;
 			}
 			i++;
 		}
-		LOG.trace("condensed "+phraseListList);
+		LOG.trace("condensed all "+phraseListList);
 		return phraseListList;
 	}
 
-	private boolean mergePhraseLists(SusType susType, int line0, int line1) {
+	private boolean mergePhraseListsVertically(SusType susType, int line0, int line1) {
 		boolean merged = false;
 		PhraseList phraseList0 = phraseListList.get(line0);
 		PhraseList phraseList1 = phraseListList.get(line1);
-		LOG.trace(line0+"???"+line1);
 		PhraseList newPhraseList = mergeSuscripts(susType, phraseList0, phraseList1);
 		if (newPhraseList != null) {
 			PhraseList mainPhraseList = (SusType.SUPER.equals(susType)) ? phraseList1 : phraseList0;

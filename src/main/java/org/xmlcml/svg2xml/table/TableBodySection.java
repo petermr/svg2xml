@@ -38,7 +38,10 @@ public class TableBodySection extends TableSection {
 	private List<RealRange> indentRangeArray;
 	private ColumnManager columnManager0;
 	
-	public TableBodySection() {
+	/** not used?
+	 * 
+	 */
+	private TableBodySection() {
 		super(TableSectionType.BODY);
 	}
 	
@@ -47,8 +50,8 @@ public class TableBodySection extends TableSection {
 	}
 	
 	public void createHeaderRowsAndColumnGroups() {
-		getOrCreatePhrases();
-		createSortedColumnManagerListFromUnassignedPhrases(phrases);
+		getOrCreateAllPhrasesInSection();
+		createSortedColumnManagerListFromUnassignedPhrases(allPhrasesInSection);
 		alignColumns();
 		createIndentArray();
 	}
@@ -121,8 +124,8 @@ public class TableBodySection extends TableSection {
 	private RealArray getYCoordinatesForPhrases() {
 		RealArray yCoordArray = new RealArray();
 		Multiset<Double> yCoordSet = HashMultiset.create();
-		for (int i = 0; i < phrases.size(); i++) {
-			yCoordSet.add(phrases.get(i).getY());
+		for (int i = 0; i < allPhrasesInSection.size(); i++) {
+			yCoordSet.add(allPhrasesInSection.get(i).getY());
 		}
 		Iterable<Entry<Double>> yCoords = MultisetUtil.getDoubleEntriesSortedByValue(yCoordSet);
 		for (Entry<Double> yCoord : yCoords) {

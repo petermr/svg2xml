@@ -96,11 +96,17 @@ public class SuscriptEditorTest {
 	public void testSuscriptLocal() {
 		
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
-		PhraseList phraseList01 = suscriptEditor.mergeSuscripts(H3OPLUS, 0, 1, SusType.SUPER);
+		LOG.trace(0 + " ?? "+1);
+		PhraseList phraseList0 = H3OPLUS.get(0);
+		PhraseList phraseList1 = H3OPLUS.get(1);
+		PhraseList phraseList01 = suscriptEditor.mergeSuscripts(SusType.SUPER, phraseList0, phraseList1);
 		Assert.assertNotNull("01 not null", phraseList01);
 		Assert.assertEquals("H O^{+}", phraseList01.toString());
 		Assert.assertEquals("H O^{+}", phraseList01.getStringValue());
-		PhraseList phraseList12 = suscriptEditor.mergeSuscripts(H3OPLUS, 1, 2, SusType.SUB);
+		LOG.trace(1 + " ?? "+2);
+		phraseList0 = H3OPLUS.get(1);
+		phraseList1 = H3OPLUS.get(2);
+		PhraseList phraseList12 = suscriptEditor.mergeSuscripts(SusType.SUB, phraseList0, phraseList1);
 		Assert.assertNotNull("12 not null", phraseList12);
 		Assert.assertEquals("H_{3} O", phraseList12.toString());
 		Assert.assertEquals("H_{3} O", phraseList12.getStringValue());

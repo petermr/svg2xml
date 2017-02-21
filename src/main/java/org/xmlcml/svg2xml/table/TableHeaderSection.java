@@ -43,21 +43,21 @@ public class TableHeaderSection extends TableSection {
 	public void createHeaderRowsAndColumnGroups() {
 		// assume this is sorted by Y; form raw colgroups and reorganize later
 		createHeaderRowListAndUnassignedPhrases();
-		createSortedColumnManagerListFromUnassignedPhrases(phrases);
+		createSortedColumnManagerListFromUnassignedPhrases(allPhrasesInSection);
 	}
 
 	private List<Phrase> createHeaderRowListAndUnassignedPhrases() {
-		phrases = null;
+		allPhrasesInSection = null;
 		headerRowList = new ArrayList<HeaderRow>();
 		Double lastY = null;
 		HeaderRow headerRow = null;
 		for (HorizontalElement element : getHorizontalElementList()) {
 			if (element instanceof PhraseList) {
-				if (phrases == null) {
-					phrases = new ArrayList<Phrase>();
+				if (allPhrasesInSection == null) {
+					allPhrasesInSection = new ArrayList<Phrase>();
 				}
 				PhraseList phraseList = (PhraseList) element;
-				phrases.addAll(phraseList.getOrCreateChildPhraseList());
+				allPhrasesInSection.addAll(phraseList.getOrCreateChildPhraseList());
 			} else if (element instanceof HorizontalRuler) {
 				HorizontalRuler ruler = (HorizontalRuler) element;
 				Double y = ruler.getY();
@@ -68,11 +68,11 @@ public class TableHeaderSection extends TableSection {
 				}
 				ColumnGroup columnGroup = new ColumnGroup();
 				IntRange rulerRange = ruler.getIntRange();
-				for (int i = phrases.size() - 1; i >= 0; i--) {
-					Phrase phrase = phrases.get(i);
+				for (int i = allPhrasesInSection.size() - 1; i >= 0; i--) {
+					Phrase phrase = allPhrasesInSection.get(i);
 					// somewhere above the ruler (ignore stacked rulers at this stage
 					if (rulerRange.includes(phrase.getIntRange()) && phrase.getY() < ruler.getY()) {
-						phrases.remove(i);
+						allPhrasesInSection.remove(i);
 						columnGroup.add(phrase);
 						columnGroup.add(ruler);
 						headerRow.add(columnGroup);
@@ -80,7 +80,7 @@ public class TableHeaderSection extends TableSection {
 				}
 			}
 		}
-		return phrases;
+		return allPhrasesInSection;
 	}
 
 	public List<HeaderRow> getOrCreateHeaderRowList() {

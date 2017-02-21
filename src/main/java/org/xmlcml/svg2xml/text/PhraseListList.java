@@ -9,18 +9,24 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
+import org.xmlcml.euclid.IntRangeArray;
+import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
+import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
 
 public class PhraseListList extends SVGG implements Iterable<PhraseList> {
+	private static final double PARA_SPACING_FACTOR = 1.2;
 	public static final Logger LOG = Logger.getLogger(PhraseListList.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -35,6 +41,8 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 
 	private List<PhraseList> childPhraseListList;
 	private List<Phrase> phrases;
+	private RealArray ySpacings;
+	private double paraSpacingTrigger;
 
 	public PhraseListList() {
 		super();
@@ -122,12 +130,12 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		return maxColumns;
 	}
 
-	public List<IntRange> getBestColumnRanges() {
+	public IntRangeArray getBestColumnRanges() {
 		getOrCreateChildPhraseList();
 		int maxColumns = getMaxColumns();
-		List<IntRange> columnRanges = new ArrayList<IntRange>();
+		IntRangeArray columnRanges = new IntRangeArray();
 		for (int i = 0; i < maxColumns; i++) {
-			columnRanges.add(i, null);
+			columnRanges.set(i, null);
 		}
 		for (PhraseList phraseList : childPhraseListList) {
 			if (phraseList.size() == maxColumns) {
@@ -143,11 +151,11 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		return columnRanges;
 	}
 	
-	public List<IntRange> getBestWhitespaceList() {
+	public IntRangeArray getBestWhitespaceRanges() {
 		getOrCreateChildPhraseList();
 		int maxColumns = getMaxColumns();
-		List<IntRange> bestColumnRanges = getBestColumnRanges();
-		List<IntRange> bestWhitespaces = new ArrayList<IntRange>();
+		IntRangeArray bestColumnRanges = getBestColumnRanges();
+		IntRangeArray bestWhitespaces = new IntRangeArray();
 		if (maxColumns > 0) {
 			bestWhitespaces.add(new IntRange(bestColumnRanges.get(0).getMin() - EPS, bestColumnRanges.get(0).getMax() - EPS));
 			for (int i = 1; i < maxColumns; i++) {
@@ -296,11 +304,81 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 	
 	public HtmlElement toHtml() {
+		HtmlElement div = new HtmlDiv();
+		createParaSpacingTrigger();
+		PhraseList lastPhraseList = null;
+		HtmlP p = new HtmlP();
+		div.appendChild(p);
+		for (int i = 0; i < this.size(); i++) {
+			PhraseList phraseList = this.get(i);
+			if (lastPhraseList != null) {
+				boolean newPara = triggerNewPara(lastPhraseList, phraseList);
+				if (newPara) {
+					p = new HtmlP();
+					div.appendChild(p);
+				} else {
+					p.appendChild(" ");
+				}
+			}
+			XMLUtil.transferChildren((Element)phraseList.toHtml().copy(), p);
+			lastPhraseList = phraseList;
+		}
+		return div;
+	}
+
+	private boolean triggerNewPara(PhraseList lastPhraseList, PhraseList phraseList) {
+		boolean newPara = false;
+		String lastString = lastPhraseList.getStringValue();
+		char lastEnd = lastString.charAt(lastString.length() - 1);
+		double deltaY = phraseList.getY() - lastPhraseList.getY();
+		double deltaX = phraseList.getX() - lastPhraseList.getX();
+		// just do paras on separation at present
+		if (deltaY > paraSpacingTrigger) {
+			newPara = true;
+		}
+		return newPara;
+	}
+
+	private void createParaSpacingTrigger() {
+		paraSpacingTrigger = Double.MAX_VALUE;
+		RealArray spacings = this.getOrCreateYSpacings();
+		double maxYSpacing = spacings.getMax();
+		double minYSpacing = spacings.getMin();
+		if (maxYSpacing / minYSpacing > PARA_SPACING_FACTOR) {
+			paraSpacingTrigger = (maxYSpacing + minYSpacing) / 2.;
+		} else {
+			paraSpacingTrigger = minYSpacing * PARA_SPACING_FACTOR;
+		}
+	}
+
+	private RealArray getOrCreateYSpacings() {
+		if (ySpacings == null) {
+			ySpacings = new RealArray();
+			for (int i = 1; i < this.size(); i++) {
+				double y = Real.normalize(this.get(i).getY() - this.get(i - 1).getY(), 2);
+				ySpacings.addElement(y);
+			}
+		}
+		LOG.trace(ySpacings);
+		return ySpacings;
+	}
+
+	public HtmlElement toHtmlUL() {
 		HtmlUl ul = new HtmlUl();
 		for (PhraseList phraseList : this) {
 			HtmlLi li = new HtmlLi();
 			li.appendChild(phraseList.toHtml());
 			ul.appendChild(li);
+		}
+		return ul;
+	}
+
+	public HtmlUl getPhraseListUl() {
+		HtmlUl ul = new HtmlUl();
+		for (PhraseList phraseList : this) {
+			HtmlLi li = new HtmlLi();
+			ul.appendChild(li);
+			li.appendChild(phraseList.toHtml().copy());
 		}
 		return ul;
 	}

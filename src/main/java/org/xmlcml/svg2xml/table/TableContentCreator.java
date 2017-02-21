@@ -323,17 +323,18 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return tableHeader;
 	}
 
-	public TableBodySection getTableBody() {
+	public TableBodySection getOrCreateTableBodySection() {
 		if (tableBody == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 3) {
 				tableBody = new TableBodySection(tableSectionList.get(2));
 			}
+			LOG.debug("Made TABLE BODY");
 		}
 		return tableBody;
 	}
 
-	public TableFooterSection getTableFooter() {
+	public TableFooterSection getOrCreateTableFooterSection() {
 		if (tableFooter == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 4) {
@@ -374,7 +375,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					new double[] {0.2, 0.2}
 					);
 		}
-		TableBodySection tableBody = getTableBody();
+		TableBodySection tableBody = getOrCreateTableBodySection();
 		if (tableBody == null) {
 			LOG.warn("no table body");
 		} else {
@@ -385,7 +386,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					new double[] {0.2, 0.2}
 					);
 		}
-		TableFooterSection tableFooter = getTableFooter();
+		TableFooterSection tableFooter = getOrCreateTableFooterSection();
 		if (tableFooter != null) {
 			svgChunk = tableFooter.createMarkedContent(
 					(SVGElement) svgChunk.copy(),

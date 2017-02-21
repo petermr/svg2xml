@@ -261,7 +261,7 @@ public class TableMarkupTest {
 		int headerCols = tableHeader == null ? -1 :
 			tableHeader.getOrCreateColumnManagerList().size();
 		Assert.assertEquals(nHeaderCols, headerCols);
-		TableBodySection tableBody = tableContentCreator.getTableBody();
+		TableBodySection tableBody = tableContentCreator.getOrCreateTableBodySection();
 		int bodyCols = tableBody == null ? -1 :
 			tableBody.getOrCreateColumnManagerList().size();
 		Assert.assertEquals(nBodyCols, bodyCols);

@@ -214,7 +214,7 @@ public class RawWords implements Iterable<Word> {
 			if (word == null) {
 				LOG.debug("null");
 			} else {
-				phrase.add(new Word(word));
+				phrase.addWord(new Word(word));
 				Word wordii = (i < wordList.size() - 1) ? wordList.get(i + 1) : null;
 				Double spaceCount = word.getSpaceCountBetween(wordii);
 				spaceCount = (i == wordList.size() - 1) ? new Double(0) : spaceCount;

@@ -156,7 +156,7 @@ public class TableContentCreatorTest {
 		File outDir = new File("target/table/suscript/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
-		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getTableFooter().getOrCreatePhraseLists());
+		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSection().getOrCreatePhraseListList());
 		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
 		suscriptEditor.mergeAll();
 		LOG.trace("PLL"+phraseListList);
@@ -174,22 +174,25 @@ public class TableContentCreatorTest {
 		// TableContentCreator is the top-level engine for tables
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		// annotate the geometric regions of the SVG
+		// generates 10.1007_s00213-015-4198-1.annot.svg
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
 		// the key Text component is a list of PhraseLists. This is created independently
 		// of subsequent section/column/row boundaries
-		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getTableFooter().getOrCreatePhraseLists());
-		LOG.trace(phraseListList.toString());
-		Assert.assertEquals(5, phraseListList.size());
+		// = footer test
+		PhraseListList footerPhraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSection().getOrCreatePhraseListList());
+		LOG.trace(footerPhraseListList.toString());
+		Assert.assertEquals(5, footerPhraseListList.size());
 		// Suscript editor works directly on the PhraseListList and incorporates all suscripts at this
 		// stage so we don't have to process later
-		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
+		SuscriptEditor suscriptEditor = new SuscriptEditor(footerPhraseListList);
 		//merge all suscripts into the PLL
 		suscriptEditor.mergeAll();
-		File file = new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+".html");
+		File file = new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+"footer.html");
+		// svg2xml/target/table/suscript/10.1007_s00213-015-4198-1.html
 		LOG.debug("outfile: "+file);
 		// PLL has an HTML output which can process suscripts and styles
 		// note the HTML must not be indented (0) as otherwise we get spurious whitespaces
-		XMLUtil.debug(phraseListList.toHtml(), file, 0);
+		XMLUtil.debug(footerPhraseListList.toHtml(), file, 0);
 		// the output is the primary initial test
 	}
 	

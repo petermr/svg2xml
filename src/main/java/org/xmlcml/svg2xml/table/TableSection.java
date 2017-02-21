@@ -15,7 +15,7 @@ import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.LineChunk;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
-import org.xmlcml.svg2xml.text.Word;
+import org.xmlcml.svg2xml.text.PhraseListList;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -48,8 +48,8 @@ public class TableSection {
 	protected List<HorizontalElement> horizontalElementList;
 	protected Real2Range boundingBox;
 	protected List<ColumnManager> columnManagerList;
-	protected List<Phrase> phrases;
-	protected List<PhraseList> phraseLists;
+	protected List<Phrase> allPhrasesInSection;
+	protected PhraseListList sectionPhraseListList;
 	protected double epsilon = 0.3;
 
 	public TableSection(TableSectionType type) {
@@ -57,10 +57,14 @@ public class TableSection {
 		this.horizontalElementList = new ArrayList<HorizontalElement>();
 	}
 	
+	/** copy constructor.
+	 * 
+	 * @param tableSection
+	 */
 	public TableSection(TableSection tableSection) {
 		this.type = tableSection.type;
 		this.horizontalElementList = tableSection.horizontalElementList;
-		this.phrases = tableSection.phrases;
+		this.allPhrasesInSection = tableSection.allPhrasesInSection;
 		this.boundingBox = tableSection.boundingBox;
 	}
 
@@ -112,37 +116,41 @@ public class TableSection {
 		return sb.toString();
 	}
 	
-	public List<Phrase> getOrCreatePhrases() {
-		if (phrases == null) {
-			phrases = new ArrayList<Phrase>();
+	/** all phrases in section.
+	 * 
+	 * @return
+	 */
+	public List<Phrase> getOrCreateAllPhrasesInSection() {
+		if (allPhrasesInSection == null) {
+			allPhrasesInSection = new ArrayList<Phrase>();
 			for (HorizontalElement element : this.getHorizontalElementList()) {
 				if (element instanceof PhraseList) {
 					PhraseList phraseList = (PhraseList) element;
+					LOG.trace("PL "+ phraseList+" / "+phraseList.size());
 					for (int i = 0; i < phraseList.size(); i++) {
 						Phrase phrase = phraseList.get(i);
 						if (phrase.getStringValue().trim().length() == 0) {
 							continue;
 						}
-						phrases.add(phraseList.get(i));
+						allPhrasesInSection.add(phraseList.get(i));
 					}
 				}
 			}
 		}
-		return phrases;
+		return allPhrasesInSection;
 	}
 
-	public List<PhraseList> getOrCreatePhraseLists() {
-		if (phraseLists == null) {
-			phraseLists = new ArrayList<PhraseList>();
+	public PhraseListList getOrCreatePhraseListList() {
+		if (sectionPhraseListList == null) {
+			sectionPhraseListList = new PhraseListList();
 			for (HorizontalElement element : this.getHorizontalElementList()) {
 				if (element instanceof PhraseList) {
 					PhraseList phraseList = (PhraseList) element;
-//					debug(phraseList);
-					phraseLists.add(phraseList);
+					sectionPhraseListList.add(phraseList);
 				}
 			}
 		}
-		return phraseLists;
+		return sectionPhraseListList;
 	}
 
 //	private void debug(PhraseList phraseList) {
@@ -192,7 +200,7 @@ public class TableSection {
 	}
 
 	protected String getFontInfo() {
-		List<Phrase> phrases = this.getOrCreatePhrases();
+		List<Phrase> phrases = this.getOrCreateAllPhrasesInSection();
 		Multiset<Double> fontSizeSet = HashMultiset.create();
 		Multiset<String> fontFamilySet = HashMultiset.create();
 		Multiset<String> fontWeightSet = HashMultiset.create();

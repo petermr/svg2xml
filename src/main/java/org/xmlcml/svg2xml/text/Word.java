@@ -160,16 +160,41 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		return getStringValue();
 	}
 
+//	public String getStringValue() {
+//		getOrCreateChildTextList();
+//		StringBuilder sb = new StringBuilder();
+//		for (SVGElement text : childTextList) {
+//			sb.append(text.getValue());
+//		}
+//		this.setStringValueAttribute(sb.toString());
+//		LOG.trace("W "+this.toXML());
+//		return sb.toString();
+//	}
+	
 	public String getStringValue() {
 		getOrCreateChildTextList();
 		StringBuilder sb = new StringBuilder();
-		for (SVGElement text : childTextList) {
+		if (hasSuperscript()) {
+			sb.append(Phrase.SUPER_START);
+		}
+		if (hasSubscript()) {
+			sb.append(Phrase.SUB_START);
+		}
+		for (int i = 0; i < childTextList.size(); i++) {
+			SVGText text = childTextList.get(i);
 			sb.append(text.getValue());
 		}
+		if (hasSuperscript()) {
+			sb.append(Phrase.SUPER_END);
+		}
+		if (hasSubscript()) {
+			sb.append(Phrase.SUB_END);
+		}
 		this.setStringValueAttribute(sb.toString());
-		LOG.trace("W "+this.toXML());
 		return sb.toString();
 	}
+
+
 
 	public Double getSpaceCountBetween(Word followingWord) {
 		SVGText char0 = get(getCharacterCount() - 1);
@@ -280,8 +305,8 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 	public Phrase createPhrase() {
 		Phrase phrase = new Phrase();
 		List<Word> splitWords = splitAtSpaces();
-		for (SVGElement word : splitWords) {
-			phrase.add(word);
+		for (Word word : splitWords) {
+			phrase.addWord(word);
 		}
 		return phrase;
 	}

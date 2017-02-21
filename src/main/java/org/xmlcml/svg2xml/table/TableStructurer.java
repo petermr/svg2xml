@@ -1,9 +1,7 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,7 +56,6 @@ import org.xmlcml.svg2xml.text.VerticalRuler;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
-import nu.xom.Node;
 
 public class TableStructurer {
 	private static final String XY = "xy";
@@ -78,17 +75,12 @@ public class TableStructurer {
 	public static final String LEADING_SPACE = "~";
 	
 
-	private PhraseListList phraseListList;
+	private PhraseListList totalPhraseListList;
 	private int maxColumns;
-	private ArrayList<ColumnManager> columnManagerList;
+	private ColumnManagerList columnManagerList;
 	private String title;
 	private HtmlTable htmlTable;
 	private HtmlHtml html;
-	private IntRange deprecatedTitleRange;
-	private IntRange deprecatedPreHeadRange;
-	private IntRange deprecatedHeaderRange;
-	private IntRange deprecatedBodyRange;
-	private IntRange deprecatedFooterRange;
 	private HtmlTbody tableBody;
 	private TextStructurer textStructurer;
 	private List<HorizontalRuler> horizontalRulerList;
@@ -117,38 +109,9 @@ public class TableStructurer {
 
 	
 	public TableStructurer(PhraseListList phraseListList) {
-		this.phraseListList = phraseListList;
+		this.totalPhraseListList = phraseListList;
 		maxColumns = phraseListList.getMaxColumns();
 	}
-
-	public void setRanges(IntRange[] ranges) {
-		setRanges(
-				ranges[0],
-				ranges[1],
-				ranges[2],
-				ranges[3],
-				ranges[4]
-				);
-	}
-	public void setRanges(
-			IntRange titleRange,
-			IntRange preHeadRange,
-			IntRange headerRange,
-			IntRange bodyRange,
-			IntRange footerRange
-			) {
-		setTitleRange(titleRange);
-		setPreHeadRange(preHeadRange);
-		setHeaderRange(headerRange);
-		setBodyRange(bodyRange);
-		setFooterRange(footerRange);
-	}
-
-	public void setTitleRange(IntRange range) {deprecatedTitleRange = range;}
-	public void setPreHeadRange(IntRange range) {deprecatedPreHeadRange = range;}
-	public void setHeaderRange(IntRange range) {deprecatedHeaderRange = range;}
-	public IntRange setBodyRange(IntRange range) {return deprecatedBodyRange = range;}
-	public void setFooterRange(IntRange range) {deprecatedFooterRange = range;}
 
 	public Real2Range getTitleBBox() {return titleBBoxManager.getTotalBox();}
 	public Real2Range getHeaderBBox() {return headerBBoxManager.getTotalBox();}
@@ -156,18 +119,12 @@ public class TableStructurer {
 	public Real2Range getFooterBBox() {return footerBBoxManager.getTotalBox();}
 	
 	public String createTitle() {
-		LOG.debug("MAKING TITLE");
 		StringBuilder titleSB = new StringBuilder();
 		titleBBoxManager = new BoundingBoxManager();
-		if (deprecatedTitleRange != null) {
-			for (int i = deprecatedTitleRange.getMin(); i < deprecatedTitleRange.getMax(); i++) {
-				titleSB.append(phraseListList.get(i));
-				titleBBoxManager.add(phraseListList.get(i).getBoundingBox());
-			}
-		} else if (tableSectionList != null && tableSectionList.size() > 0) {
+		if (tableSectionList != null && tableSectionList.size() > 0) {
 			TableSection titleSection = tableSectionList.get(0);
-			List<PhraseList> phraseLists = titleSection.getOrCreatePhraseLists();
-			titleUl = PhraseList.getPhraseListUl(phraseLists);
+			PhraseListList sectionPhraseListList = titleSection.getOrCreatePhraseListList();
+			titleUl = sectionPhraseListList.getPhraseListUl();
 			try {
 				XMLUtil.debug(titleUl, new FileOutputStream("target/table/debug/title.html"), 1);
 			} catch (Exception e) {
@@ -182,7 +139,6 @@ public class TableStructurer {
 				SVGElement horizontal = (SVGElement) horizontalList.get(i);
 				titleSB.append(horizontal);
 				Real2Range bbox = horizontal.getBoundingBox();
-//				LOG.trace("BB "+bbox.format(2)+"/"+((PhraseList)horizontalList.get(i)).getStringValue());
 				titleBBoxManager.add(bbox);
 			}
 		} else {
@@ -194,18 +150,19 @@ public class TableStructurer {
 		return title;
 	}
 
-	private void ensureColumnManagers() {
+	private ColumnManagerList ensureColumnManagerList() {
 		if (columnManagerList == null) {
-			this.columnManagerList = new ArrayList<ColumnManager>();
+			this.columnManagerList = new ColumnManagerList();
 			for (int i = 0; i < maxColumns; i++) {
 				ColumnManager columnManager = new ColumnManager();
 				columnManagerList.add(columnManager);
 			}
 		}
+		return columnManagerList;
 	}
 	
 	private ColumnManager getColumnManager(int iCol) {
-		ensureColumnManagers();
+		ensureColumnManagerList();
 		return columnManagerList.get(iCol);
 	}
 
@@ -246,6 +203,7 @@ public class TableStructurer {
 		addHtmlHead();
 		addFooter();
 		addHeader();
+		createBody0();
 		createBody();
 		html.appendChild(createFirefoxWarning());
 		
@@ -260,103 +218,56 @@ public class TableStructurer {
 		return div;
 	}
 
+	private void createBody0() {
+		if (tableSectionList == null || tableSectionList.size() < 3) {
+			LOG.error("ERROR: no Body section");
+			return;
+		}
+		LOG.debug("BODY0 - dummy");
+		TableSection bodySection = tableSectionList.get(2);
+		PhraseListList bodyPhraseListList= bodySection.getOrCreatePhraseListList();
+		LOG.debug("body: "+bodyPhraseListList.size());
+	}
+
 	private void createBody() {
 		tableBody = new HtmlTbody();
-//		addPreHeader(tableBody);
-//		addAndCompressHeader(tableBody);  // this adds the Th
 		addBody(tableBody);
-	}
-
-	private void addPreHeader(HtmlTbody tableBody) {
-		if (deprecatedPreHeadRange != null) {
-			List<HtmlTr> rows0 = this.createBodyTableRows(deprecatedPreHeadRange.getMin(), deprecatedPreHeadRange.getMax(), HtmlTh.class);
-			for (HtmlTr row : rows0) {
-				tableBody.appendChild(row);
-			}
-		}
-	}
-
-	private void addAndCompressHeader(HtmlTbody tableBody) {
-		List<HtmlTr> rows1 = null;
-		if (tableSectionList != null) {
-			TableSection bodySection = tableSectionList.get(1);
-			PhraseListList phraseListList= new PhraseListList();
-			for (HorizontalElement element : bodySection.getHorizontalElementList()) {
-				if (element instanceof PhraseList) {
-					phraseListList.add((PhraseList) element);
-				} else {
-					throw new RuntimeException("HORIZONTAL RULER NOT CODED");
-//					phraseListList.add(new PhraseList(PhraseList.NULL));
-				}
-			}
-			maxColumns = phraseListList.getMaxColumns();
-			rows1 = createBodyTableRows(0, phraseListList.size() - 1, HtmlTd.class);
-		} else if (deprecatedHeaderRange != null) {
-			rows1 = createBodyTableRows( 
-					deprecatedHeaderRange.getMin(), deprecatedHeaderRange.getMax(), HtmlTh.class);
-			// project cells into StringBuilder array
-		}
-		List<StringBuilder> sbList = new ArrayList<StringBuilder>();
-		for (int i = 0; i < maxColumns; i++) {
-			sbList.add(new StringBuilder());
-		}
-		if (rows1 == null) {
-			LOG.error("no rows");
-		} else {
-			for (HtmlTr rowt : rows1) {
-				for (int i = 0; i < maxColumns; i++) {
-					Node child = (i >= rowt.getChildCount()) ? null : rowt.getChild(i);
-					String value = (child == null) ? EMPTY_CHILD : child.getValue();
-					sbList.get(i).append(value == null ? "" : value);
-				}
-			}
-		}
-		HtmlTr rowx = new HtmlTr();
-		for (int i = 0; i < maxColumns; i++) {
-			HtmlTh th = new HtmlTh();
-			th.appendChild(sbList.get(i).toString());
-			rowx.appendChild(th);
-		}
-		tableBody.appendChild(rowx);
 	}
 
 	private void addBody(HtmlTbody tableBody) {
 		List<HtmlTr> rows = null;
-		if (deprecatedBodyRange != null) {
-			rows = createBodyTableRows(deprecatedBodyRange.getMin(), deprecatedBodyRange.getMax(), HtmlTd.class);
+		bodyBBoxManager = new BoundingBoxManager();
+		PhraseListList bodyPhraseListList= new PhraseListList();
+		if (tableSectionList == null || tableSectionList.size() < 3) {
+			LOG.error("ERROR: no Body section");
 		} else {
-			bodyBBoxManager = new BoundingBoxManager();
-			if (tableSectionList == null) {
-				LOG.error("no body");
-			} else {
-				if (tableSectionList == null || tableSectionList.size() < 3) {
-					LOG.error("ERROR: no Body section");
+			TableSection bodySection = tableSectionList.get(2);
+			for (HorizontalElement element : bodySection.getHorizontalElementList()) {
+				bodyBBoxManager.add(((SVGElement)element).getBoundingBox());
+				if (element instanceof PhraseList) {
+					bodyPhraseListList.add(new PhraseList((PhraseList) element));
 				} else {
-					TableSection bodySection = tableSectionList.get(2);
-					PhraseListList phraseListList= new PhraseListList();
-					for (HorizontalElement element : bodySection.getHorizontalElementList()) {
-						bodyBBoxManager.add(((SVGElement)element).getBoundingBox());
-						if (element instanceof PhraseList) {
-							phraseListList.add(new PhraseList((PhraseList) element));
-						} else {
-							LOG.error("Omitted ruler: "+element);
-						}
-					}
+					LOG.error("Omitted ruler: "+element);
 				}
 			}
-			rows = createBodyTableRows(0, phraseListList.size() - 1, HtmlTd.class);
 		}
+		rows = createBodyTableRows(bodyPhraseListList);
 		HtmlTr row1 = new HtmlTr();
-		HtmlTd td = new HtmlTd();
-		row1.appendChild(td);
-		td.appendChild("BODY FOLLOWS");
-		tableBody.appendChild(row1);
+		
+//		addNOTE(tableBody, row1);
 		
 		for (HtmlTr row : rows) {
 			tableBody.appendChild(row);
 		}
 		htmlTable.appendChild(tableBody);
 
+	}
+
+	private void addNOTE(HtmlTbody tableBody, HtmlTr row1) {
+		HtmlTd td = new HtmlTd();
+		row1.appendChild(td);
+		td.appendChild("BODY FOLLOWS");
+		tableBody.appendChild(row1);
 	}
 
 	private void addHtmlHead() {
@@ -372,35 +283,80 @@ public class TableStructurer {
 	}
 
 	private void addHeader() {
+		LOG.debug("HEADER COLS "+maxColumns);
+//		ensureColumnManagerList().debug();
 		headerBBoxManager = new BoundingBoxManager();
+		TableSection tableHeaderSection = null;
 		if (tableSectionList != null && tableSectionList.size() > 1) {
-			TableSection headerSection =tableSectionList.get(1);
-			for (HorizontalElement element : headerSection.getHorizontalElementList()) {
+			tableHeaderSection =tableSectionList.get(1);
+			for (HorizontalElement element : tableHeaderSection.getHorizontalElementList()) {
 				headerBBoxManager.add(((SVGElement)element).getBoundingBox());
 				if (element instanceof HorizontalRuler) {
-					Real2 xy = ((HorizontalRuler)element).getXY();
-					HtmlTr tr = new HtmlTr();
-					HtmlTh th = new HtmlTh();
-					tr.appendChild(th);
-					HtmlTd td = new HtmlTd();
-					th.appendChild(td);
-					HtmlHr hr = new HtmlHr();
-					td.appendChild(hr);
-					hr.addAttribute(new Attribute(XY, xy.toString()));
-					hr.setStyle("color:#00ff77;height:2px");
-					thead.appendChild(tr);
+					addRulerToHead((HorizontalRuler) element);
 				} else {
-					PhraseList phraseList = (PhraseList) element;
-					List<HtmlTh> thList = phraseList.getThList();
-					HtmlTr tr = new HtmlTr();
-					for (HtmlTh th : thList) {
-						tr.appendChild(th);
-					}
-					thead.appendChild(tr);
-					LOG.trace(">TH>"+phraseList.getStringValue());
+					addPhraseList((PhraseList) element);
 				}
 			}
 		}
+		List<HtmlTr> trList = createHeaderRows(tableHeaderSection);
+		for (HtmlTr tr : trList) {
+			LOG.debug("T "+tr.toXML());
+		}
+
+	}
+	
+	private List<HtmlTr> createHeaderRows(TableSection tableHeaderSection) {
+		List<HtmlTr> rows = new ArrayList<HtmlTr>();
+		PhraseListList headerPhraseListList = new PhraseListList();
+		for (HorizontalElement element : tableHeaderSection.getHorizontalElementList()) {
+			if (element instanceof PhraseList) {
+				PhraseList phraseList = (PhraseList) element;
+				headerPhraseListList.add(phraseList);
+				List<HtmlTh> thList = phraseList.getThList();
+			} else {
+//				LOG.error("Omitted ruler: "+element);
+			}
+		}
+
+		
+		// find margins
+		IntRangeArray bestWhitespaces = headerPhraseListList.getBestWhitespaceRanges();
+		LOG.debug("BestWhite (R margin) "+bestWhitespaces);
+		IntRangeArray bestColumnRanges = headerPhraseListList.getBestColumnRanges();
+		LOG.debug("BestColumn () "+bestColumnRanges);
+		
+		for (PhraseList phraseList : headerPhraseListList) {
+			HtmlTr row = createTableRow(phraseList);
+			rows.add(row);
+		}
+		LOG.debug("ROWS "+rows);
+		return rows;
+
+	}
+
+
+	private void addPhraseList(PhraseList phraseList) {
+		List<HtmlTh> thList = phraseList.getThList();
+		HtmlTr tr = new HtmlTr();
+		for (HtmlTh th : thList) {
+			tr.appendChild(th);
+		}
+		thead.appendChild(tr);
+		LOG.trace(">TH>"+phraseList.getStringValue());
+	}
+
+	private void addRulerToHead(HorizontalRuler ruler) {
+		Real2 xy = ruler.getXY();
+		HtmlTr tr = new HtmlTr();
+		HtmlTh th = new HtmlTh();
+		tr.appendChild(th);
+		HtmlTd td = new HtmlTd();
+		th.appendChild(td);
+		HtmlHr hr = new HtmlHr();
+		td.appendChild(hr);
+		hr.addAttribute(new Attribute(XY, xy.toString()));
+		hr.setStyle("color:#00ff77;height:2px");
+		thead.appendChild(tr);
 	}
 
 	private void addFooter() {
@@ -412,25 +368,17 @@ public class TableStructurer {
 		HtmlTd footTd = new HtmlTd();
 		footRow.appendChild(footTd);
 		footTd.addAttribute(new Attribute("colspan", String.valueOf(maxColumns)));
-		if (deprecatedFooterRange != null) {
-			for (int i = deprecatedFooterRange.getMin(); i < deprecatedFooterRange.getMax(); i++) {
-				PhraseList phraseList = phraseListList.get(i);
-				footTd.appendChild(phraseList.toString());
-				footTd.appendChild(new HtmlBr());
-			}
-		} else {
-			footerBBoxManager = new BoundingBoxManager();
-			if (tableSectionList != null && tableSectionList.size() > 3) {
-				TableSection footerSection =tableSectionList.get(3);
-				for (HorizontalElement element : footerSection.getHorizontalElementList()) {
-					footerBBoxManager.add(((SVGElement)element).getBoundingBox());
-					if (element instanceof HorizontalRuler) {
-						LOG.trace("HRULER in footer");
-					} else {
-						PhraseList phraseList = (PhraseList) element;
-						footTd.appendChild(phraseList.toString());
-						footTd.appendChild(new HtmlBr());
-					}
+		footerBBoxManager = new BoundingBoxManager();
+		if (tableSectionList != null && tableSectionList.size() > 3) {
+			TableSection footerSection =tableSectionList.get(3);
+			for (HorizontalElement element : footerSection.getHorizontalElementList()) {
+				footerBBoxManager.add(((SVGElement)element).getBoundingBox());
+				if (element instanceof HorizontalRuler) {
+					LOG.trace("HRULER in footer");
+				} else {
+					PhraseList phraseList = (PhraseList) element;
+					footTd.appendChild(phraseList.toString());
+					footTd.appendChild(new HtmlBr());
 				}
 			}
 		}
@@ -735,23 +683,23 @@ public class TableStructurer {
 
 
 	public void mergeRulersAndTextIntoShapeList() {
-		phraseListList = textStructurer.getPhraseListList();
+		totalPhraseListList = textStructurer.getPhraseListList();
 		int iPhrase = 0; 
 		int iRuler = 0;
 		horizontalElementList = new ArrayList<SVGElement>();
 		while (true) {
-			if (iPhrase < phraseListList.size() && iRuler < horizontalRulerList.size()) {
-				PhraseList phraseList = phraseListList.get(iPhrase);
+			if (iPhrase < totalPhraseListList.size() && iRuler < horizontalRulerList.size()) {
+				PhraseList phraseList = totalPhraseListList.get(iPhrase);
 				Ruler ruler = horizontalRulerList.get(iRuler);
 				double yPhrase = phraseList.getBoundingBox().getYMin();
 				double yRuler = ruler.getBoundingBox().getYMin();
 				if (yPhrase <= yRuler) {
-					horizontalElementList.add(phraseListList.get(iPhrase++));
+					horizontalElementList.add(totalPhraseListList.get(iPhrase++));
 				} else {
 					horizontalElementList.add(horizontalRulerList.get(iRuler++));
 				}
-			} else if (iPhrase < phraseListList.size()) {
-				horizontalElementList.add(phraseListList.get(iPhrase++));
+			} else if (iPhrase < totalPhraseListList.size()) {
+				horizontalElementList.add(totalPhraseListList.get(iPhrase++));
 			} else if (iRuler < horizontalRulerList.size()) {
 				horizontalElementList.add(horizontalRulerList.get(iRuler++));
 			} else {
@@ -762,12 +710,12 @@ public class TableStructurer {
 	}
 
 	private void addIndexes() {
-		Real2Range bboxPhrase = phraseListList.getBoundingBox();
+		Real2Range bboxPhrase = totalPhraseListList.getBoundingBox();
 		bboxRuler = SVGUtil.createBoundingBox(horizontalRulerList);
 		horizontalElementByCode = new HashMap<String, SVGElement>();
 		// there may be no lines
 		Integer maxLength = (bboxRuler == null) ? null : (int) bboxRuler.getXRange().getRange();
-		double maxFont = getMaxFont(phraseListList);
+		double maxFont = getMaxFont(totalPhraseListList);
 		int iPhrase = 0;
 		int iRuler = 0;
 		StringBuilder total = new StringBuilder();
@@ -849,10 +797,10 @@ public class TableStructurer {
 
 	private Double getMaxFont(PhraseListList phraseListList2) {
 		Double maxFont = null;
-		if (phraseListList.size() > 0) {
-			maxFont = phraseListList.get(0).getFontSize();
-			for (int i = 1; i < phraseListList.size(); i++) {
-				Double f = phraseListList.get(i).getFontSize();
+		if (totalPhraseListList.size() > 0) {
+			maxFont = totalPhraseListList.get(0).getFontSize();
+			for (int i = 1; i < totalPhraseListList.size(); i++) {
+				Double f = totalPhraseListList.get(i).getFontSize();
 				maxFont =  Math.max(maxFont,  f);
 			}
 		}
@@ -887,7 +835,6 @@ public class TableStructurer {
 		}
 		
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
-		tableStructurer.setRanges(intRanges);
 		HtmlHtml html = tableStructurer.getHtmlWithTable();
 		return html;
 	}
@@ -921,14 +868,6 @@ public class TableStructurer {
 	 * @return
 	 */
 	public HtmlHtml createHtmlWithTable(List<TableSection> tableSectionList, TableTitle tableTitle) {
-//		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
-//		
-//		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineListForCommonestFont();
-//		for (ScriptLine scriptLine : scriptedLineList) {
-//			TextLine textLine0 = scriptLine.getTextLineList().get(0);
-//		}
-//		
-////		TableStructurer tableStructurer = textStructurer.createTableStructurer();
 		this.setTableTitle(tableTitle);
 		this.setSections(tableSectionList);
 		HtmlHtml html = this.getHtmlWithTable();
@@ -945,9 +884,11 @@ public class TableStructurer {
 	}
 
 	private void analyzeTableRow(PhraseList phraseList, int iRow) {
-		phraseListList.getOrCreateChildPhraseList();
-		ensureColumnManagers();
-		List<IntRange> bestWhitespaces = phraseListList.getBestWhitespaceList();
+		LOG.debug("ANALYSE COL ROW "+iRow+" / "+phraseList.getStringValue());
+		totalPhraseListList.getOrCreateChildPhraseList();
+		ensureColumnManagerList();
+		IntRangeArray bestWhitespaces = totalPhraseListList.getBestWhitespaceRanges();
+		LOG.debug("BW "+bestWhitespaces);
 		if (bestWhitespaces.size() != maxColumns) {
 			LOG.warn("maxWhitespace ("+bestWhitespaces.size()+") != maxColumns ("+maxColumns+")");
 		}
@@ -974,43 +915,77 @@ public class TableStructurer {
 	}
 
 	public HtmlTr createTableRow(PhraseList phraseList, int iRow, Class<?> clazz) {
-		phraseListList.getOrCreateChildPhraseList();
-		ensureColumnManagers();
+		totalPhraseListList.getOrCreateChildPhraseList();
+		ensureColumnManagerList();
 		HtmlTr row = new HtmlTr();
 		for (int icol = 0; icol < maxColumns; icol++) {
 			HtmlElement cell = (clazz.equals(HtmlTh.class)) ? new HtmlTh() : new HtmlTd();
 			row.appendChild(cell);
 			Phrase phrase = columnManagerList.get(icol).getPhrase(iRow);
-//			String value = phrase == null ? "" : phrase.getStringValue();
-//			cell.appendChild(value);
 			HtmlElement span = phrase == null ? new HtmlBr() : phrase.getSpanValue();
 			cell.appendChild(span);
 		}
 		return row;
 	}
 
-	public List<HtmlTr> createBodyTableRows(int startRow, int endRow, Class<?> clazz) {
-		phraseListList.getOrCreateChildPhraseList();
+	private List<HtmlTr> createBodyTableRows(int startRow, int endRow, Class<?> clazz) {
+		totalPhraseListList.getOrCreateChildPhraseList();
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
 		// find margins
-//		List<IntRange> bestWhitespaces = phraseListList.getBestWhitespaceList();
+		IntRangeArray bestWhitespaces = totalPhraseListList.getBestWhitespaceRanges();
+		
+		/*
+	private void analyzeTableRow(PhraseList phraseList, int iRow) {
+		LOG.debug("ANALYSE COL ROW "+iRow);
+		phraseListList.getOrCreateChildPhraseList();
+		ensureColumnManagerList();
+		List<IntRange> bestWhitespaces = phraseListList.getBestWhitespaceList();
+		 */
+		
 		for (int iRow = startRow; iRow <= endRow; iRow++) {
-			PhraseList phraseList = phraseListList.get(iRow);
+			PhraseList phraseList = totalPhraseListList.get(iRow);
 			analyzeTableRow(phraseList, iRow);
 		}
 		for (int iRow = startRow; iRow <= endRow; iRow++) {
-			PhraseList phraseList = phraseListList.get(iRow);
+			PhraseList phraseList = totalPhraseListList.get(iRow);
 			HtmlTr row = createTableRow(phraseList, iRow, clazz);
 			rows.add(row);
 		}
 		return rows;
 	}
 
-	private void debugColumnManagers() {
-		ensureColumnManagers();
-		for (int i = 0; i < columnManagerList.size(); i++) {
-			columnManagerList.get(i).debug();
+	public List<HtmlTr> createBodyTableRows(PhraseListList bodyPhraseListList) {
+		List<HtmlTr> rows = new ArrayList<HtmlTr>();
+		// find margins
+		IntRangeArray bestWhitespaces = bodyPhraseListList.getBestWhitespaceRanges();
+		LOG.debug("BestWhite (R margin) "+bestWhitespaces);
+		IntRangeArray bestColumnRanges = bodyPhraseListList.getBestColumnRanges();
+		LOG.debug("BestColumn () "+bestColumnRanges);
+		
+		/*
+	private void analyzeTableRow(PhraseList phraseList, int iRow) {
+		LOG.debug("ANALYSE COL ROW "+iRow);
+		phraseListList.getOrCreateChildPhraseList();
+		ensureColumnManagerList();
+		List<IntRange> bestWhitespaces = phraseListList.getBestWhitespaceList();
+		 */
+		
+		for (PhraseList phraseList : bodyPhraseListList) {
+			HtmlTr row = createTableRow(phraseList);
+			rows.add(row);
 		}
+		return rows;
+	}
+
+	private HtmlTr createTableRow(PhraseList phraseList) {
+		HtmlTr tr = new HtmlTr();
+		for (Phrase phrase : phraseList) {
+			HtmlTd td = new HtmlTd();
+			tr.appendChild(td);
+			HtmlElement htmlElement = phrase.toHtml();
+			td.appendChild(htmlElement.copy());
+		}
+		return tr;
 	}
 
 	public BoundingBoxManager getHeaderBBoxManager() {

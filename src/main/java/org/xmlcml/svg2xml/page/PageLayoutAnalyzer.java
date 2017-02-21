@@ -167,7 +167,7 @@ public class PageLayoutAnalyzer {
 		}
 		Collections.reverse(horizontalList);
 		for (HorizontalElement horizontalElement : horizontalList) {
-			LOG.debug("============"+horizontalElement.getClass()+"\n"+horizontalElement.toString());
+			LOG.trace("============"+horizontalElement.getClass()+"\n"+horizontalElement.toString());
 		}
 	}
 
