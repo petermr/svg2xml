@@ -342,12 +342,14 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	private void createParaSpacingTrigger() {
 		paraSpacingTrigger = Double.MAX_VALUE;
 		RealArray spacings = this.getOrCreateYSpacings();
-		double maxYSpacing = spacings.getMax();
-		double minYSpacing = spacings.getMin();
-		if (maxYSpacing / minYSpacing > PARA_SPACING_FACTOR) {
-			paraSpacingTrigger = (maxYSpacing + minYSpacing) / 2.;
-		} else {
-			paraSpacingTrigger = minYSpacing * PARA_SPACING_FACTOR;
+		if (spacings.size() > 0) {
+			double maxYSpacing = spacings.getMax();
+			double minYSpacing = spacings.getMin();
+			if (maxYSpacing / minYSpacing > PARA_SPACING_FACTOR) {
+				paraSpacingTrigger = (maxYSpacing + minYSpacing) / 2.;
+			} else {
+				paraSpacingTrigger = minYSpacing * PARA_SPACING_FACTOR;
+			}
 		}
 	}
 

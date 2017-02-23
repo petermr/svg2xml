@@ -196,6 +196,44 @@ public class TableContentCreatorTest {
 		// the output is the primary initial test
 	}
 	
+	@Test
+	/** subscript
+	 * isolated superscripts
+	 * @throws IOException
+	 */
+	public void testTables() throws IOException {
+		File[] files = Fixtures.TABLE_DIR.listFiles();
+		File outDir = new File("target/table/tableFiles/");
+		for (File file : files) {
+			String filename = file.toString();
+			if (filename.endsWith(".svg")) {
+				String root = FilenameUtils.getBaseName(filename);
+				LOG.debug("ROOT "+root);
+				TableContentCreator tableContentCreator = new TableContentCreator(); 
+				tableContentCreator.markupAndOutputTable(file, outDir);
+				writeBody(outDir, root, tableContentCreator);
+				writeFooter(outDir, root, tableContentCreator);
+			}
+		}
+	}
+
+	private void writeBody(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
+		TableSection body = tableContentCreator.getOrCreateTableBodySection();
+		if (body != null) {
+			PhraseListList footerPhraseListList = body.getOrCreatePhraseListList();
+			File filex = new File(outDir, root+".body.html");
+			XMLUtil.debug(footerPhraseListList.toHtml(), filex, 0);
+		}
+	}
+	
+	private void writeFooter(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
+		TableSection footer = tableContentCreator.getOrCreateTableFooterSection();
+		if (footer != null) {
+			PhraseListList footerPhraseListList = footer.getOrCreatePhraseListList();
+			File filex = new File(outDir, root+".footer.html");
+			XMLUtil.debug(footerPhraseListList.toHtml(), filex, 0);
+		}
+	}
 	
 	@Test
 	/** subscript

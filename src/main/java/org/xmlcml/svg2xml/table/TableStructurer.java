@@ -411,37 +411,39 @@ public class TableStructurer {
 
 	private void removeOuterBox() {
 		Real2Range bbox = SVGElement.createBoundingBox(shapeList);
-		RealRange xRange = bbox.getXRange();
-		RealRange yRange = bbox.getYRange();
-		List<SVGRect> horizontalSpanRects = new ArrayList<SVGRect>();
-		List<SVGRect> verticalSpanRects = new ArrayList<SVGRect>();
-		for (SVGShape shape : shapeList) {
-			if (shape instanceof SVGRect) {
-				SVGRect rect = (SVGRect) shape;
-				RealRange xRange1 = rect.getRealRange(Direction.HORIZONTAL);
-				RealRange yRange1 = rect.getRealRange(Direction.VERTICAL);
-				if (xRange.isEqualTo(xRange1, epsilon)) {
-					horizontalSpanRects.add(rect);
-				} else {
-					if (yRange.isEqualTo(yRange1, epsilon)) {
-						verticalSpanRects.add(rect);
-					}
-				}				
-			}
-		}
-		
-		spanningRects = findAllSpanningRects(horizontalSpanRects, verticalSpanRects, epsilon);
-		if (spanningRects.size() == 1) {
-			outerRect = spanningRects.get(0);
-			Real2Range bbox1 = outerRect.getBoundingBox();
-			if (bbox1.isEqualTo(bbox, epsilon)) {
-				if (shapeList.remove(outerRect)) {
-					LOG.trace("removed outerRect: "+outerRect.toXML());
-				} else {
-					LOG.trace("failed to remove outerRect "+outerRect.hashCode());
+		if (bbox != null) {
+			RealRange xRange = bbox.getXRange();
+			RealRange yRange = bbox.getYRange();
+			List<SVGRect> horizontalSpanRects = new ArrayList<SVGRect>();
+			List<SVGRect> verticalSpanRects = new ArrayList<SVGRect>();
+			for (SVGShape shape : shapeList) {
+				if (shape instanceof SVGRect) {
+					SVGRect rect = (SVGRect) shape;
+					RealRange xRange1 = rect.getRealRange(Direction.HORIZONTAL);
+					RealRange yRange1 = rect.getRealRange(Direction.VERTICAL);
+					if (xRange.isEqualTo(xRange1, epsilon)) {
+						horizontalSpanRects.add(rect);
+					} else {
+						if (yRange.isEqualTo(yRange1, epsilon)) {
+							verticalSpanRects.add(rect);
+						}
+					}				
 				}
 			}
-		} 
+		
+			spanningRects = findAllSpanningRects(horizontalSpanRects, verticalSpanRects, epsilon);
+			if (spanningRects.size() == 1) {
+				outerRect = spanningRects.get(0);
+				Real2Range bbox1 = outerRect.getBoundingBox();
+				if (bbox1.isEqualTo(bbox, epsilon)) {
+					if (shapeList.remove(outerRect)) {
+						LOG.trace("removed outerRect: "+outerRect.toXML());
+					} else {
+						LOG.trace("failed to remove outerRect "+outerRect.hashCode());
+					}
+				}
+			} 
+		}
 	}
 	
 	private static List<SVGRect> findAllSpanningRects(List<SVGRect> horizontalSpanRects, List<SVGRect> verticalSpanRects, double epsilon) {
