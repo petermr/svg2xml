@@ -60,9 +60,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private TableTitle tableTitle;
 	private boolean addIndents;
 	private TableTitleSection tableTitleSection;
-	private TableHeaderSection tableHeader;
-	private TableBodySection tableBody;
-	private TableFooterSection tableFooter;
+	private TableHeaderSection tableHeaderSection;
+	private TableBodySection tableBodySection;
+	private TableFooterSection tableFooterSection;
 	
 	public TableContentCreator() {
 	}
@@ -303,46 +303,67 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 	}
 
-	public TableTitleSection getTableTitle() {
+//	public TableTitleSection getTableTitle() {
+//		if (tableTitleSection == null) {
+//			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
+//			if (tableSectionList.size() > 0) {
+//				tableTitleSection = new TableTitleSection(tableSectionList.get(0));
+//			}
+//		}
+//		return tableTitleSection;
+//	}
+
+//	public TableHeaderSection getTableHeader() {
+//		if (tableHeader == null) {
+//			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
+//			if (tableSectionList.size() >= 2) {
+//				tableHeader = new TableHeaderSection(tableSectionList.get(1));
+//			}
+//		}
+//		return tableHeader;
+//	}
+
+	public TableTitleSection getOrCreateTableTitleSection() {
 		if (tableTitleSection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
-			if (tableSectionList.size() > 0) {
+			if (tableSectionList.size() >= 1) {
 				tableTitleSection = new TableTitleSection(tableSectionList.get(0));
 			}
 		}
 		return tableTitleSection;
 	}
 
-	public TableHeaderSection getTableHeader() {
-		if (tableHeader == null) {
+	public TableHeaderSection getOrCreateTableHeaderSection() {
+		if (tableHeaderSection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 2) {
-				tableHeader = new TableHeaderSection(tableSectionList.get(1));
+				tableHeaderSection = new TableHeaderSection(tableSectionList.get(1));
 			}
 		}
-		return tableHeader;
+		return tableHeaderSection;
 	}
 
 	public TableBodySection getOrCreateTableBodySection() {
-		if (tableBody == null) {
+		if (tableBodySection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 3) {
-				tableBody = new TableBodySection(tableSectionList.get(2));
+				tableBodySection = new TableBodySection(tableSectionList.get(2));
 			}
 			LOG.debug("Made TABLE BODY");
 		}
-		return tableBody;
+		return tableBodySection;
 	}
 
 	public TableFooterSection getOrCreateTableFooterSection() {
-		if (tableFooter == null) {
+		if (tableFooterSection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 4) {
-				tableFooter = new TableFooterSection(tableSectionList.get(3));
+				tableFooterSection = new TableFooterSection(tableSectionList.get(3));
 			}
 		}
-		return tableFooter;
+		return tableFooterSection;
 	}
+
 
 	public SVGElement getSVGChunk() {
 		return textStructurer.getSVGChunk();
@@ -354,7 +375,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				new String[] {"yellow", "red", "cyan", "blue"},
 				new double[] {0.2, 0.2, 0.2, 0.2}
 			);
-		TableTitleSection tableTitle = getTableTitle();
+		TableTitleSection tableTitle = getOrCreateTableTitleSection();
 		if (tableTitle == null) {
 			LOG.warn("no table title");
 		} else {
@@ -364,7 +385,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					new double[] {0.2, 0.2}
 					);
 		}
-		TableHeaderSection tableHeader = getTableHeader();
+		TableHeaderSection tableHeader = getOrCreateTableHeaderSection();
 		if (tableHeader == null) {
 			LOG.warn("no table header");
 		} else {
