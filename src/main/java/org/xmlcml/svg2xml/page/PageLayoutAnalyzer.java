@@ -21,9 +21,7 @@ import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
-import org.xmlcml.svg2xml.text.SuscriptEditor;
 import org.xmlcml.svg2xml.text.TextStructurer;
-import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -81,13 +79,13 @@ public class PageLayoutAnalyzer {
 		LOG.trace(inputFile.getAbsolutePath());
 		this.inputFile = inputFile;
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
-		SVGElement chunk = textStructurer.getSVGChunk();
-		cleanChunk(chunk);
+		SVGElement inputSVGChunk = textStructurer.getSVGChunk();
+		cleanChunk(inputSVGChunk);
 		if (rotatable  && textStructurer.hasAntiClockwiseCharacters()) {
-			SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/debug/preRot.svg"));
-			chunk = textStructurer.rotateClockwise();
-			SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/debug/postRot.svg"));
-			TextStructurer textStructurer1 = TextStructurer.createTextStructurerWithSortedLines(chunk);
+			SVGSVG.wrapAndWriteAsSVG(inputSVGChunk, new File("target/debug/preRot.svg"));
+			inputSVGChunk = textStructurer.rotateClockwise();
+			SVGSVG.wrapAndWriteAsSVG(inputSVGChunk, new File("target/debug/postRot.svg"));
+			TextStructurer textStructurer1 = TextStructurer.createTextStructurerWithSortedLines(inputSVGChunk);
 			textStructurer = textStructurer1;
 		}
 

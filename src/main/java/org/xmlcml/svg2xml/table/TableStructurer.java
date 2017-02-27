@@ -223,10 +223,8 @@ public class TableStructurer {
 			LOG.error("ERROR: no Body section");
 			return;
 		}
-		LOG.debug("BODY0 - dummy");
 		TableSection bodySection = tableSectionList.get(2);
 		PhraseListList bodyPhraseListList= bodySection.getOrCreatePhraseListList();
-		LOG.debug("body: "+bodyPhraseListList.size());
 	}
 
 	private void createBody() {
@@ -247,7 +245,7 @@ public class TableStructurer {
 				if (element instanceof PhraseList) {
 					bodyPhraseListList.add(new PhraseList((PhraseList) element));
 				} else {
-					LOG.error("Omitted ruler: "+element);
+					LOG.trace("Omitted ruler: "+element);
 				}
 			}
 		}
@@ -283,8 +281,6 @@ public class TableStructurer {
 	}
 
 	private void addHeader() {
-		LOG.debug("HEADER COLS "+maxColumns);
-//		ensureColumnManagerList().debug();
 		headerBBoxManager = new BoundingBoxManager();
 		TableSection tableHeaderSection = null;
 		if (tableSectionList != null && tableSectionList.size() > 1) {
@@ -299,9 +295,9 @@ public class TableStructurer {
 			}
 		}
 		List<HtmlTr> trList = createHeaderRows(tableHeaderSection);
-		for (HtmlTr tr : trList) {
-			LOG.debug("T "+tr.toXML());
-		}
+//		for (HtmlTr tr : trList) {
+//			LOG.debug("T "+tr.toXML());
+//		}
 
 	}
 	
@@ -322,15 +318,14 @@ public class TableStructurer {
 		
 		// find margins
 		IntRangeArray bestWhitespaces = headerPhraseListList.getBestWhitespaceRanges();
-		LOG.debug("BestWhite (R margin) "+bestWhitespaces);
+		LOG.trace("BestWhite (R margin) "+bestWhitespaces);
 		IntRangeArray bestColumnRanges = headerPhraseListList.getBestColumnRanges();
-		LOG.debug("BestColumn () "+bestColumnRanges);
+		LOG.trace("BestColumn () "+bestColumnRanges);
 		
 		for (PhraseList phraseList : headerPhraseListList) {
 			HtmlTr row = createTableRow(phraseList);
 			rows.add(row);
 		}
-		LOG.debug("ROWS "+rows);
 		return rows;
 
 	}
@@ -887,11 +882,9 @@ public class TableStructurer {
 	}
 
 	private void analyzeTableRow(PhraseList phraseList, int iRow) {
-		LOG.debug("ANALYSE COL ROW "+iRow+" / "+phraseList.getStringValue());
 		totalPhraseListList.getOrCreateChildPhraseList();
 		ensureColumnManagerList();
 		IntRangeArray bestWhitespaces = totalPhraseListList.getBestWhitespaceRanges();
-		LOG.debug("BW "+bestWhitespaces);
 		if (bestWhitespaces.size() != maxColumns) {
 			LOG.warn("maxWhitespace ("+bestWhitespaces.size()+") != maxColumns ("+maxColumns+")");
 		}
@@ -961,9 +954,7 @@ public class TableStructurer {
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
 		// find margins
 		IntRangeArray bestWhitespaces = bodyPhraseListList.getBestWhitespaceRanges();
-		LOG.debug("BestWhite (R margin) "+bestWhitespaces);
 		IntRangeArray bestColumnRanges = bodyPhraseListList.getBestColumnRanges();
-		LOG.debug("BestColumn () "+bestColumnRanges);
 		
 		/*
 	private void analyzeTableRow(PhraseList phraseList, int iRow) {

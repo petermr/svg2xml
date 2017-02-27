@@ -52,7 +52,4 @@ public class TableTitleSection extends TableSection {
 		}
 		return g;
 	}
-	
-
-
 }

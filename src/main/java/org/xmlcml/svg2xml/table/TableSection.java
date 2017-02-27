@@ -10,6 +10,8 @@ import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.util.MultisetUtil;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.html.HtmlElement;
+import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
 import org.xmlcml.svg2xml.text.LineChunk;
@@ -217,6 +219,13 @@ public class TableSection {
 		sb.append("{"+MultisetUtil.getEntriesSortedByCount(fontWeightSet).toString()+"}");
 		sb.append("{"+MultisetUtil.getEntriesSortedByCount(fontStyleSet).toString()+"}");
 		return sb.toString();
+	}
+
+	public HtmlElement toHtml() {
+		PhraseListList sectionPhraseListList = getOrCreatePhraseListList();
+		HtmlElement sectionElement = sectionPhraseListList == null ? new HtmlP("missing section "+this.getClass().getSimpleName()) :
+			sectionPhraseListList.toHtml();
+		return sectionElement;
 	}
 
 }

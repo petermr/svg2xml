@@ -40,7 +40,6 @@ import nu.xom.Attribute;
 
 public class TableContentCreator extends PageLayoutAnalyzer {
 
-
 	private static final Logger LOG = Logger.getLogger(TableContentCreator.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -63,6 +62,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private TableHeaderSection tableHeaderSection;
 	private TableBodySection tableBodySection;
 	private TableFooterSection tableFooterSection;
+	private SVGElement annotatedSvgChunk;
 	
 	public TableContentCreator() {
 	}
@@ -146,7 +146,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			if (horizontalElement instanceof HorizontalRuler) {
 				HorizontalRuler thisRuler = (HorizontalRuler) horizontalElement;
 				IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange());
-//				LOG.debug("*****************"+thisRange+"/"+thisRuler.getSVGLine().getXY(0).getY());
 				if (firstRuler == null) {
 					firstRuler = thisRuler;
 					firstRange = thisRange;
@@ -171,7 +170,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			List<HorizontalRuler> fullRulerList = getFullRulers(iRow);
 			tableSectionList = new ArrayList<TableSection>();
 			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
-			LOG.debug("Table Span "+tableSpan);
 			if (tableSpan != null) {
 				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
 				this.createPhraseRangesArray();
@@ -188,7 +186,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			length += phraseListCount;
 			rangesArray.add(intRange);
 		}
-		LOG.debug("rangesArray "+rangesArray);
 		return rangesArray;
 	}
 
@@ -217,27 +214,26 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				}
 			}
 		}
-		LOG.debug("sections "+tableSectionList.size());
 	}
 
 	public IntRangeArray getRangesArray() {
 		return rangesArray;
 	}
 
-	private IntRangeArray getRangesArrayWithPseudoHeader() {
-		if (rangesArray.size() == 4) {
-			LOG.warn("adding pseudoheader");
-			IntRangeArray newArray = new IntRangeArray();
-			newArray.add(rangesArray.get(0));
-			newArray.add(new IntRange(rangesArray.get(0).getMax(), rangesArray.get(1).getMin()));
-			for (int i = 1; i < rangesArray.size(); i++) {
-				newArray.add(rangesArray.get(i));
-			}
-			rangesArray = newArray;
-		}
-
-		return rangesArray;
-	}
+//	private IntRangeArray getRangesArrayWithPseudoHeader() {
+//		if (rangesArray.size() == 4) {
+//			LOG.warn("adding pseudoheader");
+//			IntRangeArray newArray = new IntRangeArray();
+//			newArray.add(rangesArray.get(0));
+//			newArray.add(new IntRange(rangesArray.get(0).getMax(), rangesArray.get(1).getMin()));
+//			for (int i = 1; i < rangesArray.size(); i++) {
+//				newArray.add(rangesArray.get(i));
+//			}
+//			rangesArray = newArray;
+//		}
+//
+//		return rangesArray;
+//	}
 
 	public List<TableSection> getTableSectionList() {
 		return tableSectionList;
@@ -246,7 +242,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
 		createSectionsAndRangesArray();
-		LOG.debug("FIXME");
 		HtmlHtml html = tableStructurer.createHtmlWithTable(tableSectionList, tableTitle);
 		try {
 			XMLUtil.debug(html, new File("target/table/debug/sections.html"), 1);
@@ -263,7 +258,16 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		this.addIndents = add;
 	}
 
-	public SVGElement createMarkedSections(
+	/** FIXME.
+	 * works on getTextStructurer().getSVGChunk(). needs refactoring to textStructurer
+	 * 
+	 * returns original file with overlaid boxes
+	 * 
+	 * @param colors
+	 * @param opacity
+	 * @return
+	 */
+	public SVGElement createMarkedSections(/*SVGElement markedChunk,*/
 			String[] colors,
 			double[] opacity) {
 		// write SVG
@@ -349,7 +353,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			if (tableSectionList.size() >= 3) {
 				tableBodySection = new TableBodySection(tableSectionList.get(2));
 			}
-			LOG.debug("Made TABLE BODY");
 		}
 		return tableBodySection;
 	}
@@ -371,6 +374,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	public SVGElement annotateAreas(File inputFile) {
 		createHTMLFromSVG(inputFile);
+		return annotateAreasInSVGChunk();
+	}
+
+	public SVGElement annotateAreasInSVGChunk() {
 		SVGElement svgChunk = createMarkedSections(
 				new String[] {"yellow", "red", "cyan", "blue"},
 				new double[] {0.2, 0.2, 0.2, 0.2}
@@ -421,10 +428,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public void markupAndOutputTable(File inputFile, File outDir) {
 		String outRoot = inputFile.getName();
 		outRoot = outRoot.substring(0, outRoot.length() - DOT_PNG.length());
+		LOG.debug("reading SVG "+inputFile);
+		annotatedSvgChunk = annotateAreas(inputFile);
 		File outputFile = new File(outDir, outRoot+DOT_ANNOT_SVG);
-		LOG.debug("reading "+inputFile);
-		SVGElement svgChunk = annotateAreas(inputFile);
-		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
+		LOG.debug("writing annotated SVG "+outputFile);
+		SVGSVG.wrapAndWriteAsSVG(annotatedSvgChunk, outputFile);
 	}
 
 	/** create HTML from annot.svg
@@ -434,7 +442,18 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @throws IOException 
 	 */
 	public void createHTML(File annotSvgFile, File outDir) throws IOException {
-		SVGElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(annotSvgFile));
+//		SVGElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(annotSvgFile));
+		LOG.debug("reading from "+annotSvgFile);
+		HtmlHtml html = createHtmlFromSVG();
+		File outfile = new File(outDir, annotSvgFile.getName()+".html");
+		LOG.debug("writing to: "+outfile);
+		XMLUtil.debug(html, outfile, 1);
+		
+		
+	}
+
+	public HtmlHtml createHtmlFromSVG() {
+		SVGElement svgElement = annotatedSvgChunk;
 		HtmlHtml html = new HtmlHtml();
 		HtmlBody body = new HtmlBody();
 		html.appendChild(body);
@@ -445,15 +464,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		addCaption(svgElement, table);
 		addHeader(svgElement, table);
 		addBody(svgElement, table);
-		XMLUtil.debug(html, new File(outDir, annotSvgFile.getName()+".html"), 1);
-		
-		
+		return html;
 	}
 
 	private void addHeader(SVGElement svgElement, HtmlTable table) {
 		HtmlTr tr = new HtmlTr();
 		table.appendChild(tr);
-		SVGElement g = (SVGElement) XMLUtil.getSingleElement(svgElement, 
+		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
 			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
@@ -469,7 +486,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private void addBody(SVGElement svgElement, HtmlTable table) {
-		SVGElement g = (SVGElement) XMLUtil.getSingleElement(svgElement, 
+		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
 		if (g != null) {
 			List<SVGG> gs = SVGG.extractSelfAndDescendantGs(g);
@@ -497,12 +514,15 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					}
 				}
 			}
-		}	
+		} else {
+			LOG.warn("no annotated body");
+		}
 	}
 
+	// FIXME empty caption
 	private void addCaption(SVGElement svgElement, HtmlTable table) {
 		HtmlCaption caption = new HtmlCaption();
-		String captionS = XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
+		String captionS = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
 		if (captionS !=null) {
 			int idx = captionS.indexOf("//");
 			captionS = idx == -1 ? captionS : captionS.substring(idx + 2);
@@ -511,6 +531,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 	}
 
-
+	public SVGElement getAnnotatedSvgChunk() {
+		return annotatedSvgChunk;
+	}
 
 }

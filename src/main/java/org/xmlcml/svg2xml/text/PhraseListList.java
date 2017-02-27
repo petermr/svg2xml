@@ -329,12 +329,14 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	private boolean triggerNewPara(PhraseList lastPhraseList, PhraseList phraseList) {
 		boolean newPara = false;
 		String lastString = lastPhraseList.getStringValue();
-		char lastEnd = lastString.charAt(lastString.length() - 1);
-		double deltaY = phraseList.getY() - lastPhraseList.getY();
-		double deltaX = phraseList.getX() - lastPhraseList.getX();
-		// just do paras on separation at present
-		if (deltaY > paraSpacingTrigger) {
-			newPara = true;
+		if (lastString.length() > 0) {
+			char lastEnd = lastString.charAt(lastString.length() - 1);
+			double deltaY = phraseList.getY() - lastPhraseList.getY();
+			double deltaX = phraseList.getX() - lastPhraseList.getX();
+			// just do paras on separation at present
+			if (deltaY > paraSpacingTrigger) {
+				newPara = true;
+			}
 		}
 		return newPara;
 	}

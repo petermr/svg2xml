@@ -52,7 +52,7 @@ private boolean hasSuscripts;
 		Double y0 = phraseList0.getY();
 		Double y1 = phraseList1.getY();
 		if (y0 == null || y1 == null) {
-			LOG.error("unexpected null y0/y1");
+			LOG.trace("unexpected null y0/y1");
 			return null;
 		}
 		yDelta = y1 - y0; // always positive

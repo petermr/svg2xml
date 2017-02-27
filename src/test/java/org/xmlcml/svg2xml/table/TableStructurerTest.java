@@ -65,6 +65,7 @@ public class TableStructurerTest {
 	private static final String WILEY44386_G_4_1_SVG = "Wiley44386.g.4.1.svg";
 	private static final File TABLE_OUT_DIR = new File("target/table");
 
+	/** OBSOLETE
 	@Test
 	@Ignore // rotated table
 	public void testAATable() throws IOException {
@@ -271,10 +272,10 @@ public class TableStructurerTest {
 	
 	@Test
 	@Ignore // FIXME
-	/** this one has a side box
+	/ * * this one has a side box
 	 * 
 	 * @throws IOException
-	 */
+	 * /
 	public void testSpringerTable() throws IOException {
 		File inputFile = new File(Fixtures.TABLE_DIR, SPRINGER68755_G_7_0_SVG);
 		String outRoot = "springer19568755";
@@ -288,10 +289,10 @@ public class TableStructurerTest {
 		TableStructurer tableStructurer = testHorizontalRulers(inputFile, outRoot, horizontalRulerCount);
 	}
 
-	/** note these two tables have been maually split
+	/ * * note these two tables have been maually split
 	 * 
 	 * @throws IOException
-	 */
+	 * /
 	@Test
 	public void testTEX1Table() throws IOException {
 		File inputFile = new File(Fixtures.TABLE_DIR, TEX_AUSLOOS2016_G_5_0_SVG);
@@ -333,7 +334,8 @@ public class TableStructurerTest {
 		int horizontalRulerCount = 3;
 		TableStructurer tableStructurer = testHorizontalRulers(inputFile, outRoot, horizontalRulerCount);
 	}
-
+*/ // end OBSOLETE
+	
 	@Test
 	public void testAMARulers() throws IOException {
 		File inputFile = new File(Fixtures.TABLE_DIR, AMA_DOBSON_G_6_4_SVG);
