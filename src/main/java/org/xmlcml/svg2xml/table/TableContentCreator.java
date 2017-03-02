@@ -1,9 +1,9 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,13 +12,14 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
+import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlHtml;
@@ -63,6 +64,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private TableBodySection tableBodySection;
 	private TableFooterSection tableFooterSection;
 	private SVGElement annotatedSvgChunk;
+	private double rowDelta = 2.5; //large to manage suscripts
 	
 	public TableContentCreator() {
 	}
@@ -173,6 +175,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			if (tableSpan != null) {
 				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
 				this.createPhraseRangesArray();
+				analyzeRangesAndSections();
+
 			}
 		}
 	}
@@ -187,6 +191,34 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			rangesArray.add(intRange);
 		}
 		return rangesArray;
+	}
+
+	private void analyzeRangesAndSections() {
+		
+		String firstSectionString = tableSectionList.get(0).getStringValue().trim();
+		firstSectionString = firstSectionString.substring(0,  Math.min(firstSectionString.length(), 50)).trim();
+		String lastSectionString = tableSectionList.get(tableSectionList.size() - 1).getStringValue().trim();
+		lastSectionString = lastSectionString.substring(0,  Math.min(lastSectionString.length(), 50)).trim();
+		if (firstSectionString.startsWith("Table")) {
+			LOG.trace("title 0 "+firstSectionString);
+		} else if (lastSectionString.startsWith("Table")) {
+			LOG.trace("title last "+lastSectionString);
+		} else {
+			LOG.debug("***** NO TITLE SECTION ****");//\n"+firstSectionString+"\n"+lastSectionString);
+		}
+		if (rangesArray.size() == 4) {
+			// the commonest
+			if (rangesArray.get(0).getMax() > 2) {
+				LOG.trace("large title: "+firstSectionString+"\n"+rangesArray);
+			} else if (rangesArray.get(1).getRange() > 4) {
+				LOG.trace("large header: "+rangesArray);
+			} else if (rangesArray.get(2).getRange() < 4) {
+				LOG.trace("small body: "+rangesArray);
+			}
+		} else {
+			LOG.debug("Ranges: "+rangesArray.size()+"; "+rangesArray);
+		}
+
 	}
 
 	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRuler> fullRulerList,
@@ -219,21 +251,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public IntRangeArray getRangesArray() {
 		return rangesArray;
 	}
-
-//	private IntRangeArray getRangesArrayWithPseudoHeader() {
-//		if (rangesArray.size() == 4) {
-//			LOG.warn("adding pseudoheader");
-//			IntRangeArray newArray = new IntRangeArray();
-//			newArray.add(rangesArray.get(0));
-//			newArray.add(new IntRange(rangesArray.get(0).getMax(), rangesArray.get(1).getMin()));
-//			for (int i = 1; i < rangesArray.size(); i++) {
-//				newArray.add(rangesArray.get(i));
-//			}
-//			rangesArray = newArray;
-//		}
-//
-//		return rangesArray;
-//	}
 
 	public List<TableSection> getTableSectionList() {
 		return tableSectionList;
@@ -306,26 +323,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			g.setTransform(t2);
 		}
 	}
-
-//	public TableTitleSection getTableTitle() {
-//		if (tableTitleSection == null) {
-//			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
-//			if (tableSectionList.size() > 0) {
-//				tableTitleSection = new TableTitleSection(tableSectionList.get(0));
-//			}
-//		}
-//		return tableTitleSection;
-//	}
-
-//	public TableHeaderSection getTableHeader() {
-//		if (tableHeader == null) {
-//			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
-//			if (tableSectionList.size() >= 2) {
-//				tableHeader = new TableHeaderSection(tableSectionList.get(1));
-//			}
-//		}
-//		return tableHeader;
-//	}
 
 	public TableTitleSection getOrCreateTableTitleSection() {
 		if (tableTitleSection == null) {
@@ -405,7 +402,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 		TableBodySection tableBody = getOrCreateTableBodySection();
 		if (tableBody == null) {
-			LOG.warn("no table body");
+			LOG.trace("no table body");
 		} else {
 			tableBody.createHeaderRowsAndColumnGroups();
 			svgChunk = tableBody.createMarkedSections(
@@ -453,7 +450,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	public HtmlHtml createHtmlFromSVG() {
-		SVGElement svgElement = annotatedSvgChunk;
 		HtmlHtml html = new HtmlHtml();
 		HtmlBody body = new HtmlBody();
 		html.appendChild(body);
@@ -461,9 +457,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		table.addAttribute(new Attribute("style", "border: 1px solid black;"));
 		body.appendChild(table);
 		
-		addCaption(svgElement, table);
-		addHeader(svgElement, table);
-		addBody(svgElement, table);
+		addCaption(annotatedSvgChunk, table);
+		addHeader(annotatedSvgChunk, table);
+		addBody(annotatedSvgChunk, table);
 		return html;
 	}
 
@@ -474,6 +470,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
 			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
+			LOG.debug("Header boxes: "+rects.size());
 			for (int i = 0; i < rects.size(); i++) {
 				String title = rects.get(i).getValue();   // messy but has to be rewritten
 				title = title.replace(" //", "");
@@ -488,34 +485,115 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private void addBody(SVGElement svgElement, HtmlTable table) {
 		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
-		if (g != null) {
-			List<SVGG> gs = SVGG.extractSelfAndDescendantGs(g);
-			List<List<SVGRect>> rectListList = new ArrayList<List<SVGRect>>();
-			for (int i = 0; i < gs.size(); i++) {
-				List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(gs.get(i));
-				rectListList.add(rects);
-			}
-			if (rectListList.size() > 0) {
-				for (int irow = 0; irow < rectListList.get(0).size(); irow++) {
-					HtmlTr tr = new HtmlTr();
-					table.appendChild(tr);
-					for (int jcol = 0; jcol < rectListList.size(); jcol++) {
-						List<SVGRect> rectjList = rectListList.get(jcol);
-						if (irow >= rectjList.size()) {
-							LOG.warn("row index out of range "+irow);;
-						} else {
-							SVGRect rectij = rectjList.get(irow);
-							HtmlTd td = new HtmlTd();
-							td.addAttribute(new Attribute("style", "border: 1px solid black;"));
-							tr.appendChild(td);
-							String value = rectij.getValue();
-							td.appendChild(value.substring(value.indexOf("/")+1));
-						}
-					}
+		if (g == null) {
+			LOG.warn("No annotated body");
+			return;
+		}
+		List<SVGG> gs = SVGG.extractSelfAndDescendantGs(g);
+		List<List<SVGRect>> columnList = new ArrayList<List<SVGRect>>();
+		for (int i = 0; i < gs.size(); i++) {
+			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(gs.get(i));
+			columnList.add(rects);
+		}
+		LOG.debug("Body columns: "+columnList.size());
+
+		if (columnList.size() == 0) {
+			return;
+		}
+
+		List<RealRange> allRanges = createRowRanges(columnList);
+		LOG.debug("ALL "+allRanges.size() +"\n"+allRanges);
+		for (int jcol = 0; jcol < columnList.size(); jcol++) {
+			List<SVGRect> column = columnList.get(jcol);
+			LOG.debug("col start "+jcol+"; "+column.size()+"\n"+column);
+			padColumn(column, allRanges);
+			LOG.debug("col end "+jcol+"; "+column.size()+"\n"+column);
+		}
+		
+		for (int irow = 0; irow < allRanges.size(); irow++) {
+			HtmlTr tr = new HtmlTr();
+			table.appendChild(tr);
+			for (int jcol = 0; jcol < columnList.size(); jcol++) {
+				List<SVGRect> rectjList = columnList.get(jcol);
+				if (irow >= rectjList.size()) {
+					LOG.trace("row index out of range "+irow);;
+				} else {
+					SVGRect rectij = rectjList.get(irow);
+					HtmlTd td = new HtmlTd();
+					td.addAttribute(new Attribute("style", "border: 1px solid black;"));
+					tr.appendChild(td);
+					String value = rectij == null ? "/" : rectij.getValue();
+					td.appendChild(value.substring(value.indexOf("/")+1));
 				}
 			}
-		} else {
-			LOG.warn("no annotated body");
+		}
+	}
+
+	private List<RealRange> createRowRanges(List<List<SVGRect>> columnList) {
+		// populate allRanges with column0
+		List<RealRange> allRanges = new ArrayList<RealRange>();
+		List<SVGRect> column0 = columnList.get(0);
+		for (int irow = 0; irow < column0.size(); irow++) {
+			SVGRect rowi = column0.get(irow);
+			RealRange rowRange = rowi.getBoundingBox().getYRange();
+			allRanges.add(rowRange);
+		}
+		
+		// iterate over other columns, filling in holes if necessary
+		for (int jcol = 1; jcol < columnList.size(); jcol++) {
+			List<SVGRect> columnj = columnList.get(jcol);
+			int allPtr = allRanges.size() - 1;
+			int colPtr = columnj.size() - 1;
+			while (colPtr >= 0) {
+				SVGRect rowi = columnj.get(colPtr);
+				RealRange colRange = rowi.getBoundingBox().getYRange();
+				RealRange allRange = allRanges.get(allPtr);
+				if (colRange.intersectsWith(allRange)) {
+					RealRange newRange = colRange.plus(allRange);
+					allRanges.set(allPtr, newRange);
+					LOG.trace("equal: "+allPtr+"; "+colPtr);
+					allPtr--;
+					colPtr--;
+				} else if (colRange.getMax() < allRange.getMin()) {
+					LOG.trace("less: "+allPtr+"; "+colPtr);
+					allPtr--;
+				} else if (colRange.getMin() > allRange.getMax()) {
+					LOG.trace("more: "+allPtr+"; "+colPtr);
+					allRanges.add(allPtr + 1, colRange);
+					colPtr--;
+				} else {
+					throw new RuntimeException("cannot add to allRanges "+allRange+"; "+colRange);
+				}
+			}
+		}
+		return allRanges;
+	}
+
+	private void padColumn(List<SVGRect> column, List<RealRange> allRanges) {
+		int allPtr = allRanges.size() - 1;
+		int colPtr = column.size() - 1;
+		while (allPtr >= 0) {
+			if (colPtr < 0) {
+				// empty space at start of column
+				column.add(0, (SVGRect) null);
+				allPtr--;
+			} else {
+				RealRange allRange = allRanges.get(allPtr);
+				RealRange colRange = column.get(colPtr).getBoundingBox().getYRange();
+				if (colRange.intersectsWith(allRange)) {
+					// ranges match
+					colPtr--;
+					allPtr--;
+				} else if (colRange.getMin() > allRange.getMax()) {
+					throw new RuntimeException("IMPOSSIBLE "+allRange+"; "+colRange);
+				} else if (colRange.getMax() < allRange.getMin()) {
+					// empty cell in column
+					column.add(colPtr + 1, (SVGRect) null);
+					allPtr--;
+				} else {
+					throw new RuntimeException("cannot map to allRanges "+allRange+"; "+colRange);
+				}
+			}
 		}
 	}
 

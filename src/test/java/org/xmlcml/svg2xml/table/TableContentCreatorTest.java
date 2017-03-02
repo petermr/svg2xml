@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.Fixtures;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.SuscriptEditor;

@@ -6,7 +6,7 @@
 
     <properties>
        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-       <svg2xml.version>2.0.7</svg2xml.version>
+       <svg2xml.version>2.0.8</svg2xml.version>
        <!--  upstream -->
        <pdf2svg.version>2.0.6</pdf2svg.version>
     </properties>

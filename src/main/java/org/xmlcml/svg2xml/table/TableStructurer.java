@@ -220,7 +220,7 @@ public class TableStructurer {
 
 	private void createBody0() {
 		if (tableSectionList == null || tableSectionList.size() < 3) {
-			LOG.error("ERROR: no Body section");
+			LOG.trace("ERROR: no Body section");
 			return;
 		}
 		TableSection bodySection = tableSectionList.get(2);
