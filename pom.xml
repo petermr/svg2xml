@@ -5,7 +5,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
        <svg2xml.version>2.0.8</svg2xml.version>
        <!--  upstream -->
        <pdf2svg.version>2.0.6</pdf2svg.version>
@@ -15,14 +14,6 @@
     <artifactId>svg2xml</artifactId>
     <version>${svg2xml.version}</version>
     <description>Takes SVG from PDF2SVG and analyzes the domain-independent semantics</description>
-
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
 
     <dependencies>
         <dependency>

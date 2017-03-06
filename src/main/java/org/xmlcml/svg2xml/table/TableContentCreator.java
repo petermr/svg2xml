@@ -425,10 +425,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public void markupAndOutputTable(File inputFile, File outDir) {
 		String outRoot = inputFile.getName();
 		outRoot = outRoot.substring(0, outRoot.length() - DOT_PNG.length());
-		LOG.debug("reading SVG "+inputFile);
+		LOG.trace("reading SVG "+inputFile);
 		annotatedSvgChunk = annotateAreas(inputFile);
 		File outputFile = new File(outDir, outRoot+DOT_ANNOT_SVG);
-		LOG.debug("writing annotated SVG "+outputFile);
+		LOG.trace("writing annotated SVG "+outputFile);
 		SVGSVG.wrapAndWriteAsSVG(annotatedSvgChunk, outputFile);
 	}
 
@@ -439,11 +439,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @throws IOException 
 	 */
 	public void createHTML(File annotSvgFile, File outDir) throws IOException {
-//		SVGElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(annotSvgFile));
-		LOG.debug("reading from "+annotSvgFile);
+		LOG.debug("reading SVG from "+annotSvgFile);
 		HtmlHtml html = createHtmlFromSVG();
 		File outfile = new File(outDir, annotSvgFile.getName()+".html");
-		LOG.debug("writing to: "+outfile);
+		LOG.debug("writing HTML to : "+outfile);
 		XMLUtil.debug(html, outfile, 1);
 		
 		
@@ -470,7 +469,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
 			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
-			LOG.debug("Header boxes: "+rects.size());
+			LOG.trace("Header boxes: "+rects.size());
 			for (int i = 0; i < rects.size(); i++) {
 				String title = rects.get(i).getValue();   // messy but has to be rewritten
 				title = title.replace(" //", "");
@@ -495,19 +494,16 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(gs.get(i));
 			columnList.add(rects);
 		}
-		LOG.debug("Body columns: "+columnList.size());
+		LOG.trace("Body columns: "+columnList.size());
 
 		if (columnList.size() == 0) {
 			return;
 		}
 
 		List<RealRange> allRanges = createRowRanges(columnList);
-		LOG.debug("ALL "+allRanges.size() +"\n"+allRanges);
 		for (int jcol = 0; jcol < columnList.size(); jcol++) {
 			List<SVGRect> column = columnList.get(jcol);
-			LOG.debug("col start "+jcol+"; "+column.size()+"\n"+column);
 			padColumn(column, allRanges);
-			LOG.debug("col end "+jcol+"; "+column.size()+"\n"+column);
 		}
 		
 		for (int irow = 0; irow < allRanges.size(); irow++) {
@@ -533,17 +529,23 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		// populate allRanges with column0
 		List<RealRange> allRanges = new ArrayList<RealRange>();
 		List<SVGRect> column0 = columnList.get(0);
+		if (column0.size() == 0) {
+			return allRanges; // no rows
+		}
 		for (int irow = 0; irow < column0.size(); irow++) {
 			SVGRect rowi = column0.get(irow);
-			RealRange rowRange = rowi.getBoundingBox().getYRange();
+			RealRange rowRange = rowi.getBoundingBox().getYRange().format(3);
 			allRanges.add(rowRange);
 		}
 		
 		// iterate over other columns, filling in holes if necessary
-		for (int jcol = 1; jcol < columnList.size(); jcol++) {
+		for (int jcol = 0; jcol < columnList.size(); jcol++) {
 			List<SVGRect> columnj = columnList.get(jcol);
 			int allPtr = allRanges.size() - 1;
 			int colPtr = columnj.size() - 1;
+			if (colPtr > allPtr) {
+				LOG.error("Column ("+jcol+"; "+(colPtr+1)+") larger than allRanges ("+(allPtr+1)+") \n"+columnj+"; \n"+allRanges);
+			}
 			while (colPtr >= 0) {
 				SVGRect rowi = columnj.get(colPtr);
 				RealRange colRange = rowi.getBoundingBox().getYRange();
@@ -563,6 +565,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					colPtr--;
 				} else {
 					throw new RuntimeException("cannot add to allRanges "+allRange+"; "+colRange);
+				}
+				if (allPtr < 0 && colPtr >= 0) {
+					LOG.error("Cannot match col=>all "+colPtr+" => "+allPtr+"; "+columnj.size()+" => "+allRanges.size()+" => "+columnj+" => "+allRanges);
+					break;
 				}
 			}
 		}
