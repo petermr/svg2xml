@@ -53,6 +53,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private static final String TABLE_TITLE = "table.title";
 	public static final String DOT_ANNOT_SVG = ".annot.svg";
 	private static final String DOT_PNG = ".png";
+	private static final String CELL_FULL = "cell";
+	private static final String CELL_EMPTY = "empty";
 
 	private List<HorizontalRuler> rulerList;
 	private List<TableSection> tableSectionList;
@@ -453,7 +455,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		HtmlBody body = new HtmlBody();
 		html.appendChild(body);
 		HtmlTable table = new HtmlTable();
-		table.addAttribute(new Attribute("style", "border: 1px solid black;"));
+		table.setClassAttribute("table");
 		body.appendChild(table);
 		
 		addCaption(annotatedSvgChunk, table);
@@ -468,16 +470,20 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
-			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
-			LOG.trace("Header boxes: "+rects.size());
-			for (int i = 0; i < rects.size(); i++) {
-				String title = rects.get(i).getValue();   // messy but has to be rewritten
-				title = title.replace(" //", "");
-				HtmlTh th = new HtmlTh();
-				th.addAttribute(new Attribute("style", "border: 1px solid black;"));
-				th.appendChild(title.substring(title.indexOf("/")+1));
-				tr.appendChild(th);
-			}
+			addHeaderBoxes(tr, g);
+		}
+	}
+
+	private void addHeaderBoxes(HtmlTr tr, SVGElement g) {
+		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
+		LOG.trace("Header boxes: "+rects.size());
+		for (int i = 0; i < rects.size(); i++) {
+			String title = rects.get(i).getValue();   // messy but has to be rewritten
+			title = title.replace(" //", "");
+			HtmlTh th = new HtmlTh();
+			th.setClassAttribute(CELL_FULL);
+			th.appendChild(title.substring(title.indexOf("/")+1));
+			tr.appendChild(th);
 		}
 	}
 
@@ -507,20 +513,25 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 		
 		for (int irow = 0; irow < allRanges.size(); irow++) {
-			HtmlTr tr = new HtmlTr();
-			table.appendChild(tr);
-			for (int jcol = 0; jcol < columnList.size(); jcol++) {
-				List<SVGRect> rectjList = columnList.get(jcol);
-				if (irow >= rectjList.size()) {
-					LOG.trace("row index out of range "+irow);;
-				} else {
-					SVGRect rectij = rectjList.get(irow);
-					HtmlTd td = new HtmlTd();
-					td.addAttribute(new Attribute("style", "border: 1px solid black;"));
-					tr.appendChild(td);
-					String value = rectij == null ? "/" : rectij.getValue();
-					td.appendChild(value.substring(value.indexOf("/")+1));
-				}
+			createRowsAndAddToTable(table, columnList, irow);
+		}
+	}
+
+	private void createRowsAndAddToTable(HtmlTable table, List<List<SVGRect>> columnList, int irow) {
+		HtmlTr tr = new HtmlTr();
+		table.appendChild(tr);
+		for (int jcol = 0; jcol < columnList.size(); jcol++) {
+			List<SVGRect> rectjList = columnList.get(jcol);
+			if (irow >= rectjList.size()) {
+				LOG.trace("row index out of range "+irow);;
+			} else {
+				SVGRect rectij = rectjList.get(irow);
+				HtmlTd td = new HtmlTd();
+				tr.appendChild(td);
+				String value = rectij == null ? "/" : rectij.getValue();
+				String value1 = value.substring(value.indexOf("/")+1);
+				td.appendChild(value1);
+				td.setClassAttribute((value1.trim().length() == 0) ? CELL_EMPTY : CELL_FULL);
 			}
 		}
 	}
