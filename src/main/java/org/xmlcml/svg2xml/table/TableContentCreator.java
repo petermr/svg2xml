@@ -3,7 +3,6 @@ package org.xmlcml.svg2xml.table;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,8 +11,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
+import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealRange;
-import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -36,8 +35,6 @@ import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.svg2xml.util.GraphPlot;
 import org.xmlcml.xml.XMLUtil;
-
-import nu.xom.Attribute;
 
 public class TableContentCreator extends PageLayoutAnalyzer {
 
@@ -459,42 +456,51 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		body.appendChild(table);
 		
 		addCaption(annotatedSvgChunk, table);
-		addHeader(annotatedSvgChunk, table);
+		int bodyCols = getGElements(annotatedSvgChunk).size();
+		addHeader(annotatedSvgChunk, table, bodyCols);
 		addBody(annotatedSvgChunk, table);
 		return html;
 	}
 
-	private void addHeader(SVGElement svgElement, HtmlTable table) {
+	private void addHeader(SVGElement svgElement, HtmlTable table, int bodyCols) {
+		int cols = 0;
 		HtmlTr tr = new HtmlTr();
 		table.appendChild(tr);
 		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
-			addHeaderBoxes(tr, g);
+			cols = addHeaderBoxes(tr, g, bodyCols);
 		}
 	}
 
-	private void addHeaderBoxes(HtmlTr tr, SVGElement g) {
+	private int addHeaderBoxes(HtmlTr tr, SVGElement g, int bodyCols) {
 		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
-		LOG.trace("Header boxes: "+rects.size());
-		for (int i = 0; i < rects.size(); i++) {
-			String title = rects.get(i).getValue();   // messy but has to be rewritten
+		int headerCols = rects.size();
+		int bodyDelta = bodyCols - headerCols;
+		LOG.trace("Header boxes: "+headerCols+"; delta: "+bodyDelta);
+		for (int i = 0; i < bodyDelta; i++) {
+			HtmlTh th = new HtmlTh();
+			tr.appendChild(th);
+		}
+		for (int i = 0; i < headerCols; i++) {
+			SVGRect rect = rects.get(i);   // messy but has to be rewritten
+			Real2 xy = rect.getXY();
+			String title = rect.getValue();   // messy but has to be rewritten
 			title = title.replace(" //", "");
 			HtmlTh th = new HtmlTh();
 			th.setClassAttribute(CELL_FULL);
 			th.appendChild(title.substring(title.indexOf("/")+1));
 			tr.appendChild(th);
 		}
+		return headerCols;
 	}
 
 	private void addBody(SVGElement svgElement, HtmlTable table) {
-		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
-				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
-		if (g == null) {
+		List<SVGG> gs = getGElements(svgElement);
+		if (gs.size() == 0) {
 			LOG.warn("No annotated body");
 			return;
 		}
-		List<SVGG> gs = SVGG.extractSelfAndDescendantGs(g);
 		List<List<SVGRect>> columnList = new ArrayList<List<SVGRect>>();
 		for (int i = 0; i < gs.size(); i++) {
 			List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(gs.get(i));
@@ -515,6 +521,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		for (int irow = 0; irow < allRanges.size(); irow++) {
 			createRowsAndAddToTable(table, columnList, irow);
 		}
+	}
+
+	private List<SVGG> getGElements(SVGElement svgElement) {
+		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
+		List<SVGG> gs = (g == null) ? new ArrayList<SVGG>() : SVGG.extractSelfAndDescendantGs(g);
+		return gs;
 	}
 
 	private void createRowsAndAddToTable(HtmlTable table, List<List<SVGRect>> columnList, int irow) {
