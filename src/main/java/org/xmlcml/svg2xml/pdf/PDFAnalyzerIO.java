@@ -30,57 +30,38 @@ public class PDFAnalyzerIO {
 	static {LOG.setLevel(Level.DEBUG);}
 
 	public static final File TARGET_DIR = new File("target");
-	public static final File OUTPUT_DIR = new File(TARGET_DIR, "output");
-	public static final File SVG_DIR = new File(TARGET_DIR, "svg");
+	public static final File TARGET_OUTPUT_DIR = new File(TARGET_DIR, "output");
+	public static final File TARGET_SVG_DIR = new File(TARGET_DIR, "svg");
 	public static final String HTTP = "http";
 	public static final String DOT_PDF = ".pdf";
 	final static PrintStream SYSOUT = System.out;
 
 	private File inFile;
 	private String inputName;
-	/** 
-	 * bar/foo.pdf =>> foo as fileRoot
-	 */
 	String fileRoot;
-	/** 
-	 * Top of where rawSVGFiles are kept, e.g. target/svg
-	 */
-	private File svgTopDir = SVG_DIR;
-	/** 
-	 * Directory where raw SVG are kept, e.g. target/svg/foo/
-	 */
+	private File svgDir = TARGET_SVG_DIR;
 	private File rawSvgDirectory;
-	/** 
-	 * Top of where outputFiles are kept , e.g. target/output
-	 */
-	private File outputTopDir = OUTPUT_DIR;
-	/** 
-	 * Directory where output are kept, e.g. target/svg/foo/
-	 */
+	private File outputDirectory = TARGET_OUTPUT_DIR;
 	File outputDocumentDir;
-	/** 
-	 * Directory where html are kept, e.g. target/svg/foo/html/ or target/svg/foo/
-	 */
 	private File htmlDir;
-
-//	private File finalSvgDirectory;
-
+	private File imageDirectory;
 	private PDFAnalyzer pdfAnalyzer;
+	private boolean skipOutput;
 
 	public PDFAnalyzerIO(PDFAnalyzer pdfAnalyzer) {
 		this.pdfAnalyzer = pdfAnalyzer;
 	}
 	
-	public void setSvgTopDir(File svgDir) {
-		this.svgTopDir = svgDir;
+	public void setSvgDir(File svgDir) {
+		this.svgDir = svgDir;
 	}
 	
-	public void setOutputTopDir(File outDir) {
-		this.outputTopDir = outDir;
+	public void setOutputDirectory(File outDir) {
+		this.outputDirectory = outDir;
 	}
 	
 	public File getOutputTopDir() {
-		return outputTopDir;
+		return outputDirectory;
 	}
 	
 	public void setFileRoot(String fileRoot) {
@@ -123,9 +104,10 @@ public class PDFAnalyzerIO {
 			fileRoot = fileRoot.substring(fileRoot.indexOf("/")+1);
 			LOG.debug("fileroot "+fileRoot);
 		}
-		rawSvgDirectory = new File(svgTopDir, fileRoot);
+//		rawSvgDirectory = new File(svgDir, fileRoot);
+		rawSvgDirectory = svgDir;
 		LOG.debug("raw svgDocument "+rawSvgDirectory);
-		outputDocumentDir = new File(outputTopDir, fileRoot);
+		outputDocumentDir = new File(outputDirectory, fileRoot);
 		outputDocumentDir.mkdirs();
 		fileRoot = "";
 		LOG.debug("outputDocument "+outputDocumentDir);
@@ -135,8 +117,9 @@ public class PDFAnalyzerIO {
 		this.inFile = inFile;
 		inputName = inFile.getName();
 		fileRoot = inputName.substring(0, inputName.length() - SVG2XMLConstantsX.DOT_PDF.length());
-		rawSvgDirectory = new File(svgTopDir, fileRoot);
-		outputDocumentDir = new File(outputTopDir, fileRoot);
+		rawSvgDirectory = svgDir;
+		outputDocumentDir = new File(outputDirectory, fileRoot);
+//		imageDirectory = new File(outputDirectory, "images");
 	}
 
 	public String createHttpInputName(String inputName) {
@@ -149,7 +132,7 @@ public class PDFAnalyzerIO {
 	}
 	
 	void outputFiles() {
-		File htmlDir = (new File(outputTopDir, fileRoot));
+		File htmlDir = (new File(outputDirectory, fileRoot));
 		copyOriginalPDF(inFile, htmlDir);
 		createHtmlMenuSystem(htmlDir);
 	}
@@ -180,7 +163,7 @@ public class PDFAnalyzerIO {
 	}
 	 
 	public void createHTMLDir() {
-		 htmlDir = new File(outputTopDir, fileRoot);
+		 htmlDir = new File(outputDirectory, fileRoot);
 	}
 	
 	public File getExistingOutputDocumentDir() {
@@ -247,14 +230,36 @@ public class PDFAnalyzerIO {
 		}
 	}
 
-	public boolean skipOutput(PDFAnalyzerOptions options) {
-		boolean skip = false;
-		if (options.skipOutput) {
-			File outputDirectory = outputDocumentDir;
-			skip = outputDirectory.exists();
-		}
-		return skip;
+
+	/** currently the options is not used.
+	 * 
+	 * @param options null means skip, else skip only if outputDocumentDir exists
+	 * @return
+	 */
+	public boolean isSkipOutput() {
+		return skipOutput;
 	}
 
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("fileRoot: "+fileRoot+"\n");
+		sb.append("inFile: "+inFile+"\n");
+		sb.append("inputName: "+inputName+"\n");
+		sb.append("outputDocumentDir: "+outputDocumentDir+"\n");
+		sb.append("outputTopDir: "+outputDirectory+"\n");
+		sb.append("rawSvgDirectory: "+rawSvgDirectory+"\n");
+		sb.append("svgTopDir: "+svgDir+"\n");
+		sb.append("htmlDir: "+htmlDir+"\n");
+		sb.append("imageDirectory: "+imageDirectory+"\n");
+		return sb.toString();
+	}
 
+	public void setSkipOutput(boolean b) {
+		skipOutput = b;
+	}
+
+	public void setImageDirectory(File imagesDir) {
+		this.imageDirectory = imagesDir;
+		
+	}
 }

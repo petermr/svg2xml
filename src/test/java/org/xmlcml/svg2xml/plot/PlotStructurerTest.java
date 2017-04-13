@@ -264,7 +264,7 @@ public class PlotStructurerTest {
 		
 		SVGG g = new SVGG();
 		for (TextBox textBox : textBoxList) {
-			SVGRect rect = textBox.getOrCreateBoundingRect();
+			SVGShape rect = textBox.getOrCreateBoundingRect();
 			rect.setFill("black");
 			rect.setOpacity(0.2);
 			rect.setStrokeWidth(1.5);
@@ -310,7 +310,7 @@ public class PlotStructurerTest {
 		
 		SVGG g = new SVGG();
 		for (TextBox textBox : textBoxList) {
-			SVGRect rect = textBox.getOrCreateBoundingRect();
+			SVGShape rect = textBox.getOrCreateBoundingRect();
 			rect.setFill("black");
 			rect.setOpacity(0.2);
 			rect.setStrokeWidth(1.5);

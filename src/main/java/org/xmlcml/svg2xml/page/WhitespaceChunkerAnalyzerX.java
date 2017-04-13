@@ -13,6 +13,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager.BoxEdge;
 import org.xmlcml.svg2xml.paths.Chunk;
@@ -239,7 +240,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 			for (SVGG chunk : chunkList) {
 				Real2Range bbox = chunk.getBoundingBox();
 				if (bbox != null) {
-					SVGRect rect = new SVGRect(bbox);
+					SVGShape rect = new SVGRect(bbox);
 					rect.setStroke(stroke);
 					rect.setFill(fill);
 					rect.setStrokeWidth(0.9);

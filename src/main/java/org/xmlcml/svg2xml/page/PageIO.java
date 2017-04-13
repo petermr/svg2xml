@@ -88,7 +88,7 @@ public class PageIO {
 
 	public static File createfinalSVGDocumentDirectory(File dir) {
 		String name = dir.getName();
-		return new File(PDFAnalyzerIO.OUTPUT_DIR, name);
+		return new File(PDFAnalyzerIO.TARGET_OUTPUT_DIR, name);
 	}
 
 	public File getFinalSVGDocumentDir() {

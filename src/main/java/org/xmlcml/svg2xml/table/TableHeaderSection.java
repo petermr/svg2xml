@@ -10,7 +10,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
@@ -119,7 +119,7 @@ public class TableHeaderSection extends TableSection {
 						new RealRange(colGroup.getBoundingBox().getYRange().getMax(), yRange.getMax());
 					String title = "HEADERCOLUMN: "+i+"/"+columnManager.getStringValue();
 					SVGTitle svgTitle = new SVGTitle(title);
-					SVGRect plotBox = GraphPlot.plotBox(new Real2Range(xRange, yRange1), colors[1], opacity[1]);
+					SVGShape plotBox = GraphPlot.plotBox(new Real2Range(xRange, yRange1), colors[1], opacity[1]);
 					plotBox.appendChild(svgTitle);
 					g.appendChild(plotBox);
 				}
@@ -155,7 +155,7 @@ public class TableHeaderSection extends TableSection {
 			HeaderRow headerRow = headerRowList.get(i);
 			for (ColumnGroup columnGroup : headerRow.getOrCreateColumnGroupList()) {
 				Real2Range bbox = columnGroup.getBoundingBox();
-				SVGRect plotBox = GraphPlot.plotBox(bbox, colors[1], opacity[1]);
+				SVGShape plotBox = GraphPlot.plotBox(bbox, colors[1], opacity[1]);
 				String title = "HEADERBOX: "+i;
 				SVGTitle svgTitle = new SVGTitle(title);
 				plotBox.appendChild(svgTitle);

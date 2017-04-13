@@ -9,6 +9,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
@@ -97,7 +98,7 @@ public class TextBox extends SVGG {
 		return bbox;
 	}
 
-	public SVGRect getOrCreateBoundingRect() {
+	public SVGShape getOrCreateBoundingRect() {
 		if (boundingRect == null) {
 			Real2Range bbox = this.getBoundingBox();
 			boundingRect = SVGRect.createFromReal2Range(bbox);

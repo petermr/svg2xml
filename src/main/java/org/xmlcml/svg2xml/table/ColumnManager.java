@@ -13,6 +13,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.Word;
@@ -187,7 +188,7 @@ public class ColumnManager {
 		Real2 xy = bbox.getCorners()[0];
 		Word emptyWord = Word.createEmptyWord(xy, fontSize);
 		Phrase emptyPhrase = new Phrase(emptyWord);
-		SVGRect plotBox = GraphPlot.plotBox(bbox, "green", 0.1);
+		SVGShape plotBox = GraphPlot.plotBox(bbox, "green", 0.1);
 		emptyPhrase.appendChild(plotBox);
 		columnPhrases.add(yPointer, emptyPhrase);
 	}

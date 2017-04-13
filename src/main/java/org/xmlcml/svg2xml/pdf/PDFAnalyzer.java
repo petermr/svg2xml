@@ -75,11 +75,11 @@ public class PDFAnalyzer {
 	}
 	
 	public void setSVGTopDir(File svgDir) {
-		pdfIo.setSvgTopDir(svgDir);
+		pdfIo.setSvgDir(svgDir);
 	}
 	
 	public void setOutputTopDir(File outDir) {
-		pdfIo.setOutputTopDir(outDir);
+		pdfIo.setOutputDirectory(outDir);
 	}
 	
 	public File getOutputTopDir() {
@@ -188,10 +188,11 @@ public class PDFAnalyzer {
 	private void analyzePDF() {
 		ensurePDFIndex();
 		createSVGFilesfromPDF();
-		if (!pdfIo.skipOutput(pdfOptions)) {
-			analyzeRawSVGPagesWithPageAnalyzers();
-		} else {
+		LOG.debug("*** created SVG");
+		if (pdfIo.isSkipOutput()) {
 			LOG.debug("Skipped Output: "+pdfIo.outputDocumentDir);
+		} else {
+			analyzeRawSVGPagesWithPageAnalyzers();
 		}
 	}
 
@@ -302,6 +303,7 @@ public class PDFAnalyzer {
 		} else {
 			LOG.debug("Skipping SVG because files in ("+svgDocumentDir+") already exist: "+files.length);
 		}
+		return;
 	}
 
 	private void ensurePDFIndex() {

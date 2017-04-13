@@ -18,6 +18,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlCaption;
@@ -538,7 +539,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			if (irow >= rectjList.size()) {
 				LOG.trace("row index out of range "+irow);;
 			} else {
-				SVGRect rectij = rectjList.get(irow);
+				SVGShape rectij = rectjList.get(irow);
 				HtmlTd td = new HtmlTd();
 				tr.appendChild(td);
 				String value = rectij == null ? "/" : rectij.getValue();

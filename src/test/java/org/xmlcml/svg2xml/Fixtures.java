@@ -7,8 +7,8 @@ import nu.xom.Builder;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.pdf2svg.PDF2SVGConverter;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
@@ -284,7 +284,7 @@ public class Fixtures {
 	
 	public static void drawChunkBoxes(List<Chunk> finalChunkList) {
 		for (Chunk chunk : finalChunkList) {
-			SVGRect bbox = chunk.createGraphicalBoundingBox();
+			SVGShape bbox = chunk.createGraphicalBoundingBox();
 			if (bbox != null) {
 				chunk.appendChild(bbox);
 			}
