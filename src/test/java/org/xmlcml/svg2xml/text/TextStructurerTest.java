@@ -36,9 +36,8 @@ public class TextStructurerTest {
 	
 	@Before
 	public void setup() {
-		File bmcDir = new File(Fixtures.BMC_DIR);
-		Assert.assertTrue(bmcDir.exists());
-		File[] files = bmcDir.listFiles();
+		Assert.assertTrue(Fixtures.BMC_DIR.exists());
+		File[] files = Fixtures.BMC_DIR.listFiles();
 		Assert.assertTrue(files.length > 0);
 		geoFileList = new ArrayList<File>();
 		for (File file : files) {
