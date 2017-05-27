@@ -11,23 +11,19 @@ import org.xmlcml.svg2xml.plot.PlotStructurerTest;
 
 public class FunnelTest {
 	
+	private static final String SVG_SUFFIX = "a.svg";
 	public static final Logger LOG = Logger.getLogger(FunnelTest.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
 
-	private File OUT_ROOT_TOP = new File("target/plots/funnel/");
-	private static final File DEMOS = new File(Fixtures.SVG2XML_DIR);
-	private static final String OUTFILE_SVG = "plot.svg";
 
 	@Test
 	public void testBakker_Funnel() throws IOException {
-		String outRoot = "bakkerFunnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/bakker2014-page11.svg/"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "bakker2014-page11";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
@@ -37,12 +33,10 @@ public class FunnelTest {
 	 * @throws IOException
 	 */
 	public void testBooth_Funnel() throws IOException {
-		String outRoot = "boothFunnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/booth2010-page18.svg/"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "booth2010-page18";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
@@ -51,12 +45,12 @@ public class FunnelTest {
 	 * @throws IOException
 	 */
 	public void testCalvin_Funnel() throws IOException {
-		String outRoot = "calvinFunnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/calvin2011-page12.svg/"),
-			outRoot
+		String fileRoot = "calvin2011-page12";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX),
+			fileRoot
 		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
@@ -65,12 +59,10 @@ public class FunnelTest {
 	 * @throws IOException
 	 */
 	public void testChoi_Funnel() throws IOException {
-		String outRoot = "choiFunnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/choi2012-page5.svg/"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "choi2012-page5";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
@@ -79,12 +71,10 @@ public class FunnelTest {
 	 * @throws IOException
 	 */
 	public void testDong_Funnel() throws IOException {
-		String outRoot = "dongFunnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/dong2009-page4.svg/"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "dong2009-page4";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
@@ -93,12 +83,10 @@ public class FunnelTest {
 	 * @throws IOException
 	 */
 	public void testKerr_Funnel() throws IOException {
-		String outRoot = "kerrFunnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/kerr2012-page5.svg/"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "kerr2012-page5";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
@@ -107,32 +95,36 @@ public class FunnelTest {
 	 * @throws IOException
 	 */
 	public void testNair_Funnel() throws IOException {
-		String outRoot = "nairFunnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/nair2014-page4.svg/"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "nair2014-page4";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot+SVG_SUFFIX),	fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
 	public void testRogers1_Funnel() throws IOException {
-		String outRoot = "rogers1Funnel";
-		PlotStructurerTest.createPaths(
-			new File(DEMOS, "funnel/rogers2009-page44.svg/"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "rogers2009-page44";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
 	}
 
 	@Test
 	public void testSAGE_Funnel() throws IOException {
-		String outRoot = "sageFunnel";
-		PlotStructurerTest.createPaths(
-			new File(Fixtures.PLOT_DIR, "SAGE_Sbarra_funnel.g.11.0.svg"),
-			outRoot
-		);
-		PlotStructurerTest.createPlots(outRoot, 0);
+		String fileRoot = "SAGE_Sbarra_funnel.g.11.0";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
+	}
+	
+	@Test
+	public void testChrisTest() throws IOException {
+		String fileRoot = "christest";
+		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
+			new File(Fixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
+		PlotStructurerTest.createPlots(svgFile, fileRoot);
+		LOG.debug("csv");
+		PlotStructurerTest.createCSV(svgFile, fileRoot);
 	}
 	
 	// =======================
