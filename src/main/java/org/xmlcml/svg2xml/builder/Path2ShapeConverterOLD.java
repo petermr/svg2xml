@@ -11,6 +11,7 @@ import org.xmlcml.graphics.svg.path.Arc;
 import org.xmlcml.graphics.svg.path.LinePrimitive;
 import org.xmlcml.graphics.svg.path.MovePrimitive;
 import org.xmlcml.graphics.svg.path.PathPrimitiveList;
+//import org.xmlcml.graphics.svg.path.SVGPathParser;
 import org.xmlcml.xml.XMLUtil;
 
 import java.util.ArrayList;
@@ -468,69 +469,71 @@ public class Path2ShapeConverterOLD {
 
 	private static SVGPath removeRedundantMoveCommands(SVGPath path, double eps) {
 		String d = path.getDString();
-		if (d != null) {
-			PathPrimitiveList newPrimitives = new PathPrimitiveList();
-			PathPrimitiveList primitives = SVGPathPrimitive.parseDString(d);
-			int primitiveCount = primitives.size();
-			SVGPathPrimitive lastPrimitive = null;
-			for (int i = 0; i < primitives.size(); i++) {
-				SVGPathPrimitive currentPrimitive = primitives.get(i);
-				boolean skip = false;
-				if (currentPrimitive instanceof MovePrimitive) {
-					if (i == primitives.size() - 1) { // final primitive
-						skip = true;
-					} else if (lastPrimitive != null) {
-						// move is to end of last primitive
-						Real2 lastLastCoord = lastPrimitive.getLastCoord();
-						Real2 currentFirstCoord = currentPrimitive.getFirstCoord();
-						skip = (lastLastCoord != null) && lastLastCoord.isEqualTo(currentFirstCoord, eps);
-					}
-					/*if (!skip && lastPrimitive != null) {
-						SVGPathPrimitive nextPrimitive = primitives.get(i + 1);
-						Real2 currentLastCoord = currentPrimitive.getLastCoord();
-						Real2 nextFirstCoord = nextPrimitive.getFirstCoord();
-						skip = (nextFirstCoord != null) && currentLastCoord.isEqualTo(nextFirstCoord, eps);
-					}*/
-				}
-				if (!skip) {
-					newPrimitives.add(currentPrimitive);
-				} else {
-					LOG.trace("skipped "+lastPrimitive+ "== "+currentPrimitive);
-				}
-				lastPrimitive = currentPrimitive;
-			}
-			return createNewPathIfModified(path, d, newPrimitives, primitiveCount);
-		}
-		return path;
+		throw new RuntimeException("gutted as obsolete");
+//		if (d != null) {
+//			PathPrimitiveList newPrimitives = new PathPrimitiveList();
+//			PathPrimitiveList primitives = new SVGPathParser().parseDString(d);
+//			int primitiveCount = primitives.size();
+//			SVGPathPrimitive lastPrimitive = null;
+//			for (int i = 0; i < primitives.size(); i++) {
+//				SVGPathPrimitive currentPrimitive = primitives.get(i);
+//				boolean skip = false;
+//				if (currentPrimitive instanceof MovePrimitive) {
+//					if (i == primitives.size() - 1) { // final primitive
+//						skip = true;
+//					} else if (lastPrimitive != null) {
+//						// move is to end of last primitive
+//						Real2 lastLastCoord = lastPrimitive.getLastCoord();
+//						Real2 currentFirstCoord = currentPrimitive.getFirstCoord();
+//						skip = (lastLastCoord != null) && lastLastCoord.isEqualTo(currentFirstCoord, eps);
+//					}
+//					/*if (!skip && lastPrimitive != null) {
+//						SVGPathPrimitive nextPrimitive = primitives.get(i + 1);
+//						Real2 currentLastCoord = currentPrimitive.getLastCoord();
+//						Real2 nextFirstCoord = nextPrimitive.getFirstCoord();
+//						skip = (nextFirstCoord != null) && currentLastCoord.isEqualTo(nextFirstCoord, eps);
+//					}*/
+//				}
+//				if (!skip) {
+//					newPrimitives.add(currentPrimitive);
+//				} else {
+//					LOG.trace("skipped "+lastPrimitive+ "== "+currentPrimitive);
+//				}
+//				lastPrimitive = currentPrimitive;
+//			}
+//			return createNewPathIfModified(path, d, newPrimitives, primitiveCount);
+//		}
+//		return path;
 	}
 	
 	private static SVGPath removeRedundantLineCommands(SVGPath path, double eps) {
 		String d = path.getDString();
-		if (d != null) {
-			PathPrimitiveList newPrimitives = new PathPrimitiveList();
-			PathPrimitiveList primitives = SVGPathPrimitive.parseDString(d);
-			int primitiveCount = primitives.size();
-			SVGPathPrimitive lastPrimitive = null;
-			for (int i = 0; i < primitives.size(); i++) {
-				SVGPathPrimitive currentPrimitive = primitives.get(i);
-				boolean skip = false;
-				if (currentPrimitive instanceof LinePrimitive) {
-					if (lastPrimitive != null) {
-						Real2 lastLastCoord = lastPrimitive.getLastCoord();
-						Real2 currentFirstCoord = currentPrimitive.getFirstCoord();
-						skip = (lastLastCoord != null) && lastLastCoord.isEqualTo(currentFirstCoord, eps);
-					}
-				}
-				if (!skip) {
-					newPrimitives.add(currentPrimitive);
-				} else {
-					LOG.trace("skipped "+lastPrimitive+ "== "+currentPrimitive);
-				}
-				lastPrimitive = currentPrimitive;
-			}
-			return createNewPathIfModified(path, d, newPrimitives, primitiveCount);
-		}
-		return path;
+		throw new RuntimeException("gutted as obsolete");
+//		if (d != null) {
+//			PathPrimitiveList newPrimitives = new PathPrimitiveList();
+//			PathPrimitiveList primitives = new SVGPathParser().parseDString(d);
+//			int primitiveCount = primitives.size();
+//			SVGPathPrimitive lastPrimitive = null;
+//			for (int i = 0; i < primitives.size(); i++) {
+//				SVGPathPrimitive currentPrimitive = primitives.get(i);
+//				boolean skip = false;
+//				if (currentPrimitive instanceof LinePrimitive) {
+//					if (lastPrimitive != null) {
+//						Real2 lastLastCoord = lastPrimitive.getLastCoord();
+//						Real2 currentFirstCoord = currentPrimitive.getFirstCoord();
+//						skip = (lastLastCoord != null) && lastLastCoord.isEqualTo(currentFirstCoord, eps);
+//					}
+//				}
+//				if (!skip) {
+//					newPrimitives.add(currentPrimitive);
+//				} else {
+//					LOG.trace("skipped "+lastPrimitive+ "== "+currentPrimitive);
+//				}
+//				lastPrimitive = currentPrimitive;
+//			}
+//			return createNewPathIfModified(path, d, newPrimitives, primitiveCount);
+//		}
+//		return path;
 	}
 
 	//TODO why not modify in place?
@@ -610,23 +613,24 @@ public class Path2ShapeConverterOLD {
 	
 	private static List<String> splitAtMoveCommandsAndCreateNewDStrings(String d) {
 		List<String> strings = new ArrayList<String>();
-		if (d.equals("")) {
-			strings.add("");
-			return strings;
-		}
-		int current = -1;
-		while (true) {
-			int i = d.indexOf(SVGPathPrimitive.ABS_MOVE, current + 1);
-			if (i == -1 && current >= 0) {
-				strings.add(d.substring(current));
-				break;
-			}
-			if (i > current + 1) {
-				strings.add(d.substring(current, i));
-			}
-			current = i;
-		}
-		return strings;
+		throw new RuntimeException("gutted as obsolete");
+//		if (d.equals("")) {
+//			strings.add("");
+//			return strings;
+//		}
+//		int current = -1;
+//		while (true) {
+//			int i = d.indexOf(SVGPathPrimitive.MOVE, current + 1);
+//			if (i == -1 && current >= 0) {
+//				strings.add(d.substring(current));
+//				break;
+//			}
+//			if (i > current + 1) {
+//				strings.add(d.substring(current, i));
+//			}
+//			current = i;
+//		}
+//		return strings;
 	}
 	
 	/** 
