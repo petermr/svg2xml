@@ -21,22 +21,24 @@ public class Fixtures {
 
 	private static final Logger LOG = Logger.getLogger(Fixtures.class);
 	
-	public static final String RESOURCES_DIR = "src/test/resources/";
-	public static final String SVG2XML_DIR = RESOURCES_DIR+"org/xmlcml/svg2xml/";
-	public static final String PDFS_DIR = RESOURCES_DIR+"pdfs/";
-	public static final String COMMAND_DIR= SVG2XML_DIR+"command/";
-	public static final String CORE_DIR = SVG2XML_DIR+"core/";
-	public static final String ACTION_DIR = SVG2XML_DIR+"action/";
-	public static final String SVG_DIR = SVG2XML_DIR+"svg/";
-	public static final String SVG1_DIR = RESOURCES_DIR+"svg/";
-	public static final String BMC_DIR = SVG_DIR+"bmc/";
-	public static final File ACTION_SVG_DIR = new File(Fixtures.ACTION_DIR, "svg");
-	public static final File ACTION_PDF_DIR = new File(Fixtures.ACTION_DIR, "pdf");
+	public static final File RESOURCES_DIR = new File("src/test/resources");
+	public static final File SVG2XML_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml");
+	public static final File PDFS_DIR = new File(RESOURCES_DIR, "pdfs");
+	public static final File ACTION_DIR = new File(SVG2XML_DIR, "action");
+	public static final File COMMAND_DIR= new File(SVG2XML_DIR, "command");
+	public static final File CORE_DIR = new File(SVG2XML_DIR, "core");
+	public static final File FUNNEL_DIR = new File(SVG2XML_DIR, "funnel");
+	public static final File SVG_DIR = new File(SVG2XML_DIR, "svg");
+	public static final File BMC_DIR = new File(SVG_DIR, "bmc");
+	public static final File SVG1_DIR = new File(RESOURCES_DIR, "svg");
+	public static final File ACTION_SVG_DIR = new File(ACTION_DIR, "svg");
+	public static final File ACTION_PDF_DIR = new File(ACTION_DIR, "pdf");
+	// not standard
 	public static final File CSIRO_DIR = new File("../pdfs/csiro/test");
 	public static final File CSIRO_DIR0 = new File("../pdfs/csiro/test0");
 	public static final File CSIRO_DIR1 = new File("../pdfs/csiro/test1");
 	
-	public static final String AJC_PAGE6_PDF = CORE_DIR+"ajc-page6.pdf";
+	public static final File AJC_PAGE6_PDF = new File(CORE_DIR, "ajc-page6.pdf");
 	
 	public final static File NOOP_FILE = new File(CORE_DIR+"noopTst.xml");
 	public final static File BASIC_FILE = new File(CORE_DIR+"basicTst.xml");
