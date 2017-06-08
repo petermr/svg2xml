@@ -22,7 +22,7 @@ public class Fixtures {
 	private static final Logger LOG = Logger.getLogger(Fixtures.class);
 	
 	public static final File RESOURCES_DIR = new File("src/test/resources");
-	public static final File SVG2XML_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml");
+	public static final File SVG2XML_DIR = new File(RESOURCES_DIR, "org/xmlcml/svg2xml/");
 	public static final File PDFS_DIR = new File(RESOURCES_DIR, "pdfs");
 	public static final File ACTION_DIR = new File(SVG2XML_DIR, "action");
 	public static final File COMMAND_DIR= new File(SVG2XML_DIR, "command");
@@ -40,22 +40,22 @@ public class Fixtures {
 	
 	public static final File AJC_PAGE6_PDF = new File(CORE_DIR, "ajc-page6.pdf");
 	
-	public final static File NOOP_FILE = new File(CORE_DIR+"noopTst.xml");
-	public final static File BASIC_FILE = new File(CORE_DIR+"basicTst.xml");
-	public static final File INCLUDE_TEST_FILE = new File(CORE_DIR+"includeTst.xml");
-	public static final File INFILE_TEST = new File(CORE_DIR+"infileTst.xml");
-	public static final File ASSERT_TST = new File(COMMAND_DIR+"assertTst.xml");
-	public static final File NO_ASSERT_TST = new File(COMMAND_DIR+"noAssertTst.xml");
-	public static final File VARIABLE_TST = new File(COMMAND_DIR+"variableTst.xml");
-	public static final File WHITESPACE_CHUNKER_COMMAND = new File(Fixtures.COMMAND_DIR+"whitespaceChunkerTst.xml");
-	public static final File WHITESPACE_0_TST = new File(Fixtures.COMMAND_DIR+"pageTst0.xml");
-	public static final File PAGE0_SVG = new File(Fixtures.COMMAND_DIR+"test-page0.svg");
-	public static final File HARTER3_SVG = new File(Fixtures.COMMAND_DIR+"harter3.svg");
-	public static final File HARTER3SMALL_SVG = new File(Fixtures.COMMAND_DIR+"harter3small.svg");
-	public static final File AJC6_SVG = new File(Fixtures.COMMAND_DIR+"ajc6.svg");
-	public static final File POLICIES_SVG = new File(Fixtures.COMMAND_DIR+"policies.svg");
-	public static final File CHUNK_ANALYZE = new File(Fixtures.ACTION_DIR+"chunkAnalyzeTst.xml");
-	public static final File CHUNK_ANALYZE0 = new File(Fixtures.ACTION_DIR+"chunkAnalyzeTst0.xml");
+	public final static File NOOP_FILE = new File(CORE_DIR, "noopTst.xml");
+	public final static File BASIC_FILE = new File(CORE_DIR, "basicTst.xml");
+	public static final File INCLUDE_TEST_FILE = new File(CORE_DIR, "includeTst.xml");
+	public static final File INFILE_TEST = new File(CORE_DIR, "infileTst.xml");
+	public static final File ASSERT_TST = new File(COMMAND_DIR, "assertTst.xml");
+	public static final File NO_ASSERT_TST = new File(COMMAND_DIR, "noAssertTst.xml");
+	public static final File VARIABLE_TST = new File(COMMAND_DIR, "variableTst.xml");
+	public static final File WHITESPACE_CHUNKER_COMMAND = new File(Fixtures.COMMAND_DIR, "whitespaceChunkerTst.xml");
+	public static final File WHITESPACE_0_TST = new File(Fixtures.COMMAND_DIR, "pageTst0.xml");
+	public static final File PAGE0_SVG = new File(Fixtures.COMMAND_DIR, "test-page0.svg");
+	public static final File HARTER3_SVG = new File(Fixtures.COMMAND_DIR, "harter3.svg");
+	public static final File HARTER3SMALL_SVG = new File(Fixtures.COMMAND_DIR, "harter3small.svg");
+	public static final File AJC6_SVG = new File(Fixtures.COMMAND_DIR, "ajc6.svg");
+	public static final File POLICIES_SVG = new File(Fixtures.COMMAND_DIR, "policies.svg");
+	public static final File CHUNK_ANALYZE = new File(Fixtures.ACTION_DIR, "chunkAnalyzeTst.xml");
+	public static final File CHUNK_ANALYZE0 = new File(Fixtures.ACTION_DIR, "chunkAnalyzeTst0.xml");
 	
 	public static final File CHUNK_ANALYZE_POLICIES = new File(Fixtures.ACTION_DIR, "chunkAnalyzePolicies.xml");
 	public static final File TWO_CHUNKS_SVG = new File(Fixtures.ACTION_SVG_DIR, "twoChunks.svg");
@@ -70,9 +70,9 @@ public class Fixtures {
 	public static final File SVG_AJC_PAGE6_SPLIT_SVG = new File(Fixtures.SVG_AJC_DIR, "ajc_page6_split.svg");
 
 	public final static File TARGET = new File("target");
-	public final static File TEST_PDFTOP = new File(RESOURCES_DIR+"pdfs");
+	public final static File TEST_PDFTOP = new File(RESOURCES_DIR, "pdfs");
 	public final static File EXT_PDFTOP = new File("../pdfs");
-	public final static File SVGTOP = new File(RESOURCES_DIR+"svg");
+	public final static File SVGTOP = new File(RESOURCES_DIR, "svg");
 	
 	public final static File BMCINDIR = new File(TEST_PDFTOP, "bmc");
 	public final static File BMCOUTDIR = new File(TARGET, "bmc");
@@ -94,7 +94,7 @@ public class Fixtures {
 	public final static File ANYOUTDIR = new File(TARGET, "any");
 	public final static File ANYSVGDIR = new File(SVGTOP, "any");
 
-	public static final File ANALYZER_DIR = new File(SVG2XML_DIR+"analyzer/");
+	public static final File ANALYZER_DIR = new File(SVG2XML_DIR, "analyzer/");
 	
 	//A 4 line chunk (paragraph) with no suscripts
 	public static final File PARA1_SVG = new File(Fixtures.ANALYZER_DIR, "1parachunk.svg");
@@ -106,7 +106,7 @@ public class Fixtures {
 	public static File PAGE3RESULTS_SVG = new File(Fixtures.ANALYZER_DIR, "page3results.svg");
 	
 	//Text stuff	
-	public static final File TEXT_DIR = new File(SVG2XML_DIR+"text/");
+	public static final File TEXT_DIR = new File(SVG2XML_DIR, "text/");
 	public static final File RAWWORDS_SVG = new File(Fixtures.TEXT_DIR, "rawwords.svg");
 //	public static final TextLine RAWWORDS_TEXT_LINE = TextStructurer.createTextLine(Fixtures.RAWWORDS_SVG, 0);
 
