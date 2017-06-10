@@ -1540,7 +1540,7 @@ public class TextStructurer {
 
 	public List<SVGText> getRotatedCharacters(Angle angle, double eps) {
 		List<SVGText> characterList = getCharacterList();
-		return SVGText.getRotatedElements(characterList, angle, eps);
+		return SVGText.getRotatedTexts(characterList, angle, eps);
 	}
 
 	public List<SVGText> getCharacterList() {
