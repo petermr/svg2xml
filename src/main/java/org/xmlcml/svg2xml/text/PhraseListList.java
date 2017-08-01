@@ -213,7 +213,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 
 	public Real2 getXY() {
-		return this.getBoundingBox().getCorners()[0];
+		return this.getBoundingBox().getLLURCorners()[0];
 	}
 
 	public boolean remove(PhraseList phraseList) {

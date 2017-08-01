@@ -9,6 +9,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
@@ -67,7 +68,7 @@ public class TableChunk {
 
 	public String getValue() {
 		StringBuilder sb = new StringBuilder();
-		for (SVGElement element: elementList) {
+		for (GraphicsElement element: elementList) {
 			sb.append(element.getValue());
 		}
 		return sb.toString();

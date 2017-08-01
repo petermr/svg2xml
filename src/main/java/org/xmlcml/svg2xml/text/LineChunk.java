@@ -54,7 +54,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 
 	public Real2 getXY() {
 		Real2Range bbox = this.getBoundingBox();
-		return bbox == null ? null : bbox.getCorners()[0];
+		return bbox == null ? null : bbox.getLLURCorners()[0];
 	}
 
 	public Double getX() {
@@ -200,12 +200,12 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 		}
 	}
 
-	private void removeAttribute(String attName) {
-		Attribute attribute = this.getAttribute(attName);
-		if (attribute != null) {
-			this.removeAttribute(attribute);
-		}
-	}
+//	public void removeAttribute(String attName) {
+//		Attribute attribute = this.getAttribute(attName);
+//		if (attribute != null) {
+//			this.removeAttribute(attribute);
+//		}
+//	}
 
 	public void setSubscript(boolean subscript) {
 		if (subscript) {

@@ -112,7 +112,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	
 	public Real2 getXY() {
 		Real2Range bbox = this.getBoundingBox();
-		return bbox == null ? null : bbox.getCorners()[0];
+		return bbox == null ? null : bbox.getLLURCorners()[0];
 	}
 
 

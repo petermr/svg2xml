@@ -83,7 +83,7 @@ public class SimpleBuilder {
 
 	private final static Logger LOG = Logger.getLogger(SimpleBuilder.class);
 	
-	protected SVGElement svgRoot;
+	protected GraphicsElement svgRoot;
 	
 	protected SVGPrimitives derivedPrimitives;
 	protected SVGPrimitives rawPrimitives;
@@ -102,17 +102,17 @@ public class SimpleBuilder {
 	protected long timeout;
 	protected long startTime;
 
-	public SimpleBuilder(SVGElement svgRoot) {
+	public SimpleBuilder(GraphicsElement svgRoot) {
 		setSvgRoot(svgRoot);
 		this.timeout = Long.MAX_VALUE;
 	}
 
-	public SimpleBuilder(SVGElement svgRoot, long timeout) {
+	public SimpleBuilder(GraphicsElement svgRoot, long timeout) {
 		setSvgRoot(svgRoot);
 		this.timeout = timeout;
 	}
 
-	public void setSvgRoot(SVGElement svgRoot) {
+	public void setSvgRoot(GraphicsElement svgRoot) {
 		this.svgRoot = svgRoot;
 	}
 	
@@ -213,7 +213,7 @@ public class SimpleBuilder {
 		while (rectsIt.hasNext()) {
 			try {
 				SVGRect rect = rectsIt.next();
-				Real2[] r = rect.getBoundingBox().getCorners();
+				Real2[] r = rect.getBoundingBox().getLLURCorners();
 				SVGPolygon polygon = new SVGPolygon(new Real2Array(Arrays.asList(r[0], new Real2(r[1].getX(), r[0].getY()), r[1], new Real2(r[0].getX(), r[1].getY()))));
 				SVGLine line = path2ShapeConverter.createNarrowLine(polygon);
 				if (line != null) {
@@ -781,7 +781,7 @@ public class SimpleBuilder {
 		}
 	}*/
 
-	public SVGElement getSVGRoot() {
+	public GraphicsElement getSVGRoot() {
 		return svgRoot;
 	}
 

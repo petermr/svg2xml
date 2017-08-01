@@ -3,6 +3,7 @@ package org.xmlcml.svg2xml.page;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.svg2xml.container.AbstractContainer;
@@ -104,7 +105,7 @@ public class ShapeAnalyzer extends ChunkAnalyzer {
 //		return shapeContainer == null ? null : shapeContainer.getShapeList();
 //	}
 
-	public SVGElement getSVGChunk() {
+	public GraphicsElement getSVGChunk() {
 		return shapeContainer == null ? null : shapeContainer.getSVGChunk();
 	}
 

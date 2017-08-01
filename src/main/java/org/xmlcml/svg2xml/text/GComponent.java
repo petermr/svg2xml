@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.text;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 
 /** component of a document.
  * Normally a graphics object or text object
@@ -17,13 +17,13 @@ public class GComponent {
 	}
 
 	private LineChunk lineChunk;
-	private SVGElement svgElement;
+	private GraphicsElement svgElement;
 
 	public GComponent(LineChunk lineChunk) {
 		this.lineChunk = lineChunk;
 	}
 
-	public GComponent(SVGElement svgElement) {
+	public GComponent(GraphicsElement svgElement) {
 		this.svgElement = svgElement;
 	}
 

@@ -13,6 +13,7 @@ import nu.xom.Nodes;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlDiv;
@@ -161,7 +162,7 @@ public abstract class AbstractContainer {
 	protected String outputSVGList(String title, List<? extends SVGElement> svgList) {
 		StringBuilder sb = new StringBuilder();
 		if (svgList.size() < 5){
-			for (SVGElement element : svgList) {
+			for (GraphicsElement element : svgList) {
 				String s = element.toXML();
 				int l = s.length();
 				sb.append(s.subSequence(0, Math.min(80, l))+((l > 80) ? "..." : "")+"\n");

@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -44,7 +45,7 @@ public class RotateTest {
 		SVGElement chunk = textStructurer.getSVGChunk();
 		Real2Range bbox = chunk.getBoundingBox();
 		double yRange = bbox.getYRange().getRange();
-		Real2 centre = bbox.getCorners()[0].plus(new Real2(yRange/2.0, yRange/2.0));
+		Real2 centre = bbox.getLLURCorners()[0].plus(new Real2(yRange/2.0, yRange/2.0));
 		SVGG rotatedVerticalText = textStructurer.createChunkFromVerticalText(centre, new Angle(-1.0 * Math.PI / 2));
 		SVGSVG.wrapAndWriteAsSVG(rotatedVerticalText, new File(Fixtures.TARGET, "text/rotate/pageTable.svg"));
 		
@@ -76,7 +77,7 @@ public class RotateTest {
 	public void testRotatedTableChunk() throws FileNotFoundException {
 		File file = new File(Fixtures.TABLE_DIR, "rotate/page4Clipped.svg");
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
-		SVGElement chunk = textStructurer.rotateClockwise();
+		GraphicsElement chunk = textStructurer.rotateClockwise();
 		SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/rotate/chunk.svg"), 900, 800);
 	}
 

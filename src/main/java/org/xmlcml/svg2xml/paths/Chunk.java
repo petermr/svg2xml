@@ -15,6 +15,7 @@ import nu.xom.Elements;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -43,13 +44,13 @@ public class Chunk extends SVGG {
 	protected BoundingBoxManager boundingBoxManager;
 	private List<Real2Range> emptyBoxList;
 	private Set<Class<?>> descendantSVGClassSet;
-	private SVGElement originalSVGElement;
+	private GraphicsElement originalSVGElement;
 	
 	protected Chunk() {
 		PDF2SVGUtil.setSVGXAttribute(this, ROLE, CHUNK);
 	}
 
-	public Chunk(SVGElement svgElement) {
+	public Chunk(GraphicsElement svgElement) {
 		this();
 		if (svgElement == null) {
 			throw new RuntimeException("Cannot create chunk from null element");
@@ -70,12 +71,12 @@ public class Chunk extends SVGG {
 		boundingBox = null;
 	}
 
-	void createElementListAndCalculateBoundingBoxes(SVGElement element) {
+	void createElementListAndCalculateBoundingBoxes(GraphicsElement element) {
 		descendantSVGElementList = getDescendantsWithoutGroupingElementsOrDefs(element);
 		calculateBoundingBoxes();
 	}
 
-	private static List<SVGElement> getDescendantsWithoutGroupingElementsOrDefs(SVGElement element) {
+	private static List<SVGElement> getDescendantsWithoutGroupingElementsOrDefs(GraphicsElement element) {
 		List<SVGElement> descendantSVGElementList = SVGUtil.getQuerySVGElements(element, 
 				".//svg:*[not(self::svg:svg or self::svg:g or self::*[ancestor-or-self::svg:defs])]");
 		return descendantSVGElementList;
@@ -169,7 +170,7 @@ public class Chunk extends SVGG {
 	private void removeEmptyTexts() {
 		Iterator<SVGElement> it = descendantSVGElementList.iterator();
 		while (it.hasNext()) {
-			SVGElement i = it.next();
+			GraphicsElement i = it.next();
 			if (i instanceof SVGText) {
 				if (((SVGText) i).getText() == null || ((SVGText) i).getText().equals("") || ((SVGText) i).getText().equals(" ")) {
 					i.detach();
@@ -227,8 +228,8 @@ public class Chunk extends SVGG {
 		return (rr == null ? false : rr.getRange() >= chunkWidth);
 	}
 
-	public void copyAttributesAndChildrenFromSVGElement(SVGElement g) {
-		SVGElement gcopy = (SVGElement) g.copy();
+	public void copyAttributesAndChildrenFromSVGElement(GraphicsElement g) {
+		GraphicsElement gcopy = (GraphicsElement) g.copy();
 		Elements gcopyChildren = gcopy.getChildElements();
 		for (int i = 0; i < gcopyChildren.size(); i++) {
 			Element child = gcopyChildren.get(i);
@@ -312,7 +313,7 @@ public class Chunk extends SVGG {
 		return chunk;
 	}
 
-	public static Chunk createAndReplace(SVGElement element) {
+	public static Chunk createAndReplace(GraphicsElement element) {
 		Chunk chunk = new Chunk();
 		chunk.copyAttributesAndChildrenFromSVGElement(element);
 		element.getParent().replaceChild(element, chunk);
@@ -326,14 +327,14 @@ public class Chunk extends SVGG {
 
 	private void ensureDescendantSVGClassSet() {
 		descendantSVGClassSet = new HashSet<Class<?>>();
-		for (SVGElement element : descendantSVGElementList) {
+		for (GraphicsElement element : descendantSVGElementList) {
 			descendantSVGClassSet.add(element.getClass());
 		}
 	}
 
 	public String getStringValue() {
 		StringBuilder sb = new StringBuilder();
-		for (SVGElement line : descendantSVGElementList) {
+		for (GraphicsElement line : descendantSVGElementList) {
 			sb.append(line.getValue()+"\n");
 		}
 		return sb.toString();
@@ -358,7 +359,7 @@ public class Chunk extends SVGG {
 	 */
 	public static List<Chunk> extractChunks(List<SVGElement> elements) {
 		List<Chunk> chunkList = new ArrayList<Chunk>();
-		for (SVGElement element : elements) {
+		for (GraphicsElement element : elements) {
 			if (element instanceof Chunk) {
 				chunkList.add((Chunk) element);
 			}

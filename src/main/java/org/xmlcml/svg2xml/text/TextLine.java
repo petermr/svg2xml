@@ -25,6 +25,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -212,7 +213,7 @@ public class TextLine implements Iterable<SVGText> {
 		if (fontFamilyMultiset == null) {
 			fontFamilyMultiset = HashMultiset.create();
 			for (int i = 0; i < textList.size(); i++) {
-				SVGElement text = textList.get(i);
+				GraphicsElement text = textList.get(i);
 				String family = text.getFontFamily();
 				fontFamilyMultiset.add(family);
 			}
@@ -224,7 +225,7 @@ public class TextLine implements Iterable<SVGText> {
 		if (fontFamilySet == null) {
 			fontFamilySet = new HashSet<String>();
 			for (int i = 0; i < textList.size(); i++) {
-				SVGElement text = textList.get(i);
+				GraphicsElement text = textList.get(i);
 				String family = text.getFontFamily();
 				fontFamilySet.add(family);
 			}
@@ -237,7 +238,7 @@ public class TextLine implements Iterable<SVGText> {
 			fontSizeContainerSet = new HashSet<TextCoordinate>();
 			if (textList != null) {
 				for (int i = 0; i < textList.size(); i++) {
-					SVGElement text = textList.get(i);
+					GraphicsElement text = textList.get(i);
 					TextCoordinate fontSize = new TextCoordinate(text.getFontSize());
 					fontSizeContainerSet.add(fontSize);
 				}
@@ -581,7 +582,7 @@ public class TextLine implements Iterable<SVGText> {
 	public Set<TextCoordinate> getFontSizeSet() {
 		if (fontSizeSet == null) {
 			fontSizeSet = new HashSet<TextCoordinate>();
-			for (SVGElement text : textList) {
+			for (GraphicsElement text : textList) {
 				double fontSize = text.getFontSize();
 				fontSizeSet.add(new TextCoordinate(fontSize));
 			}
@@ -751,7 +752,7 @@ public class TextLine implements Iterable<SVGText> {
 		Double currentFontSize = null;
 		HtmlSpan span = null;
 		StringBuffer sb = null;
-		for (SVGElement character : textList) {
+		for (GraphicsElement character : textList) {
 			String fontFamily = character.getFontFamily();
 			String fontStyle = character.getFontStyle();
 			String fontWeight = character.getFontWeight();
@@ -848,7 +849,7 @@ public class TextLine implements Iterable<SVGText> {
 	public String getSpacedLineString() {
 		StringBuilder sb = new StringBuilder();
 		if (textList != null) {
-			for (SVGElement text : textList) {
+			for (GraphicsElement text : textList) {
 				String s = text.getValue();
 				if (s.trim().length() == 0) {
 					s = " ";
@@ -874,7 +875,7 @@ public class TextLine implements Iterable<SVGText> {
 	public String getRawValue() {
 		StringBuilder sb = new StringBuilder();
 		if (textList != null) {
-			for (SVGElement text : textList) {
+			for (GraphicsElement text : textList) {
 				sb.append(text.getValue());
 			}
 		}
@@ -923,7 +924,7 @@ public class TextLine implements Iterable<SVGText> {
 			fontSizeMultiset = HashMultiset.create();
 			if (textList != null) {
 				for (int i = 0; i < textList.size(); i++) {
-					SVGElement text = textList.get(i);
+					GraphicsElement text = textList.get(i);
 					Double size = text.getFontSize();
 					fontSizeMultiset.add(size);
 				}
@@ -979,7 +980,7 @@ public class TextLine implements Iterable<SVGText> {
 
 	public List<String> getValueList() {
 		List<String> valueList = new ArrayList<String>();
-		for (SVGElement text : textList) {
+		for (GraphicsElement text : textList) {
 			valueList.add(text.getValue());
 		}
 		return valueList;

@@ -740,7 +740,7 @@ public class Path2ShapeConverterOLD {
 	 * @param path
 	 * @param result
 	 */
-	public static void copyAttributes(SVGPath path, SVGElement result) {
+	public static void copyAttributes(SVGPath path, GraphicsElement result) {
 		path.setUseStyleAttribute(false);
 		for (String attName : new String[]{
 				StyleBundle.FILL, 
@@ -857,7 +857,7 @@ public class Path2ShapeConverterOLD {
 	 * 
 	 * @param svgElement
 	 */
-	public List<SVGShape> convertPathsToShapes(SVGElement svgElement) {
+	public List<SVGShape> convertPathsToShapes(GraphicsElement svgElement) {
 		List<SVGPath> pathList = SVGPath.extractPaths(svgElement);
 		List<List<SVGShape>> shapeListList = convertPathsToShapesAndSplitAtMoves(pathList);
 		replaceEachPathWithShapesOrPaths(shapeListList, pathList);

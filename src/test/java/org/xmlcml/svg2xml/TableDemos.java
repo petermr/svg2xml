@@ -14,7 +14,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlHtml;
@@ -418,7 +418,7 @@ createHTML(LB_DIR, roots);
 			String outroot = "target/table/"+"old/"+root+"/"+tableTitle.getTitle().replaceAll("\\s", "")+
 					"."+tableTitle.getChunkName().replaceAll("\\.svg", "");
 			writeFile(tableTitle, html, outroot);
-			SVGElement markedChunk = tableContentCreator.createMarkedSections(
+			GraphicsElement markedChunk = tableContentCreator.createMarkedSections(
 				new String[] {"yellow", "red", "cyan", "blue"},
 				new double[] {0.2, 0.2, 0.2, 0.2}
 			);

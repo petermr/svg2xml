@@ -7,6 +7,7 @@ import java.util.List;
 import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.svg2xml.container.AbstractContainer;
@@ -49,7 +50,7 @@ public abstract class ChunkAnalyzer {
 		getChunkId();
 	}
 	
-	protected SVGElement getSVGChunk() {
+	protected GraphicsElement getSVGChunk() {
 		return svgChunk;
 	}
 
@@ -66,7 +67,7 @@ public abstract class ChunkAnalyzer {
 	public SVGG createChunkFromList(List<? extends SVGElement> svgElements) {
 		SVGG g = new SVGG();
 		for (int i = 0; i < svgElements.size(); i++) {
-			SVGElement element = svgElements.get(i);
+			GraphicsElement element = svgElements.get(i);
 			g.appendChild(element.copy());
 		}
 		String title = this.getClass().getName()+svgElements.size();

@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
@@ -90,7 +91,7 @@ public abstract class FigureComponent {
 			filteredImageList = SVGImage.extractImages(createElementList("IMAGE", where, ySplit, imageList));
 			allElementList.addAll(filteredImageList);
 		}
-		for (SVGElement element : allElementList) {
+		for (GraphicsElement element : allElementList) {
 			svgContainer.appendChild(element.copy());
 		}
 		LOG.trace("Container "+svgContainer.getChildCount());

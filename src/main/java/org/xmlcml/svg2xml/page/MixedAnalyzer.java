@@ -146,8 +146,8 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 
 	private List<Real2Range> createEdgeBoxes(Real2Range boundingBox, double eps) {
 		List<Real2Range> edgeBoxes = new ArrayList<Real2Range>();
-		Real2 corner0 = boundingBox.getCorners()[0];
-		Real2 corner1 = boundingBox.getCorners()[1];
+		Real2 corner0 = boundingBox.getLLURCorners()[0];
+		Real2 corner1 = boundingBox.getLLURCorners()[1];
 		Double width = boundingBox.getXRange().getRange();
 		Double height = boundingBox.getYRange().getRange();
 		edgeBoxes.add(new Real2Range(corner0, corner0.plus(new Real2(eps, height)))); // left

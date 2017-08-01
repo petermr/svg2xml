@@ -13,6 +13,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
@@ -63,11 +64,11 @@ public class TableTable extends TableChunk {
 	}
 
 	public static TableTable createTableTable(Element element) {
-		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
+		GraphicsElement svgElement = SVGElement.readAndCreateSVG(element);
 		return createTableTable(svgElement);
 	}
 
-	private static TableTable createTableTable(SVGElement svgElement) {
+	private static TableTable createTableTable(GraphicsElement svgElement) {
 		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgElement);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgElement);
 		TableTable table = new TableTable(shapeList, textList);

@@ -10,7 +10,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.util.MultisetUtil;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
@@ -134,8 +134,8 @@ public class TableBodySection extends TableSection {
 		return yCoordArray;
 	}
 
-	public SVGElement createMarkedSections(
-			SVGElement svgChunk,
+	public GraphicsElement createMarkedSections(
+			GraphicsElement svgChunk,
 			String[] colors,
 			double[] opacity) {
 		// write SVG
@@ -149,7 +149,7 @@ public class TableBodySection extends TableSection {
 		return svgChunk;
 	}
 
-	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createColumnBoxesAndShiftToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_COLUMN_BOXES);
 		if (boundingBox == null) {
@@ -169,7 +169,7 @@ public class TableBodySection extends TableSection {
 		return g;
 	}
 	
-	private SVGG createCellBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createCellBoxesAndShiftToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_CELL_BOXES);
 		if (boundingBox == null) {
@@ -185,7 +185,7 @@ public class TableBodySection extends TableSection {
 		return g;
 	}
 	
-	private SVGG createSubtableBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createSubtableBoxesAndShiftToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_SUBTABLE_BOXES);
 		if (boundingBox == null) {

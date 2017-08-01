@@ -222,7 +222,7 @@ public class CMUCLTest {
 			svg.appendChild(g);
 			Real2Range bbox = svg.getBoundingBox();
 			double scale = TD_WIDTH / bbox.getXRange().getRange();
-			Real2 corner = bbox.getCorners()[0];
+			Real2 corner = bbox.getLLURCorners()[0];
 			String transform = "scale("+scale+") ";
 			transform += " translate("+(-1.0*corner.getX())+","+(-1.0*corner.getY())+")";
 			g.addAttribute(new Attribute("transform", transform));

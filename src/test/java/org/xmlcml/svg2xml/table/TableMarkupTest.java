@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.IntRange;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.svg2xml.Fixtures;
@@ -82,9 +82,9 @@ public class TableMarkupTest {
 		tableContentCreator.createHTMLFromSVG(inputFile);
 		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
 		tableHeader.createHeaderRowsAndColumnGroups();
-		SVGElement svgChunk = (SVGElement)tableContentCreator.getSVGChunk().copy();
+		GraphicsElement svgChunk = (GraphicsElement)tableContentCreator.getSVGChunk().copy();
 		svgChunk = tableHeader.createMarkedSections(
-				(SVGElement)tableContentCreator.getSVGChunk().copy(),
+				(GraphicsElement)tableContentCreator.getSVGChunk().copy(),
 				new String[] {"blue", "green"}, 
 				new double[] {0.2, 0.2}
 				);
@@ -99,7 +99,7 @@ public class TableMarkupTest {
 		String inputFilename = root+".g.2.3.svg";
 		File inputFile = new File(Fixtures.TABLE_DIR, inputFilename);
 		File outputFile = new File("target/table/"+root+"/table.g.2.3.svg");
-		SVGElement svgChunk = new TableContentCreator().annotateAreas(inputFile);
+		GraphicsElement svgChunk = new TableContentCreator().annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 	}
 	
@@ -255,7 +255,7 @@ public class TableMarkupTest {
 		File outputFile = new File("target/table/marked/"+root+"/table"+filename);
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		LOG.trace("reading "+inputFilename);
-		SVGElement svgChunk = tableContentCreator.annotateAreas(inputFile);
+		GraphicsElement svgChunk = tableContentCreator.annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
 		int headerCols = tableHeader == null ? -1 :

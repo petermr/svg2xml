@@ -7,7 +7,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.xml.XMLUtil;
@@ -27,7 +27,7 @@ public class TextUtil {
 	 * @param s
 	 * @return
 	 */
-	public static SVGElement normalize(String s) {
+	public static GraphicsElement normalize(String s) {
 		if (!Normalizer.isNormalized(s, Normalizer.Form.NFKC)) {
 //			SVGElement parent = (SVGElement) child.getParent();
 //			int index = parent.indexOf(child);
@@ -69,7 +69,7 @@ public class TextUtil {
 		String string = svgText.getValue();
 		
 		if (!Normalizer.isNormalized(string, form)) {
-			SVGElement parent = (SVGElement) svgText.getParent();
+			GraphicsElement parent = (GraphicsElement) svgText.getParent();
 			int index = parent.indexOf(svgText);
 			parent.removeChild(index);
 			double unscaledWidth = svgText.getSVGXFontWidth() / 1000.;
@@ -119,7 +119,7 @@ public class TextUtil {
 	 * @param form from Normalizer
 	 * @return true if changes made
 	 */
-	public static boolean normalize(SVGElement svgChunk, Normalizer.Form form) {
+	public static boolean normalize(GraphicsElement svgChunk, Normalizer.Form form) {
 		boolean normalized = false;
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgChunk);
 		for (SVGText text : textList) {

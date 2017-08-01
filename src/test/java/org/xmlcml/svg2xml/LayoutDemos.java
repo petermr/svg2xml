@@ -14,7 +14,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.euclid.util.MultisetUtil;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -154,7 +154,7 @@ public class LayoutDemos {
 			plotLine(g, YMAX, "cyan", 0.1, xEnd);
 		}
 		for (int i = 0; i <= 500; i+=50) {
-			SVGElement text = new SVGText(new Real2(i, 100.), ""+i);
+			GraphicsElement text = new SVGText(new Real2(i, 100.), ""+i);
 			text.setFontSize(8.);
 			g.appendChild(text);
 			SVGLine line = new SVGLine(new Real2(i, 30), new Real2(i, 70));

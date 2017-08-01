@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.Fixtures;
@@ -297,7 +298,7 @@ public class PageAnalyzerTest {
 	@Test
 	@Ignore
 	public void testSVGBug() {
-		SVGElement svgElement = SVGElement.readAndCreateSVG(new File("src/test/resources/svg/Shukla/page8.svg"));
+		GraphicsElement svgElement = SVGElement.readAndCreateSVG(new File("src/test/resources/svg/Shukla/page8.svg"));
 		//analyzeChunkInSVGPage((SVGElement) svgElement.getChildElements().get(5), "chunk", "src/test/resources/org/xmlcml/svg2xml/svg/Shukla/out", "results");
 	}
 	
@@ -376,7 +377,7 @@ public class PageAnalyzerTest {
 		pageAnalyzer.getPageIO().setRawSVGDocumentDir(new File("target/mdpi/test/"));
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		MixedContainer mixedContainer10 = (MixedContainer) containerList.get(7);
-		SVGElement chunk10 = mixedContainer10.getChunkAnalyzer().getSVGChunk();
+		GraphicsElement chunk10 = mixedContainer10.getChunkAnalyzer().getSVGChunk();
 		LOG.trace("chunk10 "+chunk10.toXML());
 		pageAnalyzer.outputChunks();
 		pageAnalyzer.outputHtmlComponents();

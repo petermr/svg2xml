@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlTable;
@@ -57,7 +58,7 @@ public class TableBody extends TableChunk {
 	private void debugRows(List<SVGElement> elementList) {
 		int nrows = elementList.size();
 		LOG.trace("ROWS "+nrows);
-		for (SVGElement element : elementList) {
+		for (GraphicsElement element : elementList) {
 			
 		}
 	}

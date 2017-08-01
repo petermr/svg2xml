@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
@@ -52,7 +52,7 @@ public class GeometryBuilder extends SimpleBuilder {
 	private TextOrientation textOrientation;
 	private TextAnalyzer textAnalyzer;
 
-	public GeometryBuilder(SVGElement svgElement) {
+	public GeometryBuilder(GraphicsElement svgElement) {
 		super(svgElement);
 		init();
 	}

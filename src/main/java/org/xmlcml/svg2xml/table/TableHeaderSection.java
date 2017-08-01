@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
@@ -90,8 +90,8 @@ public class TableHeaderSection extends TableSection {
 		return headerRowList;
 	}
 	
-	public SVGElement createMarkedSections(
-			SVGElement svgChunk,
+	public GraphicsElement createMarkedSections(
+			GraphicsElement svgChunk,
 			String[] colors,
 			double[] opacity) {
 		// write SVG
@@ -102,7 +102,7 @@ public class TableHeaderSection extends TableSection {
 		return svgChunk;
 	}
 
-	private SVGG createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createColumnBoxesAndTransformToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_COLUMN_BOXES);
 		if (boundingBox == null) {
@@ -148,7 +148,7 @@ public class TableHeaderSection extends TableSection {
 		return columnGroup;
 	}
 
-	private SVGG createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createHeaderBoxesAndTransformToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_BOXES);
 		for (int i = 0; i < headerRowList.size(); i++) {

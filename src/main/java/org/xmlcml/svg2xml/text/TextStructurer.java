@@ -22,6 +22,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGDefs;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -1348,7 +1349,7 @@ public class TextStructurer {
 	 * Detach every character in rawCharacters.
 	 */
 	public void detachCharacters() {
-		for (SVGElement character : rawCharacters) {
+		for (GraphicsElement character : rawCharacters) {
 			character.detach();
 		}
 	}

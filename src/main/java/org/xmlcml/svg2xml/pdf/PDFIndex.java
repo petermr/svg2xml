@@ -21,6 +21,7 @@ import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntMatrix;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
@@ -459,7 +460,7 @@ public class PDFIndex {
 				File dir = new File("target/"+title+"/duplicate/");
 				dir.mkdirs();
 				File file = new File(dir, id+SVG2XMLConstantsX.DOT_SVG);
-				SVGElement element = svgElementByIdMap.get(id);
+				GraphicsElement element = svgElementByIdMap.get(id);
 				SVGUtil.debug(element, new FileOutputStream(file), 1);
 				LOG.trace("wrote: "+file.getAbsolutePath());
 			}

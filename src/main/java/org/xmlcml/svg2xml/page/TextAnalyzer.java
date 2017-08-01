@@ -15,6 +15,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -68,7 +69,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 
 	private TextLine rawCharacterList;
 	private Map<Integer, TextLine> characterByXCoordMap;
-	private SVGElement svgParent;
+	private GraphicsElement svgParent;
     private List<SVGText> textCharacters;
     
     private TextOrientation textOrientation = TextOrientation.ANY;
@@ -106,7 +107,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 		setTextList(textList);
 	}
 
-	public TextAnalyzer(SVGElement svgElement, PageAnalyzer pageAnalyzer) {
+	public TextAnalyzer(GraphicsElement svgElement, PageAnalyzer pageAnalyzer) {
 		this(SVGText.extractSelfAndDescendantTexts(svgElement), pageAnalyzer);
 	}
 

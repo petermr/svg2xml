@@ -22,6 +22,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
@@ -123,29 +124,29 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	private void tidySVGPage() {
-		SVGElement svgPage = pageIo.getRawSVGPage();
+		GraphicsElement svgPage = pageIo.getRawSVGPage();
 		removeClipPathsDefs(svgPage);
 		removeClipPathAttributes(svgPage);
 		numberElements();
 	}
 
 	private void numberElements() {
-		SVGElement svgPage = pageIo.getRawSVGPage();
+		GraphicsElement svgPage = pageIo.getRawSVGPage();
 		if (svgPage != null) {
 			for (int i = 0; i < svgPage.getChildElements().size(); i++) {
-				SVGUtil.setSVGXAttribute((SVGElement) svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
+				SVGUtil.setSVGXAttribute((GraphicsElement) svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
 			}
 		}
 	}
 
-	private void removeClipPathsDefs(SVGElement svgPage) {
+	private void removeClipPathsDefs(GraphicsElement svgPage) {
 		List<SVGElement> defs = SVGUtil.getQuerySVGElements(svgPage, "./svg:defs");
-		for (SVGElement def : defs) {
+		for (GraphicsElement def : defs) {
 			removeClipPathChildrenAndEmptyDef(def);
 		}
 	}
 
-	private void removeClipPathAttributes(SVGElement svgPage) {
+	private void removeClipPathAttributes(GraphicsElement svgPage) {
 		if (svgPage != null) {
 			Nodes clipPathAttributes = svgPage.query("./*/@clip-path");
 			for (int i = 0; i < clipPathAttributes.size(); i++) {
@@ -154,9 +155,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		}
 	}
 
-	private void removeClipPathChildrenAndEmptyDef(SVGElement def) {
+	private void removeClipPathChildrenAndEmptyDef(GraphicsElement def) {
 		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(def, "./svg:clipPath");
-		for (SVGElement clipPath : clipPaths) {
+		for (GraphicsElement clipPath : clipPaths) {
 			clipPath.detach();
 		}
 		if (def.getChildElements().size() == 0) {
@@ -230,7 +231,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
 	private void detachChildrenAndReplaceInZOrder(SVGG gChunk, Map<Double, SVGElement> elementByZMap,
 			List<SVGElement> childElements, List<Double> rawList) {
-		for (SVGElement childElement : childElements) {
+		for (GraphicsElement childElement : childElements) {
 			childElement.detach();
 		}
 		Collections.sort(rawList);
@@ -386,7 +387,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 */
 	private void processNonUnicodeCharactersInTitles() {
 		List<SVGElement> textTitles = SVGUtil.getQuerySVGElements(pageIo.getRawSVGPage(), ".//svg:title");
-		for (SVGElement t : textTitles) {
+		for (GraphicsElement t : textTitles) {
 			SVGTitle title = (SVGTitle) t;
 			String s = title.getValue();
 			String[] chunks =s.split(";");
@@ -402,7 +403,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 					break;
 				}
 			}
-			SVGElement text = ((SVGElement)title.getParent());
+			GraphicsElement text = ((GraphicsElement)title.getParent());
 			int cc =text.getChildCount();
 			for (int i = 0; i < cc; i++) {
 				text.getChild(0).detach();
@@ -442,7 +443,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 			LOG.trace("ID written "+chunkId+" "+indexed);
 			if (indexed) {
 				Real2Range bbox = g.getBoundingBox();
-				Real2[] corners = bbox.getCorners();
+				Real2[] corners = bbox.getLLURCorners();
 				SVGLine line = new SVGLine(corners[0], corners[1]);
 				line.setOpacity(0.3);
 				line.setWidth(5.0);

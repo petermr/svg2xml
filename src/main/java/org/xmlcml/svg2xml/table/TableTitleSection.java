@@ -2,7 +2,7 @@ package org.xmlcml.svg2xml.table;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
@@ -28,8 +28,8 @@ public class TableTitleSection extends TableSection {
 		super(tableSection);
 	}
 	
-	public SVGElement createMarkedContent(
-			SVGElement svgChunk,
+	public GraphicsElement createMarkedContent(
+			GraphicsElement svgChunk,
 			String[] colors,
 			double[] opacity) {
 			SVGG g = createBoxAndShiftToOrigin(svgChunk, colors, opacity);
@@ -37,7 +37,7 @@ public class TableTitleSection extends TableSection {
 			return svgChunk;
 	}
 	
-	private SVGG createBoxAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createBoxAndShiftToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(TITLE_TITLE);
 		if (boundingBox == null) {

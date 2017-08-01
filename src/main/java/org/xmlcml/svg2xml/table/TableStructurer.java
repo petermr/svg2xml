@@ -17,6 +17,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
@@ -481,7 +482,7 @@ public class TableStructurer {
 
 	public List<SVGShape> getOrCreateShapeList() {
 		if (shapeList == null) {
-			SVGElement svgChunk = textStructurer.getSVGChunk();
+			GraphicsElement svgChunk = textStructurer.getSVGChunk();
 			shapeList = SVGUtil.makeShapes(svgChunk);
 			SVGElement.format(shapeList, 3);
 			addMarkersToZeroDimensionalShapes();
@@ -734,7 +735,7 @@ public class TableStructurer {
 		rowCodes = total.toString().trim();
 	}
 
-	private String indexSVGLine(int maxLength, int iRuler, SVGElement horizontalElement) {
+	private String indexSVGLine(int maxLength, int iRuler, GraphicsElement horizontalElement) {
 		String index;
 		index = " L"+iRuler+"";
 		SVGLine line = (SVGLine) horizontalElement;
@@ -771,7 +772,7 @@ public class TableStructurer {
 		return index;
 	}
 
-	private String indexLineChunk(double maxFont, int iPhrase, SVGElement horizontalElement) {
+	private String indexLineChunk(double maxFont, int iPhrase, GraphicsElement horizontalElement) {
 		String index;
 		index = " P"+iPhrase;
 		PhraseList lineChunk = (PhraseList) horizontalElement;

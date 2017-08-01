@@ -9,6 +9,7 @@ import nu.xom.Elements;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -97,7 +98,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	 * The main analysis routine.
 	 * Includes text, paths, figures and tables.
 	 */
-	public List<Chunk> splitByWhitespaceAndLabelLeafNodes(SVGElement svgElement) {
+	public List<Chunk> splitByWhitespaceAndLabelLeafNodes(GraphicsElement svgElement) {
 		List<Chunk> chunkList = splitByWhitespace(svgElement);
 		labelLeafNodes(chunkList);
 		return chunkList;
@@ -137,7 +138,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	 * @return
 	 */
 	// FIXME add variable levels
-	public List<Chunk> splitByWhitespace(SVGElement elementToBeChunked) {
+	public List<Chunk> splitByWhitespace(GraphicsElement elementToBeChunked) {
 		Chunk topChunk = new Chunk(elementToBeChunked);
 		//topChunk.debug("PRE"+topChunk.getParent());
 		Long time0 = System.currentTimeMillis();
@@ -213,7 +214,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 		return finalChunks;
 	}
 
-	private void moveChildrenFromChunkToElement(SVGElement elementToBeChunked, Chunk topChunk) {
+	private void moveChildrenFromChunkToElement(GraphicsElement elementToBeChunked, Chunk topChunk) {
 		Elements childElements1 = topChunk.getChildElements();
 		for (int i = 0; i < childElements1.size(); i++) {
 			childElements1.get(i).detach();
@@ -221,7 +222,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 		}
 	}
 
-	private void removeChildren(SVGElement elementToBeChunked) {
+	private void removeChildren(GraphicsElement elementToBeChunked) {
 		Elements childElements = elementToBeChunked.getChildElements();
 		for (int i = 0; i < childElements.size(); i++) {
 			childElements.get(i).detach();
@@ -230,7 +231,7 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 
 	private void removeEmptyChunks(Chunk topChunk) {
 		List<SVGElement> emptyGList = SVGUtil.getQuerySVGElements(topChunk, ".//svg:g[count(*)=0]");
-		for (SVGElement g : emptyGList) {
+		for (GraphicsElement g : emptyGList) {
 			g.detach();
 		}
 	}

@@ -185,7 +185,7 @@ public class ColumnManager {
 	}
 
 	private void addEmptyCell(Real2Range bbox, double fontSize) {
-		Real2 xy = bbox.getCorners()[0];
+		Real2 xy = bbox.getLLURCorners()[0];
 		Word emptyWord = Word.createEmptyWord(xy, fontSize);
 		Phrase emptyPhrase = new Phrase(emptyWord);
 		SVGShape plotBox = GraphPlot.plotBox(bbox, "green", 0.1);

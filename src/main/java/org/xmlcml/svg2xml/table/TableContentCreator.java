@@ -14,6 +14,7 @@ import org.xmlcml.euclid.IntRangeArray;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -63,7 +64,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private TableHeaderSection tableHeaderSection;
 	private TableBodySection tableBodySection;
 	private TableFooterSection tableFooterSection;
-	private SVGElement annotatedSvgChunk;
+	private GraphicsElement annotatedSvgChunk;
 	private double rowDelta = 2.5; //large to manage suscripts
 	
 	public TableContentCreator() {
@@ -284,11 +285,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @param opacity
 	 * @return
 	 */
-	public SVGElement createMarkedSections(/*SVGElement markedChunk,*/
+	public GraphicsElement createMarkedSections(/*SVGElement markedChunk,*/
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		SVGElement markedChunk = getTextStructurer().getSVGChunk();
+		GraphicsElement markedChunk = getTextStructurer().getSVGChunk();
 		SVGG g = new SVGG();
 		g.setClassName("sections");
 		markedChunk.appendChild(g);
@@ -314,9 +315,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return markedChunk;
 	}
 
-	public static void shiftToOrigin(SVGElement markedChunk, SVGG g) {
+	public static void shiftToOrigin(GraphicsElement markedChunk, SVGG g) {
 		SVGG gg = null;
-		SVGElement svgElement =  (SVGElement) markedChunk.getChildElements().get(0);
+		GraphicsElement svgElement =  (GraphicsElement) markedChunk.getChildElements().get(0);
 		if (svgElement instanceof SVGG) {
 			SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
 			Transform2 t2 = firstG.getTransform();
@@ -365,17 +366,17 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 
-	public SVGElement getSVGChunk() {
+	public GraphicsElement getSVGChunk() {
 		return textStructurer.getSVGChunk();
 	}
 
-	public SVGElement annotateAreas(File inputFile) {
+	public GraphicsElement annotateAreas(File inputFile) {
 		createHTMLFromSVG(inputFile);
 		return annotateAreasInSVGChunk();
 	}
 
-	public SVGElement annotateAreasInSVGChunk() {
-		SVGElement svgChunk = createMarkedSections(
+	public GraphicsElement annotateAreasInSVGChunk() {
+		GraphicsElement svgChunk = createMarkedSections(
 				new String[] {"yellow", "red", "cyan", "blue"},
 				new double[] {0.2, 0.2, 0.2, 0.2}
 			);
@@ -384,7 +385,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			LOG.warn("no table title");
 		} else {
 			svgChunk = tableTitle.createMarkedContent(
-					(SVGElement) svgChunk.copy(),
+					(GraphicsElement) svgChunk.copy(),
 					new String[] {"yellow", "yellow"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -395,7 +396,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		} else {
 			tableHeader.createHeaderRowsAndColumnGroups();
 			svgChunk = tableHeader.createMarkedSections(
-					(SVGElement) svgChunk.copy(),
+					(GraphicsElement) svgChunk.copy(),
 					new String[] {"blue", "green"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -406,7 +407,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		} else {
 			tableBody.createHeaderRowsAndColumnGroups();
 			svgChunk = tableBody.createMarkedSections(
-					(SVGElement) svgChunk.copy(),
+					(GraphicsElement) svgChunk.copy(),
 					new String[] {"yellow", "red"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -414,7 +415,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		TableFooterSection tableFooter = getOrCreateTableFooterSection();
 		if (tableFooter != null) {
 			svgChunk = tableFooter.createMarkedContent(
-					(SVGElement) svgChunk.copy(),
+					(GraphicsElement) svgChunk.copy(),
 					new String[] {"blue", "blue"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -463,18 +464,18 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return html;
 	}
 
-	private void addHeader(SVGElement svgElement, HtmlTable table, int bodyCols) {
+	private void addHeader(GraphicsElement svgElement, HtmlTable table, int bodyCols) {
 		int cols = 0;
 		HtmlTr tr = new HtmlTr();
 		table.appendChild(tr);
-		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+		GraphicsElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
 			cols = addHeaderBoxes(tr, g, bodyCols);
 		}
 	}
 
-	private int addHeaderBoxes(HtmlTr tr, SVGElement g, int bodyCols) {
+	private int addHeaderBoxes(HtmlTr tr, GraphicsElement g, int bodyCols) {
 		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
 		int headerCols = rects.size();
 		int bodyDelta = bodyCols - headerCols;
@@ -496,7 +497,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return headerCols;
 	}
 
-	private void addBody(SVGElement svgElement, HtmlTable table) {
+	private void addBody(GraphicsElement svgElement, HtmlTable table) {
 		List<SVGG> gs = getGElements(svgElement);
 		if (gs.size() == 0) {
 			LOG.warn("No annotated body");
@@ -524,8 +525,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 	}
 
-	private List<SVGG> getGElements(SVGElement svgElement) {
-		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+	private List<SVGG> getGElements(GraphicsElement svgElement) {
+		GraphicsElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
 		List<SVGG> gs = (g == null) ? new ArrayList<SVGG>() : SVGG.extractSelfAndDescendantGs(g);
 		return gs;
@@ -629,7 +630,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	// FIXME empty caption
-	private void addCaption(SVGElement svgElement, HtmlTable table) {
+	private void addCaption(GraphicsElement svgElement, HtmlTable table) {
 		HtmlCaption caption = new HtmlCaption();
 		String captionS = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
 		if (captionS !=null) {
@@ -640,7 +641,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 	}
 
-	public SVGElement getAnnotatedSvgChunk() {
+	public GraphicsElement getAnnotatedSvgChunk() {
 		return annotatedSvgChunk;
 	}
 

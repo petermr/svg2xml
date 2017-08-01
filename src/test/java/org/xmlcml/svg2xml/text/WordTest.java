@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Util;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.Fixtures;
 
@@ -25,7 +25,7 @@ public class WordTest {
 	public static Word WORD1 = RawWordsTest.RAW_WORDS.get(1);
 	public static Word WORD2 = RawWordsTest.RAW_WORDS.get(2);
 	
-	SVGElement word1 = TextLineTest.PAGE_TEXT_LINE.getRawWords().get(1);
+	GraphicsElement word1 = TextLineTest.PAGE_TEXT_LINE.getRawWords().get(1);
 
 	@Test
 	public void testGetWordAndSpaces() {

@@ -6,6 +6,7 @@ import java.util.List;
 import nu.xom.Builder;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
@@ -293,8 +294,8 @@ public class Fixtures {
 		}
 	}
 	
-	public final static SVGElement createSVGElement(File file) {
-		SVGElement svgElement =  null;
+	public final static GraphicsElement createSVGElement(File file) {
+		GraphicsElement svgElement =  null;
 		try {
 			svgElement = SVGElement.readAndCreateSVG(new Builder().build(file).getRootElement());
 		} catch (Exception e) {
