@@ -1,11 +1,12 @@
 package org.xmlcml.svg2xml.text;
 
+import java.io.File;
 import java.util.List;
 
-import org.junit.Assert;
-
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.container.ScriptContainerTest;
 
 public class ScriptLineTest {
@@ -29,6 +30,25 @@ public class ScriptLineTest {
 				"Hiwatashi et al. BMC Evolutionary Biology 2011, 11:312",
 				"http://www.biomedcentral.com/1471-2148/11/312",
 		};
+		int i = 0;
+		for (StyleSpans styleSpans : styleSpansList) {
+			Assert.assertEquals("s"+(i), expected[i], styleSpans.getTextContentWithSpaces());
+			i++;
+		}
+	}
+	
+	@Test
+	public void testMissingFontSize() {
+		List<StyleSpans> styleSpansList = ScriptContainerTest.getStyleSpansList(new File(SVG2XMLFixtures.TEXT_DIR,  "bmc312.chunk6.0Samini.svg"));
+		String[] expected = {
+//				"Hiwatashi et al. BMC Evolutionary Biology 2011, 11:312",
+//				"http://www.biomedcentral.com/1471-2148/11/312",
+            "H .",
+		};
+//		String[] expected = {
+//				"Hi",
+//		};
+//		LOG.debug(styleSpansList.size());
 		int i = 0;
 		for (StyleSpans styleSpans : styleSpansList) {
 			Assert.assertEquals("s"+(i), expected[i], styleSpans.getTextContentWithSpaces());

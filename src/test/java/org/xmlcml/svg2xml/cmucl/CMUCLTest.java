@@ -42,8 +42,8 @@ import org.xmlcml.html.HtmlImg;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTd;
 import org.xmlcml.html.HtmlTr;
-import org.xmlcml.pdf2svg.PDF2SVGConverter;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.PDF2SVGConverterNew;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.table.TableContentCreator;
 import org.xmlcml.xml.XMLUtil;
 
@@ -60,7 +60,7 @@ public class CMUCLTest {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
-	private final static File CMUCL0 = new File(Fixtures.TABLE_DIR, "cmucl0/");
+	private final static File CMUCL0 = new File(SVG2XMLFixtures.TABLE_DIR, "cmucl0/");
 	private static final File CMUCL_OUT_DIR = new File("target/table/cmucl0");
 	private static final String BORDER = "border";
 	private static final File CM_UCL_DIR = new File("../../cm-ucl");
@@ -69,7 +69,7 @@ public class CMUCLTest {
 
 	@Test
 	public void testBMC() {
-		Assert.assertTrue("tables should exist", Fixtures.TABLE_DIR.exists());
+		Assert.assertTrue("tables should exist", SVG2XMLFixtures.TABLE_DIR.exists());
 		Assert.assertTrue("CMUCL0 should exist", CMUCL0.exists());
 		String root = "BMC_Medicine";
 		extractTables(root);
@@ -293,7 +293,7 @@ public class CMUCLTest {
 			File pdfFile = new File(pdfDir, "fulltext.pdf");
 			File svgDir = new File(pmrPdfDir, "svg/");
 			svgDir.mkdirs();
-			new PDF2SVGConverter().run(
+			new PDF2SVGConverterNew().run(
 					"-logger", "-infofiles", "-logglyphs", "-outdir", svgDir.toString(), pdfFile.toString());
 			File pngDir = new File(pmrPdfDir, "png/");
 			List<File> pngs = new ArrayList<File>(FileUtils.listFiles(svgDir, new String[] {"png"}, false));

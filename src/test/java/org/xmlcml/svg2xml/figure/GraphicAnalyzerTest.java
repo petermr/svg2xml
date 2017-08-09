@@ -12,7 +12,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
@@ -37,14 +37,14 @@ public class GraphicAnalyzerTest {
 
 	@Test
 	public void failingTestForFigureMargins() {
-		FigureGraphic f = new FigureGraphic(new FigureAnalyzer(new PageAnalyzer(Fixtures.FIGURE_PAGE_3_SVG)));
+		FigureGraphic f = new FigureGraphic(new FigureAnalyzer(new PageAnalyzer(SVG2XMLFixtures.FIGURE_PAGE_3_SVG)));
 		f.createImageFromComponents(FIGURE_GRAPHIC+"/margins.png");
 	}
 	
 	@Test
 	public void testGraphic() {
 		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG) null);
-		GraphicsElement svgElement = SVGElement.readAndCreateSVG(Fixtures.FIGURE_PAGE_3_SVG);
+		GraphicsElement svgElement = SVGElement.readAndCreateSVG(SVG2XMLFixtures.FIGURE_PAGE_3_SVG);
 		SVGG graphic = (SVGG) SVGG.generateElementList(svgElement, "svg:g/svg:g/svg:g[@edge='YMIN']").get(2);
 		GraphicAnalyzer graphicAnalyzer = new GraphicAnalyzer(pageAnalyzer, graphic);
 		Assert.assertNull("image", graphicAnalyzer.getImageAnalyzer());
@@ -56,7 +56,7 @@ public class GraphicAnalyzerTest {
 	
 	@Test
 	public void testTextOrientation() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
 		Assert.assertEquals("textList", 2168, graphicAnalyzer.getAllTextCharacters().size());
 		Assert.assertEquals("textList0", 2089, graphicAnalyzer.getTextAnalyzer().getRot0TextCharacters().size());
 		Assert.assertEquals("textListPi2", 79, graphicAnalyzer.getTextAnalyzer().getRotPi2TextCharacters().size());
@@ -67,7 +67,7 @@ public class GraphicAnalyzerTest {
 	
 	@Test
 	public void testTextOrientationAnalyzers() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
 		Assert.assertEquals("textList", 2168, graphicAnalyzer.getAllTextCharacters().size());
 		Assert.assertNotNull("textList0", graphicAnalyzer.getRot0TextAnalyzer());
 		Assert.assertEquals("textList0", 2089, graphicAnalyzer.getRot0TextAnalyzer().getTextCharacters().size());
@@ -88,7 +88,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testRot0Analyzer() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
 		TextAnalyzer textAnalyzer = graphicAnalyzer.getRot0TextAnalyzer();
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
 		HtmlElement htmlElement = textStructurer.createHtmlElement();
@@ -108,7 +108,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testRotPi2Analyzer() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g", 2);
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g", 2);
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, PAGE+"/page3pi2.svg", PAGE+"/page3pi2.html", "page3pi2",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">" +
 				"<p /><b>Suboscines Oscines</b>" +
@@ -122,7 +122,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testTreeGraphics() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.TREE_G_8_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.TREE_G_8_2_SVG,  "./svg:g");
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, TREE+"/tree.svg", TREE+"/tree.html", "tree",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">" +
 				" Hpi L A  Ssy L 89  Hla L 99  Hag L 95  Nle L  Human L  Macaque L  Hpi M  Ssy M 92  Hag M 99" +
@@ -135,7 +135,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testMathsGraphics72() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_7_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.MATHS_G_7_2_SVG,  "./svg:g");
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_0, MATHS+"/g72.svg", MATHS+"/g72.html", "html",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">" +
 				"1) 0.4 A 1) 2) 3) 2) 0.3 0.2 0.3 0.4 0 0.1 0.2 0.3 0.4 0 0.1 0.2 3) 0.1 0 0 2 4 6 8 10 12 14 B 0 2 4 6 8 10 12 14 Time (Myr) <p />" +
@@ -150,7 +150,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testMathsGraphicsPi2() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_7_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.MATHS_G_7_2_SVG,  "./svg:g");
 		testSVGandHTML(graphicAnalyzer, TextOrientation.ROT_PI2, MATHS+"/g72pi2.svg", MATHS+"/g72pi2.html", "g72pi2",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">Sampling  Diversif cation rate (r)  frequency </div>");
 	}
@@ -160,7 +160,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testHistogram() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.HISTOGRAM_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.HISTOGRAM_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, HISTOGRAM+"/histogram", 
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">0 2 4 6 8 10 12 14 Time (Myr) </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, HISTOGRAM+"/histogram", 
@@ -179,7 +179,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testXAxis() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.XAXIS_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.XAXIS_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, AXIS+"/xaxis",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">0 2 4 6 8 10 12 14 Time (Myr) </div>");
 	}
@@ -189,7 +189,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testMultiple72() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MULTIPLE_G_7_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.MULTIPLE_G_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, TEXT+"/multiple72",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><i>H. agilis</i> <p /><b>**</b> <b>**</b> 0.4  0.2  0.0  <i>H. lar</i> <p /><b>** *</b> 0.2  0.1null <p /><b>NE</b> 0.0  <i>H. pileatus</i> 0.2  <p /><b>** **</b> 0.1  0.0  <sub><i>N. leucogenys</i></sub> <p /><b>**</b> <b>**</b> 0.4  0.2  0.0  <i>S. syndactylus</i> 0.3  0.2  <p /><b>**</b> 0.1  0.0  <p /><b>Ex Int Ex Int G</b> <sub><b>A </b></sub> <b>G</b> <sub><b>X</b></sub> <b>L M Kim et al</b> </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, TEXT+"/multiple72",
@@ -201,7 +201,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testMaths66() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_6_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.MATHS_G_6_6_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, MATHS+"/maths66",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">A B </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, MATHS+"/maths66",
@@ -213,7 +213,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testMaths68() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MATHS_G_6_8_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.MATHS_G_6_8_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, MATHS+"/maths68",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">25 50 75 100 Taxon sampling (%) </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, MATHS+"/maths68",
@@ -225,7 +225,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testMultiple92() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.MULTIPLE_G_9_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.MULTIPLE_G_9_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, TEXT+"/multiple92",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p /><b>Exon 3 Intron 3 Exon 4 Intron 4 Exon 5</b> <b>Hag</b> <b>Hla</b> <b>Hpi</b> <b>Nle</b> <b>Ssy</b> </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, TEXT+"/multiple92", 
@@ -237,7 +237,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testScatterplotRed() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOTRED_7_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.SCATTERPLOTRED_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, SCATTERPLOT+"/scatterplotred",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">  0.04   <sup>0.03  </sup> <sup>0.02  </sup> 0.01   0.00   0.00   0.01   0.02   0.03   0.04   0.05   <p />" +
 				"<b>dN of </b> <b><i>EF-1 </i></b> <i>α</i> </div>");
@@ -253,7 +253,7 @@ public class GraphicAnalyzerTest {
 	 */
 	@Test
 	public void testMulticolourScatterplot() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOT_7_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.SCATTERPLOT_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, SCATTERPLOT+"/scatterplot",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">  0.04   <sup>0.03  </sup> <sup>0.02  </sup> 0.01   0.00   0.00   0.01   0.02   0.03   0.04   0.05   <p /><b>dN of </b> <b><i>EF-1 </i></b> null </div>");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_PI2, SCATTERPLOT+"/scatterplot", 
@@ -270,7 +270,7 @@ public class GraphicAnalyzerTest {
         @Ignore
 	@Test
 	public void test5Scatterplots() {
-		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(Fixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g");
+		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g");
 		testExtractionOfTextWithTextStructurer(graphicAnalyzer, TextOrientation.ROT_0, SCATTERPLOT+"/scatterplot5",
 				"<div xmlns=\"http://www.w3.org/1999/xhtml\">0.14    B  C A  0.50   0.04   <sup>0.12  </sup> 0.40   <sup>0.03   0.10  </sup> <sup>0.30  </sup>" +
 				" 0.08   <sup>0.02  </sup> <sup>0.06  </sup>" +

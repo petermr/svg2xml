@@ -23,7 +23,7 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.flow.FlowStructurer;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextBox;
@@ -44,7 +44,7 @@ public class PlotStructurerTest {
 	public void testTEX10Paths() throws IOException {
 		String fileRoot = "TEX.g.10.1";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -52,7 +52,7 @@ public class PlotStructurerTest {
 	public void testTEX11Paths() throws IOException {
 		String fileRoot = "TEX.g.11.1";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -60,7 +60,7 @@ public class PlotStructurerTest {
 	public void testTEX12Paths() throws IOException {
 		String fileRoot = "TEX.g.12.0";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -68,7 +68,7 @@ public class PlotStructurerTest {
 	public void testTEX13Paths() throws IOException {
 		String fileRoot = "TEX.g.13.1";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -76,7 +76,7 @@ public class PlotStructurerTest {
 	public void testBLK_SAM3() throws IOException {
 		String fileRoot = "BLK_SAM.g.3.1";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -85,7 +85,7 @@ public class PlotStructurerTest {
 	public void testBLK_SAM4() throws IOException {
 		String fileRoot = "BLK_SAM.g.4.0";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -93,7 +93,7 @@ public class PlotStructurerTest {
 	public void testBLK_SAM4Bot() throws IOException {
 		String fileRoot = "BLK_SAM.g.4.0.bot";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -101,7 +101,7 @@ public class PlotStructurerTest {
 	public void testBLK_SAM4Top() throws IOException {
 		String fileRoot = "BLK_SAM.g.4.0.top";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 
@@ -113,7 +113,7 @@ public class PlotStructurerTest {
 	public void testBLK_SAM4TopSmall() throws IOException {
 		String fileRoot = "BLK_SAM.g.4.0.top.small";
 		File svgPathFile = createSVGPathsAndWriteToSVGPathFile(
-			new File(Fixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
+			new File(SVG2XMLFixtures.PLOT_DIR, fileRoot + ".svg"), fileRoot);
 		createPlots(svgPathFile, fileRoot);
 	}
 

@@ -12,7 +12,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class WordTest {
 	private static final Logger LOG = Logger.getLogger(WordTest.class);
@@ -71,7 +71,7 @@ public class WordTest {
 	@Test
 	public void testSplitWords() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.RAWWORDS_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
 		List<RawWords> rawWordsList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("rawWordsList", 1, rawWordsList.size());
 		RawWords rawWords = rawWordsList.get(0);

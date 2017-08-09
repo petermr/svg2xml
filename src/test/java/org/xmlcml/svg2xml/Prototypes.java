@@ -38,7 +38,7 @@ public class Prototypes {
 	}
 
 	private static void UCL() {
-		File uclDir = new File(Fixtures.TABLE_PDF_DIR, "fala/fala25/");
+		File uclDir = new File(SVG2XMLFixtures.TABLE_PDF_DIR, "fala/fala25/");
 		List<File> pdfFiles = new ArrayList<File>(FileUtils.listFiles(uclDir, new String[]{"pdf"}, true));
 		LOG.debug(pdfFiles.size());
 		for (File pdfFile : pdfFiles) {

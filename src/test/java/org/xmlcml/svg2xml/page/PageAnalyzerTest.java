@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.container.AbstractContainer;
 import org.xmlcml.svg2xml.container.MixedContainer;
 import org.xmlcml.svg2xml.container.ScriptContainer;
@@ -73,7 +73,7 @@ public class PageAnalyzerTest {
 	//TODO update container count once a decent chunking algorithm has been written
 	@Test
 	public void testRawPage1() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE1);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE1);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		Assert.assertNotNull("containers", containerList);
 		//Assert.assertEquals("containers", 12, containerList.size());
@@ -81,7 +81,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testRawPage1classes() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE1);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE1);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{
@@ -102,7 +102,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testRawPage2classes() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{
@@ -119,7 +119,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testRawPage2Content() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkContainerRawContent(
 			new String[]{
@@ -185,7 +185,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testPage2HtmlAll() throws Exception {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		int i = 0;
 		for (AbstractContainer container : containerList) {
@@ -197,7 +197,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testPage2Html0() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(0).createHtmlElement().toXML();
 		LOG.trace(".. "+actual);
@@ -211,8 +211,8 @@ public class PageAnalyzerTest {
 	 */
 	@Test
 	public void testPage2Html3_3() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.SVG_MULTIPLE_2_3_3_SVG);
-		LOG.trace(SVGElement.readAndCreateSVG(Fixtures.SVG_MULTIPLE_2_3_3_SVG).toXML());
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.SVG_MULTIPLE_2_3_3_SVG);
+		LOG.trace(SVGElement.readAndCreateSVG(SVG2XMLFixtures.SVG_MULTIPLE_2_3_3_SVG).toXML());
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(0).createHtmlElement().toXML();
 		LOG.trace(".. "+actual);
@@ -227,7 +227,7 @@ public class PageAnalyzerTest {
 	 */
 	@Test
 	public void testPage2Html3() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(3).createHtmlElement().toXML();
 		LOG.trace(".. "+actual);
@@ -242,7 +242,7 @@ public class PageAnalyzerTest {
 
 	@Test
 	public void testPage2ScriptLineList0Content() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		ScriptContainer scriptContainer = (ScriptContainer) pageAnalyzer.getAbstractContainerList().get(0);
 		List<ScriptLine> scriptLineList = scriptContainer.getScriptLineList();
 		Assert.assertEquals("scriptLines", 2, scriptLineList.size());
@@ -257,7 +257,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testStyleSpans2_0_0() {
-		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(Fixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
+		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
 		StyleSpansTest.checkStyleSpans("0 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">Hiwatashi <i>et al</i>. <i>BMC Evolutionary Biology </i>2011, <b>11</b>:312</span>",
 				7.97, styleSpans);
@@ -265,7 +265,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testStyleSpans2_2_0() {
-		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(Fixtures.RAW_MULTIPLE312_SVG_PAGE2, 2, 0);
+		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 2, 0);
 		StyleSpansTest.checkStyleSpans("2 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">corresponding sequence of the other, this type of recombi-</span>",
 				9.763, styleSpans);
@@ -273,7 +273,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testPage2ScriptLineList0() {
-		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(Fixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
+		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
 		StyleSpansTest.checkStyleSpans("0 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">Hiwatashi <i>et al</i>. <i>BMC Evolutionary Biology </i>2011, <b>11</b>:312</span>",
 				7.97, styleSpans);
@@ -282,7 +282,7 @@ public class PageAnalyzerTest {
 
 	@Test
 	public void testRawPage3classes() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE3);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE3);
 		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{

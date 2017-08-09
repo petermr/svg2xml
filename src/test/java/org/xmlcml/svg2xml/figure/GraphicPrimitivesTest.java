@@ -28,7 +28,7 @@ import org.xmlcml.graphics.svg.linestuff.ComplexLine;
 import org.xmlcml.graphics.svg.linestuff.ComplexLine.CombType;
 import org.xmlcml.graphics.svg.linestuff.ComplexLine.LineOrientation;
 import org.xmlcml.graphics.svg.linestuff.Joint;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -41,7 +41,7 @@ public class GraphicPrimitivesTest {
 
 	@Test
 	public void testAllXYaxisinPlot() {
-		SVGG g = SVGG.createSVGGChunk(Fixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g", 0);
+		SVGG g = SVGG.createSVGGChunk(SVG2XMLFixtures.SCATTERPLOT_FIVE_7_2_SVG,  "./svg:g", 0);
 		List<SVGLine> svgLines = SVGLine.extractSelfAndDescendantLines(g);
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS);
 		List<SVGLine> verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, EPS);
@@ -78,7 +78,7 @@ public class GraphicPrimitivesTest {
 
 	@Test
 	public void testXaxis() {
-		SVGG g = SVGG.createSVGGChunk(Fixtures.XAXIS_SVG,  "./svg:g", 0);
+		SVGG g = SVGG.createSVGGChunk(SVG2XMLFixtures.XAXIS_SVG,  "./svg:g", 0);
 		List<SVGLine> svgLines = SVGLine.extractSelfAndDescendantLines(g);
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS);
 		List<SVGLine> verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, EPS);
@@ -95,7 +95,7 @@ public class GraphicPrimitivesTest {
 
 	@Test
 	public void testXaxis1() {
-		SVGG g = SVGG.createSVGGChunk(Fixtures.XAXIS_SVG,  "./svg:g", 0);
+		SVGG g = SVGG.createSVGGChunk(SVG2XMLFixtures.XAXIS_SVG,  "./svg:g", 0);
 		List<SVGLine> svgLines = SVGLine.extractSelfAndDescendantLines(g);
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS);
 		List<SVGLine> verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, EPS);
@@ -111,7 +111,7 @@ public class GraphicPrimitivesTest {
 
 	@Test
 	public void testXYaxisinPlot() {
-		SVGG g = SVGG.createSVGGChunk(Fixtures.SCATTERPLOTRED_7_2_SVG,  "./svg:g", 0);
+		SVGG g = SVGG.createSVGGChunk(SVG2XMLFixtures.SCATTERPLOTRED_7_2_SVG,  "./svg:g", 0);
 		List<SVGLine> svgLines = SVGLine.extractSelfAndDescendantLines(g);
 		List<SVGLine> horizontalLines = ComplexLine.createSubset(svgLines, LineOrientation.HORIZONTAL, EPS);
 		List<SVGLine> verticalLines = ComplexLine.createSubset(svgLines, LineOrientation.VERTICAL, EPS);
@@ -159,7 +159,7 @@ public class GraphicPrimitivesTest {
 
 	@Test
 	public void testScatterplotAnalysis() {
-		SVGG g = SVGG.createSVGGChunk(Fixtures.SCATTERPLOT_7_2_SVG,  "./svg:g", 0);
+		SVGG g = SVGG.createSVGGChunk(SVG2XMLFixtures.SCATTERPLOT_7_2_SVG,  "./svg:g", 0);
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(g,
 				".//svg:*[not(local-name()='g') and not(local-name()='svg')]");
 		Assert.assertEquals(GraphicPrimitives.ALL, 746, elementList.size());
@@ -246,7 +246,7 @@ public class GraphicPrimitivesTest {
 	@Test
 	@Ignore // values in different order
 	public void testLinePlots() {
-		SVGG g = SVGG.createSVGGChunk(Fixtures.LINEPLOTS_10_2_SVG,  "./svg:g", 0);
+		SVGG g = SVGG.createSVGGChunk(SVG2XMLFixtures.LINEPLOTS_10_2_SVG,  "./svg:g", 0);
 		GraphicPrimitives graphicPrimitives = new GraphicPrimitives(g);
 		graphicPrimitives.addPlotComponent(GraphicPrimitives.ALL, 
 				GraphicPrimitivesNavigator.COUNT, 343);

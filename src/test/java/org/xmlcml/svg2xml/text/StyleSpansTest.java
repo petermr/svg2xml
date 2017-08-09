@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 
@@ -13,7 +13,7 @@ public class StyleSpansTest {
 
 	@Test
 	public void testStyleSpans0() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		ScriptContainer scriptContainer = (ScriptContainer) pageAnalyzer.getAbstractContainerList().get(0);
 		List<ScriptLine> scriptLineList = scriptContainer.getScriptLineList();
 		ScriptLine scriptLine0 = scriptLineList.get(0);
@@ -29,7 +29,7 @@ public class StyleSpansTest {
 	
 	@Test
 	public void testStyleSpans1() {
-		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(Fixtures.RAW_MULTIPLE312_SVG_PAGE2);
+		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
 		ScriptContainer scriptContainer = (ScriptContainer) pageAnalyzer.getAbstractContainerList().get(1);
 		List<ScriptLine> scriptLineList = scriptContainer.getScriptLineList();
 		ScriptLine scriptLine0 = scriptLineList.get(0);
@@ -45,7 +45,7 @@ public class StyleSpansTest {
 	
 	@Test
 	public void testStyleSpans0a() {
-		StyleSpans styleSpans = getStyleSpans(Fixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
+		StyleSpans styleSpans = getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
 		checkStyleSpans("0 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">Hiwatashi <i>et al</i>. <i>BMC Evolutionary Biology </i>2011, <b>11</b>:312</span>",
 				7.97, styleSpans);
@@ -53,7 +53,7 @@ public class StyleSpansTest {
 	
 	@Test
 	public void testStyleSpansSubcript() {
-		StyleSpans styleSpans = getStyleSpans(Fixtures.RAW_MATH311_SVG_PAGE2, 6, 5);
+		StyleSpans styleSpans = getStyleSpans(SVG2XMLFixtures.RAW_MATH311_SVG_PAGE2, 6, 5);
 		checkStyleSpans("6 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">collection of <i>N </i>data sets <i>d</i><sub><i>1</i></sub><i>, d</i><sub><i>2</i></sub><i>, ..., d</i><sub><i>N </i></sub>(e.g. phylogenies of</span>",
 				9.763, styleSpans);
@@ -61,7 +61,7 @@ public class StyleSpansTest {
 	
 	@Test
 	public void testStyleSpansSuperscript() {
-		StyleSpans styleSpans = getStyleSpans(Fixtures.RAW_GEO310_SVG_PAGE8, 3, 26);
+		StyleSpans styleSpans = getStyleSpans(SVG2XMLFixtures.RAW_GEO310_SVG_PAGE8, 3, 26);
 		checkStyleSpans("6 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">erations and sampled every 1000<sup>th </sup>generation. The</span>",
 				9.763, styleSpans);

@@ -17,7 +17,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 
 /**
@@ -35,7 +35,7 @@ public class PDFRegionTest {
 
 	@Test
 	public void testExtractRegion() throws FileNotFoundException {
-		File pageSvgFile = new File(Fixtures.TABLE_DIR, "page5rect.svg");
+		File pageSvgFile = new File(SVG2XMLFixtures.TABLE_DIR, "page5rect.svg");
 		SVGSVG pageSVG = (SVGSVG) SVGUtil.parseToSVGElement(new FileInputStream(pageSvgFile));
 		List<SVGElement> svgElements1 = SVGUtil.getQuerySVGElements(pageSVG, ".//*");
 		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(pageSVG);

@@ -5,7 +5,7 @@ import java.io.File;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class SubSuperscriptTest {
 
@@ -16,7 +16,7 @@ public class SubSuperscriptTest {
 
 	@Test
 	public void testSuperscripts() {
-		File inputFile = new File(Fixtures.TEXT_DIR, "superscript.svg");
+		File inputFile = new File(SVG2XMLFixtures.TEXT_DIR, "superscript.svg");
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		PhraseListList phraseListList = textStructurer.getPhraseListList();
 		phraseListList.applySubAndSuperscripts();
@@ -25,7 +25,7 @@ public class SubSuperscriptTest {
 
 	@Test
 	public void testSubscripts() {
-		File inputFile = new File(Fixtures.TEXT_DIR, "subscript.svg");
+		File inputFile = new File(SVG2XMLFixtures.TEXT_DIR, "subscript.svg");
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		PhraseListList phraseListList = textStructurer.getPhraseListList();
 		phraseListList.applySubAndSuperscripts();

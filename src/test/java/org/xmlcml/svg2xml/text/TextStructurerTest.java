@@ -17,7 +17,7 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
@@ -36,8 +36,8 @@ public class TextStructurerTest {
 	
 	@Before
 	public void setup() {
-		Assert.assertTrue(Fixtures.BMC_DIR.exists());
-		File[] files = Fixtures.BMC_DIR.listFiles();
+		Assert.assertTrue(SVG2XMLFixtures.BMC_DIR.exists());
+		File[] files = SVG2XMLFixtures.BMC_DIR.listFiles();
 		Assert.assertTrue(files.length > 0);
 		geoFileList = new ArrayList<File>();
 		for (File file : files) {
@@ -52,7 +52,7 @@ public class TextStructurerTest {
 	
 	@Test
 	public void testMultilineFonts() {
-		TextStructurer textContainer = TextStructurer.createTextStructurer(Fixtures.PARA_SUSCRIPT_SVG);
+		TextStructurer textContainer = TextStructurer.createTextStructurer(SVG2XMLFixtures.PARA_SUSCRIPT_SVG);
 		Multiset<String> fontFamilyMultiset = textContainer.getFontFamilyMultiset();
 		Assert.assertEquals("font occurrences", 523, fontFamilyMultiset.size());
 		Set<String> entrySet = fontFamilyMultiset.elementSet();
@@ -64,7 +64,7 @@ public class TextStructurerTest {
 	
 	@Test
 	public void testMultilineCommonestFontFamily() {
-		TextStructurer textContainer = TextStructurer.createTextStructurer(Fixtures.PARA_SUSCRIPT_SVG);
+		TextStructurer textContainer = TextStructurer.createTextStructurer(SVG2XMLFixtures.PARA_SUSCRIPT_SVG);
 		Assert.assertEquals("commonest fontfamily", "TimesNewRoman", textContainer.getCommonestFontFamily());
 	}
 	
@@ -129,7 +129,7 @@ public class TextStructurerTest {
 	@Ignore // fails
 	public void testFullTables() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
 		List<TabbedTextLine> tabbedTextLineList = textStructurer.createTabbedLineList();
 //		Assert.assertNotNull(tabbedTextLineList);
 //		for (int i = 0; i < tabbedTextLineList.size(); i++) {
@@ -142,7 +142,7 @@ public class TextStructurerTest {
 	@Ignore
 	public void testWordListCollection() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
 		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY();
 		for (int i = 0; i < textLineList.size(); i++) {
 			System.out.println(">"+i+"> "+textLineList.get(i));
@@ -153,7 +153,7 @@ public class TextStructurerTest {
 	@Test
 	public void testHOText() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_11_HO_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_HO_SVG);
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("ho", "{HO}", wordList.get(0).toString());
 	}
@@ -161,7 +161,7 @@ public class TextStructurerTest {
 	@Test
 	public void testSubscriptedText() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_11_NO2_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_NO2_SVG);
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("no2", 2, wordList.size());
 		Assert.assertEquals("no", "{NO}", wordList.get(0).toString());
@@ -173,7 +173,7 @@ public class TextStructurerTest {
 	@Test
 	public void test2_11() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_11_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_SVG);
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("2.11", 3, wordList.size());
 		Assert.assertEquals("1", "{HO........NO}", wordList.get(0).toString());
@@ -185,7 +185,7 @@ public class TextStructurerTest {
 	@Test
 	public void test2_15() {
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.IMAGE_2_15_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_15_SVG);
 		
 		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("words", 6, wordList.size());
@@ -206,7 +206,7 @@ public class TextStructurerTest {
 	 */
 	public void testRotatePhrasesAndExtractPhraseList() throws Exception {
 		PhraseListList phraseListList; PhraseList phraseList; Phrase phrase; Word word0, word1;
-		File graphTextFile = new File(Fixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
 		TextStructurer textStructurer;
 		phraseListList = getUnrotatedPhrases(graphTextFile, 36, "HD-73//1//antibiotic free diet//0.9//0.8//y//t//i//l//0.7//a//t//r//o//0.6//m//e//0.5//v//i//t//a//0.4//l//u//m//0.3//u//rifampicin//c//0.2//diet//0.1//0//1 2 3 4 5//days//");
 
@@ -281,7 +281,7 @@ public class TextStructurerTest {
 	 */
 	public void testRotatePhrasesAndExtractPhraseList1() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
 		String outputRoot = "blkSam40";
 
 		String totalStringValue = ""
@@ -322,7 +322,7 @@ public class TextStructurerTest {
 	 */
 	public void testRotatePhrasesAndExtractPhraseListHistogram() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.FIGURE_DIR, "histogram.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.FIGURE_DIR, "histogram.svg");
 		String outputRoot = "histogram";
 
 		int phraseListListSize = 19;
@@ -360,7 +360,7 @@ public class TextStructurerTest {
 	 */
 	public void testScatterPlot() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.FIGURE_DIR, "lineplots.g.10.2.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.FIGURE_DIR, "lineplots.g.10.2.svg");
 		String outputRoot = "scatter";
 
 		int phraseListListSize = 40;
@@ -396,7 +396,7 @@ public class TextStructurerTest {
 	 */
 	public void testMultiAxes() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.FIGURE_DIR, "maths.g.6.8.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.FIGURE_DIR, "maths.g.6.8.svg");
 		String outputRoot = "multiaxes";
 
 		int phraseListListSize = 58;
@@ -441,7 +441,7 @@ public class TextStructurerTest {
 	 */
 	public void testSingleScatterplot() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.FIGURE_DIR, "scatterplot.g.7.2.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.FIGURE_DIR, "scatterplot.g.7.2.svg");
 		String outputRoot = "scatterplot";
 
 		int phraseListListSize = 20;
@@ -479,7 +479,7 @@ public class TextStructurerTest {
 	 */
 	public void testScatterplot5() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.FIGURE_DIR, "scatterplot5.g.7.2.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.FIGURE_DIR, "scatterplot5.g.7.2.svg");
 		String outputRoot = "scatterplot5";
 
 		int phraseListListSize = 133;
@@ -535,7 +535,7 @@ public class TextStructurerTest {
 	 */
 	public void testMultiPanel1() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.FIGURE_DIR, "maths.g.7.2.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.FIGURE_DIR, "maths.g.7.2.svg");
 		String outputRoot = "multipanel1";
 
 		int phraseListListSize = 65;
@@ -595,7 +595,7 @@ public class TextStructurerTest {
 	 */
 	public void testCompleteTable() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.TABLE_DIR, "aa_kranke2000-page2.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.TABLE_DIR, "aa_kranke2000-page2.svg");
 		String outputRoot = "rotatedTable";
 
 		int phraseListListSize = 488;
@@ -747,7 +747,7 @@ public class TextStructurerTest {
 	 */
 	public void testPhyloTree() throws Exception {
 		
-		File graphTextFile = new File(Fixtures.FONT_DIR, "image.g.3.2.svg");
+		File graphTextFile = new File(SVG2XMLFixtures.FONT_DIR, "image.g.3.2.svg");
 		String outputRoot = "phylotree";
 
 		int phraseListListSize = 246;
@@ -816,7 +816,7 @@ public class TextStructurerTest {
 	public void testRotateTextLines() {
 
 		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.RAWWORDS_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
 		textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
 		textStructurer.formatTextLineTransforms(5);
 		List<TextLine> textLineList = textStructurer.getTextLineList();

@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class LineChunkTest {
 
@@ -17,7 +17,7 @@ public class LineChunkTest {
 	@Before
 	public void setup() {
 		TextStructurer BERICHT_PAGE6_TXTSTR = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
 		List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
 		BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 	}

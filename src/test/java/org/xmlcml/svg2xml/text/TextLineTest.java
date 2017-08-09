@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.xml.XMLUtil;
 
@@ -111,10 +111,10 @@ public class TextLineTest {
 	@Ignore
 	public void insertSpaceFactorTest() {
 
-		TextLine textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 5);
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("control", "activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
 
-		textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 5);
+		textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("control", "activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
 		double spaceFactor = 0.0;
 		textLine5.insertSpaces(spaceFactor);
@@ -138,9 +138,9 @@ public class TextLineTest {
 	@Test
 	public void insertSpaceTest() {
 
-		TextLine textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 5);
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("control", "activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
-		textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 5);
+		textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("control", "activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
 		textLine5.insertSpaces();
 		Assert.assertEquals("default spaceFactor", "activation energy. Taking the natural logarithm of this equa-", textLine5.getLineContent());
@@ -148,7 +148,7 @@ public class TextLineTest {
 
 	private static void testScalefactor(double spaceFactor, int lineNumber, String expected) {
 		TextLine textLine5;
-		textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, lineNumber);
+		textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, lineNumber);
 		textLine5.insertSpaces(spaceFactor);
 		Assert.assertEquals("spaceFactor: "+spaceFactor, expected, textLine5.getLineContent());
 	}
@@ -158,13 +158,13 @@ public class TextLineTest {
 	 *
 	 */
 	public void addSpacesTest() {
-		TextLine textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 5);
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
 	}
 
 	@Test
 	public void testFontSizeSetLine0() {
-		TextLine textLine0 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 0);
+		TextLine textLine0 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 0);
 		Set<TextCoordinate> fontSizeSet = textLine0.getFontSizeSet();
 		Assert.assertNotNull("line0 set", fontSizeSet);
 		Assert.assertEquals("line0 size", 1, fontSizeSet.size());
@@ -173,7 +173,7 @@ public class TextLineTest {
 
 	@Test
 	public void testFontSizeSetLine5() {
-		TextLine textLine5 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 5);
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Set<TextCoordinate> fontSizeSet = textLine5.getFontSizeSet();
 		Assert.assertNotNull("line5 set", fontSizeSet);
 		Assert.assertEquals("line5 size", 1, fontSizeSet.size());
@@ -182,7 +182,7 @@ public class TextLineTest {
 
 	@Test
 	public void testgetSimpleFontFamilyMultiset8() {
-		TextLine textLine8 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 8);
+		TextLine textLine8 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 8);
 		Multiset<String> fontFamilyMultiset = textLine8.getFontFamilyMultiset();
 		Assert.assertNotNull("fontFamilyMultiset", fontFamilyMultiset);
 		Assert.assertEquals("single", 45, fontFamilyMultiset.size());
@@ -192,7 +192,7 @@ public class TextLineTest {
 	
 	@Test
 	public void testgetSimpleFontFamilyMultiset0() {
-		TextLine textLine0 = TextLineTest.getTextLine(Fixtures.PARA_SUSCRIPT_SVG, 0);
+		TextLine textLine0 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 0);
 		Multiset<String> fontFamilyMultiset = textLine0.getFontFamilyMultiset();
 		Assert.assertNotNull("fontFamilyMultiset", fontFamilyMultiset);
 		Assert.assertEquals("single", 4, fontFamilyMultiset.size());

@@ -15,7 +15,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
@@ -30,7 +30,7 @@ public class PageSplitterAndHtmlTest {
 	
 	@Test
 	public void testTransformChunksToXML() {
-		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+		Element svg = SVGElement.readAndCreateSVG(SVG2XMLFixtures.SVG_AJC_PAGE6_SPLIT_SVG);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		Assert.assertEquals("chunks", 14, gList.size());
 	}
@@ -38,7 +38,7 @@ public class PageSplitterAndHtmlTest {
 	@Test
 	@Ignore // needs revisiting
 	public void testTransformChunksToXMLAndGuessTypes() {
-		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+		Element svg = SVGElement.readAndCreateSVG(SVG2XMLFixtures.SVG_AJC_PAGE6_SPLIT_SVG);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		CheckAnalyzer[] checkAnalyzers = new CheckAnalyzer[] {
 				new CheckAnalyzer(TextAnalyzer.class, 3),               //0
@@ -589,7 +589,7 @@ public class PageSplitterAndHtmlTest {
 	}*/
 
 	private void testMultipleLineInMixedChunk(int chunk, int nlines, Element ref) {
-		Element svg = SVGElement.readAndCreateSVG(Fixtures.SVG_AJC_PAGE6_SPLIT_SVG);
+		Element svg = SVGElement.readAndCreateSVG(SVG2XMLFixtures.SVG_AJC_PAGE6_SPLIT_SVG);
 		PageSplitterAndHtmlTest.analyzeChunkInSVGPage(chunk, nlines, ref, svg);
 	}
 

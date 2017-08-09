@@ -5,16 +5,16 @@ import java.io.File;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzerTest;
 
 public class SampleTest {
 
 	private final static Logger LOG = Logger.getLogger(SampleTest.class);
 
-	public final static File AJCINDIR = new File(Fixtures.EXT_PDFTOP, "ajc");
-	public final static File AJCSVGDIR = new File(Fixtures.TARGET, "ajc");
-	public final static File AJCOUTDIR = new File(Fixtures.TARGET, "ajc");
+	public final static File AJCINDIR = new File(SVG2XMLFixtures.EXT_PDFTOP, "ajc");
+	public final static File AJCSVGDIR = new File(SVG2XMLFixtures.TARGET, "ajc");
+	public final static File AJCOUTDIR = new File(SVG2XMLFixtures.TARGET, "ajc");
 	
 	public final static String MATHS = "maths-1471-2148-11-311";
 	public final static String MULTIPLE = "multiple-1471-2148-11-312";
@@ -39,25 +39,25 @@ public class SampleTest {
 	@Test
 	@Ignore
 	public void testAnalyzePDFSInBMCDirectory() {
-		PageAnalyzerTest.testDirectory(Fixtures.BMCINDIR, Fixtures.BMCSVGDIR, Fixtures.BMCOUTDIR, false);
+		PageAnalyzerTest.testDirectory(SVG2XMLFixtures.BMCINDIR, SVG2XMLFixtures.BMCSVGDIR, SVG2XMLFixtures.BMCOUTDIR, false);
 	}
 
 	@Test
 	@Ignore
 	public void testAnalyzePDFSInElifeDirectory() {
-		PageAnalyzerTest.testDirectory(Fixtures.ELIFEINDIR, Fixtures.ELIFESVGDIR, Fixtures.ELIFEOUTDIR, false);
+		PageAnalyzerTest.testDirectory(SVG2XMLFixtures.ELIFEINDIR, SVG2XMLFixtures.ELIFESVGDIR, SVG2XMLFixtures.ELIFEOUTDIR, false);
 	}
 	
 	@Test
 	@Ignore
 	public void testAnalyzePDFSInPeerJDirectory() {
-		PageAnalyzerTest.testDirectory(Fixtures.PEERJINDIR, Fixtures.PEERJSVGDIR, Fixtures.PEERJOUTDIR, false);
+		PageAnalyzerTest.testDirectory(SVG2XMLFixtures.PEERJINDIR, SVG2XMLFixtures.PEERJSVGDIR, SVG2XMLFixtures.PEERJOUTDIR, false);
 	}
 	
 	@Test
 	@Ignore
 	public void testAny() {
-		PageAnalyzerTest.testDirectory(Fixtures.ANYINDIR, Fixtures.ANYSVGDIR, Fixtures.ANYOUTDIR);
+		PageAnalyzerTest.testDirectory(SVG2XMLFixtures.ANYINDIR, SVG2XMLFixtures.ANYSVGDIR, SVG2XMLFixtures.ANYOUTDIR);
 	}
 
 	//====================================================================

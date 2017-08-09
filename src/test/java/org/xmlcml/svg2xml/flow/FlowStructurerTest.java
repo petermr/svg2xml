@@ -24,7 +24,7 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.objects.ArrowFactory;
 import org.xmlcml.graphics.svg.objects.SVGArrow;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextBox;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -49,7 +49,7 @@ public class FlowStructurerTest {
 	@Test
 	public void testLANCETMicro() throws IOException {
 		createFlow(
-			new File(Fixtures.FLOW_DIR, LANCETMICRO_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, LANCETMICRO_SVG),
 			"lancetMicro"
 		);
 	}
@@ -57,7 +57,7 @@ public class FlowStructurerTest {
 	@Test
 	public void testLANCETMini0() throws IOException {
 		createFlow(
-			new File(Fixtures.FLOW_DIR, LANCETMINI0_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, LANCETMINI0_SVG),
 			"lancetMini0"
 		);
 	}
@@ -65,7 +65,7 @@ public class FlowStructurerTest {
 	@Test
 	public void testLANCETMini() throws IOException {
 		createFlow(
-			new File(Fixtures.FLOW_DIR, LANCETMINI_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, LANCETMINI_SVG),
 			"lancetMini"
 		);
 	}
@@ -73,7 +73,7 @@ public class FlowStructurerTest {
 	@Test
 	public void testLANCETFlow() throws IOException {
 		createFlow(
-			new File(Fixtures.FLOW_DIR, LANCET_G_5_0_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, LANCET_G_5_0_SVG),
 			"lancet"
 		);
 	}
@@ -81,7 +81,7 @@ public class FlowStructurerTest {
 	@Test
 	public void testLANCETMinipaths() throws IOException {
 		createPaths(
-			new File(Fixtures.FLOW_DIR, LANCET_MINIPATHS_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, LANCET_MINIPATHS_SVG),
 			"lancetMinipaths"
 		);
 	}
@@ -89,7 +89,7 @@ public class FlowStructurerTest {
 	@Test
 	public void testLANCETPaths() throws IOException {
 		createPaths(
-			new File(Fixtures.FLOW_DIR, LANCET_G_5_0_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, LANCET_G_5_0_SVG),
 			"lancetPaths"
 		);
 	}
@@ -98,7 +98,7 @@ public class FlowStructurerTest {
 	public void testAMAPaths() throws IOException {
 		String outRoot = "amaPaths";
 		createPaths(
-			new File(Fixtures.FLOW_DIR, AMA_FIG_1_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, AMA_FIG_1_SVG),
 			outRoot
 		);
 		createArrows(outRoot, 24);
@@ -108,7 +108,7 @@ public class FlowStructurerTest {
 	public void testLPWPaths() throws IOException {
 		String outRoot = "lpwPaths";
 		createPaths(
-			new File(Fixtures.FLOW_DIR, LPW_G_4_0_SVG),
+			new File(SVG2XMLFixtures.FLOW_DIR, LPW_G_4_0_SVG),
 			outRoot
 		);
 		createArrows(outRoot, 0);
@@ -118,7 +118,7 @@ public class FlowStructurerTest {
 	public void testSAGE_Sbarra() throws IOException {
 		String outRoot = "sageSbarra";
 		createPaths(
-			new File(Fixtures.FLOW_DIR, "SAGE_Sbarra.g.6.0.svg"),
+			new File(SVG2XMLFixtures.FLOW_DIR, "SAGE_Sbarra.g.6.0.svg"),
 			outRoot
 		);
 		createArrows(outRoot, 0);

@@ -31,7 +31,7 @@ public class LayoutDemos {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
-	private final static File ELS_DIR = new File(Fixtures.TABLE_PDF_DIR, "els");
+	private final static File ELS_DIR = new File(SVG2XMLFixtures.TABLE_PDF_DIR, "els");
 	private final static File DEMOS_DIR = new File("demos");
 	private final static File CLINICAL_SVG_DIR = new File(DEMOS_DIR, "clinical/svg");
 	private final static File TARGET_SVG = new File("target/svg");

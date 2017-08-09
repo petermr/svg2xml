@@ -15,7 +15,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLine;
@@ -368,7 +368,7 @@ public class ScriptContainerTest {
 	@Test
 	public void testIndents() {
 		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.SVG_MULTIPLE_2_2_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.SVG_MULTIPLE_2_2_SVG);
 		RealRange xRange = textContainer.getXRange();
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
 		List<ScriptLine> scriptLineList = sc.getScriptLineList();
@@ -397,7 +397,7 @@ public class ScriptContainerTest {
 	@Test
 	public void testParagraphs() {
 		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.SVG_MULTIPLE_2_2_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.SVG_MULTIPLE_2_2_SVG);
 		RealRange xRange = textContainer.getXRange();
 		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
 		List<ScriptLine> scriptLineList = sc.getScriptLineList();
@@ -484,10 +484,10 @@ public class ScriptContainerTest {
 			Double leftIndent = scriptLine.getLeftIndent(xRange);
 			LOG.trace(" L "+(int)(double)leftIndent+" R "+(int)(double)rightIndent+" "+scriptLine);
 			if (scriptLine.indentCouldStartParagraph(xRange)) {
-				LOG.debug(">> "+scriptLine);
+				LOG.trace(">> "+scriptLine);
 			}
 			if (scriptLine.couldEndParagraph(xRange)) {
-				LOG.debug("<< "+scriptLine);
+				LOG.trace("<< "+scriptLine);
 			}
 		}
 	}

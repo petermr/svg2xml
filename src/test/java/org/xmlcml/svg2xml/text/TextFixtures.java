@@ -8,51 +8,51 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.container.ScriptContainerTest;
 
 public class TextFixtures {
 
-	public final static File ACS_072516_6_4SB_SVG = new File(Fixtures.TEXT_DIR, "acs072516.chunk6.4Sb.svg");
-	public final static File ACS_072516_6_5SA_SVG = new File(Fixtures.TEXT_DIR, "acs072516.chunk6.5Sa.svg");
-	public final static File AJC_01182_2_5SA_SVG = new File(Fixtures.TEXT_DIR, "ajc01182.chunk2.5Sa.svg");
-	public final static File BMC_174_1_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page1.svg");
-	public final static File BMC_174_1_6_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page1.6.svg");
-	public final static File BMC_174_1_8_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page1.8.svg");
-	public final static File BMC_174_4_3_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page4.3.svg");
-	public final static File BMC_174_5_2_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page5.2.svg");
-	public final static File BMC_174_5_3SA_SVG = new File(Fixtures.TEXT_DIR, "bmc174.chunk5.3Sa.svg");
-	public final static File BMC_174_6_3SA_SVG = new File(Fixtures.TEXT_DIR, "bmc174.chunk6.3Sa.svg");
-	public final static File BMC_174_6_4_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page6.4.svg");
-	public final static File BMC_174_9_3_SVG = new File(Fixtures.TEXT_DIR, "bmc174.page9.3.svg");
-	public final static File BMC_312_1_4SA_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk1.4Sa.svg");
-	public final static File BMC_312_1_7DA_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk1.7Da.svg");
-	public final static File BMC_312_1_10SA_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk1.10Sa.svg");
-	public final static File BMC_312_2_4SC_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk2.4Sc.svg");
-	public final static File BMC_312_6_0SA_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.0Sa.svg");
-	public final static File BMC_312_6_0SA0_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.0Sa0.svg");
-	public final static File BMC_312_6_0SA1_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.0Sa1.svg");
-	public final static File BMC_312_6_1SA_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.1Sa.svg");
-	public final static File BMC_312_6_3SA_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.3Sa.svg");
-	public final static File BMC_312_6_4SA_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.4Sa.svg");
-	public final static File BMC_312_6_4SB_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.4Sb.svg");
-	public final static File BMC_312_6_4SB3_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk6.4Sb3.svg");
-	public final static File BMC_312_12_7SB_SVG = new File(Fixtures.TEXT_DIR, "bmc312.chunk12.7Sb.svg");
-	public final static File MDPI_27_4_1SA_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa.svg");
-	public final static File MDPI_27_4_1SA0_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk4.1Sa0.svg");
-	public final static File MDPI_27_18_7SA_SVG = new File(Fixtures.TEXT_DIR, "mdpi27.chunk18.7Sa.svg");
+	public final static File ACS_072516_6_4SB_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "acs072516.chunk6.4Sb.svg");
+	public final static File ACS_072516_6_5SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "acs072516.chunk6.5Sa.svg");
+	public final static File AJC_01182_2_5SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "ajc01182.chunk2.5Sa.svg");
+	public final static File BMC_174_1_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.page1.svg");
+	public final static File BMC_174_1_6_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.page1.6.svg");
+	public final static File BMC_174_1_8_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.page1.8.svg");
+	public final static File BMC_174_4_3_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.page4.3.svg");
+	public final static File BMC_174_5_2_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.page5.2.svg");
+	public final static File BMC_174_5_3SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.chunk5.3Sa.svg");
+	public final static File BMC_174_6_3SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.chunk6.3Sa.svg");
+	public final static File BMC_174_6_4_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.page6.4.svg");
+	public final static File BMC_174_9_3_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc174.page9.3.svg");
+	public final static File BMC_312_1_4SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk1.4Sa.svg");
+	public final static File BMC_312_1_7DA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk1.7Da.svg");
+	public final static File BMC_312_1_10SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk1.10Sa.svg");
+	public final static File BMC_312_2_4SC_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk2.4Sc.svg");
+	public final static File BMC_312_6_0SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.0Sa.svg");
+	public final static File BMC_312_6_0SA0_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.0Sa0.svg");
+	public final static File BMC_312_6_0SA1_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.0Sa1.svg");
+	public final static File BMC_312_6_1SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.1Sa.svg");
+	public final static File BMC_312_6_3SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.3Sa.svg");
+	public final static File BMC_312_6_4SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.4Sa.svg");
+	public final static File BMC_312_6_4SB_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.4Sb.svg");
+	public final static File BMC_312_6_4SB3_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk6.4Sb3.svg");
+	public final static File BMC_312_12_7SB_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "bmc312.chunk12.7Sb.svg");
+	public final static File MDPI_27_4_1SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "mdpi27.chunk4.1Sa.svg");
+	public final static File MDPI_27_4_1SA0_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "mdpi27.chunk4.1Sa0.svg");
+	public final static File MDPI_27_18_7SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "mdpi27.chunk18.7Sa.svg");
 	
-	public final static File NPG_00788_5_3SA_SVG = new File(Fixtures.TEXT_DIR, "npg00778.chunk5.3Sa.svg");
-	public final static File NPG_00778_5_4SA_SVG = new File(Fixtures.TEXT_DIR, "npg00778.chunk5.4Sa.svg");
+	public final static File NPG_00788_5_3SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "npg00778.chunk5.3Sa.svg");
+	public final static File NPG_00778_5_4SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "npg00778.chunk5.4Sa.svg");
 
 
-	public final static File PEERJ_50_12_6SB_SVG = new File(Fixtures.TEXT_DIR, "peerj50.chunk12.6Sb.svg");
-	public final static File RSC_B306241d_6_8SA_SVG = new File(Fixtures.TEXT_DIR, "rscb306241d.chunk6.8Sa.svg");
+	public final static File PEERJ_50_12_6SB_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "peerj50.chunk12.6Sb.svg");
+	public final static File RSC_B306241d_6_8SA_SVG = new File(SVG2XMLFixtures.TEXT_DIR, "rscb306241d.chunk6.8Sa.svg");
 	
-	public final static File BMC_312MULT_1_0SA_SVG = new File(Fixtures.MULTIPLE312_DIR, "chunk1.0Sa.svg");
-	public final static File BMC_312MULT_1_1PA_SVG = new File(Fixtures.MULTIPLE312_DIR, "chunk1.1Pa.svg");
-	public final static File BMC_312MULT_1_2DA_SVG = new File(Fixtures.MULTIPLE312_DIR, "chunk1.2Da.svg");
-	public final static File BMC_312MULT_1_3SA_SVG = new File(Fixtures.MULTIPLE312_DIR, "chunk1.3Sa.svg");
+	public final static File BMC_312MULT_1_0SA_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "chunk1.0Sa.svg");
+	public final static File BMC_312MULT_1_1PA_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "chunk1.1Pa.svg");
+	public final static File BMC_312MULT_1_2DA_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "chunk1.2Da.svg");
+	public final static File BMC_312MULT_1_3SA_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "chunk1.3Sa.svg");
 	public static final String[][] BMC_312MULT_1_0_HTML = {
 		{"Hiwatashi ", "<I>et al</I>", ". ", "<I>BMC Evolutionary Biology </I>", "2011, ", "<B>11</B>", ":312"}, 
 		{"http://www.biomedcentral.com/1471-2148/11/312"}	
@@ -62,10 +62,10 @@ public class TextFixtures {
 		{"<B>RESEARCH ARTICLE Open Access</B>"}
 	};
 	
-	public static final File BMC_312MULT_8_SVG = new File(Fixtures.MULTIPLE312_DIR, "page8.svg");
-	public static final File BMC_312MULT_8_0_SVG = new File(Fixtures.MULTIPLE312_DIR, "chunk8.0Sa.svg");
-	public static final File BMC_312MULT_8_1_SVG = new File(Fixtures.MULTIPLE312_DIR, "chunk8.1Sa.svg");	
-	public static final File BMC_312MULT_8_2_SVG = new File(Fixtures.MULTIPLE312_DIR, "chunk8.2Da.svg");	
+	public static final File BMC_312MULT_8_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "page8.svg");
+	public static final File BMC_312MULT_8_0_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "chunk8.0Sa.svg");
+	public static final File BMC_312MULT_8_1_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "chunk8.1Sa.svg");	
+	public static final File BMC_312MULT_8_2_SVG = new File(SVG2XMLFixtures.MULTIPLE312_DIR, "chunk8.2Da.svg");	
 	
 	public static final String[][] BMC_312MULT_8_0_HTML = {
 		{"Hiwatashi ", "<I>et al</I>", ". ", "<I>BMC Evolutionary Biology </I>", "2011, ", "<B>11</B>", ":312"}, 
@@ -105,7 +105,17 @@ public class TextFixtures {
 				}
 				Assert.assertEquals("line"+i, values[i].length, styleSpans.size());
 				for (int j = 0; j < values[i].length; j++) {
-					Assert.assertEquals("line"+i+","+j, values[i][j], styleSpans.get(j).toString());
+					try {
+						Assert.assertEquals("line"+i+","+j, values[i][j], styleSpans.get(j).toString());
+					} catch (RuntimeException e) {
+						if (e.getMessage().startsWith("missing font-size")) {
+							throw e;
+//							LOG.debug("bug in  testSpans");
+//							continue;
+						} else {
+							throw e;
+						}
+					}
 				}
 			}
 		}

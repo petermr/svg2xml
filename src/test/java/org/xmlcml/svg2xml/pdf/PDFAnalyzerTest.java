@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class PDFAnalyzerTest {
 
@@ -16,7 +16,7 @@ public class PDFAnalyzerTest {
 	//@Ignore
 	public void testPDFAnalyzerPDFWithSVG() {
 		PDFAnalyzer analyzer = new PDFAnalyzer();
-		analyzer.analyzePDFFile(Fixtures.MULTIPLE312_PDF);
+		analyzer.analyzePDFFile(SVG2XMLFixtures.MULTIPLE312_PDF);
 	}
 
 

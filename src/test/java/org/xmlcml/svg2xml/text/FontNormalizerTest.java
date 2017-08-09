@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 
 
@@ -29,7 +29,7 @@ public class FontNormalizerTest {
 
 	@Before
 	public void setup() {
-		File file = new File(Fixtures.FONT_DIR, "fontweights.svg");
+		File file = new File(SVG2XMLFixtures.FONT_DIR, "fontweights.svg");
 		try {
 			GraphicsElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(file));
 			textList = SVGText.extractSelfAndDescendantTexts(svgElement);

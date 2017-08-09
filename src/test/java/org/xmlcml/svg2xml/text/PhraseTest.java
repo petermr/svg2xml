@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class PhraseTest {
 	private static final Logger LOG = Logger.getLogger(PhraseTest.class);
@@ -22,14 +22,14 @@ public class PhraseTest {
 	@Before
 	public void setup() {
 		TextStructurer BERICHT_PAGE6_TXTSTR = 
-				TextStructurer.createTextStructurerWithSortedLines(Fixtures.BERICHT_PAGE6_SVG);
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
 		List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
 		BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 	}
 
 	@Test
 	public void testPhraseList() {
-		TextLine textLine = TextStructurer.createTextLine(Fixtures.RAWWORDS_SVG, 0);
+		TextLine textLine = TextStructurer.createTextLine(SVG2XMLFixtures.RAWWORDS_SVG, 0);
 		List<Phrase> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 1, phraseList.size());
 		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phraseList.get(0).getPrintableString());

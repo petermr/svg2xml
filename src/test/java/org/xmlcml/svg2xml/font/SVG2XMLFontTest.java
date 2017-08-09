@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class SVG2XMLFontTest {
 
@@ -26,7 +26,7 @@ public class SVG2XMLFontTest {
 
 	@Test
 	public void readCorpus() {
-		GraphicsElement bmc = SVGElement.readAndCreateSVG(Fixtures.BMC_RUNNING_NORMAL_SVG);
+		GraphicsElement bmc = SVGElement.readAndCreateSVG(SVG2XMLFixtures.BMC_RUNNING_NORMAL_SVG);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(bmc);
 		SVG2XMLFont font = new SVG2XMLFont("bmc.running");
 		for (int i = 0; i < textList.size() - 1; i++) {
@@ -39,7 +39,7 @@ public class SVG2XMLFontTest {
 
 	@Test
 	public void readCorpusAndWidths() {
-		GraphicsElement bmc = SVGElement.readAndCreateSVG(Fixtures.BMC_RUNNING_NORMAL_SVG);
+		GraphicsElement bmc = SVGElement.readAndCreateSVG(SVG2XMLFixtures.BMC_RUNNING_NORMAL_SVG);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(bmc);
 		SVG2XMLFont font = new SVG2XMLFont("bmc.running");
 		font.addTextListAndGenerateSizes(textList);
@@ -48,7 +48,7 @@ public class SVG2XMLFontTest {
 
 	@Test
 	public void readCorpusAndWidths32() {
-		GraphicsElement bmc = SVGElement.readAndCreateSVG(Fixtures.IMAGE_3_2_SVG);
+		GraphicsElement bmc = SVGElement.readAndCreateSVG(SVG2XMLFixtures.IMAGE_3_2_SVG);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(bmc);
 		SVG2XMLFont font = new SVG2XMLFont("image.3.2");
 		font.addTextListAndGenerateSizes(textList);

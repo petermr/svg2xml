@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.builder.GeometryBuilder;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.Word;
@@ -21,7 +21,7 @@ public class WordBuilderTest {
 
 	@Test
 	public void testWordList() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.8.2.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.8.2.svg")));
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 16, wordList.size());
@@ -31,7 +31,7 @@ public class WordBuilderTest {
 
 	@Test
 	public void testWordList1() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2a.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2a.svg")));
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 130, wordList.size());
@@ -48,7 +48,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testWordListAllWords() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2.svg")));
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 410, wordList.size());
@@ -81,7 +81,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testHorizontalWordOrientation() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
@@ -119,7 +119,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testVerticalWordOrientation() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "image.g.3.2.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
@@ -130,7 +130,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testHorizontalScience() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
@@ -151,7 +151,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testVerticalScience() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
@@ -163,7 +163,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testHorizontalScienceSmall() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
@@ -174,7 +174,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testHorizontalScienceSmallSuscript() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
 		HtmlElement htmlElement = geometryBuilder.createHtmlElement();
 		Assert.assertNotNull(htmlElement);
@@ -184,7 +184,7 @@ public class WordBuilderTest {
 	
 	@Test
 	public void testVerticalScienceSmall() {
-		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
+		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
 		List<Word> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
@@ -196,7 +196,7 @@ public class WordBuilderTest {
 	@Test
 	public void testVerticalScienceSmallSuscript() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
-				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
+				new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
 		HtmlElement htmlElement = geometryBuilder.createHtmlElement();
 		Assert.assertNotNull(htmlElement);
