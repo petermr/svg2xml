@@ -7,7 +7,13 @@
     <properties>
        <svg2xml.version>2.2.0-SNAPSHOT</svg2xml.version>
        <!--  upstream -->
+       <!-- remove this from the chain -->
+       <!-- 
        <pdf2svg.version>2.2.0-SNAPSHOT</pdf2svg.version>
+       -->
+       <!-- the later version with PDFBox 2.0.6 -->
+<!--        <pdf2svg.version>2.3.0-SNAPSHOT</pdf2svg.version> -->
+       <html.version>2.2.0-SNAPSHOT</html.version>
     </properties>
 
     <groupId>org.contentmine</groupId>
@@ -16,10 +22,17 @@
     <description>Takes SVG from PDF2SVG and analyzes the domain-independent semantics</description>
 
     <dependencies>
+    <!-- 
         <dependency>
             <groupId>org.contentmine</groupId>
             <artifactId>pdf2svg</artifactId>
             <version>${pdf2svg.version}</version>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>org.contentmine</groupId>
+            <artifactId>html</artifactId>
+            <version>${html.version}</version>
         </dependency>
     </dependencies>
 
