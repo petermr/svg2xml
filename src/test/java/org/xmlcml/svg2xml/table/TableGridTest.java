@@ -14,7 +14,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class TableGridTest {
 
@@ -25,7 +25,7 @@ public class TableGridTest {
 
 	@Test
 	public void testReadRelative() throws FileNotFoundException {
-		File cellFile = new File(Fixtures.TABLE_DIR, "els/table1top.svg");
+		File cellFile = new File(SVG2XMLFixtures.TABLE_DIR, "els/table1top.svg");
 		SVGSVG svg = (SVGSVG) SVGUtil.parseToSVGElement(new FileInputStream(cellFile)); 
 		List<SVGShape> shapeList = SVGUtil.makeShapes(svg);
 	}

@@ -27,7 +27,7 @@ import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTd;
 import org.xmlcml.html.HtmlTr;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
@@ -339,7 +339,7 @@ public class TableStructurerTest {
 	
 	@Test
 	public void testAMARulers() throws IOException {
-		File inputFile = new File(Fixtures.TABLE_DIR, AMA_DOBSON_G_6_4_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, AMA_DOBSON_G_6_4_SVG);
 		String outputRoot = "ama";
 		int horizontalRulerCount = 26;
 		TableStructurer tableStructurer = testHorizontalRulers(inputFile, outputRoot, horizontalRulerCount);
@@ -388,7 +388,7 @@ public class TableStructurerTest {
 	@Test
 	@Ignore
 	public void testAA_Kranke() {
-		File inputFile = new File(Fixtures.TABLE_DIR, AA_KRANKE_G_2_3_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, AA_KRANKE_G_2_3_SVG);
 		int superscript = 99; 
 		int subscript = 6;
 		testSuscripts(inputFile, superscript, subscript);
@@ -397,7 +397,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testACRSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, ACR_G_7_2_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ACR_G_7_2_SVG);
 		int superscript = 1; // this is false, it is a misaligned multiline
 		int subscript = 6;
 		testSuscripts(inputFile, superscript, subscript);
@@ -406,7 +406,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testADA1Suscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, ADA1_G_4_0_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ADA1_G_4_0_SVG);
 		int superscript = 1; // all 3 on same TextLine BUT the chi is missing
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -415,7 +415,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testADA2Suscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, ADA2_G_4_3_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ADA2_G_4_3_SVG);
 		int superscript = 0;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -427,7 +427,7 @@ public class TableStructurerTest {
 	 * 
 	 */
 	public void testAHASuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, ADA2_G_4_3_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ADA2_G_4_3_SVG);
 		int superscript = 0;  // should be one - bad typesetting
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -436,7 +436,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testAMADobsonSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, AMA_DOBSON_G_6_4_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, AMA_DOBSON_G_6_4_SVG);
 		int superscript = 3;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -445,7 +445,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testAPANuitjenSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, APA_NUITJEN_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, APA_NUITJEN_SVG);
 		int superscript = 5;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -454,7 +454,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testBLK1Suscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, BLK_JPR_PARTIAL_G_2_8_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, BLK_JPR_PARTIAL_G_2_8_SVG);
 		int superscript = 0;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -463,7 +463,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testBLK2Suscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, BLK_SAM_PARTIAL_G_6_9_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, BLK_SAM_PARTIAL_G_6_9_SVG);
 		int superscript = 3;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -472,7 +472,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testELSSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
 		int superscript = 0;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -480,7 +480,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testELS2Suscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, ELS2_G_4_17_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ELS2_G_4_17_SVG);
 		int superscript = 0;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -488,7 +488,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testLPWSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, LPW_REISINGER_G_4_5_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, LPW_REISINGER_G_4_5_SVG);
 		int superscript = 1;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -496,7 +496,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testOUPSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, OUP_PARTIAL_G_2_4_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, OUP_PARTIAL_G_2_4_SVG);
 		int superscript = 0;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -504,7 +504,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testPLOSSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, PLOS57170_G_2_8_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, PLOS57170_G_2_8_SVG);
 		int superscript = 9; // some superscripts on same line
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -512,7 +512,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testSpringerSuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, SPRINGER68755_G_7_0_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, SPRINGER68755_G_7_0_SVG);
 		int superscript = 1;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -520,7 +520,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testTEX1Suscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, TEX_AUSLOOS2016_G_5_0_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, TEX_AUSLOOS2016_G_5_0_SVG);
 		int superscript = 2;
 		int subscript = 4;
 		testSuscripts(inputFile, superscript, subscript);
@@ -528,7 +528,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testTEX2Suscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, TEX_AUSLOOS2016_G_5_1_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, TEX_AUSLOOS2016_G_5_1_SVG);
 		int superscript = 0;
 		int subscript = 2;
 		testSuscripts(inputFile, superscript, subscript);
@@ -536,7 +536,7 @@ public class TableStructurerTest {
 
 	@Test
 	public void testWileySuscripts() {
-		File inputFile = new File(Fixtures.TABLE_DIR, WILEY44386_G_4_1_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, WILEY44386_G_4_1_SVG);
 		int superscript = 0;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
@@ -547,7 +547,7 @@ public class TableStructurerTest {
 		// 1092 - Table 4
 		String root = "els_1092";
 		File outDir = new File(TABLE_OUT_DIR, root+"/");
-		File pdfIn = new File(Fixtures.TABLE_PDF_DIR, root+".pdf");
+		File pdfIn = new File(SVG2XMLFixtures.TABLE_PDF_DIR, root+".pdf");
 		outDir.mkdirs();
 		String[] args = {"-outdir", outDir.toString(), pdfIn.toString()};
 		PDFAnalyzer.main(args);
@@ -558,7 +558,7 @@ public class TableStructurerTest {
 	@Test
 	@Ignore // obsolete
 	public void testELSTableRangesArray() throws IOException {
-		File inputFile = new File(Fixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
 		String outRoot = "els_Petaja2009.ranges";
 //		"{0, 3}/{3, 3}/{3, 4}/{4, 10}/{11, 13}"
 		IntRangeArray rangesArray = new IntRangeArray(
@@ -586,7 +586,7 @@ public class TableStructurerTest {
 	@Ignore // throws null RangeArray
 	// FIXME
 	public void testELSTableAuto() throws IOException {
-		File inputFile = new File(Fixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
 		IntRangeArray rangesArray = null;
 		String outRoot = "els_Petaja2009.auto";
 

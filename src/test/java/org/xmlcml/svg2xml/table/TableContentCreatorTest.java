@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.SuscriptEditor;
 import org.xmlcml.xml.XMLUtil;
@@ -26,7 +26,7 @@ public class TableContentCreatorTest {
 	private static final double IMG_XSCALE = 700.0;
 	@Test
 	public void testSimple1() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "grid/simple1.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "grid/simple1.svg");
 		File outDir = new File("target/table/grid/");
 		// refactor this stack
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
@@ -37,7 +37,7 @@ public class TableContentCreatorTest {
 	
 	@Test
 	public void testTable1() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "grid/table1.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "grid/table1.svg");
 		File outDir = new File("target/table/grid/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile, outDir);
@@ -45,7 +45,7 @@ public class TableContentCreatorTest {
 
 	@Test
 	public void testSimple2() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "grid/simple2.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "grid/simple2.svg");
 		File outDir = new File("target/table/grid/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile, outDir);
@@ -53,7 +53,7 @@ public class TableContentCreatorTest {
 
 	@Test
 	public void testSimple3() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "grid/simple3.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "grid/simple3.svg");
 		File outDir = new File("target/table/grid/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile, outDir);
@@ -65,7 +65,7 @@ public class TableContentCreatorTest {
 
 	@Test
 	public void testSimple4() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "grid/simple4.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "grid/simple4.svg");
 		File outDir = new File("target/table/grid/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile, outDir);
@@ -76,7 +76,7 @@ public class TableContentCreatorTest {
 	// not yet solved
 	@Test
 	public void testBox1() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "box/table1.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "box/table1.svg");
 		File outDir = new File("target/table/box/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile, outDir);
@@ -85,10 +85,10 @@ public class TableContentCreatorTest {
 	@Test
 	// 	10.1016_j.pain.2014.09.020
 	public void testGlueTables() {
-		File inputFile1 = new File(Fixtures.TABLE_DIR, "glue/table3.svg");
-		File inputFile1cont = new File(Fixtures.TABLE_DIR, "glue/table3cont.svg");
-		File inputFile1annot = new File(Fixtures.TABLE_DIR, "glue/table3.svg");
-		File inputFile1annotcont = new File(Fixtures.TABLE_DIR, "glue/table3cont.svg");
+		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "glue/table3.svg");
+		File inputFile1cont = new File(SVG2XMLFixtures.TABLE_DIR, "glue/table3cont.svg");
+		File inputFile1annot = new File(SVG2XMLFixtures.TABLE_DIR, "glue/table3.svg");
+		File inputFile1annotcont = new File(SVG2XMLFixtures.TABLE_DIR, "glue/table3cont.svg");
 		File outDir = new File("target/table/glue/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
@@ -101,7 +101,7 @@ public class TableContentCreatorTest {
 	 */
 	public void testSimple2Html() throws IOException {
 //		cm-ucl/corpus-oa-pmr/10.1016_j.pain.2014.09.033/pdftable/table1.annot.svg
-		File inputFile1 = new File(Fixtures.TABLE_DIR, "html/simple/10.1016_j.pain.2014.09.033.annot.svg");
+		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "html/simple/10.1016_j.pain.2014.09.033.annot.svg");
 //		10.1016_j.jadohealth.2016.10.001/pdftable/table3.annot.svg
 //		File inputFile1 = new File(Fixtures.TABLE_DIR, "html/table3.annot.svg");
 		File outDir = new File("target/table/html/simple");
@@ -113,7 +113,7 @@ public class TableContentCreatorTest {
 	@Ignore
 	// spurious SVGText with whitespace content
 	public void testWhitespaceProblem() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "whitespace/table1.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "whitespace/table1.svg");
 		File outDir = new File("target/table/whitespace/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile, outDir);
@@ -126,7 +126,7 @@ public class TableContentCreatorTest {
 	 */
 	public void testIndents() throws IOException {
 //		cm-ucl/corpus-oa-pmr/10.1186_1471-2431-13-190/pdftable/table1.annot.svg
-		File inputFile1 = new File(Fixtures.TABLE_DIR, "indent/10.1186_1471-2431-13-190.annot.svg");
+		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "indent/10.1186_1471-2431-13-190.annot.svg");
 		File outDir = new File("target/table/indent/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.createHTML(inputFile1, outDir);
@@ -139,7 +139,7 @@ public class TableContentCreatorTest {
 	 */
 	public void testSplitColumn() throws IOException {
 //		cm-ucl/corpus-oa-pmr/1	10.1179_1743132815Y.0000000050/pdftable/table5.annot.svg
-		File inputFile1 = new File(Fixtures.TABLE_DIR, "splitcol/10.1179_1743132815Y.0000000050.annot.svg");
+		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "splitcol/10.1179_1743132815Y.0000000050.annot.svg");
 		File outDir = new File("target/table/splitcol/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.createHTML(inputFile1, outDir);
@@ -153,7 +153,7 @@ public class TableContentCreatorTest {
 	 */
 	public void testSuscriptSVG() throws IOException {
 //		cm-ucl/corpus-oa-pmr/10.1371_journal.pbio.1000481/pdftable/table1.annot.svg
-		File inputFile1 = new File(Fixtures.TABLE_DIR, "suscript/10.1371_journal.pbio.1000481.svg");
+		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "suscript/10.1371_journal.pbio.1000481.svg");
 		File outDir = new File("target/table/suscript/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
@@ -170,7 +170,7 @@ public class TableContentCreatorTest {
 	 */
 	public void testSuscriptSVG1() throws IOException {
 		// output of PDF2SVG 
-		File inputFile1 = new File(Fixtures.TABLE_DIR, "suscript/10.1007_s00213-015-4198-1.svg");
+		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "suscript/10.1007_s00213-015-4198-1.svg");
 		File outDir = new File("target/table/suscript/");
 		// TableContentCreator is the top-level engine for tables
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
@@ -202,8 +202,9 @@ public class TableContentCreatorTest {
 	 * isolated superscripts
 	 * @throws IOException
 	 */
+	@Ignore // too long
 	public void testTables() throws IOException {
-		File[] files = Fixtures.TABLE_DIR.listFiles();
+		File[] files = SVG2XMLFixtures.TABLE_DIR.listFiles();
 		File outDir = new File("target/table/tableFiles/");
 		for (File file : files) {
 			String filename = file.toString();
@@ -243,7 +244,7 @@ public class TableContentCreatorTest {
 	 */
 	public void testSuscriptHTML() throws IOException {
 //		cm-ucl/corpus-oa-pmr/10.1371_journal.pbio.1000481/pdftable/table1.annot.svg
-		File inputFile1 = new File(Fixtures.TABLE_DIR, "suscript/10.1371_journal.pbio.1000481.annot.svg");
+		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "suscript/10.1371_journal.pbio.1000481.annot.svg");
 		File outDir = new File("target/table/suscript/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.createHTML(inputFile1, outDir);

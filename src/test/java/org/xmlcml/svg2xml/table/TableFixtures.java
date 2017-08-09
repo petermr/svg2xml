@@ -11,20 +11,20 @@ import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.xml.XMLUtil;
 
 public class TableFixtures {
 
 	// full table
-	public final static File TABLEFILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.svg");
-	public final static File TDBLOCKFILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.tdbody.svg");
-	public final static File CELL00FILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.cell.0.0.svg");
+	public final static File TABLEFILE = new File(SVG2XMLFixtures.ANALYZER_DIR, "bmc174.table1.svg");
+	public final static File TDBLOCKFILE = new File(SVG2XMLFixtures.ANALYZER_DIR, "bmc174.table1.tdbody.svg");
+	public final static File CELL00FILE = new File(SVG2XMLFixtures.ANALYZER_DIR, "bmc174.table1.cell.0.0.svg");
 	
-	public final static File HROWFILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.hrow.svg");
-	public final static File HROW0FILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.hrow.0.svg");
-	public final static File HROW1FILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.hrow.1.svg");
-	public final static File HROW2FILE = new File(Fixtures.ANALYZER_DIR, "bmc174.table1.hrow.2.svg");
+	public final static File HROWFILE = new File(SVG2XMLFixtures.ANALYZER_DIR, "bmc174.table1.hrow.svg");
+	public final static File HROW0FILE = new File(SVG2XMLFixtures.ANALYZER_DIR, "bmc174.table1.hrow.0.svg");
+	public final static File HROW1FILE = new File(SVG2XMLFixtures.ANALYZER_DIR, "bmc174.table1.hrow.1.svg");
+	public final static File HROW2FILE = new File(SVG2XMLFixtures.ANALYZER_DIR, "bmc174.table1.hrow.2.svg");
 	
 	public static final String TEXT_OR_PATH_XPATH = ".//svg:text|//svg:path";
 	public static final String PATH_XPATH = ".//svg:path";

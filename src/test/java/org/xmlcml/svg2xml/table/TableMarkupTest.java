@@ -11,7 +11,7 @@ import org.xmlcml.euclid.IntRange;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlHtml;
-import org.xmlcml.svg2xml.Fixtures;
+import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class TableMarkupTest {
 
@@ -22,7 +22,7 @@ public class TableMarkupTest {
 
 	@Test
 	public void testHeaderRowList() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		HtmlHtml html = tableContentCreator.createHTMLFromSVG(inputFile);
 		TableHeaderSection headerSection = tableContentCreator.getOrCreateTableHeaderSection(); 
@@ -45,7 +45,7 @@ public class TableMarkupTest {
 	
 	@Test
 	public void testColumnManagerList() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		HtmlHtml html = tableContentCreator.createHTMLFromSVG(inputFile);
 		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
@@ -76,7 +76,7 @@ public class TableMarkupTest {
 	
 	@Test
 	public void testHeaderAreas() {
-		File inputFile = new File(Fixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		System.out.println();
 		tableContentCreator.createHTMLFromSVG(inputFile);
@@ -97,7 +97,7 @@ public class TableMarkupTest {
 	public void testHeaderAreasAA_Kranke() {
 		String root = "AA_Kranke";
 		String inputFilename = root+".g.2.3.svg";
-		File inputFile = new File(Fixtures.TABLE_DIR, inputFilename);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, inputFilename);
 		File outputFile = new File("target/table/"+root+"/table.g.2.3.svg");
 		GraphicsElement svgChunk = new TableContentCreator().annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
@@ -251,7 +251,7 @@ public class TableMarkupTest {
 	
 	private void annotateAndOutput(String root, String filename, int nHeaderCols, int nBodyCols) {
 		String inputFilename = root+filename;
-		File inputFile = new File(Fixtures.TABLE_DIR, inputFilename);
+		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, inputFilename);
 		File outputFile = new File("target/table/marked/"+root+"/table"+filename);
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		LOG.trace("reading "+inputFilename);
