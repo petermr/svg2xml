@@ -8,10 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import nu.xom.Attribute;
-import nu.xom.Element;
-import nu.xom.Elements;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
@@ -23,8 +19,11 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager.BoxEdge;
-import org.xmlcml.pdf2svg.util.PDF2SVGUtil;
 import org.xmlcml.svg2xml.page.PageIO;
+
+import nu.xom.Attribute;
+import nu.xom.Element;
+import nu.xom.Elements;
 
 /**
  * Chunk tags an SVG container (svg:g or svg:svg) as a chunk. 
@@ -47,7 +46,7 @@ public class Chunk extends SVGG {
 	private GraphicsElement originalSVGElement;
 	
 	protected Chunk() {
-		PDF2SVGUtil.setSVGXAttribute(this, ROLE, CHUNK);
+		SVGUtil.setSVGXAttribute(this, ROLE, CHUNK);
 	}
 
 	public Chunk(GraphicsElement svgElement) {

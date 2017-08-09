@@ -14,8 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import nu.xom.Element;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Level;
@@ -23,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.pdf2svg.PDF2SVGConverter;
+import org.xmlcml.svg2xml.PDF2SVGConverterNew;
 import org.xmlcml.svg2xml.collection.DocumentListAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.PageIO;
@@ -280,7 +278,7 @@ public class PDFAnalyzer {
 
 	public void createSVGFilesfromPDF() {
 		LOG.trace("createSVG");
-		PDF2SVGConverter converter = new PDF2SVGConverter();
+		PDF2SVGConverterNew converter = new PDF2SVGConverterNew();
 		File inFile = pdfIo.getInFile();
 		String inputName = pdfIo.getInputName();
 		if (inFile != null && inFile.exists()) {
@@ -293,7 +291,8 @@ public class PDFAnalyzer {
 		}
 	}
 
-	public void createSVGFilesfromPDF(PDF2SVGConverter converter, String inputName) {
+	public void createSVGFilesfromPDF(PDF2SVGConverterNew converter, String inputName) {
+		if (true) LOG.debug("PDF2SVGConverter skipped");
 		File svgDocumentDir = pdfIo.getRawSVGDirectory();
 		File[] files = (svgDocumentDir == null ? null : svgDocumentDir.listFiles());
 		if (!svgDocumentDir.exists() || files == null || files.length == 0) {

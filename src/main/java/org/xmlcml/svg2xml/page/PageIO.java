@@ -6,23 +6,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Element;
-import nu.xom.Node;
-import nu.xom.Text;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.util.SVGSerializer;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.pdf2svg.SVGSerializer;
 import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzerIO;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Element;
+import nu.xom.Node;
+import nu.xom.Text;
 
 public class PageIO {
 
