@@ -572,7 +572,7 @@ public class ScriptLine implements Iterable<TextLine> {
 					double deltaX = x - lastX;
 					LOG.trace("   DX " +deltaX+" "+deltaX/fontSize);
 					if (deltaX > getSpaceFactor() * fontSize) {
-						insertComputedSpace(currentSpan, lastX, y);
+						insertComputedSpace(currentSpan, lastX, y, fontSize);
 					}
 				}
 				// have any attributes changed?
@@ -618,12 +618,18 @@ public class ScriptLine implements Iterable<TextLine> {
 		return spaceFactor ;
 	}
 
-	private void insertComputedSpace(StyleSpan currentSpan, Double lastX, Double y) {
+	private void insertComputedSpace(StyleSpan currentSpan, Double lastX, Double y, Double defaultFontSize) {
 		Real2 xy = new Real2(lastX, y);
 		if (new Real2(0., 0.).isEqualTo(xy, 0.0000001)) {
-			throw new RuntimeException("Suspicious spave at "+xy);
+			throw new RuntimeException("Suspicious space at "+xy);
 		}
 		SVGText space = new SVGText(xy, " ");
+		Double fontSize = currentSpan.getFontSize();
+		if (fontSize == null) {
+//			throw new RuntimeException("Null fontSize "+currentSpan);
+			fontSize = defaultFontSize;
+		}
+		space.setFontSize(fontSize);
 		currentSpan.addCharacter(space);
 	}
 

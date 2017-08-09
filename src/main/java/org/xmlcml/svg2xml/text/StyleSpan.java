@@ -36,6 +36,9 @@ public class StyleSpan {
 
 	public void addCharacter(SVGText character) {
 		ensureCharacterList();
+		if (character.getFontSize() == null) {
+			throw new RuntimeException("Missing fontSize :::: "+character.toXML());
+		}
 		characterList.add(character);
 	}
 
@@ -94,10 +97,11 @@ public class StyleSpan {
 	}
 
 	
-	public static StyleSpan createSpace() {
+	public static StyleSpan createSpace(Double fontSize) {
 		StyleSpan styleSpan = new StyleSpan();
 		SVGText text = new SVGText();
 		text.setText(" ");
+		text.setFontSize(fontSize);
 		styleSpan.addCharacter(text);
 		return styleSpan;
 	}
@@ -106,12 +110,19 @@ public class StyleSpan {
 		StringBuilder sb = new StringBuilder();
 		SVGText lastText = null;
 		for (SVGText text : characterList) {
+			Double fontSize = text.getFontSize();
+			if (fontSize == null) {
+				throw new RuntimeException("missing fontSize ::: "+text.toXML());
+			}
 			String sp = StyleSpan.computeInterveningSpaces(lastText, text);
 			if (sp != null && !sp.equals("")) {
 				sb.append(sp);
 			}
 			sb.append(text.getText());
 			lastText = text;
+			if (lastText.getFontSize() == null) {
+				lastText.setFontSize(fontSize);
+			}
 		}
 		return sb.toString();
 	}
@@ -129,6 +140,12 @@ public class StyleSpan {
 	public static String computeInterveningSpaces(SVGText lastText, SVGText text) {
 		String spaces = null;
 		if (lastText != null && text != null) {
+			if (lastText.getFontSize() == null) {
+				LOG.debug("Missing fontSize in :"+lastText.toXML());
+			}
+			if (text.getFontSize() == null) {
+				LOG.debug("Missing fontSize in ::"+text.toXML());
+			}
 			 Double x0 = lastText.getBoundingBox().getXMax();
 			 Double x1 = text.getX();
 			 if (x0 != null && x1 != null) {
@@ -159,6 +176,7 @@ public class StyleSpan {
 		Double fontSize = null;
 		for (GraphicsElement character : characterList) {
 			Double fontSize0 = character.getFontSize();
+			
 			// skip inserted spaces
 			if (!Real.isEqual(1.0, fontSize0, EPS) && character.getValue().trim().length() != 0) {
 				LOG.trace("["+character.toXML()+"] "+fontSize0);

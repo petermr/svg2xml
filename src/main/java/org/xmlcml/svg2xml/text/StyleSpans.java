@@ -62,7 +62,7 @@ public class StyleSpans {
 	public void addStyleSpans(StyleSpans styleSpans, boolean insertSpaces) {
 		ensureSSList();
 		if (ssList.size() > 0 && insertSpaces) {
-			ssList.add(StyleSpan.createSpace());
+			ssList.add(StyleSpan.createSpace(styleSpans.getFontSize()));
 		}
 		ssList.addAll(styleSpans.getStyleSpanList());
 	}
