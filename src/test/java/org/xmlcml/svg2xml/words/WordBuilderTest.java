@@ -203,39 +203,5 @@ public class WordBuilderTest {
 		Assert.assertEquals("words",  "<div xmlns=\"http://www.w3.org/1999/xhtml\">Specific luminosity  ν  L <sub>ν  </sub> (erg s <sup>−1</sup> ) </div>",
 				htmlElement.toXML());
 	}
-	
-//	@Test
-//	public void testPaths() {
-//		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
-//				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-//		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());
-//		Assert.assertEquals("paths", 36, pathList.size());
-//	}
-	
-//	@Test
-//	public void testShape() {
-//		SimpleBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
-//				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-//		extractShapes1();
-//		Assert.assertEquals("paths", 36, pathList.size());
-//		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
-//		Assert.assertEquals("shapes", 0, shapeList1.size());
-//		Assert.assertEquals("lines", 6, lineList.size());
-//		for (SVGLine line : lineList) {
-//			LOG.debug("line: "+line);
-//		}
-//		Assert.assertEquals("polylines", 19, polylineList.size());
-//		for (SVGPolyline polyline : polylineList) {
-//			polyline.format(2);
-//			LOG.debug("polyLine: "+polyline.size()+" "+polyline.getBoundingBox().getXRange().getRange()+"/"+polyline.getBoundingBox().getYRange().getRange());
-//		}
-//		System.out.println();
-//		Assert.assertEquals("polygons", 11, polygonList.size());
-//		for (SVGPolygon polygon : polygonList) {
-//			polygon.format(2);
-//			LOG.debug("polygon: "+polygon.size()+" "+polygon.getBoundingBox().getXRange().getRange()+"/"+polygon.getBoundingBox().getYRange().getRange());
-//		}
-//	}
-	
-	
+		
 }

@@ -124,7 +124,7 @@ public class SVG2XMLUtil {
 				filename += SVG2XMLConstantsX.DOT_SVG;
 			}
 			File outFile = new File(dir, filename);
-			if (debug) {LOG.debug("wrote: "+outFile);}
+			if (debug) {LOG.info("wrote: "+outFile);}
 			SVGUtil.debug(svgElement, new FileOutputStream(outFile), 1);
 		} catch (Exception e) {
 			throw new RuntimeException("cannot write", e);

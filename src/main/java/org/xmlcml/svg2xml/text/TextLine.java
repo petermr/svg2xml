@@ -624,49 +624,6 @@ public class TextLine implements Iterable<SVGText> {
 		return subscript;
 	}
 
-//	/** mainly debug
-//	 * 
-//	 * @return
-//	 */
-//	private List<SVGText> createSuscriptString() {
-//		List<SVGText> textList = new ArrayList<SVGText>();
-//		Integer thisIndex = 0;
-//		TextLine superscript = this.getSuperscript();
-//		List<SVGText> superChars = (superscript == null) ? new ArrayList<SVGText>() : superscript.textList;
-//		Integer superIndex = 0;
-//		TextLine subscript = this.getSubscript();
-//		List<SVGText> subChars = (subscript == null) ? new ArrayList<SVGText>() : subscript.textList;
-//		Integer subIndex = 0;
-//		while (true) {
-//			SVGText nextSup = peekNext(superChars, superIndex);
-//			SVGText nextThis = peekNext(textList, thisIndex);
-//			SVGText nextSub = peekNext(subChars, subIndex);
-//			SVGText nextText = textWithLowestX(nextSup, nextThis, nextSub);
-//			if (nextText == null) {
-//				break;
-//			}
-//			SVGText mark = null;
-//			if (nextText.equals(nextSup)) {
-//				superIndex++;
-//				mark = (SVGText) SUP.copy();
-//			} else if (nextText.equals(nextThis)) {
-//				thisIndex++;
-//			} else if (nextText.equals(nextSub)) {
-//				subIndex++;
-//				mark = (SVGText) SUB.copy();
-//			} else {
-//				LOG.debug("NEXT OMITTED");
-//			}
-//			LOG.debug(superIndex+" "+thisIndex+" "+subIndex);
-//			if (mark != null) {
-//				mark.setXY(nextText.getXY());
-//				textList.add(mark);
-//			}
-//			textList.add(nextText);
-//		}
-//		return textList;
-//	}
-
 	/** mainly debug
 	 * 
 	 * @return
@@ -957,8 +914,6 @@ public class TextLine implements Iterable<SVGText> {
 		}
 		String style = word.getFontStyle();
 		String weight = word.getFontWeight();
-//		LOG.debug("weight "+weight+"; style: "+style);
-//		word.pullUpChildAttributes();
 		return rawWords;
 	}
 

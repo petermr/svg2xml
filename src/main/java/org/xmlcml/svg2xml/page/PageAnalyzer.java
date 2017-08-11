@@ -625,7 +625,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 				ImageAnalyzer imageAnalyzer = (ImageAnalyzer) chunkAnalyzer;
 				List<SVGImage> imageList = imageAnalyzer.getImageList();
 				outputImageFiles(chunkId, imageAnalyzer, imageList);
-				LOG.debug("ImageAnalyzer needs writing: "+chunkId);
+				LOG.warn("ImageAnalyzer needs writing: "+chunkId);
 			} else if (chunkAnalyzer instanceof FigureAnalyzer) {
 				throw new RuntimeException("FigureAnalyzer needs writing: "+chunkId);
 			} else if (chunkAnalyzer instanceof MixedAnalyzer) {
@@ -748,7 +748,6 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 	public static PageAnalyzer createAndAnalyze(SVGSVG svg, Integer pageCounter, File rawSvgDirectory) {
-		LOG.debug("new page generator");
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svg);
 		pageAnalyzer.setRawSVGDocumentDir(rawSvgDirectory);
 		pageAnalyzer.setMachinePageNumber(pageCounter);

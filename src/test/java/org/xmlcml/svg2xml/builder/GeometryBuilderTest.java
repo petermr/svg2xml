@@ -19,54 +19,5 @@ public class GeometryBuilderTest {
 	public static final Angle MAX_ANGLE = new Angle(0.12, Units.RADIANS);
 	public static final Double MAX_WIDTH = 2.0;
 
-//	@Test
-//	@Ignore
-//	public void testWords() {
-//		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(Fixtures.IMAGE_2_11_SVG, "bloom-203-6-page3small.svg")));
-//		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());
-//		Assert.assertEquals("paths", 36, pathList.size());
-//	}
-//
-//	@Test
-//	public void testPaths() {
-//		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(
-//				new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
-//		List<SVGPath> pathList = SVGPath.extractPaths(geometryBuilder.getSVGRoot());
-//		Assert.assertEquals("paths", 36, pathList.size());
-//	}
-	
-//	@Test
-//	@Ignore
-//	public void testShape() {
-//		SVGElement svg = SVGElement.readAndCreateSVG(new File(Fixtures.BUILDER_DIR, "bloom-203-6-page3small.svg"));
-//		GeometryBuilder geometryBuilder = new GeometryBuilder(svg);
-//		//geometryBuilder.extractPlotComponents();
-//		geometryBuilder.createDerivedPrimitives();
-//		List<SVGPolygon> polygonList = geometryBuilder.getRawPrimitives().getPolygonList();
-//		List<SVGLine> lineList = geometryBuilder.getRawPrimitives().getLineList();
-//		List<SVGShape> shapeList = geometryBuilder.getRawPrimitives().getShapeList();
-//		List<SVGPolyline> polylineList = geometryBuilder.getRawPrimitives().getPolylineList();
-//		List<SVGPath> pathList = geometryBuilder.getRawPrimitives().getPathList();
-//		Assert.assertEquals("paths", 36, pathList.size());
-//		File file = new File("target/");
-//		file.mkdirs();
-//		SVGSVG.wrapAndWriteAsSVG(svg, new File("target/astro.svg"));
-//		//Assert.assertEquals("shapes", 0, shapeList.size());
-//		Assert.assertEquals("lines", 6, lineList.size());
-//		for (SVGShape line : lineList) {
-//			LOG.debug("line: "+line);
-//		}
-//		Assert.assertEquals("polylines", 19, polylineList.size());
-//		for (SVGPolyline polyline : polylineList) {
-//			polyline.format(2);
-//			LOG.debug("polyLine: "+polyline.size()+" "+polyline.getBoundingBox().getXRange().getRange()+"/"+polyline.getBoundingBox().getYRange().getRange());
-//		}
-//		System.out.println();
-//		Assert.assertEquals("polygons", 11, polygonList.size());
-//		for (SVGPolygon polygon : polygonList) {
-//			polygon.format(2);
-//			LOG.debug("polygon: "+polygon.size()+" "+polygon.getBoundingBox().getXRange().getRange()+"/"+polygon.getBoundingBox().getYRange().getRange());
-//		}
-//	}
 
 }

@@ -258,14 +258,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		Real2Range over2 = bbox2 == null ? null : bbox2.intersectionWith(superBBox);
 		if ((phrase1 == null || over1 != null) ||
 			(phrase2 == null || over2 != null)) {			
-//		Double x1 = bbox1.getXMin();
-//		Double x2 = bbox2.getXMin();
-//		Double superX = superBBox.getXMin();
-//		if ()
-//		Real2Range over = firstBBox == null ? new Real2Range() : firstBBox.intersectionWith(superBBox);
-//		LOG.debug(">ov>"+firstBBox+" / "+superBBox+" / "+over);
-//		if ((thisX == null || (over != null && thisX < superX)) {
-			LOG.debug("OVER "+this.getStringValue()+" / "+superPhrase.getStringValue());
+			LOG.trace("OVER "+this.getStringValue()+" / "+superPhrase.getStringValue());
 			overlap = true;
 		}
 		return overlap;

@@ -144,7 +144,6 @@ public class PlotStructurerTest {
 		}
 		
 		for (SVGShape shape : shapeList) {
-			LOG.debug(shape);
 			if (shape instanceof SVGRect) {
 				shape.setFill("cyan");
 				shape.setOpacity(0.2);
@@ -172,8 +171,6 @@ public class PlotStructurerTest {
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
 		PhraseListList phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
-		
-		LOG.debug(">>>>\n"+phraseListList+"\n>>>>>");
 		
 		Real2 xMargins = new Real2(5.0, 5.0);
 		Real2 yMargins = new Real2(2.0, 2.0);
@@ -246,7 +243,6 @@ public class PlotStructurerTest {
 		for (SVGText text : textList) {
 			if (blackDot.equals(text.getText())) {
 				Real2 xy = text.getXY();
-//				LOG.debug(xy);
 				sb.append(xy.getX()+","+xy.getY()+"\n");
 			}
 		}

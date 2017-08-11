@@ -310,7 +310,7 @@ public class SVG2XMLFixtures {
 	public static SVGSVG getSVGPageFromPDF(File file, int page) {
 		PDF2SVGConverterNew converter = new PDF2SVGConverterNew();
 		converter.run("-outdir target "+file);
-		LOG.debug("PDF2SVGConverter shorted out");
+		LOG.warn("PDF2SVGConverter shorted out");
 		SVGSVG svgPage = (page < 1 || page > converter.getPageList().size() ? null : converter.getPageList().get(page - 1));
 		return svgPage;
 	}
@@ -327,7 +327,6 @@ public class SVG2XMLFixtures {
 
 	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
 		SVGSVG svgPage = SVG2XMLFixtures.getSVGPageFromPDF(pdfFile, pageNum);
-		LOG.debug("svgPage "+svgPage.query(".//*").size());
 		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
 		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgPage);
 		return svgPage;

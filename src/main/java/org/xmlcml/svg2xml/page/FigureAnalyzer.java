@@ -81,7 +81,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 			if (nfig > 0) {
 				LOG.trace("Skipped svg with "+nfig+" PNGs");
 			} else {
-				LOG.debug("writing SVG "+svgName);
+				LOG.trace("writing SVG "+svgName);
 				figureGraphic.createAndWriteImageAndSVG(imageName, div, svgName);
 			}
 		}

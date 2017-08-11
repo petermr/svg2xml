@@ -205,7 +205,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		} else if (lastSectionString.startsWith("Table")) {
 			LOG.trace("title last "+lastSectionString);
 		} else {
-			LOG.debug("***** NO TITLE SECTION ****");//\n"+firstSectionString+"\n"+lastSectionString);
+			LOG.info("***** NO TITLE SECTION ****");//\n"+firstSectionString+"\n"+lastSectionString);
 		}
 		if (rangesArray.size() == 4) {
 			// the commonest
@@ -217,7 +217,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				LOG.trace("small body: "+rangesArray);
 			}
 		} else {
-			LOG.debug("Ranges: "+rangesArray.size()+"; "+rangesArray);
+			LOG.trace("Ranges: "+rangesArray.size()+"; "+rangesArray);
 		}
 
 	}
@@ -440,10 +440,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @throws IOException 
 	 */
 	public void createHTML(File annotSvgFile, File outDir) throws IOException {
-		LOG.debug("reading SVG from "+annotSvgFile);
 		HtmlHtml html = createHtmlFromSVG();
 		File outfile = new File(outDir, annotSvgFile.getName()+".html");
-		LOG.debug("writing HTML to : "+outfile);
 		XMLUtil.debug(html, outfile, 1);
 		
 		

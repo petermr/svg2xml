@@ -596,7 +596,6 @@ public class PageSplitterAndHtmlTest {
 	public static void analyzeChunkInSVGPage(int chunk, int nlines, Element ref, Element svg) {
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		SVGElement g = gList.get(chunk);
-		//g.debug("GGG");
 		if (!(g instanceof SVGG)) {
 			throw new RuntimeException("BUG: g should be SVGG");
 		}
@@ -610,7 +609,6 @@ public class PageSplitterAndHtmlTest {
 			LOG.trace(textLine);
 		}
 		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
-		//Element element = textAnalyzer.createHtmlDivWithParas();
 		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
 		LOG.trace(ref.toXML()+"\n\n"+element.toXML());
 		TestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);

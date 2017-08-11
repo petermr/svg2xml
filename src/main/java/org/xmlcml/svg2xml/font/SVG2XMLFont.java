@@ -1,17 +1,11 @@
 package org.xmlcml.svg2xml.font;
 
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import nu.xom.Element;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.GraphicsElement;
@@ -42,19 +36,10 @@ public class SVG2XMLFont {
 		this.characterMap.put(character.getUnicodePoint(), character);
 	}
 
-	public Element createElement() {
-		ensureSortedUnicodeList();
-//		SVG2XMLFont thisCopy = new SVG2XMLFont(this);
+//	private Element createElement() {
 //		ensureSortedUnicodeList();
-//		characterList = new ArrayList<SVG2XMLCharacter>();
-//		for (Long unicode : unicodeList) {
-//			List<SVG2XMLCharacter> characterList = characterMap.get(unicode);
-//			LOG.debug(unicode+" > "+(char)(int)(long)unicode+" > "+characterList.size());
-////			SVG2XMLFont font = characterList.get(0);
-////			characterList.add(characterMap.get(unicode));
-//		}
-		return null;
-	}
+//		return null;
+//	}
 
 	public List<Long> ensureSortedUnicodeList() {
 		if (unicodeList == null) {

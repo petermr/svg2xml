@@ -108,13 +108,7 @@ public class TextFixtures {
 					try {
 						Assert.assertEquals("line"+i+","+j, values[i][j], styleSpans.get(j).toString());
 					} catch (RuntimeException e) {
-						if (e.getMessage().startsWith("missing font-size")) {
-							throw e;
-//							LOG.debug("bug in  testSpans");
-//							continue;
-						} else {
-							throw e;
-						}
+						throw e;
 					}
 				}
 			}

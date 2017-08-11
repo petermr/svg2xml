@@ -571,7 +571,6 @@ public class PDFIndex {
 				LOG.trace("Cannot index " + container.getClass());
 			}
 		}
-//		LOG.debug("PageAnalyzer NYI");
 	}
 
 	public void addToBoldIndex(Double fontSize, ScriptContainer scriptContainer) {

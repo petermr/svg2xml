@@ -42,7 +42,6 @@ public class PhytoTest {
 			String root = pdfFile.getParentFile().getName();
 			File wrongOutDir = new File("target/svg/fulltext");
 			File outDir = new File(JEOR_DIR, root+"/svg/");
-			LOG.debug(root+" => "+outDir);
 			PDFAnalyzer pdfAnalyzer = new PDFAnalyzer();
 			pdfAnalyzer.setOutputTopDir(outDir);
 			pdfAnalyzer.analyzePDFFile(pdfFile);

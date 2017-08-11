@@ -90,7 +90,6 @@ public class FilledTableAnalyzerTest {
 		svgStore.readGraphicsComponents(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		File svgOutFile = SVG2XMLFixtures.getCompactSVGFile(new File("target/"+FILLED), new File("target/"+FILLED+"/"+svgFile.getPath()+"micro"));
-		LOG.debug(">>"+svgOutFile);
 		SVGSVG.wrapAndWriteAsSVG(svgElement, svgOutFile, 1000., 1000.);
 	}
 
@@ -173,9 +172,7 @@ public class FilledTableAnalyzerTest {
 			row.add(textList.size());
 			row.add(pathList.size());
 			countListList.add(row);
-			LOG.debug(">>"+row);
 		}
-		LOG.debug(">>"+countListList);
 	}
 	
 	@Test
@@ -195,7 +192,6 @@ public class FilledTableAnalyzerTest {
 		List<IntRange> keyList = IntRange.createSortedList(keySet);
 		Multiset<IntRange> rangeSet = HashMultiset.create();
 		for (IntRange yrange : keyList) {
-			LOG.debug(">>"+yrange+"; "+yrange.getRange());
 			SVGLine line = new SVGLine(new Real2(10., yrange.getMin()), new Real2(10., yrange.getMax()));
 			line.setCSSStyle("stroke-width:2.;stroke:blue;");
 			g.appendChild(line);
@@ -217,7 +213,6 @@ public class FilledTableAnalyzerTest {
 			g.appendChild(text.copy());
 		}
 		SVGSVG.wrapAndWriteAsSVG(g, new File("target/"+FILLED+"/rows.svg"));
-		LOG.debug(">ranges>"+rangeSet);
 	}
 
 	@Test
@@ -235,93 +230,7 @@ public class FilledTableAnalyzerTest {
 			filledTableAnalyzer.createRows();
 			SVGSVG svgOut = filledTableAnalyzer.createSVGSVG();
 			svgOut.writeQuietly(new File("target/"+FILLED+"/"+doi+"/"+tableName+"/"+"rows.svg"));
-//			LOG.debug(">ranges>"+colRangeSet);
 		}
 	}
 
-
-
-
-	/** rotate element positions position
-	 * @throws FileNotFoundException 
-	 * 
-	 */
-	@Test
-	@Ignore // long
-	public void testNestedNYI() throws FileNotFoundException {
-		File cProjectDir = new File(SVG2XMLFixtures.TABLE_DIR, FILLED);
-		Assert.assertTrue(cProjectDir.exists());
-		int count = 0;
-		for (File svgFile : FILLED_FILES) {
-			File svgOutFile = new File("target/"+FILLED+"/"+svgFile.getPath());
-			SVGCache svgStore = new SVGCache();
-			svgStore.readGraphicsComponents(svgFile);
-			SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
-			// this is inefficient but OK for now
-			List<SVGElement> descendants = SVGElement.extractSelfAndDescendantElements(svgElement);
-			List<SVGRect> rectList = SVGRect.extractSelfAndDescendantRects(svgElement);
-			List<SVGGBox> boxList = new ArrayList<SVGGBox>();
-			boolean change = true;
-			String[] color = {"yellow", "pink", "gray", "cyan"};
-			int icolor = 0;
-			SVGSVG svg = new SVGSVG();
-//			SVGDefs defs = svg.getOrCreateDefs();
-//			SVGElement gradient = SVGRadialGradient.getDefaultRadialGradient();
-//			defs.appendChild(gradient);
-//			String defsId = gradient.createURLIdRef();
-			while (change) {
-				change = false;
-				for (int i = rectList.size() - 1; i >= 0; i--) {
-					SVGRect rect = rectList.get(i);
-					rect.setBoundingBoxCached(true);
-					// this is to search. We extend because fonts may cross boundaries
-					Real2Range rectBox = makeResizedBbox(rect, 3);
-					// this is for display only
-					Real2Range rectBox0 = makeResizedBbox(rect, -2);
-					for (int j = descendants.size() - 1; j >= 0; j--) {
-						SVGElement elem = descendants.get(j);
-						elem.setBoundingBoxCached(true);
-						if (elem == rect) continue; // don't insert into self
-						Real2Range elemBox = elem.getBoundingBox();
-						if (rectBox.includes(elemBox)) {
-							if (elem instanceof SVGRect) {
-								LOG.info("nested boxes "+elemBox+" in "+rectBox);
-							} else if (elem instanceof SVGText) {
-//								((SVGText)elem).
-							}
-							LOG.trace(rectBox+" includes "+elem.toString());
-//							SVGRect containedRect0 = SVGRect.createFromReal2Range(elemBox);
-//							containedRect.setClassName("containedRect");
-//							containedRect.setCSSStyle("stroke:red;stroke-width:0.5;fill:"+defsId+";");
-//							svgElement.appendChild(containedRect);
-							descendants.remove(j);
-							rect.setCSSStyle("opacity:0.3;fill:"+color[icolor++ % 3]+";stroke:blue;stroke-width:2.0;");
-//							SVGRect innerRectBox = SVGRect.createFromReal2Range(rectBox0);
-//							innerRectBox.setCSSStyle("opacity:0.2;fill:none;stroke:green;stroke-width:0.5;");
-//							svgElement.appendChild(innerRectBox);
-							SVGGBox box = new SVGGBox();
-							change = true;
-						}
-					}
-// ?					if (change) break;
-				}
-			}
-			
-//			List<SVGContainer> containerList = SVGContainer.makeContainerList(svgElement);
-			
-//			SVGSVG.wrapAndWriteAsSVG(svgElement, svgOutFile, 1200., 1000.);
-			File outfile = SVG2XMLFixtures.getCompactSVGFile(new File("target/"+FILLED), svgOutFile);
-			LOG.debug(">>>"+outfile);
-			svg.appendChild(svgElement);
-			svg.writeQuietly(outfile);
-		}
-	}
-
-
-	private Real2Range makeResizedBbox(SVGRect rect, int delta) {
-		Real2Range rectBox = rect.getBoundingBox();
-		rectBox.extendBothEndsBy(Direction.HORIZONTAL, delta, delta);
-		rectBox.extendBothEndsBy(Direction.VERTICAL, delta, delta);
-		return rectBox;
-	}
 }

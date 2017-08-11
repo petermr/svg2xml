@@ -171,7 +171,7 @@ public class ColumnMaps {
 				//endXSortedByCoordinate.remove(0);
 				endXList.remove(0);
 			} else {
-				LOG.debug("FINISHED");
+				LOG.trace("FINISHED");
 				break;
 			}
 			if (tab != null) {

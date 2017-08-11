@@ -23,11 +23,6 @@ public class TableBodyTest {
 	private final static String TABLE = "target/table";
 
 	@Test
-	public void dummy() {
-		LOG.debug("TableBodyChunkTest NYI");
-	}
-
-	@Test
 	public void testTDBlockValue() {
 		TableChunk genericChunk = TableFixtures.createGenericChunkFromElements(TableFixtures.TDBLOCKFILE);
 		String value = genericChunk.getValue();

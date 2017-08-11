@@ -104,7 +104,6 @@ public class ColumnManager {
 	public void debug() {
 		ensureStartXMultiset();
 		ensureEndXMultiset();
-		LOG.debug(startXMultiset+"\n"+endXMultiset);
 	}
 
 	public void addPhrase(Phrase phrase) {
@@ -206,7 +205,7 @@ public class ColumnManager {
 			Phrase phrase = columnPhrases.get(yPointer);
 			Double ycell = phrase.getY();
 			if (ycell == null) {
-				LOG.debug("Null cell: "+phrase.getStringValue()+phrase.toXML());
+				LOG.trace("Null cell: "+phrase.getStringValue()+phrase.toXML());
 			}
 			if (ycell - y > epsilon) {
 				addEmptyCell(bbox, fontSize);

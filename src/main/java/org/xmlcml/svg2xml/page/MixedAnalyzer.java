@@ -183,7 +183,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 		if (frameBox.size() >= 4) {
 			for (SVGShape shape : frameBox) {
 				if (!shapeList.remove(shape)) {
-					LOG.debug("cannot remove shape");
+					LOG.warn("cannot remove shape");
 				}
 			}
 			return true;

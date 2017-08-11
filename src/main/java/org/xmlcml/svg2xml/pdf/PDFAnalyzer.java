@@ -186,9 +186,9 @@ public class PDFAnalyzer {
 	private void analyzePDF() {
 		ensurePDFIndex();
 		createSVGFilesfromPDF();
-		LOG.debug("*** created SVG");
+		LOG.trace("*** created SVG");
 		if (pdfIo.isSkipOutput()) {
-			LOG.debug("Skipped Output: "+pdfIo.outputDocumentDir);
+			LOG.trace("Skipped Output: "+pdfIo.outputDocumentDir);
 		} else {
 			analyzeRawSVGPagesWithPageAnalyzers();
 		}
@@ -211,12 +211,6 @@ public class PDFAnalyzer {
 		}
 	}
 
-	private void debugContainers() {
-		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			LOG.debug("\n============== "+pageAnalyzer.toString());
-		}
-	}
-
 	private void createIndexesAndRemoveDuplicates() {
 		ensurePDFIndex();
 		pdfIndex.ensureElementMultimaps();
@@ -233,7 +227,7 @@ public class PDFAnalyzer {
 		File rawSVGDirectory = pdfIo.getRawSVGPageDirectory();
 		List<File> rawSvgPageFiles = pdfIo.collectRawSVGFiles();
 		ensurePageAnalyzerList();
-		LOG.debug(rawSVGDirectory+" files: "+rawSvgPageFiles.size());
+		LOG.trace(rawSVGDirectory+" files: "+rawSvgPageFiles.size());
 		for (int pageCounter = 0; pageCounter < rawSvgPageFiles.size(); pageCounter++) {
 			SYSOUT.print(pageCounter+"~");
 			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(rawSvgPageFiles.get(pageCounter), rawSVGDirectory, pageCounter);
@@ -245,7 +239,7 @@ public class PDFAnalyzer {
 	public List<PageAnalyzer> createAndFillPageAnalyzers(List<SVGSVG> svgList) {
 		ensurePageAnalyzerList();
 		File rawSVGDirectory = this.pdfIo.getRawSVGDirectory();
-		LOG.debug("raw svg "+rawSVGDirectory);
+		LOG.trace("raw svg "+rawSVGDirectory);
 		for (int pageCounter = 0; pageCounter < svgList.size(); pageCounter++) {
 			SYSOUT.print(pageCounter+"~");
 			PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(svgList.get(pageCounter), pageCounter, rawSVGDirectory);
@@ -297,10 +291,10 @@ public class PDFAnalyzer {
 		File[] files = (svgDocumentDir == null ? null : svgDocumentDir.listFiles());
 		if (!svgDocumentDir.exists() || files == null || files.length == 0) {
 			svgDocumentDir.mkdirs();
-			LOG.debug("running "+inputName+" to "+svgDocumentDir.toString());
+			LOG.trace("running "+inputName+" to "+svgDocumentDir.toString());
 			converter.run("-outdir", svgDocumentDir.toString(), inputName );
 		} else {
-			LOG.debug("Skipping SVG because files in ("+svgDocumentDir+") already exist: "+files.length);
+			LOG.trace("Skipping SVG because files in ("+svgDocumentDir+") already exist: "+files.length);
 		}
 		return;
 	}

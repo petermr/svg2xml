@@ -421,18 +421,6 @@ public class TextAnalyzerTest {
 		Assert.assertEquals("sub", "0a", subscript.getLineString());
 	}
 
-//	@Test
-//	/** 
-//	 * suscripts - mainly debugging routine 
-//	 * does not produce html
-//	 */
-//	public void testCreateSuscriptLine0() {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		TextLine largeLine = textStructurer.getLinesWithLargestFont().get(0);
-//		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
-//		printLine(largeLineSVG);
-//	}
-
 	@Test
 	/** 
 	 * suscripts
@@ -497,149 +485,6 @@ public class TextAnalyzerTest {
 		}
 	}
 	
-//	@Test
-//	/** 
-//	 * superscripts
-//	 */
-//	public void testCreateHTML0() {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		TextLine largeLine = textStructurer.getLinesWithLargestFont().get(0);
-//		HtmlElement p = largeLine.createHtmlLine();
-//		Element ref = XMLUtil.parseXML(
-//				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-//"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The rate constant is 0.61795 mg L</span>" +
-//"<sup>" +
-//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>��� </span>" +
-//"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
-//"</sup>" +
-//"<span style='font-size:9.465px;font-family:TimesNewRoman;'>h</span>" +
-//"<sup>" +
-//"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>��� </span>" +
-//"<span style='font-size:7.074px;font-family:TimesNewRoman;'>1</span>" +
-//"</sup>" +
-//"<span style='font-size:9.465px;font-family:TimesNewRoman;'>.</span>" +
-//"</p>" +
-//"");
-//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-//	}
-	
-
-//	@Test
-//	/** 
-//	 * superscripts
-//	 */
-//	public void testCreateHTML1() {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		HtmlElement p = textStructurer.getLinesWithLargestFont().get(1).createHtmlLine();
-//		Element ref = XMLUtil.parseXML(
-//				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>The temperature dependence of the rate constants is described</span>"+
-//			"</p>" +
-//			"");
-//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-//	}
-//	
-//	@Test
-//	/** 
-//	 * superscripts
-//	 */
-//	public void testCreateHTML2() {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		HtmlElement p = textStructurer.getLinesWithLargestFont().get(2).createHtmlLine();
-//		Element ref = XMLUtil.parseXML(""+
-//		"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>by the Arrhenius equation </span>" +
-//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
-//		"<span style='font-size:9.465px;font-family:TimesNewRoman;' />" +
-//		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>=</span>" +
-//		"<span style='font-size:9.465px;font-family:TimesNewRoman;' />" +
-//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
-//		"<sub>" +
-//		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>0</span>" +
-//		"</sub>" +
-//		"<span style='font-size:9.465px;font-family:Times-Roman;'>exp</span>" +
-//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>(</span>" +
-//		"<span style='font-size:9.465px;color:red;font-family:MTSYN;'>"+MINUS+"</span>" +
-//		"<span style='font-size:9.465px;font-family:Times-Roman;' />" +
-//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
-//		"<sub>" +
-//		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
-//		"</sub>" +
-//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>/</span>" +
-//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>RT</span>" +
-//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'> ), where </span>" +
-//		"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
-//		"<sub>" +
-//		"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
-//		"</sub>" +
-//		"<span style='font-size:9.465px;font-family:TimesNewRoman;'>is the</span>" +
-//		"</p>" +
-//		"");
-//
-//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-//	}
-//	
-//	@Test
-//	/** 
-//	 * superscripts
-//	 */
-//	public void testCreateHTML5() {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		HtmlElement p = textStructurer.getLinesWithLargestFont().get(5).createHtmlLine();
-//		Element ref = XMLUtil.parseXML(
-//				"<p xmlns='http://www.w3.org/1999/xhtml'>" +
-//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>130 and 200</span>" +
-//				"<sup>" +
-//				"<span style='font-size:7.074px;color:red;font-family:MTSYN;'>"+WHITE_BULLET+"</span>" +
-//				"</sup>" +
-//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>C yields the results of </span>" +
-//				"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>k</span>" +
-//				"<sub>" +
-//				"<span style='font-size:7.074px;font-family:TimesNewRoman;'>0</span>" +
-//				"</sub>" +
-//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>and </span>" +
-//				"<span style='font-size:9.465px;font-style:italic;font-family:TimesNewRoman;'>E</span>" +
-//				"<sub>" +
-//				"<span style='font-size:7.074px;font-family:TimesNewRoman;'>a</span>" +
-//				"</sub>" +
-//				"<span style='font-size:9.465px;font-family:TimesNewRoman;'>at higher tem-</span>" +
-//				"</p>" +
-//"");
-//		JumboTestUtils.assertEqualsIncludingFloat("ref ", ref, p, true, 0.001);
-//	}
-	
-//	@Test
-//	/** 
-//	 * superscripts
-//	 */
-//	public void testCreateHTMLDivWithParas() throws Exception {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		HtmlElement div = textStructurer.getTextAnalyzer().createHtmlElement();
-//		SVGUtil.debug(div, new FileOutputStream("target/divParas0.html"), 0);
-//	}
-	
-//	@Test
-//	/** 
-//	 * superscripts
-//	 */
-//	public void testCreateHTMLDivWithParasNew() throws Exception {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		List<ScriptLine> textGroupList = textStructurer.getScriptedLineList();
-//		HtmlElement div = textStructurer.createHtmlElementWithParas(textGroupList);
-//		SVGUtil.debug(div, new FileOutputStream("target/divParasNew.html"), 0);
-//	}
-//	
-//	@Test
-//	/** 
-//	 * bold
-//	 */
-//	public void testCreateHTMLDivWithParasBold() throws Exception {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PAGE3RESULTS_SVG);
-//		List<ScriptLine> textGroupList = textStructurer.getScriptedLineList();
-//		HtmlElement div = textStructurer.createHtmlElementWithParas(textGroupList);
-//		SVGUtil.debug(div, new FileOutputStream("target/divBold.html"), 0);
-//	}
-	
 
 	private void printTextLines(List<TextLine> suscriptLines) {
 		for (TextLine textLine : suscriptLines){
@@ -648,31 +493,11 @@ public class TextAnalyzerTest {
 		}
 	}
 
-//	@Test
-//	/** 
-//	 * suscripts
-//	 */
-//	public void testCreateSuscriptLine4() {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		List<TextLine> largestLineList = textStructurer.getLinesWithLargestFont();
-//		TextLine largeLine = largestLineList.get(4);
-//		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
-//		printLine(largeLineSVG);
-//	}
 
-//	@Test
-//	/** 
-//	 * suscripts
-//	 */
-//	public void testCreateSuscriptLine5() {
-//		if (1==1) throw new RuntimeException("Skipped");
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(Fixtures.PARA_SUSCRIPT_SVG);
-//		List<TextLine> largestLineList = textStructurer.getLinesWithLargestFont();
-//		TextLine largeLine = largestLineList.get(5);
-//		List<SVGText> largeLineSVG = largeLine.createSuscriptString();
-//		printLine(largeLineSVG);
-//	}
-
+	/** no-op
+	 * 
+	 * @param largeLineSVG
+	 */
 	private void printLine(List<SVGText> largeLineSVG) {
 //		SYSOUT.print("LINE: ");
 //		for (SVGText large : largeLineSVG) {

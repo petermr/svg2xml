@@ -214,7 +214,7 @@ public class CMUCLTest {
 		try {
 			svg = SVGUtil.parseToSVGElement(new FileInputStream(svgAnnotFile1));
 		} catch (FileNotFoundException fnfe) {
-			LOG.debug("no SVG file:"+svgAnnotFile1);
+			LOG.error("no SVG file:"+svgAnnotFile1);
 		}
 		if (svg != null) {
 			SVGG g = new SVGG();
@@ -352,7 +352,7 @@ public class CMUCLTest {
 					try {
 						tableContentCreator.createHTML(annotSvg, tableDir);
 					} catch (IOException e) {
-						LOG.debug("Cannot write html: "+e);
+						LOG.error("Cannot write html: "+e);
 					}
 				}
 			}

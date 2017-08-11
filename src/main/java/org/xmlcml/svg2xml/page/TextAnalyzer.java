@@ -176,7 +176,7 @@ public class TextAnalyzer extends ChunkAnalyzer {
 	
 	private void debug(String string, Map<Integer, TextLine> textByCoordMap) {
 		if (textByCoordMap == null) {
-			LOG.debug("No textCoordMap "+textStructurer.getTextLineByYCoordMap());
+			LOG.warn("No textCoordMap "+textStructurer.getTextLineByYCoordMap());
 		} else {
 			Set<Integer> keys = textByCoordMap.keySet();
 			Integer[] ii = keys.toArray(new Integer[keys.size()]);

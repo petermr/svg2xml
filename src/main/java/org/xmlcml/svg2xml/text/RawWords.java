@@ -212,7 +212,7 @@ public class RawWords implements Iterable<Word> {
 			}
 			Word word = wordList.get(i);
 			if (word == null) {
-				LOG.debug("null");
+				LOG.trace("null");
 			} else {
 				phrase.addWord(new Word(word));
 				Word wordii = (i < wordList.size() - 1) ? wordList.get(i + 1) : null;

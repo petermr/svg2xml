@@ -379,7 +379,7 @@ public class TableStructurerTest {
 		Matcher matcher = TOTAL.matcher(rowCodes);
 		if (matcher.matches()) {
 			for (int i = 0; i <= matcher.groupCount(); i++) {
-				LOG.debug(">>"+matcher.group(i));
+				LOG.trace(">>"+matcher.group(i));
 			}
 		}
 		
@@ -471,33 +471,9 @@ public class TableStructurerTest {
 	}
 
 	@Test
-	public void testELSSuscripts() {
-		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ELS_PETAJA_G_4_3_SVG);
-		int superscript = 0;
-		int subscript = 0;
-		testSuscripts(inputFile, superscript, subscript);
-	}
-
-	@Test
-	public void testELS2Suscripts() {
-		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, ELS2_G_4_17_SVG);
-		int superscript = 0;
-		int subscript = 0;
-		testSuscripts(inputFile, superscript, subscript);
-	}
-
-	@Test
 	public void testLPWSuscripts() {
 		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, LPW_REISINGER_G_4_5_SVG);
 		int superscript = 1;
-		int subscript = 0;
-		testSuscripts(inputFile, superscript, subscript);
-	}
-
-	@Test
-	public void testOUPSuscripts() {
-		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, OUP_PARTIAL_G_2_4_SVG);
-		int superscript = 0;
 		int subscript = 0;
 		testSuscripts(inputFile, superscript, subscript);
 	}

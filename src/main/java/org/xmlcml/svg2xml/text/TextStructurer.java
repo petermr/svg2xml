@@ -728,30 +728,7 @@ public class TextStructurer {
 		boolean normalized = TextUtil.normalize(svgChunk, NORMALIZE_FORM);
 		SVGDefs.removeDefs(svgChunk);
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
-//		List<SVGText> rotatedChars = SVGText.getRotatedElements(textCharacters, new Angle(Math.PI/2.), 0.0001);
-//		LOG.debug("PI2 "+rotatedChars.size());
-//	    rotatedChars = SVGText.getRotatedElements(textCharacters, new Angle(0), 0.0001);
-//		LOG.debug("000 "+rotatedChars.size());
-//		LOG.debug(">txt>"+textCharacters.size());
-//		for (SVGText charx : rotatedChars) {
-//			LOG.debug(">>"+charx);
-//		}
 		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
-//		if (rotatedChars.size() > 0) {
-//			LOG.debug("ROTATED");
-//			textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
-//			textStructurer.formatTextLineTransforms(5);
-////			textStructurer.getCharacterList();
-//			List<TextLine> textLineList = textStructurer.getTextLineList();
-//			SVGG g = new SVGG();
-//			for (TextLine textLine : textLineList) {
-//				LOG.debug("textLine "+textLine);
-//				for (SVGText character : textLine.getSVGTextCharacters()) {
-//					g.appendChild(character.copy());
-//				}
-//			}
-//			SVGSVG.wrapAndWriteAsSVG(g, new File(Fixtures.TARGET, "/test/textLinesRotate.svg"));
-//		}
 		textStructurer.setSvgChunk(svgChunk);
 		textStructurer.getOrCreatePhraseListListFromWords();
 		return textStructurer;
@@ -763,7 +740,6 @@ public class TextStructurer {
 
 	public static TextStructurer createTextStructurerWithSortedLines(List<SVGText> textCharacters, TextAnalyzer textAnalyzer) {
 		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
-		//textStructurer.createLinesSortedInXThenY(textCharacters, textAnalyzer);
 		return textStructurer;
 	}
 
@@ -786,9 +762,6 @@ public class TextStructurer {
 		// the next two lines may be unnecessary
 		textStructurer.sortLineByXandMakeTextLineByYCoordMap(textCharacters);
 		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY(); 
-//		for (TextLine textLine : textLineList) {
-//			LOG.debug("TLY "+textLine);
-//		}
 		textAnalyzer.setTextStructurer(textStructurer);
 		return textStructurer;
 	}

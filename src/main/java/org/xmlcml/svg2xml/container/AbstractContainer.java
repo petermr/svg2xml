@@ -145,7 +145,7 @@ public abstract class AbstractContainer {
 		StringBuilder sb = new StringBuilder(this.getClass().getSimpleName()+"\n");
 		sb.append("Containers: "+containerList.size()+"\n");
 		for (AbstractContainer container : containerList) {
-			LOG.debug("CONT: "+container.getClass());
+			LOG.trace("CONT: "+container.getClass());
 			sb.append(container.toString()+"\n");
 		}
 		return sb.toString();
@@ -196,7 +196,7 @@ public abstract class AbstractContainer {
 			if (chunk != null) {
 				chunkId = new ChunkId(chunk.getId());
 				if (chunkId == null) {
-					LOG.debug("CHUNK "+chunk.toXML());
+					LOG.trace("CHUNK "+chunk.toXML());
 				}
 			} else {
 				LOG.trace("no chunk "+this.getClass());

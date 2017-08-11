@@ -88,11 +88,10 @@ public class DocumentListAnalyzer {
 		this.inputDir = inputDir;
 		ensureElementMultimaps();
 		if (inputDir != null && inputDir.isDirectory()) {
-			LOG.debug("SVG: "+svgTopDir+"; output: "+outputTopDir);
+			LOG.trace("SVG: "+svgTopDir+"; output: "+outputTopDir);
 			File[] files = inputDir.listFiles();
 			analyzeFiles(Arrays.asList(files));
 		}
-		findDuplicatesInIndexes();
 	}
 
 	private void ensureElementMultimaps() {
@@ -105,41 +104,7 @@ public class DocumentListAnalyzer {
 
 
 	
-	public void findDuplicatesInIndexes() {
-		List<List<ChunkId>> idListList;
-		throw new RuntimeException("NYI");
-//		idListList = PDFIndex.findDuplicates(PDFIndex.CONTENT, contentMap);
-//		printDuplicates(PDFIndex.CONTENT, idListList);
-//		idListList = PDFIndex.findDuplicates(PDFIndex.IMAGE, imageMap);
-//		printDuplicates(PDFIndex.IMAGE, idListList);
-//		idListList = PDFIndex.findDuplicates(PDFIndex.PATH, pathMap);
-//		printDuplicates(PDFIndex.PATH, idListList);
-	}
 
-	/** this doesn't work yet
-	 * 
-	 * @param title
-	 * @param elementListList
-	 */
-	private void printDuplicates(String title, List<List<ChunkId>> elementListList) {
-		throw new RuntimeException("NYI");
-//		if (elementListList.size() > 0 ) {
-//			LOG.debug("duplicate "+title);
-//			for (List<String> elementList : elementListList) {
-//				SVGElement firstElement = elementList.get(0);
-//				if (title.equals(PDFAnalyzer.CONTENT)) {
-//					String content = firstElement.getValue();
-//					LOG.debug(elementList.size()+": "+content.substring(0, Math.min(100, content.length())));
-//				} else if (title.equals(PDFAnalyzer.IMAGE)) {
-//					PDFAnalyzer.output(firstElement, duplicateImageCount, title);
-//					duplicateImageCount++;
-//				} else if (title.equals(PDFAnalyzer.PATH)) {
-//					PDFAnalyzer.output(firstElement, duplicatePathCount, title);
-//					duplicatePathCount++;
-//				}
-//			}
-//		}
-	}
 
 	private String getRandomName() {
 		return "" + (int) (100*Math.random());

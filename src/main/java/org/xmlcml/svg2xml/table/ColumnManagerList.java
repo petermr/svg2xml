@@ -59,7 +59,6 @@ public class ColumnManagerList {
 			ensureColumnManagerList();
 			for (ColumnManager columnManager : columnManagerList) {
 				IntRange intRange = columnManager.getEnclosingRange();
-				LOG.debug("IR "+intRange);
 				rangeArray.add(intRange);
 			}
 		}

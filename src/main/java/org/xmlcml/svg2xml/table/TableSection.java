@@ -155,14 +155,6 @@ public class TableSection {
 		return sectionPhraseListList;
 	}
 
-//	private void debug(PhraseList phraseList) {
-//		for (Phrase phrase : phraseList) {
-//			for (Word word : phrase) {
-//				LOG.debug("B? "+word.isBold());
-//			}
-//		}
-//	}
-
 	public Real2Range getBoundingBox() {
 		return boundingBox;
 	}

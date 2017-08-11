@@ -84,7 +84,7 @@ public class TableChunk {
 	}
 	
 	public void splitHorizontally() {
-		LOG.debug("HOR MASK NYI "+horizontalMask);
+		LOG.warn("HOR MASK NYI "+horizontalMask);
 	}
 	public RealRangeArray getVerticalMask() {
 		return verticalMask;
@@ -95,7 +95,7 @@ public class TableChunk {
 	}
 	
 	public void splitVertically() {
-		LOG.debug("VERT MASK NYI "+verticalMask);
+		LOG.warn("VERT MASK NYI "+verticalMask);
 	}
 
 	public void debug() {
@@ -119,7 +119,6 @@ public class TableChunk {
 	public void createHorizontalMask(RealRangeArray horizontalGaps) {
 			this.horizontalGaps = horizontalGaps;
 			this.setHorizontalMask(horizontalGaps.inverse());
-	//		LOG.debug("Horizontal Mask "+getHorizontalMask());
 			if (horizontalMask != null && horizontalMask.size() > 1) {
 				LOG.trace("HM"+horizontalMask);
 			}

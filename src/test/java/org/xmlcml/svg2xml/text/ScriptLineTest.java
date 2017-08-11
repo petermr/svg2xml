@@ -45,10 +45,6 @@ public class ScriptLineTest {
 //				"http://www.biomedcentral.com/1471-2148/11/312",
             "H .",
 		};
-//		String[] expected = {
-//				"Hi",
-//		};
-//		LOG.debug(styleSpansList.size());
 		int i = 0;
 		for (StyleSpans styleSpans : styleSpansList) {
 			Assert.assertEquals("s"+(i), expected[i], styleSpans.getTextContentWithSpaces());

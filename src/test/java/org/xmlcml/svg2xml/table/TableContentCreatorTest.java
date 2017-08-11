@@ -190,7 +190,6 @@ public class TableContentCreatorTest {
 		suscriptEditor.mergeAll();
 		File file = new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+"footer.html");
 		// svg2xml/target/table/suscript/10.1007_s00213-015-4198-1.html
-		LOG.debug("outfile: "+file);
 		// PLL has an HTML output which can process suscripts and styles
 		// note the HTML must not be indented (0) as otherwise we get spurious whitespaces
 		XMLUtil.debug(footerPhraseListList.toHtml(), file, 0);
@@ -210,7 +209,6 @@ public class TableContentCreatorTest {
 			String filename = file.toString();
 			if (filename.endsWith(".svg")) {
 				String root = FilenameUtils.getBaseName(filename);
-				LOG.debug("ROOT "+root);
 				TableContentCreator tableContentCreator = new TableContentCreator(); 
 				tableContentCreator.markupAndOutputTable(file, outDir);
 				writeBody(outDir, root, tableContentCreator);

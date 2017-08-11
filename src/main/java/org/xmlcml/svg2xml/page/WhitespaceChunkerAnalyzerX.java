@@ -140,43 +140,28 @@ public class WhitespaceChunkerAnalyzerX /*extends PageChunkAnalyzer*/ {
 	// FIXME add variable levels
 	public List<Chunk> splitByWhitespace(GraphicsElement elementToBeChunked) {
 		Chunk topChunk = new Chunk(elementToBeChunked);
-		//topChunk.debug("PRE"+topChunk.getParent());
 		Long time0 = System.currentTimeMillis();
 		// I could recurse, but we only have 3 levels...
 		LOG.trace("descendants0: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis() - time0));
 		topChunk.setBoundingBoxCacheForSelfAndDescendants(true);
 		LOG.trace("descendants: "+topChunk.getDescendantSVGElementListWithoutDefsDescendants().size()+"/"+(System.currentTimeMillis() - time0));
-		//pageEditorX.getSVGPage().appendChild(topChunk);
 		topChunk.setId(TOP_CHUNK);
 		LOG.trace(String.valueOf(splitterParams.get(0).width)+"; "+String.valueOf(splitterParams.get(1).width)+"; "+String.valueOf(splitterParams.get(2).width)+"; ");
 		List<Chunk> subChunkList = topChunk.splitIntoChunks(splitterParams.get(0).width, splitterParams.get(0).boxEdge);
 		List<Chunk> finalSubChunks = mergeAdjacentDiagramChunks(subChunkList);
 		List<Chunk> subSubChunkList = new ArrayList<Chunk>();
-		//List<Chunk> subSubSubChunkList = null;
 		List<Chunk> subSubSubChunkList = new ArrayList<Chunk>();
 		for (Chunk subChunk : finalSubChunks) {
 			List<Chunk> subSubChunks = subChunk.splitIntoChunks(splitterParams.get(1).width, splitterParams.get(1).boxEdge);
-			/*int chunksWithOnlyText = 0;
-			for (Chunk c : cc) {
-				if (c.isTextChunk()) {
-					chunksWithOnlyText++;
-				}
-			}
-			if (cc.size() - chunksWithOnlyText > 1) {
-				subSubChunkList.addAll(subChunk.splitIntoChunks(Double.MAX_VALUE, splitterParams.get(1).boxEdge));
-			} else {*/
 			List<Chunk> finalSubSubChunks = mergeAdjacentDiagramChunks(subSubChunks);
 			subSubChunkList.addAll(finalSubSubChunks);
-			//}
 		}
 		for (Chunk subSubChunk : subSubChunkList) {
-			//List<Chunk> cc = subSubChunk.splitIntoChunks(subSubChunk.isTextChunk() ? splitterParams.get(2).width : Double.MAX_VALUE, splitterParams.get(2).boxEdge);
 			List<Chunk> subSubSubChunks = subSubChunk.splitIntoChunks(splitterParams.get(2).width, splitterParams.get(2).boxEdge);
 			List<Chunk> finalSubSubSubChunks = mergeAdjacentDiagramChunks(subSubSubChunks);
 			subSubSubChunkList.addAll(finalSubSubSubChunks);
 		}
 		removeEmptyChunks(topChunk);
-		//topChunk.debug("TOP");
 		removeChildren(elementToBeChunked);
 		moveChildrenFromChunkToElement(elementToBeChunked, topChunk);
 		return subSubSubChunkList;

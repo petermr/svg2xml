@@ -207,7 +207,7 @@ public class ScriptContainer extends AbstractContainer implements Iterable<Scrip
 			String textValue = lastText.getValue();
 			textValue += SOFT_HYPHEN;
 			lastText.setValue(textValue);
-			LOG.debug(".. "+lastText);
+			LOG.trace(".. "+lastText);
 		}
 	}
 

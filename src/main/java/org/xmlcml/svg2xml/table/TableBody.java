@@ -55,14 +55,6 @@ public class TableBody extends TableChunk {
 			return rowList;
 		}
 
-	private void debugRows(List<SVGElement> elementList) {
-		int nrows = elementList.size();
-		LOG.trace("ROWS "+nrows);
-		for (GraphicsElement element : elementList) {
-			
-		}
-	}
-
 	/** create rows from horizontalsly separated chunks
 	 * crude. may speed up later
 	 */

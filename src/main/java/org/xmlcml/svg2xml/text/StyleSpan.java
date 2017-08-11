@@ -141,10 +141,10 @@ public class StyleSpan {
 		String spaces = null;
 		if (lastText != null && text != null) {
 			if (lastText.getFontSize() == null) {
-				LOG.debug("Missing fontSize in :"+lastText.toXML());
+				LOG.warn("Missing fontSize in :"+lastText.toXML());
 			}
 			if (text.getFontSize() == null) {
-				LOG.debug("Missing fontSize in ::"+text.toXML());
+				LOG.warn("Missing fontSize in ::"+text.toXML());
 			}
 			 Double x0 = lastText.getBoundingBox().getXMax();
 			 Double x1 = text.getX();
@@ -158,7 +158,6 @@ public class StyleSpan {
 						 double sp = deltax / spaceWidth;
 						 int nspaces = (int) sp;
 						 if (nspaces > 0) {
-//							 LOG.debug(nspaces);
 							 StringBuilder sb = new StringBuilder();
 							 for (int i = 0; i < nspaces; i++) {
 								 sb.append(" ");

@@ -41,7 +41,6 @@ public class ListContainer extends AbstractContainer {
 	public ListContainer(PageAnalyzer pageAnalyzer, List<ListItem> multiScriptLineList) {
 		super(pageAnalyzer);
 		this.multiScriptLineList = multiScriptLineList;
-//		debug();
 	}
 
 	public ListContainer(ScriptContainer sc) {

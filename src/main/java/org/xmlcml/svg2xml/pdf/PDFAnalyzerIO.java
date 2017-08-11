@@ -102,15 +102,11 @@ public class PDFAnalyzerIO {
 		if (fileRoot.startsWith(HTTP)) {
 			fileRoot = fileRoot.substring(fileRoot.indexOf("//")+2);
 			fileRoot = fileRoot.substring(fileRoot.indexOf("/")+1);
-			LOG.debug("fileroot "+fileRoot);
 		}
-//		rawSvgDirectory = new File(svgDir, fileRoot);
 		rawSvgDirectory = svgDir;
-		LOG.debug("raw svgDocument "+rawSvgDirectory);
 		outputDocumentDir = new File(outputDirectory, fileRoot);
 		outputDocumentDir.mkdirs();
 		fileRoot = "";
-		LOG.debug("outputDocument "+outputDocumentDir);
 	}
 	
 	void setUpPDF(File inFile) {
@@ -127,7 +123,6 @@ public class PDFAnalyzerIO {
 		if (inputName1.toLowerCase().endsWith(DOT_PDF)) {
 			inputName = inputName1.substring(0, inputName1.length()-DOT_PDF.length());
 		}
-		LOG.debug("filename: "+inputName);
 		return inputName;
 	}
 	

@@ -125,7 +125,6 @@ public class FunnelTest {
 		File svgFile = PlotStructurerTest.createSVGPathsAndWriteToSVGPathFile(
 			new File(SVG2XMLFixtures.FUNNEL_DIR, fileRoot + SVG_SUFFIX), fileRoot);
 		PlotStructurerTest.createPlots(svgFile, fileRoot);
-		LOG.debug("csv");
 		PlotStructurerTest.createCSV(svgFile, fileRoot);
 	}
 	

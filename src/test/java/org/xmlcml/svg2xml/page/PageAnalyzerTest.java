@@ -444,12 +444,10 @@ public class PageAnalyzerTest {
 	}
 
 	public static void testDirectory(File inDir, File svgDir, File outDir, boolean skipFile) {
-		LOG.debug("inputTopDir: "+inDir+"; svgDir "+svgDir+"; outDir "+outDir);
 		File[] files = inDir.listFiles();
 		if (files != null) {
 			for (File file : files) {
 				String path = file.getName().toLowerCase();
-				LOG.debug("path: "+path);
 				if (path.endsWith(".pdf")) {
 					PDFAnalyzer analyzer = new PDFAnalyzer();
 					analyzer.setSVGTopDir(svgDir);

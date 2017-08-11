@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.graphics.svg.GraphicsElement;
@@ -13,6 +14,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
+@Ignore // old style
 public class TableMarkupTest {
 
 	public static final Logger LOG = Logger.getLogger(TableMarkupTest.class);
@@ -94,6 +96,7 @@ public class TableMarkupTest {
 	}
 
 	@Test
+//	@Ignore
 	public void testHeaderAreasAA_Kranke() {
 		String root = "AA_Kranke";
 		String inputFilename = root+".g.2.3.svg";
@@ -157,22 +160,6 @@ public class TableMarkupTest {
 		String root = "BMJ312529";
 		String filename = ".g.4.1.svg";
 		annotateAndOutput(root, filename, 11, 11);
-	}
-
-	@Test
-	// FIXME runs over header into body
-	public void testHeaderAreasELS2() {
-		String root = "ELS2";
-		String filename = ".g.4.17.svg";
-		annotateAndOutput(root, filename, 3, 4);
-	}
-
-	@Test
-	// FIXME runs over header into body
-	public void testHeaderAreasELSPetaja() {
-		String root = "ELSPetaja";
-		String filename = ".g.4.3.svg";
-		annotateAndOutput(root, filename, 2, 3);
 	}
 
 	@Test

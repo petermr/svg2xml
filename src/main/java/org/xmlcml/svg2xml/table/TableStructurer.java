@@ -296,9 +296,6 @@ public class TableStructurer {
 			}
 		}
 		List<HtmlTr> trList = createHeaderRows(tableHeaderSection);
-//		for (HtmlTr tr : trList) {
-//			LOG.debug("T "+tr.toXML());
-//		}
 
 	}
 	
@@ -586,13 +583,6 @@ public class TableStructurer {
 			horizontalRulerList = joinHorizontallyTouchingRulers1();
 		}
 		return horizontalRulerList;
-	}
-
-	private void debug(List<HorizontalRuler> horizontalRulerList) {
-		LOG.debug("PRE");
-		for (HorizontalRuler horizontalRuler : horizontalRulerList) {
-			LOG.debug("PRE-RULER "+horizontalRuler.toXML());
-		}
 	}
 
 	private List<HorizontalRuler> addRulerOrCombineVerticalOverlaps() {
@@ -928,16 +918,6 @@ public class TableStructurer {
 	private List<HtmlTr> createBodyTableRows(int startRow, int endRow, Class<?> clazz) {
 		totalPhraseListList.getOrCreateChildPhraseList();
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
-		// find margins
-		IntRangeArray bestWhitespaces = totalPhraseListList.getBestWhitespaceRanges();
-		
-		/*
-	private void analyzeTableRow(PhraseList phraseList, int iRow) {
-		LOG.debug("ANALYSE COL ROW "+iRow);
-		phraseListList.getOrCreateChildPhraseList();
-		ensureColumnManagerList();
-		List<IntRange> bestWhitespaces = phraseListList.getBestWhitespaceList();
-		 */
 		
 		for (int iRow = startRow; iRow <= endRow; iRow++) {
 			PhraseList phraseList = totalPhraseListList.get(iRow);
@@ -956,14 +936,6 @@ public class TableStructurer {
 		// find margins
 		IntRangeArray bestWhitespaces = bodyPhraseListList.getBestWhitespaceRanges();
 		IntRangeArray bestColumnRanges = bodyPhraseListList.getBestColumnRanges();
-		
-		/*
-	private void analyzeTableRow(PhraseList phraseList, int iRow) {
-		LOG.debug("ANALYSE COL ROW "+iRow);
-		phraseListList.getOrCreateChildPhraseList();
-		ensureColumnManagerList();
-		List<IntRange> bestWhitespaces = phraseListList.getBestWhitespaceList();
-		 */
 		
 		for (PhraseList phraseList : bodyPhraseListList) {
 			HtmlTr row = createTableRow(phraseList);

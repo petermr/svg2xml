@@ -175,7 +175,7 @@ public class MixedContainer extends AbstractContainer {
 
 	public HtmlTable createTableHtmlElement() {
 		if (true && false) {
-			LOG.debug("FORCE SKIP TABLE");
+			LOG.warn("FORCE SKIP TABLE");
 			HtmlTable table = new HtmlTable();
 			table.appendChild("NULL TABLE");
 			return table;

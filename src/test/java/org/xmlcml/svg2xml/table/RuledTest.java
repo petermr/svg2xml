@@ -69,14 +69,11 @@ public class RuledTest {
 		svgStore.setSplitAtMove(true);
 		svgStore.readGraphicsComponents(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
-		LOG.debug("container "+svgElement.toXML());
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 		Assert.assertEquals("lines", 19, lineList.size());
 		SVGLine svgLine0 = lineList.get(0);
-		LOG.debug("new line "+svgLine0.toXML());
 		Assert.assertEquals("line0", "none", svgLine0.getFill());
 		Assert.assertEquals("line0", "line.0", svgLine0.getId());
-//		Assert.assertTrue("line0 style", svgLine0.getStyle().startsWith("clip-path:url(#clipPath1);fill:#131313;stroke:black;stroke-width:0.2"));
 		Assert.assertEquals("line0", 0.469, svgLine0.getStrokeWidth(), 0.001);
 		Assert.assertEquals("line0", 66.332, svgLine0.getXY(0).getX(), 0.001);
 		Assert.assertEquals("line0", 59.319, svgLine0.getXY(0).getY(), 0.001);
@@ -100,39 +97,6 @@ public class RuledTest {
 		File svgOutFile = SVG2XMLFixtures.getCompactSVGFile(new File("target/"+RULED), new File("target/"+RULED+"/"+svgFile.getPath()+"micro"));
 		SVGSVG.wrapAndWriteAsSVG(svgElement, svgOutFile, 1000., 1000.);
 	}
-	
-//	/** test conversion of thin rects to lines
-//	 * 
-//	 * @throws FileNotFoundException
-//	 */
-//	@Test
-//	public void testThinRectToLineAndAttributes() throws FileNotFoundException {
-//		File svgFile = RULED1007_1MICRO;
-//		SVGStore svgStore = new SVGStore();
-//		svgStore.readGraphicsComponents(svgFile);
-//		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
-//		LOG.debug(svgElement.toXML());
-//		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
-//		Assert.assertEquals("lines", 4, lineList.size());
-//		SVGLine svgLine0 = lineList.get(0);
-//		Assert.assertEquals("line0", "#131313", svgLine0.getFill());
-//		Assert.assertEquals("line0", "line.0", svgLine0.getId());
-//		Assert.assertTrue("line0", svgLine0.getStyle().startsWith("clip-path:url(#clipPath1);fill:#131313;stroke:black;stroke-width:0.2"));
-//		Assert.assertEquals("line0", 0.283, svgLine0.getStrokeWidth(), 0.001);
-//		Assert.assertEquals("line0", 353.537, svgLine0.getXY(0).getX(), 0.001);
-//		Assert.assertEquals("line0", 106.369, svgLine0.getXY(0).getY(), 0.001);
-//		double[] widths = {0.283, 0.283, 0.340, 0.397};
-//		double[] lengths = {213.392, 421.795, 422.362, 422.362};
-//		for (int i = 0; i < lineList.size(); i++) {
-//			SVGLine line = lineList.get(i);
-//			Assert.assertEquals("width "+i, widths[i], line.getStrokeWidth(), 0.001);
-//			Assert.assertEquals("length "+i, lengths[i], line.getLength(), 0.001);
-//		}
-//		File svgOutFile = NormaFixtures.getCompactSVGFile(new File("target/"+RULED), new File("target/"+RULED+"/"+svgFile.getPath()+"micro"));
-//		LOG.debug(">>"+svgOutFile);
-//		SVGSVG.wrapAndWriteAsSVG(svgElement, svgOutFile, 1000., 1000.);
-//	}
-	
 	/** test joining lines
 	 * draws SVG showing lines to merge
 	 * @throws FileNotFoundException
@@ -170,9 +134,7 @@ public class RuledTest {
 			lengthSet.add(Util.format(mergedLine.getLength(), 0));
 		}
 		List<Multiset.Entry<Double>> lengthEntryList = MultisetUtil.createDoubleListSortedByValue(lengthSet);
-		LOG.debug(lengthEntryList);
 		List<Multiset.Entry<Double>> widthEntryList = MultisetUtil.createDoubleListSortedByValue(widthSet);
-		LOG.debug(widthSet);
 	}
 
 	/** rotate element positions position
