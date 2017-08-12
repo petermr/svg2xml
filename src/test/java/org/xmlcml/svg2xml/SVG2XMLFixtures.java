@@ -11,6 +11,7 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.paths.Chunk;
+import org.xmlcml.svg2xml.table.TableFixtures;
 
 import nu.xom.Builder;
 
@@ -180,7 +181,7 @@ public class SVG2XMLFixtures {
 	public static final File TREE313_PDF = new File(PDFS_BMC_DIR, TREE_ROOT+".pdf");
 	public static final File SVG_TREE313_DIR = new File(SVG_BMC_DIR, TREE_ROOT+"/");
 	public static final File HTML_TREE313_DIR = new File(TREE313_DIR, "html/");
-	
+
 	public static final File BMC174_PDF = new File(PDFS_BMC_DIR, "174.pdf");
 
 	public static final File ROBERTS_PDF = new File(PDFS_DIR, "roberts.pdf");
@@ -246,11 +247,33 @@ public class SVG2XMLFixtures {
 	public final static String LINEPLOTS_ROOT = "lineplots-1471-2148-11-327";
 	public static final File LINEPLOTS_327_PDF = new File(PDFS_BMC_DIR, LINEPLOTS_ROOT+".pdf");
 
-	public static final File TABLE_DIR = new File(TEST_RESOURCES_DIR, "org/xmlcml/svg2xml/table");
+	/** TABLES */
+	public static final File TABLE_DIR = new File(SVG2XML_DIR, "table");
 	public static final File TABLE_PDF_DIR = new File(TABLE_DIR, "pdf");
+	public static final File TABLE_TYPE_DIR = new File(TABLE_DIR, "types");
+	public static final File TABLE_TYPE_APA_DIR = new File(TABLE_TYPE_DIR, "apa");
+	public static final File TABLE_TYPE_APAROT_DIR = new File(TABLE_TYPE_DIR, "aparot");
+	public static final File TABLE_TYPE_AUTHOR_DIR = new File(TABLE_TYPE_DIR, "author");
+	public static final File TABLE_TYPE_BANDED_DIR = new File(TABLE_TYPE_DIR, "banded");
+	public static final File TABLE_TYPE_GRIDDED_DIR = new File(TABLE_TYPE_DIR, "gridded");
+	public static final File TABLE_TYPE_LEFTBAR_DIR = new File(TABLE_TYPE_DIR, "leftbar");
+	public static final File TABLE_TYPE_PANEL_DIR = new File(TABLE_TYPE_DIR, "panel");
+	public static final File TABLE_TYPE_RULES_DIR = new File(TABLE_TYPE_DIR, "rules");
+	public static final File[] TABLE_TYPES = { 
+		TABLE_TYPE_APA_DIR,
+		TABLE_TYPE_APAROT_DIR,
+		TABLE_TYPE_AUTHOR_DIR,
+		TABLE_TYPE_BANDED_DIR,
+		TABLE_TYPE_GRIDDED_DIR,
+		TABLE_TYPE_LEFTBAR_DIR,
+		TABLE_TYPE_PANEL_DIR,
+		TABLE_TYPE_RULES_DIR,
+	};
+	
 	public static final File DK_PAGE1_SVG = new File(SVG2XMLFixtures.TABLE_DIR, "dk.page1.svg");
 	public static final File BERICHT_PAGE6_SVG = new File(SVG2XMLFixtures.TABLE_DIR, "bericht.page6.svg");
 	public static final File BERICHT_PAGE22_SVG = new File(SVG2XMLFixtures.TABLE_DIR, "bericht.page22.svg");
+	// ========================
 
 	public static final File BUILDER_DIR = new File(SVG2XML_DIR, "builder");
 
