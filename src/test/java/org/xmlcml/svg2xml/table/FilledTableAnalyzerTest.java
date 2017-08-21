@@ -26,7 +26,7 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.cache.SVGCache;
+import org.xmlcml.graphics.svg.cache.ComponentCache;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -86,7 +86,7 @@ public class FilledTableAnalyzerTest {
 	@Test
 	public void testStyles() throws FileNotFoundException {
 		File svgFile = FILLED1016_2MICRO;
-		SVGCache svgStore = new SVGCache();
+		ComponentCache svgStore = new ComponentCache();
 		svgStore.readGraphicsComponents(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		File svgOutFile = SVG2XMLFixtures.getCompactSVGFile(new File("target/"+FILLED), new File("target/"+FILLED+"/"+svgFile.getPath()+"micro"));
@@ -111,7 +111,7 @@ public class FilledTableAnalyzerTest {
 	@Test
 	public void testReadGraphicsComponents() throws FileNotFoundException {
 		for (File svgFile : FILLED_FILES) {
-			SVGCache svgStore = new SVGCache();
+			ComponentCache svgStore = new ComponentCache();
 			svgStore.readGraphicsComponents(svgFile);
 			SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 			// this is inefficient but OK for now
@@ -216,7 +216,7 @@ public class FilledTableAnalyzerTest {
 	}
 
 	@Test
-	public void testCreateRows() {
+	public void testCreateAndDrawRows() {
 		Pattern filePattern = Pattern.compile("^.*/([^/]*)/tables/(table[^/]*)/.*$");
 		for (File svgFile : FILLED_ELEM_FILES) {
 			String f = svgFile.toString();
@@ -227,10 +227,27 @@ public class FilledTableAnalyzerTest {
 			
 			FilledTableAnalyzer filledTableAnalyzer = new FilledTableAnalyzer();
 			filledTableAnalyzer.readSVGElement(svgFile);
-			filledTableAnalyzer.createRows();
-			SVGSVG svgOut = filledTableAnalyzer.createSVGSVG();
-			svgOut.writeQuietly(new File("target/"+FILLED+"/"+doi+"/"+tableName+"/"+"rows.svg"));
+			SVGG g = filledTableAnalyzer.createBoundaryListsAndProcessRows();
+			SVGSVG.wrapAndWriteAsSVG(g, new File("target/"+FILLED+"/"+doi+"/"+tableName+"/"+"rows.svg"));
 		}
 	}
-
+	
+	@Test
+	public void testCreateRowsWithEmptyCells() {
+		Pattern filePattern = Pattern.compile("^.*/([^/]*)/tables/(table[^/]*)/.*$");
+		for (File svgFile : FILLED_ELEM_FILES) {
+			String f = svgFile.toString();
+			Matcher matcher = filePattern.matcher(f);
+			if (!matcher.matches()) throw new RuntimeException("bad match");
+			String doi = matcher.group(1);
+			String tableName = matcher.group(2);
+			
+			FilledTableAnalyzer filledTableAnalyzer = new FilledTableAnalyzer();
+			filledTableAnalyzer.readSVGElement(svgFile);
+			List<CellRow> cellRows = filledTableAnalyzer.createCellRowList();
+			SVGG g = filledTableAnalyzer.createBoundaryListsAndProcessRows();
+			SVGSVG.wrapAndWriteAsSVG(g, new File("target/"+FILLED+"/"+doi+"/"+tableName+"/"+"emptyCells.svg"));
+		}
+	}
+	
 }

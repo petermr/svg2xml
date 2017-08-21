@@ -12,9 +12,10 @@ import org.junit.Test;
 import org.xmlcml.euclid.util.CSVUtil;
 import org.xmlcml.euclid.util.MultisetUtil;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.cache.SVGCache;
-import org.xmlcml.graphics.svg.cache.SVGCache.Feature;
+import org.xmlcml.graphics.svg.cache.ComponentCache;
+import org.xmlcml.graphics.svg.cache.ComponentCache.Feature;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
+import org.xmlcml.svg2xml.cache.GraphicCache;
 
 import com.google.common.collect.Multiset;
 
@@ -24,6 +25,7 @@ import com.google.common.collect.Multiset;
  * @author pm286
  *
  */
+@Deprecated //"move to package svg";
 public class GraphicComponentAnalyzerTest {
 	private static final Logger LOG = Logger.getLogger(GraphicComponentAnalyzerTest.class);
 	static {
@@ -59,7 +61,7 @@ public class GraphicComponentAnalyzerTest {
 					LOG.debug(filename);
 					row.add(filename);
 					SVGElement svgElement = SVGElement.readAndCreateSVG(svgFile);
-					SVGCache cache = new SVGCache();
+					GraphicCache cache = new GraphicCache();
 					cache.readGraphicsComponents(svgElement);
 					List<String> featureValues = cache.getFeatureValues(features);
 					row.addAll(featureValues);
@@ -90,9 +92,9 @@ public class GraphicComponentAnalyzerTest {
 					LOG.debug(filename);
 					row.add(filename);
 					SVGElement svgElement = SVGElement.readAndCreateSVG(svgFile);
-					SVGCache cache = new SVGCache();
+					GraphicCache cache = new GraphicCache();
 					cache.readGraphicsComponents(svgElement);
-					Multiset<String> styleSet = cache.createAbbreviatedHorizontalTextStyleMultiset();
+					Multiset<String> styleSet = cache.getOrCreateTextCache().createAbbreviatedHorizontalTextStyleMultiset();
 					List<Multiset.Entry<String>> entryList = MultisetUtil.createStringListSortedByCount(styleSet);
 					int entryCount = entryList.size();
 					int filled = Math.min(entryCount, maxStyles);
@@ -112,5 +114,43 @@ public class GraphicComponentAnalyzerTest {
 		}
 		File csvFile = new File("target/table/types/fonts.csv");
 		CSVUtil.writeCSV(csvFile.toString(), headers, bodyList);
+	}
+	
+	@Test
+	public void testLinesAndRects() {
+		List<List<String>> bodyList = new ArrayList<List<String>>();
+		List<String> headers = new ArrayList<String>();
+		headers.add(FILE);
+		List<Feature> features = Arrays.asList(new Feature[] {
+			Feature.LONG_HORIZONTAL_RULE_COUNT,
+			Feature.SHORT_HORIZONTAL_RULE_COUNT,
+			Feature.TOP_HORIZONTAL_RULE_COUNT,
+			Feature.BOTTOM_HORIZONTAL_RULE_COUNT,
+			Feature.LONG_HORIZONTAL_RULE_THICKNESS_COUNT,
+			Feature.HORIZONTAL_PANEL_COUNT,
+		}
+		);
+		headers.addAll(Feature.getAbbreviations(features));
+		headers.add(FILE);
+		for (File dir : SVG2XMLFixtures.TABLE_TYPES) {
+			File[] svgFiles = dir.listFiles();
+			for (File svgFile : svgFiles) {
+				if (svgFile.toString().endsWith(".svg")) {
+					List<String> row = new ArrayList<String>();
+					String filename = svgFile.getName();
+					LOG.debug(filename);
+					row.add(filename);
+					SVGElement svgElement = SVGElement.readAndCreateSVG(svgFile);
+					GraphicCache cache = new GraphicCache();
+					cache.readGraphicsComponents(svgElement);
+					List<String> featureValues = cache.getFeatureValues(features);
+					row.addAll(featureValues);
+					bodyList.add(row);
+				}
+			}
+		}
+		File csvFile = new File("target/table/types/lines.csv");
+		CSVUtil.writeCSV(csvFile.toString(), headers, bodyList);
+		
 	}
 }

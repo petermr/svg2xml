@@ -19,7 +19,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.cache.SVGCache;
+import org.xmlcml.graphics.svg.cache.ComponentCache;
 import org.xmlcml.graphics.svg.linestuff.LineMerger;
 import org.xmlcml.graphics.svg.linestuff.LineMerger.MergeMethod;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
@@ -65,7 +65,7 @@ public class RuledTest {
 	@Test
 	public void testThinRectToLineAndAttributes0() throws FileNotFoundException {
 		File svgFile = RULED2001_1MICRO;
-		SVGCache svgStore = new SVGCache();
+		ComponentCache svgStore = new ComponentCache();
 		svgStore.setSplitAtMove(true);
 		svgStore.readGraphicsComponents(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
@@ -104,7 +104,7 @@ public class RuledTest {
 	@Test
 	public void testMergeLines() throws FileNotFoundException {
 		File svgFile = RULED1007_1;
-		SVGCache svgStore = new SVGCache();
+		ComponentCache svgStore = new ComponentCache();
 		svgStore.readGraphicsComponents(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
@@ -122,7 +122,7 @@ public class RuledTest {
 	@Test
 	public void testLinesByWidthAndLength() throws FileNotFoundException {
 		File svgFile = RULED1007_1;
-		SVGCache svgStore = new SVGCache();
+		ComponentCache svgStore = new ComponentCache();
 		svgStore.readGraphicsComponents(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
@@ -161,7 +161,7 @@ public class RuledTest {
 		};
 		int i = 0;
 		for (File svgFile : RULED_FILES) {
-			SVGCache svgStore = new SVGCache();
+			ComponentCache svgStore = new ComponentCache();
 			svgStore.readGraphicsComponents(svgFile);
 			SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 			List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
