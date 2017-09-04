@@ -10,16 +10,20 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.cache.ComponentCache;
 import org.xmlcml.svg2xml.table.TableGrid;
 import org.xmlcml.svg2xml.table.TableStructurer;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -34,6 +38,13 @@ import com.google.common.collect.Multiset;
  *
  */
 public class PageLayoutAnalyzer {
+
+	private static final char CHAR_P = 'P';
+	private static final char CHAR_L = 'L';
+	private static final String LP = "LP";
+	private static final String LP_1 = LP+"{1}";
+	private static final String X = "X";
+	private static final String T = "T";
 
 	private static final Logger LOG = Logger.getLogger(PageLayoutAnalyzer.class);
 	static {
@@ -56,9 +67,8 @@ public class PageLayoutAnalyzer {
 	private int xRangeRangeMin; // to exclude ticks on diagrams
 	private File inputFile;
 	private boolean rotatable = false;
-
-
 	private boolean omitWhitespace = true;
+	protected SVGElement svgChunk;
 
 	public PageLayoutAnalyzer() {
 		setDefaults();
@@ -77,9 +87,18 @@ public class PageLayoutAnalyzer {
 	}
 	
 	public void createContent(File inputFile) {
-		LOG.trace(inputFile.getAbsolutePath());
 		this.inputFile = inputFile;
-		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		svgChunk = SVGElement.readAndCreateSVG(inputFile);
+		createContent(svgChunk);
+	}
+
+	public void createContent(SVGElement svgElement) {
+		ComponentCache componentCache = new ComponentCache();
+		componentCache.readGraphicsComponents(svgElement);
+		LOG.debug("components: "+componentCache.toString());
+		List<Real2Range> rects = SVGElement.createBoundingBoxList(componentCache.getOrCreateRectCache().getOrCreateRectList());
+		LOG.trace("rects: "+rects);
+		textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgElement);
 		SVGElement inputSVGChunk = textStructurer.getSVGChunk();
 		cleanChunk(inputSVGChunk);
 		if (rotatable  && textStructurer.hasAntiClockwiseCharacters()) {
@@ -91,7 +110,7 @@ public class PageLayoutAnalyzer {
 		}
 
 		phraseListList = textStructurer.getPhraseListList();
-		LOG.trace("reading ... "+phraseListList.toXML());
+		LOG.trace(">pll>"+phraseListList.size()+" ... "+phraseListList.toXML());
 		textStructurer.condenseSuscripts();
 		phraseListList.format(3);
 		tableStructurer = textStructurer.createTableStructurer();
@@ -99,8 +118,89 @@ public class PageLayoutAnalyzer {
 			
 		if (tableGrid == null) {
 			createOrderedHorizontalList();
+			LOG.trace("hlist: " + PageLayoutAnalyzer.createSig(horizontalList));
 		}
+		return;
 	}
+
+	public static String createSig(List<HorizontalElement> horizontalList) {
+		StringBuilder sb;
+		String sig = createLPList(horizontalList);
+		LOG.trace(">>"+sig);
+		String lpc = createLPCountList(sig);
+		LOG.trace(">>>"+lpc);
+		String lpccond = contractLP1(lpc);
+		LOG.trace(">>>>"+lpccond);
+		return lpccond;
+	}
+
+	private static String createLPList(List<HorizontalElement> horizontalList) {
+		StringBuilder sb = new StringBuilder();
+		for (HorizontalElement helem :horizontalList) {
+			if (helem instanceof HorizontalRuler) {
+				sb.append("L");
+			} else if (helem instanceof PhraseList) {
+				sb.append("P");
+			} else {
+				sb.append(helem.getClass().getSimpleName());
+			}
+		}
+		String sig = sb.toString();
+		return sig;
+	}
+
+	private static String createLPCountList(String sig) {
+		StringBuilder sb;
+		sb = new StringBuilder();
+		int pcount = 0;
+		for (int i = 0; i < sig.length(); i++) {
+			char c = sig.charAt(i);
+			if (c == CHAR_P) {
+				pcount++;
+			} else if (c == CHAR_L) {
+				if (pcount > 0) {
+					sb.append(CHAR_P+"{"+pcount+"}");
+				}
+				pcount = 0;
+				sb.append("L");
+			}
+		}
+		if (pcount > 0) {
+			sb.append(CHAR_P+"{"+pcount+"}");
+		}
+		return sb.toString();
+	}
+
+	private static String contractLP1(String sig) {
+		String cond = sig.replace(LP_1, X);
+		StringBuilder sb = new StringBuilder();
+		int xcount = 0;
+		int i = 0;
+		while (i < cond.length()) {
+			String s = cond.substring(i, i+1);
+			if (X.equals(s)) {
+				if (xcount == 1) {
+					sb.append(X);
+				}
+				xcount++;
+			} else {
+				if (xcount > 1) {
+					sb.append(T+"{"+(xcount - 1) +"}");
+					xcount = 0;
+				}
+				sb.append(s);
+			}
+			i++;
+		}
+		if (xcount > 0) {
+			sb.append(T+"{"+xcount+"}");
+		}
+		String s = sb.toString();
+		s = s.replace(X, LP);
+		s = s.replace(T+"{1}", LP);
+		return s;
+	}
+
 
 	private void cleanChunk(GraphicsElement chunk) {
 		if (omitWhitespace) {
@@ -207,11 +307,6 @@ public class PageLayoutAnalyzer {
 		return horizontalRulerList;
 	}
 
-//	private void ensureContent() {
-//		if (tableStructurer == null && inputFile != null) {
-//			createContent(inputFile);
-//		}
-//	}
 
 	public void setIncludeRulers(boolean b) {
 		this.includeRulers = b;

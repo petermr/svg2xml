@@ -11,7 +11,7 @@ import org.xmlcml.graphics.svg.SVGRect;
  */
 public class GraphPlot {
 
-	public static SVGRect plotBox(Real2Range bbox, String fill, double opacity) {
+	public static SVGRect createBoxWithFillOpacity(Real2Range bbox, String fill, double opacity) {
 		SVGRect plotRect = SVGRect.createFromReal2Range(bbox);
 		if (plotRect == null) {
 			plotRect = new SVGRect(new Real2(0.0, 0.0), new Real2(200., 30.));
