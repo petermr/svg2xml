@@ -187,7 +187,7 @@ public class ColumnManager {
 		Real2 xy = bbox.getLLURCorners()[0];
 		Word emptyWord = Word.createEmptyWord(xy, fontSize);
 		Phrase emptyPhrase = new Phrase(emptyWord);
-		SVGShape plotBox = GraphPlot.plotBox(bbox, "green", 0.1);
+		SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(bbox, "green", 0.1);
 		emptyPhrase.appendChild(plotBox);
 		columnPhrases.add(yPointer, emptyPhrase);
 	}
@@ -220,9 +220,9 @@ public class ColumnManager {
 		SVGG g = new SVGG();
 		g.setClassName("col"+"."+colno);
 		for (int iPhrase = 0; iPhrase < columnPhrases.size(); iPhrase++) {
-			Real2Range phraseBox = columnPhrases.get(iPhrase).getBoundingBox();
-			if (phraseBox.getYMin() < 0) {
-				LOG.error("FIXME box: "+phraseBox);
+			Real2Range contentBox = columnPhrases.get(iPhrase).getBoundingBox();
+			if (contentBox.getYMin() < 0) {
+				LOG.error("FIXME box: "+contentBox);
 			}
 			String iPhraseS = columnPhrases.get(iPhrase).getStringValue();
 			if (iPhraseS == null || iPhraseS.trim().length() == 0) {
@@ -230,7 +230,7 @@ public class ColumnManager {
 			} else {
 				String title = colno+"."+iPhrase+"/"+columnPhrases.get(iPhrase).getStringValue();
 				SVGTitle svgTitle = new SVGTitle(title);
-				SVGRect plotBox = GraphPlot.plotBox(phraseBox, colors[1], opacity[1]);
+				SVGRect plotBox = GraphPlot.createBoxWithFillOpacity(contentBox, colors[1], opacity[1]);
 				plotBox.setClassName("cell"+"."+colno+"."+iPhrase);
 				plotBox.appendChild(svgTitle);
 				g.appendChild(plotBox);

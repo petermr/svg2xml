@@ -160,7 +160,7 @@ public class TableBodySection extends TableSection {
 				Real2Range colManagerBox = new Real2Range(new RealRange(columnManager.getEnclosingRange()), boundingBox.getYRange());
 				String title = "BODYCOLUMN: "+i+"/"+columnManager.getStringValue();
 				SVGTitle svgTitle = new SVGTitle(title);
-				SVGShape plotBox = GraphPlot.plotBox(colManagerBox, colors[1], opacity[1]);
+				SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(colManagerBox, colors[1], opacity[1]);
 				plotBox.appendChild(svgTitle);
 				g.appendChild(plotBox);
 			}
@@ -198,7 +198,7 @@ public class TableBodySection extends TableSection {
 				xRange.extendLowerEndBy(xIndent);
 				for (int i = 0; i < indentRangeArray.size(); i++) {
 					Real2Range subTable = new Real2Range(xRange, indentRangeArray.get(i));
-					SVGShape plotBox = GraphPlot.plotBox(subTable, colors[i % colors.length], opacity[i % opacity.length]);
+					SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(subTable, colors[i % colors.length], opacity[i % opacity.length]);
 					g.appendChild(plotBox);
 				}
 			}

@@ -45,7 +45,7 @@ public class TableTitleSection extends TableSection {
 		} else {
 			String title = "TITLE: "+this.getFontInfo()+" //" +this.getStringValue();
 			SVGTitle svgTitle = new SVGTitle(title);
-			SVGShape plotBox = GraphPlot.plotBox(boundingBox, colors[0], opacity[0]);
+			SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(boundingBox, colors[0], opacity[0]);
 			plotBox.appendChild(svgTitle);
 			g.appendChild(plotBox);
 			TableContentCreator.shiftToOrigin(svgChunk, g);

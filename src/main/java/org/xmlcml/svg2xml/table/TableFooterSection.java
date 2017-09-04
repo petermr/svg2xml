@@ -45,7 +45,7 @@ public class TableFooterSection extends TableSection {
 		} else {
 			String title = FOOTER_TITLE+": "+this.getFontInfo()+" //" +this.getStringValue();
 			SVGTitle svgTitle = new SVGTitle("footer: "+title);
-			SVGShape plotBox = GraphPlot.plotBox(boundingBox, colors[1], opacity[1]);
+			SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(boundingBox, colors[1], opacity[1]);
 			plotBox.appendChild(svgTitle);
 			g.appendChild(plotBox);
 			TableContentCreator.shiftToOrigin(svgChunk, g);

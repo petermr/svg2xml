@@ -119,7 +119,7 @@ public class TableHeaderSection extends TableSection {
 						new RealRange(colGroup.getBoundingBox().getYRange().getMax(), yRange.getMax());
 					String title = "HEADERCOLUMN: "+i+"/"+columnManager.getStringValue();
 					SVGTitle svgTitle = new SVGTitle(title);
-					SVGShape plotBox = GraphPlot.plotBox(new Real2Range(xRange, yRange1), colors[1], opacity[1]);
+					SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(new Real2Range(xRange, yRange1), colors[1], opacity[1]);
 					plotBox.appendChild(svgTitle);
 					g.appendChild(plotBox);
 				}
@@ -137,7 +137,7 @@ public class TableHeaderSection extends TableSection {
 			for (ColumnGroup colGroup : headerRow.getOrCreateColumnGroupList()) {
 				Real2Range bbox = colGroup.getBoundingBox();
 				RealRange colGroupXRange = bbox.getXRange();
-				if (colGroupXRange.intersectsWith(xRange)) {
+				if (colGroupXRange.intersects(xRange)) {
 					if (bbox.getYMax() > ymax) {
 						ymax = bbox.getYMax();
 						columnGroup = colGroup;
@@ -155,7 +155,7 @@ public class TableHeaderSection extends TableSection {
 			HeaderRow headerRow = headerRowList.get(i);
 			for (ColumnGroup columnGroup : headerRow.getOrCreateColumnGroupList()) {
 				Real2Range bbox = columnGroup.getBoundingBox();
-				SVGShape plotBox = GraphPlot.plotBox(bbox, colors[1], opacity[1]);
+				SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(bbox, colors[1], opacity[1]);
 				String title = "HEADERBOX: "+i;
 				SVGTitle svgTitle = new SVGTitle(title);
 				plotBox.appendChild(svgTitle);

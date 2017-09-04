@@ -3,6 +3,7 @@ package org.xmlcml.svg2xml.table;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -55,8 +56,8 @@ public class TableSection {
 	protected double epsilon = 0.3;
 
 	public TableSection(TableSectionType type) {
+		this();
 		this.type = type;
-		this.horizontalElementList = new ArrayList<HorizontalElement>();
 	}
 	
 	/** copy constructor.
@@ -70,6 +71,10 @@ public class TableSection {
 		this.boundingBox = tableSection.boundingBox;
 	}
 
+
+	public TableSection() {
+		this.horizontalElementList = new ArrayList<HorizontalElement>();
+	}
 
 	public void add(HorizontalElement horizontalElement) {
 		this.horizontalElementList.add(horizontalElement);
@@ -219,5 +224,33 @@ public class TableSection {
 			sectionPhraseListList.toHtml();
 		return sectionElement;
 	}
+
+	public boolean contains(Pattern regex) {
+		getOrCreatePhraseListList();
+		for (PhraseList phraseList : sectionPhraseListList) {
+			if (phraseList.contains(regex)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** debug down to the Phrase level.
+	 * 
+	 * @param tableSection
+	 */
+	public String debugPhrases() {
+		StringBuilder sb = new StringBuilder();
+		PhraseListList pll = this.getOrCreatePhraseListList();
+		sb.append("pll: "+pll.size()+"\n");
+		for (PhraseList pl : pll) {
+			sb.append(">>pl: " + pl.size()+"\n");
+			for (Phrase p : pl) {
+				sb.append(">>>>>p: " + p.getY()+": "+p.getStringValue()+"\n");
+			}
+		}
+		return sb.toString();
+	}
+	
 
 }

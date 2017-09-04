@@ -873,7 +873,7 @@ public class TableStructurer {
 	}
 
 	private void analyzeTableRow(PhraseList phraseList, int iRow) {
-		totalPhraseListList.getOrCreateChildPhraseList();
+		totalPhraseListList.getOrCreateChildPhraseListList();
 		ensureColumnManagerList();
 		IntRangeArray bestWhitespaces = totalPhraseListList.getBestWhitespaceRanges();
 		if (bestWhitespaces.size() != maxColumns) {
@@ -902,7 +902,7 @@ public class TableStructurer {
 	}
 
 	public HtmlTr createTableRow(PhraseList phraseList, int iRow, Class<?> clazz) {
-		totalPhraseListList.getOrCreateChildPhraseList();
+		totalPhraseListList.getOrCreateChildPhraseListList();
 		ensureColumnManagerList();
 		HtmlTr row = new HtmlTr();
 		for (int icol = 0; icol < maxColumns; icol++) {
@@ -916,7 +916,7 @@ public class TableStructurer {
 	}
 
 	private List<HtmlTr> createBodyTableRows(int startRow, int endRow, Class<?> clazz) {
-		totalPhraseListList.getOrCreateChildPhraseList();
+		totalPhraseListList.getOrCreateChildPhraseListList();
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
 		
 		for (int iRow = startRow; iRow <= endRow; iRow++) {
