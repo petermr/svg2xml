@@ -21,6 +21,7 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlUl;
+import org.xmlcml.svg2xml.table.TableSection;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
@@ -51,24 +52,24 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	
 	public PhraseListList(PhraseListList phraseListList) {
 		this();
-		getOrCreateChildPhraseList();
-		childPhraseListList.addAll(phraseListList.getOrCreateChildPhraseList());
+		getOrCreateChildPhraseListList();
+		childPhraseListList.addAll(phraseListList.getOrCreateChildPhraseListList());
 	}
 
 	public PhraseListList(List<PhraseList> phraseLists) {
 		this();
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		for (PhraseList phraseList : phraseLists) {
 			this.add(phraseList);
 		}
 	}
 
 	public Iterator<PhraseList> iterator() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		return childPhraseListList.iterator();
 	}
 
-	public List<PhraseList> getOrCreateChildPhraseList() {
+	public List<PhraseList> getOrCreateChildPhraseListList() {
 		if (childPhraseListList == null) {
 			List<Element> phraseChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+PhraseList.TAG+"']");
 			childPhraseListList = new ArrayList<PhraseList>();
@@ -81,7 +82,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 
 	public String getStringValue() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		StringBuilder sb = new StringBuilder();
 		for (PhraseList phraseList : childPhraseListList) {
 			sb.append(""+phraseList.getStringValue()+"//");
@@ -93,22 +94,22 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	public void add(PhraseList phraseList) {
 		this.appendChild(new PhraseList(phraseList));
 		childPhraseListList = null;
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 	}
 
 	public PhraseList get(int i) {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		return (i < 0 || i >= childPhraseListList.size()) ? null : childPhraseListList.get(i);
 	}
 	
 	protected List<? extends LineChunk> getChildChunks() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		return childPhraseListList;
 	}
 
 
 	public List<IntArray> getLeftMarginsList() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		List<IntArray> leftMarginsList = new ArrayList<IntArray>();
 		for (PhraseList phraseList : childPhraseListList) {
 			IntArray leftMargins = phraseList.getLeftMargins();
@@ -122,7 +123,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	 * @return
 	 */
 	public int getMaxColumns() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		int maxColumns = 0;
 		for (PhraseList phraseList : childPhraseListList) {
 			maxColumns = Math.max(maxColumns, phraseList.size());
@@ -131,7 +132,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 
 	public IntRangeArray getBestColumnRanges() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		int maxColumns = getMaxColumns();
 		IntRangeArray columnRanges = new IntRangeArray();
 		for (int i = 0; i < maxColumns; i++) {
@@ -152,7 +153,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 	
 	public IntRangeArray getBestWhitespaceRanges() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		int maxColumns = getMaxColumns();
 		IntRangeArray bestColumnRanges = getBestColumnRanges();
 		IntRangeArray bestWhitespaces = new IntRangeArray();
@@ -181,12 +182,12 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 
 	public int size() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		return childPhraseListList.size();
 	}
 
 	public Real2Range getBoundingBox() {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		Real2Range bbox = null;
 		if (childPhraseListList.size() > 0) {
 			bbox = childPhraseListList.get(0).getBoundingBox();
@@ -198,7 +199,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	}
 
 	public void rotateAll(Real2 centreOfRotation, Angle angle) {
-		getOrCreateChildPhraseList();
+		getOrCreateChildPhraseListList();
 		for (PhraseList phraseList : childPhraseListList) {
 			phraseList.rotateAll(centreOfRotation, angle);
 			LOG.trace("PL: "+phraseList.toXML());
@@ -386,6 +387,7 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		}
 		return ul;
 	}
+
 
 
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -15,10 +16,8 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlLi;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlTh;
-import org.xmlcml.html.HtmlUl;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
@@ -312,6 +311,16 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 			}
 		}
 		return thList;
+	}
+
+	public boolean contains(Pattern regex) {
+		getOrCreateChildPhraseList();
+		for (Phrase phrase : childPhraseList) {
+			if (phrase.contains(regex)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -120,8 +120,19 @@ public class TextUtil {
 	 * @return true if changes made
 	 */
 	public static boolean normalize(GraphicsElement svgChunk, Normalizer.Form form) {
-		boolean normalized = false;
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgChunk);
+		boolean normalized = normalize(textList, form);
+		return normalized;
+	}
+
+	/**
+	 * 
+	 * @param textList list to normalize
+	 * @param form normalizer
+	 * @return 
+	 */
+	public static boolean normalize(List<SVGText> textList, Normalizer.Form form) {
+		boolean normalized = false;
 		for (SVGText text : textList) {
 			normalized |= normalize(text, form);
 		}

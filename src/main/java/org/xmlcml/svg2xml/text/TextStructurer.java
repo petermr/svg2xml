@@ -30,6 +30,9 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.cache.ComponentCache;
+import org.xmlcml.graphics.svg.cache.TextCache;
+import org.xmlcml.graphics.svg.plot.SVGMediaBox;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.flow.FlowStructurer;
@@ -724,12 +727,31 @@ public class TextStructurer {
 		return createTextStructurerWithSortedLines(svgChunk);
 	}
 
-	public static TextStructurer createTextStructurerWithSortedLines(SVGElement svgChunk) {
-		boolean normalized = TextUtil.normalize(svgChunk, NORMALIZE_FORM);
-		SVGDefs.removeDefs(svgChunk);
-		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgChunk, ".//svg:text"));
+	public static TextStructurer createTextStructurerWithSortedLines(SVGElement svgElement) {
+		SVGDefs.removeDefs(svgElement);
+		List<SVGText> textCharacters = SVGText.extractSelfAndDescendantTexts(svgElement);
+		boolean normalized = TextUtil.normalize(textCharacters, NORMALIZE_FORM);
 		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
-		textStructurer.setSvgChunk(svgChunk);
+		textStructurer.setSvgChunk(svgElement);
+		textStructurer.getOrCreatePhraseListListFromWords();
+		return textStructurer;
+	}
+
+	/** may not be used - if I can seamlessly merge TextCache in here.
+	 * 
+	 * @param svgElement
+	 * @return
+	 */
+	public static TextStructurer createTextStructurerWithSortedLinesAndCaches(SVGElement svgElement) {
+		// FIXME - may crash later
+		SVGMediaBox box = null;
+		ComponentCache componentCache = new ComponentCache(box);
+		componentCache.readGraphicsComponents(svgElement);
+		boolean normalized = TextUtil.normalize(svgElement, NORMALIZE_FORM);
+		SVGDefs.removeDefs(svgElement);
+		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgElement, ".//svg:text"));
+		TextStructurer textStructurer = createTextStructurerWithSortedLines(textCharacters);
+		textStructurer.setSvgChunk(svgElement);
 		textStructurer.getOrCreatePhraseListListFromWords();
 		return textStructurer;
 	}

@@ -3,9 +3,10 @@ package org.xmlcml.svg2xml.text;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.util.log.Log;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
@@ -14,7 +15,6 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Util;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlBr;
@@ -447,6 +447,12 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 			newWord.setStringValueAttribute((String)null);
 			this.addWord(newWord);
 		}
+	}
+
+	public boolean contains(Pattern regex) {
+		String value = getStringValue();
+		Matcher matcher = regex.matcher(value);
+		return matcher.find();
 	}
 
 
