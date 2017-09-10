@@ -12,7 +12,20 @@ import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
 
-
+/** a contentBox is (usually) a Rect which contains other material.
+ * Examples are textboxes, legend boxes or author-marked areas
+ * especially in tables.
+ * 
+ * The contents are ordered by geometry and not by order of addition. There is no check on
+ * duplicate additions at present.
+ * 
+ * Contents can be any SVGElements but are usually PhraseLists (a line of text)
+ * or lines (for legends or short rules) 
+ * or small graphics objects (Shapes) for symbols
+ * 
+ * @author pm286
+ *
+ */
 public class SVGContentBox extends SVGG {
 
 	public static final String CONTENT_BOX = "contentBox";

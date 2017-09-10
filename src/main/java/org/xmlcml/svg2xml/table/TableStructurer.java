@@ -45,7 +45,7 @@ import org.xmlcml.html.HtmlThead;
 import org.xmlcml.html.HtmlTr;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
@@ -84,7 +84,7 @@ public class TableStructurer {
 	private HtmlHtml html;
 	private HtmlTbody tableBody;
 	private TextStructurer textStructurer;
-	private List<HorizontalRuler> horizontalRulerList;
+	private List<HorizontalRule> horizontalRulerList;
 	private List<SVGElement> horizontalElementList;
 	private List<VerticalRuler> verticalRulerList;
 	private Real2Range bboxRuler;
@@ -288,8 +288,8 @@ public class TableStructurer {
 			tableHeaderSection =tableSectionList.get(1);
 			for (HorizontalElement element : tableHeaderSection.getHorizontalElementList()) {
 				headerBBoxManager.add(((SVGElement)element).getBoundingBox());
-				if (element instanceof HorizontalRuler) {
-					addRulerToHead((HorizontalRuler) element);
+				if (element instanceof HorizontalRule) {
+					addRulerToHead((HorizontalRule) element);
 				} else {
 					addPhraseList((PhraseList) element);
 				}
@@ -339,7 +339,7 @@ public class TableStructurer {
 		LOG.trace(">TH>"+phraseList.getStringValue());
 	}
 
-	private void addRulerToHead(HorizontalRuler ruler) {
+	private void addRulerToHead(HorizontalRule ruler) {
 		Real2 xy = ruler.getXY();
 		HtmlTr tr = new HtmlTr();
 		HtmlTh th = new HtmlTh();
@@ -367,7 +367,7 @@ public class TableStructurer {
 			TableSection footerSection =tableSectionList.get(3);
 			for (HorizontalElement element : footerSection.getHorizontalElementList()) {
 				footerBBoxManager.add(((SVGElement)element).getBoundingBox());
-				if (element instanceof HorizontalRuler) {
+				if (element instanceof HorizontalRule) {
 					LOG.trace("HRULER in footer");
 				} else {
 					PhraseList phraseList = (PhraseList) element;
@@ -430,7 +430,7 @@ public class TableStructurer {
 				Real2Range bbox1 = outerRect.getBoundingBox();
 				if (bbox1.isEqualTo(bbox, epsilon)) {
 					if (shapeList.remove(outerRect)) {
-						LOG.trace("removed outerRect: "+outerRect.toXML());
+						LOG.debug("removed outerRect from shapeList: "+outerRect.toXML());
 					} else {
 						LOG.trace("failed to remove outerRect "+outerRect.hashCode());
 					}
@@ -466,12 +466,12 @@ public class TableStructurer {
 		return verticalRulerList;
 	}
 
-	public List<HorizontalRuler> getOrCreateHorizontalRulerList() {
+	public List<HorizontalRule> getOrCreateHorizontalRulerList() {
 		if (horizontalRulerList == null) {
 			shapeList = getOrCreateShapeList();
 			List<SVGLine> lineList = extractLines(shapeList, Line2.XAXIS);
 			lineList = removeShortLines(lineList, 1.0);
-			horizontalRulerList = HorizontalRuler.createSortedRulersFromSVGList(lineList);
+			horizontalRulerList = HorizontalRule.createSortedRulersFromSVGList(lineList);
 			Ruler.formatStrokeWidth(horizontalRulerList, 1);
 		}
 		return horizontalRulerList;
@@ -564,7 +564,7 @@ public class TableStructurer {
 		this.textStructurer = textStructurer;
 	}
 
-	public List<HorizontalRuler> getHorizontalRulerList() {
+	public List<HorizontalRule> getHorizontalRulerList() {
 		return getHorizontalRulerList(false, 0.0);
 	}
 
@@ -576,7 +576,7 @@ public class TableStructurer {
 	 * 
 	 * @return
 	 */
-	public List<HorizontalRuler> getHorizontalRulerList(boolean merge, double eps) {
+	public List<HorizontalRule> getHorizontalRulerList(boolean merge, double eps) {
 		LOG.trace("====HRuler===");
 		if (horizontalRulerList != null && merge) {
 			horizontalRulerList = addRulerOrCombineVerticalOverlaps();
@@ -585,10 +585,10 @@ public class TableStructurer {
 		return horizontalRulerList;
 	}
 
-	private List<HorizontalRuler> addRulerOrCombineVerticalOverlaps() {
-		List<HorizontalRuler> newRulerList = new ArrayList<HorizontalRuler>();
+	private List<HorizontalRule> addRulerOrCombineVerticalOverlaps() {
+		List<HorizontalRule> newRulerList = new ArrayList<HorizontalRule>();
 		for (int i = 0; i < horizontalRulerList.size(); i++) {
-			HorizontalRuler horizontalRuler = horizontalRulerList.get(i);
+			HorizontalRule horizontalRuler = horizontalRulerList.get(i);
 			if (horizontalRuler.getSVGLine() != null) {
 				addRulerOrCombineVerticalOverlaps(newRulerList, horizontalRuler);
 			}
@@ -602,10 +602,10 @@ public class TableStructurer {
 	 * @param horizontalRuler
 	 * @return
 	 */
-	private void addRulerOrCombineVerticalOverlaps(List<HorizontalRuler> newRulerList, HorizontalRuler horizontalRuler) {
+	private void addRulerOrCombineVerticalOverlaps(List<HorizontalRule> newRulerList, HorizontalRule horizontalRuler) {
 		boolean multipleRuler = true;
 		if (newRulerList.size() > 0) {
-			HorizontalRuler lastRuler = newRulerList.get(newRulerList.size() -1);
+			HorizontalRule lastRuler = newRulerList.get(newRulerList.size() -1);
 			IntRange thisXRange = new IntRange(horizontalRuler.getBoundingBox().getXRange());
 			IntRange lastXRange = new IntRange(lastRuler.getBoundingBox().getXRange());
 			double deltaY = horizontalRuler.getY() - lastRuler.getY();
@@ -628,13 +628,13 @@ public class TableStructurer {
 	 * @param startRow
 	 * @return
 	 */
-	private List<HorizontalRuler> joinHorizontallyTouchingRulers1() {
-		List<HorizontalRuler> rulerList = new ArrayList<HorizontalRuler>();
+	private List<HorizontalRule> joinHorizontallyTouchingRulers1() {
+		List<HorizontalRule> rulerList = new ArrayList<HorizontalRule>();
 		IntRange previousRange = null;
 		double previousY = Double.NaN;
 		SVGLine line = null;
 		for (int i = 0; i < horizontalRulerList.size(); i++) {
-			HorizontalRuler thisRuler = (HorizontalRuler) horizontalRulerList.get(i);
+			HorizontalRule thisRuler = (HorizontalRule) horizontalRulerList.get(i);
 			line = thisRuler.getSVGLine();
 			double thisY = line.getXY(0).getY();
 			IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange().getRangeExtendedBy(PIXEL_GAP, PIXEL_GAP));
@@ -643,7 +643,7 @@ public class TableStructurer {
 					previousRange = previousRange.plus(thisRange);
 					LOG.trace("Joint touching horizontal rulers");
 			} else if (previousRange != null) {
-				HorizontalRuler newRuler = createRuler(previousRange, line, previousY);
+				HorizontalRule newRuler = createRuler(previousRange, line, previousY);
 				rulerList.add(newRuler);
 				previousRange = thisRange;
 			} else {
@@ -652,7 +652,7 @@ public class TableStructurer {
 			previousY = thisY;
 		}
 		if (previousRange != null) {
-			HorizontalRuler newRuler = createRuler(previousRange, line, previousY);
+			HorizontalRule newRuler = createRuler(previousRange, line, previousY);
 			rulerList.add(newRuler);
 		}
 		for (HorizontalElement ruler : rulerList) {
@@ -662,11 +662,11 @@ public class TableStructurer {
 		return horizontalRulerList;
 	}
 	
-	private HorizontalRuler createRuler(IntRange previousRange, SVGLine line, double y) {
+	private HorizontalRule createRuler(IntRange previousRange, SVGLine line, double y) {
 		SVGLine newLine = new SVGLine(line);
 		newLine.setXY(new Real2(previousRange.getMin(), y), 0);
 		newLine.setXY(new Real2(previousRange.getMax(), y), 1);
-		HorizontalRuler ruler = new HorizontalRuler(newLine);
+		HorizontalRule ruler = new HorizontalRule(newLine);
 		return ruler;
 	}
 

@@ -14,7 +14,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.LineChunk;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
@@ -92,7 +92,7 @@ public class TableSection {
 			if (horizontalElement instanceof PhraseList) {
 				sb.append(((PhraseList) horizontalElement).getStringValue()+"\n");
 			} else {
-				sb.append("=>=>=>"+((HorizontalRuler) horizontalElement).toString()+"<=<=<=\n");
+				sb.append("=>=>=>"+((HorizontalRule) horizontalElement).toString()+"<=<=<=\n");
 			}
 		}
 		return sb.toString();

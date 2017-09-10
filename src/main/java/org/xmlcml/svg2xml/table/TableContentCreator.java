@@ -12,18 +12,23 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.euclid.RealRange.Direction;
+import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGLineList;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
+import org.xmlcml.graphics.svg.cache.LineCache;
 import org.xmlcml.graphics.svg.cache.RectCache;
-import org.xmlcml.graphics.svg.cache.TextCache;
 import org.xmlcml.html.HtmlBody;
 import org.xmlcml.html.HtmlCaption;
 import org.xmlcml.html.HtmlHtml;
@@ -32,9 +37,10 @@ import org.xmlcml.html.HtmlTd;
 import org.xmlcml.html.HtmlTh;
 import org.xmlcml.html.HtmlTr;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
+import org.xmlcml.svg2xml.table.GenericRow.RowType;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextStructurer;
@@ -64,6 +70,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private static final String DOT_PNG = ".png";
 	private static final String CELL_FULL = "cell";
 	private static final String CELL_EMPTY = "empty";
+	private static final double LINE_BOX_WIDTH = 0.5;
 
 	private List<TableSection> tableSectionList;
 	private IntRangeArray rangesArray;
@@ -75,6 +82,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private GraphicsElement annotatedSvgChunk;
 	private double rowDelta = 2.5; //large to manage suscripts
 	private ContentBoxCache contentBoxCache;
+	private int titleSectionIndex;
+	private List<HorizontalRule> firstFullRuleList;
+	private SVGG contentBoxGridG;
+	private File contentBoxGridFile;
+	private ComponentCache ownerComponentCache;
 	
 	public TableContentCreator() {
 	}
@@ -139,8 +151,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	// FIXME not used
-	private HorizontalRuler getNextRuler(int irow) {
-		HorizontalRuler nextRuler = null;
+	private HorizontalRule getNextRuler(int irow) {
+		HorizontalRule nextRuler = null;
 		getFullRulers(irow);
 		return nextRuler;
 	}
@@ -150,15 +162,15 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @param startRow
 	 * @return
 	 */
-	private List<HorizontalRuler> getFullRulers(int startRow) {
-		HorizontalRuler firstRuler = null;
+	private List<HorizontalRule> getFullRulers(int startRow) {
+		HorizontalRule firstRuler = null;
 		IntRange firstRange = null;
-		List<HorizontalRuler> followingRulerList = new ArrayList<HorizontalRuler>();
+		List<HorizontalRule> followingRulerList = new ArrayList<HorizontalRule>();
 		IntRange previousRange = null;
 		for (int i = startRow; i < horizontalList.size(); i++) {
 			HorizontalElement horizontalElement = horizontalList.get(i);
-			if (horizontalElement instanceof HorizontalRuler) {
-				HorizontalRuler thisRuler = (HorizontalRuler) horizontalElement;
+			if (horizontalElement instanceof HorizontalRule) {
+				HorizontalRule thisRuler = (HorizontalRule) horizontalElement;
 				IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange());
 				if (firstRuler == null) {
 					firstRuler = thisRuler;
@@ -181,7 +193,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			LOG.error("Cannot find title: "+tableTitle +"; MAYBE CHANGE LOGIC");
 			// CHANGE LOGIC
 		} else {
-			List<HorizontalRuler> fullRulerList = getFullRulers(iRow);
+			List<HorizontalRule> fullRulerList = getFullRulers(iRow);
 			tableSectionList = new ArrayList<TableSection>();
 			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
 			if (tableSpan != null) {
@@ -197,63 +209,119 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		removeBoundingRules(horizontalList, StartEnd.START);
 		removeBoundingRules(horizontalList, StartEnd.END);
 		makeCaches(svgChunk);
-		SVGG g = new SVGG();
-		g.appendChild(contentBoxCache.getOrCreateConvertedSVGElement());
-		g.appendChild(contentBoxCache.getContentBoxGrid().getOrCreateSVGElement());
-		SVGSVG.wrapAndWriteAsSVG(g, new File("target/contentBox/contenBoxGrid.svg"));
+		LineCache lineCache = ownerComponentCache.getOrCreateLineCache();
+		contentBoxGridG = new SVGG();
+		contentBoxGridG.appendChild(contentBoxCache.getOrCreateConvertedSVGElement());
+		contentBoxGridG.appendChild(contentBoxCache.getOrCreateContentBoxGrid().getOrCreateSVGElement());
 		String sig = PageLayoutAnalyzer.createSig(horizontalList);
-		String ss = sig.replaceAll("[^L]", "");
-		LOG.debug("hlist: " + sig +": "+ ss.length());
-		List<HorizontalRuler> fullRulerList = getFullRulers(0);
-		LOG.debug("fullRule "+fullRulerList.size());
 		tableSectionList = new ArrayList<TableSection>();
 		TableSection tableSection = new TableSection();
-		for (HorizontalElement elem : horizontalList) {
-			if (elem instanceof HorizontalRuler) {
-				tableSectionList.add(tableSection);
-				tableSection = new TableSection();
-			} else if (elem instanceof PhraseList) {
-				tableSection.add(elem);
-			} else {
-				throw new RuntimeException("Unknown horizontal element type: "+elem.getClass()+"; "+elem);
-			}
+		
+		// sections are always bounded by long horizontal lines or panels,
+		// and never by phraselists, phraselistlists or short horizontal lines
+		// forget HorizontalElements at this stage
+		// this will be fairly crude.
+		RowManager rowManager = new RowManager();
+		
+		List<Real2Range> contentGridPanelBoxes = contentBoxCache.getOrCreateContentBoxGrid().getBboxList();
+		LOG.debug("contentGrid: "+contentGridPanelBoxes.size());
+		for (Real2Range contentGridPanelBox : contentGridPanelBoxes) {
+			RealRange yRange1 = contentGridPanelBox.getRealRange(Direction.VERTICAL);
+			rowManager.addContentGridPanelBox(contentGridPanelBox);
 		}
-		if (tableSection.getHorizontalElementList().size() > 0) {
-			tableSectionList.add(tableSection);
-		}
-		LOG.debug("SECTIONS "+tableSectionList.size());
-		int title = -1;
-		for (int i = 0; i < tableSectionList.size(); i++) {
-			TableSection tableSection1 = tableSectionList.get(i);
-			if (tableSection1.contains(TABLE_PATTERN)) {
-				title = i;
-			}
-			LOG.trace(tableSection1.debugPhrases()+"\n===========================\n");
-		}
-		LOG.debug("**title => "+title);
-		IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
+		SVGLineList longHorizontalRuleList = lineCache.getOrCreateLongHorizontalLineList();
+		rowManager.addHorizontalRules(longHorizontalRuleList, RowType.LONG_HORIZONTAL);
+		// I think the short Horizontal all get turned into siblings
+		SVGLineList shortHorizontalRuleList = lineCache.getOrCreateShortHorizontalLineList();
+		rowManager.addHorizontalRules(shortHorizontalRuleList, RowType.SHORT_HORIZONTAL);
+		List<SVGLineList> horizontalSiblingsList = lineCache.getHorizontalSiblingsList();
+		rowManager.addHorizontalSiblingsList(horizontalSiblingsList);
+// phrases		
+		addPhrases(rowManager);
+		rowManager.sort();
+		LOG.debug("RowManager "+rowManager.toString());
+		
+		getTitleSectionIndex();
+		String fullRules = sig.replaceAll("[^L]", "");
+		LOG.debug("sections "+tableSectionList.size()+"; title => "+titleSectionIndex+"; sig: " + sig +"; fullRules: "+ fullRules.length());
+		firstFullRuleList = getFullRulers(0);
+		LOG.debug("fullRule "+firstFullRuleList.size()+"; ");
+
+		IntRange tableSpan = firstFullRuleList.size() == 0 ? null : firstFullRuleList.get(0).getIntRange().getRangeExtendedBy(20, 20);
 		if (tableSpan != null) {
-			this.createSectionsNew(horizontalList, 0, fullRulerList, tableSpan);
+			this.createSectionsNew(horizontalList, 0, firstFullRuleList, tableSpan);
 			this.createPhraseRangesArray();
 			analyzeRangesAndSections();
 		}
 	}
 
+	private void addPhrases(RowManager rowManager) {
+		for (HorizontalElement elem : horizontalList) {
+			if (elem instanceof PhraseList) {
+				PhraseList phraseList = (PhraseList) elem;
+				rowManager.addPhraseList(phraseList);
+			}
+		}
+	}
+
+	private void addToRangeArray(RealRangeArray yRangeArray, SVGLineList ruleList, String type) {
+		for (SVGLine line : ruleList) {
+			Real2Range lineBox = line.getBoundingBox().
+					getReal2RangeExtendedInY(LINE_BOX_WIDTH, LINE_BOX_WIDTH);
+			RealRange yRange = lineBox.getYRange();
+			addRange(yRangeArray, type, yRange, "");
+		}
+	}
+
+	private void addRange(RealRangeArray yRangeArray, String type, RealRange yRange, String msg) {
+		if (yRangeArray.includes(yRange)) {
+			LOG.debug("OMITTED " + type+": "+msg);
+		} else {
+			yRangeArray.add(yRange);
+		}
+	}
+
+	private void addContentBoxGridPanels(RealRangeArray yRangeArray) {
+		List<Real2Range> contentGridPanels = contentBoxCache.getOrCreateContentBoxGrid().getBboxList();
+		LOG.debug("contentGrid: "+contentGridPanels.size());
+		for (Real2Range contentGridPanel : contentGridPanels) {
+			RealRange yRange = contentGridPanel.getRealRange(Direction.VERTICAL);
+			yRangeArray.add(yRange);
+		}
+	}
+
+	/** finds section containing the string matching TABLE_PATTERN regex
+	 * 
+	 * @return index of section -1 if not found (THBF => 0, HBTF => 2, etc.) 
+	 */
+	private int getTitleSectionIndex() {
+		titleSectionIndex = -1;
+		for (int i = 0; i < tableSectionList.size(); i++) {
+			TableSection tableSection1 = tableSectionList.get(i);
+			if (tableSection1.contains(TABLE_PATTERN)) {
+				titleSectionIndex = i;
+			}
+			LOG.trace(tableSection1.debugPhrases()+"\n===========================\n");
+		}
+		return titleSectionIndex;
+	}
+
 	private void makeCaches(SVGElement svgElement) {
-		ComponentCache componentCache = new ComponentCache();
-		componentCache.readGraphicsComponents(svgElement);
-		RectCache rectCache = componentCache.getOrCreateRectCache();
+		ownerComponentCache = new ComponentCache();
+		ownerComponentCache.readGraphicsComponentsAndMakeCaches(svgElement);
+		RectCache rectCache = ownerComponentCache.getOrCreateRectCache();
+		ownerComponentCache.removeBorderingRects();
 		contentBoxCache = ContentBoxCache.createCache(rectCache, phraseListList);
 		contentBoxCache.getOrCreateConvertedSVGElement();
-		contentBoxCache.createContentBoxGrid();
-		componentCache.addCache(contentBoxCache);
+		contentBoxCache.getOrCreateContentBoxGrid();
+		ownerComponentCache.addCache(contentBoxCache);
 	}
 
 	private void removeBoundingRules(List<HorizontalElement> horizontalList, StartEnd startEnd) {
 		while (horizontalList.size() > 0) {
 			int ielem = StartEnd.START.equals(startEnd) ? 0 : horizontalList.size() - 1;
 			HorizontalElement helem = horizontalList.get(ielem);
-			if (helem instanceof HorizontalRuler) {
+			if (helem instanceof HorizontalRule) {
 				LOG.trace("removed: "+horizontalList.get(ielem));
 				horizontalList.remove(ielem);
 			} else {
@@ -303,14 +371,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	}
 
-	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRuler> fullRulerList,
+	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRulerList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
 			HorizontalElement element = horizontalList.get(j);
-			HorizontalRuler ruler = (element instanceof HorizontalRuler) ? 
-					(HorizontalRuler) element : null;
+			HorizontalRule ruler = (element instanceof HorizontalRule) ? 
+					(HorizontalRule) element : null;
 			if (tableSection == null || fullRulerList.contains(ruler)) {
 				tableSection = new TableSection(TableSectionType.OTHER);
 				tableSectionList.add(tableSection);
@@ -321,7 +389,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					tableSection.add(newPhraseList);
 				}
 				
-			} else if (element instanceof HorizontalRuler) {
+			} else if (element instanceof HorizontalRule) {
 				// dont add Ruler if first element (e.g sectioning ruler)
 				if (tableSection.getHorizontalElementList().size() > 0) {
 					tableSection.add(element);
@@ -332,14 +400,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	/** may not be needed */
-	private void createSectionsNew(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRuler> fullRulerList,
+	private void createSectionsNew(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRulerList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
 			HorizontalElement element = horizontalList.get(j);
-			HorizontalRuler ruler = (element instanceof HorizontalRuler) ? 
-					(HorizontalRuler) element : null;
+			HorizontalRule ruler = (element instanceof HorizontalRule) ? 
+					(HorizontalRule) element : null;
 			if (tableSection == null || fullRulerList.contains(ruler)) {
 				tableSection = new TableSection(TableSectionType.OTHER);
 				tableSectionList.add(tableSection);
@@ -350,7 +418,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					tableSection.add(newPhraseList);
 				}
 				
-			} else if (element instanceof HorizontalRuler) {
+			} else if (element instanceof HorizontalRule) {
 				// dont add Ruler if first element (e.g sectioning ruler)
 				if (tableSection.getHorizontalElementList().size() > 0) {
 					tableSection.add(element);
@@ -373,6 +441,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
 		createSectionsAndRangesArrayNew();
+		if (contentBoxGridFile != null) {
+			SVGSVG.wrapAndWriteAsSVG(contentBoxGridG, contentBoxGridFile);
+		}
 		HtmlHtml html = tableStructurer.createHtmlWithTable(tableSectionList, tableTitle);
 		try {
 			XMLUtil.debug(html, new File("target/table/debug/sections.html"), 1);
@@ -776,4 +847,20 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return annotatedSvgChunk;
 	}
 
+	public static TableContentCreator createHTMLFrom(File tableFile) {
+		TableContentCreator tableContentCreator = null;
+		if (tableFile != null) {
+			tableContentCreator = new TableContentCreator();
+			tableContentCreator.createHTMLFromSVG(tableFile);
+		}
+		return tableContentCreator;
+	}
+	
+	public void setContentBoxGridFile(File file) {
+		this.contentBoxGridFile = file;
+	}
+
+	public ContentBoxCache getContentBoxCache() {
+		return contentBoxCache;
+	}
 }

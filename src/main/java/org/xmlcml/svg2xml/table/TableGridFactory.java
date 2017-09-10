@@ -6,7 +6,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.util.MultisetUtil;
-import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.VerticalRuler;
 
 import com.google.common.collect.HashMultiset;
@@ -24,7 +24,7 @@ public class TableGridFactory {
 	}
 
 	private List<VerticalRuler> verticalRulerList;
-	private List<HorizontalRuler> horizontalRulerList;
+	private List<HorizontalRule> horizontalRulerList;
 	private IntRange horizontalTotalRange;
 	private IntRange verticalTotalRange;
 	private TableGrid tableGrid;
@@ -35,7 +35,7 @@ public class TableGridFactory {
 	private int columnCount;
 	private int rowCount;
 	
-	public TableGridFactory(List<HorizontalRuler> horizontalRulerList, List<VerticalRuler> verticalRulerList) {
+	public TableGridFactory(List<HorizontalRule> horizontalRulerList, List<VerticalRuler> verticalRulerList) {
 		this.verticalRulerList = verticalRulerList;
 		this.horizontalRulerList = horizontalRulerList;
 	}
@@ -73,7 +73,7 @@ public class TableGridFactory {
 		if (horizontalTotalRange == null) {
 			horizontalIntRangeSet = HashMultiset.create();
 			for (int i = 0; i < horizontalRulerList.size(); i++) {
-				HorizontalRuler horizontalRuler = horizontalRulerList.get(i);
+				HorizontalRule horizontalRuler = horizontalRulerList.get(i);
 				IntRange horizontalRange = horizontalRuler.getIntRange();
 				horizontalTotalRange = horizontalTotalRange == null ? horizontalRange : horizontalTotalRange.plus(horizontalRange);			
 				horizontalIntRangeSet.add(horizontalRange);

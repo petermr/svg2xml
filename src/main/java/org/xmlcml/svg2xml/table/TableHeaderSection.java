@@ -13,7 +13,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.util.GraphPlot;
@@ -58,10 +58,10 @@ public class TableHeaderSection extends TableSection {
 				}
 				PhraseList phraseList = (PhraseList) element;
 				allPhrasesInSection.addAll(phraseList.getOrCreateChildPhraseList());
-			} else if (element instanceof HorizontalRuler) {
-				HorizontalRuler ruler = (HorizontalRuler) element;
+			} else if (element instanceof HorizontalRule) {
+				HorizontalRule ruler = (HorizontalRule) element;
 				Double y = ruler.getY();
-				if (lastY == null || (y - lastY) > HorizontalRuler.Y_TOLERANCE) {
+				if (lastY == null || (y - lastY) > HorizontalRule.Y_TOLERANCE) {
 					headerRow = new HeaderRow();
 					headerRowList.add(headerRow);
 					lastY = y;

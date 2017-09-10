@@ -7,7 +7,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.LineChunk;
 import org.xmlcml.svg2xml.text.Phrase;
 
@@ -26,7 +26,7 @@ public class ColumnGroup {
 	}
 	
 	private List<Phrase> phrases;
-	private HorizontalRuler ruler;
+	private HorizontalRule ruler;
 	private Real2Range boundingBox;
 	
 	public void add(Phrase phrase) {
@@ -56,11 +56,11 @@ public class ColumnGroup {
 		return phrases;
 	}
 
-	public HorizontalRuler getRuler() {
+	public HorizontalRule getRuler() {
 		return ruler;
 	}
 
-	public void add(HorizontalRuler ruler) {
+	public void add(HorizontalRule ruler) {
 		if (this.ruler != null) {
 //			LOG.warn("Existing ruler will be overwritten");
 		}
