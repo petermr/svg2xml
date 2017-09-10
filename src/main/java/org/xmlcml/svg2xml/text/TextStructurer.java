@@ -130,6 +130,8 @@ public class TextStructurer {
 
 	private boolean rotatable;
 
+	private boolean omitShapeList = true;
+
 	public TextStructurer() {
 		this(new TextAnalyzer((List<SVGText>) null));
 	}
@@ -746,7 +748,7 @@ public class TextStructurer {
 		// FIXME - may crash later
 		SVGMediaBox box = null;
 		ComponentCache componentCache = new ComponentCache(box);
-		componentCache.readGraphicsComponents(svgElement);
+		componentCache.readGraphicsComponentsAndMakeCaches(svgElement);
 		boolean normalized = TextUtil.normalize(svgElement, NORMALIZE_FORM);
 		SVGDefs.removeDefs(svgElement);
 		List<SVGText> textCharacters = SVGText.extractTexts(SVGUtil.getQuerySVGElements(svgElement, ".//svg:text"));
@@ -1433,7 +1435,11 @@ public class TextStructurer {
 		getOrCreatePhraseListListFromWords();
 		tableStructurer = new TableStructurer(phraseListList);
 		tableStructurer.setTextStructurer(this);
-		tableStructurer.analyzeShapeList();
+		if (omitShapeList ) {
+			LOG.info("Skipped tableStructurer shapeList");
+		} else {
+			tableStructurer.analyzeShapeList();
+		}
 		return tableStructurer;
 	}
 

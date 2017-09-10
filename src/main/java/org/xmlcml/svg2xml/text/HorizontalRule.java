@@ -10,9 +10,9 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.graphics.svg.SVGLine;
 
-public class HorizontalRuler extends Ruler {
+public class HorizontalRule extends Ruler {
 
-	private static final Logger LOG = Logger.getLogger(HorizontalRuler.class);
+	private static final Logger LOG = Logger.getLogger(HorizontalRule.class);
 
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -23,7 +23,7 @@ public class HorizontalRuler extends Ruler {
 	
 	private List<Word> wordList;
 
-	public HorizontalRuler(SVGLine line) {
+	public HorizontalRule(SVGLine line) {
 		super(line);
 	}
 	
@@ -32,12 +32,12 @@ public class HorizontalRuler extends Ruler {
 	 * @param lines
 	 * @return
 	 */
-	public static List<HorizontalRuler> createSortedRulersFromSVGList(List<SVGLine> lines) {
-		List<HorizontalRuler> rulerList = new ArrayList<HorizontalRuler>();
+	public static List<HorizontalRule> createSortedRulersFromSVGList(List<SVGLine> lines) {
+		List<HorizontalRule> rulerList = new ArrayList<HorizontalRule>();
 		for (int i = 0; i < lines.size(); i++) {
 			SVGLine line = lines.get(i);
 			if (line.isHorizontal(epsilon)) {
-				HorizontalRuler ruler = new HorizontalRuler(line);
+				HorizontalRule ruler = new HorizontalRule(line);
 				rulerList.add(ruler);
 			}
 		}
@@ -72,9 +72,9 @@ public class HorizontalRuler extends Ruler {
 	}
 	
 }
-class HorizontalRulerComparator implements Comparator<HorizontalRuler> {
+class HorizontalRulerComparator implements Comparator<HorizontalRule> {
 
-	public int compare(HorizontalRuler hr1, HorizontalRuler hr2) {
+	public int compare(HorizontalRule hr1, HorizontalRule hr2) {
 		if (hr1 == null || hr2 == null || hr1.getIntRange() == null || hr2.getIntRange() == null) {
 			return 0;
 		}
