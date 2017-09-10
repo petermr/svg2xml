@@ -673,6 +673,7 @@ public class TableStructurer {
 
 	public void mergeRulersAndTextIntoShapeList() {
 		totalPhraseListList = textStructurer.getPhraseListList();
+		getOrCreateHorizontalRulerList();
 		int iPhrase = 0; 
 		int iRuler = 0;
 		horizontalElementList = new ArrayList<SVGElement>();

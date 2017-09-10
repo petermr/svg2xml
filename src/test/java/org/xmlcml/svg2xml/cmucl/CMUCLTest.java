@@ -14,6 +14,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
@@ -236,6 +237,7 @@ public class CMUCLTest {
 	}
 
 	@Test
+	// LONG
 	public void testCreateDoubleTableHTML() throws IOException {
 		double TD_WIDTH = 500.0;
 		File pmrDir = new File(CM_UCL_DIR, "corpus-oa-pmr");
@@ -255,7 +257,13 @@ public class CMUCLTest {
 					String pngName = png.getName();
 					String pngRoot = pngName.substring(0, pngName.length() - ".png".length());
 					File pngFile = new File(pmrImageDir, pngName);
-					BufferedImage image = ImageIO.read(pngFile);
+					BufferedImage image = null;
+					try {
+						image = ImageIO.read(pngFile);
+					} catch (IIOException iioe) {
+						LOG.error("cannot read image file: "+iioe+" in "+pngFile.getAbsoluteFile());
+						continue;
+					}
 					int imgWidth = image.getWidth();
 					int imgHeight = image.getHeight();
 					String pngRootSuffix = pngRoot.substring(TABLE.length());

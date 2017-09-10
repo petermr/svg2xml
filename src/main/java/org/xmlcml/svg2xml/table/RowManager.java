@@ -90,7 +90,7 @@ public class RowManager {
 		StringBuilder sb = new StringBuilder();
 		for (RealRange yRange : yRangeArray) {
 			GenericRow row = rowByYRange.get(yRange);
-			sb.append(row.getSignature());
+			sb.append((row == null ? "?" : row.getSignature()));
 		}
 		return sb.toString();
 	}
