@@ -62,7 +62,7 @@ public class GraphicComponentAnalyzerTest {
 					row.add(filename);
 					SVGElement svgElement = SVGElement.readAndCreateSVG(svgFile);
 					GraphicCache cache = new GraphicCache();
-					cache.readGraphicsComponents(svgElement);
+					cache.readGraphicsComponentsAndMakeCaches(svgElement);
 					List<String> featureValues = cache.getFeatureValues(features);
 					row.addAll(featureValues);
 					bodyList.add(row);
@@ -93,7 +93,7 @@ public class GraphicComponentAnalyzerTest {
 					row.add(filename);
 					SVGElement svgElement = SVGElement.readAndCreateSVG(svgFile);
 					GraphicCache cache = new GraphicCache();
-					cache.readGraphicsComponents(svgElement);
+					cache.readGraphicsComponentsAndMakeCaches(svgElement);
 					Multiset<String> styleSet = cache.getOrCreateTextCache().createAbbreviatedHorizontalTextStyleMultiset();
 					List<Multiset.Entry<String>> entryList = MultisetUtil.createStringListSortedByCount(styleSet);
 					int entryCount = entryList.size();
@@ -142,7 +142,7 @@ public class GraphicComponentAnalyzerTest {
 					row.add(filename);
 					SVGElement svgElement = SVGElement.readAndCreateSVG(svgFile);
 					GraphicCache cache = new GraphicCache();
-					cache.readGraphicsComponents(svgElement);
+					cache.readGraphicsComponentsAndMakeCaches(svgElement);
 					List<String> featureValues = cache.getFeatureValues(features);
 					row.addAll(featureValues);
 					bodyList.add(row);

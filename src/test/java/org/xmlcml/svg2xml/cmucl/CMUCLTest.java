@@ -52,7 +52,7 @@ import com.google.common.collect.Multiset;
 
 import nu.xom.Attribute;
 
-@Ignore // production
+//@Ignore // production
 public class CMUCLTest {
 
 	public static final Logger LOG = Logger.getLogger(CMUCLTest.class);

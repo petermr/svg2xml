@@ -30,7 +30,7 @@ import org.xmlcml.html.HtmlTr;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRuler;
+import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.xml.XMLUtil;
@@ -585,7 +585,7 @@ public class TableStructurerTest {
 
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
-		List<HorizontalRuler> rulerList = tableStructurer.getHorizontalRulerList();
+		List<HorizontalRule> rulerList = tableStructurer.getHorizontalRulerList();
 		Assert.assertEquals(horizontalRulerCount, rulerList.size());		
 		tableStructurer.mergeRulersAndTextIntoShapeList();
 		List<SVGElement> horizontalElementList = tableStructurer.getHorizontalElementList();
