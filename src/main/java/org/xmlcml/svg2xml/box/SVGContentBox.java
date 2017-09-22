@@ -105,7 +105,7 @@ public class SVGContentBox extends SVGG {
 	}
 
 	public void addContainedElements(GraphicsElement phraseListList) {
-		throw new RuntimeException("NYI");
+		LOG.error("addContainedElements NYI");
 //		for (PhraseList phraseList : phraseListList) {
 //			for (int iPhrase = 0; iPhrase < phraseList.size(); iPhrase++) {
 //				Phrase phrase = phraseList.get(iPhrase);
