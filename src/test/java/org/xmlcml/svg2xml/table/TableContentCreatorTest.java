@@ -157,7 +157,7 @@ public class TableContentCreatorTest {
 		File outDir = new File("target/table/suscript/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
-		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSection().getOrCreatePhraseListList());
+		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
 		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
 		suscriptEditor.mergeAll();
 		LOG.trace("PLL"+phraseListList);
@@ -182,7 +182,7 @@ public class TableContentCreatorTest {
 		// the key Text component is a list of PhraseLists. This is created independently
 		// of subsequent section/column/row boundaries
 		// = footer test
-		PhraseListList footerPhraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSection().getOrCreatePhraseListList());
+		PhraseListList footerPhraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
 		LOG.trace(footerPhraseListList.toString());
 //		Assert.assertEquals(5, footerPhraseListList.size());
 		// Suscript editor works directly on the PhraseListList and incorporates all suscripts at this
@@ -220,7 +220,7 @@ public class TableContentCreatorTest {
 	}
 
 	private void writeBody(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
-		TableSection body = tableContentCreator.getOrCreateTableBodySection();
+		TableSection body = tableContentCreator.getOrCreateTableBodySectionOLD();
 		if (body != null) {
 			PhraseListList footerPhraseListList = body.getOrCreatePhraseListList();
 			File filex = new File(outDir, root+".body.html");
@@ -229,7 +229,7 @@ public class TableContentCreatorTest {
 	}
 	
 	private void writeFooter(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
-		TableSection footer = tableContentCreator.getOrCreateTableFooterSection();
+		TableSection footer = tableContentCreator.getOrCreateTableFooterSectionOLD();
 		if (footer != null) {
 			PhraseListList footerPhraseListList = footer.getOrCreatePhraseListList();
 			File filex = new File(outDir, root+".footer.html");

@@ -50,7 +50,7 @@ public class ContentBoxGrid {
 		return Real2Range.agglomerateIntersections(rect.getBoundingBox(), bboxList, delta);
 	}
 
-	void add(List<SVGRect> rectList) {
+	public void add(List<SVGRect> rectList) {
 		for (SVGRect rect : rectList) {
 			add(rect);
 		}

@@ -171,7 +171,7 @@ public class TableStructurer {
 		return htmlTable;
 	}
 
-	public HtmlHtml getHtmlWithTable() {
+	private HtmlHtml createHtmlWithTable() {
 		html = new HtmlHtml();
 		createHtmlHead();
 		createHtmlTable();
@@ -201,7 +201,8 @@ public class TableStructurer {
 	public HtmlTable createHtmlTable() {
 		htmlTable = new HtmlTable();
 		addTitle();
-		addHtmlHead();
+		addEmptyHtmlHead();
+		
 		addFooter();
 		addHeader();
 		createBody0();
@@ -225,7 +226,7 @@ public class TableStructurer {
 			return;
 		}
 		TableSection bodySection = tableSectionList.get(2);
-		PhraseListList bodyPhraseListList= bodySection.getOrCreatePhraseListList();
+		GraphicsElement bodyPhraseListList= bodySection.getOrCreatePhraseListList();
 	}
 
 	private void createBody() {
@@ -269,7 +270,7 @@ public class TableStructurer {
 		tableBody.appendChild(row1);
 	}
 
-	private void addHtmlHead() {
+	private void addEmptyHtmlHead() {
 		thead = new HtmlThead();
 		htmlTable.appendChild(thead);
 	}
@@ -368,7 +369,7 @@ public class TableStructurer {
 			for (HorizontalElement element : footerSection.getHorizontalElementList()) {
 				footerBBoxManager.add(((SVGElement)element).getBoundingBox());
 				if (element instanceof HorizontalRule) {
-					LOG.trace("HRULER in footer");
+					LOG.trace("HRULE in footer");
 				} else {
 					PhraseList phraseList = (PhraseList) element;
 					footTd.appendChild(phraseList.toString());
@@ -785,7 +786,7 @@ public class TableStructurer {
 		return index;
 	}
 
-	private Double getMaxFont(PhraseListList phraseListList2) {
+	private Double getMaxFont(GraphicsElement phraseListList2) {
 		Double maxFont = null;
 		if (totalPhraseListList.size() > 0) {
 			maxFont = totalPhraseListList.get(0).getFontSize();
@@ -825,7 +826,7 @@ public class TableStructurer {
 		}
 		
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
-		HtmlHtml html = tableStructurer.getHtmlWithTable();
+		HtmlHtml html = tableStructurer.createHtmlWithTable();
 		return html;
 	}
 	
@@ -836,7 +837,7 @@ public class TableStructurer {
 	 * @param tableTitle
 	 * @return
 	 */
-	public HtmlHtml createHtmlWithTable(File inputFile, List<TableSection> tableSectionList, TableTitle tableTitle) {
+	private HtmlHtml createHtmlWithTable(File inputFile, List<TableSection> tableSectionList, TableTitle tableTitle) {
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		
 		List<ScriptLine> scriptedLineList = textStructurer.getScriptedLineListForCommonestFont();
@@ -847,7 +848,7 @@ public class TableStructurer {
 //		TableStructurer tableStructurer = textStructurer.createTableStructurer();
 		this.setTableTitle(tableTitle);
 		this.setSections(tableSectionList);
-		HtmlHtml html = this.getHtmlWithTable();
+		HtmlHtml html = this.createHtmlWithTable();
 		return html;
 	}
 	
@@ -860,7 +861,7 @@ public class TableStructurer {
 	public HtmlHtml createHtmlWithTable(List<TableSection> tableSectionList, TableTitle tableTitle) {
 		this.setTableTitle(tableTitle);
 		this.setSections(tableSectionList);
-		HtmlHtml html = this.getHtmlWithTable();
+		HtmlHtml html = this.createHtmlWithTable();
 		return html;
 	}
 

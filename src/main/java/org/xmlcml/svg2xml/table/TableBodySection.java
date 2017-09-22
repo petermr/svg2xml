@@ -37,14 +37,7 @@ public class TableBodySection extends TableSection {
 
 	private List<RealRange> indentRangeArray;
 	private ColumnManager columnManager0;
-	
-	/** not used?
-	 * 
-	 */
-	private TableBodySection() {
-		super(TableSectionType.BODY);
-	}
-	
+		
 	public TableBodySection(TableSection tableSection) {
 		super(tableSection);
 	}

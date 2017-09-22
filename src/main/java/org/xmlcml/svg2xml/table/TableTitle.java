@@ -14,8 +14,12 @@ public class TableTitle {
 	private String chunkName;
 
 	public TableTitle(String title, String chunkName) {
-		this.title = title.trim();
+		this(title);
 		this.chunkName = chunkName.trim();
+	}
+
+	public TableTitle(String title) {
+		this.title = title.trim();
 	}
 
 	public String getTitle() {

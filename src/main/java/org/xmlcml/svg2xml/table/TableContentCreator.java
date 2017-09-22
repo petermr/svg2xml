@@ -36,9 +36,12 @@ import org.xmlcml.html.HtmlTable;
 import org.xmlcml.html.HtmlTd;
 import org.xmlcml.html.HtmlTh;
 import org.xmlcml.html.HtmlTr;
+import org.xmlcml.svg2xml.box.ContentBoxCache;
+import org.xmlcml.svg2xml.box.SVGContentBox;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
 import org.xmlcml.svg2xml.table.GenericRow.RowType;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
+import org.xmlcml.svg2xml.table.TableSection.TableSectionTypeOLD;
 import org.xmlcml.svg2xml.text.HorizontalElement;
 import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.PhraseList;
@@ -60,7 +63,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
-	public final static Pattern TABLE_TITLE_PATTERN = Pattern.compile("(T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(?:\\(cont(inued)?\\.?\\))?\\s*)");
+	public final static Pattern TABLE_PATTERN_CONTINUED = Pattern.compile("(.*\\(?[Cc]ont(inued)?\\.?\\)?)");
+	public final static Pattern TABLE_TITLE_PATTERN_SIMPLE = Pattern.compile("(T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+\\s*)");
+	public final static Pattern TABLE_TITLE_PATTERN_CONTINUED = Pattern.compile("(T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(\\(?[Cc]ont(inued)?\\.?\\)?)\\s*)");
+	public final static Pattern TABLE_TITLE_PATTERN_ANY = Pattern.compile("(.*T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(?:\\([Cc]ont(inued)?\\.?\\))?\\s*.*)");
 	
 	private static final String TABLE_FOOTER = "table.footer";
 	private static final String TABLE_BODY = "table.body";
@@ -75,6 +81,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private List<TableSection> tableSectionList;
 	private IntRangeArray rangesArray;
 	private TableTitle tableTitle;
+	private boolean continued = false;
 	private TableTitleSection tableTitleSection;
 	private TableHeaderSection tableHeaderSection;
 	private TableBodySection tableBodySection;
@@ -91,34 +98,34 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public TableContentCreator() {
 	}
 
-	/** scans whole file for all tableTitles.
-	 * 
-	 * @param svgChunkFiles
-	 * @return list of titles;
-	 */
-	// FIXME not used?
-	private List<TableTitle> findTableTitles(List<File> svgChunkFiles) {
-		List<TableTitle> tableTitleList = new ArrayList<TableTitle>();
-		for (File svgChunkFile : svgChunkFiles) {
-			findTableTitle(tableTitleList, svgChunkFile);
-		}
-		return tableTitleList;
-	}
+//	/** scans whole file for all tableTitles.
+//	 * 
+//	 * @param svgChunkFiles
+//	 * @return list of titles;
+//	 */
+//	// FIXME not used?
+//	private List<TableTitle> findTableTitles(List<File> svgChunkFiles) {
+//		List<TableTitle> tableTitleList = new ArrayList<TableTitle>();
+//		for (File svgChunkFile : svgChunkFiles) {
+//			findTableTitle(tableTitleList, svgChunkFile);
+//		}
+//		return tableTitleList;
+//	}
 
-	private void findTableTitle(List<TableTitle> tableTitleList, File svgChunkFile) {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgChunkFile);
-		PhraseListList phraseListList = textStructurer.getPhraseListList();
-		phraseListList.format(3);
-		String value = phraseListList.getStringValue();
-		List<String> titleList = findTitlesWithPattern(value);
-		for (int i = 0; i < titleList.size(); i++) {
-			TableTitle tableTitle = new TableTitle(titleList.get(i), svgChunkFile.getName());
-			tableTitleList.add(tableTitle);
-		}
-	}
+//	private void findTableTitle(List<TableTitle> tableTitleList, File svgChunkFile) {
+//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgChunkFile);
+//		PhraseListList phraseListList = textStructurer.getPhraseListList();
+//		phraseListList.format(3);
+//		String value = phraseListList.getStringValue();
+//		List<String> titleList = TableContentCreator.findTitles(TABLE_TITLE_PATTERN_ANY, value);
+//		for (int i = 0; i < titleList.size(); i++) {
+//			TableTitle tableTitle = new TableTitle(titleList.get(i), svgChunkFile.getName());
+//			tableTitleList.add(tableTitle);
+//		}
+//	}
 
-	private List<String> findTitlesWithPattern(String value) {
-		Matcher matcher = TABLE_TITLE_PATTERN.matcher(value);
+	private static List<String> findTitles(Pattern titlePattern, String value) {
+		Matcher matcher = titlePattern.matcher(value);
 		List<String> titleList = new ArrayList<String>();
 		int start = 0;
 		while (matcher.find(start)) {
@@ -150,60 +157,60 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return titleIndex;
 	}
 
-	// FIXME not used
-	private HorizontalRule getNextRuler(int irow) {
-		HorizontalRule nextRuler = null;
-		getFullRulers(irow);
-		return nextRuler;
-	}
+//	// FIXME not used
+//	private HorizontalRule getNextRuler(int irow) {
+//		HorizontalRule nextRuler = null;
+//		getFullRulers(irow);
+//		return nextRuler;
+//	}
 
 	/** assume following ruler is representative of this table and find all subsequent full rulers.
 	 * 
 	 * @param startRow
 	 * @return
 	 */
-	private List<HorizontalRule> getFullRulers(int startRow) {
-		HorizontalRule firstRuler = null;
+	private List<HorizontalRule> getFullRules(int startRow) {
+		HorizontalRule firstRule = null;
 		IntRange firstRange = null;
-		List<HorizontalRule> followingRulerList = new ArrayList<HorizontalRule>();
+		List<HorizontalRule> followingRuleList = new ArrayList<HorizontalRule>();
 		IntRange previousRange = null;
 		for (int i = startRow; i < horizontalList.size(); i++) {
 			HorizontalElement horizontalElement = horizontalList.get(i);
 			if (horizontalElement instanceof HorizontalRule) {
-				HorizontalRule thisRuler = (HorizontalRule) horizontalElement;
-				IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange());
-				if (firstRuler == null) {
-					firstRuler = thisRuler;
+				HorizontalRule thisRule = (HorizontalRule) horizontalElement;
+				IntRange thisRange = new IntRange(thisRule.getBoundingBox().getXRange());
+				if (firstRule == null) {
+					firstRule = thisRule;
 					firstRange = thisRange;
 				} else if (!thisRange.isEqualTo(firstRange)) {
 					LOG.trace("skipped range: "+thisRange+" vs "+firstRange);
 					continue;
 				}
-				followingRulerList.add(thisRuler);
+				followingRuleList.add(thisRule);
 			}
 		}
-		return followingRulerList;
+		return followingRuleList;
 	}
 
-	private void createSectionsAndRangesArray() {
-		List<HorizontalElement> horizontalList = getHorizontalList();
-		int iRow = tableTitle == null ? 0 : search(tableTitle.getTitle());
-//		mergeOverlappingRulersWithSameYInHorizontalElements(iRow);
-		if (iRow == -1) {
-			LOG.error("Cannot find title: "+tableTitle +"; MAYBE CHANGE LOGIC");
-			// CHANGE LOGIC
-		} else {
-			List<HorizontalRule> fullRulerList = getFullRulers(iRow);
-			tableSectionList = new ArrayList<TableSection>();
-			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
-			if (tableSpan != null) {
-				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
-				this.createPhraseRangesArray();
-				analyzeRangesAndSections();
-
-			}
-		}
-	}
+//	private void createSectionsAndRangesArray() {
+//		List<HorizontalElement> horizontalList = getHorizontalList();
+//		int iRow = tableTitle == null ? 0 : search(tableTitle.getTitle());
+////		mergeOverlappingRulersWithSameYInHorizontalElements(iRow);
+//		if (iRow == -1) {
+//			LOG.error("Cannot find title: "+tableTitle +"; MAYBE CHANGE LOGIC");
+//			// CHANGE LOGIC
+//		} else {
+//			List<HorizontalRule> fullRulerList = getFullRules(iRow);
+//			tableSectionList = new ArrayList<TableSection>();
+//			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
+//			if (tableSpan != null) {
+//				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
+//				this.createPhraseRangesArray();
+//				analyzeRangesAndSections();
+//
+//			}
+//		}
+//	}
 	
 	private void createSectionsAndRangesArrayNew() {
 		removeBoundingRules(horizontalList, StartEnd.START);
@@ -223,6 +230,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		// this will be fairly crude.
 		RowManager rowManager = new RowManager();
 		
+		List<SVGContentBox> contentBoxes = contentBoxCache.getOrCreateContentBoxList();
+		LOG.debug("contentBox: "+contentBoxes.size());
+		for (SVGContentBox contentBox : contentBoxes) {
+			rowManager.addContentBox(contentBox);
+		}
 		List<Real2Range> contentGridPanelBoxes = contentBoxCache.getOrCreateContentBoxGrid().getBboxList();
 		LOG.debug("contentGrid: "+contentGridPanelBoxes.size());
 		for (Real2Range contentGridPanelBox : contentGridPanelBoxes) {
@@ -238,13 +250,15 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		rowManager.addHorizontalSiblingsList(horizontalSiblingsList);
 // phrases		
 		addPhrases(rowManager);
-		rowManager.sort();
+		rowManager.sortAndAddBoxContent();
 		LOG.debug("RowManager "+rowManager.toString());
 		
 		getTitleSectionIndex();
+		// the L refers to lines (now H) // FIXME
+		
 		String fullRules = sig.replaceAll("[^L]", "");
 		LOG.debug("sections "+tableSectionList.size()+"; title => "+titleSectionIndex+"; sig: " + sig +"; fullRules: "+ fullRules.length());
-		firstFullRuleList = getFullRulers(0);
+		firstFullRuleList = getFullRules(0);
 		LOG.debug("fullRule "+firstFullRuleList.size()+"; ");
 
 		IntRange tableSpan = firstFullRuleList.size() == 0 ? null : firstFullRuleList.get(0).getIntRange().getRangeExtendedBy(20, 20);
@@ -371,16 +385,16 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	}
 
-	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRulerList,
+	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRuleList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
 			HorizontalElement element = horizontalList.get(j);
-			HorizontalRule ruler = (element instanceof HorizontalRule) ? 
+			HorizontalRule rule = (element instanceof HorizontalRule) ? 
 					(HorizontalRule) element : null;
-			if (tableSection == null || fullRulerList.contains(ruler)) {
-				tableSection = new TableSection(TableSectionType.OTHER);
+			if (tableSection == null || fullRuleList.contains(rule)) {
+				tableSection = new TableSection(TableSectionTypeOLD.OTHER);
 				tableSectionList.add(tableSection);
 			}
 			if (element instanceof PhraseList) {
@@ -390,16 +404,16 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				}
 				
 			} else if (element instanceof HorizontalRule) {
-				// dont add Ruler if first element (e.g sectioning ruler)
+				// dont add Rule if first element (e.g sectioning rule)
 				if (tableSection.getHorizontalElementList().size() > 0) {
 					tableSection.add(element);
 				}
 			}
 		}
-		LOG.debug("TABLE SECTIONS: "+tableSectionList.size());
+		LOG.debug("Created but not analyzed table sections OLD: "+tableSectionList.size());
 	}
 
-	/** may not be needed */
+	/** used in transition between refactors */
 	private void createSectionsNew(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRulerList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
@@ -409,7 +423,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			HorizontalRule ruler = (element instanceof HorizontalRule) ? 
 					(HorizontalRule) element : null;
 			if (tableSection == null || fullRulerList.contains(ruler)) {
-				tableSection = new TableSection(TableSectionType.OTHER);
+				tableSection = new TableSection(TableSectionTypeOLD.OTHER);
 				tableSectionList.add(tableSection);
 			}
 			if (element instanceof PhraseList) {
@@ -425,7 +439,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				}
 			}
 		}
-		LOG.trace("TABLE SECTIONS: "+tableSectionList.size());
+		LOG.debug("Created but not analyzed table sections NEW: "+tableSectionList.size());
 	}
 
 	// GETTER
@@ -441,6 +455,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
 		createSectionsAndRangesArrayNew();
+		analyzeSectionsNew();
 		if (contentBoxGridFile != null) {
 			SVGSVG.wrapAndWriteAsSVG(contentBoxGridG, contentBoxGridFile);
 		}
@@ -452,7 +467,55 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return html;
 	}
 
-	public void setTableTitle(TableTitle tableTitle) {
+	private void analyzeSectionsNew() {
+		LOG.debug("ANALYZE SECTIONS NEW: "+tableSectionList.size());
+		findTitleSections();
+		LOG.debug("Other sects: ");
+		for (int isect = 0; isect < tableSectionList.size(); isect++) {
+			TableSection tableSection = tableSectionList.get(isect);
+			if (!tableSection.isTitleOrContinued()) {
+				PhraseListList phraseListList = tableSection.getOrCreatePhraseListList();
+				LOG.debug("PHRASES: "+phraseListList.size()+"; font "+phraseListList.getFontFamily()+"; "+phraseListList.getFontSize());
+				
+			}
+		}
+		
+	}
+
+	private void findTitleSections() {
+		tableTitle = null;
+		continued = false;
+		for (int isect = 0; isect < tableSectionList.size(); isect++) {
+			TableSection tableSection = tableSectionList.get(isect);
+//			LOG.debug("Table section: "+tableSection);
+			String title = tableSection.matchAgainstIndividualPhrases(TABLE_TITLE_PATTERN_ANY);
+			if (title != null) {
+				tableSection.setType(TableSectionType.TITLE);
+				tableTitle = new TableTitle(title);
+				LOG.debug("**TITLE: "+title);
+			}
+			// this allows for it to be on separate line
+			continued = tableSection.matchAgainstIndividualPhrases(TABLE_PATTERN_CONTINUED) != null;
+			if (continued) {
+				tableSection.setType(TableSectionType.TITLE_CONT);
+				LOG.debug("**CONT: "+title);
+			}
+			if (title != null || continued) {
+				if (isect == 0) {
+					// ok
+				} else if (isect == tableSectionList.size() - 1) {
+					LOG.debug("Table at foot");
+				} else {
+					LOG.warn("Table in strange place: section "+isect);
+				}
+				continue;
+			} else {
+				// skip non titles
+			}
+		}
+	}
+
+	private void setTableTitle(TableTitle tableTitle) {
 		this.tableTitle = tableTitle;
 	}
 
@@ -505,7 +568,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 	}
 
-	public TableTitleSection getOrCreateTableTitleSection() {
+	public TableTitleSection getOrCreateTableTitleSectionOLD() {
 		if (tableTitleSection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 1) {
@@ -515,7 +578,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return tableTitleSection;
 	}
 
-	public TableHeaderSection getOrCreateTableHeaderSection() {
+	public TableHeaderSection getOrCreateTableHeaderSectionOLD() {
 		if (tableHeaderSection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 2) {
@@ -525,7 +588,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return tableHeaderSection;
 	}
 
-	public TableBodySection getOrCreateTableBodySection() {
+	public TableBodySection getOrCreateTableBodySectionOLD() {
 		if (tableBodySection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 3) {
@@ -535,7 +598,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return tableBodySection;
 	}
 
-	public TableFooterSection getOrCreateTableFooterSection() {
+	public TableFooterSection getOrCreateTableFooterSectionOLD() {
 		if (tableFooterSection == null) {
 			List<TableSection> tableSectionList = getTableStructurer().getTableSectionList();
 			if (tableSectionList.size() >= 4) {
@@ -572,7 +635,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private GraphicsElement annotateAreasInFooterSection(GraphicsElement svgChunk) {
-		TableFooterSection tableFooter = getOrCreateTableFooterSection();
+		TableFooterSection tableFooter = getOrCreateTableFooterSectionOLD();
 		if (tableFooter != null) {
 			svgChunk = tableFooter.createMarkedContent(
 					(GraphicsElement) svgChunk.copy(),
@@ -584,7 +647,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private GraphicsElement annotateAreasInBodySection(GraphicsElement svgChunk) {
-		TableBodySection tableBody = getOrCreateTableBodySection();
+		TableBodySection tableBody = getOrCreateTableBodySectionOLD();
 		if (tableBody == null) {
 			LOG.trace("no table body");
 		} else {
@@ -599,7 +662,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private GraphicsElement annotateAreasInHeaderSection(GraphicsElement svgChunk) {
-		TableHeaderSection tableHeader = getOrCreateTableHeaderSection();
+		TableHeaderSection tableHeader = getOrCreateTableHeaderSectionOLD();
 		if (tableHeader == null) {
 			LOG.warn("no table header");
 		} else {
@@ -614,7 +677,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private GraphicsElement annotateAreasInTitleSection(GraphicsElement svgChunk) {
-		TableTitleSection tableTitle = getOrCreateTableTitleSection();
+		TableTitleSection tableTitle = getOrCreateTableTitleSectionOLD();
 		if (tableTitle == null) {
 			LOG.warn("no table title");
 		} else {

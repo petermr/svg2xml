@@ -2,9 +2,12 @@ package org.xmlcml.svg2xml.table;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGLineList;
+import org.xmlcml.svg2xml.box.SVGContentBox;
 import org.xmlcml.svg2xml.table.GenericRow.RowType;
 import org.xmlcml.svg2xml.text.PhraseList;
 
@@ -20,15 +23,17 @@ import org.xmlcml.svg2xml.text.PhraseList;
  */
 public class GenericRow {
 	
+
 	public enum RowType {
-		LONG_HORIZONTAL("L"),
-		SHORT_HORIZONTAL("l"),
-		LINE_LIST("Y"),
+		LONG_HORIZONTAL("H"),
+		SHORT_HORIZONTAL("h"),
+		LINE_LIST("L"),
 		CONTENT_BOX("B"),
 		PHRASE_LIST("P"),
 		SIBLING_PHRASE_LIST("S"),
-		CONTENT_PANEL("C"), 
-		SIBLING_RULES("Z");
+//		CONTENT_PANEL("C"), 
+		SIBLING_RULES("="), 
+		CONTENT_GRID_PANEL("G");
 		
 		private String abbrev;
 
@@ -46,11 +51,13 @@ public class GenericRow {
 	}
 
 	public final static double LINE_DELTA_Y = 0.5; // make lines at least 1 pixel thick
+	private static final double LINE_THICKNESS_FACTOR  = (1.0 + 1.0) + 0.1;
 	private SVGLine line;
 	private RowType type;
 	private Real2Range box;
 	private PhraseList phraseList;
 	private SVGLineList lineList;
+	private SVGContentBox contentBox;
 
 	private GenericRow(RowType type) {
 		this.type = type;
@@ -80,12 +87,17 @@ public class GenericRow {
 		
 	}
 
+	public GenericRow(SVGContentBox contentBox) {
+		this(RowType.CONTENT_BOX);
+		this.contentBox = contentBox;
+	}
+
 	public Real2Range getOrCreateBoundingBox() {
 		Real2Range bbox = null;
 		if (bbox == null) {
 			if (type.equals(RowType.LONG_HORIZONTAL) || type.equals(RowType.SHORT_HORIZONTAL)) {
 				bbox = getLineBBox();
-			} else if (type.equals(RowType.CONTENT_BOX) || type.equals(RowType.CONTENT_PANEL)) {
+			} else if (type.equals(RowType.CONTENT_BOX) || type.equals(RowType.CONTENT_GRID_PANEL)) {
 				bbox = box;
 			} else if (type.equals(RowType.PHRASE_LIST)) {
 				bbox = phraseList == null ? null: phraseList.getBoundingBox();
@@ -115,4 +127,100 @@ public class GenericRow {
 		return s;
 	}
 	
+	/*
+	private SVGLine line;
+	private RowType type;
+	private Real2Range box;
+	private PhraseList phraseList;
+	private SVGLineList lineList;
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(type.abbrev);
+		sb.append("; ");
+		sb.append((line == null ? "" : line.toString()));
+		sb.append((contentBox == null ? "" : contentBox.toString()));
+		sb.append((box == null ? "" : box.toString()));
+		sb.append((phraseList == null ? "" : phraseList.toString()));
+		sb.append((lineList == null ? "" : lineList.toString()));
+		return sb.toString();
+	}
+
+	public SVGContentBox getContentBox() {
+		return contentBox;
+	}
+
+	boolean intersectsBoxRange(RealRange boxYRange) {
+		boolean intersects = false;
+		RealRange rowYRange = getOrCreateBoundingBox().getYRange();
+		// equality
+		if (boxYRange.isEqualTo(rowYRange, LINE_DELTA_Y)) {
+			LOG.trace("ROW "+this.toString()+" EQUALS "+rowYRange+"; "+getSignature());
+			intersects = true;
+		} else if (boxYRange.includes(rowYRange)) {
+			LOG.trace("ROW "+this.toString()+" INCLUDES "+rowYRange+"; "+getSignature());
+			intersects = true;
+		} else if (boxYRange.intersects(rowYRange)) {
+			boolean touchesLow = Real.isEqual(boxYRange.getMin(), rowYRange.getMin(), LINE_DELTA_Y);
+			boolean touchesHigh = Real.isEqual(boxYRange.getMax(), rowYRange.getMax(), LINE_DELTA_Y);
+			if (touchesLow && touchesHigh) {
+				LOG.trace("ROW "+this.toString()+" TOUCHES_BOTH "+rowYRange+"; "+getSignature());
+			} else if (touchesLow) {
+				LOG.trace("ROW "+this.toString()+" TOUCHES_LOW "+rowYRange+"; "+getSignature());
+			} else if (touchesHigh) {
+				LOG.trace("ROW "+this.toString()+" TOUCHES_HIGH "+rowYRange+"; "+getSignature());
+			} else {
+				LOG.trace("ROW "+this.toString()+" INTERSECTS "+rowYRange+"; "+getSignature());
+			}
+			if (rowYRange.getRange() < LINE_THICKNESS_FACTOR  * LINE_DELTA_Y) {
+				// a line on edge of box is EXCLUDED
+				intersects = false;
+				LOG.trace("EXCLUDED");
+			} else {
+				intersects = true;
+			}
+		} else {
+			// doesn't intersect
+		}
+		return intersects;
+	}
+	
+	public RowType getRowType() {
+		return type;
+	}
+
+	public SVGLine getLine() {
+		return line;
+	}
+
+	public PhraseList getPhraseList() {
+		return phraseList;
+	}
+
+	public boolean addLineToContentBox(SVGContentBox contentBox) {
+		boolean added = false;
+		if (line != null) {
+			added = contentBox.addLine(line);
+		}
+		return added;
+	}
+	
+	public boolean addLineListToContentBox(SVGContentBox contentBox) {
+		boolean added = false;
+		if (lineList != null) {
+			added = contentBox.addLineList(lineList);
+		}
+		return added;
+	}
+
+	public boolean addPhraseListToContentBox(SVGContentBox contentBox) {
+		boolean added = false;
+		if (phraseList != null) {
+			added = contentBox.addPhraseList(phraseList);
+		}
+		return added;
+	}
+
+
 }

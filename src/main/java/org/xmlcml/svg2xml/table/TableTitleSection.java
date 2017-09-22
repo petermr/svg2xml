@@ -21,7 +21,7 @@ public class TableTitleSection extends TableSection {
 	}
 
 	public TableTitleSection() {
-		super(TableSectionType.TITLE);
+		super(TableSectionTypeOLD.TITLE);
 	}
 	
 	public TableTitleSection(TableSection tableSection) {

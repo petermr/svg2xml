@@ -3,6 +3,7 @@ package org.xmlcml.svg2xml.table;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
@@ -34,7 +35,7 @@ public class TableSection {
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
-	public enum TableSectionType {
+	public enum TableSectionTypeOLD {
 		TITLE(0),
 		HEADER(1),
 		BODY(2),
@@ -42,30 +43,50 @@ public class TableSection {
 		OTHER(-1);
 		private int serial;
 
-		private TableSectionType(int serial) {
+		private TableSectionTypeOLD(int serial) {
 			this.serial = serial;
 		}
 	}
 
+	public enum TableSectionType {
+		TITLE("T"),
+		TITLE_CONT("C"),
+		HEADER("H"),
+		BODY("B"),
+		FOOTER("F"),
+		OTHER("?");
+		private String abbrev;
+
+		private TableSectionType(String abbrev) {
+			this.abbrev = abbrev;
+		}
+	}
+
 	protected TableSectionType type;
+	protected TableSectionTypeOLD typeOLD;
 	protected List<HorizontalElement> horizontalElementList;
 	protected Real2Range boundingBox;
 	protected List<ColumnManager> columnManagerList;
+	// what is the difference between these two?
 	protected List<Phrase> allPhrasesInSection;
 	protected PhraseListList sectionPhraseListList;
+	protected List<PhraseListList> sectionChunks; // structure within the text (e.g. whitespace)
 	protected double epsilon = 0.3;
 
-	public TableSection(TableSectionType type) {
+	public TableSection(TableSectionTypeOLD typeOLD) {
 		this();
-		this.type = type;
+		this.typeOLD = typeOLD;
 	}
 	
 	/** copy constructor.
+	 * 
+	 * used from subclasses 
 	 * 
 	 * @param tableSection
 	 */
 	public TableSection(TableSection tableSection) {
 		this.type = tableSection.type;
+		this.typeOLD = tableSection.typeOLD;
 		this.horizontalElementList = tableSection.horizontalElementList;
 		this.allPhrasesInSection = tableSection.allPhrasesInSection;
 		this.boundingBox = tableSection.boundingBox;
@@ -109,7 +130,7 @@ public class TableSection {
 	}
 	
 	public String toString() {
-		StringBuilder sb = new StringBuilder(type+": ");
+		StringBuilder sb = new StringBuilder(typeOLD+": ");
 		sb.append(horizontalElementList.size()+"\n");
 //		if (horizontalElementList.size() > 0) {
 //			sb.append(String.valueOf(horizontalElementList.get(0))+"...\n");
@@ -250,6 +271,26 @@ public class TableSection {
 			}
 		}
 		return sb.toString();
+	}
+
+	public void setType(TableSectionType type) {
+		this.type = type;
+	}
+
+	public String matchAgainstIndividualPhrases(Pattern pattern) {
+		getOrCreatePhraseListList();
+		for (PhraseList phraseList : sectionPhraseListList) {
+			String value = phraseList.getStringValue();
+			Matcher matcher = pattern.matcher(value);
+			if (matcher.matches()) {
+				return matcher.group(0);
+			}
+		}
+		return null;
+	}
+
+	public boolean isTitleOrContinued() {
+		return TableSectionType.TITLE.equals(type) || TableSectionType.TITLE_CONT.equals(type);
 	}
 	
 
