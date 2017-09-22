@@ -1,13 +1,20 @@
-package org.xmlcml.svg2xml.table;
+package org.xmlcml.svg2xml.box;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.management.RuntimeErrorException;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.graphics.svg.SVGLineList;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.svg2xml.table.GenericRow;
 import org.xmlcml.svg2xml.text.Phrase;
 import org.xmlcml.svg2xml.text.PhraseList;
 import org.xmlcml.svg2xml.text.PhraseListList;
@@ -36,7 +43,9 @@ public class SVGContentBox extends SVGG {
 
 	private SVGRect rect = null;
 	private PhraseListList phraseListList;
+	private SVGLineList lineList;
 	private SVGG svgElement;
+	private ArrayList<SVGLineList> lineListList;
 	
 	private SVGContentBox() {
 		super();
@@ -95,18 +104,19 @@ public class SVGContentBox extends SVGG {
 		return size;
 	}
 
-	public void addContainedElements(PhraseListList phraseListList) {
-		for (PhraseList phraseList : phraseListList) {
-			for (int iPhrase = 0; iPhrase < phraseList.size(); iPhrase++) {
-				Phrase phrase = phraseList.get(iPhrase);
-				phrase.setBoundingBoxCached(true);
-				//this is inefficient but it keeps the phrases in order
-				if (getRect().getBoundingBox().includes(phrase.getBoundingBox())) {
-					addPhrase(phrase);
-					this.appendChild(phrase.copy());
-				}
-			}
-		}
+	public void addContainedElements(GraphicsElement phraseListList) {
+		throw new RuntimeException("NYI");
+//		for (PhraseList phraseList : phraseListList) {
+//			for (int iPhrase = 0; iPhrase < phraseList.size(); iPhrase++) {
+//				Phrase phrase = phraseList.get(iPhrase);
+//				phrase.setBoundingBoxCached(true);
+//				//this is inefficient but it keeps the phrases in order
+//				if (getRect().getBoundingBox().includes(phrase.getBoundingBox())) {
+//					addPhrase(phrase);
+//					this.appendChild(phrase.copy());
+//				}
+//			}
+//		}
 	}
 
 	@Override
@@ -129,5 +139,59 @@ public class SVGContentBox extends SVGG {
 			svgElement.appendChild(phraseListList.copy());
 		}
 		return svgElement;
+	}
+
+	/** rather horrible 
+	 * selects row content and adds that.
+	 * may be in wrong place
+	 * 
+	 * @param row
+	 */
+	/*
+	private SVGLine line;
+	private RowType type;
+	private Real2Range box;
+	private PhraseList phraseList;
+	private SVGLineList lineList;
+	private SVGContentBox contentBox;
+	 */
+	public void add(GenericRow row) {
+		boolean added = row.addLineToContentBox(this);
+		if (!added) {
+			added = row.addLineListToContentBox(this);
+		}
+		if (!added) {
+			added = row.addPhraseListToContentBox(this);
+		}
+	}
+
+	public boolean addLine(SVGLine line) {
+		getOrCreateLineList();
+		return lineList.add(line);
+	}
+
+	private SVGLineList getOrCreateLineList() {
+		if (lineList == null) {
+			lineList = new SVGLineList();
+		}
+		return lineList;
+	}
+
+	public boolean addLineList(SVGLineList lineList) {
+		getOrCreateLineListList();
+		return lineListList.add(lineList);
+	}
+
+	private List<SVGLineList> getOrCreateLineListList() {
+		if (lineListList == null) {
+			lineListList = new ArrayList<SVGLineList>();
+		}
+		return lineListList;
+	}
+
+	public boolean addPhraseList(PhraseList phraseList) {
+		getOrCreatePhraseListList();
+		phraseListList.add(phraseList);
+		return phraseList != null;
 	}
 }

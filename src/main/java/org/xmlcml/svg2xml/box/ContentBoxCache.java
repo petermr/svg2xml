@@ -1,4 +1,4 @@
-package org.xmlcml.svg2xml.table;
+package org.xmlcml.svg2xml.box;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +6,14 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.cache.AbstractCache;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
 import org.xmlcml.graphics.svg.cache.RectCache;
 import org.xmlcml.graphics.svg.cache.TextCache;
+import org.xmlcml.svg2xml.table.ContentBoxGrid;
 import org.xmlcml.svg2xml.text.PhraseListList;
 
 public class ContentBoxCache extends AbstractCache {
@@ -21,7 +23,7 @@ public class ContentBoxCache extends AbstractCache {
 		LOG.setLevel(Level.DEBUG);
 	}
 
-	private AbstractCache rectCache;
+	private RectCache rectCache;
 	private TextCache textCache;
 	private List<SVGContentBox> contentBoxList;
 	private ContentBoxGrid contentBoxGrid;
@@ -64,7 +66,7 @@ public class ContentBoxCache extends AbstractCache {
 		return contentBoxCache;
 	}
 
-	private List<SVGContentBox> createContentBoxList(List<SVGRect> rectList, PhraseListList phraseListList) {
+	private List<SVGContentBox> createContentBoxList(List<SVGRect> rectList, GraphicsElement phraseListList) {
 		Real2Range ownerBBox = getOwnerComponentCache().getBoundingBox();
 		LOG.trace("own "+ownerBBox);
 		contentBoxList = new ArrayList<SVGContentBox>();
