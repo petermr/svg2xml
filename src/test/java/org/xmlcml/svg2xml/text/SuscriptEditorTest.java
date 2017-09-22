@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
 
 public class SuscriptEditorTest {
@@ -122,7 +123,7 @@ public class SuscriptEditorTest {
 	public void testSuscriptAll() {
 		
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
-		PhraseListList phraseListList = suscriptEditor.mergeAll();
+		GraphicsElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);
 		
@@ -132,7 +133,7 @@ public class SuscriptEditorTest {
 	public void testSuscriptAll1() {
 		
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS_SO4);
-		PhraseListList phraseListList = suscriptEditor.mergeAll();
+		GraphicsElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);
 		

@@ -581,4 +581,27 @@ public class Word extends LineChunk implements Iterable<SVGText> {
 		return StyleBundle.FontStyle.ITALIC.toString().equalsIgnoreCase(style);
 	}
 	
+	/**
+	 * @return the fill
+	 */
+	public String getCSSStyle() {
+		getOrCreateChildTextList();
+		String style = null;
+		if (childTextList.size() > 0) {
+			style = childTextList.get(0).getStyle();
+			for (int i = 1; i < childTextList.size(); i++) {
+				String style1 = childTextList.get(i).getFill();
+				if (style1 != null) {
+					if (!style1.equals(style)) {
+						LOG.trace("changed style in word from "+style+"=>"+style1+"/"+this.getStringValue());
+						style = MIXED_STYLE;
+						break;
+					}
+				}
+			}
+		}
+		if (style != null) this.setFill(style);
+		return style;
+	}
+	
 }

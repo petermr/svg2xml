@@ -1443,7 +1443,7 @@ public class TextStructurer {
 		return tableStructurer;
 	}
 
-	public FlowStructurer createFlowStructurer(PhraseListList phraseListList) {
+	public FlowStructurer createFlowStructurer(GraphicsElement phraseListList) {
 //		createPhraseListListFromWords();
 		flowStructurer = new FlowStructurer(phraseListList);
 		flowStructurer.setTextStructurer(this);

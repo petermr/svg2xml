@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -54,7 +55,7 @@ public class TextBox extends SVGG {
 		this.setClassName(TAG);
 	}
 
-	public PhraseListList getOrCreatePhraseListList() {
+	public GraphicsElement getOrCreatePhraseListList() {
 		if (phraseListListElement == null) {
 			List<Element> phraseListChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+PhraseList.TAG+"']");//			List<Element> phraseListListChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"']");
 			phraseListListElement = new PhraseListList();

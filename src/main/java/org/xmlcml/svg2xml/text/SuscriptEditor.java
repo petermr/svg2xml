@@ -2,6 +2,7 @@ package org.xmlcml.svg2xml.text;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.svg.GraphicsElement;
 
 /** merges phrases which might be related as sub or superscripts
  * 
@@ -157,7 +158,7 @@ private boolean hasSuscripts;
 
 
 
-	public PhraseListList mergeAll() {
+	public GraphicsElement mergeAll() {
 		int size = phraseListList.size();
 		for (int i = 0; i < size - 1;) {
 			PhraseList phraseList0 = phraseListList.get(i);
@@ -197,7 +198,7 @@ private boolean hasSuscripts;
 		return merged;
 	}
 
-	public PhraseListList getPhraseListList() {
+	public GraphicsElement getPhraseListList() {
 		return phraseListList;
 	}
 

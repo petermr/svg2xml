@@ -455,5 +455,21 @@ public class Phrase extends LineChunk implements Iterable<Word> {
 		return matcher.find();
 	}
 
+	public String getCSSStyle() {
+		String pStyle = null;
+		for (Word word : this) {
+			String wordStyle = word.getCSSStyle();
+			if (pStyle == null) {
+				wordStyle = pStyle;
+			} else if (pStyle.equals(wordStyle)) {
+				// OK
+			} else {
+				pStyle = MIXED_STYLE;
+			}
+		}
+		return pStyle;
+	}
+
+
 
 }

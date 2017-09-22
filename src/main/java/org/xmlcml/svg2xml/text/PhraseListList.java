@@ -26,6 +26,7 @@ import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
 
+@Deprecated // use renamed TextChunk
 public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 	private static final double PARA_SPACING_FACTOR = 1.2;
 	public static final Logger LOG = Logger.getLogger(PhraseListList.class);
@@ -388,6 +389,20 @@ public class PhraseListList extends SVGG implements Iterable<PhraseList> {
 		return ul;
 	}
 
+	public String getCSSStyle() {
+		String pllStyle = null;
+		for (PhraseList phraseList : this) {
+			String plStyle = phraseList.getCSSStyle();
+			if (pllStyle == null) {
+				plStyle = pllStyle;
+			} else if (pllStyle.equals(plStyle)) {
+				// OK
+			} else {
+				pllStyle = MIXED_STYLE;
+			}
+		}
+		return pllStyle;
+	}
 
 
 }

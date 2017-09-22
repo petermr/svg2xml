@@ -323,4 +323,20 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return false;
 	}
 
+	public String getCSSStyle() {
+		String plStyle = null;
+		for (Phrase phrase : this) {
+			String pStyle = phrase.getCSSStyle();
+			if (plStyle == null) {
+				pStyle = plStyle;
+			} else if (plStyle.equals(pStyle)) {
+				// OK
+			} else {
+				plStyle = "mixed";
+			}
+		}
+		return plStyle;
+	}
+
+
 }
