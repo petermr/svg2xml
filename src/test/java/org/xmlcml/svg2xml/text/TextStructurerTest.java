@@ -17,8 +17,11 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
 import com.google.common.collect.Multiset;
@@ -205,7 +208,7 @@ public class TextStructurerTest {
 	 * WORKS
 	 */
 	public void testRotatePhrasesAndExtractPhraseList() throws Exception {
-		PhraseListList phraseListList; PhraseList phraseList; Phrase phrase; Word word0, word1;
+		TextChunk phraseListList; PhraseChunk phraseList; PhraseNew phrase; WordNew word0, word1;
 		File graphTextFile = new File(SVG2XMLFixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
 		TextStructurer textStructurer;
 		phraseListList = getUnrotatedPhrases(graphTextFile, 36, "HD-73//1//antibiotic free diet//0.9//0.8//y//t//i//l//0.7//a//t//r//o//0.6//m//e//0.5//v//i//t//a//0.4//l//u//m//0.3//u//rifampicin//c//0.2//diet//0.1//0//1 2 3 4 5//days//");
@@ -851,9 +854,9 @@ public class TextStructurerTest {
 
 // ===========================================
 	
-	private void assertLadder(PhraseListList phraseListList, int[] phraseIndexes, String[] phraseValues, double xValue,
+	private void assertLadder(TextChunk phraseListList, int[] phraseIndexes, String[] phraseValues, double xValue,
 			double deltaY, double yEps) {
-		Phrase phrase;
+		PhraseNew phrase;
 		if (phraseIndexes != null) {
 			for (int i = 0; i < phraseIndexes.length; i++) {
 				phrase = phraseListList.get(phraseIndexes[i]).get(0);
@@ -879,7 +882,7 @@ public class TextStructurerTest {
 		File outFile1 = new File(outDir, "rotatedVerticalText.svg");
 		File outfile2 = new File(outDir, "phrasesRotate.svg");
 		Assert.assertTrue("graphTextFile exists", graphTextFile.exists());
-		PhraseListList phraseListList = getUnrotatedPhrases(graphTextFile, phraseListListSize, totalStringValue);
+		TextChunk phraseListList = getUnrotatedPhrases(graphTextFile, phraseListListSize, totalStringValue);
 		Assert.assertNotNull("phraseListList not null", phraseListList);
 
 		assertHorizontalPhrases(phraseListList, horizontalPhraseValues, horizontalPhraseIndexes);
@@ -900,7 +903,7 @@ public class TextStructurerTest {
 		phraseListList.format(1);
 		phraseListList.getStringValue(); // computes if not already known
 		for (int i = 0; i < phraseListList.size(); i++) {
-			PhraseList phraseList = phraseListList.get(i);
+			PhraseChunk phraseList = phraseListList.get(i);
 			LOG.trace(">"+i+">"+phraseList.getBoundingBox()+"/"+phraseList.getStringValue());
 		}
 
@@ -919,7 +922,7 @@ public class TextStructurerTest {
 	 * @param horizontalPhraseValues
 	 * @param horizontalPhraseIndexes
 	 */
-	private void assertHorizontalPhrases(PhraseListList phraseListList, String[] horizontalPhraseValues,
+	private void assertHorizontalPhrases(TextChunk phraseListList, String[] horizontalPhraseValues,
 			int[] horizontalPhraseIndexes) {
 		LOG.trace(phraseListList.size());
 		for (int i = 0; i < phraseListList.size(); i++) {
@@ -931,8 +934,8 @@ public class TextStructurerTest {
 		}
 	}
 
-	private PhraseListList getUnrotatedPhrases(File graphTextFile, int phraseListListSize, String totalStringValue) {
-		PhraseListList phraseListList;
+	private TextChunk getUnrotatedPhrases(File graphTextFile, int phraseListListSize, String totalStringValue) {
+		TextChunk phraseListList;
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(graphTextFile);
 		phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		Assert.assertNotNull("phraseListList not null", phraseListList);

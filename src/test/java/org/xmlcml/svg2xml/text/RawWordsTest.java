@@ -6,8 +6,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.xml.XMLUtil;
 
 public class RawWordsTest {
@@ -121,11 +122,11 @@ public class RawWordsTest {
 		TextStructurer textStructurer = 
 				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
 		RawWords rawWords = textStructurer.createRawWordsListFromTextLineList().get(0);
-		Word word = rawWords.get(0);
-		Phrase phrase = word.createPhrase();
+		WordNew word = rawWords.get(0);
+		PhraseNew phrase = word.createPhrase();
 		Assert.assertEquals("phrase", "{Phenotypic tarsus (mm)}", phrase.toString());
 		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phrase.getPrintableString());
-		List<Word> wordList = phrase.getOrCreateWordList();
+		List<WordNew> wordList = phrase.getOrCreateWordList();
 		Assert.assertEquals("phrase", 3, wordList.size());
 		Assert.assertEquals("word0", "Phenotypic", wordList.get(0).toString());
 		Assert.assertEquals("word1", "tarsus", wordList.get(1).toString());
@@ -138,9 +139,9 @@ public class RawWordsTest {
 		RawWords rawWords = textLine.getRawWords();
 		Assert.assertEquals("rawSpaces", "{Total Topf 1...........................231.....343.....453.....491}",
 				rawWords.toString());
-		Word word0 = rawWords.get(0);
+		WordNew word0 = rawWords.get(0);
 		Assert.assertEquals("word0", "Total Topf 1", word0.toString());
-		Phrase phrase0 = word0.createPhrase();
+		PhraseNew phrase0 = word0.createPhrase();
 		Assert.assertEquals("phrase", "{Total Topf 1}", phrase0.toString());
 		Assert.assertEquals("phrase", "Total Topf 1", phrase0.getPrintableString());
 		Assert.assertEquals("word1", "231", rawWords.get(1).createPhrase().getPrintableString());

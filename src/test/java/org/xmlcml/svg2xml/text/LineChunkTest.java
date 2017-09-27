@@ -2,10 +2,11 @@ package org.xmlcml.svg2xml.text;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
-import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.xmlcml.graphics.svg.rule.horizontal.LineChunk;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class LineChunkTest {

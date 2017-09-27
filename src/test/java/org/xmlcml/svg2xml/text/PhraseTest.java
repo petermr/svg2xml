@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class PhraseTest {
@@ -30,7 +32,7 @@ public class PhraseTest {
 	@Test
 	public void testPhraseList() {
 		TextLine textLine = TextStructurer.createTextLine(SVG2XMLFixtures.RAWWORDS_SVG, 0);
-		List<Phrase> phraseList = textLine.createPhraseList();
+		List<PhraseNew> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 1, phraseList.size());
 		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phraseList.get(0).getPrintableString());
 		Assert.assertEquals("phrase", "{Phenotypic tarsus (mm)}", phraseList.get(0).toString());
@@ -39,7 +41,7 @@ public class PhraseTest {
 	@Test
 	public void testPhraseList1() {
 		TextLine textLine = BERICHT_PAGE6_34_TEXTLINE;
-		List<Phrase> phraseList = textLine.createPhraseList();
+		List<PhraseNew> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 5, phraseList.size());
 		Assert.assertEquals("phrase", "Total Topf 1", phraseList.get(0).getPrintableString());
 		Assert.assertEquals("phrase", "{Total Topf 1}", phraseList.get(0).toString());
@@ -53,10 +55,10 @@ public class PhraseTest {
 	public void testGetWordList() {
 		SVGText t11 = new SVGText(new Real2(25., 16.), "+");
 		t11.setFontSize(8.0);
-		Word w11 = new Word(t11);
-		Phrase p11 = new Phrase(w11);
+		WordNew w11 = new WordNew(t11);
+		PhraseNew p11 = new PhraseNew(w11);
 		LOG.trace(""+p11.getOrCreateBoundingBox());
-		List<Word> wordList = p11.getOrCreateWordList();
+		List<WordNew> wordList = p11.getOrCreateWordList();
 		Assert.assertEquals(1, wordList.size());
 	}
 

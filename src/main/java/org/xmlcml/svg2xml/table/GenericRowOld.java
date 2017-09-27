@@ -7,9 +7,8 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGLineList;
-import org.xmlcml.svg2xml.box.SVGContentBox;
-import org.xmlcml.svg2xml.table.GenericRow.RowType;
-import org.xmlcml.svg2xml.text.PhraseList;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.svg2xml.box.SVGContentBoxOld;
 
 /** generic horizontally-based object in a table.
  * replaces HorizontalElement
@@ -21,7 +20,7 @@ import org.xmlcml.svg2xml.text.PhraseList;
  * @author pm286
  *
  */
-public class GenericRow {
+public class GenericRowOld {
 	
 
 	public enum RowType {
@@ -45,7 +44,7 @@ public class GenericRow {
 		}
 	}
 	
-	private static final Logger LOG = Logger.getLogger(GenericRow.class);
+	private static final Logger LOG = Logger.getLogger(GenericRowOld.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
@@ -55,39 +54,39 @@ public class GenericRow {
 	private SVGLine line;
 	private RowType type;
 	private Real2Range box;
-	private PhraseList phraseList;
+	private PhraseChunk phraseList;
 	private SVGLineList lineList;
-	private SVGContentBox contentBox;
+	private SVGContentBoxOld contentBox;
 
-	private GenericRow(RowType type) {
+	private GenericRowOld(RowType type) {
 		this.type = type;
 		if (type == null) {
 			throw new RuntimeException("null type in GenericRow");
 		}
 	}
 	
-	public GenericRow(SVGLine line, RowType type) {
+	public GenericRowOld(SVGLine line, RowType type) {
 		this(type);
 		this.line = line;
 	}
 
-	public GenericRow(Real2Range box, RowType type) {
+	public GenericRowOld(Real2Range box, RowType type) {
 		this(type);
 		this.box = box;
 	}
 	
-	public GenericRow(PhraseList phraseList, RowType type) {
+	public GenericRowOld(PhraseChunk phraseList, RowType type) {
 		this(type);
 		this.phraseList = phraseList;
 	}
 	
-	public GenericRow(SVGLineList lineList, RowType type) {
+	public GenericRowOld(SVGLineList lineList, RowType type) {
 		this(type);
 		this.lineList = lineList;
 		
 	}
 
-	public GenericRow(SVGContentBox contentBox) {
+	public GenericRowOld(SVGContentBoxOld contentBox) {
 		this(RowType.CONTENT_BOX);
 		this.contentBox = contentBox;
 	}
@@ -147,7 +146,7 @@ public class GenericRow {
 		return sb.toString();
 	}
 
-	public SVGContentBox getContentBox() {
+	public SVGContentBoxOld getContentBox() {
 		return contentBox;
 	}
 
@@ -194,11 +193,11 @@ public class GenericRow {
 		return line;
 	}
 
-	public PhraseList getPhraseList() {
+	public PhraseChunk getPhraseList() {
 		return phraseList;
 	}
 
-	public boolean addLineToContentBox(SVGContentBox contentBox) {
+	public boolean addLineToContentBox(SVGContentBoxOld contentBox) {
 		boolean added = false;
 		if (line != null) {
 			added = contentBox.addLine(line);
@@ -206,7 +205,7 @@ public class GenericRow {
 		return added;
 	}
 	
-	public boolean addLineListToContentBox(SVGContentBox contentBox) {
+	public boolean addLineListToContentBox(SVGContentBoxOld contentBox) {
 		boolean added = false;
 		if (lineList != null) {
 			added = contentBox.addLineList(lineList);
@@ -214,7 +213,7 @@ public class GenericRow {
 		return added;
 	}
 
-	public boolean addPhraseListToContentBox(SVGContentBox contentBox) {
+	public boolean addPhraseListToContentBox(SVGContentBoxOld contentBox) {
 		boolean added = false;
 		if (phraseList != null) {
 			added = contentBox.addPhraseList(phraseList);

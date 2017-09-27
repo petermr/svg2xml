@@ -7,13 +7,11 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGPath;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.builder.GeometryBuilder;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
-import org.xmlcml.svg2xml.text.Word;
-//import org.xmlcml.svgbuilder.geom.SimpleBuilder;
 
 public class WordBuilderTest {
 
@@ -22,7 +20,7 @@ public class WordBuilderTest {
 	@Test
 	public void testWordList() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.8.2.svg")));
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 16, wordList.size());
 		Assert.assertEquals("words",  "[ Hag L,  Hla L,  Hpi L, 81,  Hag M,  Hla M,  Hpi M, 100,  Ssy L, 99,  Ssy M,  Nle L, 95,  Nle M,  Human L,  Human M]", wordList.toString());
@@ -32,7 +30,7 @@ public class WordBuilderTest {
 	@Test
 	public void testWordList1() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2a.svg")));
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 130, wordList.size());
 		Assert.assertEquals("words",  "[Luscinia  , *, Ficedula, *, Turdus, *, Mimus, *, Sturnus, *, 0.5, Troglodytes, *, Sitta, "
@@ -49,7 +47,7 @@ public class WordBuilderTest {
 	@Test
 	public void testWordListAllWords() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2.svg")));
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 410, wordList.size());
 		Assert.assertEquals("words",  "[-, p, Luscinia  , (Muscicapidae), a, *, Ficedula, c, *, i, c, a, (Turdidae), Turdus, s, *, e, u, (Mimidae),"
@@ -83,7 +81,7 @@ public class WordBuilderTest {
 	public void testHorizontalWordOrientation() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 331, wordList.size());
 		Assert.assertEquals("words",  "[Luscinia  , (Muscicapidae), *, Ficedula, *, (Turdidae), Turdus, *, (Mimidae),"
@@ -121,7 +119,7 @@ public class WordBuilderTest {
 	public void testVerticalWordOrientation() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "image.g.3.2.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 10, wordList.size());
 		Assert.assertEquals("words",  "[Suboscines, Oscines, 'core Corvoidea', Passer-, Sylvi-, Muscicap-, oidea, oidea, oidea, Passerida]",
@@ -132,7 +130,7 @@ public class WordBuilderTest {
 	public void testHorizontalScience() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 65, wordList.size());
 		Assert.assertEquals("words",  "[−10, 10, Synch + EC + self−Compton, 46, 10, Synch + EC + afterglow,"
@@ -153,7 +151,7 @@ public class WordBuilderTest {
 	public void testVerticalScience() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 16, wordList.size());
 		Assert.assertEquals("words",  "[−1 , −2, Specific flux ν, F, (erg s, cm, ), ν,  , −1, Specific luminosity ν,"
@@ -165,7 +163,7 @@ public class WordBuilderTest {
 	public void testHorizontalScienceSmall() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_0);
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 15, wordList.size());
 		Assert.assertEquals("words",  "[14, 15, 10, 10, −13, 10, −14, 10, −15, 10, 4.0, 2.0, 1.0, 0.5,   Obs. wavelength (µm)]",
@@ -186,7 +184,7 @@ public class WordBuilderTest {
 	public void testVerticalScienceSmall() {
 		GeometryBuilder geometryBuilder = new GeometryBuilder(SVGElement.readAndCreateSVG(new File(SVG2XMLFixtures.BUILDER_DIR, "bloom-203-6-page3small.svg")));
 		geometryBuilder.setTextOrientation(TextOrientation.ROT_PI2);
-		List<Word> wordList = geometryBuilder.getWordList();
+		List<WordNew> wordList = geometryBuilder.getWordList();
 		Assert.assertNotNull(wordList);
 		Assert.assertEquals("words", 7, wordList.size());
 		Assert.assertEquals("words",  "[−1, Specific luminosity ν, L, (erg s, ), ν,  ]",

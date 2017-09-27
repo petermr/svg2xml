@@ -12,10 +12,10 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRule;
-import org.xmlcml.svg2xml.text.Phrase;
-import org.xmlcml.svg2xml.text.PhraseList;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 /** manages the table header, including trying to sort out the column spanning
@@ -46,22 +46,22 @@ public class TableHeaderSection extends TableSection {
 		createSortedColumnManagerListFromUnassignedPhrases(allPhrasesInSection);
 	}
 
-	private List<Phrase> createHeaderRowListAndUnassignedPhrases() {
+	private List<PhraseNew> createHeaderRowListAndUnassignedPhrases() {
 		allPhrasesInSection = null;
 		headerRowList = new ArrayList<HeaderRow>();
 		Double lastY = null;
 		HeaderRow headerRow = null;
-		for (HorizontalElement element : getHorizontalElementList()) {
-			if (element instanceof PhraseList) {
+		for (HorizontalElementNew element : getHorizontalElementList()) {
+			if (element instanceof PhraseChunk) {
 				if (allPhrasesInSection == null) {
-					allPhrasesInSection = new ArrayList<Phrase>();
+					allPhrasesInSection = new ArrayList<PhraseNew>();
 				}
-				PhraseList phraseList = (PhraseList) element;
+				PhraseChunk phraseList = (PhraseChunk) element;
 				allPhrasesInSection.addAll(phraseList.getOrCreateChildPhraseList());
-			} else if (element instanceof HorizontalRule) {
-				HorizontalRule ruler = (HorizontalRule) element;
+			} else if (element instanceof HorizontalRuleNew) {
+				HorizontalRuleNew ruler = (HorizontalRuleNew) element;
 				Double y = ruler.getY();
-				if (lastY == null || (y - lastY) > HorizontalRule.Y_TOLERANCE) {
+				if (lastY == null || (y - lastY) > HorizontalRuleNew.Y_TOLERANCE) {
 					headerRow = new HeaderRow();
 					headerRowList.add(headerRow);
 					lastY = y;
@@ -69,7 +69,7 @@ public class TableHeaderSection extends TableSection {
 				ColumnGroup columnGroup = new ColumnGroup();
 				IntRange rulerRange = ruler.getIntRange();
 				for (int i = allPhrasesInSection.size() - 1; i >= 0; i--) {
-					Phrase phrase = allPhrasesInSection.get(i);
+					PhraseNew phrase = allPhrasesInSection.get(i);
 					// somewhere above the ruler (ignore stacked rulers at this stage
 					if (rulerRange.includes(phrase.getIntRange()) && phrase.getY() < ruler.getY()) {
 						allPhrasesInSection.remove(i);

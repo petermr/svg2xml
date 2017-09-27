@@ -7,13 +7,12 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
 import org.xmlcml.svg2xml.text.RawWords;
 import org.xmlcml.svg2xml.text.TextStructurer;
-import org.xmlcml.svg2xml.text.Word;
-//import org.xmlcml.svgbuilder.geom.SimpleBuilder;
 
 /**
  * Builds higher-level primitives from SVGPaths, SVGLines, etc. to create SVG objects 
@@ -47,7 +46,7 @@ public class GeometryBuilder extends SimpleBuilder {
 
 	private final static Logger LOG = Logger.getLogger(GeometryBuilder.class);
 	
-	private List<Word> wordList;
+	private List<WordNew> wordList;
 	private TextStructurer textStructurer;
 	private TextOrientation textOrientation;
 	private TextAnalyzer textAnalyzer;
@@ -61,7 +60,7 @@ public class GeometryBuilder extends SimpleBuilder {
 		textAnalyzer = new TextAnalyzer();
 	}
 
-	public List<Word> getWordList() {
+	public List<WordNew> getWordList() {
 		createWordList();
 		return wordList;
 	}
@@ -73,7 +72,7 @@ public class GeometryBuilder extends SimpleBuilder {
 	 * 
 	 * @return
 	 */
-	public List<Word> createWordList() {
+	public List<WordNew> createWordList() {
 		if (wordList == null) {
 			createTextStructurerWithRotation();
 			extractWordList();
@@ -84,15 +83,15 @@ public class GeometryBuilder extends SimpleBuilder {
 	private void extractWordList() {
 		List<RawWords> rawWordsList = textStructurer.createRawWordsListFromTextLineList();
 		for (RawWords rawWords : rawWordsList) {
-			List<Word> rwordList = rawWords.getWordList();
-			for (Word word :rwordList) {
+			List<WordNew> rwordList = rawWords.getWordList();
+			for (WordNew word :rwordList) {
 				wordList.add(word);
 			}
 		}
 	}
 
 	private TextStructurer createTextStructurerWithRotation() {
-		wordList = new ArrayList<Word>();
+		wordList = new ArrayList<WordNew>();
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(getSVGRoot());
 		textAnalyzer.setTextList(textList);
 		textStructurer = textAnalyzer.getTextStructurer();

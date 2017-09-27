@@ -6,12 +6,10 @@ import java.io.IOException;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.html.HtmlElement;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.SuscriptEditor;
 import org.xmlcml.xml.XMLUtil;
 
@@ -151,13 +149,14 @@ public class TableContentCreatorTest {
 	 * complex suscripts in Footer - not yet resolved
 	 * @throws IOException
 	 */
+//	@Ignore // fails to get Footer
 	public void testSuscriptSVG() throws IOException {
 //		cm-ucl/corpus-oa-pmr/10.1371_journal.pbio.1000481/pdftable/table1.annot.svg
 		File inputFile1 = new File(SVG2XMLFixtures.TABLE_DIR, "suscript/10.1371_journal.pbio.1000481.svg");
 		File outDir = new File("target/table/suscript/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
-		PhraseListList phraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
+		TextChunk phraseListList = new TextChunk(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
 		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
 		suscriptEditor.mergeAll();
 		LOG.trace("PLL"+phraseListList);
@@ -182,7 +181,7 @@ public class TableContentCreatorTest {
 		// the key Text component is a list of PhraseLists. This is created independently
 		// of subsequent section/column/row boundaries
 		// = footer test
-		PhraseListList footerPhraseListList = new PhraseListList(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
+		TextChunk footerPhraseListList = new TextChunk(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
 		LOG.trace(footerPhraseListList.toString());
 //		Assert.assertEquals(5, footerPhraseListList.size());
 		// Suscript editor works directly on the PhraseListList and incorporates all suscripts at this
@@ -222,7 +221,7 @@ public class TableContentCreatorTest {
 	private void writeBody(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
 		TableSection body = tableContentCreator.getOrCreateTableBodySectionOLD();
 		if (body != null) {
-			PhraseListList footerPhraseListList = body.getOrCreatePhraseListList();
+			TextChunk footerPhraseListList = body.getOrCreatePhraseListList();
 			File filex = new File(outDir, root+".body.html");
 			XMLUtil.debug(footerPhraseListList.toHtml(), filex, 0);
 		}
@@ -231,7 +230,7 @@ public class TableContentCreatorTest {
 	private void writeFooter(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
 		TableSection footer = tableContentCreator.getOrCreateTableFooterSectionOLD();
 		if (footer != null) {
-			PhraseListList footerPhraseListList = footer.getOrCreatePhraseListList();
+			TextChunk footerPhraseListList = footer.getOrCreatePhraseListList();
 			File filex = new File(outDir, root+".footer.html");
 			XMLUtil.debug(footerPhraseListList.toHtml(), filex, 0);
 		}

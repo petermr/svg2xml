@@ -14,23 +14,21 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
+import org.xmlcml.graphics.html.HtmlHtml;
+import org.xmlcml.graphics.html.HtmlTable;
+import org.xmlcml.graphics.html.HtmlTd;
+import org.xmlcml.graphics.html.HtmlTr;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlHtml;
-import org.xmlcml.html.HtmlTable;
-import org.xmlcml.html.HtmlTd;
-import org.xmlcml.html.HtmlTr;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRule;
 import org.xmlcml.svg2xml.text.TextLine;
 import org.xmlcml.svg2xml.text.TextStructurer;
 import org.xmlcml.xml.XMLUtil;
@@ -585,7 +583,7 @@ public class TableStructurerTest {
 
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
-		List<HorizontalRule> rulerList = tableStructurer.getHorizontalRulerList();
+		List<HorizontalRuleNew> rulerList = tableStructurer.getHorizontalRulerList();
 		if (rulerList == null) {
 			LOG.warn("Expected RuleList");
 //			Assert.assertEquals(horizontalRulerCount);		
@@ -596,7 +594,7 @@ public class TableStructurerTest {
 		List<SVGElement> horizontalElementList = tableStructurer.getHorizontalElementList();
 		SVGG g = new SVGG();
 		for (GraphicsElement horizontalElement : horizontalElementList) {
-			Element element = ((HorizontalElement)horizontalElement).copyElement();
+			Element element = ((HorizontalElementNew)horizontalElement).copyElement();
 			g.appendChild(element);
 		}
 		SVGSVG.wrapAndWriteAsSVG(g, outputSVGFile);

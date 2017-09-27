@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
@@ -14,7 +13,7 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.svg2xml.text.Phrase;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 import com.google.common.collect.HashMultiset;
@@ -59,7 +58,7 @@ public class TableBodySection extends TableSection {
 		boolean inIndent = false;
 		double startRange = 0;
 		double endRange = 0;
-		Phrase phrasei = null;
+		PhraseNew phrasei = null;
 		for (int i = 0; i < indentArray.size(); i++) {
 			phrasei = columnManager0.getPhrase(i);
 			if (phrasei.getStringValue().trim().length() == 0) {

@@ -17,12 +17,12 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
 import org.xmlcml.svg2xml.table.TableGrid;
 import org.xmlcml.svg2xml.table.TableStructurer;
-import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRule;
-import org.xmlcml.svg2xml.text.PhraseList;
-import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
 import com.google.common.collect.HashMultiset;
@@ -51,10 +51,10 @@ public class PageLayoutAnalyzer {
 
 
 	protected TextStructurer textStructurer;
-	protected PhraseListList phraseListList;
+	protected TextChunk phraseListList;
 	protected TableStructurer tableStructurer;
-	protected List<HorizontalRule> horizontalRuleList;
-	protected List<HorizontalElement> horizontalList;
+	protected List<HorizontalRuleNew> horizontalRuleList;
+	protected List<HorizontalElementNew> horizontalList;
 	
 	private Multiset<IntRange> xRangeSet = HashMultiset.create();
 	private Multiset<Integer> xRangeStartSet;
@@ -118,7 +118,7 @@ public class PageLayoutAnalyzer {
 		return;
 	}
 
-	public static String createSig(List<HorizontalElement> horizontalList) {
+	public static String createSig(List<HorizontalElementNew> horizontalList) {
 		StringBuilder sb;
 		String sig = createLPList(horizontalList);
 		LOG.trace(">>"+sig);
@@ -129,12 +129,12 @@ public class PageLayoutAnalyzer {
 		return lpccond;
 	}
 
-	private static String createLPList(List<HorizontalElement> horizontalList) {
+	private static String createLPList(List<HorizontalElementNew> horizontalList) {
 		StringBuilder sb = new StringBuilder();
-		for (HorizontalElement helem :horizontalList) {
-			if (helem instanceof HorizontalRule) {
+		for (HorizontalElementNew helem :horizontalList) {
+			if (helem instanceof HorizontalRuleNew) {
 				sb.append("L");
-			} else if (helem instanceof PhraseList) {
+			} else if (helem instanceof PhraseChunk) {
 				sb.append("P");
 			} else {
 				sb.append(helem.getClass().getSimpleName());
@@ -213,24 +213,24 @@ public class PageLayoutAnalyzer {
 		}
 	}
 
-	private List<HorizontalElement> createOrderedHorizontalList() {
-		Stack<PhraseList> phraseListStack = new Stack<PhraseList>();
-		for (PhraseList phraseList : phraseListList) {
+	private List<HorizontalElementNew> createOrderedHorizontalList() {
+		Stack<PhraseChunk> phraseListStack = new Stack<PhraseChunk>();
+		for (PhraseChunk phraseList : phraseListList) {
 			phraseListStack.push(phraseList);
 		}
-		Stack<HorizontalRule> horizontalRulerListStack = new Stack<HorizontalRule>();
+		Stack<HorizontalRuleNew> horizontalRulerListStack = new Stack<HorizontalRuleNew>();
 		horizontalRuleList = tableStructurer.getHorizontalRulerList(true, 1.0);
-		for (HorizontalRule ruler : horizontalRuleList) {
+		for (HorizontalRuleNew ruler : horizontalRuleList) {
 			horizontalRulerListStack.push(ruler);
 		}
 		addStacksToHorizontalListInYOrder(phraseListStack, horizontalRulerListStack);
 		return horizontalList;
 	}
 
-	private void addStacksToHorizontalListInYOrder(Stack<PhraseList> phraseListStack, Stack<HorizontalRule> horizontalRulerListStack) {
-		horizontalList = new ArrayList<HorizontalElement>();
-		PhraseList currentPhraseList = null;
-		HorizontalRule currentRuler = null;
+	private void addStacksToHorizontalListInYOrder(Stack<PhraseChunk> phraseListStack, Stack<HorizontalRuleNew> horizontalRulerListStack) {
+		horizontalList = new ArrayList<HorizontalElementNew>();
+		PhraseChunk currentPhraseList = null;
+		HorizontalRuleNew currentRuler = null;
 		while (!phraseListStack.isEmpty() || !horizontalRulerListStack.isEmpty() ||
 				currentPhraseList != null || currentRuler != null) {
 			if (!phraseListStack.isEmpty() && currentPhraseList == null) {
@@ -260,37 +260,37 @@ public class PageLayoutAnalyzer {
 			}
 		}
 		Collections.reverse(horizontalList);
-		for (HorizontalElement horizontalElement : horizontalList) {
+		for (HorizontalElementNew horizontalElement : horizontalList) {
 			LOG.trace("============"+horizontalElement.getClass()+"\n"+horizontalElement.toString());
 		}
 	}
 
-	private void addRuler(HorizontalRule currentRuler) {
-		horizontalList.add((HorizontalElement)currentRuler);
+	private void addRuler(HorizontalRuleNew currentRuler) {
+		horizontalList.add((HorizontalElementNew)currentRuler);
 		LOG.trace("phrase: "+currentRuler.getStringValue()+"/"+currentRuler.getY());
 	}
 
-	private void addPhraseList(PhraseList currentPhraseList) {
+	private void addPhraseList(PhraseChunk currentPhraseList) {
 		horizontalList.add(currentPhraseList);
 		LOG.trace("phrase: "+currentPhraseList.getStringValue()+"/"+currentPhraseList.getY());
 	}
 
-	public List<HorizontalElement> getHorizontalList() {
+	public List<HorizontalElementNew> getHorizontalList() {
 		return horizontalList;
 	}
 
 
 	public void analyzeXRangeExtents(File inputFile) {
 		createContent(inputFile);
-		List<HorizontalElement> horizontalElementList = getHorizontalList();
+		List<HorizontalElementNew> horizontalElementList = getHorizontalList();
 		
-		for (HorizontalElement horizontalElement : horizontalElementList) {
+		for (HorizontalElementNew horizontalElement : horizontalElementList) {
 			IntRange xRange = new IntRange(((SVGElement)horizontalElement).getBoundingBox().getXRange().format(0));
 			int round = 1;
 			xRangeStartSet.add(xRange.getMin() / round * round);
 			xRangeEndSet.add(xRange.getMax() / round * round);
-			if (includeRulers && horizontalElement instanceof HorizontalRule ||
-				includePhrases && horizontalElement instanceof PhraseList) {
+			if (includeRulers && horizontalElement instanceof HorizontalRuleNew ||
+				includePhrases && horizontalElement instanceof PhraseChunk) {
 				if (xRange.getRange() >= xRangeRangeMin) {
 					xRangeSet.add(xRange);
 				}
@@ -298,7 +298,7 @@ public class PageLayoutAnalyzer {
 		}
 	}
 
-	public List<HorizontalRule> getHorizontalRulerList() {
+	public List<HorizontalRuleNew> getHorizontalRulerList() {
 		return horizontalRuleList;
 	}
 

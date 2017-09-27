@@ -3,8 +3,6 @@ package org.xmlcml.svg2xml.box;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.GraphicsElement;
@@ -14,10 +12,11 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGLineList;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.table.GenericRow;
-import org.xmlcml.svg2xml.text.Phrase;
-import org.xmlcml.svg2xml.text.PhraseList;
-import org.xmlcml.svg2xml.text.PhraseListList;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
+import org.xmlcml.svg2xml.table.GenericRowOld;
+import org.xmlcml.svg2xml.text.PhraseListListOld;
 
 /** a contentBox is (usually) a Rect which contains other material.
  * Examples are textboxes, legend boxes or author-marked areas
@@ -33,26 +32,27 @@ import org.xmlcml.svg2xml.text.PhraseListList;
  * @author pm286
  *
  */
-public class SVGContentBox extends SVGG {
+@Deprecated // moved to svg package
+public class SVGContentBoxOld extends SVGG {
 
 	public static final String CONTENT_BOX = "contentBox";
-	private static final Logger LOG = Logger.getLogger(SVGContentBox.class);
+	private static final Logger LOG = Logger.getLogger(SVGContentBoxOld.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
 
 	private SVGRect rect = null;
-	private PhraseListList phraseListList;
+	private TextChunk phraseListList;
 	private SVGLineList lineList;
 	private SVGG svgElement;
 	private ArrayList<SVGLineList> lineListList;
 	
-	private SVGContentBox() {
+	private SVGContentBoxOld() {
 		super();
 		this.setClassName(CONTENT_BOX);
 	}
 
-	public SVGContentBox(SVGRect rect) {
+	public SVGContentBoxOld(SVGRect rect) {
 		this();
 		if (rect != null) {
 			this.rect = rect;
@@ -61,28 +61,28 @@ public class SVGContentBox extends SVGG {
 		}
 	}
 
-	public static SVGContentBox createContentBox(SVGRect rect, PhraseListList phraseListList) {
-		SVGContentBox contentBox = null;
+	public static SVGContentBoxOld createContentBox(SVGRect rect, TextChunk phraseListList) {
+		SVGContentBoxOld contentBox = null;
 		if (rect != null && phraseListList != null) {
 			if (rect.getBoundingBox().includes(phraseListList.getBoundingBox())) {
-				contentBox = new SVGContentBox(rect);
+				contentBox = new SVGContentBoxOld(rect);
 				contentBox.phraseListList = phraseListList;
 			}
 		}
 		return contentBox;
 	}
 
-	public void addPhrase(Phrase phrase) {
+	public void addPhrase(PhraseNew phrase) {
 		getOrCreatePhraseListList();
-		PhraseList phraseList = new PhraseList();
+		PhraseChunk phraseList = new PhraseChunk();
 		// maybe we should detach
-		phraseList.add(new Phrase(phrase));
+		phraseList.add(new PhraseNew(phrase));
 		phraseListList.add(phraseList);
 	}
 
-	public PhraseListList getOrCreatePhraseListList() {
+	public TextChunk getOrCreatePhraseListList() {
 		if (phraseListList == null) {
-			phraseListList = new PhraseListList();
+			phraseListList = new TextChunk();
 		}
 		return phraseListList;
 	}
@@ -155,7 +155,7 @@ public class SVGContentBox extends SVGG {
 	private SVGLineList lineList;
 	private SVGContentBox contentBox;
 	 */
-	public void add(GenericRow row) {
+	public void add(GenericRowOld row) {
 		boolean added = row.addLineToContentBox(this);
 		if (!added) {
 			added = row.addLineListToContentBox(this);
@@ -189,7 +189,7 @@ public class SVGContentBox extends SVGG {
 		return lineListList;
 	}
 
-	public boolean addPhraseList(PhraseList phraseList) {
+	public boolean addPhraseList(PhraseChunk phraseList) {
 		getOrCreatePhraseListList();
 		phraseListList.add(phraseList);
 		return phraseList != null;

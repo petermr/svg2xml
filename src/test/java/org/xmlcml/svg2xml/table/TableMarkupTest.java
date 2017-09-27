@@ -9,9 +9,9 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.IntRange;
+import org.xmlcml.graphics.html.HtmlHtml;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.html.HtmlHtml;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 @Ignore // old style

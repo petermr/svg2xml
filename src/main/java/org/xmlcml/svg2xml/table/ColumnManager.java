@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
@@ -15,8 +14,8 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.svg2xml.text.Phrase;
-import org.xmlcml.svg2xml.text.Word;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 import com.google.common.collect.HashMultiset;
@@ -44,7 +43,7 @@ public class ColumnManager {
 	private IntRange enclosingRange;
 	private Multiset<Integer> startXMultiset;
 	private Multiset<Integer> endXMultiset;
-	private List<Phrase> columnPhrases;
+	private List<PhraseNew> columnPhrases;
 	private int yPointer = -1;
 	private double epsilon = 0.3; // compares y values
 	private RealArray xMinArray;
@@ -106,7 +105,7 @@ public class ColumnManager {
 		ensureEndXMultiset();
 	}
 
-	public void addPhrase(Phrase phrase) {
+	public void addPhrase(PhraseNew phrase) {
 		if (phrase != null && phrase.getStringValue().trim().length() != 0) {
 			getOrCreateColumnPhrases();
 			columnPhrases.add(phrase);
@@ -124,14 +123,14 @@ public class ColumnManager {
 		}
 	}
 
-	List<Phrase> getOrCreateColumnPhrases() {
+	List<PhraseNew> getOrCreateColumnPhrases() {
 		if (columnPhrases == null) {
-			columnPhrases = new ArrayList<Phrase>();
+			columnPhrases = new ArrayList<PhraseNew>();
 		}
 		return columnPhrases;
 	}
 
-	public Phrase getPhrase(int iRow) {
+	public PhraseNew getPhrase(int iRow) {
 		getOrCreateColumnPhrases();
 		return (iRow < 0 || iRow >= columnPhrases.size()) ? null : columnPhrases.get(iRow);
 	}
@@ -151,7 +150,7 @@ public class ColumnManager {
 
 	public String getStringValue() {
 		StringBuilder sb = new StringBuilder();
-		for (Phrase phrase : columnPhrases) {
+		for (PhraseNew phrase : columnPhrases) {
 			sb.append(phrase.getStringValue()+" // ");
 		}
 		return sb.toString();
@@ -168,7 +167,7 @@ public class ColumnManager {
 	public double getPointerYCoord() {
 		double y = -1;
 		if (yPointer < columnPhrases.size()) {
-			Phrase phrase = columnPhrases.get(yPointer);
+			PhraseNew phrase = columnPhrases.get(yPointer);
 			if (phrase != null) {
 				Double yy = phrase.getY();
 				if (yy != null) {
@@ -185,8 +184,8 @@ public class ColumnManager {
 
 	private void addEmptyCell(Real2Range bbox, double fontSize) {
 		Real2 xy = bbox.getLLURCorners()[0];
-		Word emptyWord = Word.createEmptyWord(xy, fontSize);
-		Phrase emptyPhrase = new Phrase(emptyWord);
+		WordNew emptyWord = WordNew.createEmptyWord(xy, fontSize);
+		PhraseNew emptyPhrase = new PhraseNew(emptyWord);
 		SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(bbox, "green", 0.1);
 		emptyPhrase.appendChild(plotBox);
 		columnPhrases.add(yPointer, emptyPhrase);
@@ -202,7 +201,7 @@ public class ColumnManager {
 		if (yPointer >= columnPhrases.size()) {
 			addEmptyCell(bbox, fontSize);
 		} else {
-			Phrase phrase = columnPhrases.get(yPointer);
+			PhraseNew phrase = columnPhrases.get(yPointer);
 			Double ycell = phrase.getY();
 			if (ycell == null) {
 				LOG.trace("Null cell: "+phrase.getStringValue()+phrase.toXML());
@@ -252,7 +251,7 @@ public class ColumnManager {
 			xMinArray = new RealArray();
 			xMaxArray = new RealArray();
 			for (int i = 0; i < columnPhrases.size(); i++) {
-				Phrase phrase = columnPhrases.get(i);
+				PhraseNew phrase = columnPhrases.get(i);
 				double x = phrase.getX();
 				xMinArray.addElement(x);
 				double xMax = phrase.getEndX();
@@ -270,7 +269,7 @@ public class ColumnManager {
 
 	private void correctForMissingValues() {
 		for (int i = 0; i < columnPhrases.size(); i++) {
-			Phrase phrase = columnPhrases.get(i);
+			PhraseNew phrase = columnPhrases.get(i);
 			String value = phrase.getStringValue();
 			if (value == null || value.trim().length() == 0) {
 				xMinArray.setElementAt(i, xMax);

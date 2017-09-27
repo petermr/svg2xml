@@ -11,15 +11,14 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.util.MultisetUtil;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlP;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRule;
-import org.xmlcml.svg2xml.text.LineChunk;
-import org.xmlcml.svg2xml.text.Phrase;
-import org.xmlcml.svg2xml.text.PhraseList;
-import org.xmlcml.svg2xml.text.PhraseListList;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -64,13 +63,13 @@ public class TableSection {
 
 	protected TableSectionType type;
 	protected TableSectionTypeOLD typeOLD;
-	protected List<HorizontalElement> horizontalElementList;
+	protected List<HorizontalElementNew> horizontalElementList;
 	protected Real2Range boundingBox;
 	protected List<ColumnManager> columnManagerList;
 	// what is the difference between these two?
-	protected List<Phrase> allPhrasesInSection;
-	protected PhraseListList sectionPhraseListList;
-	protected List<PhraseListList> sectionChunks; // structure within the text (e.g. whitespace)
+	protected List<PhraseNew> allPhrasesInSection;
+	protected TextChunk sectionPhraseListList;
+	protected List<TextChunk> sectionChunks; // structure within the text (e.g. whitespace)
 	protected double epsilon = 0.3;
 
 	public TableSection(TableSectionTypeOLD typeOLD) {
@@ -94,26 +93,26 @@ public class TableSection {
 
 
 	public TableSection() {
-		this.horizontalElementList = new ArrayList<HorizontalElement>();
+		this.horizontalElementList = new ArrayList<HorizontalElementNew>();
 	}
 
-	public void add(HorizontalElement horizontalElement) {
+	public void add(HorizontalElementNew horizontalElement) {
 		this.horizontalElementList.add(horizontalElement);
 		Real2Range bbox = ((SVGElement)horizontalElement).getBoundingBox();
 		boundingBox = (boundingBox == null) ? bbox : boundingBox.plus(bbox);
 	}
 
-	public List<HorizontalElement> getHorizontalElementList() {
+	public List<HorizontalElementNew> getHorizontalElementList() {
 		return horizontalElementList;
 	}
 
 	public String getStringValue() {
 		StringBuilder sb = new StringBuilder();
-		for (HorizontalElement horizontalElement : horizontalElementList) {
-			if (horizontalElement instanceof PhraseList) {
-				sb.append(((PhraseList) horizontalElement).getStringValue()+"\n");
+		for (HorizontalElementNew horizontalElement : horizontalElementList) {
+			if (horizontalElement instanceof PhraseChunk) {
+				sb.append(((PhraseChunk) horizontalElement).getStringValue()+"\n");
 			} else {
-				sb.append("=>=>=>"+((HorizontalRule) horizontalElement).toString()+"<=<=<=\n");
+				sb.append("=>=>=>"+((HorizontalRuleNew) horizontalElement).toString()+"<=<=<=\n");
 			}
 		}
 		return sb.toString();
@@ -121,8 +120,8 @@ public class TableSection {
 	
 	public int getPhraseListCount() {
 		int i = 0;
-		for (HorizontalElement horizontalElement : horizontalElementList) {
-			if (horizontalElement instanceof PhraseList) {
+		for (HorizontalElementNew horizontalElement : horizontalElementList) {
+			if (horizontalElement instanceof PhraseChunk) {
 				i++;
 			}
 		}
@@ -137,7 +136,7 @@ public class TableSection {
 //			sb.append(String.valueOf("..."+horizontalElementList.get(horizontalElementList.size()-1))+"\n");
 //		}
 		for (int i = 0; i < horizontalElementList.size(); i++) {
-			HorizontalElement horizontalElement = horizontalElementList.get(i);
+			HorizontalElementNew horizontalElement = horizontalElementList.get(i);
 			String s = String.valueOf(horizontalElement+"\n");
 			sb.append(s);
 		}
@@ -148,15 +147,15 @@ public class TableSection {
 	 * 
 	 * @return
 	 */
-	public List<Phrase> getOrCreateAllPhrasesInSection() {
+	public List<PhraseNew> getOrCreateAllPhrasesInSection() {
 		if (allPhrasesInSection == null) {
-			allPhrasesInSection = new ArrayList<Phrase>();
-			for (HorizontalElement element : this.getHorizontalElementList()) {
-				if (element instanceof PhraseList) {
-					PhraseList phraseList = (PhraseList) element;
+			allPhrasesInSection = new ArrayList<PhraseNew>();
+			for (HorizontalElementNew element : this.getHorizontalElementList()) {
+				if (element instanceof PhraseChunk) {
+					PhraseChunk phraseList = (PhraseChunk) element;
 					LOG.trace("PL "+ phraseList+" / "+phraseList.size());
 					for (int i = 0; i < phraseList.size(); i++) {
-						Phrase phrase = phraseList.get(i);
+						PhraseNew phrase = phraseList.get(i);
 						if (phrase.getStringValue().trim().length() == 0) {
 							continue;
 						}
@@ -168,12 +167,12 @@ public class TableSection {
 		return allPhrasesInSection;
 	}
 
-	public PhraseListList getOrCreatePhraseListList() {
+	public TextChunk getOrCreatePhraseListList() {
 		if (sectionPhraseListList == null) {
-			sectionPhraseListList = new PhraseListList();
-			for (HorizontalElement element : this.getHorizontalElementList()) {
-				if (element instanceof PhraseList) {
-					PhraseList phraseList = (PhraseList) element;
+			sectionPhraseListList = new TextChunk();
+			for (HorizontalElementNew element : this.getHorizontalElementList()) {
+				if (element instanceof PhraseChunk) {
+					PhraseChunk phraseList = (PhraseChunk) element;
 					sectionPhraseListList.add(phraseList);
 				}
 			}
@@ -185,13 +184,13 @@ public class TableSection {
 		return boundingBox;
 	}
 
-	protected void createSortedColumnManagerListFromUnassignedPhrases(List<Phrase> currentPhrases) {
+	protected void createSortedColumnManagerListFromUnassignedPhrases(List<PhraseNew> currentPhrases) {
 		if (currentPhrases == null) {
 			LOG.trace("no current phrases");
 			return;
 		}
 		columnManagerList = new ArrayList<ColumnManager>();
-		for (Phrase phrase : currentPhrases) {
+		for (PhraseNew phrase : currentPhrases) {
 			IntRange phraseRange = phrase.getIntRange();
 			ColumnManager existingColumnManager = null;
 			for (int i = 0; i < columnManagerList.size(); i++) {
@@ -220,12 +219,12 @@ public class TableSection {
 	}
 
 	protected String getFontInfo() {
-		List<Phrase> phrases = this.getOrCreateAllPhrasesInSection();
+		List<PhraseNew> phrases = this.getOrCreateAllPhrasesInSection();
 		Multiset<Double> fontSizeSet = HashMultiset.create();
 		Multiset<String> fontFamilySet = HashMultiset.create();
 		Multiset<String> fontWeightSet = HashMultiset.create();
 		Multiset<String> fontStyleSet = HashMultiset.create();
-		for (LineChunk phrase : phrases) {
+		for (PhraseNew phrase : phrases) {
 			fontSizeSet.add(phrase.getFontSize());
 			fontFamilySet.add(String.valueOf(phrase.getFontFamily()));
 			fontWeightSet.add(String.valueOf(phrase.getFontWeight()));
@@ -240,7 +239,7 @@ public class TableSection {
 	}
 
 	public HtmlElement toHtml() {
-		PhraseListList sectionPhraseListList = getOrCreatePhraseListList();
+		TextChunk sectionPhraseListList = getOrCreatePhraseListList();
 		HtmlElement sectionElement = sectionPhraseListList == null ? new HtmlP("missing section "+this.getClass().getSimpleName()) :
 			sectionPhraseListList.toHtml();
 		return sectionElement;
@@ -248,7 +247,7 @@ public class TableSection {
 
 	public boolean contains(Pattern regex) {
 		getOrCreatePhraseListList();
-		for (PhraseList phraseList : sectionPhraseListList) {
+		for (PhraseChunk phraseList : sectionPhraseListList) {
 			if (phraseList.contains(regex)) {
 				return true;
 			}
@@ -262,11 +261,11 @@ public class TableSection {
 	 */
 	public String debugPhrases() {
 		StringBuilder sb = new StringBuilder();
-		PhraseListList pll = this.getOrCreatePhraseListList();
+		TextChunk pll = this.getOrCreatePhraseListList();
 		sb.append("pll: "+pll.size()+"\n");
-		for (PhraseList pl : pll) {
+		for (PhraseChunk pl : pll) {
 			sb.append(">>pl: " + pl.size()+"\n");
-			for (Phrase p : pl) {
+			for (PhraseNew p : pl) {
 				sb.append(">>>>>p: " + p.getY()+": "+p.getStringValue()+"\n");
 			}
 		}
@@ -279,7 +278,7 @@ public class TableSection {
 
 	public String matchAgainstIndividualPhrases(Pattern pattern) {
 		getOrCreatePhraseListList();
-		for (PhraseList phraseList : sectionPhraseListList) {
+		for (PhraseChunk phraseList : sectionPhraseListList) {
 			String value = phraseList.getStringValue();
 			Matcher matcher = pattern.matcher(value);
 			if (matcher.matches()) {

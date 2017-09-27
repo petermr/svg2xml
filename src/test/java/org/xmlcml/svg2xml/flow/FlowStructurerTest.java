@@ -24,8 +24,8 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.objects.ArrowFactory;
 import org.xmlcml.graphics.svg.objects.SVGArrow;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.text.PhraseListList;
 import org.xmlcml.svg2xml.text.TextBox;
 import org.xmlcml.svg2xml.text.TextStructurer;
 
@@ -130,7 +130,7 @@ public class FlowStructurerTest {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
-		PhraseListList phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
+		TextChunk phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		
 		Real2 xMargins = new Real2(5.0, 5.0);
 		Real2 yMargins = new Real2(2.0, 2.0);
@@ -175,7 +175,7 @@ public class FlowStructurerTest {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
-		PhraseListList phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
+		TextChunk phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		
 		Real2 xMargins = new Real2(5.0, 5.0);
 		Real2 yMargins = new Real2(2.0, 2.0);

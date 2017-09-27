@@ -17,6 +17,13 @@ import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.html.HtmlBody;
+import org.xmlcml.graphics.html.HtmlCaption;
+import org.xmlcml.graphics.html.HtmlHtml;
+import org.xmlcml.graphics.html.HtmlTable;
+import org.xmlcml.graphics.html.HtmlTd;
+import org.xmlcml.graphics.html.HtmlTh;
+import org.xmlcml.graphics.html.HtmlTr;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -27,26 +34,18 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
+import org.xmlcml.graphics.svg.cache.ContentBoxCache;
 import org.xmlcml.graphics.svg.cache.LineCache;
 import org.xmlcml.graphics.svg.cache.RectCache;
-import org.xmlcml.html.HtmlBody;
-import org.xmlcml.html.HtmlCaption;
-import org.xmlcml.html.HtmlHtml;
-import org.xmlcml.html.HtmlTable;
-import org.xmlcml.html.HtmlTd;
-import org.xmlcml.html.HtmlTh;
-import org.xmlcml.html.HtmlTr;
-import org.xmlcml.svg2xml.box.ContentBoxCache;
-import org.xmlcml.svg2xml.box.SVGContentBox;
+import org.xmlcml.graphics.svg.objects.SVGContentBox;
+import org.xmlcml.graphics.svg.rule.GenericRowNew.RowType;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
-import org.xmlcml.svg2xml.table.GenericRow.RowType;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionTypeOLD;
-import org.xmlcml.svg2xml.text.HorizontalElement;
-import org.xmlcml.svg2xml.text.HorizontalRule;
-import org.xmlcml.svg2xml.text.PhraseList;
-import org.xmlcml.svg2xml.text.PhraseListList;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.HorizontalRuleOld;
 import org.xmlcml.svg2xml.util.GraphPlot;
 import org.xmlcml.xml.XMLUtil;
 
@@ -90,39 +89,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private double rowDelta = 2.5; //large to manage suscripts
 	private ContentBoxCache contentBoxCache;
 	private int titleSectionIndex;
-	private List<HorizontalRule> firstFullRuleList;
+	private List<HorizontalRuleOld> firstFullRuleList;
 	private SVGG contentBoxGridG;
 	private File contentBoxGridFile;
 	private ComponentCache ownerComponentCache;
 	
 	public TableContentCreator() {
 	}
-
-//	/** scans whole file for all tableTitles.
-//	 * 
-//	 * @param svgChunkFiles
-//	 * @return list of titles;
-//	 */
-//	// FIXME not used?
-//	private List<TableTitle> findTableTitles(List<File> svgChunkFiles) {
-//		List<TableTitle> tableTitleList = new ArrayList<TableTitle>();
-//		for (File svgChunkFile : svgChunkFiles) {
-//			findTableTitle(tableTitleList, svgChunkFile);
-//		}
-//		return tableTitleList;
-//	}
-
-//	private void findTableTitle(List<TableTitle> tableTitleList, File svgChunkFile) {
-//		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgChunkFile);
-//		PhraseListList phraseListList = textStructurer.getPhraseListList();
-//		phraseListList.format(3);
-//		String value = phraseListList.getStringValue();
-//		List<String> titleList = TableContentCreator.findTitles(TABLE_TITLE_PATTERN_ANY, value);
-//		for (int i = 0; i < titleList.size(); i++) {
-//			TableTitle tableTitle = new TableTitle(titleList.get(i), svgChunkFile.getName());
-//			tableTitleList.add(tableTitle);
-//		}
-//	}
 
 	private static List<String> findTitles(Pattern titlePattern, String value) {
 		Matcher matcher = titlePattern.matcher(value);
@@ -143,9 +116,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private int search(String title) {
 		int titleIndex = -1;
 		for (int i = 0; i < horizontalList.size(); i++) {
-			HorizontalElement horizontalElement = horizontalList.get(i);
-			if (horizontalElement instanceof PhraseList) {
-				String value = ((PhraseList)horizontalElement).getStringValue().trim();
+			HorizontalElementNew horizontalElement = horizontalList.get(i);
+			if (horizontalElement instanceof PhraseChunk) {
+				String value = ((PhraseChunk)horizontalElement).getStringValue().trim();
 				if (value.startsWith(title)) {
 					titleIndex = i;
 					LOG.trace("title["+value+"]");
@@ -169,15 +142,15 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @param startRow
 	 * @return
 	 */
-	private List<HorizontalRule> getFullRules(int startRow) {
-		HorizontalRule firstRule = null;
+	private List<HorizontalRuleOld> getFullRules(int startRow) {
+		HorizontalRuleOld firstRule = null;
 		IntRange firstRange = null;
-		List<HorizontalRule> followingRuleList = new ArrayList<HorizontalRule>();
+		List<HorizontalRuleOld> followingRuleList = new ArrayList<HorizontalRuleOld>();
 		IntRange previousRange = null;
 		for (int i = startRow; i < horizontalList.size(); i++) {
-			HorizontalElement horizontalElement = horizontalList.get(i);
-			if (horizontalElement instanceof HorizontalRule) {
-				HorizontalRule thisRule = (HorizontalRule) horizontalElement;
+			HorizontalElementNew horizontalElement = horizontalList.get(i);
+			if (horizontalElement instanceof HorizontalRuleOld) {
+				HorizontalRuleOld thisRule = (HorizontalRuleOld) horizontalElement;
 				IntRange thisRange = new IntRange(thisRule.getBoundingBox().getXRange());
 				if (firstRule == null) {
 					firstRule = thisRule;
@@ -270,9 +243,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private void addPhrases(RowManager rowManager) {
-		for (HorizontalElement elem : horizontalList) {
-			if (elem instanceof PhraseList) {
-				PhraseList phraseList = (PhraseList) elem;
+		for (HorizontalElementNew elem : horizontalList) {
+			if (elem instanceof PhraseChunk) {
+				PhraseChunk phraseList = (PhraseChunk) elem;
 				rowManager.addPhraseList(phraseList);
 			}
 		}
@@ -331,11 +304,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		ownerComponentCache.addCache(contentBoxCache);
 	}
 
-	private void removeBoundingRules(List<HorizontalElement> horizontalList, StartEnd startEnd) {
+	private void removeBoundingRules(List<HorizontalElementNew> horizontalList, StartEnd startEnd) {
 		while (horizontalList.size() > 0) {
 			int ielem = StartEnd.START.equals(startEnd) ? 0 : horizontalList.size() - 1;
-			HorizontalElement helem = horizontalList.get(ielem);
-			if (helem instanceof HorizontalRule) {
+			HorizontalElementNew helem = horizontalList.get(ielem);
+			if (helem instanceof HorizontalRuleOld) {
 				LOG.trace("removed: "+horizontalList.get(ielem));
 				horizontalList.remove(ielem);
 			} else {
@@ -385,25 +358,25 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	}
 
-	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRuleList,
+	private void createSections(List<HorizontalElementNew> horizontalList, int iRow, List<HorizontalRuleOld> fullRuleList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
-			HorizontalElement element = horizontalList.get(j);
-			HorizontalRule rule = (element instanceof HorizontalRule) ? 
-					(HorizontalRule) element : null;
+			HorizontalElementNew element = horizontalList.get(j);
+			HorizontalRuleOld rule = (element instanceof HorizontalRuleOld) ? 
+					(HorizontalRuleOld) element : null;
 			if (tableSection == null || fullRuleList.contains(rule)) {
 				tableSection = new TableSection(TableSectionTypeOLD.OTHER);
 				tableSectionList.add(tableSection);
 			}
-			if (element instanceof PhraseList) {
-				PhraseList newPhraseList = (PhraseList) element;
+			if (element instanceof PhraseChunk) {
+				PhraseChunk newPhraseList = (PhraseChunk) element;
 				if (newPhraseList.size() > 0) {
 					tableSection.add(newPhraseList);
 				}
 				
-			} else if (element instanceof HorizontalRule) {
+			} else if (element instanceof HorizontalRuleOld) {
 				// dont add Rule if first element (e.g sectioning rule)
 				if (tableSection.getHorizontalElementList().size() > 0) {
 					tableSection.add(element);
@@ -414,25 +387,25 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	/** used in transition between refactors */
-	private void createSectionsNew(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRulerList,
+	private void createSectionsNew(List<HorizontalElementNew> horizontalList, int iRow, List<HorizontalRuleOld> fullRulerList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
-			HorizontalElement element = horizontalList.get(j);
-			HorizontalRule ruler = (element instanceof HorizontalRule) ? 
-					(HorizontalRule) element : null;
+			HorizontalElementNew element = horizontalList.get(j);
+			HorizontalRuleOld ruler = (element instanceof HorizontalRuleOld) ? 
+					(HorizontalRuleOld) element : null;
 			if (tableSection == null || fullRulerList.contains(ruler)) {
 				tableSection = new TableSection(TableSectionTypeOLD.OTHER);
 				tableSectionList.add(tableSection);
 			}
-			if (element instanceof PhraseList) {
-				PhraseList newPhraseList = (PhraseList) element;
+			if (element instanceof PhraseChunk) {
+				PhraseChunk newPhraseList = (PhraseChunk) element;
 				if (newPhraseList.size() > 0) {
 					tableSection.add(newPhraseList);
 				}
 				
-			} else if (element instanceof HorizontalRule) {
+			} else if (element instanceof HorizontalRuleOld) {
 				// dont add Ruler if first element (e.g sectioning ruler)
 				if (tableSection.getHorizontalElementList().size() > 0) {
 					tableSection.add(element);
@@ -474,7 +447,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		for (int isect = 0; isect < tableSectionList.size(); isect++) {
 			TableSection tableSection = tableSectionList.get(isect);
 			if (!tableSection.isTitleOrContinued()) {
-				PhraseListList phraseListList = tableSection.getOrCreatePhraseListList();
+				TextChunk phraseListList = tableSection.getOrCreatePhraseListList();
 				LOG.debug("PHRASES: "+phraseListList.size()+"; font "+phraseListList.getFontFamily()+"; "+phraseListList.getFontSize());
 				
 			}
