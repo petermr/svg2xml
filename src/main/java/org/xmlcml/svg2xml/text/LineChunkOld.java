@@ -8,6 +8,7 @@ import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
 import org.xmlcml.html.HtmlB;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlI;
@@ -21,10 +22,11 @@ import nu.xom.Attribute;
  * @author pm286
  *
  */
-public abstract class LineChunk extends SVGG implements HorizontalElement {
+@Deprecated // move to svg
+public abstract class LineChunkOld extends SVGG implements HorizontalElementOld {
 	
 	private static final String TRUE = "true";
-	private static final Logger LOG = Logger.getLogger(LineChunk.class);
+	private static final Logger LOG = Logger.getLogger(LineChunkOld.class);
 
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -37,11 +39,11 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	protected static final String NULL_SPACE = "";
 	protected static final double SPACE_OFFSET1 = -0.5;
 
-	public LineChunk() {
+	public LineChunkOld() {
 		super();
 	}
 	
-	public LineChunk(SVGG e) {
+	public LineChunkOld(SVGG e) {
 		super(e);
 	}
 
@@ -69,7 +71,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 
 	public String getFontFamily() {
 		String s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() > 0) {
 			s = childChunks.get(0).getFontFamily();
 			for (int i = 1; i < childChunks.size(); i++) {
@@ -86,7 +88,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	
 	public Double getFontSize() {
 		Double s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() > 0) {
 			s = childChunks.get(0).getFontSize();
 			for (int i = 1; i < childChunks.size(); i++) {
@@ -103,7 +105,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	
 	public String getFontWeight() {
 		String s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() > 0) {
 			s = childChunks.get(0).getFontWeight();
 			for (int i = 1; i < childChunks.size(); i++) {
@@ -120,7 +122,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	
 	public String getFontStyle() {
 		String s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() > 0) {
 			s = childChunks.get(0).getFontStyle();
 			for (int i = 1; i < childChunks.size(); i++) {
@@ -137,7 +139,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	
 	public String getFill() {
 		String s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() > 0) {
 			s = childChunks.get(0).getFill();
 			for (int i = 1; i < childChunks.size(); i++) {
@@ -154,7 +156,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	
 	public String getStroke() {
 		String s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() > 0) {
 			s = childChunks.get(0).getStroke();
 			for (int i = 1; i < childChunks.size(); i++) {
@@ -171,7 +173,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	
 	public boolean isBold() {
 		String s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() == 0) return false;
 		for (int i = 0; i < childChunks.size(); i++) {
 			if (!childChunks.get(i).isBold()) return false;
@@ -181,7 +183,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 	
 	public boolean isItalic() {
 		String s = null;
-		List<? extends LineChunk> childChunks = getChildChunks();
+		List<? extends LineChunkOld> childChunks = getChildChunks();
 		if (childChunks.size() == 0) return false;
 		for (int i = 0; i < childChunks.size(); i++) {
 			if (!childChunks.get(i).isItalic()) return false;
@@ -189,7 +191,7 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 		return true;
 	}
 	
-	protected abstract List<? extends LineChunk> getChildChunks();
+	protected abstract List<? extends LineChunkOld> getChildChunks();
 
 	public void setSuperscript(boolean superscript) {
 		if (superscript) {
@@ -224,21 +226,21 @@ public abstract class LineChunk extends SVGG implements HorizontalElement {
 		return TRUE.equals(this.getAttributeValue(SUBSCRIPT));
 	}
 
-	public void setSuscript(SusType susType, boolean onoff) {
-		if (SusType.SUB.equals(susType)) {
+	public void setSuscript(SusTypeOld susType, boolean onoff) {
+		if (SusTypeOld.SUB.equals(susType)) {
 			this.setSubscript(onoff);
-		} else if (SusType.SUPER.equals(susType)) {
+		} else if (SusTypeOld.SUPER.equals(susType)) {
 			this.setSuperscript(onoff);
 		}
 	}
 
-	protected boolean shouldAddSpaceBefore(LineChunk chunk) {
+	protected boolean shouldAddSpaceBefore(LineChunkOld chunk) {
 		boolean addSpace = false;
 		if (chunk == null || chunk.getOrCreateBoundingBox() == null || getOrCreateBoundingBox() == null) return false;
 		double deltax = Real.normalize(chunk.getOrCreateBoundingBox().getXMin() - getOrCreateBoundingBox().getXMax(), 1);
-		if (deltax < PhraseList.SPACE_OFFSET1) {
+		if (deltax < PhraseListOld.SPACE_OFFSET1) {
 			addSpace = false;
-		} else if (deltax > PhraseList.SPACE_OFFSET) {
+		} else if (deltax > PhraseListOld.SPACE_OFFSET) {
 			addSpace = true;
 		} else {
 			addSpace = false;

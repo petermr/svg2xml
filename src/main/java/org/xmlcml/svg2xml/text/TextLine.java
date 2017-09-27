@@ -4,8 +4,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -13,10 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import nu.xom.Attribute;
-import nu.xom.Element;
-
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real;
@@ -29,12 +23,15 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.rule.horizontal.LineChunk;
+import org.xmlcml.graphics.svg.text.phrase.BlankNew;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.html.HtmlSub;
 import org.xmlcml.html.HtmlSup;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.xml.XMLConstants;
@@ -42,6 +39,9 @@ import org.xmlcml.xml.XMLConstants;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
+
+import nu.xom.Attribute;
+import nu.xom.Element;
 
 /** 
  * Holds a list of characters, normally in a horizontal line
@@ -898,7 +898,7 @@ public class TextLine implements Iterable<SVGText> {
 	public RawWords getRawWords() {
 		int ntext = textList.size();
 		RawWords rawWords = new RawWords();
-		Word word = new Word();
+		WordNew word = new WordNew();
 		rawWords.add(word);
 		for (int i = 0; i < ntext; i++) {
 			SVGText text = new SVGText(textList.get(i));
@@ -907,7 +907,7 @@ public class TextLine implements Iterable<SVGText> {
 				SVGText nextText = textList.get(i + 1);
 				Double spaceCount = text.getEnSpaceCount(nextText);
 				if (spaceCount != null && spaceCount > SPACE_FACTOR1) {
-					word = new Word();
+					word = new WordNew();
 					rawWords.add(word);
 				}
 			}
@@ -950,11 +950,11 @@ public class TextLine implements Iterable<SVGText> {
 		return separationArray;
 	}
 
-	public List<Phrase> createPhraseList() {
-		List<Phrase> phraseList = new ArrayList<Phrase>();
+	public List<PhraseNew> createPhraseList() {
+		List<PhraseNew> phraseList = new ArrayList<PhraseNew>();
 		RawWords rawWords = getRawWords();
-		for (Word word : rawWords) {
-			Phrase phrase = word.createPhrase();
+		for (WordNew word : rawWords) {
+			PhraseNew phrase = word.createPhrase();
 			phraseList.add(phrase);
 		}
 		return phraseList;
@@ -962,11 +962,11 @@ public class TextLine implements Iterable<SVGText> {
 	
 	public List<LineChunk> getLineChunks() {
 		List<LineChunk> lineChunkList = new ArrayList<LineChunk>();
-		List<Phrase> phraseList = this.createPhraseList();
+		List<PhraseNew> phraseList = this.createPhraseList();
 		for (int i = 0; i < phraseList.size(); i++) {
-			Phrase phrase = phraseList.get(i);
+			PhraseNew phrase = phraseList.get(i);
 			if (i > 0) {
-				Blank blank = phraseList.get(i - 1).createBlankBetween(phrase);
+				BlankNew blank = phraseList.get(i - 1).createBlankBetween(phrase);
 				lineChunkList.add(blank);
 			}
 			lineChunkList.add(phrase);

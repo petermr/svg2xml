@@ -3,10 +3,9 @@ package org.xmlcml.svg2xml.text;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xmlcml.euclid.Real;
 import org.xmlcml.graphics.svg.SVGLine;
 
-public class NewVerticalRuler extends Ruler {
+public class NewVerticalRuler extends RulerOld {
 
 	public NewVerticalRuler(SVGLine line) {
 		super(line);

@@ -8,9 +8,9 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Util;
-
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Multiset;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.WordNew;
 
 /** 
  * A list of Words.
@@ -20,29 +20,29 @@ import com.google.common.collect.Multiset;
  * 
  * @author pm286
  */
-public class RawWords implements Iterable<Word> {
+public class RawWords implements Iterable<WordNew> {
 
 	private final static Logger LOG = Logger.getLogger(RawWords.class);
 	
-	private List<Word> wordList;
+	private List<WordNew> wordList;
 
 	public RawWords() {
-		this.wordList = new ArrayList<Word>();
+		this.wordList = new ArrayList<WordNew>();
 	}
 
-	public List<Word> getWordList() {
+	public List<WordNew> getWordList() {
 		return wordList;
 	}
 	
-	public void add(Word word) {
+	public void add(WordNew word) {
 		wordList.add(word);
 	}
 	
-	public Word get(int index) {
+	public WordNew get(int index) {
 		return wordList.get(index);
 	}
 	
-	public Iterator<Word> iterator() {
+	public Iterator<WordNew> iterator() {
 		return wordList.iterator();
 	}
 	
@@ -53,8 +53,8 @@ public class RawWords implements Iterable<Word> {
 	public RealArray getInterWordWhitePixels() {
 		RealArray separationArray = new RealArray();
 		for (int i = 1; i < wordList.size(); i++) {
-			Word word0 = wordList.get(i - 1);
-			Word word = wordList.get(i);
+			WordNew word0 = wordList.get(i - 1);
+			WordNew word = wordList.get(i);
 			double separation = Util.format(word0.getSeparationBetween(word), 3);
 			separationArray.addElement(separation);
 		}
@@ -64,8 +64,8 @@ public class RawWords implements Iterable<Word> {
 	public RealArray getInterWordWhiteEnSpaces() {
 		RealArray spaceCountArray = new RealArray();
 		for (int i = 1; i < wordList.size(); i++) {
-			Word word0 = wordList.get(i - 1);
-			Word word = wordList.get(i);
+			WordNew word0 = wordList.get(i - 1);
+			WordNew word = wordList.get(i);
 			double spaceCount = Util.format(word0.getSpaceCountBetween(word), 3);
 			spaceCountArray.addElement(spaceCount);
 		}
@@ -75,7 +75,7 @@ public class RawWords implements Iterable<Word> {
 	public RealArray getStartXArray() {
 		RealArray startArray = new RealArray();
 		for (int i = 0; i < wordList.size(); i++) {
-			Word word = wordList.get(i);
+			WordNew word = wordList.get(i);
 			double start = Util.format(word.getStartX(), 3);
 			startArray.addElement(start);
 		}
@@ -85,7 +85,7 @@ public class RawWords implements Iterable<Word> {
 	public RealArray getMidXArray() {
 		RealArray startArray = new RealArray();
 		for (int i = 0; i < wordList.size(); i++) {
-			Word word = wordList.get(i);
+			WordNew word = wordList.get(i);
 			double end = Util.format(word.getMidX(), 3);
 			startArray.addElement(end);
 		}
@@ -95,14 +95,14 @@ public class RawWords implements Iterable<Word> {
 	public RealArray getEndXArray() {
 		RealArray startArray = new RealArray();
 		for (int i = 0; i < wordList.size(); i++) {
-			Word word = wordList.get(i);
+			WordNew word = wordList.get(i);
 			double end = Util.format(word.getEndX(), 3);
 			startArray.addElement(end);
 		}
 		return startArray;
 	}
 
-	public Word getLastWord() {
+	public WordNew getLastWord() {
 		return wordList.get(wordList.size() - 1);
 	}
 	
@@ -149,7 +149,7 @@ public class RawWords implements Iterable<Word> {
 	 */
 	public IntArray translateToIntArray() {
 		IntArray intArray = new IntArray();
-		for (Word word : wordList) {
+		for (WordNew word : wordList) {
 			Integer i = word.translateToInteger();
 			if (i == null) {
 				intArray = null;
@@ -169,7 +169,7 @@ public class RawWords implements Iterable<Word> {
 	 */
 	public RealArray translateToRealArray() {
 		RealArray realArray = new RealArray();
-		for (Word word : wordList) {
+		for (WordNew word : wordList) {
 			Double d = word.translateToDouble();
 			if (d == null) {
 				realArray = null;
@@ -190,10 +190,10 @@ public class RawWords implements Iterable<Word> {
 	 * 
 	 * @return new RawWords 
 	 */
-	public List<Phrase> createPhrases() {
-		List<Phrase> phraseList = new ArrayList<Phrase>();
-		for (Word word : wordList) {
-			Phrase phrase = word.createPhrase();
+	public List<PhraseNew> createPhrases() {
+		List<PhraseNew> phraseList = new ArrayList<PhraseNew>();
+		for (WordNew word : wordList) {
+			PhraseNew phrase = word.createPhrase();
 			phraseList.add(phrase);
 		}
 		return phraseList;
@@ -202,20 +202,20 @@ public class RawWords implements Iterable<Word> {
 	/** 
 	 * 
 	 */
-	public PhraseList createPhraseList() {
-		PhraseList phraseList = new PhraseList();
-		Phrase phrase = null;
+	public PhraseChunk createPhraseList() {
+		PhraseChunk phraseList = new PhraseChunk();
+		PhraseNew phrase = null;
 		for (int i = 0; i < wordList.size(); i++) {
 			if (phrase == null) {
-				phrase = new Phrase();
+				phrase = new PhraseNew();
 				phraseList.add(phrase);
 			}
-			Word word = wordList.get(i);
+			WordNew word = wordList.get(i);
 			if (word == null) {
 				LOG.trace("null");
 			} else {
-				phrase.addWord(new Word(word));
-				Word wordii = (i < wordList.size() - 1) ? wordList.get(i + 1) : null;
+				phrase.addWord(new WordNew(word));
+				WordNew wordii = (i < wordList.size() - 1) ? wordList.get(i + 1) : null;
 				Double spaceCount = word.getSpaceCountBetween(wordii);
 				spaceCount = (i == wordList.size() - 1) ? new Double(0) : spaceCount;
 				if (spaceCount == null || spaceCount > 1) {
@@ -233,7 +233,7 @@ public class RawWords implements Iterable<Word> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder("{");
 		for (int i = 0; i < wordList.size() - 1; i++) {
-			Word word = wordList.get(i);
+			WordNew word = wordList.get(i);
 			sb.append(""+word.toString()+"");
 			Double spaceCount = word.getSpaceCountBetween(wordList.get(i + 1));
 			if (spaceCount != null) {

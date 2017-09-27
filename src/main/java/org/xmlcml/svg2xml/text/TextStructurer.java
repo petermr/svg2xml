@@ -31,8 +31,10 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
-import org.xmlcml.graphics.svg.cache.TextCache;
 import org.xmlcml.graphics.svg.plot.SVGMediaBox;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.container.ScriptContainer;
 import org.xmlcml.svg2xml.flow.FlowStructurer;
@@ -120,7 +122,7 @@ public class TextStructurer {
 	private TextOrientation textOrientation;
 
 	private List<RawWords> rawWordsList;
-	private PhraseListList phraseListList;
+	private TextChunk phraseListList;
 	private TableStructurer tableStructurer;
 	private FlowStructurer flowStructurer;
 	private List<TextLine> subscriptLineList;
@@ -1419,12 +1421,12 @@ public class TextStructurer {
 		}
 	}
 
-	public PhraseListList getOrCreatePhraseListListFromWords() {
+	public TextChunk getOrCreatePhraseListListFromWords() {
 		if (phraseListList == null) {
 			List<RawWords> rawWordsList = this.createRawWordsListFromTextLineList();
-			phraseListList = new PhraseListList();
+			phraseListList = new TextChunk();
 			for (RawWords rawWords : rawWordsList) {
-				PhraseList phraseList = rawWords.createPhraseList();
+				PhraseChunk phraseList = rawWords.createPhraseList();
 				phraseListList.add(phraseList);
 			}
 		}
@@ -1453,7 +1455,7 @@ public class TextStructurer {
 	/**
 	 * @return
 	 */
-	public PhraseListList getPhraseListList() {
+	public TextChunk getPhraseListList() {
 		if (phraseListList == null) {
 			getOrCreatePhraseListListFromWords();
 		}
@@ -1500,12 +1502,12 @@ public class TextStructurer {
 		return subscriptLineList;
 	}
 
-	public List<TextBox> createTextBoxList(PhraseListList phraseListList, Real2 xMargins, Real2 yMargins) {
+	public List<TextBox> createTextBoxList(TextChunk phraseListList, Real2 xMargins, Real2 yMargins) {
 		textBoxList = new ArrayList<TextBox>();
 		for (int i = 0; i < phraseListList.size(); i++) {
-			PhraseList phraseList = phraseListList.get(i);
+			PhraseChunk phraseList = phraseListList.get(i);
 			for (int j = 0; j < phraseList.size(); j++) {
-				Phrase phrase = phraseList.get(j);
+				PhraseNew phrase = phraseList.get(j);
 				Real2Range phraseBox = phrase.getBoundingBox();
 				phraseBox = phraseBox.getReal2RangeExtendedInX(xMargins.x, xMargins.y).getReal2RangeExtendedInY(yMargins.x, yMargins.y);
 				int ibox = -1;
@@ -1514,7 +1516,7 @@ public class TextStructurer {
 					Real2Range bboxi = textBox.getBoundingBox(); 
 					Real2Range intersect = phraseBox.intersectionWith(bboxi);
 					if (!SVGUtil.isNullReal2Range(intersect)) {
-						textBox.add(new Phrase(phrase));
+						textBox.add(new PhraseNew(phrase));
 						ibox = k;
 						break;
 					}

@@ -11,6 +11,10 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
+import org.xmlcml.graphics.svg.rule.horizontal.LineChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.phrase.TextChunk;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
@@ -30,7 +34,7 @@ public class TextBox extends SVGG {
 
 	public final static String TAG = "textBox";
 
-	private PhraseListList phraseListListElement;
+	private TextChunk phraseListListElement;
 	private SVGRect boundingRect;
 	
 	public TextBox() {
@@ -38,7 +42,7 @@ public class TextBox extends SVGG {
 		this.setClassName(TAG);
 	}
 
-	public TextBox(PhraseList phraseList) {
+	public TextBox(PhraseChunk phraseList) {
 		this();
 		add(phraseList);
 	}
@@ -57,10 +61,10 @@ public class TextBox extends SVGG {
 
 	public GraphicsElement getOrCreatePhraseListList() {
 		if (phraseListListElement == null) {
-			List<Element> phraseListChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+PhraseList.TAG+"']");//			List<Element> phraseListListChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"']");
-			phraseListListElement = new PhraseListList();
+			List<Element> phraseListChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+PhraseChunk.TAG+"']");//			List<Element> phraseListListChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"']");
+			phraseListListElement = new TextChunk();
 			for (Element phraseListList : phraseListChildren) {
-				phraseListListElement.add(new PhraseList((PhraseList)phraseListList));
+				phraseListListElement.add(new PhraseChunk((PhraseChunk)phraseListList));
 			}
 		}
 		return phraseListListElement;
@@ -68,22 +72,22 @@ public class TextBox extends SVGG {
 
 
 	public void add(LineChunk phrase) {
-		PhraseList phraseList = new PhraseList();
-		phraseList.add(new Phrase(phrase));
+		PhraseChunk phraseList = new PhraseChunk();
+		phraseList.add(new PhraseNew(phrase));
 		add(phraseList);
 		boundingRect = null;
 	}
 
-	public void add(PhraseList phraseList) {
+	public void add(PhraseChunk phraseList) {
 		ensurePhraseListList();
-		PhraseList newPhraseList = new PhraseList(phraseList);
+		PhraseChunk newPhraseList = new PhraseChunk(phraseList);
 		phraseListListElement.appendChild(newPhraseList);
 		getOrCreatePhraseListList();
 	}
 
 	private void ensurePhraseListList() {
 		if (phraseListListElement == null) {
-			phraseListListElement = new PhraseListList();
+			phraseListListElement = new TextChunk();
 			this.appendChild(phraseListListElement);
 		}
 	}

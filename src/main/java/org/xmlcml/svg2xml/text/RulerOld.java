@@ -13,9 +13,10 @@ import org.xmlcml.graphics.svg.SVGShape;
 
 import nu.xom.Element;
 
-public abstract class Ruler extends LineChunk {
+@Deprecated // move to SVG
+public abstract class RulerOld extends LineChunkOld {
 
-	private static final Logger LOG = Logger.getLogger(Ruler.class);
+	private static final Logger LOG = Logger.getLogger(RulerOld.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
@@ -24,12 +25,12 @@ public abstract class Ruler extends LineChunk {
 	
 	protected static double epsilon = 0.01;
 	
-	public Ruler() {
+	public RulerOld() {
 		super();
 		this.setClassName(TAG);
 	}
 
-	public Ruler(SVGLine line) {
+	public RulerOld(SVGLine line) {
 		this();
 		this.appendChild(line.copy());
 	}
@@ -44,8 +45,8 @@ public abstract class Ruler extends LineChunk {
 		return (SVGLine) this.getChildElements().get(0);
 	}
 
-	public static void formatStrokeWidth(List<? extends Ruler> rulerList, int d) {
-		for (Ruler ruler : rulerList) {
+	public static void formatStrokeWidth(List<? extends RulerOld> rulerList, int d) {
+		for (RulerOld ruler : rulerList) {
 			ruler.formatStrokeWidth(d);
 		}
 	}
@@ -91,8 +92,8 @@ public abstract class Ruler extends LineChunk {
 		return element;
 	}
 
-	protected List<? extends LineChunk> getChildChunks() {
-		return new ArrayList<LineChunk>();
+	protected List<? extends LineChunkOld> getChildChunks() {
+		return new ArrayList<LineChunkOld>();
 	}
 
 

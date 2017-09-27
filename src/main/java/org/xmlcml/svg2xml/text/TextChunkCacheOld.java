@@ -18,60 +18,60 @@ import org.xmlcml.graphics.svg.cache.TextCache;
  * @author pm286
  *
  */
-public class PhraseCache extends AbstractCache {
-	static final Logger LOG = Logger.getLogger(PhraseCache.class);
+@Deprecated // moved to svg package // perhaps never used 
+public class TextChunkCacheOld extends AbstractCache {
+	static final Logger LOG = Logger.getLogger(TextChunkCacheOld.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
 
 	private List<SVGText> rawTextList;
-	private List<TextChunk> textChunkList;
-	private List<PhraseListList> textChunkListOld;
+	private List<TextChunkOld> textChunkList;
+//	private List<PhraseListList> textChunkListOld;
 	private TextCache siblingTextCache;
 
-	private PhraseCache() {
-		
+	private TextChunkCacheOld() {
 	}
 	
-	public PhraseCache(ComponentCache containingComponentCache) {
+	public TextChunkCacheOld(ComponentCache containingComponentCache) {
 		super(containingComponentCache);
 	}
 
 	public List<? extends SVGElement> getOrCreateElementList() {
-		return getOrCreateTextChunkListOld();
+		return getOrCreateTextChunkList();
 	}
 	
 	public List<SVGText> getOrCreateRawTextList() {
 		if (textChunkList == null) {
 			 rawTextList = siblingTextCache == null ? null : siblingTextCache.getTextList();
 			if (textChunkList == null) {
-				textChunkList = new ArrayList<TextChunk>();
+				textChunkList = new ArrayList<TextChunkOld>();
 			}
 		}
 		return rawTextList;
 	}
 
-	public List<SVGText> getOrCreateRawTextListOld() {
-		if (textChunkListOld == null) {
-			 rawTextList = siblingTextCache == null ? null : siblingTextCache.getTextList();
-			if (textChunkListOld == null) {
-				textChunkListOld = new ArrayList<PhraseListList>();
-			}
-		}
-		return rawTextList;
-	}
+//	public List<SVGText> getOrCreateRawTextListOld() {
+//		if (textChunkListOld == null) {
+//			 rawTextList = siblingTextCache == null ? null : siblingTextCache.getTextList();
+//			if (textChunkListOld == null) {
+//				textChunkListOld = new ArrayList<PhraseListList>();
+//			}
+//		}
+//		return rawTextList;
+//	}
 
-	public List<PhraseListList> getOrCreateTextChunkListOld() {
-		if (textChunkListOld == null) {
-			getOrCreateRawTextListOld();
-			throw new RuntimeException("TextChunks NYI");
-		}
-		return textChunkListOld;
-	}
+//	public List<PhraseListList> getOrCreateTextChunkListOld() {
+//		if (textChunkListOld == null) {
+//			getOrCreateRawTextListOld();
+//			throw new RuntimeException("TextChunks NYI");
+//		}
+//		return textChunkListOld;
+//	}
 
-	public List<TextChunk> getOrCreateTextChunkList() {
+	public List<TextChunkOld> getOrCreateTextChunkList() {
 		if (textChunkList == null) {
-			getOrCreateRawTextListOld();
+			getOrCreateRawTextList();
 			throw new RuntimeException("TextChunks NYI");
 		}
 		return textChunkList;
@@ -81,11 +81,12 @@ public class PhraseCache extends AbstractCache {
 
 	@Override
 	public String toString() {
-		getOrCreateTextChunkListOld();
+		getOrCreateTextChunkList();
 		String s = ""
-			+ "rawText size: "+getOrCreateRawTextListOld().size()
+			+ "rawText size: "+getOrCreateRawTextList().size()
 			+ "textChunks: "+textChunkList.size()+"; "
-			+ "textChunksOld: "+textChunkListOld.size()+"; ";
+//			+ "textChunksOld: "+textChunkListOld.size()+"; "
+			;
 		return s;
 
 	}
@@ -94,7 +95,7 @@ public class PhraseCache extends AbstractCache {
 	public void clearAll() {
 		superClearAll();
 		textChunkList = null;
-		textChunkListOld = null;
+//		textChunkListOld = null;
 	}
 
 }

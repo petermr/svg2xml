@@ -22,10 +22,9 @@ import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;
 
-public class PhraseList extends LineChunk implements Iterable<Phrase> {
-	
-
-	private static final Logger LOG = Logger.getLogger(PhraseList.class);
+@Deprecated // moved to svg
+public class PhraseListOld extends LineChunkOld implements Iterable<PhraseOld> {
+	private static final Logger LOG = Logger.getLogger(PhraseListOld.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
@@ -33,27 +32,27 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	public final static String TAG = "phraseList";
 
 	// this is not exposed
-	private List<Phrase> childPhraseList; 
+	private List<PhraseOld> childPhraseList; 
 
-	public PhraseList() {
+	public PhraseListOld() {
 		super();
 		this.setClassName(TAG);
 	}
 	
-	public PhraseList(PhraseList phraseList) {
+	public PhraseListOld(PhraseListOld phraseList) {
 		super(phraseList);
 	}
 
-	public Iterator<Phrase> iterator() {
+	public Iterator<PhraseOld> iterator() {
 		getOrCreateChildPhraseList();
 		return childPhraseList.iterator();
 	}
 	
-	public void add(Phrase phrase) {
+	public void add(PhraseOld phrase) {
 		this.appendChild(phrase);
 	}
 
-	protected List<? extends LineChunk> getChildChunks() {
+	protected List<? extends LineChunkOld> getChildChunks() {
 		getOrCreateChildPhraseList();
 		return childPhraseList;
 	}
@@ -62,7 +61,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	public IntArray getLeftMargins() {
 		getOrCreateChildPhraseList();
 		IntArray leftMargins = new IntArray();
-		for (Phrase phrase : childPhraseList) {
+		for (PhraseOld phrase : childPhraseList) {
 			Double firstX = phrase.getFirstX();
 			if (firstX != null) {
 				leftMargins.addElement((int)(double) firstX);
@@ -71,18 +70,18 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return leftMargins;
 	}
 	
-	public Phrase get(int i) {
+	public PhraseOld get(int i) {
 		getOrCreateChildPhraseList();
 		return i < 0 || i >= size() ? null : childPhraseList.get(i);
 	}
 
-	public List<Phrase> getOrCreateChildPhraseList() {
+	public List<PhraseOld> getOrCreateChildPhraseList() {
 		if (childPhraseList == null) {
-			List<Element> phraseChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+Phrase.TAG+"']");
-			childPhraseList = new ArrayList<Phrase>();
+			List<Element> phraseChildren = XMLUtil.getQueryElements(this, "*[local-name()='"+SVGG.TAG+"' and @class='"+PhraseOld.TAG+"']");
+			childPhraseList = new ArrayList<PhraseOld>();
 			for (Element child : phraseChildren) {
 				// FIXME 
-				childPhraseList.add(new Phrase((SVGG)child));
+				childPhraseList.add(new PhraseOld((SVGG)child));
 			}
 		}
 		return childPhraseList;
@@ -97,7 +96,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		getOrCreateChildPhraseList();
 		Real2Range bboxTotal = null;
 		for (int i = 0; i < childPhraseList.size(); i++) {
-			Phrase phrase = childPhraseList.get(i);
+			PhraseOld phrase = childPhraseList.get(i);
 			Real2Range bbox = phrase.getBoundingBox();
 			if (i == 0) {
 				bboxTotal = bbox;
@@ -135,7 +134,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 //		return (Element) this.copy();
 		getOrCreateChildPhraseList();
 		Element element = (Element) this.copy();
-		for (LineChunk phrase : childPhraseList) {
+		for (LineChunkOld phrase : childPhraseList) {
 			element.appendChild(phrase.copyElement());
 		}
 		return element;
@@ -145,9 +144,9 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		// this needs memoization
 		getOrCreateChildPhraseList();
 		StringBuilder sb = new StringBuilder();
-		LineChunk lastPhrase = null;
+		LineChunkOld lastPhrase = null;
 		for (int i = 0; i < childPhraseList.size(); i++) {
-			Phrase phrase = childPhraseList.get(i);
+			PhraseOld phrase = childPhraseList.get(i);
 			if (lastPhrase != null) {
 				if (lastPhrase.shouldAddSpaceBefore(phrase)) {
 					sb.append(SPACE);
@@ -164,7 +163,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 
 	public void rotateAll(Real2 centreOfRotation, Angle angle) {
 		getOrCreateChildPhraseList();
-		for (Phrase phrase : childPhraseList) {
+		for (PhraseOld phrase : childPhraseList) {
 			phrase.rotateAll(centreOfRotation, angle);
 			LOG.trace("P: "+phrase.toXML());
 		}
@@ -182,11 +181,11 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return this.getStringValue();
 	}
 
-	public PhraseList extractIncludedLists(IntRange tableSpan) {
-		PhraseList includedPhraseList = new PhraseList();
-		for (Phrase phrase : this) {
+	public PhraseListOld extractIncludedLists(IntRange tableSpan) {
+		PhraseListOld includedPhraseList = new PhraseListOld();
+		for (PhraseOld phrase : this) {
 			if (tableSpan.includes(phrase.getIntRange())) {
-				includedPhraseList.add(new Phrase(phrase));
+				includedPhraseList.add(new PhraseOld(phrase));
 			} else {
 				LOG.trace("excluded phrase by tableSpan: "+phrase);
 			}
@@ -194,12 +193,12 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		return includedPhraseList;
 	}
 
-	public void mergeByXCoord(PhraseList otherPhraseList) {
-		Queue<Phrase> otherQueue = otherPhraseList.getPhraseQueue();
-		Queue<Phrase> thisQueue = this.getPhraseQueue();
-		Phrase thisPhrase = thisQueue.isEmpty() ? null : thisQueue.remove();
-		Phrase otherPhrase = otherQueue.isEmpty() ? null : otherQueue.remove();
-		List<Phrase> newPhraseList = new ArrayList<Phrase>();
+	public void mergeByXCoord(PhraseListOld otherPhraseList) {
+		Queue<PhraseOld> otherQueue = otherPhraseList.getPhraseQueue();
+		Queue<PhraseOld> thisQueue = this.getPhraseQueue();
+		PhraseOld thisPhrase = thisQueue.isEmpty() ? null : thisQueue.remove();
+		PhraseOld otherPhrase = otherQueue.isEmpty() ? null : otherQueue.remove();
+		List<PhraseOld> newPhraseList = new ArrayList<PhraseOld>();
 		while (thisPhrase != null || otherPhrase != null) {
 			if (thisPhrase == null && !thisQueue.isEmpty()) {
 				thisPhrase = thisQueue.remove();
@@ -224,18 +223,18 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		this.childPhraseList = newPhraseList;
 	}
 
-	public Queue<Phrase> getPhraseQueue() {
-		Queue<Phrase> phraseQueue = new LinkedList<Phrase>();
-		for (Phrase phrase : this) {
+	public Queue<PhraseOld> getPhraseQueue() {
+		Queue<PhraseOld> phraseQueue = new LinkedList<PhraseOld>();
+		for (PhraseOld phrase : this) {
 			phraseQueue.add(phrase);
 		}
 		return phraseQueue;
 	}
 
-	private void addSuperscript(Phrase superPhrase) {
+	private void addSuperscript(PhraseOld superPhrase) {
 		for (int index = 0; index <= this.size(); index++) {
-			LineChunk phrase1 = (index == 0) ? null : this.get(index - 1);
-			LineChunk phrase2 = index == this.size() ? null : this.get(index);
+			LineChunkOld phrase1 = (index == 0) ? null : this.get(index - 1);
+			LineChunkOld phrase2 = index == this.size() ? null : this.get(index);
 			if (canHaveSuperscript(phrase1, superPhrase, phrase2)) {
 				this.insertSuperscript(index, superPhrase);
 				break;
@@ -243,12 +242,12 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		}
 	}
 
-	public void insertSuperscript(int index, Phrase superPhrase) {
+	public void insertSuperscript(int index, PhraseOld superPhrase) {
 		this.childPhraseList.add(index, superPhrase);
 		superPhrase.setSuperscript(true);
 	}
 	
-	public boolean canHaveSuperscript(LineChunk phrase1, Phrase superPhrase, LineChunk phrase2) {
+	public boolean canHaveSuperscript(LineChunkOld phrase1, PhraseOld superPhrase, LineChunkOld phrase2) {
 		boolean overlap = false;
 		Real2Range bbox1 = phrase1 == null ? null : phrase1.getOrCreateBoundingBox().format(1).getReal2RangeExtendedInX(0.0, 1.0);
 		Real2Range bbox2 = phrase2 == null ? null : phrase2.getOrCreateBoundingBox().format(1).getReal2RangeExtendedInX(0.0, 1.0);
@@ -264,13 +263,13 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	}
 
 	public void setSuperscript(boolean b) {
-		for (LineChunk phrase : this) {
+		for (LineChunkOld phrase : this) {
 			phrase.setSuperscript(b);
 		}
 	}
 
 	public void setSubscript(boolean b) {
-		for (LineChunk phrase : this) {
+		for (LineChunkOld phrase : this) {
 			phrase.setSubscript(b);
 		}
 	}
@@ -279,13 +278,13 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 		HtmlElement span = new HtmlSpan();
 		span.setClassAttribute("phraseList");
 		span = addSuscriptsAndStyle(span);
-		Phrase lastPhrase = null;
+		PhraseOld lastPhrase = null;
 		for (int i = 0; i < this.size(); i++) {
-			Phrase phrase = this.get(i);
+			PhraseOld phrase = this.get(i);
 			HtmlElement phraseElement = phrase.toHtml();
 			if (i > 0) {
 				if (lastPhrase.shouldAddSpaceBefore(phrase)) {
-					span.appendChild(LineChunk.SPACE);
+					span.appendChild(LineChunkOld.SPACE);
 				} else {
 				}
 			}
@@ -303,7 +302,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 	public List<HtmlTh> getThList() {
 		List<HtmlTh> thList = new ArrayList<HtmlTh>();
 		if (childPhraseList != null) {
-			for (Phrase phrase : childPhraseList) {
+			for (PhraseOld phrase : childPhraseList) {
 				HtmlElement element = phrase.toHtml();
 				HtmlTh th = new HtmlTh();
 				th.appendChild(element.copy());
@@ -315,7 +314,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 
 	public boolean contains(Pattern regex) {
 		getOrCreateChildPhraseList();
-		for (Phrase phrase : childPhraseList) {
+		for (PhraseOld phrase : childPhraseList) {
 			if (phrase.contains(regex)) {
 				return true;
 			}
@@ -325,7 +324,7 @@ public class PhraseList extends LineChunk implements Iterable<Phrase> {
 
 	public String getCSSStyle() {
 		String plStyle = null;
-		for (Phrase phrase : this) {
+		for (PhraseOld phrase : this) {
 			String pStyle = phrase.getCSSStyle();
 			if (plStyle == null) {
 				pStyle = plStyle;

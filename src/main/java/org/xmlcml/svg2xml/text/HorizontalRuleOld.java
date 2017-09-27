@@ -9,10 +9,10 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.graphics.svg.SVGLine;
+@Deprecated // move to svg
+public class HorizontalRuleOld extends RulerOld {
 
-public class HorizontalRule extends Ruler {
-
-	private static final Logger LOG = Logger.getLogger(HorizontalRule.class);
+	private static final Logger LOG = Logger.getLogger(HorizontalRuleOld.class);
 
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -21,9 +21,9 @@ public class HorizontalRule extends Ruler {
 	/** allowed misalignment for "same Y"*/
 	public static final double Y_TOLERANCE = 2.0;
 	
-	private List<Word> wordList;
+	private List<WordOld> wordList;
 
-	public HorizontalRule(SVGLine line) {
+	public HorizontalRuleOld(SVGLine line) {
 		super(line);
 	}
 	
@@ -32,12 +32,12 @@ public class HorizontalRule extends Ruler {
 	 * @param lines
 	 * @return
 	 */
-	public static List<HorizontalRule> createSortedRulersFromSVGList(List<SVGLine> lines) {
-		List<HorizontalRule> rulerList = new ArrayList<HorizontalRule>();
+	public static List<HorizontalRuleOld> createSortedRulersFromSVGList(List<SVGLine> lines) {
+		List<HorizontalRuleOld> rulerList = new ArrayList<HorizontalRuleOld>();
 		for (int i = 0; i < lines.size(); i++) {
 			SVGLine line = lines.get(i);
 			if (line.isHorizontal(epsilon)) {
-				HorizontalRule ruler = new HorizontalRule(line);
+				HorizontalRuleOld ruler = new HorizontalRuleOld(line);
 				rulerList.add(ruler);
 			}
 		}
@@ -72,9 +72,9 @@ public class HorizontalRule extends Ruler {
 	}
 	
 }
-class HorizontalRulerComparator implements Comparator<HorizontalRule> {
+class HorizontalRulerComparator implements Comparator<HorizontalRuleOld> {
 
-	public int compare(HorizontalRule hr1, HorizontalRule hr2) {
+	public int compare(HorizontalRuleOld hr1, HorizontalRuleOld hr2) {
 		if (hr1 == null || hr2 == null || hr1.getIntRange() == null || hr2.getIntRange() == null) {
 			return 0;
 		}

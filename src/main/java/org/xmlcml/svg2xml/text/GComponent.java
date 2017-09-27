@@ -3,6 +3,7 @@ package org.xmlcml.svg2xml.text;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.rule.horizontal.LineChunk;
 
 /** component of a document.
  * Normally a graphics object or text object

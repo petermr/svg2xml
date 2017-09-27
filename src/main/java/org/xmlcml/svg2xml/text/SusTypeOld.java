@@ -1,9 +1,9 @@
 package org.xmlcml.svg2xml.text;
 
-public enum SusType {
+public enum SusTypeOld {
 	SUB,
 	SUPER;
-	private SusType() {
+	private SusTypeOld() {
 		
 	}
 

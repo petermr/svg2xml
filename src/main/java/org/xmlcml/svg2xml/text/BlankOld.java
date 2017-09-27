@@ -8,14 +8,15 @@ import org.xmlcml.graphics.svg.SVGG;
 
 import nu.xom.Element;
 
-public class Blank extends LineChunk {
+@Deprecated // moved to svg
+public class BlankOld extends LineChunkOld {
 
-	private static final Logger LOG = Logger.getLogger(Blank.class);
+	private static final Logger LOG = Logger.getLogger(BlankOld.class);
 	public final static String TAG = "blank";
 	
 	private Real2Range boundingBox;
 
-	public Blank(Real2Range bbox) {
+	public BlankOld(Real2Range bbox) {
 		super();
 		this.setClassName(TAG);
 		this.boundingBox = bbox;
@@ -30,7 +31,7 @@ public class Blank extends LineChunk {
 		return (Element) this.copy();
 	}
 
-	protected List<? extends LineChunk> getChildChunks() {
+	protected List<? extends LineChunkOld> getChildChunks() {
 		throw new RuntimeException("not applicable");
 	}
 
