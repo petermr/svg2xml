@@ -18,20 +18,20 @@ import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TableAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.TextLine;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
+import org.xmlcml.svg2xml.text.ScriptLineOLD;
+import org.xmlcml.svg2xml.text.TextLineOLD;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
-public class MixedContainer extends AbstractContainer {
+public class MixedContainer extends AbstractContainerOLD {
 
 	public final static Logger LOG = Logger.getLogger(MixedContainer.class);
 	private boolean box;
 	private ShapeContainer shapeContainer;
 	private ImageContainer imageContainer;
-	private TextAnalyzer textAnalyzerX;
-	private TextStructurer textStructurer;
-	private ScriptContainer scriptContainer;
+	private TextAnalyzerOLD textAnalyzerX;
+	private TextStructurerOLD textStructurer;
+	private ScriptContainerOLD scriptContainer;
 	private HtmlTable tableElement;
 	private HtmlDiv figureElement;
 
@@ -80,13 +80,13 @@ public class MixedContainer extends AbstractContainer {
 
 	public void addTextList(List<SVGText> characterList) {
 		if (characterList != null && characterList.size() > 0) {
-			textAnalyzerX = new TextAnalyzer(pageAnalyzer);
+			textAnalyzerX = new TextAnalyzerOLD(pageAnalyzer);
 			textAnalyzerX.setTextList(characterList);
-			List<TextLine> textLineList = getTextAnalyzer().getTextLines();
-			textStructurer = new TextStructurer((TextAnalyzer) null);
+			List<TextLineOLD> textLineList = getTextAnalyzer().getTextLines();
+			textStructurer = new TextStructurerOLD((TextAnalyzerOLD) null);
 			textStructurer.setTextLines(textLineList);
-			List<ScriptLine> scriptList = textStructurer.getScriptedLineListForCommonestFont();
-			scriptContainer = new ScriptContainer(pageAnalyzer);
+			List<ScriptLineOLD> scriptList = textStructurer.getScriptedLineListForCommonestFont();
+			scriptContainer = new ScriptContainerOLD(pageAnalyzer);
 			scriptContainer.add(scriptList);
 			add(scriptContainer);
 		}
@@ -105,7 +105,7 @@ public class MixedContainer extends AbstractContainer {
 	@Override
 	public SVGG createSVGGChunk() {
 		SVGG g = new SVGG();
-		for (AbstractContainer container : containerList) {
+		for (AbstractContainerOLD container : containerList) {
 			SVGG childG = container.createSVGGChunk();
 			g.appendChild(childG);
 		}
@@ -130,21 +130,21 @@ public class MixedContainer extends AbstractContainer {
 	@Override
 	public String getRawValue() {
 		StringBuilder sb = new StringBuilder();
-		for (AbstractContainer container : containerList) {
+		for (AbstractContainerOLD container : containerList) {
 			sb.append(container.getRawValue()+"\n");
 		}
 		return sb.toString();
 	}
 
-	public TextAnalyzer getTextAnalyzer() {
+	public TextAnalyzerOLD getTextAnalyzer() {
 		return textAnalyzerX;
 	}
 
-	public void setTextAnalyzerX(TextAnalyzer textAnalyzerX) {
+	public void setTextAnalyzerX(TextAnalyzerOLD textAnalyzerX) {
 		this.textAnalyzerX = textAnalyzerX;
 	}
 
-	public AbstractContainer getPathContainer() {
+	public AbstractContainerOLD getPathContainer() {
 		return shapeContainer;
 	}
 	

@@ -72,7 +72,7 @@ public class TextAnalyzerUtils {
 		SVGText svgText = getConcatenatedText(textChunk);
 		if (svgText != null) {
 			LOG.trace("wrapped text "+textChunk.getId());
-			double textWidthFactor = TextAnalyzer.DEFAULT_TEXTWIDTH_FACTOR;
+			double textWidthFactor = TextAnalyzerOLD.DEFAULT_TEXTWIDTH_FACTOR;
 			List<SVGElement> rawTextList = SVGUtil.getQuerySVGElements(textChunk, "./svg:text");
 			Real2Range rawBoundingBox = SVGUtil.createBoundingBox(rawTextList);
 			if (rawBoundingBox == null) {

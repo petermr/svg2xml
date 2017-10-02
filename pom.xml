@@ -5,15 +5,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-       <svg2xml.version>2.2.0-SNAPSHOT</svg2xml.version>
+       <svg2xml.version>2.3.0-SNAPSHOT</svg2xml.version>
        <!--  upstream -->
+       <svghtml.version>1.0.0-SNAPSHOT</svghtml.version>
+
        <!-- remove this from the chain -->
        <!-- 
        <pdf2svg.version>2.2.0-SNAPSHOT</pdf2svg.version>
        -->
+<!-- no longer use pdf2svg in the link chain; everything in svg -->
        <!-- the later version with PDFBox 2.0.6 -->
 <!--        <pdf2svg.version>2.3.0-SNAPSHOT</pdf2svg.version> -->
+<!-- do not use HTML in link either -->
+<!--
        <html.version>2.2.0-SNAPSHOT</html.version>
+-->
+
     </properties>
 
     <groupId>org.contentmine</groupId>
@@ -29,10 +36,18 @@
             <version>${pdf2svg.version}</version>
         </dependency>
         -->
+<!--
         <dependency>
             <groupId>org.contentmine</groupId>
             <artifactId>html</artifactId>
             <version>${html.version}</version>
+        </dependency>
+-->
+		<!-- uses new combined library -->
+        <dependency>
+            <groupId>org.contentmine</groupId>
+            <artifactId>svghtml</artifactId>
+            <version>${svghtml.version}</version>
         </dependency>
     </dependencies>
 

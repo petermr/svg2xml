@@ -12,9 +12,9 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.rule.horizontal.LineChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;

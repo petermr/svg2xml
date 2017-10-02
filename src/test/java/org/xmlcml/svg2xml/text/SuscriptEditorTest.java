@@ -8,11 +8,11 @@ import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
-import org.xmlcml.graphics.svg.text.phrase.SusType;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
-import org.xmlcml.graphics.svg.text.phrase.WordNew;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.SusType;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.build.WordNew;
 
 public class SuscriptEditorTest {
 
@@ -101,7 +101,7 @@ public class SuscriptEditorTest {
 	@Test
 	public void testSuscriptLocal() {
 		
-		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
+		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(H3OPLUS);
 		LOG.trace(0 + " ?? "+1);
 		PhraseChunk phraseList0 = H3OPLUS.get(0);
 		PhraseChunk phraseList1 = H3OPLUS.get(1);
@@ -126,7 +126,7 @@ public class SuscriptEditorTest {
 	@Test
 	public void testSuscriptAll() {
 		
-		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
+		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(H3OPLUS);
 		GraphicsElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);
@@ -136,7 +136,7 @@ public class SuscriptEditorTest {
 	@Test
 	public void testSuscriptAll1() {
 		
-		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS_SO4);
+		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(H3OPLUS_SO4);
 		GraphicsElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);

@@ -26,7 +26,7 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
 //	public static final Pattern PATTERN = Pattern.compile("^\\s*Sub\\s*Vote\\s*(\\d+).*", Pattern.DOTALL);
 
-	private TextAnalyzer textAnalyzer;
+	private TextAnalyzerOLD textAnalyzer;
 	private ShapeAnalyzer shapeAnalyzer;
 
 //	private Real2Range pathBox;
@@ -37,7 +37,7 @@ public class TableAnalyzer /*extends PageChunkAnalyzer */ {
 		super();
 	}
 
-	public TableAnalyzer(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer) {
+	public TableAnalyzer(TextAnalyzerOLD textAnalyzer, ShapeAnalyzer shapeAnalyzer) {
 		this.textAnalyzer = textAnalyzer;
 		this.shapeAnalyzer = shapeAnalyzer;
 	}

@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
-import org.xmlcml.graphics.svg.text.phrase.WordNew;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.WordNew;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class PhraseTest {
@@ -19,19 +19,19 @@ public class PhraseTest {
 		LOG.setLevel(Level.DEBUG);
 	}
 
-	private TextLine BERICHT_PAGE6_34_TEXTLINE = null;
+	private TextLineOLD BERICHT_PAGE6_34_TEXTLINE = null;
 
 	@Before
 	public void setup() {
-		TextStructurer BERICHT_PAGE6_TXTSTR = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
-		List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
+		TextStructurerOLD BERICHT_PAGE6_TXTSTR = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
+		List<TextLineOLD> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
 		BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 	}
 
 	@Test
 	public void testPhraseList() {
-		TextLine textLine = TextStructurer.createTextLine(SVG2XMLFixtures.RAWWORDS_SVG, 0);
+		TextLineOLD textLine = TextStructurerOLD.createTextLine(SVG2XMLFixtures.RAWWORDS_SVG, 0);
 		List<PhraseNew> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 1, phraseList.size());
 		Assert.assertEquals("phrase", "Phenotypic tarsus (mm)", phraseList.get(0).getPrintableString());
@@ -40,7 +40,7 @@ public class PhraseTest {
 	
 	@Test
 	public void testPhraseList1() {
-		TextLine textLine = BERICHT_PAGE6_34_TEXTLINE;
+		TextLineOLD textLine = BERICHT_PAGE6_34_TEXTLINE;
 		List<PhraseNew> phraseList = textLine.createPhraseList();
 		Assert.assertEquals("phraseList", 5, phraseList.size());
 		Assert.assertEquals("phrase", "Total Topf 1", phraseList.get(0).getPrintableString());

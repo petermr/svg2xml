@@ -12,8 +12,8 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlLi;
-import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.ScriptLineOLD;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds a chunk of scriptLines
@@ -41,25 +41,25 @@ public class ListItem {
 	// FIXME
 	
 	
-	private List<ScriptLine> scriptLineList;
+	private List<ScriptLineOLD> scriptLineList;
 	private boolean indented;
 	
 	public ListItem() {
 		
 	}
 
-	public void add(ScriptLine scriptLine) {
+	public void add(ScriptLineOLD scriptLine) {
 		ensureScriptLineList();
 		scriptLineList.add(scriptLine);
 	}
 
 	private void ensureScriptLineList() {
 		if (scriptLineList == null) {
-			scriptLineList = new ArrayList<ScriptLine>();
+			scriptLineList = new ArrayList<ScriptLineOLD>();
 		}
 	}
 
-	public List<ScriptLine> getScriptLineList() {
+	public List<ScriptLineOLD> getScriptLineList() {
 		ensureScriptLineList();
 		return scriptLineList;
 	}
@@ -69,7 +69,7 @@ public class ListItem {
 		return scriptLineList.size();
 	}
 	
-	public ScriptLine get(int index) {
+	public ScriptLineOLD get(int index) {
 		ensureScriptLineList();
 		return scriptLineList.get(index);
 	}
@@ -114,7 +114,7 @@ public class ListItem {
 	
 	public HtmlElement createHtmlElement() {
 		HtmlElement li = new HtmlLi();
-		ScriptContainer scriptContainer = new ScriptContainer(scriptLineList);
+		ScriptContainerOLD scriptContainer = new ScriptContainerOLD(scriptLineList);
 		HtmlElement e = scriptContainer.createHtmlElement();
     	SVG2XMLUtil.moveChildrenFromTo(e, li);
 		return li;
@@ -122,7 +122,7 @@ public class ListItem {
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (ScriptLine scriptLine : scriptLineList) {
+		for (ScriptLineOLD scriptLine : scriptLineList) {
 			sb.append(scriptLine.getTextContentWithSpaces()+"\n");
 		}
 		return sb.toString();

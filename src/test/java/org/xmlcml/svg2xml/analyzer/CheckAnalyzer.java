@@ -4,7 +4,7 @@ import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
 
 /** checks result of running analyzer
  * 
@@ -24,8 +24,8 @@ public class CheckAnalyzer {
 	
 	public static CheckAnalyzer createCheckAnalyzer(ChunkAnalyzer analyzer) {
 		CheckAnalyzer  checkAnalyzer = null;
-		if (analyzer instanceof TextAnalyzer) {
-			checkAnalyzer = new CheckAnalyzer((TextAnalyzer) analyzer);
+		if (analyzer instanceof TextAnalyzerOLD) {
+			checkAnalyzer = new CheckAnalyzer((TextAnalyzerOLD) analyzer);
 		} else if (analyzer instanceof ShapeAnalyzer) {
 			checkAnalyzer = new CheckAnalyzer((ShapeAnalyzer) analyzer);
 		} else if (analyzer instanceof MixedAnalyzer) {
@@ -51,8 +51,8 @@ public class CheckAnalyzer {
 				mixedAnalyzer.getTextAnalyzer());
 	}
 	
-	public CheckAnalyzer(TextAnalyzer textAnalyzer) {
-		this(TextAnalyzer.class, textAnalyzer.getTextCharacters().size());
+	public CheckAnalyzer(TextAnalyzerOLD textAnalyzer) {
+		this(TextAnalyzerOLD.class, textAnalyzer.getTextCharacters().size());
 	}
 	
 	public CheckAnalyzer(Class<? extends ChunkAnalyzer> clazz, int count) {
@@ -61,7 +61,7 @@ public class CheckAnalyzer {
 	}
 	
 	public CheckAnalyzer(Class<? extends MixedAnalyzer> clazz, 
-			ImageAnalyzer imageAnalyzer, ShapeAnalyzer shapeAnalyzer, TextAnalyzer textAnalyzer) {
+			ImageAnalyzer imageAnalyzer, ShapeAnalyzer shapeAnalyzer, TextAnalyzerOLD textAnalyzer) {
 		this.clazz = clazz;
 		this.imageCount = imageAnalyzer == null ? 0 : imageAnalyzer.getImageList().size();
 		this.shapeCount = shapeAnalyzer == null ? 0 : shapeAnalyzer.getShapeList().size();

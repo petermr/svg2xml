@@ -13,7 +13,7 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 import com.google.common.collect.HashMultiset;

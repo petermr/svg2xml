@@ -11,8 +11,8 @@ import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD.TextOrientation;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 /** Analyzer for a graphic object.
  * <p>
@@ -33,7 +33,7 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	
 	private ImageAnalyzer imageAnalyzer;
 	private ShapeAnalyzer shapeAnalyzer;
-	private TextAnalyzer textAnalyzer;
+	private TextAnalyzerOLD textAnalyzer;
 
 	public GraphicAnalyzer(PageAnalyzer pageAnalyzer) {
 		super(pageAnalyzer);
@@ -59,7 +59,7 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	private void createAnalyzers() {
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgChunk);
 		if (textList != null && textList.size() > 0) {
-			textAnalyzer = new TextAnalyzer(textList, pageAnalyzer);
+			textAnalyzer = new TextAnalyzerOLD(textList, pageAnalyzer);
 		}
 		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgChunk);
 		if (shapeList != null && shapeList.size() > 0) {
@@ -114,8 +114,8 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	 * @param textOrientation
 	 * @return
 	 */
-	public TextAnalyzer createTextAnalyzer(TextOrientation textOrientation) {
-		TextAnalyzer textAnalyzer = null;
+	public TextAnalyzerOLD createTextAnalyzer(TextOrientation textOrientation) {
+		TextAnalyzerOLD textAnalyzer = null;
 		if (TextOrientation.ROT_0.equals(textOrientation)) {
 			textAnalyzer = getRot0TextAnalyzer();
 		} else if (TextOrientation.ROT_PI2.equals(textOrientation)) {
@@ -140,9 +140,9 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 	 * @param textOrientation
 	 * @return null if unknown orientation
 	 */
-	public  TextStructurer createTextStructurer(TextOrientation textOrientation) {
-		TextAnalyzer textAnalyzer = createTextAnalyzer(textOrientation);
-		return (textAnalyzer == null ? null : new TextStructurer(textAnalyzer));
+	public  TextStructurerOLD createTextStructurer(TextOrientation textOrientation) {
+		TextAnalyzerOLD textAnalyzer = createTextAnalyzer(textOrientation);
+		return (textAnalyzer == null ? null : new TextStructurerOLD(textAnalyzer));
 	}
 
 	public ImageAnalyzer getImageAnalyzer() {
@@ -153,27 +153,27 @@ public class GraphicAnalyzer extends ChunkAnalyzer {
 		return shapeAnalyzer;
 	}
 
-	public TextAnalyzer getTextAnalyzer() {
+	public TextAnalyzerOLD getTextAnalyzer() {
 		return textAnalyzer;
 	}
 
-	public TextAnalyzer getRot0TextAnalyzer() {
+	public TextAnalyzerOLD getRot0TextAnalyzer() {
 		return (textAnalyzer == null ? null : textAnalyzer.getRot0TextAnalyzer());
 	}
 
-	public TextAnalyzer getRotPi2TextAnalyzer() {
+	public TextAnalyzerOLD getRotPi2TextAnalyzer() {
 		return (textAnalyzer == null ? null : textAnalyzer.getRotPi2TextAnalyzer());
 	}
 
-	public TextAnalyzer getRotPiTextAnalyzer() {
+	public TextAnalyzerOLD getRotPiTextAnalyzer() {
 		return (textAnalyzer == null ? null : textAnalyzer.getRotPiTextAnalyzer());
 	}
 
-	public TextAnalyzer getRot3Pi2TextAnalyzer() {
+	public TextAnalyzerOLD getRot3Pi2TextAnalyzer() {
 		return textAnalyzer == null ? null : textAnalyzer.getRot3Pi2TextAnalyzer();
 	}
 
-	public TextAnalyzer getRotIrregularTextAnalyzer() {
+	public TextAnalyzerOLD getRotIrregularTextAnalyzer() {
 		return textAnalyzer == null ? null : textAnalyzer.getRotIrregularTextAnalyzer();
 	}
 

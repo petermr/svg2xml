@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
 
 /** supports a column group within the TableHeader.
  * Usually denoted by a horizontal ruler with text above

@@ -48,12 +48,13 @@ import org.xmlcml.graphics.svg.rule.RuleNew;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
 import org.xmlcml.graphics.svg.rule.vertical.VerticalRuleNew;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
-import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.TextLine;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.build.TextChunkList;
+import org.xmlcml.graphics.svg.text.line.ScriptLine;
+import org.xmlcml.graphics.svg.text.line.TextLine;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
@@ -76,7 +77,7 @@ public class TableStructurer {
 	public static final String LEADING_SPACE = "~";
 	
 
-	private TextChunk totalPhraseListList;
+	private TextChunkList totalTextChunkList;
 	private int maxColumns;
 	private ColumnManagerList columnManagerList;
 	private String title;
@@ -109,9 +110,9 @@ public class TableStructurer {
 	private HtmlUl titleUl;
 
 	
-	public TableStructurer(TextChunk phraseListList) {
-		this.totalPhraseListList = phraseListList;
-		maxColumns = phraseListList.getMaxColumns();
+	public TableStructurer(TextChunk textChunk) {
+		this.totalTextChunkList = new TextChunkList(textChunk);
+		maxColumns = textChunk.getMaxColumns();
 	}
 
 	public Real2Range getTitleBBox() {return titleBBoxManager.getTotalBox();}
@@ -673,24 +674,24 @@ public class TableStructurer {
 
 
 	public void mergeRulersAndTextIntoShapeList() {
-		totalPhraseListList = textStructurer.getPhraseListList();
+		totalTextChunkList = textStructurer.getTextChunkList();
 		getOrCreateHorizontalRulerList();
 		int iPhrase = 0; 
 		int iRuler = 0;
 		horizontalElementList = new ArrayList<SVGElement>();
 		while (true) {
-			if (iPhrase < totalPhraseListList.size() && iRuler < horizontalRulerList.size()) {
-				PhraseChunk phraseList = totalPhraseListList.get(iPhrase);
+			if (iPhrase < totalTextChunkList.size() && iRuler < horizontalRulerList.size()) {
+				PhraseChunk phraseList = totalTextChunkList.get(iPhrase).getLastPhraseChunk();
 				RuleNew ruler = horizontalRulerList.get(iRuler);
 				double yPhrase = phraseList.getBoundingBox().getYMin();
 				double yRuler = ruler.getBoundingBox().getYMin();
 				if (yPhrase <= yRuler) {
-					horizontalElementList.add(totalPhraseListList.get(iPhrase++));
+					horizontalElementList.add(totalTextChunkList.get(iPhrase++));
 				} else {
 					horizontalElementList.add(horizontalRulerList.get(iRuler++));
 				}
-			} else if (iPhrase < totalPhraseListList.size()) {
-				horizontalElementList.add(totalPhraseListList.get(iPhrase++));
+			} else if (iPhrase < totalTextChunkList.size()) {
+				horizontalElementList.add(totalTextChunkList.get(iPhrase++));
 			} else if (iRuler < horizontalRulerList.size()) {
 				horizontalElementList.add(horizontalRulerList.get(iRuler++));
 			} else {
@@ -701,12 +702,12 @@ public class TableStructurer {
 	}
 
 	private void addIndexes() {
-		Real2Range bboxPhrase = totalPhraseListList.getBoundingBox();
+		Real2Range bboxPhrase = totalTextChunkList.getBoundingBox();
 		bboxRuler = SVGUtil.createBoundingBox(horizontalRulerList);
 		horizontalElementByCode = new HashMap<String, SVGElement>();
 		// there may be no lines
 		Integer maxLength = (bboxRuler == null) ? null : (int) bboxRuler.getXRange().getRange();
-		double maxFont = getMaxFont(totalPhraseListList);
+		double maxFont = getMaxFont(totalTextChunkList);
 		int iPhrase = 0;
 		int iRuler = 0;
 		StringBuilder total = new StringBuilder();
@@ -788,10 +789,10 @@ public class TableStructurer {
 
 	private Double getMaxFont(GraphicsElement phraseListList2) {
 		Double maxFont = null;
-		if (totalPhraseListList.size() > 0) {
-			maxFont = totalPhraseListList.get(0).getFontSize();
-			for (int i = 1; i < totalPhraseListList.size(); i++) {
-				Double f = totalPhraseListList.get(i).getFontSize();
+		if (totalTextChunkList.size() > 0) {
+			maxFont = totalTextChunkList.get(0).getFontSize();
+			for (int i = 1; i < totalTextChunkList.size(); i++) {
+				Double f = totalTextChunkList.get(i).getFontSize();
 				maxFont =  Math.max(maxFont,  f);
 			}
 		}
@@ -825,11 +826,22 @@ public class TableStructurer {
 			TextLine textLine0 = scriptLine.getTextLineList().get(0);
 		}
 		
-		TableStructurer tableStructurer = textStructurer.createTableStructurer();
+//		TableStructurer tableStructurer = textStructurer.createTableStructurer();
+		TableStructurer tableStructurer = TableStructurer.createTableStructurer(textStructurer);
 		HtmlHtml html = tableStructurer.createHtmlWithTable();
 		return html;
 	}
-	
+
+	/** dummy due to refactoring
+	 * 
+	 * @param textStructurer
+	 * @return
+	 * @throws RuntimeException
+	 */
+	public static TableStructurer createTableStructurer(TextStructurer textStructurer) {
+		throw new RuntimeException("refactored - maybe needs new method here");
+	}
+
 	/** this is messy code.
 	 * 
 	 * @param inputFile
@@ -875,9 +887,10 @@ public class TableStructurer {
 	}
 
 	private void analyzeTableRow(PhraseChunk phraseList, int iRow) {
-		totalPhraseListList.getOrCreateChildPhraseListList();
+		TextChunk lastTextChunk = totalTextChunkList.getLastTextChunk();
+		lastTextChunk.getOrCreateChildPhraseChunkList();
 		ensureColumnManagerList();
-		IntRangeArray bestWhitespaces = totalPhraseListList.getBestWhitespaceRanges();
+		IntRangeArray bestWhitespaces = lastTextChunk.getBestWhitespaceRanges();
 		if (bestWhitespaces.size() != maxColumns) {
 			LOG.warn("maxWhitespace ("+bestWhitespaces.size()+") != maxColumns ("+maxColumns+")");
 		}
@@ -904,7 +917,7 @@ public class TableStructurer {
 	}
 
 	public HtmlTr createTableRow(PhraseChunk phraseList, int iRow, Class<?> clazz) {
-		totalPhraseListList.getOrCreateChildPhraseListList();
+		totalTextChunkList.getLastTextChunk().getOrCreateChildPhraseChunkList();
 		ensureColumnManagerList();
 		HtmlTr row = new HtmlTr();
 		for (int icol = 0; icol < maxColumns; icol++) {
@@ -918,15 +931,16 @@ public class TableStructurer {
 	}
 
 	private List<HtmlTr> createBodyTableRows(int startRow, int endRow, Class<?> clazz) {
-		totalPhraseListList.getOrCreateChildPhraseListList();
+		TextChunk lastTextChunk = totalTextChunkList.getLastTextChunk();
+		lastTextChunk.getOrCreateChildPhraseChunkList();
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
 		
 		for (int iRow = startRow; iRow <= endRow; iRow++) {
-			PhraseChunk phraseList = totalPhraseListList.get(iRow);
+			PhraseChunk phraseList = lastTextChunk.get(iRow);
 			analyzeTableRow(phraseList, iRow);
 		}
 		for (int iRow = startRow; iRow <= endRow; iRow++) {
-			PhraseChunk phraseList = totalPhraseListList.get(iRow);
+			PhraseChunk phraseList = lastTextChunk.get(iRow);
 			HtmlTr row = createTableRow(phraseList, iRow, clazz);
 			rows.add(row);
 		}

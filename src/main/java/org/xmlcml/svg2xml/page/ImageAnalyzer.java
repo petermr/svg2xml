@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGImage;
-import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.AbstractContainerOLD;
 import org.xmlcml.svg2xml.container.ImageContainer;
 
 /**
@@ -82,7 +82,7 @@ public class ImageAnalyzer extends ChunkAnalyzer {
 	 * @return
 	 */
 	@Override
-	public List<AbstractContainer> createContainers() {
+	public List<AbstractContainerOLD> createContainers() {
 		ensureImageContainer();
 		ensureAbstractContainerList();
 		abstractContainerList.add(imageContainer);

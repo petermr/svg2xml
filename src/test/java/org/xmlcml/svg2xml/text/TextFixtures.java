@@ -93,10 +93,10 @@ public class TextFixtures {
 	
 	
 	public static void testSpans(String[][] values, File file) {
-		List<StyleSpans> styleSpansList = ScriptContainerTest.getStyleSpansList(file);
+		List<StyleSpansOLD> styleSpansList = ScriptContainerTest.getStyleSpansList(file);
 		Assert.assertEquals("lists", values.length, styleSpansList.size());
 		for (int i = 0; i < values.length; i++) {
-			StyleSpans styleSpans = styleSpansList.get(i);
+			StyleSpansOLD styleSpans = styleSpansList.get(i);
 			if (values[i].length > 0) {
 				if (values[i].length != styleSpans.size()) {
 					for (int j = 0; j < styleSpans.size(); j++) {

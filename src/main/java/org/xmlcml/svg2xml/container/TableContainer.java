@@ -16,7 +16,7 @@ import org.xmlcml.svg2xml.page.PageAnalyzer;
  * @author pm286
  *
  */
-public class TableContainer extends AbstractContainer {
+public class TableContainer extends AbstractContainerOLD {
 
 	
 	public final static Logger LOG = Logger.getLogger(TableContainer.class);

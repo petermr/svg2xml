@@ -11,7 +11,7 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.AbstractContainerOLD;
 import org.xmlcml.svg2xml.container.MixedContainer;
 
 public class MixedAnalyzer extends ChunkAnalyzer {
@@ -20,7 +20,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 
 	private ImageAnalyzer imageAnalyzer = null;
 	private ShapeAnalyzer shapeAnalyzer = null;
-	private TextAnalyzer textAnalyzer = null;
+	private TextAnalyzerOLD textAnalyzer = null;
 
 	private List<ChunkAnalyzer> analyzerList;
 
@@ -50,7 +50,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	
 	public void readTextList(List<SVGText> textCharacters) {
 		if (textCharacters != null && textCharacters.size() > 0) {
-			textAnalyzer = new TextAnalyzer(pageAnalyzer);
+			textAnalyzer = new TextAnalyzerOLD(pageAnalyzer);
 			textAnalyzer.analyzeTexts(textCharacters);
 		}
 	}
@@ -91,7 +91,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 		return shapeAnalyzer;
 	}
 	
-	public TextAnalyzer getTextAnalyzer() {
+	public TextAnalyzerOLD getTextAnalyzer() {
 		return textAnalyzer;
 	}
 
@@ -107,8 +107,8 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 			imageAnalyzer = (ImageAnalyzer) analyzer;
 		} else if (analyzer instanceof ShapeAnalyzer) {
 			shapeAnalyzer = (ShapeAnalyzer) analyzer;
-		} else if (analyzer instanceof TextAnalyzer) {
-			textAnalyzer = (TextAnalyzer) analyzer;
+		} else if (analyzer instanceof TextAnalyzerOLD) {
+			textAnalyzer = (TextAnalyzerOLD) analyzer;
 		}
 	}
 
@@ -251,7 +251,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 		if (analyzerList != null) {
 			List<ChunkAnalyzer> newAnalyzerList = new ArrayList<ChunkAnalyzer>();
 			for (ChunkAnalyzer analyzer : analyzerList) {
-				if (!(analyzer instanceof TextAnalyzer)) {
+				if (!(analyzer instanceof TextAnalyzerOLD)) {
 					newAnalyzerList.add(analyzer);
 				}
 			}
@@ -268,7 +268,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 			type += "+"+ShapeAnalyzer.class.getSimpleName();
 		}
 		if (textList != null) {
-			type += "+"+TextAnalyzer.class.getSimpleName();
+			type += "+"+TextAnalyzerOLD.class.getSimpleName();
 		}
 		return type;
 	}
@@ -281,7 +281,7 @@ public class MixedAnalyzer extends ChunkAnalyzer {
 	 * @return
 	 */
 	@Override
-	public List<AbstractContainer> createContainers() {
+	public List<AbstractContainerOLD> createContainers() {
 		MixedContainer mixedContainer = new MixedContainer(pageAnalyzer);
 		if (removeFrameBoxFromShapeList()) {
 			mixedContainer.setBox(true);

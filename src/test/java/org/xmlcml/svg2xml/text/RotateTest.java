@@ -31,8 +31,8 @@ public class RotateTest {
 	@Test
 	public void readRotatedText() throws FileNotFoundException {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/pageTableText.svg");
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(new File(SVG2XMLFixtures.TABLE_DIR, "rotate/pageTableText.svg"));
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(new File(SVG2XMLFixtures.TABLE_DIR, "rotate/pageTableText.svg"));
 		List<SVGText> textList = textStructurer.getCharacterList();
 		Assert.assertEquals(409,  textList.size());
 		
@@ -41,7 +41,7 @@ public class RotateTest {
 	@Test
 	public void testRotatedCharacters() {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/pageTableText.svg");
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(file);
 		SVGElement chunk = textStructurer.getSVGChunk();
 		Real2Range bbox = chunk.getBoundingBox();
 		double yRange = bbox.getYRange().getRange();
@@ -53,7 +53,7 @@ public class RotateTest {
 	@Test
 	public void testRotatedTableText() {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/page4Clipped.svg");
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(file);
 		SVGG rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
 		// This is text only
 		SVGSVG.wrapAndWriteAsSVG(rotatedVerticalText, new File(SVG2XMLFixtures.TARGET, "rotate/page4Clipped.svg"), 900, 800);
@@ -64,7 +64,7 @@ public class RotateTest {
 	@Test
 	public void testRotatedTable() throws FileNotFoundException {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/page4Clipped.svg");
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(file);
 		SVGElement chunk = textStructurer.getSVGChunk();
 		Angle angle = new Angle(-1.0 * Math.PI / 2);
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
@@ -76,7 +76,7 @@ public class RotateTest {
 	@Test
 	public void testRotatedTableChunk() throws FileNotFoundException {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/page4Clipped.svg");
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(file);
 		GraphicsElement chunk = textStructurer.rotateClockwise();
 		SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/rotate/chunk.svg"), 900, 800);
 	}

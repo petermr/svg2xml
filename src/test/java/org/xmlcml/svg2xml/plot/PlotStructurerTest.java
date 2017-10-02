@@ -23,11 +23,11 @@ import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.flow.FlowStructurer;
 import org.xmlcml.svg2xml.text.TextBox;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 public class PlotStructurerTest {
 	
@@ -123,7 +123,7 @@ public class PlotStructurerTest {
 	
 	private void createFlow(File inputFile, String fileRoot) throws IOException {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
 
 		TextChunk phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		
@@ -168,7 +168,7 @@ public class PlotStructurerTest {
 	
 	public static File createSVGPathsAndWriteToSVGPathFile(File inputFile, String fileRoot) throws IOException {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
 
 		TextChunk phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		

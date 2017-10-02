@@ -9,9 +9,9 @@ import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
-import org.xmlcml.graphics.svg.text.phrase.WordNew;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.WordNew;
 
 public class PhraseListTest {
 	private static final Logger LOG = Logger.getLogger(PhraseListTest.class);

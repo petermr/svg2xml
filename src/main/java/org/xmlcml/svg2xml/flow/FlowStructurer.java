@@ -8,18 +8,18 @@ import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 public class FlowStructurer {
 
-	private TextStructurer textStructurer;
+	private TextStructurerOLD textStructurer;
 	private GraphicsElement phraseListList;
 
 	public FlowStructurer(GraphicsElement phraseListList) {
 		this.phraseListList = phraseListList;
 	}
 
-	public void setTextStructurer(TextStructurer textStructurer) {
+	public void setTextStructurer(TextStructurerOLD textStructurer) {
 		this.textStructurer = textStructurer;
 	}
 

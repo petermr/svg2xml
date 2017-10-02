@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,15 +41,25 @@ import org.xmlcml.graphics.svg.cache.RectCache;
 import org.xmlcml.graphics.svg.objects.SVGContentBox;
 import org.xmlcml.graphics.svg.rule.GenericRowNew.RowType;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.svg2xml.old.HorizontalRuleOld;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionTypeOLD;
-import org.xmlcml.svg2xml.text.HorizontalRuleOld;
 import org.xmlcml.svg2xml.util.GraphPlot;
 import org.xmlcml.xml.XMLUtil;
 
+/** IMPORTANT2017 creates structured content from SVGElement
+ * uses caches to extract high level obecjts and then create tables
+ * 
+ * Probably will have siblings to do the same for Plots.
+ * 
+ * 2017-10 integrating TextChunkCache into previous
+ * 
+ * @author pm286
+ *
+ */
 public class TableContentCreator extends PageLayoutAnalyzer {
 
 	private static final Pattern TABLE_PATTERN = Pattern.compile("T[Aa][Bb][Ll][Ee]");
@@ -296,12 +307,12 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private void makeCaches(SVGElement svgElement) {
 		ownerComponentCache = new ComponentCache();
 		ownerComponentCache.readGraphicsComponentsAndMakeCaches(svgElement);
-		RectCache rectCache = ownerComponentCache.getOrCreateRectCache();
-		ownerComponentCache.removeBorderingRects();
-		contentBoxCache = ContentBoxCache.createCache(rectCache, phraseListList);
-		contentBoxCache.getOrCreateConvertedSVGElement();
-		contentBoxCache.getOrCreateContentBoxGrid();
-		ownerComponentCache.addCache(contentBoxCache);
+//		RectCache rectCache = ownerComponentCache.getOrCreateRectCache();
+//		ownerComponentCache.removeBorderingRects();
+//		contentBoxCache = ContentBoxCache.createCache(rectCache, textChunkCache);
+//		contentBoxCache.getOrCreateConvertedSVGElement();
+//		contentBoxCache.getOrCreateContentBoxGrid();
+//		ownerComponentCache.addContentBoxCache(contentBoxCache);
 	}
 
 	private void removeBoundingRules(List<HorizontalElementNew> horizontalList, StartEnd startEnd) {
@@ -582,7 +593,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 
-	public GraphicsElement getSVGChunk() {
+	public SVGElement getSVGChunk() {
 		return textStructurer.getSVGChunk();
 	}
 
@@ -666,7 +677,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public void markupAndOutputTable(File inputFile, File outDir) {
 		String outRoot = inputFile.getName();
 		outRoot = outRoot.substring(0, outRoot.length() - DOT_PNG.length());
-		LOG.trace("reading SVG "+inputFile);
+		LOG.debug("reading SVG "+inputFile);
 		annotatedSvgChunk = annotateAreas(inputFile);
 		File outputFile = new File(outDir, outRoot+DOT_ANNOT_SVG);
 		LOG.trace("writing annotated SVG "+outputFile);

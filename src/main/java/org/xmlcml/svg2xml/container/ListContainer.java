@@ -13,17 +13,17 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.ScriptLineOLD;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
-public class ListContainer extends AbstractContainer {
+public class ListContainer extends AbstractContainerOLD {
 
 	public final static Logger LOG = Logger.getLogger(ListContainer.class);
 
 	private static final double INDENT_EPS = 1.0; // lines are sometimes slightly wiggly
 
 	private List<ListItem> multiScriptLineList = null;
-	private ScriptContainer scriptContainer;
+	private ScriptContainerOLD scriptContainer;
 	private boolean hasList = true;
 
 	private Integer firstInteger;
@@ -43,7 +43,7 @@ public class ListContainer extends AbstractContainer {
 		this.multiScriptLineList = multiScriptLineList;
 	}
 
-	public ListContainer(ScriptContainer sc) {
+	public ListContainer(ScriptContainerOLD sc) {
 		super(sc.pageAnalyzer);
 		this.scriptContainer = sc;
 	}
@@ -69,7 +69,7 @@ public class ListContainer extends AbstractContainer {
 		}
 	}
 	
-	public static ListContainer createList(ScriptContainer sc) {
+	public static ListContainer createList(ScriptContainerOLD sc) {
 		sc.createLeftIndentSet(0);
 		LOG.trace("LEFTIND "+sc.getLeftIndentSet());
 		int size = sc.leftIndentSet.entrySet().size();
@@ -205,7 +205,7 @@ public class ListContainer extends AbstractContainer {
 		multiScriptLineList = new ArrayList<ListItem>();
 		ListItem multiScriptLine = null;
 		Double lastIndent = null;
-		for (ScriptLine scriptLine : scriptContainer) {
+		for (ScriptLineOLD scriptLine : scriptContainer) {
 //			LOG.trace(scriptLine.getTextContentWithSpaces());
 			Double leftMargin = scriptLine.getLeftMargin();
 			if (Real.isEqual(leftMargin, leftIndent0, INDENT_EPS)) {

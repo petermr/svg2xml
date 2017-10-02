@@ -23,11 +23,11 @@ public class ColumnMaps {
 	
 	private static final Double COUNT_CUTOFF = 0.33;
 	
-	private TextStructurer textStructurer;
+	private TextStructurerOLD textStructurer;
 	private Multiset<Integer> startXIntSet;
 	private Multiset<Integer> midXIntSet;
 	private Multiset<Integer> endXIntSet;
-	private List<TextLine> textLineList;
+	private List<TextLineOLD> textLineList;
 
 	private List<Multiset.Entry<Integer>> startXSortedByCount;
 	private List<Multiset.Entry<Integer>> startXSortedByCoordinate;
@@ -51,13 +51,13 @@ public class ColumnMaps {
 		
 	}
 	
-	public ColumnMaps(TextStructurer textStructurer) {
+	public ColumnMaps(TextStructurerOLD textStructurer) {
 		this.textStructurer = textStructurer;
 		textLineList = textStructurer.getTextLineList();
 		generateMaps();
 	}
 
-	public ColumnMaps(List<TextLine> textLineList) {
+	public ColumnMaps(List<TextLineOLD> textLineList) {
 		this.textLineList = textLineList;
 		generateMaps();
 	}
@@ -67,8 +67,8 @@ public class ColumnMaps {
 		startXIntSet = HashMultiset.create();
 		midXIntSet = HashMultiset.create();
 		endXIntSet = HashMultiset.create();
-		for (TextLine textLine : textLineList) {
-			RawWords rawWords = textLine.getRawWords();
+		for (TextLineOLD textLine : textLineList) {
+			RawWordsOLD rawWords = textLine.getRawWords();
 			addToSet(rawWords.getStartXArray(), startXIntSet);
 			addToSet(rawWords.getMidXArray(), midXIntSet);
 			addToSet(rawWords.getEndXArray(), endXIntSet);

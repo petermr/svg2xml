@@ -18,10 +18,10 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.ScriptWord;
-import org.xmlcml.svg2xml.text.StyleSpans;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.ScriptLineOLD;
+import org.xmlcml.svg2xml.text.ScriptWordOLD;
+import org.xmlcml.svg2xml.text.StyleSpansOLD;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 public class ScriptContainerTest {
 
@@ -32,14 +32,14 @@ public class ScriptContainerTest {
 	
 	@Test
 	public void test3WordContainer() {
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		Assert.assertEquals("1a", 
 				"TextStructurer: 1" + lineSeparator + "chars: 9 Y: 39.615 fontSize: 7.97 >>Page6of14" + lineSeparator,
 				textContainer.toString());
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, pageAnalyzer);
 		Assert.assertEquals("1a", "Page6of14", sc.getRawValue());
 	}
 	
@@ -47,11 +47,11 @@ public class ScriptContainerTest {
 	@Test
 	public void test4WordContainerScriptList() {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<ScriptLine> scriptList = sc.getScriptLineList();
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, pageAnalyzer);
+		List<ScriptLineOLD> scriptList = sc.getScriptLineList();
 		Assert.assertEquals("scriptLines", 1, scriptList.size());
 		Assert.assertEquals("line0", "Page6of14  %%%%\n", scriptList.get(0).toString());
 	}
@@ -59,13 +59,13 @@ public class ScriptContainerTest {
 	@Test
 	public void testGet4Words() {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_1SA_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<ScriptLine> scriptLineList = sc.getScriptLineList();
-		ScriptLine scriptLine = scriptLineList.get(0);
-		List<ScriptWord> scriptWords = scriptLine.getScriptWordList();
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, pageAnalyzer);
+		List<ScriptLineOLD> scriptLineList = sc.getScriptLineList();
+		ScriptLineOLD scriptLine = scriptLineList.get(0);
+		List<ScriptWordOLD> scriptWords = scriptLine.getScriptWordList();
 		Assert.assertEquals("line0", 4, scriptWords.size());
 		String[] value ={"Page", "6", "of", "14"};
 		for (int i = 0; i < scriptWords.size(); i++) {
@@ -137,11 +137,11 @@ public class ScriptContainerTest {
 	@Test
 	public void testGetSpans0() {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA0_SVG);
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA0_SVG);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(org.xmlcml.svg2xml.text.TextFixtures.BMC_312_6_0SA0_SVG);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, pageAnalyzer);
+		List<ScriptLineOLD> scriptLineList = sc.getScriptLineList();
 		Assert.assertEquals("lists", 1, scriptLineList.size());
 		Assert.assertEquals("lists0", 7, scriptLineList.get(0).getStyleSpans().size());
 		Assert.assertEquals("lists0.0", "Hiwatashi ", scriptLineList.get(0).getStyleSpans().get(0).toString());
@@ -324,10 +324,10 @@ public class ScriptContainerTest {
 	public void testGetHTML63() throws Exception {
 		File file = org.xmlcml.svg2xml.text.TextFixtures.BMC_174_6_3SA_SVG;
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(file);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(file);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, pageAnalyzer);
 		HtmlElement divElement = sc.createHtmlElement();
 		SVGUtil.debug(divElement, new FileOutputStream("target/bmc174_6_3.html"), 0);
 	}
@@ -375,12 +375,12 @@ public class ScriptContainerTest {
 			LOG.error("FIXME test");
 			return;
 		}
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.SVG_MULTIPLE_2_2_SVG);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.SVG_MULTIPLE_2_2_SVG);
 		RealRange xRange = textContainer.getXRange();
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
-		List<ScriptLine> scriptLineList = sc.getScriptLineList();
-		ScriptLine scriptLine = scriptLineList.get(0);
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, null);
+		List<ScriptLineOLD> scriptLineList = sc.getScriptLineList();
+		ScriptLineOLD scriptLine = scriptLineList.get(0);
 		Assert.assertEquals("L ", 0.0, scriptLine.getLeftIndent(xRange), 0.1);
 		Assert.assertEquals("R ", 2.2, scriptLine.getRightIndent(xRange), 0.1);
 		scriptLine = scriptLineList.get(1);
@@ -404,11 +404,11 @@ public class ScriptContainerTest {
 	
 	@Test
 	public void testParagraphs() {
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.SVG_MULTIPLE_2_2_SVG);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.SVG_MULTIPLE_2_2_SVG);
 		RealRange xRange = textContainer.getXRange();
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
-		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, null);
+		List<ScriptLineOLD> scriptLineList = sc.getScriptLineList();
 		Assert.assertFalse(scriptLineList.get(0).indentCouldStartParagraph(xRange));
 		Assert.assertFalse(scriptLineList.get(0).couldEndParagraph(xRange));
 		Assert.assertFalse(scriptLineList.get(1).indentCouldStartParagraph(xRange));
@@ -456,7 +456,7 @@ public class ScriptContainerTest {
 	
 	private void createHtml(File file, String outfile) throws IOException,
 			FileNotFoundException {
-		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(file);
 		HtmlElement divElement = sc.createHtmlElement();
 		SVGUtil.debug(divElement, new FileOutputStream(outfile), 0);
 	}
@@ -467,27 +467,27 @@ public class ScriptContainerTest {
 	// ==========================================================================================
 
 
-	public static List<StyleSpans> getStyleSpansList(File file) {
+	public static List<StyleSpansOLD> getStyleSpansList(File file) {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(file);
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(file);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(file);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, (PDFAnalyzer) null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<StyleSpans> styleSpansList = new ArrayList<StyleSpans>();
-		List<ScriptLine> scriptLineList = sc.getScriptLineList();
-		for (ScriptLine scriptLine : scriptLineList) {
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, pageAnalyzer);
+		List<StyleSpansOLD> styleSpansList = new ArrayList<StyleSpansOLD>();
+		List<ScriptLineOLD> scriptLineList = sc.getScriptLineList();
+		for (ScriptLineOLD scriptLine : scriptLineList) {
 			styleSpansList.add(scriptLine.getStyleSpans());
 		}
 		return styleSpansList;
 	}
 
 	private void testParagraphMarkers(File svgFile) {
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(svgFile);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(svgFile);
 		RealRange xRange = textContainer.getXRange();
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, null);
-		List<ScriptLine> scriptLineList = sc.getScriptLineList();
-		for (ScriptLine scriptLine : scriptLineList) {
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, null);
+		List<ScriptLineOLD> scriptLineList = sc.getScriptLineList();
+		for (ScriptLineOLD scriptLine : scriptLineList) {
 			Double rightIndent = scriptLine.getRightIndent(xRange);
 			Double leftIndent = scriptLine.getLeftIndent(xRange);
 			LOG.trace(" L "+(int)(double)leftIndent+" R "+(int)(double)rightIndent+" "+scriptLine);
@@ -502,15 +502,15 @@ public class ScriptContainerTest {
 	
 	private void testScript(File svgFile, String[][] words) {
 		SVGSVG svgPage = (SVGSVG) SVGElement.readAndCreateSVG(svgFile);
-		TextStructurer textContainer = 
-				TextStructurer.createTextStructurerWithSortedLines(svgFile);
+		TextStructurerOLD textContainer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(svgFile);
 		PageAnalyzer pageAnalyzer = new PageAnalyzer(svgPage, null);
-		ScriptContainer sc = ScriptContainer.createScriptContainer(textContainer, pageAnalyzer);
-		List<ScriptLine> scriptLineList = sc.getScriptLineList();
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(textContainer, pageAnalyzer);
+		List<ScriptLineOLD> scriptLineList = sc.getScriptLineList();
 		Assert.assertEquals("scriptLines", words.length, scriptLineList.size());
 		for(int i = 0; i < words.length; i++) {
-			ScriptLine scriptLine = scriptLineList.get(i);
-			List<ScriptWord> scriptWords = scriptLine.getScriptWordList();
+			ScriptLineOLD scriptLine = scriptLineList.get(i);
+			List<ScriptWordOLD> scriptWords = scriptLine.getScriptWordList();
 			if (words[i].length > 0) {
 				if (words[i].length != scriptWords.size()) {
 					for (int j = 0; j < scriptWords.size(); j++) {

@@ -23,7 +23,7 @@ import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class FigureGraphic extends FigureComponent {
@@ -44,7 +44,7 @@ public class FigureGraphic extends FigureComponent {
 		super(figureAnalyzer);
 	}
 
-	public FigureGraphic(TextAnalyzer textAnalyzer,
+	public FigureGraphic(TextAnalyzerOLD textAnalyzer,
 			ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer) {
 		super(textAnalyzer, shapeAnalyzer, imageAnalyzer);
 	}

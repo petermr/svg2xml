@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.xmlcml.graphics.svg.SVGLine;
+import org.xmlcml.svg2xml.old.RulerOld;
 
 public class NewVerticalRuler extends RulerOld {
 

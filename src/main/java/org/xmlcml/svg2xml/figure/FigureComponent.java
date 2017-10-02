@@ -17,7 +17,7 @@ import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
 
 public abstract class FigureComponent {
 
@@ -38,7 +38,7 @@ public abstract class FigureComponent {
 	public static final String BELOW = "below";
 
 	protected SVGG svgContainer;
-	protected TextAnalyzer textAnalyzer;
+	protected TextAnalyzerOLD textAnalyzer;
 	protected ShapeAnalyzer shapeAnalyzer;
 	protected ImageAnalyzer imageAnalyzer;
 	protected Real2Range boundingBox;
@@ -63,7 +63,7 @@ public abstract class FigureComponent {
 		this.pageAnalyzer = figureAnalyzer.getPageAnalyzer();
 	}
 
-	protected FigureComponent(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
+	protected FigureComponent(TextAnalyzerOLD textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
 		this.textAnalyzer = textAnalyzer;
 		this.shapeAnalyzer = shapeAnalyzer;
 		this.imageAnalyzer = imageAnalyzer;

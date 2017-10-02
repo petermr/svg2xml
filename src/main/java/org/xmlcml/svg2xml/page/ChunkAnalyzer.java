@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.AbstractContainerOLD;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 
 /** 
@@ -35,7 +35,7 @@ public abstract class ChunkAnalyzer {
 	protected ChunkId chunkId;
 	protected SVGElement svgChunk;
 	protected PageAnalyzer pageAnalyzer;
-	protected List<AbstractContainer> abstractContainerList;
+	protected List<AbstractContainerOLD> abstractContainerList;
 	
 	protected ChunkAnalyzer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
@@ -54,13 +54,13 @@ public abstract class ChunkAnalyzer {
 		return svgChunk;
 	}
 
-	public List<AbstractContainer> createContainers() {
+	public List<AbstractContainerOLD> createContainers() {
 		throw new RuntimeException("Override for: "+getClass());
 	}
 
 	protected void ensureAbstractContainerList() {
 		if (abstractContainerList == null) {
-			abstractContainerList = new ArrayList<AbstractContainer>();
+			abstractContainerList = new ArrayList<AbstractContainerOLD>();
 		}
 	}
 

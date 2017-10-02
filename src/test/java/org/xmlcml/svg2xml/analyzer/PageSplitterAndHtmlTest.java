@@ -19,8 +19,8 @@ import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.text.TextLine;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
+import org.xmlcml.svg2xml.text.TextLineOLD;
 import org.xmlcml.testutil.TestUtils;
 import org.xmlcml.xml.XMLUtil;
 
@@ -41,15 +41,15 @@ public class PageSplitterAndHtmlTest {
 		Element svg = SVGElement.readAndCreateSVG(SVG2XMLFixtures.SVG_AJC_PAGE6_SPLIT_SVG);
 		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
 		CheckAnalyzer[] checkAnalyzers = new CheckAnalyzer[] {
-				new CheckAnalyzer(TextAnalyzer.class, 3),               //0
-				new CheckAnalyzer(TextAnalyzer.class, 29),              //1
+				new CheckAnalyzer(TextAnalyzerOLD.class, 3),               //0
+				new CheckAnalyzer(TextAnalyzerOLD.class, 29),              //1
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 6, 23),        //2
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 2, 7),         //3
-				new CheckAnalyzer(TextAnalyzer.class, 8),               //4
+				new CheckAnalyzer(TextAnalyzerOLD.class, 8),               //4
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 11, 14),       //5
-				new CheckAnalyzer(TextAnalyzer.class, 31),              //6
+				new CheckAnalyzer(TextAnalyzerOLD.class, 31),              //6
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 14, 26),       //7
-				new CheckAnalyzer(TextAnalyzer.class, 32),              //8
+				new CheckAnalyzer(TextAnalyzerOLD.class, 32),              //8
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 155, 42),      //9
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 2, 157),       //10
 				new CheckAnalyzer(MixedAnalyzer.class, 0, 2, 1486),      //11
@@ -602,10 +602,10 @@ public class PageSplitterAndHtmlTest {
 		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG)g);
 		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
 		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
-		TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
+		TextAnalyzerOLD textAnalyzer = mixedAnalyzer.getTextAnalyzer();
 		LOG.trace("TextAnalyzer "+textAnalyzer);
-		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
-		for (TextLine textLine : textLines) {
+		List<TextLineOLD> textLines = textAnalyzer.getLinesInIncreasingY();
+		for (TextLineOLD textLine : textLines) {
 			LOG.trace(textLine);
 		}
 		Assert.assertEquals("lines"+chunk, nlines, textLines.size());

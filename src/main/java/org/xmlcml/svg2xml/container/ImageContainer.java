@@ -16,7 +16,7 @@ import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 
-public class ImageContainer extends AbstractContainer  {
+public class ImageContainer extends AbstractContainerOLD  {
 
 	public final static Logger LOG = Logger.getLogger(ImageContainer.class);
 	

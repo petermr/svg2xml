@@ -9,27 +9,34 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
+import org.xmlcml.graphics.svg.cache.TextChunkCache;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.build.TextChunkList;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.table.TableGrid;
 import org.xmlcml.svg2xml.table.TableStructurer;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
 /** a new approach (2017) to analyzing the structure of pages.
  * uses PhraseList extents and HorizontalRulers to estimate widths
+ * 
+ * Now (2017) uses Caches to process the SVG input in TableContentCreator.CreateContent()
  * 
  * @author pm286
  *
@@ -51,7 +58,7 @@ public class PageLayoutAnalyzer {
 
 
 	protected TextStructurer textStructurer;
-	protected TextChunk phraseListList;
+	protected TextChunk textChunk;
 	protected TableStructurer tableStructurer;
 	protected List<HorizontalRuleNew> horizontalRuleList;
 	protected List<HorizontalElementNew> horizontalList;
@@ -89,26 +96,33 @@ public class PageLayoutAnalyzer {
 		createContent(svgChunk);
 	}
 
+	/** uses the SVG classes and methods
+	 * 
+	 * @param svgElement
+	 */
 	public void createContent(SVGElement svgElement) {
 		ComponentCache componentCache = new ComponentCache();
 		componentCache.readGraphicsComponentsAndMakeCaches(svgElement);
+		TextChunkCache textChunkCache = componentCache.getOrCreateTextChunkCache();
+		TextStructurer textStructurer = textChunkCache.getOrCreateTextStructurer();
+		TextChunkList textChunkList = textChunkCache.getOrCreateTextChunkList();
 		LOG.debug("components: "+componentCache.toString());
+		// should probably move TextStructure to TextChunkCache
 		textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgElement);
 		SVGElement inputSVGChunk = textStructurer.getSVGChunk();
 		cleanChunk(inputSVGChunk);
 		if (rotatable  && textStructurer.hasAntiClockwiseCharacters()) {
-			SVGSVG.wrapAndWriteAsSVG(inputSVGChunk, new File("target/debug/preRot.svg"));
-			inputSVGChunk = textStructurer.rotateClockwise();
-			SVGSVG.wrapAndWriteAsSVG(inputSVGChunk, new File("target/debug/postRot.svg"));
-			TextStructurer textStructurer1 = TextStructurer.createTextStructurerWithSortedLines(inputSVGChunk);
-			textStructurer = textStructurer1;
+			throw new RuntimeException("refactored rot90");
+//			inputSVGChunk = rotateClockwise(textStructurer);
+//			TextStructurer textStructurer1 = TextStructurer.createTextStructurerWithSortedLines(inputSVGChunk);
+//			textStructurer = textStructurer1;
 		}
 
-		phraseListList = textStructurer.getPhraseListList();
-		LOG.trace(">pll>"+phraseListList.size()+" ... "+phraseListList.toXML());
+		textChunk = textStructurer.getTextChunkList().getLastTextChunk();
+//		LOG.trace(">pll>"+phraseListList.size()+" ... "+phraseListList.toXML());
 		textStructurer.condenseSuscripts();
-		phraseListList.format(3);
-		tableStructurer = textStructurer.createTableStructurer(); // this deletes outer rect
+//		phraseListList.format(3);
+		tableStructurer = PageLayoutAnalyzer.createTableStructurer(textStructurer); // this deletes outer rect
 		TableGrid tableGrid = tableStructurer.createGrid();
 			
 		if (tableGrid == null) {
@@ -116,6 +130,38 @@ public class PageLayoutAnalyzer {
 			LOG.trace("hlist: " + PageLayoutAnalyzer.createSig(horizontalList));
 		}
 		return;
+	}
+	
+	/** rotates text clockwise to create new tables.
+	 * probable obsolete here.
+	 * static because of refactoring
+	 * 
+	 * @param textStructurer
+	 * @return
+	 */
+	public static SVGElement rotateClockwise(TextStructurer textStructurer) {
+		SVGG rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
+		TableStructurer tableStructurer = TableStructurer.createTableStructurer(textStructurer);
+		SVGElement chunk = textStructurer.getSVGChunk();
+		Angle angle = new Angle(-1.0 * Math.PI / 2);
+		List<SVGShape> shapeList = tableStructurer.getOrCreateShapeList();
+		SVGElement.rotateAndAlsoUpdateTransforms(shapeList, chunk.getCentreForClockwise90Rotation(), angle);
+		chunk.removeChildren();
+		XMLUtil.transferChildren(rotatedVerticalText, chunk);
+		for (SVGShape shape : shapeList) {
+			shape.detach();
+			chunk.appendChild(shape);
+		}
+		return chunk;
+	}
+
+
+	private static TableStructurer createTableStructurer(TextStructurer textStructurer) {
+		TextChunkList textChunkList = textStructurer.getOrCreateTextChunkListFromWords();
+		TableStructurer tableStructurer = new TableStructurer(textChunkList.getLastTextChunk());
+		tableStructurer.setTextStructurer(textStructurer);
+		tableStructurer.analyzeShapeList();
+		return tableStructurer;
 	}
 
 	public static String createSig(List<HorizontalElementNew> horizontalList) {
@@ -215,7 +261,7 @@ public class PageLayoutAnalyzer {
 
 	private List<HorizontalElementNew> createOrderedHorizontalList() {
 		Stack<PhraseChunk> phraseListStack = new Stack<PhraseChunk>();
-		for (PhraseChunk phraseList : phraseListList) {
+		for (PhraseChunk phraseList : textChunk) {
 			phraseListStack.push(phraseList);
 		}
 		Stack<HorizontalRuleNew> horizontalRulerListStack = new Stack<HorizontalRuleNew>();

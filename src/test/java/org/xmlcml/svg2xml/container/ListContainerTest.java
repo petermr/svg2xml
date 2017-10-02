@@ -50,7 +50,7 @@ public class ListContainerTest {
 	public void testRSCListHtml() throws Exception {
 		File file = org.xmlcml.svg2xml.text.TextFixtures.RSC_B306241d_6_8SA_SVG;
 		String outfile = LIST_CONTAINER+"/rscb306241d.chunk6.8Sa.html";
-		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(file);
 		ListContainer listContainer = ListContainer.createList(sc);
 		HtmlElement elem = listContainer.createHtmlElement();
 		new File(outfile).getParentFile().mkdirs();
@@ -98,7 +98,7 @@ public class ListContainerTest {
 	
 	private static void createAndDebugList(String pub, File file, String outfileName) {
 //		SYSOUT.println("========="+pub+"===========");
-		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
+		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(file);
 		ListContainer listContainer = ListContainer.createList(sc);
 		if (listContainer != null) {
 			HtmlElement list = listContainer.createHtmlElement();

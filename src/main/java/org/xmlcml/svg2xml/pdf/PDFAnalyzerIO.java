@@ -13,7 +13,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlMenuSystem;
-import org.xmlcml.svg2xml.container.AbstractContainer.ContainerType;
+import org.xmlcml.svg2xml.container.AbstractContainerOLD.ContainerType;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.util.NameComparator;

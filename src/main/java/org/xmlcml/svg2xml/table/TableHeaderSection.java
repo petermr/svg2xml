@@ -14,8 +14,8 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 /** manages the table header, including trying to sort out the column spanning

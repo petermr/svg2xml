@@ -12,11 +12,11 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGLineList;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
-import org.xmlcml.svg2xml.table.GenericRowOld;
-import org.xmlcml.svg2xml.text.PhraseListListOld;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.svg2xml.old.GenericRowOld;
+import org.xmlcml.svg2xml.old.PhraseListListOld;
 
 /** a contentBox is (usually) a Rect which contains other material.
  * Examples are textboxes, legend boxes or author-marked areas

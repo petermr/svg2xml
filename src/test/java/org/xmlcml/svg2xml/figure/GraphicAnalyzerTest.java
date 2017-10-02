@@ -16,9 +16,9 @@ import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.GraphicAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD.TextOrientation;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 public class GraphicAnalyzerTest {
 
@@ -89,8 +89,8 @@ public class GraphicAnalyzerTest {
 	@Test
 	public void testRot0Analyzer() {
 		GraphicAnalyzer graphicAnalyzer = GraphicAnalyzer.createGraphicAnalyzer(SVG2XMLFixtures.FIGURE_PAGE_3_SVG,  "svg:g/svg:g/svg:g[@edge='YMIN']", 2);
-		TextAnalyzer textAnalyzer = graphicAnalyzer.getRot0TextAnalyzer();
-		TextStructurer textStructurer = new TextStructurer(textAnalyzer);
+		TextAnalyzerOLD textAnalyzer = graphicAnalyzer.getRot0TextAnalyzer();
+		TextStructurerOLD textStructurer = new TextStructurerOLD(textAnalyzer);
 		HtmlElement htmlElement = textStructurer.createHtmlElement();
 		// missing?
 //		SVGUtil.debug(htmlElement, TEXT+"/rot0.html", 1);
@@ -292,7 +292,7 @@ public class GraphicAnalyzerTest {
 		Assert.assertNotNull("non-null graphicsAnalyzer", graphicAnalyzer);
 		new File(svgFilename).getParentFile().mkdirs();
 		new File(htmlFilename).getParentFile().mkdirs();
-		TextStructurer textStructurer = graphicAnalyzer.createTextStructurer(textOrientation);
+		TextStructurerOLD textStructurer = graphicAnalyzer.createTextStructurer(textOrientation);
 		if (textStructurer != null) {
 			SVGUtil.debug(textStructurer.getDebugSVG(), svgFilename, 1);
 			HtmlElement htmlElement = textStructurer.createHtmlElement();

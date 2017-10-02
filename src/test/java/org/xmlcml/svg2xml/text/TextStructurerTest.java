@@ -17,10 +17,10 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
-import org.xmlcml.graphics.svg.text.phrase.PhraseNew;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
-import org.xmlcml.graphics.svg.text.phrase.WordNew;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.build.WordNew;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
@@ -55,7 +55,7 @@ public class TextStructurerTest {
 	
 	@Test
 	public void testMultilineFonts() {
-		TextStructurer textContainer = TextStructurer.createTextStructurer(SVG2XMLFixtures.PARA_SUSCRIPT_SVG);
+		TextStructurerOLD textContainer = TextStructurerOLD.createTextStructurer(SVG2XMLFixtures.PARA_SUSCRIPT_SVG);
 		Multiset<String> fontFamilyMultiset = textContainer.getFontFamilyMultiset();
 		Assert.assertEquals("font occurrences", 523, fontFamilyMultiset.size());
 		Set<String> entrySet = fontFamilyMultiset.elementSet();
@@ -67,7 +67,7 @@ public class TextStructurerTest {
 	
 	@Test
 	public void testMultilineCommonestFontFamily() {
-		TextStructurer textContainer = TextStructurer.createTextStructurer(SVG2XMLFixtures.PARA_SUSCRIPT_SVG);
+		TextStructurerOLD textContainer = TextStructurerOLD.createTextStructurer(SVG2XMLFixtures.PARA_SUSCRIPT_SVG);
 		Assert.assertEquals("commonest fontfamily", "TimesNewRoman", textContainer.getCommonestFontFamily());
 	}
 	
@@ -79,7 +79,7 @@ public class TextStructurerTest {
 	@Test
 	public void testReadBMCGeotableContainers() {
 		for (File geoFile : geoFileList) {
-			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
+			TextStructurerOLD container = TextStructurerOLD.createTextStructurer(geoFile);
 		}
 	}
 	
@@ -89,8 +89,8 @@ public class TextStructurerTest {
 		double[] sizes = {7.97, 7.97, 9.76, 10.26, 9.76, 10.26, 9.76};
 		int i = 0;
 		for (File geoFile : geoFileList) {
-			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
-			TextCoordinate size = container.getCommonestFontSize();
+			TextStructurerOLD container = TextStructurerOLD.createTextStructurer(geoFile);
+			TextCoordinateOLD size = container.getCommonestFontSize();
 			Assert.assertEquals("file"+i, sizes[i], size.getDouble(), 0.001);
 			i++;
 		}
@@ -103,7 +103,7 @@ public class TextStructurerTest {
 				           "AdvOTa9103878", "AdvOTa9103878", "AdvOTa9103878"};
 		int i = 0;
 		for (File geoFile : geoFileList) {
-			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
+			TextStructurerOLD container = TextStructurerOLD.createTextStructurer(geoFile);
 			String fontFamily = container.getCommonestFontFamily();
 			Assert.assertEquals("file"+i, family[i], fontFamily);
 			i++;
@@ -116,7 +116,7 @@ public class TextStructurerTest {
 		int[] nfont = {3, 1, 3, 3, 1, 5, 3};
 		int i = 0;
 		for (File geoFile : geoFileList) {
-			TextStructurer container = TextStructurer.createTextStructurer(geoFile);
+			TextStructurerOLD container = TextStructurerOLD.createTextStructurer(geoFile);
 			Assert.assertEquals("file"+i, nfont[i], container.getFontFamilyCount());
 			i++;
 		}
@@ -125,15 +125,15 @@ public class TextStructurerTest {
 	@Test
 	public void testBMCGeotableTextLines() {
 		File geoFile2 = geoFileList.get(2);
-		TextStructurer container = TextStructurer.createTextStructurer(geoFile2);
+		TextStructurerOLD container = TextStructurerOLD.createTextStructurer(geoFile2);
 	}
 	
 	@Test
 	@Ignore // fails
 	public void testFullTables() {
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
-		List<TabbedTextLine> tabbedTextLineList = textStructurer.createTabbedLineList();
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
+		List<TabbedTextLineOLD> tabbedTextLineList = textStructurer.createTabbedLineList();
 //		Assert.assertNotNull(tabbedTextLineList);
 //		for (int i = 0; i < tabbedTextLineList.size(); i++) {
 //			System.out.println(">"+i+"> "+tabbedTextLineList.get(i));
@@ -144,9 +144,9 @@ public class TextStructurerTest {
 	@Test
 	@Ignore
 	public void testWordListCollection() {
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
-		List<TextLine> textLineList = textStructurer.getLinesInIncreasingY();
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
+		List<TextLineOLD> textLineList = textStructurer.getLinesInIncreasingY();
 		for (int i = 0; i < textLineList.size(); i++) {
 			System.out.println(">"+i+"> "+textLineList.get(i));
 		}
@@ -155,17 +155,17 @@ public class TextStructurerTest {
 
 	@Test
 	public void testHOText() {
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_HO_SVG);
-		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_HO_SVG);
+		List<RawWordsOLD> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("ho", "{HO}", wordList.get(0).toString());
 	}
 	
 	@Test
 	public void testSubscriptedText() {
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_NO2_SVG);
-		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_NO2_SVG);
+		List<RawWordsOLD> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("no2", 2, wordList.size());
 		Assert.assertEquals("no", "{NO}", wordList.get(0).toString());
 		Assert.assertEquals("xy", "(299.7,525.78)", wordList.get(0).get(0).getXY().toString());
@@ -175,9 +175,9 @@ public class TextStructurerTest {
 	
 	@Test
 	public void test2_11() {
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_SVG);
-		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_11_SVG);
+		List<RawWordsOLD> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("2.11", 3, wordList.size());
 		Assert.assertEquals("1", "{HO........NO}", wordList.get(0).toString());
 		Assert.assertEquals("2", "{2}", wordList.get(1).toString());
@@ -187,10 +187,10 @@ public class TextStructurerTest {
 	
 	@Test
 	public void test2_15() {
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_15_SVG);
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.IMAGE_2_15_SVG);
 		
-		List<RawWords> wordList = textStructurer.createRawWordsListFromTextLineList();
+		List<RawWordsOLD> wordList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("words", 6, wordList.size());
 		Assert.assertEquals("0", "{O}", wordList.get(0).toString());
 		Assert.assertEquals("1", "{N}", wordList.get(1).toString());
@@ -210,7 +210,7 @@ public class TextStructurerTest {
 	public void testRotatePhrasesAndExtractPhraseList() throws Exception {
 		TextChunk phraseListList; PhraseChunk phraseList; PhraseNew phrase; WordNew word0, word1;
 		File graphTextFile = new File(SVG2XMLFixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
-		TextStructurer textStructurer;
+		TextStructurerOLD textStructurer;
 		phraseListList = getUnrotatedPhrases(graphTextFile, 36, "HD-73//1//antibiotic free diet//0.9//0.8//y//t//i//l//0.7//a//t//r//o//0.6//m//e//0.5//v//i//t//a//0.4//l//u//m//0.3//u//rifampicin//c//0.2//diet//0.1//0//1 2 3 4 5//days//");
 
 		// horizontal phrases
@@ -240,7 +240,7 @@ public class TextStructurerTest {
 
 		// now process rotated text - this is common y-axis text orientation
 		// rotation centre is arbitrary, angle is clockwise
-		TextStructurer textStructurer2 = new TextStructurer();
+		TextStructurerOLD textStructurer2 = new TextStructurerOLD();
 		textStructurer2.setRotatable(true);
 		SVGG rotatedVerticalText = textStructurer2.createChunkFromVerticalText(new Real2(200., 200.), new Angle(-1.0 * Math.PI / 2));
 		LOG.trace("rot text "+rotatedVerticalText.toXML());
@@ -255,7 +255,7 @@ public class TextStructurerTest {
 		SVGSVG.wrapAndWriteAsSVG(rotatedVerticalText, outFile);
 		
 		// reread and analyze the horizontal (previously vertical) lines;
-		textStructurer = TextStructurer.createTextStructurerWithSortedLines(rotatedVerticalText);
+		textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(rotatedVerticalText);
 		phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		phraseListList.getStringValue(); // computes if not already known
 		Assert.assertEquals(1, phraseListList.size());
@@ -818,13 +818,13 @@ public class TextStructurerTest {
 	 */
 	public void testRotateTextLines() {
 
-		TextStructurer textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
+		TextStructurerOLD textStructurer = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
 		textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
 		textStructurer.formatTextLineTransforms(5);
-		List<TextLine> textLineList = textStructurer.getTextLineList();
+		List<TextLineOLD> textLineList = textStructurer.getTextLineList();
 		SVGG g = new SVGG();
-		for (TextLine textLine : textLineList) {
+		for (TextLineOLD textLine : textLineList) {
 			for (GraphicsElement character : textLine.getSVGTextCharacters()) {
 				g.appendChild(character.copy());
 			}
@@ -833,17 +833,17 @@ public class TextStructurerTest {
 		SVGSVG.wrapAndWriteAsSVG(g, rotatedFile);
 
 		textStructurer = 
-				TextStructurer.createTextStructurerWithSortedLines(rotatedFile);
+				TextStructurerOLD.createTextStructurerWithSortedLines(rotatedFile);
 		textLineList = textStructurer.getTextLineList();
 		LOG.trace("TXT>"+textLineList.size());
-		for (TextLine textLine : textLineList) {
+		for (TextLineOLD textLine : textLineList) {
 			LOG.trace("LINE: "+textLine);
 		}
 		textStructurer.rotateAsBlock(new Real2(100., 100.), new Angle(Math.PI / 2 ));
 		textStructurer.formatTextLineTransforms(5);
 		textLineList = textStructurer.getTextLineList();
 		g = new SVGG();
-		for (TextLine textLine : textLineList) {
+		for (TextLineOLD textLine : textLineList) {
 			for (GraphicsElement character : textLine.getSVGTextCharacters()) {
 				g.appendChild(character.copy());
 			}
@@ -891,14 +891,14 @@ public class TextStructurerTest {
 		
 		// now process rotated text - this is common y-axis text orientation
 		// rotation centre is arbitrary, angle is clockwise
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(graphTextFile);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(graphTextFile);
 		SVGG rotatedVerticalText = textStructurer.createChunkFromVerticalText(rotCentre, new Angle(-1.0 * Math.PI / 2));
 		Assert.assertEquals(verticalCharacterCount, SVGText.extractSelfAndDescendantTexts(rotatedVerticalText).size());
 
 		SVGSVG.wrapAndWriteAsSVG(rotatedVerticalText, outFile1);
 		
 		// reread and analyze the horizontal (previously vertical) lines;
-		TextStructurer textStructurer2 = TextStructurer.createTextStructurerWithSortedLines(rotatedVerticalText);
+		TextStructurerOLD textStructurer2 = TextStructurerOLD.createTextStructurerWithSortedLines(rotatedVerticalText);
 		phraseListList = textStructurer2.getOrCreatePhraseListListFromWords();
 		phraseListList.format(1);
 		phraseListList.getStringValue(); // computes if not already known
@@ -936,7 +936,7 @@ public class TextStructurerTest {
 
 	private TextChunk getUnrotatedPhrases(File graphTextFile, int phraseListListSize, String totalStringValue) {
 		TextChunk phraseListList;
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(graphTextFile);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(graphTextFile);
 		phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
 		Assert.assertNotNull("phraseListList not null", phraseListList);
 		phraseListList.getStringValue(); // computes if not already known

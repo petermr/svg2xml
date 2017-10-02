@@ -9,8 +9,8 @@ import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 public class FigureCaption extends FigureComponent {
 
 	private final static Logger LOG = Logger.getLogger(FigureCaption.class);
@@ -19,15 +19,15 @@ public class FigureCaption extends FigureComponent {
 	public FigureCaption(FigureAnalyzer figureAnalyzer) {
 		super(figureAnalyzer);
 	}
-	public FigureCaption(TextAnalyzer textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
+	public FigureCaption(TextAnalyzerOLD textAnalyzer, ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer)  {
 		super(textAnalyzer, shapeAnalyzer, imageAnalyzer);
 	}
 
 	public void processCaptionText(HtmlDiv div) {
 		LOG.trace(svgContainer.getChildCount());
 		List<SVGText> characters = SVGText.extractSelfAndDescendantTexts(svgContainer);
-		TextAnalyzer textAnalyzer1 = new TextAnalyzer(characters, pageAnalyzer);
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters, textAnalyzer1);
+		TextAnalyzerOLD textAnalyzer1 = new TextAnalyzerOLD(characters, pageAnalyzer);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(characters, textAnalyzer1);
 		div.appendChild(textStructurer.createHtmlElement());
 	}
 

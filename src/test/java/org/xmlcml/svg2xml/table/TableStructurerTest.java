@@ -29,8 +29,8 @@ import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.text.TextLine;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.text.TextLineOLD;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
@@ -581,7 +581,7 @@ public class TableStructurerTest {
 	private TableStructurer testHorizontalRules(File inputFile, String outputRoot, int horizontalRulerCount) {
 		File outputSVGFile = new File("target/table/"+outputRoot+"/horizontal.svg");
 
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
 		TableStructurer tableStructurer = textStructurer.createTableStructurer();
 		List<HorizontalRuleNew> rulerList = tableStructurer.getHorizontalRulerList();
 		if (rulerList == null) {
@@ -662,9 +662,9 @@ public class TableStructurerTest {
 	}
 
 	private void testSuscripts(File inputFile, int superscript, int subscript) {
-		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
 		textStructurer.extractAndApplySuscripts();
-		List<TextLine> superList = textStructurer.getSuperscriptLineList();
+		List<TextLineOLD> superList = textStructurer.getSuperscriptLineList();
 //		for (TextLine supersc : superList) {
 //			System.out.println("^^"+supersc);
 //		}

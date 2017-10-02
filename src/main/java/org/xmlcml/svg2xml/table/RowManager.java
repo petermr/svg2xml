@@ -17,7 +17,7 @@ import org.xmlcml.graphics.svg.SVGLineList.SiblingType;
 import org.xmlcml.graphics.svg.objects.SVGContentBox;
 import org.xmlcml.graphics.svg.rule.GenericRowNew;
 import org.xmlcml.graphics.svg.rule.GenericRowNew.RowType;
-import org.xmlcml.graphics.svg.text.phrase.PhraseChunk;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 
 /** manages the addition and sorting of the row-like objects in a table.
  * these include:

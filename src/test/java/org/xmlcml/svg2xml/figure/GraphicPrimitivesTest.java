@@ -30,8 +30,8 @@ import org.xmlcml.graphics.svg.linestuff.ComplexLine.LineOrientation;
 import org.xmlcml.graphics.svg.linestuff.Joint;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.page.GraphicAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzer.TextOrientation;
-import org.xmlcml.svg2xml.text.TextStructurer;
+import org.xmlcml.svg2xml.page.TextAnalyzerOLD.TextOrientation;
+import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 public class GraphicPrimitivesTest {
 
@@ -147,7 +147,7 @@ public class GraphicPrimitivesTest {
 		verticalComplexLine.detach();
 		SVGSVG.wrapAndWriteAsSVG(g, new File("target/noHorizontalOrVerticalAxis.svg"));
 		GraphicAnalyzer graphicAnalyzer = new GraphicAnalyzer(g);
-		TextStructurer textStructurer = graphicAnalyzer.createTextStructurer(TextOrientation.ROT_0);
+		TextStructurerOLD textStructurer = graphicAnalyzer.createTextStructurer(TextOrientation.ROT_0);
 		textStructurer.detachCharacters();
 		SVGSVG.wrapAndWriteAsSVG(g, new File("target/noHorizontalText.svg"));
 		textStructurer = graphicAnalyzer.createTextStructurer(TextOrientation.ROT_PI2);

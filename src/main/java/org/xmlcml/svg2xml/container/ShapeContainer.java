@@ -12,7 +12,7 @@ import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
-public class ShapeContainer extends AbstractContainer  {
+public class ShapeContainer extends AbstractContainerOLD  {
 
 	public final static Logger LOG = Logger.getLogger(ShapeContainer.class);
 

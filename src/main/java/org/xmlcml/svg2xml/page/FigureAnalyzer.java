@@ -12,7 +12,7 @@ import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.svg2xml.figure.FigureCaption;
 import org.xmlcml.svg2xml.figure.FigureComponent;
 import org.xmlcml.svg2xml.figure.FigureGraphic;
-import org.xmlcml.svg2xml.text.ScriptLine;
+import org.xmlcml.svg2xml.text.ScriptLineOLD;
 
 /**
  * A figure is a complex and variable mixture of CaptionComponent and GraphicComponent.
@@ -42,7 +42,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 
 	private static final Double YEPS = 2.0;
 	
-	private TextAnalyzer textAnalyzer;
+	private TextAnalyzerOLD textAnalyzer;
 	private ShapeAnalyzer shapeAnalyzer;
 	private ImageAnalyzer imageAnalyzer;
 
@@ -54,7 +54,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		super(pageAnalyzer);
 	}
 	
-	public FigureAnalyzer(TextAnalyzer textAnalyzer,
+	public FigureAnalyzer(TextAnalyzerOLD textAnalyzer,
 			ShapeAnalyzer shapeAnalyzer, ImageAnalyzer imageAnalyzer, SVGElement svgElement) {
 		super(textAnalyzer.getPageAnalyzer());
 		this.textAnalyzer = textAnalyzer;
@@ -65,7 +65,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 
 	public HtmlDiv createHtmlFigure() {
 		String id = String.valueOf(getChunkId());
-		List<ScriptLine> scriptLineList = textAnalyzer.getTextStructurer().getScriptedLineListForCommonestFont(); 
+		List<ScriptLineOLD> scriptLineList = textAnalyzer.getTextStructurer().getScriptedLineListForCommonestFont(); 
 		Double yCoordinateOfCaption = iterateThroughLinesToFindCaption(scriptLineList);
 		if (yCoordinateOfCaption != null) {
 			createCaptionAndGraphic(id, yCoordinateOfCaption);
@@ -90,9 +90,9 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		return div;
 	}
 
-	private Double iterateThroughLinesToFindCaption(List<ScriptLine> scriptLineList) {
+	private Double iterateThroughLinesToFindCaption(List<ScriptLineOLD> scriptLineList) {
 		Double ySplit = null;
-		for (ScriptLine scriptLine : scriptLineList) {	
+		for (ScriptLineOLD scriptLine : scriptLineList) {	
 			String s = scriptLine.getTextContentWithSpaces();
 			LOG.trace("Y "+scriptLine.getBoundingBox()+" "+s);
 			if (CAPTION_PATTERN.matcher(s).matches()) {
@@ -121,7 +121,7 @@ public class FigureAnalyzer extends ChunkAnalyzer {
 		}
 	}
 
-	public TextAnalyzer getTextAnalyzer() {
+	public TextAnalyzerOLD getTextAnalyzer() {
 		return textAnalyzer;
 	}
 

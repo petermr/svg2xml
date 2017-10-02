@@ -13,13 +13,13 @@ import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.AbstractContainerOLD;
 import org.xmlcml.svg2xml.container.MixedContainer;
-import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.container.ScriptContainerOLD;
 import org.xmlcml.svg2xml.container.ShapeContainer;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.StyleSpans;
+import org.xmlcml.svg2xml.text.ScriptLineOLD;
+import org.xmlcml.svg2xml.text.StyleSpansOLD;
 import org.xmlcml.svg2xml.text.StyleSpansTest;
 
 
@@ -74,7 +74,7 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage1() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE1);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		Assert.assertNotNull("containers", containerList);
 		//Assert.assertEquals("containers", 12, containerList.size());
 	}
@@ -82,37 +82,37 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage1classes() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE1);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{
-				ScriptContainer.class,
+				ScriptContainerOLD.class,
 				ShapeContainer.class,
 				MixedContainer.class,
-				ScriptContainer.class,
-				ScriptContainer.class,
+				ScriptContainerOLD.class,
+				ScriptContainerOLD.class,
 				MixedContainer.class,
-				ScriptContainer.class,
-				ScriptContainer.class,
+				ScriptContainerOLD.class,
+				ScriptContainerOLD.class,
 				MixedContainer.class,
-				ScriptContainer.class,
+				ScriptContainerOLD.class,
 				ShapeContainer.class,
-				ScriptContainer.class,},
+				ScriptContainerOLD.class,},
 				containerList);
 	}
 	
 	@Test
 	public void testRawPage2classes() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{
-						ScriptContainer.class,
-						ScriptContainer.class,
-						ScriptContainer.class,
-						ScriptContainer.class,
-						ScriptContainer.class,
-						ScriptContainer.class,
-						ScriptContainer.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
 						},
 				containerList);
 	}
@@ -120,7 +120,7 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage2Content() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		checkContainerRawContent(
 			new String[]{
 				"Hiwatashietal.BMCEvolutionaryBiology2011,11:312http://www.biomedcentral.com/1471-2148/11/312",
@@ -186,9 +186,9 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2HtmlAll() throws Exception {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		int i = 0;
-		for (AbstractContainer container : containerList) {
+		for (AbstractContainerOLD container : containerList) {
 			new File("target/junk/").mkdirs();
 			SVGUtil.debug(container.createHtmlElement(), 
 				new FileOutputStream(new File("target/junk/page2."+(i++)+".html")), 1);
@@ -198,7 +198,7 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2Html0() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(0).createHtmlElement().toXML();
 		LOG.trace(".. "+actual);
 		Assert.assertEquals("html0", "" +
@@ -213,7 +213,7 @@ public class PageAnalyzerTest {
 	public void testPage2Html3_3() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.SVG_MULTIPLE_2_3_3_SVG);
 		LOG.trace(SVGElement.readAndCreateSVG(SVG2XMLFixtures.SVG_MULTIPLE_2_3_3_SVG).toXML());
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(0).createHtmlElement().toXML();
 		LOG.trace(".. "+actual);
 		// ids are computed so 2.0
@@ -228,7 +228,7 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2Html3() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		String actual = containerList.get(3).createHtmlElement().toXML();
 		LOG.trace(".. "+actual);
 		Assert.assertEquals("html3", 
@@ -243,8 +243,8 @@ public class PageAnalyzerTest {
 	@Test
 	public void testPage2ScriptLineList0Content() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2);
-		ScriptContainer scriptContainer = (ScriptContainer) pageAnalyzer.getAbstractContainerList().get(0);
-		List<ScriptLine> scriptLineList = scriptContainer.getScriptLineList();
+		ScriptContainerOLD scriptContainer = (ScriptContainerOLD) pageAnalyzer.getAbstractContainerList().get(0);
+		List<ScriptLineOLD> scriptLineList = scriptContainer.getScriptLineList();
 		Assert.assertEquals("scriptLines", 2, scriptLineList.size());
 		checkScriptLineListContent(
 				new String[]{
@@ -257,7 +257,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testStyleSpans2_0_0() {
-		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
+		StyleSpansOLD styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
 		StyleSpansTest.checkStyleSpans("0 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">Hiwatashi <i>et al</i>. <i>BMC Evolutionary Biology </i>2011, <b>11</b>:312</span>",
 				7.97, styleSpans);
@@ -265,7 +265,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testStyleSpans2_2_0() {
-		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 2, 0);
+		StyleSpansOLD styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 2, 0);
 		StyleSpansTest.checkStyleSpans("2 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">corresponding sequence of the other, this type of recombi-</span>",
 				9.763, styleSpans);
@@ -273,7 +273,7 @@ public class PageAnalyzerTest {
 	
 	@Test
 	public void testPage2ScriptLineList0() {
-		StyleSpans styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
+		StyleSpansOLD styleSpans = StyleSpansTest.getStyleSpans(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE2, 0, 0);
 		StyleSpansTest.checkStyleSpans("0 0", 
 				"<span xmlns=\"http://www.w3.org/1999/xhtml\">Hiwatashi <i>et al</i>. <i>BMC Evolutionary Biology </i>2011, <b>11</b>:312</span>",
 				7.97, styleSpans);
@@ -283,14 +283,14 @@ public class PageAnalyzerTest {
 	@Test
 	public void testRawPage3classes() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(SVG2XMLFixtures.RAW_MULTIPLE312_SVG_PAGE3);
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 				new Class[]{
-						ScriptContainer.class,
-						ScriptContainer.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
 						MixedContainer.class,
-						ScriptContainer.class,
-						ScriptContainer.class,
+						ScriptContainerOLD.class,
+						ScriptContainerOLD.class,
 						},
 				containerList);
 	}
@@ -306,11 +306,11 @@ public class PageAnalyzerTest {
     @Ignore
 	public void testSVGBug1() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(new File("src/test/resources/svg/Shukla/page8.svg"));
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 			new Class[]{
-					org.xmlcml.svg2xml.container.ScriptContainer.class,
-					org.xmlcml.svg2xml.container.ScriptContainer.class,
+					org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+					org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 					org.xmlcml.svg2xml.container.ShapeContainer.class,
 					org.xmlcml.svg2xml.container.ShapeContainer.class,
 					org.xmlcml.svg2xml.container.ShapeContainer.class,
@@ -324,8 +324,8 @@ public class PageAnalyzerTest {
 					org.xmlcml.svg2xml.container.ShapeContainer.class,
 					org.xmlcml.svg2xml.container.ShapeContainer.class,
 					org.xmlcml.svg2xml.container.MixedContainer.class,
-					org.xmlcml.svg2xml.container.ScriptContainer.class,
-					org.xmlcml.svg2xml.container.ScriptContainer.class,
+					org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+					org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 			},
 			containerList);
 	}
@@ -333,39 +333,39 @@ public class PageAnalyzerTest {
 	@Test
 	public void testMDPIPageAndProcessing() {
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(new File("src/test/resources/svg/mdpi/metabolites-02-00039-page2.svg"));
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		checkAbstractContainers(
 		new Class[]{
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				
 				org.xmlcml.svg2xml.container.MixedContainer.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
 				
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 				org.xmlcml.svg2xml.container.MixedContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
-				org.xmlcml.svg2xml.container.ScriptContainer.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
+				org.xmlcml.svg2xml.container.ScriptContainerOLD.class,
 		},
 		containerList);
 	}
@@ -375,7 +375,7 @@ public class PageAnalyzerTest {
 	public void testOutput(){
 		PageAnalyzer pageAnalyzer = PageAnalyzer.createAndAnalyze(new File("src/test/resources/svg/mdpi/metabolites-02-00039-page2.svg"));
 		pageAnalyzer.getPageIO().setRawSVGDocumentDir(new File("target/mdpi/test/"));
-		List<AbstractContainer> containerList = pageAnalyzer.getAbstractContainerList();
+		List<AbstractContainerOLD> containerList = pageAnalyzer.getAbstractContainerList();
 		MixedContainer mixedContainer10 = (MixedContainer) containerList.get(7);
 		GraphicsElement chunk10 = mixedContainer10.getChunkAnalyzer().getSVGChunk();
 		LOG.trace("chunk10 "+chunk10.toXML());
@@ -392,7 +392,7 @@ public class PageAnalyzerTest {
 	
 	//TODO sort out count checking once a decent chunking algorithm has been written
 	private void checkAbstractContainers(Class<?>[] classes,
-			List<AbstractContainer> containerList) {
+			List<AbstractContainerOLD> containerList) {
 		Assert.assertNotNull(containerList);
 		/*try {
 			Assert.assertEquals("size", classes.length, containerList.size());
@@ -409,11 +409,11 @@ public class PageAnalyzerTest {
 	}
 
 	private void checkContainerRawContent(String[] contents,
-			List<AbstractContainer> containerList) {
+			List<AbstractContainerOLD> containerList) {
 		try {
 			Assert.assertEquals("size", contents.length, containerList.size());
 		} catch (AssertionError e) {
-			for (AbstractContainer container : containerList) {
+			for (AbstractContainerOLD container : containerList) {
 				System.err.println(container.getRawValue());
 			}
 			throw (new RuntimeException("Failed", e));
@@ -424,11 +424,11 @@ public class PageAnalyzerTest {
 	}
 
 	private void checkScriptLineListContent(String[] contents,
-			List<ScriptLine> scriptLineList) {
+			List<ScriptLineOLD> scriptLineList) {
 		try {
 			Assert.assertEquals("size", contents.length, scriptLineList.size());
 		} catch (AssertionError e) {
-			for (ScriptLine scriptLine : scriptLineList) {
+			for (ScriptLineOLD scriptLine : scriptLineList) {
 				System.err.println(scriptLine);
 			}
 			throw (new RuntimeException("Failed", e));

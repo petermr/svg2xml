@@ -6,7 +6,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.AbstractContainerOLD;
 import org.xmlcml.svg2xml.container.ShapeContainer;
 
 /**
@@ -83,7 +83,7 @@ public class ShapeAnalyzer extends ChunkAnalyzer {
 	 * @return
 	 */
 	@Override
-	public List<AbstractContainer> createContainers() {
+	public List<AbstractContainerOLD> createContainers() {
 		ensureShapeContainer();
 		ensureAbstractContainerList();
 		abstractContainerList.add(shapeContainer);
@@ -97,7 +97,7 @@ public class ShapeAnalyzer extends ChunkAnalyzer {
 		return s;
 	}
 
-	public AbstractContainer getPathContainer() {
+	public AbstractContainerOLD getPathContainer() {
 		return shapeContainer;
 	}
 

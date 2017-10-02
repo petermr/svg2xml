@@ -28,9 +28,9 @@ import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.container.AbstractContainer;
+import org.xmlcml.svg2xml.container.AbstractContainerOLD;
 import org.xmlcml.svg2xml.container.ImageContainer;
-import org.xmlcml.svg2xml.container.ScriptContainer;
+import org.xmlcml.svg2xml.container.ScriptContainerOLD;
 import org.xmlcml.svg2xml.container.ShapeContainer;
 import org.xmlcml.svg2xml.indexer.AbstractIndexer;
 import org.xmlcml.svg2xml.indexer.AppendixIndexer;
@@ -44,8 +44,8 @@ import org.xmlcml.svg2xml.indexer.SchemeIndexer;
 import org.xmlcml.svg2xml.indexer.SummaryIndexer;
 import org.xmlcml.svg2xml.indexer.TableIndexer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.text.ScriptLine;
-import org.xmlcml.svg2xml.text.ScriptWord;
+import org.xmlcml.svg2xml.text.ScriptLineOLD;
+import org.xmlcml.svg2xml.text.ScriptWordOLD;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.svg2xml.util.TextFlattener;
@@ -105,9 +105,9 @@ public class PDFIndex {
 	private Multimap<String, ChunkId> svgIdBySchemeMap;
 	private Multimap<String, ChunkId> svgIdByTableMap;
 
-	private Multimap<Double, AbstractContainer> scriptContainerByBoldFontSize;
-	private Multimap<Double, AbstractContainer> pathContainerByPathString;
-	private Multimap<Double, AbstractContainer> imageContainerByImageString;
+	private Multimap<Double, AbstractContainerOLD> scriptContainerByBoldFontSize;
+	private Multimap<Double, AbstractContainerOLD> pathContainerByPathString;
+	private Multimap<Double, AbstractContainerOLD> imageContainerByImageString;
 
 	private Multimap<Int2Range, ChunkId> bboxMap;
 
@@ -560,9 +560,9 @@ public class PDFIndex {
 	}
 
 	public void addToindexes(PageAnalyzer pageAnalyzer) {
-		for (AbstractContainer container : pageAnalyzer.getAbstractContainerList()) {
-			if (container instanceof ScriptContainer) {
-				((ScriptContainer)container).addToIndexes(this);
+		for (AbstractContainerOLD container : pageAnalyzer.getAbstractContainerList()) {
+			if (container instanceof ScriptContainerOLD) {
+				((ScriptContainerOLD)container).addToIndexes(this);
 			} else if (container instanceof ShapeContainer) {
 				((ShapeContainer)container).addToIndexes(this);
 			} else if (container instanceof ImageContainer) {
@@ -573,13 +573,13 @@ public class PDFIndex {
 		}
 	}
 
-	public void addToBoldIndex(Double fontSize, ScriptContainer scriptContainer) {
+	public void addToBoldIndex(Double fontSize, ScriptContainerOLD scriptContainer) {
 		ensureContainerMaps();
 		LOG.trace("Adding: "+fontSize+" "+scriptContainer);
 		scriptContainerByBoldFontSize.put(fontSize, scriptContainer);
 	}
 
-	public void addToShapeIndex(String pathString, AbstractContainer pathContainer) {
+	public void addToShapeIndex(String pathString, AbstractContainerOLD pathContainer) {
 		LOG.trace("NYI Adding: "+pathString+" "+pathContainer);
 	}
 
@@ -599,11 +599,11 @@ public class PDFIndex {
 			Arrays.sort(fontSizes);
 			for (Double fontSize : fontSizes) {
 				LOG.trace("************* "+fontSize);
-				List<AbstractContainer> containers = getListByKey(fontSize);
-				for (AbstractContainer container : containers) {
-					if (container instanceof ScriptContainer) {
-						ScriptContainer scriptContainer = (ScriptContainer) container;
-						for (ScriptLine script : scriptContainer) {
+				List<AbstractContainerOLD> containers = getListByKey(fontSize);
+				for (AbstractContainerOLD container : containers) {
+					if (container instanceof ScriptContainerOLD) {
+						ScriptContainerOLD scriptContainer = (ScriptContainerOLD) container;
+						for (ScriptLineOLD script : scriptContainer) {
 							RealRangeArray wordArray = script.getWordRangeArray();
 							wordArray.sortAndRemoveOverlapping();
 							wordArray.format(pdfAnalyzer.getDecimalPlaces());
@@ -612,8 +612,8 @@ public class PDFIndex {
 								LOG.trace(character.getValue()+"_"+character.getX()+" ");
 							}
 //							SYSOUT.println();
-							List<ScriptWord> words = script.getScriptWordList();
-							for (ScriptWord word : words) {
+							List<ScriptWordOLD> words = script.getScriptWordList();
+							for (ScriptWordOLD word : words) {
 								LOG.trace(" ~  "+word.getRawValue());
 							}
 //							SYSOUT.println();
@@ -625,10 +625,10 @@ public class PDFIndex {
 		}
 	}
 
-	private List<AbstractContainer> getListByKey(Double fontSize) {
-		Collection<AbstractContainer> containers = scriptContainerByBoldFontSize.get(fontSize);
-		List<AbstractContainer> containerList = new ArrayList<AbstractContainer>();
-		for (Iterator<AbstractContainer> iter = containers.iterator() ; iter.hasNext(); ) {containerList.add(iter.next());}
+	private List<AbstractContainerOLD> getListByKey(Double fontSize) {
+		Collection<AbstractContainerOLD> containers = scriptContainerByBoldFontSize.get(fontSize);
+		List<AbstractContainerOLD> containerList = new ArrayList<AbstractContainerOLD>();
+		for (Iterator<AbstractContainerOLD> iter = containers.iterator() ; iter.hasNext(); ) {containerList.add(iter.next());}
 		return containerList;
 	}
 }

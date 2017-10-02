@@ -8,9 +8,9 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xmlcml.graphics.svg.text.phrase.TextChunk;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.text.SuscriptEditor;
+import org.xmlcml.svg2xml.text.SuscriptEditorOLD;
 import org.xmlcml.xml.XMLUtil;
 
 
@@ -157,7 +157,7 @@ public class TableContentCreatorTest {
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
 		TextChunk phraseListList = new TextChunk(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
-		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
+		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(phraseListList);
 		suscriptEditor.mergeAll();
 		LOG.trace("PLL"+phraseListList);
 	}
@@ -186,7 +186,7 @@ public class TableContentCreatorTest {
 //		Assert.assertEquals(5, footerPhraseListList.size());
 		// Suscript editor works directly on the PhraseListList and incorporates all suscripts at this
 		// stage so we don't have to process later
-		SuscriptEditor suscriptEditor = new SuscriptEditor(footerPhraseListList);
+		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(footerPhraseListList);
 		//merge all suscripts into the PLL
 		suscriptEditor.mergeAll();
 		File file = new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+"footer.html");

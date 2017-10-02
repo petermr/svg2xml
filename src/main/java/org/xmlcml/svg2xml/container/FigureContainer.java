@@ -9,11 +9,11 @@ import org.xmlcml.html.HtmlElement;
 import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 
-public class FigureContainer extends AbstractContainer  {
+public class FigureContainer extends AbstractContainerOLD  {
 
 	public final static Logger LOG = Logger.getLogger(FigureContainer.class);
 
-	private List<ScriptContainer> captionList;
+	private List<ScriptContainerOLD> captionList;
 	private List<ImageContainer> imageContainerList;
 	private List<ShapeContainer> pathContainerList;
 	
@@ -24,7 +24,7 @@ public class FigureContainer extends AbstractContainer  {
 
 	private void ensureContainerLists() {
 		if (captionList == null) {
-			captionList = new ArrayList<ScriptContainer>();
+			captionList = new ArrayList<ScriptContainerOLD>();
 		}
 		if (imageContainerList == null) {
 			imageContainerList = new ArrayList<ImageContainer>();
@@ -44,13 +44,13 @@ public class FigureContainer extends AbstractContainer  {
 
 	public SVGG createSVGGChunk() {
 		SVGG g = new SVGG();
-		for (AbstractContainer container : captionList) {
+		for (AbstractContainerOLD container : captionList) {
 			g.appendChild(container.createSVGGChunk());
 		}
-		for (AbstractContainer container : imageContainerList) {
+		for (AbstractContainerOLD container : imageContainerList) {
 			g.appendChild(container.createSVGGChunk());
 		}
-		for (AbstractContainer container : pathContainerList) {
+		for (AbstractContainerOLD container : pathContainerList) {
 			g.appendChild(container.createSVGGChunk());
 		}
 		return g;

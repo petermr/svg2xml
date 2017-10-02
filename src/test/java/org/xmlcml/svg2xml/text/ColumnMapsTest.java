@@ -9,22 +9,22 @@ import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class ColumnMapsTest {
 
-	private TextLine BERICHT_PAGE6_34_TEXTLINE = null;
+	private TextLineOLD BERICHT_PAGE6_34_TEXTLINE = null;
 
 	@Before
 	public void setup() {
-		TextStructurer BERICHT_PAGE6_TXTSTR = 
-				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
-		List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
+		TextStructurerOLD BERICHT_PAGE6_TXTSTR = 
+				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
+		List<TextLineOLD> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
 		BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 	}
 	
 	
 	@Test
 	public void testTextLine() {
-		TextLine textLine = BERICHT_PAGE6_34_TEXTLINE;
+		TextLineOLD textLine = BERICHT_PAGE6_34_TEXTLINE;
 		Assert.assertEquals("textline", "chars: 24 Y: 536.4 fontSize: 10.193 >>Total Topf 1231343453491", textLine.toString());
-		RawWords rawWords = textLine.getRawWords();
+		RawWordsOLD rawWords = textLine.getRawWords();
 		Assert.assertEquals("raw", 5, rawWords.size());
 		Assert.assertEquals("word0", "Total Topf 1", rawWords.get(0).toString());
 		Assert.assertEquals("word1", "231", rawWords.get(1).toString());
