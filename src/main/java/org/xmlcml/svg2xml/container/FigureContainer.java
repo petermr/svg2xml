@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlP;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 
 public class FigureContainer extends AbstractContainerOLD  {

@@ -1,14 +1,10 @@
 package org.xmlcml.svg2xml.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.html.HtmlCaption;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlTable;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGPath;
-import org.xmlcml.html.HtmlCaption;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 
 /** not sure whether this should be built during page creation

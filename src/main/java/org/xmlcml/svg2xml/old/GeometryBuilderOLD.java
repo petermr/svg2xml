@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.text.build.WordNew;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
 import org.xmlcml.svg2xml.page.TextAnalyzerOLD.TextOrientation;
 import org.xmlcml.svg2xml.text.RawWordsOLD;

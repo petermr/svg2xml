@@ -1,20 +1,16 @@
 package org.xmlcml.svg2xml.container;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import nu.xom.Node;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlUl;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.ScriptLineOLD;
-import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 public class ListContainer extends AbstractContainerOLD {
 

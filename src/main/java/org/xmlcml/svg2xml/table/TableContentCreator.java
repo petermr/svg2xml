@@ -103,7 +103,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private List<HorizontalRuleOld> firstFullRuleList;
 	private SVGG contentBoxGridG;
 	private File contentBoxGridFile;
-	private ComponentCache ownerComponentCache;
+//	private ComponentCache ownerComponentCache;
 	
 	public TableContentCreator() {
 	}
@@ -199,8 +199,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private void createSectionsAndRangesArrayNew() {
 		removeBoundingRules(horizontalList, StartEnd.START);
 		removeBoundingRules(horizontalList, StartEnd.END);
-		makeCaches(svgChunk);
-		LineCache lineCache = ownerComponentCache.getOrCreateLineCache();
+//		makeCaches(svgChunk); // already done
+		LineCache lineCache = componentCache.getOrCreateLineCache();
+		ContentBoxCache contentBoxCache = componentCache.getOrCreateContentBoxCache();
 		contentBoxGridG = new SVGG();
 		contentBoxGridG.appendChild(contentBoxCache.getOrCreateConvertedSVGElement());
 		contentBoxGridG.appendChild(contentBoxCache.getOrCreateContentBoxGrid().getOrCreateSVGElement());
@@ -280,6 +281,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private void addContentBoxGridPanels(RealRangeArray yRangeArray) {
+		contentBoxCache = componentCache.getOrCreateContentBoxCache();
 		List<Real2Range> contentGridPanels = contentBoxCache.getOrCreateContentBoxGrid().getBboxList();
 		LOG.debug("contentGrid: "+contentGridPanels.size());
 		for (Real2Range contentGridPanel : contentGridPanels) {
@@ -305,8 +307,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	private void makeCaches(SVGElement svgElement) {
-		ownerComponentCache = new ComponentCache();
-		ownerComponentCache.readGraphicsComponentsAndMakeCaches(svgElement);
+		componentCache = new ComponentCache();
+		componentCache.readGraphicsComponentsAndMakeCaches(svgElement);
 //		RectCache rectCache = ownerComponentCache.getOrCreateRectCache();
 //		ownerComponentCache.removeBorderingRects();
 //		contentBoxCache = ContentBoxCache.createCache(rectCache, textChunkCache);
@@ -516,7 +518,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		GraphicsElement markedChunk = getTextStructurer().getSVGChunk();
+		GraphicsElement markedChunk = getOrCreateTextStructurer().getSVGChunk();
 		SVGG g = new SVGG();
 		g.setClassName("sections");
 		markedChunk.appendChild(g);
@@ -908,6 +910,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	public ContentBoxCache getContentBoxCache() {
+		if (contentBoxCache == null) {
+			contentBoxCache = componentCache.getOrCreateContentBoxCache();
+		}
 		return contentBoxCache;
 	}
 }

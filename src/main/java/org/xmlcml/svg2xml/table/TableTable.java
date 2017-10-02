@@ -5,27 +5,27 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Element;
-import nu.xom.Nodes;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.html.HtmlBody;
+import org.xmlcml.graphics.html.HtmlCaption;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlHead;
+import org.xmlcml.graphics.html.HtmlP;
+import org.xmlcml.graphics.html.HtmlTable;
+import org.xmlcml.graphics.html.HtmlTh;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlBody;
-import org.xmlcml.html.HtmlCaption;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlHead;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlTable;
-import org.xmlcml.html.HtmlTh;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Element;
+import nu.xom.Nodes;
 
 /** holds temporary table as list of chunks.
  * might disappear into TableAnalyzer later?

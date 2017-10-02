@@ -6,25 +6,25 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import nu.xom.Attribute;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.euclid.Vector2;
+import org.xmlcml.graphics.html.HtmlA;
+import org.xmlcml.graphics.html.HtmlDiv;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlImg;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.image.HiddenGraphics;
-import org.xmlcml.html.HtmlA;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlImg;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.ShapeAnalyzer;
 import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
+
+import nu.xom.Attribute;
 
 public class FigureGraphic extends FigureComponent {
 

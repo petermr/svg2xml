@@ -15,13 +15,12 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Util;
+import org.xmlcml.graphics.html.HtmlDiv;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlLi;
+import org.xmlcml.graphics.html.HtmlP;
+import org.xmlcml.graphics.html.HtmlUl;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlLi;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlUl;
-import org.xmlcml.svg2xml.table.TableSection;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;

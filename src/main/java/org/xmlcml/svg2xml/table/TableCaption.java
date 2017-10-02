@@ -3,20 +3,20 @@ package org.xmlcml.svg2xml.table;
 import java.util.List;
 import java.util.regex.Matcher;
 
-import nu.xom.Attribute;
-import nu.xom.Element;
-import nu.xom.Nodes;
-
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.html.HtmlB;
+import org.xmlcml.graphics.html.HtmlCaption;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlP;
+import org.xmlcml.graphics.html.HtmlTable;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.html.HtmlB;
-import org.xmlcml.html.HtmlCaption;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.page.TableAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Attribute;
+import nu.xom.Element;
+import nu.xom.Nodes;
 
 public class TableCaption extends TableChunk {
 

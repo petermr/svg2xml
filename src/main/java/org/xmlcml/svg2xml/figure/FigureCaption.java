@@ -3,8 +3,8 @@ package org.xmlcml.svg2xml.figure;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.html.HtmlDiv;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;

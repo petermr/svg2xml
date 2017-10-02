@@ -13,6 +13,8 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlSpan;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -21,8 +23,6 @@ import org.xmlcml.graphics.svg.StyleBundle;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
 import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.graphics.svg.text.build.WordNew;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;

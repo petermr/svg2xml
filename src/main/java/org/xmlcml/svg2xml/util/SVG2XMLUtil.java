@@ -3,18 +3,18 @@ package org.xmlcml.svg2xml.util;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import nu.xom.Element;
-import nu.xom.Node;
-import nu.xom.Nodes;
-import nu.xom.Text;
-
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGConstants;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
+
+import nu.xom.Element;
+import nu.xom.Node;
+import nu.xom.Nodes;
+import nu.xom.Text;
 
 public class SVG2XMLUtil {
 

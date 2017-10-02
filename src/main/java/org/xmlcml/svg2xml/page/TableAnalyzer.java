@@ -10,10 +10,10 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.html.HtmlTable;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.table.TableTable;
 
 /**

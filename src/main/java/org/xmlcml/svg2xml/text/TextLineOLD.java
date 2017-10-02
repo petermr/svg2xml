@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.PrintStream;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,6 +19,11 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlP;
+import org.xmlcml.graphics.html.HtmlSpan;
+import org.xmlcml.graphics.html.HtmlSub;
+import org.xmlcml.graphics.html.HtmlSup;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
@@ -28,11 +32,6 @@ import org.xmlcml.graphics.svg.rule.horizontal.LineChunk;
 import org.xmlcml.graphics.svg.text.build.BlankNew;
 import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.graphics.svg.text.build.WordNew;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.html.HtmlSub;
-import org.xmlcml.html.HtmlSup;
 import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.xml.XMLConstants;

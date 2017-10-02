@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.html.HtmlDiv;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlDiv;
 import org.xmlcml.svg2xml.figure.FigureCaption;
 import org.xmlcml.svg2xml.figure.FigureComponent;
 import org.xmlcml.svg2xml.figure.FigureGraphic;

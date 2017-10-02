@@ -1,15 +1,14 @@
 package org.xmlcml.svg2xml.container;
 
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.xml.XMLUtil;
 
 public class ListContainerTest {

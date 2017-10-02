@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.old;
 
 import java.util.ArrayList;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -16,12 +15,12 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.Util;
+import org.xmlcml.graphics.html.HtmlB;
+import org.xmlcml.graphics.html.HtmlBr;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlI;
+import org.xmlcml.graphics.html.HtmlSpan;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlB;
-import org.xmlcml.html.HtmlBr;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlI;
-import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;

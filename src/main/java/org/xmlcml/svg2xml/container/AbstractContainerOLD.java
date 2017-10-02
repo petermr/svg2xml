@@ -1,31 +1,32 @@
 package org.xmlcml.svg2xml.container;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nu.xom.Attribute;
-import nu.xom.Element;
-import nu.xom.Nodes;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.html.HtmlDiv;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlTable;
+import org.xmlcml.graphics.html.HtmlUl;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlTable;
-import org.xmlcml.html.HtmlUl;
 import org.xmlcml.svg2xml.figure.FigureGraphic;
 import org.xmlcml.svg2xml.indexer.LicenceIndexer;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.ChunkAnalyzer;
+import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
+
+import nu.xom.Attribute;
+import nu.xom.Element;
+import nu.xom.Nodes;
 
 /** Containers contain the outputs of PageAnalyzer.
  * <p>

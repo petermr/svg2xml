@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlSpan;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlSpan;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds styleSpans within a ScriptLine or possibly later within a ScriptContainer

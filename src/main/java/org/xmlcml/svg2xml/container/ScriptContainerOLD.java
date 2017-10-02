@@ -7,23 +7,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import nu.xom.Element;
-import nu.xom.Nodes;
-import nu.xom.ParentNode;
-import nu.xom.Text;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.html.HtmlDiv;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlP;
+import org.xmlcml.graphics.html.HtmlSpan;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlSpan;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.pdf.ChunkId;
@@ -36,6 +31,11 @@ import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
+
+import nu.xom.Element;
+import nu.xom.Nodes;
+import nu.xom.ParentNode;
+import nu.xom.Text;
 @Deprecated // moved to svg
 public class ScriptContainerOLD extends AbstractContainerOLD implements Iterable<ScriptLineOLD> {
 

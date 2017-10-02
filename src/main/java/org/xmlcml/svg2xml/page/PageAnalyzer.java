@@ -12,16 +12,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import nu.xom.Attribute;
-import nu.xom.Element;
-import nu.xom.Node;
-import nu.xom.Nodes;
-import nu.xom.ParentNode;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.html.HtmlBody;
+import org.xmlcml.graphics.html.HtmlDiv;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlH1;
+import org.xmlcml.graphics.html.HtmlHtml;
+import org.xmlcml.graphics.html.HtmlP;
+import org.xmlcml.graphics.html.HtmlStyle;
+import org.xmlcml.graphics.html.HtmlTitle;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -33,14 +35,6 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.image.ImageConverter;
-import org.xmlcml.html.HtmlBody;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlH1;
-import org.xmlcml.html.HtmlHtml;
-import org.xmlcml.html.HtmlP;
-import org.xmlcml.html.HtmlStyle;
-import org.xmlcml.html.HtmlTitle;
 import org.xmlcml.svg2xml.container.AbstractContainerOLD;
 import org.xmlcml.svg2xml.container.AbstractContainerOLD.ContainerType;
 import org.xmlcml.svg2xml.container.MixedContainer;
@@ -51,6 +45,12 @@ import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.pdf.PDFIndex;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Attribute;
+import nu.xom.Element;
+import nu.xom.Node;
+import nu.xom.Nodes;
+import nu.xom.ParentNode;
 
 /**
  * Processes a page.

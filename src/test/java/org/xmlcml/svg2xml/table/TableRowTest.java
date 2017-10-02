@@ -2,17 +2,17 @@ package org.xmlcml.svg2xml.table;
 
 import java.util.List;
 
-import org.junit.Assert;
-import nu.xom.Element;
-
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlElement;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Element;
 
 /** 
  * test for RowChunk

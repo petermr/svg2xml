@@ -14,10 +14,10 @@ import org.xmlcml.euclid.IntArray;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlSpan;
+import org.xmlcml.graphics.html.HtmlTh;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.html.HtmlTh;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Element;

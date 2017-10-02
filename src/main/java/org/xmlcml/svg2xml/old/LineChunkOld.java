@@ -7,13 +7,12 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.html.HtmlB;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlI;
+import org.xmlcml.graphics.html.HtmlSub;
+import org.xmlcml.graphics.html.HtmlSup;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.text.build.PhraseChunk;
-import org.xmlcml.html.HtmlB;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlI;
-import org.xmlcml.html.HtmlSub;
-import org.xmlcml.html.HtmlSup;
 
 import nu.xom.Attribute;
 

@@ -3,17 +3,17 @@ package org.xmlcml.svg2xml.table;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Element;
-import nu.xom.Nodes;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlTh;
+import org.xmlcml.graphics.html.HtmlTr;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlTh;
-import org.xmlcml.html.HtmlTr;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Element;
+import nu.xom.Nodes;
 
 public class TableRow extends TableChunk {
 

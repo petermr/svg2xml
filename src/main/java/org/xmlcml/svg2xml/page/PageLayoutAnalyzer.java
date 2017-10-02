@@ -73,6 +73,7 @@ public class PageLayoutAnalyzer {
 	private boolean rotatable = false;
 	private boolean omitWhitespace = true;
 	protected SVGElement svgChunk;
+	protected ComponentCache componentCache;
 
 	public PageLayoutAnalyzer() {
 		setDefaults();
@@ -101,16 +102,16 @@ public class PageLayoutAnalyzer {
 	 * @param svgElement
 	 */
 	public void createContent(SVGElement svgElement) {
-		ComponentCache componentCache = new ComponentCache();
+		componentCache = new ComponentCache();
 		componentCache.readGraphicsComponentsAndMakeCaches(svgElement);
-		TextChunkCache textChunkCache = componentCache.getOrCreateTextChunkCache();
-		TextStructurer textStructurer = textChunkCache.getOrCreateTextStructurer();
-		TextChunkList textChunkList = textChunkCache.getOrCreateTextChunkList();
-		LOG.debug("components: "+componentCache.toString());
-		// should probably move TextStructure to TextChunkCache
-		textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgElement);
-		SVGElement inputSVGChunk = textStructurer.getSVGChunk();
-		cleanChunk(inputSVGChunk);
+//		TextChunkCache textChunkCache = componentCache.getOrCreateTextChunkCache();
+//		TextStructurer textStructurer = textChunkCache.getOrCreateTextStructurer();
+//		TextChunkList textChunkList = textChunkCache.getOrCreateTextChunkList();
+//		LOG.debug("components: "+componentCache.toString());
+//		// should probably move TextStructure to TextChunkCache
+//		textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgElement);
+//		SVGElement inputSVGChunk = textStructurer.getSVGChunk();
+//		cleanChunk(inputSVGChunk);
 		if (rotatable  && textStructurer.hasAntiClockwiseCharacters()) {
 			throw new RuntimeException("refactored rot90");
 //			inputSVGChunk = rotateClockwise(textStructurer);
@@ -118,10 +119,13 @@ public class PageLayoutAnalyzer {
 //			textStructurer = textStructurer1;
 		}
 
-		textChunk = textStructurer.getTextChunkList().getLastTextChunk();
 //		LOG.trace(">pll>"+phraseListList.size()+" ... "+phraseListList.toXML());
-		textStructurer.condenseSuscripts();
+//		textStructurer.condenseSuscripts();
 //		phraseListList.format(3);
+		TextChunkCache textChunkCache = componentCache.getOrCreateTextChunkCache();
+		// is this a good idea here?
+		TextStructurer textStructurer = textChunkCache.getOrCreateTextStructurer();
+		textChunk = textStructurer.getTextChunkList().getLastTextChunk();
 		tableStructurer = PageLayoutAnalyzer.createTableStructurer(textStructurer); // this deletes outer rect
 		TableGrid tableGrid = tableStructurer.createGrid();
 			
@@ -242,22 +246,6 @@ public class PageLayoutAnalyzer {
 		return s;
 	}
 
-
-	private void cleanChunk(GraphicsElement chunk) {
-		if (omitWhitespace) {
-			detachWhitespaceTexts(chunk);
-		}
-	}
-
-	private void detachWhitespaceTexts(GraphicsElement chunk) {
-		List<SVGText> spaceList = SVGText.extractSelfAndDescendantTexts(chunk);
-		for (SVGText text : spaceList) {
-			String textS = text.getText();
-			if (textS == null || textS.trim().length() == 0) {
-				text.detach();
-			}
-		}
-	}
 
 	private List<HorizontalElementNew> createOrderedHorizontalList() {
 		Stack<PhraseChunk> phraseListStack = new Stack<PhraseChunk>();
@@ -400,7 +388,12 @@ public class PageLayoutAnalyzer {
 		return xArray;
 	}
 
-	public TextStructurer getTextStructurer() {
+	public TextStructurer getOrCreateTextStructurer() {
+		if (textStructurer == null && componentCache != null) {
+			textStructurer = componentCache.getOrCreateTextChunkCache().getOrCreateTextStructurer();
+			// this is tacky
+			textStructurer.setSVGChunk(svgChunk);
+		}
 		return textStructurer;
 	}
 

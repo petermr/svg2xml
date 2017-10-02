@@ -5,15 +5,15 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
+import org.xmlcml.graphics.html.HtmlB;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlI;
+import org.xmlcml.graphics.html.HtmlSpan;
+import org.xmlcml.graphics.html.HtmlSub;
+import org.xmlcml.graphics.html.HtmlSup;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.html.HtmlB;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlI;
-import org.xmlcml.html.HtmlSpan;
-import org.xmlcml.html.HtmlSub;
-import org.xmlcml.html.HtmlSup;
 
 /**
  * moved to svg

@@ -5,15 +5,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import nu.xom.Node;
-
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlLi;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlLi;
 import org.xmlcml.svg2xml.text.ScriptLineOLD;
-import org.xmlcml.svg2xml.text.TextStructurerOLD;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 /** holds a chunk of scriptLines

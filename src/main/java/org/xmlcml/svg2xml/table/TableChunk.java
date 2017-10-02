@@ -9,11 +9,10 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 /** superclass of cells, rows, etc in table

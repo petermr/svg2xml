@@ -1,8 +1,8 @@
 package org.xmlcml.svg2xml.table;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlTd;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlTd;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 
 public class TableCell extends TableChunk {

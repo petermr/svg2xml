@@ -707,7 +707,7 @@ public class TableStructurer {
 		horizontalElementByCode = new HashMap<String, SVGElement>();
 		// there may be no lines
 		Integer maxLength = (bboxRuler == null) ? null : (int) bboxRuler.getXRange().getRange();
-		double maxFont = getMaxFont(totalTextChunkList);
+		Double maxFont = getMaxFont(totalTextChunkList);
 		int iPhrase = 0;
 		int iRuler = 0;
 		StringBuilder total = new StringBuilder();
@@ -728,7 +728,7 @@ public class TableStructurer {
 		rowCodes = total.toString().trim();
 	}
 
-	private String indexSVGLine(int maxLength, int iRuler, GraphicsElement horizontalElement) {
+	private String indexSVGLine(Integer maxLength, int iRuler, GraphicsElement horizontalElement) {
 		String index;
 		index = " L"+iRuler+"";
 		SVGLine line = (SVGLine) horizontalElement;
@@ -746,32 +746,34 @@ public class TableStructurer {
 		index += w+"";
 		double l = line.getLength();
 		String s = "";
-		if (l / (double) maxLength > 0.1) {
-			s += LONG;
-		}
-		if (l / (double) maxLength > 0.2) {
-			s += LONG;
-		}
-		if (l / (double) maxLength > 0.4) {
-			s += LONG;
-		}
-		if (l / (double) maxLength > 0.8) {
-			s += LONG;
-		}
-		if (l / (double) maxLength > 0.99) {
-			s += LONG;
+		if (maxLength != null) {
+			if (l / (double) maxLength > 0.1) {
+				s += LONG;
+			}
+			if (l / (double) maxLength > 0.2) {
+				s += LONG;
+			}
+			if (l / (double) maxLength > 0.4) {
+				s += LONG;
+			}
+			if (l / (double) maxLength > 0.8) {
+				s += LONG;
+			}
+			if (l / (double) maxLength > 0.99) {
+				s += LONG;
+			}
 		}
 		index += s+"";
 		return index;
 	}
 
-	private String indexLineChunk(double maxFont, int iPhrase, GraphicsElement horizontalElement) {
+	private String indexLineChunk(Double maxFont, int iPhrase, GraphicsElement horizontalElement) {
 		String index;
 		index = " P"+iPhrase;
 		PhraseChunk lineChunk = (PhraseChunk) horizontalElement;
 		String f = "";
 		Double ff = lineChunk.getFontSize();
-		if (ff != null) {
+		if (ff != null && maxFont != null) {
 			int fs = (int) (double) lineChunk.getFontSize();
 			if (fs / maxFont > 0.6) {
 				f += FONT;
@@ -839,7 +841,15 @@ public class TableStructurer {
 	 * @throws RuntimeException
 	 */
 	public static TableStructurer createTableStructurer(TextStructurer textStructurer) {
-		throw new RuntimeException("refactored - maybe needs new method here");
+		TextChunkList textChunkList = textStructurer.getOrCreateTextChunkListFromWords();
+		TableStructurer tableStructurer = new TableStructurer(textChunkList.getLastTextChunk());
+		tableStructurer.setTextStructurer(textStructurer);
+//		if (omitShapeList ) {
+//			LOG.info("Skipped tableStructurer shapeList");
+//		} else {
+			tableStructurer.analyzeShapeList();
+//		}
+		return tableStructurer;
 	}
 
 	/** this is messy code.

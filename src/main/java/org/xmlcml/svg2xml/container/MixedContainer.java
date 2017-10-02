@@ -4,14 +4,13 @@ package org.xmlcml.svg2xml.container;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.html.HtmlDiv;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlTable;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.html.HtmlDiv;
-import org.xmlcml.html.HtmlElement;
-import org.xmlcml.html.HtmlTable;
 import org.xmlcml.svg2xml.page.FigureAnalyzer;
 import org.xmlcml.svg2xml.page.ImageAnalyzer;
 import org.xmlcml.svg2xml.page.MixedAnalyzer;
