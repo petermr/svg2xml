@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.line.SuscriptEditor;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.text.SuscriptEditorOLD;
 import org.xmlcml.xml.XMLUtil;
 
 
@@ -156,8 +156,8 @@ public class TableContentCreatorTest {
 		File outDir = new File("target/table/suscript/");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		tableContentCreator.markupAndOutputTable(inputFile1, outDir);
-		TextChunk phraseListList = new TextChunk(tableContentCreator.getOrCreateTableFooterSectionOLD().getOrCreatePhraseListList());
-		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(phraseListList);
+		TextChunk phraseListList = new TextChunk(tableContentCreator.getOrCreateTableFooterSection().getOrCreatePhraseListList());
+		SuscriptEditor suscriptEditor = new SuscriptEditor(phraseListList);
 		suscriptEditor.mergeAll();
 		LOG.trace("PLL"+phraseListList);
 	}
@@ -181,7 +181,7 @@ public class TableContentCreatorTest {
 		// the key Text component is a list of PhraseLists. This is created independently
 		// of subsequent section/column/row boundaries
 		// = footer test
-		TableFooterSection tableFooterSection = tableContentCreator.getOrCreateTableFooterSectionOLD();
+		TableFooterSection tableFooterSection = tableContentCreator.getOrCreateTableFooterSection();
 		if (tableFooterSection == null) {
 			LOG.error("NO FOOTER: ABORT");
 			return;
@@ -191,7 +191,7 @@ public class TableContentCreatorTest {
 //		Assert.assertEquals(5, footerPhraseListList.size());
 		// Suscript editor works directly on the PhraseListList and incorporates all suscripts at this
 		// stage so we don't have to process later
-		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(footerPhraseListList);
+		SuscriptEditor suscriptEditor = new SuscriptEditor(footerPhraseListList);
 		//merge all suscripts into the PLL
 		suscriptEditor.mergeAll();
 		File file = new File(outDir, FilenameUtils.getBaseName(inputFile1.toString())+"footer.html");
@@ -224,7 +224,7 @@ public class TableContentCreatorTest {
 	}
 
 	private void writeBody(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
-		TableSection body = tableContentCreator.getOrCreateTableBodySectionOLD();
+		TableSection body = tableContentCreator.getOrCreateTableBodySection();
 		if (body != null) {
 			TextChunk footerPhraseListList = body.getOrCreatePhraseListList();
 			File filex = new File(outDir, root+".body.html");
@@ -233,7 +233,7 @@ public class TableContentCreatorTest {
 	}
 	
 	private void writeFooter(File outDir, String root, TableContentCreator tableContentCreator) throws IOException {
-		TableSection footer = tableContentCreator.getOrCreateTableFooterSectionOLD();
+		TableSection footer = tableContentCreator.getOrCreateTableFooterSection();
 		if (footer != null) {
 			TextChunk footerPhraseListList = footer.getOrCreatePhraseListList();
 			File filex = new File(outDir, root+".footer.html");

@@ -22,7 +22,6 @@ import org.xmlcml.graphics.html.HtmlDiv;
 import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.PDF2SVGConverterNew;
-import org.xmlcml.svg2xml.collection.DocumentListAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
@@ -53,7 +52,6 @@ public class PDFAnalyzer {
 	public static final String Z_CHUNK = "z_";
 	
 	private PDFAnalyzerIO pdfIo;
-	private DocumentListAnalyzer documentListAnalyzer;
 	// created by analyzing pages
 	private List<PageAnalyzer> pageAnalyzerList;
 	private PDFAnalyzerOptions pdfOptions;
@@ -65,11 +63,6 @@ public class PDFAnalyzer {
 		setPdfOptions(new PDFAnalyzerOptions(this));
 	}
 
-	public PDFAnalyzer(DocumentListAnalyzer documentListAnalyzer) {
-		this();
-		this.documentListAnalyzer = documentListAnalyzer;
-	}
-	
 	public void setSVGTopDir(File svgDir) {
 		pdfIo.setSvgDir(svgDir);
 	}

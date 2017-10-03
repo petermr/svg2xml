@@ -19,6 +19,7 @@ import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -34,7 +35,7 @@ public class TableSection {
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
-	public enum TableSectionTypeOLD {
+	public enum TableSectionTypeOld {
 		TITLE(0),
 		HEADER(1),
 		BODY(2),
@@ -42,7 +43,7 @@ public class TableSection {
 		OTHER(-1);
 		private int serial;
 
-		private TableSectionTypeOLD(int serial) {
+		private TableSectionTypeOld(int serial) {
 			this.serial = serial;
 		}
 	}
@@ -61,8 +62,8 @@ public class TableSection {
 		}
 	}
 
+	protected TableSectionTypeOld typeOld;
 	protected TableSectionType type;
-	protected TableSectionTypeOLD typeOLD;
 	protected List<HorizontalElementNew> horizontalElementList;
 	protected Real2Range boundingBox;
 	protected List<ColumnManager> columnManagerList;
@@ -72,9 +73,9 @@ public class TableSection {
 	protected List<TextChunk> sectionChunks; // structure within the text (e.g. whitespace)
 	protected double epsilon = 0.3;
 
-	public TableSection(TableSectionTypeOLD typeOLD) {
+	public TableSection(TableSectionType type) {
 		this();
-		this.typeOLD = typeOLD;
+		this.type = type;
 	}
 	
 	/** copy constructor.
@@ -85,7 +86,7 @@ public class TableSection {
 	 */
 	public TableSection(TableSection tableSection) {
 		this.type = tableSection.type;
-		this.typeOLD = tableSection.typeOLD;
+		this.type = tableSection.type;
 		this.horizontalElementList = tableSection.horizontalElementList;
 		this.allPhrasesInSection = tableSection.allPhrasesInSection;
 		this.boundingBox = tableSection.boundingBox;
@@ -129,7 +130,7 @@ public class TableSection {
 	}
 	
 	public String toString() {
-		StringBuilder sb = new StringBuilder(typeOLD+": ");
+		StringBuilder sb = new StringBuilder(type+": ");
 		sb.append(horizontalElementList.size()+"\n");
 //		if (horizontalElementList.size() > 0) {
 //			sb.append(String.valueOf(horizontalElementList.get(0))+"...\n");

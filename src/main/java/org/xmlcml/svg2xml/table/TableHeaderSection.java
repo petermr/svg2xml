@@ -33,7 +33,7 @@ public class TableHeaderSection extends TableSection {
 
 	private List<HeaderRow> headerRowList;
 	public TableHeaderSection() {
-		super(TableSectionTypeOLD.HEADER);
+		super(TableSectionType.HEADER);
 	}
 	
 	public TableHeaderSection(TableSection tableSection) {

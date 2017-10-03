@@ -13,6 +13,7 @@ import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.graphics.svg.text.build.SusType;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.graphics.svg.text.build.WordNew;
+import org.xmlcml.graphics.svg.text.line.SuscriptEditor;
 
 public class SuscriptEditorTest {
 
@@ -101,7 +102,7 @@ public class SuscriptEditorTest {
 	@Test
 	public void testSuscriptLocal() {
 		
-		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(H3OPLUS);
+		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
 		LOG.trace(0 + " ?? "+1);
 		PhraseChunk phraseList0 = H3OPLUS.get(0);
 		PhraseChunk phraseList1 = H3OPLUS.get(1);
@@ -126,7 +127,7 @@ public class SuscriptEditorTest {
 	@Test
 	public void testSuscriptAll() {
 		
-		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(H3OPLUS);
+		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
 		GraphicsElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);
@@ -136,7 +137,7 @@ public class SuscriptEditorTest {
 	@Test
 	public void testSuscriptAll1() {
 		
-		SuscriptEditorOLD suscriptEditor = new SuscriptEditorOLD(H3OPLUS_SO4);
+		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS_SO4);
 		GraphicsElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);

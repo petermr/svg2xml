@@ -21,7 +21,7 @@ public class TableFooterSection extends TableSection {
 	}
 
 	public TableFooterSection() {
-		super(TableSectionTypeOLD.FOOTER);
+		super(TableSectionType.FOOTER);
 	}
 	
 	public TableFooterSection(TableSection tableSection) {

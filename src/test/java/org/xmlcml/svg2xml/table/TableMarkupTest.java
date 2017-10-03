@@ -27,7 +27,7 @@ public class TableMarkupTest {
 		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		HtmlHtml html = tableContentCreator.createHTMLFromSVG(inputFile);
-		TableHeaderSection headerSection = tableContentCreator.getOrCreateTableHeaderSectionOLD(); 
+		TableHeaderSection headerSection = tableContentCreator.getOrCreateTableHeaderSection(); 
 		headerSection.createHeaderRowsAndColumnGroups();
 		
 		List<HeaderRow> headerRowList = headerSection.getOrCreateHeaderRowList();
@@ -50,7 +50,7 @@ public class TableMarkupTest {
 		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, "LWW61463_TABLE1..image.g.2.9.svg");
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		HtmlHtml html = tableContentCreator.createHTMLFromSVG(inputFile);
-		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSectionOLD();
+		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
 		tableHeader.createHeaderRowsAndColumnGroups();
 				
 		List<ColumnManager> columnManagerList = tableHeader.getOrCreateColumnManagerList();
@@ -82,7 +82,7 @@ public class TableMarkupTest {
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		System.out.println();
 		tableContentCreator.createHTMLFromSVG(inputFile);
-		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSectionOLD();
+		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
 		tableHeader.createHeaderRowsAndColumnGroups();
 		GraphicsElement svgChunk = (GraphicsElement)tableContentCreator.getSVGChunk().copy();
 		svgChunk = tableHeader.createMarkedSections(
@@ -244,11 +244,11 @@ public class TableMarkupTest {
 		LOG.trace("reading "+inputFilename);
 		GraphicsElement svgChunk = tableContentCreator.annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
-		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSectionOLD();
+		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
 		int headerCols = tableHeader == null ? -1 :
 			tableHeader.getOrCreateColumnManagerList().size();
 		Assert.assertEquals(nHeaderCols, headerCols);
-		TableBodySection tableBody = tableContentCreator.getOrCreateTableBodySectionOLD();
+		TableBodySection tableBody = tableContentCreator.getOrCreateTableBodySection();
 		int bodyCols = tableBody == null ? -1 :
 			tableBody.getOrCreateColumnManagerList().size();
 		Assert.assertEquals(nBodyCols, bodyCols);
