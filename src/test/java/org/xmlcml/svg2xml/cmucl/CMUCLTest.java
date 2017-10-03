@@ -102,6 +102,7 @@ public class CMUCLTest {
 	}
 	
 	@Test
+	@Ignore // rather long
 	public void testNature() {
 		String root = "Nature_EurJClinNutrit";
 		markupAndOutputTables(root);
@@ -123,6 +124,7 @@ public class CMUCLTest {
 	}
 
 	@Test
+	@Ignore // LONG 
 	public void testAllMarkup() {
 		File[] dirs = CMUCL0.listFiles();
 		for (File dir : dirs) {
@@ -237,7 +239,7 @@ public class CMUCLTest {
 	}
 
 	@Test
-	// LONG
+	@Ignore // LONG
 	public void testCreateDoubleTableHTML() throws IOException {
 		double TD_WIDTH = 500.0;
 		File pmrDir = new File(CM_UCL_DIR, "corpus-oa-pmr");
