@@ -6,6 +6,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class SubSuperscriptTest {
@@ -18,8 +19,8 @@ public class SubSuperscriptTest {
 	@Test
 	public void testSuperscripts() {
 		File inputFile = new File(SVG2XMLFixtures.TEXT_DIR, "superscript.svg");
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
-		TextChunk phraseListList = textStructurer.getPhraseListList();
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		TextChunk phraseListList = textStructurer.getTextChunkList().getLastTextChunk();
 		phraseListList.applySubAndSuperscripts();
 		LOG.trace(phraseListList.getStringValue());
 	}
@@ -27,8 +28,8 @@ public class SubSuperscriptTest {
 	@Test
 	public void testSubscripts() {
 		File inputFile = new File(SVG2XMLFixtures.TEXT_DIR, "subscript.svg");
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
-		TextChunk phraseListList = textStructurer.getPhraseListList();
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
+		TextChunk phraseListList = textStructurer.getTextChunkList().getLastTextChunk();
 		phraseListList.applySubAndSuperscripts();
 		LOG.trace(phraseListList.getStringValue());
 	}

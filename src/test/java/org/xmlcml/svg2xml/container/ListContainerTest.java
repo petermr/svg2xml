@@ -1,14 +1,13 @@
 package org.xmlcml.svg2xml.container;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.graphics.html.HtmlElement;
-import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.text.structure.ScriptContainer;
 import org.xmlcml.xml.XMLUtil;
 
 public class ListContainerTest {
@@ -43,17 +42,6 @@ public class ListContainerTest {
 		File file = org.xmlcml.svg2xml.text.TextFixtures.RSC_B306241d_6_8SA_SVG;
 		String outfile = LIST_CONTAINER+"/rscb306241d.chunk6.8Sa.html";
 		createAndDebugList("RSC", file, outfile);
-	}
-
-	@Test
-	public void testRSCListHtml() throws Exception {
-		File file = org.xmlcml.svg2xml.text.TextFixtures.RSC_B306241d_6_8SA_SVG;
-		String outfile = LIST_CONTAINER+"/rscb306241d.chunk6.8Sa.html";
-		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(file);
-		ListContainer listContainer = ListContainer.createList(sc);
-		HtmlElement elem = listContainer.createHtmlElement();
-		new File(outfile).getParentFile().mkdirs();
-		SVGUtil.debug(elem, new FileOutputStream(new File(outfile)), 1);
 	}
 
 	@Test
@@ -97,23 +85,7 @@ public class ListContainerTest {
 	
 	private static void createAndDebugList(String pub, File file, String outfileName) {
 //		SYSOUT.println("========="+pub+"===========");
-		ScriptContainerOLD sc = ScriptContainerOLD.createScriptContainer(file);
-		ListContainer listContainer = ListContainer.createList(sc);
-		if (listContainer != null) {
-			HtmlElement list = listContainer.createHtmlElement();
-			if (list == null) {
-				throw new RuntimeException("Cannot create list, null");
-			}
-			File outfile = new File(outfileName);
-			outfile.getParentFile().mkdirs();
-			try {
-				XMLUtil.debug(list, outfile, 1);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
-		} else {
-			throw new RuntimeException("Cannot create list");
-		}
+		ScriptContainer sc = ScriptContainer.createScriptContainer(file);
 	}
 
 }

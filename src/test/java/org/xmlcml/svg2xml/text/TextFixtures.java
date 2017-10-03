@@ -1,13 +1,13 @@
 package org.xmlcml.svg2xml.text;
 
 import java.io.File;
-
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
+import org.xmlcml.graphics.svg.text.line.StyleSpans;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.container.ScriptContainerTest;
 
@@ -93,10 +93,10 @@ public class TextFixtures {
 	
 	
 	public static void testSpans(String[][] values, File file) {
-		List<StyleSpansOLD> styleSpansList = ScriptContainerTest.getStyleSpansList(file);
+		List<StyleSpans> styleSpansList = ScriptContainerTest.getStyleSpansList(file);
 		Assert.assertEquals("lists", values.length, styleSpansList.size());
 		for (int i = 0; i < values.length; i++) {
-			StyleSpansOLD styleSpans = styleSpansList.get(i);
+			StyleSpans styleSpans = styleSpansList.get(i);
 			if (values[i].length > 0) {
 				if (values[i].length != styleSpans.size()) {
 					for (int j = 0; j < styleSpans.size(); j++) {

@@ -25,13 +25,11 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
+import org.xmlcml.graphics.svg.text.line.TextLine;
 import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
-import org.xmlcml.svg2xml.text.TextLineOLD;
-import org.xmlcml.svg2xml.text.TextStructurerOLD;
 import org.xmlcml.xml.XMLUtil;
 
 import nu.xom.Attribute;
@@ -664,9 +662,9 @@ public class TableStructurerTest {
 	}
 
 	private void testSuscripts(File inputFile, int superscript, int subscript) {
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		textStructurer.extractAndApplySuscripts();
-		List<TextLineOLD> superList = textStructurer.getSuperscriptLineList();
+		List<TextLine> superList = textStructurer.getSuperscriptLineList();
 //		for (TextLine supersc : superList) {
 //			System.out.println("^^"+supersc);
 //		}

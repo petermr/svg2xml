@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.table;
 
 import java.util.List;
-import java.util.regex.Matcher;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.html.HtmlB;
@@ -10,7 +9,6 @@ import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.html.HtmlP;
 import org.xmlcml.graphics.html.HtmlTable;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.svg2xml.page.TableAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLUtil;
 import org.xmlcml.xml.XMLUtil;
 
@@ -49,14 +47,14 @@ public class TableCaption extends TableChunk {
 
 	public static Integer getNumber(HtmlCaption caption) {
 		Integer number = null;
-		if (caption != null) {
-			String value = caption.getValue();
-			Matcher matcher = TableAnalyzer.PATTERN.matcher(value);
-			if (matcher.matches()) {
-				String tableId = matcher.group(1);
-				number = new Integer(tableId);
-			}
-		}
+//		if (caption != null) {
+//			String value = caption.getValue();
+//			Matcher matcher = TableAnalyzer.PATTERN.matcher(value);
+//			if (matcher.matches()) {
+//				String tableId = matcher.group(1);
+//				number = new Integer(tableId);
+//			}
+//		}
 		return number;
 	}
 

@@ -24,7 +24,6 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.PDF2SVGConverterNew;
 import org.xmlcml.svg2xml.collection.DocumentListAnalyzer;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
 import com.google.common.collect.Multimap;
@@ -55,7 +54,6 @@ public class PDFAnalyzer {
 	
 	private PDFAnalyzerIO pdfIo;
 	private DocumentListAnalyzer documentListAnalyzer;
-	PDFIndex pdfIndex;
 	// created by analyzing pages
 	private List<PageAnalyzer> pageAnalyzerList;
 	private PDFAnalyzerOptions pdfOptions;
@@ -212,15 +210,15 @@ public class PDFAnalyzer {
 	}
 
 	private void createIndexesAndRemoveDuplicates() {
-		ensurePDFIndex();
-		pdfIndex.ensureElementMultimaps();
-		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			pdfIndex.addToindexes(pageAnalyzer);
-		}
-		pdfIndex.analyzeContainers();
-		pdfIndex.createIndexes();
-		pdfIndex.AnalyzeDuplicates();
-		LOG.trace("IDS: "+pdfIndex.getUsedIdSet());
+//		ensurePDFIndex();
+//		pdfIndex.ensureElementMultimaps();
+//		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
+//			pdfIndex.addToindexes(pageAnalyzer);
+//		}
+//		pdfIndex.analyzeContainers();
+//		pdfIndex.createIndexes();
+//		pdfIndex.AnalyzeDuplicates();
+//		LOG.trace("IDS: "+pdfIndex.getUsedIdSet());
 	}
 
 	private List<PageAnalyzer> createAndFillPageAnalyzers() {
@@ -251,7 +249,7 @@ public class PDFAnalyzer {
 	public HtmlElement createRunningHtml() {
 		runningTextElement = new HtmlDiv();
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			PageIO.copyChildElementsFromTo(pageAnalyzer.getRunningHtmlElement(), runningTextElement);
+//			PageIO.copyChildElementsFromTo(pageAnalyzer.getRunningHtmlElement(), runningTextElement);
 		}
 		return runningTextElement;
 	}
@@ -259,7 +257,7 @@ public class PDFAnalyzer {
 	public HtmlElement forceCreateRunningHtml() {
 		runningTextElement = new HtmlDiv();
 		for (PageAnalyzer pageAnalyzer : pageAnalyzerList) {
-			PageIO.copyChildElementsFromTo(pageAnalyzer.createRunningHtml(), runningTextElement);
+//			PageIO.copyChildElementsFromTo(pageAnalyzer.createRunningHtml(), runningTextElement);
 		}
 		return runningTextElement;
 	}
@@ -300,9 +298,9 @@ public class PDFAnalyzer {
 	}
 
 	private void ensurePDFIndex() {
-		if (pdfIndex == null) {
-			pdfIndex = new PDFIndex(this);
-		}
+//		if (pdfIndex == null) {
+//			pdfIndex = new PDFIndex(this);
+//		}
 	}
 
 	public static List<List<String>> findDuplicates(String title, Multimap<? extends Object, String> map) {
@@ -320,10 +318,10 @@ public class PDFAnalyzer {
 		return duplicateList;
 	}
 		
-	public PDFIndex getIndex() {
-		ensurePDFIndex();
-		return pdfIndex;
-	}
+//	public PDFIndex getIndex() {
+//		ensurePDFIndex();
+//		return pdfIndex;
+//	}
 
 	/**
 	 * Example usage:
@@ -353,7 +351,7 @@ public class PDFAnalyzer {
 	}
 
 	public int getDecimalPlaces() {
-		return PageIO.DECIMAL_PLACES;
+		return /*PageIO.DECIMAL_PLACES*/ 1;
 	}
 	
 	public PDFAnalyzerIO getPDFIO() {

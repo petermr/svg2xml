@@ -24,18 +24,21 @@ public class ChunkId implements Comparable<ChunkId> {
 		} catch (Exception e) {
 			throw new RuntimeException("cannot parse identifier: "+id, e);
 		}
+		throw new RuntimeException("CHECK NEVER USED");
 	}
 	
 	public ChunkId(ChunkId chunkId) {
 		this.pageNumber = chunkId.pageNumber;
 		this.chunkNumber = chunkId.chunkNumber;
 		this.subChunkNumber = chunkId.subChunkNumber;
+		throw new RuntimeException("CHECK NEVER USED");
 	}
 
 	public ChunkId(int pageNumber, int ichunk) {
 		this.pageNumber = pageNumber;
 		this.chunkNumber = ichunk;
 		this.subChunkNumber = null;
+		throw new RuntimeException("CHECK NEVER USED");
 	}
 
 	private void processId() {

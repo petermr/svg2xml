@@ -19,7 +19,6 @@ import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager.BoxEdge;
-import org.xmlcml.svg2xml.page.PageIO;
 
 import nu.xom.Attribute;
 import nu.xom.Element;
@@ -105,66 +104,66 @@ public class Chunk extends SVGG {
 		return descendantSVGElementList;
 	}
 	
-	public List<Chunk> splitIntoChunks(Double chunkWidth, BoxEdge edge) {
-		getDescendantSVGElementListWithoutDefsDescendants();
-		removeEmptyTexts();
-		ensureEmptyBoxList(edge);
-		SVGUtil.setBoundingBoxCached(descendantSVGElementList, true);
-		Long time0 = System.currentTimeMillis();
-		descendantSVGElementList = BoundingBoxManager.getElementsSortedByEdge(descendantSVGElementList, edge);
-		LOG.trace("sort edge: "+edge);
-		addTerminatingEmptyBox(1.5 * chunkWidth, edge);
-		List<Chunk> chunkList = new ArrayList<Chunk>();
-		if (emptyBoxList == null) {
-			return chunkList;
-		}
-		Chunk newChunk = null;
-		LOG.trace("emptyBoxes "+emptyBoxList.size());
-		Iterator<Real2Range> boxIterator = emptyBoxList.iterator();
-		if (!boxIterator.hasNext()) {
-			return chunkList;
-		}
-		Iterator<SVGElement> elementIterator = descendantSVGElementList.iterator();
-		Real2Range box = boxIterator.next();
-		SVGElement element = elementIterator.next();
-		int count = 0;
-		while (element != null) {
-			LOG.trace("count: "+count);
-			count++;
-			if (box == null || elementLagsBehindBox(edge, box, element)) {
-				time0 = System.currentTimeMillis();
-				if (newChunk == null) {
-					newChunk = makeChunk(chunkWidth, edge, PageIO.DECIMAL_PLACES, count);
-					chunkList.add(newChunk);
-					appendChild(newChunk);
-				}
-				newChunk.addSVGElement(element);
-				element = (elementIterator.hasNext() ? elementIterator.next() : null);
-				LOG.trace("addChunk/element: "+(System.currentTimeMillis() - time0));
-			} else {
-				box = null;
-				newChunk = null; // ?
-				if (boxIterator.hasNext()) {
-					newChunk = null;
-					while (boxIterator.hasNext()) {
-						box = boxIterator.next();
-						if (boxLargeEnough(chunkWidth, edge, box)) {
-							break;
-						}
-					}
-				}
-			}
-		}
-		LOG.trace("emptyBoxCount "+emptyBoxList.size());
-		checkAndDebugEmptyBoxes();
-		LOG.trace("======");
-		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis() - time0));
-		for (Chunk chunk0 : chunkList) {
-			chunk0.setBoundingBoxAttribute(PageIO.DECIMAL_PLACES);
-		}
-		LOG.trace("reformat chunkList: "+chunkList.size()+"/"+(System.currentTimeMillis() - time0));
-		return chunkList;
-	}
+//	public List<Chunk> splitIntoChunks(Double chunkWidth, BoxEdge edge) {
+//		getDescendantSVGElementListWithoutDefsDescendants();
+//		removeEmptyTexts();
+//		ensureEmptyBoxList(edge);
+//		SVGUtil.setBoundingBoxCached(descendantSVGElementList, true);
+//		Long time0 = System.currentTimeMillis();
+//		descendantSVGElementList = BoundingBoxManager.getElementsSortedByEdge(descendantSVGElementList, edge);
+//		LOG.trace("sort edge: "+edge);
+//		addTerminatingEmptyBox(1.5 * chunkWidth, edge);
+//		List<Chunk> chunkList = new ArrayList<Chunk>();
+//		if (emptyBoxList == null) {
+//			return chunkList;
+//		}
+//		Chunk newChunk = null;
+//		LOG.trace("emptyBoxes "+emptyBoxList.size());
+//		Iterator<Real2Range> boxIterator = emptyBoxList.iterator();
+//		if (!boxIterator.hasNext()) {
+//			return chunkList;
+//		}
+//		Iterator<SVGElement> elementIterator = descendantSVGElementList.iterator();
+//		Real2Range box = boxIterator.next();
+//		SVGElement element = elementIterator.next();
+//		int count = 0;
+//		while (element != null) {
+//			LOG.trace("count: "+count);
+//			count++;
+//			if (box == null || elementLagsBehindBox(edge, box, element)) {
+//				time0 = System.currentTimeMillis();
+//				if (newChunk == null) {
+//					newChunk = makeChunk(chunkWidth, edge, PageIO.DECIMAL_PLACES, count);
+//					chunkList.add(newChunk);
+//					appendChild(newChunk);
+//				}
+//				newChunk.addSVGElement(element);
+//				element = (elementIterator.hasNext() ? elementIterator.next() : null);
+//				LOG.trace("addChunk/element: "+(System.currentTimeMillis() - time0));
+//			} else {
+//				box = null;
+//				newChunk = null; // ?
+//				if (boxIterator.hasNext()) {
+//					newChunk = null;
+//					while (boxIterator.hasNext()) {
+//						box = boxIterator.next();
+//						if (boxLargeEnough(chunkWidth, edge, box)) {
+//							break;
+//						}
+//					}
+//				}
+//			}
+//		}
+//		LOG.trace("emptyBoxCount "+emptyBoxList.size());
+//		checkAndDebugEmptyBoxes();
+//		LOG.trace("======");
+//		LOG.trace("iterations: "+count+" loop count time: "+(System.currentTimeMillis() - time0));
+//		for (Chunk chunk0 : chunkList) {
+//			chunk0.setBoundingBoxAttribute(PageIO.DECIMAL_PLACES);
+//		}
+//		LOG.trace("reformat chunkList: "+chunkList.size()+"/"+(System.currentTimeMillis() - time0));
+//		return chunkList;
+//	}
 
 	private void removeEmptyTexts() {
 		Iterator<SVGElement> it = descendantSVGElementList.iterator();

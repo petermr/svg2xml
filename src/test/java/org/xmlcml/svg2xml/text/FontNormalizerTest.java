@@ -14,8 +14,8 @@ import org.junit.Test;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.text.structure.FontNormalizer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
 
 
 public class FontNormalizerTest {
@@ -46,7 +46,7 @@ public class FontNormalizerTest {
 			SVGText text = textList.get(i);
 			String fontName = text.getSVGXFontName();
 			fontNames.add(fontName);
-			isBlack.add(FontNormalizerOLD.isBoldFontName(fontName));
+			isBlack.add(FontNormalizer.isBoldFontName(fontName));
 		}
 		Assert.assertEquals("fontnames", 
 				"[EFEEEK+Syntax-Black, EFEEEK+Syntax-Black, EFEEDJ+Syntax-Roman, EFEEDJ+Syntax-Roman]", 
@@ -61,7 +61,7 @@ public class FontNormalizerTest {
 	public void testBoldFromGrayness() {
 		List<Boolean> isBoldList = new ArrayList<Boolean>();
 		List<String> fillList = new ArrayList<String>();
-		FontNormalizerOLD fontNormalizer = new FontNormalizerOLD();
+		FontNormalizer fontNormalizer = new FontNormalizer();
 		fontNormalizer.setBoldThreshold(0x60);
 		for (int i = 0; i < textList.size(); i++) {
 			GraphicsElement text = textList.get(i);

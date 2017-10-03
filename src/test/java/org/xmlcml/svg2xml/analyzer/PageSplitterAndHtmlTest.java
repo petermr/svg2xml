@@ -1,11 +1,6 @@
 package org.xmlcml.svg2xml.analyzer;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
-
-import nu.xom.Element;
-import nu.xom.Nodes;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -13,16 +8,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.page.ChunkAnalyzer;
-import org.xmlcml.svg2xml.page.MixedAnalyzer;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.TextAnalyzerOLD;
-import org.xmlcml.svg2xml.text.TextLineOLD;
-import org.xmlcml.testutil.TestUtils;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Element;
 
 public class PageSplitterAndHtmlTest {
 
@@ -35,35 +24,6 @@ public class PageSplitterAndHtmlTest {
 		Assert.assertEquals("chunks", 14, gList.size());
 	}
 	
-	@Test
-	@Ignore // needs revisiting
-	public void testTransformChunksToXMLAndGuessTypes() {
-		Element svg = SVGElement.readAndCreateSVG(SVG2XMLFixtures.SVG_AJC_PAGE6_SPLIT_SVG);
-		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		CheckAnalyzer[] checkAnalyzers = new CheckAnalyzer[] {
-				new CheckAnalyzer(TextAnalyzerOLD.class, 3),               //0
-				new CheckAnalyzer(TextAnalyzerOLD.class, 29),              //1
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 6, 23),        //2
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 2, 7),         //3
-				new CheckAnalyzer(TextAnalyzerOLD.class, 8),               //4
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 11, 14),       //5
-				new CheckAnalyzer(TextAnalyzerOLD.class, 31),              //6
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 14, 26),       //7
-				new CheckAnalyzer(TextAnalyzerOLD.class, 32),              //8
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 155, 42),      //9
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 2, 157),       //10
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 2, 1486),      //11
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 3, 1547),      //12
-				new CheckAnalyzer(MixedAnalyzer.class, 0, 3, 692),       //13
-		};
-		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG)svg);
-		for (int i = 0; i < gList.size(); i++) {
-			SVGElement g = gList.get(i);
-			ChunkAnalyzer analyzer = pageAnalyzer.createSpecificAnalyzer(g);
-			CheckAnalyzer checkAnalyzer = CheckAnalyzer.createCheckAnalyzer(analyzer);
-			Assert.assertTrue("analyzer "+i+" "+analyzer+"; "+checkAnalyzers[i], checkAnalyzer.equals(checkAnalyzers[i]));
-		}
-	}
 	
 	/*@Test
 	public void testTransformChunksToXMLAndAnalyzeText0() {
@@ -594,35 +554,35 @@ public class PageSplitterAndHtmlTest {
 	}
 
 	public static void analyzeChunkInSVGPage(int chunk, int nlines, Element ref, Element svg) {
-		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
-		SVGElement g = gList.get(chunk);
-		if (!(g instanceof SVGG)) {
-			throw new RuntimeException("BUG: g should be SVGG");
-		}
-		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG)g);
-		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
-		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
-		TextAnalyzerOLD textAnalyzer = mixedAnalyzer.getTextAnalyzer();
-		LOG.trace("TextAnalyzer "+textAnalyzer);
-		List<TextLineOLD> textLines = textAnalyzer.getLinesInIncreasingY();
-		for (TextLineOLD textLine : textLines) {
-			LOG.trace(textLine);
-		}
-		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
-		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
-		LOG.trace(ref.toXML()+"\n\n"+element.toXML());
-		TestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
-		try {
-			Nodes nodes = element.query(".//@style");
-			for (int i = 0; i < nodes.size(); i++) {
-				nodes.get(i).detach();
-			}
-			File file = new File("target/");
-			file.mkdirs();
-			SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		List<SVGElement> gList = SVGG.generateElementList(svg, "svg:g/svg:g/svg:g[@edge='YMIN']");
+//		SVGElement g = gList.get(chunk);
+//		if (!(g instanceof SVGG)) {
+//			throw new RuntimeException("BUG: g should be SVGG");
+//		}
+//		PageAnalyzer pageAnalyzer = new PageAnalyzer((SVGSVG)g);
+//		MixedAnalyzer mixedAnalyzer = (MixedAnalyzer) pageAnalyzer.createSpecificAnalyzer(g);
+//		LOG.trace("MixedAnalyzer "+mixedAnalyzer);
+//		TextAnalyzer textAnalyzer = mixedAnalyzer.getTextAnalyzer();
+//		LOG.trace("TextAnalyzer "+textAnalyzer);
+//		List<TextLine> textLines = textAnalyzer.getLinesInIncreasingY();
+//		for (TextLine textLine : textLines) {
+//			LOG.trace(textLine);
+//		}
+//		Assert.assertEquals("lines"+chunk, nlines, textLines.size());
+//		Element element = textAnalyzer.getTextStructurer().createHtmlElement();
+//		LOG.trace(ref.toXML()+"\n\n"+element.toXML());
+//		TestUtils.assertEqualsIncludingFloat("chunk"+chunk, ref, element, true, 0.001);
+//		try {
+//			Nodes nodes = element.query(".//@style");
+//			for (int i = 0; i < nodes.size(); i++) {
+//				nodes.get(i).detach();
+//			}
+//			File file = new File("target/");
+//			file.mkdirs();
+//			SVGUtil.debug(element, new FileOutputStream("target/chunk"+chunk+".html"), 1);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 }

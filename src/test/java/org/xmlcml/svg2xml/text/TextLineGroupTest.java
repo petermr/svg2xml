@@ -6,37 +6,40 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.IntArray;
+import org.xmlcml.graphics.svg.text.line.ScriptLine;
+import org.xmlcml.graphics.svg.text.line.TextLine;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 
 public class TextLineGroupTest {
 
-	private static final String TERM = ScriptLineOLD.TERM;
+	private static final String TERM = ScriptLine.TERM;
 	private final static Logger LOG = Logger.getLogger(TextLineGroupTest.class);
 	
 	String lineSeparator = System.getProperty("line.separator");
 	
 	@Test
 	public void testTextStructurerGroupWeight() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
-		List<ScriptLineOLD> textLineGroupList = textStructurer.getScriptedLineListForCommonestFont();
+		List<ScriptLine> textLineGroupList = textStructurer.getScriptedLineListForCommonestFont();
 		Assert.assertTrue("header", textLineGroupList.get(0).isBold());
 		Assert.assertFalse("header", textLineGroupList.get(1).isBold());
 		Assert.assertFalse("header", textLineGroupList.get(15).isBold());
-		for (ScriptLineOLD textLineGroup : textLineGroupList) {
+		for (ScriptLine textLineGroup : textLineGroupList) {
 			LOG.trace(textLineGroup);
 		}
 	}
 
 	@Test
 	public void testTextStructurerLineIsCommonestFontSize() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
 		Assert.assertEquals("commonest size", 9.76, textStructurer
 				.getCommonestFontSize().getDouble(), 0.001);
-		ScriptLineOLD textLineGroup0 = textStructurer.getScriptedLineListForCommonestFont().get(0);
+		ScriptLine textLineGroup0 = textStructurer.getScriptedLineListForCommonestFont().get(0);
 		Assert.assertFalse("not commonest size",
 				textStructurer.isCommonestFontSize(textLineGroup0));
-		ScriptLineOLD textLineGroup1 = textStructurer.getScriptedLineListForCommonestFont().get(1);
+		ScriptLine textLineGroup1 = textStructurer.getScriptedLineListForCommonestFont().get(1);
 		LOG.trace("textLine1 " + textLineGroup1);
 		Assert.assertTrue("commonest Font Size",
 				textStructurer.isCommonestFontSize(textLineGroup1));
@@ -45,15 +48,15 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerLineIsDifferentSize() {
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
 		Assert.assertEquals("commonest size", 9.76, textStructurer
 				.getCommonestFontSize().getDouble(), 0.001);
-		TextLineOLD textLine0 = textStructurer.getTextLineList().get(0);
+		TextLine textLine0 = textStructurer.getTextLineList().get(0);
 		Assert.assertFalse("not commonestFontSize",
 				textStructurer.isCommonestFontSize(textLine0));
 		Assert.assertTrue("line 0 different size",
 				textStructurer.lineIsLargerThanCommonestFontSize(textLine0));
-		TextLineOLD textLine1 = textStructurer.getTextLineList().get(1);
+		TextLine textLine1 = textStructurer.getTextLineList().get(1);
 		Assert.assertTrue("isCommonestFontSize",
 				textStructurer.isCommonestFontSize(textLine1));
 		Assert.assertFalse("line 1 not different size",
@@ -62,7 +65,7 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplitLineSizesNone() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_8_SVG);
 		IntArray intArray = textStructurer.splitGroupBiggerThanCommonest();
 		LOG.trace(intArray);
@@ -72,7 +75,7 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplitLineSizesOne() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
 		IntArray intArray = textStructurer.splitBiggerThanCommonest();
 		LOG.trace(intArray);
@@ -82,7 +85,7 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplitLineSizesNoneButFont() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_4_3_SVG);
 		IntArray intArray = textStructurer.splitBiggerThanCommonest();
 		LOG.trace(intArray);
@@ -92,7 +95,7 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplitLineGroupSizesNoneButFont() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_4_3_SVG);
 		IntArray intArray = textStructurer.splitBiggerThanCommonest();
 		LOG.trace(intArray);
@@ -102,11 +105,11 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplit() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
 		int[] ref = {0};
 		IntArray intArray = new IntArray(ref);
-		List <TextStructurerOLD> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
+		List <TextStructurer> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 2, textStructurerList.size());
 		LOG.trace("E0 "+textStructurerList.get(0));
 		LOG.trace("E1 "+textStructurerList.get(1));
@@ -114,11 +117,11 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplit6_4_0_1() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_6_4_SVG);
 		int[] ref = {0,1};
 		IntArray intArray = new IntArray(ref);
-		List <TextStructurerOLD> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
+		List <TextStructurer> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 3, textStructurerList.size());
 		Assert.assertEquals("T0 ", "TextStructurer: 1" + lineSeparator + "chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion" + lineSeparator, 
 				textStructurerList.get(0).toString());
@@ -131,11 +134,11 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplit6_4_0() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_6_4_SVG);
 		int[] ref = {0};
 		IntArray intArray = new IntArray(ref);
-		List <TextStructurerOLD> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
+		List <TextStructurer> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 2, TextStructurerList.size());
 		Assert.assertEquals("T0 ", "TextStructurer: 1" + lineSeparator + "chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion" + lineSeparator, 
 				TextStructurerList.get(0).toString());
@@ -147,11 +150,11 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplit6_4_1() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_6_4_SVG);
 		int[] ref = {1};
 		IntArray intArray = new IntArray(ref);
-		List <TextStructurerOLD> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
+		List <TextStructurer> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 2, TextStructurerList.size());
 		Assert.assertEquals("T0 ", "TextStructurer: 2" + lineSeparator + "chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion" + lineSeparator +
 				"chars: 47 Y: 501.882 fontSize: 9.763 >>Thecurrentmodelofholinholeformationhypothesizes" + lineSeparator,
@@ -163,11 +166,11 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplit6_4_2() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_6_4_SVG);
 		int[] ref = {2};
 		IntArray intArray = new IntArray(ref);
-		List <TextStructurerOLD> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
+		List <TextStructurer> TextStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 2, TextStructurerList.size());
 		Assert.assertEquals("T0 ", "TextStructurer: 3" + lineSeparator + "chars: 10 Y: 489.92 fontSize: 10.261 >>Discussion" + lineSeparator + "chars: 47 Y: 501.882 fontSize: 9.763 >>Thecurrentmodelofholinholeformationhypothesizes" + lineSeparator + "chars: 45 Y: 513.842 fontSize: 9.763 >>thatλphagelysistimingismainlydeterminedbywhen" + lineSeparator,
 				TextStructurerList.get(0).toString());
@@ -178,7 +181,7 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplit6_4_3() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_6_4_SVG);
 		int[] ref = {3};
 		IntArray intArray = new IntArray(ref);
@@ -193,10 +196,10 @@ public class TextLineGroupTest {
 
 	@Test
 	public void testTextStructurerSplit5_2_subAndSuper() {
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(TextFixtures.BMC_174_5_2_SVG);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_174_5_2_SVG);
 		int[] ref = {1,2,4,5};
 		IntArray intArray = new IntArray(ref);
-		List <TextStructurerOLD> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
+		List <TextStructurer> textStructurerList = textStructurer.splitLineGroupsAfter(intArray);
 		Assert.assertEquals("split after 0", 5, textStructurerList.size());
 		Assert.assertEquals("L0_1 ", 
 				"TextStructurer: 2" + lineSeparator + "chars: 41 Y: 95.394 fontSize: 9.763 >>betweenMLTandanothercommonlyusedmeasureof" + lineSeparator +
@@ -230,15 +233,15 @@ public class TextLineGroupTest {
 	
 	@Test
 	public void testTextStructurerSplitBoldHeader_1_6() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_1_6_SVG);
-		List<TextStructurerOLD> splitList = textStructurer.splitOnFontBoldChange(0);
+		List<TextStructurer> splitList = textStructurer.splitOnFontBoldChange(0);
 		Assert.assertEquals("split", 2, splitList.size());
 		Assert.assertEquals("split0", 
 				"TextStructurer: 1" + lineSeparator + "chars: 10 Y: 464.578 fontSize: 10.261 >>Background" + lineSeparator, 
 				splitList.get(0).toString());
-		TextStructurerOLD split1 = splitList.get(1);
-		List<ScriptLineOLD> split1GroupList = split1.getScriptedLineListForCommonestFont();
+		TextStructurer split1 = splitList.get(1);
+		List<ScriptLine> split1GroupList = split1.getScriptedLineListForCommonestFont();
 		Assert.assertEquals("split1", 15, split1GroupList.size());
 		Assert.assertEquals("split1.0", 
 				"Somephenotypicvariationarisesfromrandomnessin  %%%%\n", 
@@ -250,19 +253,19 @@ public class TextLineGroupTest {
 	 * 
 	 */
 	public void testTextStructurerSplitBoldHeader_9_3() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_9_3_SVG);
-		List<TextStructurerOLD> splitList = textStructurer.splitOnFontBoldChange(0);
+		List<TextStructurer> splitList = textStructurer.splitOnFontBoldChange(0);
 		Assert.assertEquals("split", 2, splitList.size());
-		List<ScriptLineOLD> split0GroupList = splitList.get(0).getScriptedLineListForCommonestFont();
+		List<ScriptLine> split0GroupList = splitList.get(0).getScriptedLineListForCommonestFont();
 		Assert.assertEquals("split0.0", 
 				"Methods  %%%%\n", 
 				split0GroupList.get(0).toString());
 		Assert.assertEquals("split0.1", 
 				"Bacterialstrains  %%%%\n", 
 				split0GroupList.get(1).toString());
-		TextStructurerOLD split1 = splitList.get(1);
-		List<ScriptLineOLD> split1GroupList = split1.getScriptedLineListForCommonestFont();
+		TextStructurer split1 = splitList.get(1);
+		List<ScriptLine> split1GroupList = split1.getScriptedLineListForCommonestFont();
 		Assert.assertEquals("split1", 3, split1GroupList.size());
 		Assert.assertEquals("split1.0", 
 				"Allbacteriaandphagestrainsusedinthisstudyarelisted  %%%%\n",
@@ -280,10 +283,10 @@ public class TextLineGroupTest {
 	 * 
 	 */
 	public void testTextStructurerSplitBoldHeader_9_3_fontSplitter() {
-		TextStructurerOLD textStructurer = TextStructurerOLD
+		TextStructurer textStructurer = TextStructurer
 				.createTextStructurerWithSortedLines(TextFixtures.BMC_174_9_3_SVG);
-		List<TextStructurerOLD> splitList = textStructurer.splitOnFontBoldChange(0);
-		TextStructurerOLD header = splitList.get(0);
+		List<TextStructurer> splitList = textStructurer.splitOnFontBoldChange(0);
+		TextStructurer header = splitList.get(0);
 		LOG.trace(header);
 		IntArray splitter = header.getSplitArrayForFontSizeChange(0);
 		Assert.assertEquals("splitter", "(0)", splitter.toString());
@@ -294,17 +297,17 @@ public class TextLineGroupTest {
 	 * 
 	 */
 	public void testTextStructurerSplitBoldHeader_9_3_fontSize() {
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(TextFixtures.BMC_174_9_3_SVG);
-		List<TextStructurerOLD> splitList = textStructurer.splitOnFontBoldChange(0);
-		TextStructurerOLD header = splitList.get(0);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(TextFixtures.BMC_174_9_3_SVG);
+		List<TextStructurer> splitList = textStructurer.splitOnFontBoldChange(0);
+		TextStructurer header = splitList.get(0);
 		LOG.trace(header);
-		List<TextStructurerOLD> headers = header.splitOnFontSizeChange(0);
+		List<TextStructurer> headers = header.splitOnFontSizeChange(0);
 		Assert.assertEquals("headers", 2, headers.size());
-		List<ScriptLineOLD> header0 = headers.get(0).getScriptedLineListForCommonestFont();
+		List<ScriptLine> header0 = headers.get(0).getScriptedLineListForCommonestFont();
 		Assert.assertEquals("header0", 
 				"[Methods"+TERM+"]", 
 				header0.toString());
-		List<ScriptLineOLD> header1 = headers.get(1).getScriptedLineListForCommonestFont();
+		List<ScriptLine> header1 = headers.get(1).getScriptedLineListForCommonestFont();
 		Assert.assertEquals("header1", 
 				"[Bacterialstrains  %%%%\n]", 
 				header1.toString());

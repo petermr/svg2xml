@@ -12,9 +12,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.html.HtmlMenuSystem;
-import org.xmlcml.svg2xml.container.AbstractContainerOLD.ContainerType;
+import org.xmlcml.graphics.svg.text.structure.AbstractContainer.ContainerType;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
-import org.xmlcml.svg2xml.page.PageIO;
 import org.xmlcml.svg2xml.util.NameComparator;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
@@ -194,34 +193,6 @@ public class PDFAnalyzerIO {
 	}
 
 	public void outputFiles(PDFAnalyzerOptions options) {
-		for (PageAnalyzer pageAnalyzer : pdfAnalyzer.getPageAnalyzerList()) {
-			if (options.summarize) {
-				pageAnalyzer.summaryContainers();
-			}
-			if (options.outputChunks) {
-				pageAnalyzer.outputChunks();
-			}
-			if (options.outputHtmlChunks ||
-					options.outputRawFigureHtml ||
-					options.outputRawTableHtml) {
-				pageAnalyzer.outputHtmlComponents();
-			}
-			if (options.outputImages) {
-				pageAnalyzer.outputImages();
-			}
-			if (options.outputRunningText) {
-				pageAnalyzer.outputHtmlRunningText();
-			}
-			if (options.outputAnnotatedSvgPages) {
-				pageAnalyzer.writeRawSVGPageToRawDirectory();
-//				pageAnalyzer.writeFinalSVGPageToFinalDirectory();
-			}
-		}
-		if (options.outputRunningText) {
-			pdfAnalyzer.createRunningHtml();
-			outputDocumentDir = PageIO.createfinalSVGDocumentDirectory(rawSvgDirectory);
-			PageIO.outputFile(pdfAnalyzer.getRunningTextHtml(), PageIO.createHtmlFile(outputDocumentDir, ContainerType.TEXT, "0"));
-		}
 	}
 
 

@@ -5,19 +5,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Assert;
-import nu.xom.Element;
-
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.text.TextCoordinate;
+import org.xmlcml.graphics.svg.text.line.TextLine;
+import org.xmlcml.graphics.svg.text.structure.RawWords;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.xml.XMLUtil;
 
 import com.google.common.collect.Multiset;
 import com.google.common.collect.Multiset.Entry;
+
+import nu.xom.Element;
 
 
 public class TextLineTest {
@@ -45,9 +48,9 @@ public class TextLineTest {
 		public final static Element PAGE_ELEMENT = XMLUtil.parseXML(PAGE_STRING);
 		public final static SVGElement PAGE_CHUNK = SVGElement.readAndCreateSVG(PAGE_ELEMENT);
 		
-		public final static TextStructurerOLD PAGE_TEXT_STRUCTURER = 
-				TextStructurerOLD.createTextStructurerWithSortedLines(PAGE_CHUNK);
-		public final static TextLineOLD PAGE_TEXT_LINE = PAGE_TEXT_STRUCTURER.getLinesInIncreasingY().get(0);
+		public final static TextStructurer PAGE_TEXT_STRUCTURER = 
+				TextStructurer.createTextStructurerWithSortedLines(PAGE_CHUNK);
+		public final static TextLine PAGE_TEXT_LINE = PAGE_TEXT_STRUCTURER.getLinesInIncreasingY().get(0);
 				
 
 		public static final String PAGE_STRING1 =
@@ -66,9 +69,9 @@ public class TextLineTest {
 		public final static Element PAGE_ELEMENT1 = XMLUtil.parseXML(PAGE_STRING1);
 		public final static SVGElement PAGE_CHUNK1 = SVGElement.readAndCreateSVG(PAGE_ELEMENT1);
 		
-		public final static TextStructurerOLD PAGE_TEXT_STRUCTURER1 = 
-				TextStructurerOLD.createTextStructurerWithSortedLines(PAGE_CHUNK1);
-		public final static TextLineOLD PAGE_TEXT_LINE1 = PAGE_TEXT_STRUCTURER1.getLinesInIncreasingY().get(0);
+		public final static TextStructurer PAGE_TEXT_STRUCTURER1 = 
+				TextStructurer.createTextStructurerWithSortedLines(PAGE_CHUNK1);
+		public final static TextLine PAGE_TEXT_LINE1 = PAGE_TEXT_STRUCTURER1.getLinesInIncreasingY().get(0);
 				
 		public static final String PAGE_STRING2 =
 		"<svg xmlns='http://www.w3.org/2000/svg'>"+ 
@@ -99,9 +102,9 @@ public class TextLineTest {
 	   "</svg>";
 		public final static Element PAGE_ELEMENT2 = XMLUtil.parseXML(PAGE_STRING2);
 		public final static SVGElement PAGE_CHUNK2 = SVGElement.readAndCreateSVG(PAGE_ELEMENT2);
-		public final static TextStructurerOLD PAGE_TEXT_STRUCTURER2 = 
-				TextStructurerOLD.createTextStructurerWithSortedLines(PAGE_CHUNK2);
-		public final static TextLineOLD PAGE_TEXT_LINE2 = PAGE_TEXT_STRUCTURER2.getTextLineList().get(0);
+		public final static TextStructurer PAGE_TEXT_STRUCTURER2 = 
+				TextStructurer.createTextStructurerWithSortedLines(PAGE_CHUNK2);
+		public final static TextLine PAGE_TEXT_LINE2 = PAGE_TEXT_STRUCTURER2.getTextLineList().get(0);
 		
 
 	@Test
@@ -111,7 +114,7 @@ public class TextLineTest {
 	@Ignore
 	public void insertSpaceFactorTest() {
 
-		TextLineOLD textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("control", "activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
 
 		textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
@@ -138,7 +141,7 @@ public class TextLineTest {
 	@Test
 	public void insertSpaceTest() {
 
-		TextLineOLD textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("control", "activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
 		textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("control", "activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
@@ -147,7 +150,7 @@ public class TextLineTest {
 	}
 
 	private static void testScalefactor(double spaceFactor, int lineNumber, String expected) {
-		TextLineOLD textLine5;
+		TextLine textLine5;
 		textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, lineNumber);
 		textLine5.insertSpaces(spaceFactor);
 		Assert.assertEquals("spaceFactor: "+spaceFactor, expected, textLine5.getLineContent());
@@ -158,14 +161,14 @@ public class TextLineTest {
 	 *
 	 */
 	public void addSpacesTest() {
-		TextLineOLD textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
 		Assert.assertEquals("activationenergy.Takingthenaturallogarithmofthisequa-", textLine5.getLineContent());
 	}
 
 	@Test
 	public void testFontSizeSetLine0() {
-		TextLineOLD textLine0 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 0);
-		Set<TextCoordinateOLD> fontSizeSet = textLine0.getFontSizeSet();
+		TextLine textLine0 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 0);
+		Set<TextCoordinate> fontSizeSet = textLine0.getFontSizeSet();
 		Assert.assertNotNull("line0 set", fontSizeSet);
 		Assert.assertEquals("line0 size", 1, fontSizeSet.size());
 		Assert.assertEquals("line0 fontSize", 7.07, fontSizeSet.iterator().next().getDouble(), 0.01);
@@ -173,8 +176,8 @@ public class TextLineTest {
 
 	@Test
 	public void testFontSizeSetLine5() {
-		TextLineOLD textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
-		Set<TextCoordinateOLD> fontSizeSet = textLine5.getFontSizeSet();
+		TextLine textLine5 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 5);
+		Set<TextCoordinate> fontSizeSet = textLine5.getFontSizeSet();
 		Assert.assertNotNull("line5 set", fontSizeSet);
 		Assert.assertEquals("line5 size", 1, fontSizeSet.size());
 		Assert.assertEquals("line5 fontSize", 9.465, fontSizeSet.iterator().next().getDouble(), 0.01);
@@ -182,7 +185,7 @@ public class TextLineTest {
 
 	@Test
 	public void testgetSimpleFontFamilyMultiset8() {
-		TextLineOLD textLine8 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 8);
+		TextLine textLine8 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 8);
 		Multiset<String> fontFamilyMultiset = textLine8.getFontFamilyMultiset();
 		Assert.assertNotNull("fontFamilyMultiset", fontFamilyMultiset);
 		Assert.assertEquals("single", 45, fontFamilyMultiset.size());
@@ -192,7 +195,7 @@ public class TextLineTest {
 	
 	@Test
 	public void testgetSimpleFontFamilyMultiset0() {
-		TextLineOLD textLine0 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 0);
+		TextLine textLine0 = TextLineTest.getTextLine(SVG2XMLFixtures.PARA_SUSCRIPT_SVG, 0);
 		Multiset<String> fontFamilyMultiset = textLine0.getFontFamilyMultiset();
 		Assert.assertNotNull("fontFamilyMultiset", fontFamilyMultiset);
 		Assert.assertEquals("single", 4, fontFamilyMultiset.size());
@@ -211,13 +214,13 @@ public class TextLineTest {
 	
 	@Test
 	public void testGetRawWords() {
-		RawWordsOLD rawWords = PAGE_TEXT_LINE.getRawWords();
+		RawWords rawWords = PAGE_TEXT_LINE.getRawWords();
 		Assert.assertEquals("rawWords", 4, rawWords.size());
 	}
 
 	@Test
 	public void testGetRawWords2() {
-		RawWordsOLD rawWords = PAGE_TEXT_LINE2.getRawWords();
+		RawWords rawWords = PAGE_TEXT_LINE2.getRawWords();
 		// there are explicit soaces to single word
 		Assert.assertEquals("rawWords", 1, rawWords.size());
 		LOG.trace(rawWords.get(0));
@@ -227,10 +230,10 @@ public class TextLineTest {
 
 	// =====================================================
 	
-	private static TextLineOLD getTextLine(File file, int lineNumber) {
-		TextStructurerOLD textContainer = TextStructurerOLD.createTextStructurerWithSortedLines(file);
-		List<TextLineOLD> textLines = textContainer.getLinesInIncreasingY();
-		TextLineOLD textLine = textLines.get(lineNumber);
+	private static TextLine getTextLine(File file, int lineNumber) {
+		TextStructurer textContainer = TextStructurer.createTextStructurerWithSortedLines(file);
+		List<TextLine> textLines = textContainer.getLinesInIncreasingY();
+		TextLine textLine = textLines.get(lineNumber);
 		return textLine;
 	}
 

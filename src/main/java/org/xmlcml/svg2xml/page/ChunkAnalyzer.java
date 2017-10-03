@@ -4,14 +4,14 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import nu.xom.Nodes;
-
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.svg2xml.container.AbstractContainerOLD;
+import org.xmlcml.graphics.svg.text.structure.AbstractContainer;
 import org.xmlcml.svg2xml.pdf.ChunkId;
+
+import nu.xom.Nodes;
 
 /** 
  * Superclass of raw components of PDFPage SVG.
@@ -35,10 +35,11 @@ public abstract class ChunkAnalyzer {
 	protected ChunkId chunkId;
 	protected SVGElement svgChunk;
 	protected PageAnalyzer pageAnalyzer;
-	protected List<AbstractContainerOLD> abstractContainerList;
+	protected List<AbstractContainer> abstractContainerList;
 	
 	protected ChunkAnalyzer(PageAnalyzer pageAnalyzer) {
 		this.pageAnalyzer = pageAnalyzer;
+		throw new RuntimeException("CHECK NEVER USED");
 	}
 	
 	public PageAnalyzer getPageAnalyzer() {
@@ -54,13 +55,13 @@ public abstract class ChunkAnalyzer {
 		return svgChunk;
 	}
 
-	public List<AbstractContainerOLD> createContainers() {
+	public List<AbstractContainer> createContainers() {
 		throw new RuntimeException("Override for: "+getClass());
 	}
 
 	protected void ensureAbstractContainerList() {
 		if (abstractContainerList == null) {
-			abstractContainerList = new ArrayList<AbstractContainerOLD>();
+			abstractContainerList = new ArrayList<AbstractContainer>();
 		}
 	}
 
@@ -113,9 +114,5 @@ public abstract class ChunkAnalyzer {
 		}
 	}
 	
-	protected PageIO getPageIO() {
-		PageAnalyzer pageAnalyzer = getPageAnalyzer();
-		return pageAnalyzer == null ? null : pageAnalyzer.getPageIO();
-	}
 
 }

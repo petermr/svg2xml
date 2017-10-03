@@ -8,24 +8,27 @@ import org.junit.Test;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.graphics.svg.text.build.WordNew;
+import org.xmlcml.graphics.svg.text.line.TextLine;
+import org.xmlcml.graphics.svg.text.structure.RawWords;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.xml.XMLUtil;
 
 public class RawWordsTest {
 
-	private TextLineOLD BERICHT_PAGE6_34_TEXTLINE = null;
+	private TextLine BERICHT_PAGE6_34_TEXTLINE = null;
 
 	@Before
 	public void setup() {
-		TextStructurerOLD BERICHT_PAGE6_TXTSTR = 
-				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
-		List<TextLineOLD> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
+		TextStructurer BERICHT_PAGE6_TXTSTR = 
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.BERICHT_PAGE6_SVG);
+		List<TextLine> BERICHT_PAGE6_TEXT_LINES = BERICHT_PAGE6_TXTSTR.getLinesInIncreasingY();
 		BERICHT_PAGE6_34_TEXTLINE = BERICHT_PAGE6_TEXT_LINES.get(34);
 	}
 
-	public static RawWordsOLD RAW_WORDS = TextLineTest.PAGE_TEXT_LINE.getRawWords();
-	public static RawWordsOLD RAW_WORDS1 = TextLineTest.PAGE_TEXT_LINE1.getRawWords();
-	public static List<TextLineOLD> DK_LIST = TextLineOLD.createSortedTextLineList(
+	public static RawWords RAW_WORDS = TextLineTest.PAGE_TEXT_LINE.getRawWords();
+	public static RawWords RAW_WORDS1 = TextLineTest.PAGE_TEXT_LINE1.getRawWords();
+	public static List<TextLine> DK_LIST = TextLine.createSortedTextLineList(
 			XMLUtil.parseQuietlyToDocument(SVG2XMLFixtures.DK_PAGE1_SVG).getRootElement());
 
 
@@ -119,9 +122,9 @@ public class RawWordsTest {
 	
 	@Test
 	public void testPhrase() {
-		TextStructurerOLD textStructurer = 
-				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
-		RawWordsOLD rawWords = textStructurer.createRawWordsListFromTextLineList().get(0);
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
+		RawWords rawWords = textStructurer.createRawWordsListFromTextLineList().get(0);
 		WordNew word = rawWords.get(0);
 		PhraseNew phrase = word.createPhrase();
 		Assert.assertEquals("phrase", "{Phenotypic tarsus (mm)}", phrase.toString());
@@ -135,8 +138,8 @@ public class RawWordsTest {
 	
 	@Test
 	public void testPhrase1() {
-		TextLineOLD textLine = BERICHT_PAGE6_34_TEXTLINE;
-		RawWordsOLD rawWords = textLine.getRawWords();
+		TextLine textLine = BERICHT_PAGE6_34_TEXTLINE;
+		RawWords rawWords = textLine.getRawWords();
 		Assert.assertEquals("rawSpaces", "{Total Topf 1...........................231.....343.....453.....491}",
 				rawWords.toString());
 		WordNew word0 = rawWords.get(0);

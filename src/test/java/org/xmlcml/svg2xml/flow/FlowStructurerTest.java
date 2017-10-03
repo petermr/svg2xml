@@ -25,9 +25,9 @@ import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.objects.ArrowFactory;
 import org.xmlcml.graphics.svg.objects.SVGArrow;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.text.TextBox;
-import org.xmlcml.svg2xml.text.TextStructurerOLD;
 
 @Ignore // currently not being developed and occasionally throws platform-dependent errors
 
@@ -128,93 +128,93 @@ public class FlowStructurerTest {
 	
 	private void createFlow(File inputFile, String outRoot) throws IOException {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
-		TextChunk phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
+		TextChunk phraseListList = textStructurer.getTextChunkList().getLastTextChunk();
 		
 		Real2 xMargins = new Real2(5.0, 5.0);
 		Real2 yMargins = new Real2(2.0, 2.0);
-		List<TextBox> textBoxList = textStructurer.createTextBoxList(phraseListList, xMargins, yMargins);
-		FlowStructurer flowStructurer = textStructurer.createFlowStructurer(phraseListList);
-		List<SVGShape> shapeList = flowStructurer.makeShapes();
+//		List<TextBox> textBoxList = textStructurer.createTextBoxList(phraseListList, xMargins, yMargins);
+//		FlowStructurer flowStructurer = textStructurer.createFlowStructurer(phraseListList);
+//		List<SVGShape> shapeList = flowStructurer.makeShapes();
 		
-		SVGG g = new SVGG();
-		for (TextBox textBox : textBoxList) {
-			SVGShape rect = textBox.getOrCreateBoundingRect();
-			rect.setFill("black");
-			rect.setOpacity(0.2);
-			rect.setStrokeWidth(1.5);
-			textBox.getStringValue();
-			g.appendChild(new TextBox(textBox));
-		}
-		
-		for (SVGShape shape : shapeList) {
-			if (shape instanceof SVGRect) {
-				shape.setFill("cyan");
-				shape.setOpacity(0.2);
-			} else if (shape instanceof SVGLine) {
-				shape.setStroke("red");
-			} else if (shape instanceof SVGPolyline) {
-				SVGPolyline polyline = (SVGPolyline) shape;
-				polyline.setStroke("orange");
-				polyline.setFill("blue");
-				polyline.setStrokeWidth(1.0);
-			} else if (shape instanceof SVGPolygon) {
-				SVGPolygon polygon = (SVGPolygon) shape;
-				polygon.setStroke("blue");
-				polygon.setFill("orange");
-				polygon.setStrokeWidth(2.0);
-			} 
-			g.appendChild(shape.copy());
-		}
-		SVGSVG.wrapAndWriteAsSVG(g, new File("target/flow/"+outRoot+"/textbox.svg"));
+//		SVGG g = new SVGG();
+//		for (TextBox textBox : textBoxList) {
+//			SVGShape rect = textBox.getOrCreateBoundingRect();
+//			rect.setFill("black");
+//			rect.setOpacity(0.2);
+//			rect.setStrokeWidth(1.5);
+//			textBox.getStringValue();
+//			g.appendChild(new TextBox(textBox));
+//		}
+//		
+//		for (SVGShape shape : shapeList) {
+//			if (shape instanceof SVGRect) {
+//				shape.setFill("cyan");
+//				shape.setOpacity(0.2);
+//			} else if (shape instanceof SVGLine) {
+//				shape.setStroke("red");
+//			} else if (shape instanceof SVGPolyline) {
+//				SVGPolyline polyline = (SVGPolyline) shape;
+//				polyline.setStroke("orange");
+//				polyline.setFill("blue");
+//				polyline.setStrokeWidth(1.0);
+//			} else if (shape instanceof SVGPolygon) {
+//				SVGPolygon polygon = (SVGPolygon) shape;
+//				polygon.setStroke("blue");
+//				polygon.setFill("orange");
+//				polygon.setStrokeWidth(2.0);
+//			} 
+//			g.appendChild(shape.copy());
+//		}
+//		SVGSVG.wrapAndWriteAsSVG(g, new File("target/flow/"+outRoot+"/textbox.svg"));
 		
 	}
 	
 	private void createPaths(File inputFile, String outRoot) throws IOException {
 		SVGSVG svg = (SVGSVG) SVGElement.readAndCreateSVG(inputFile);
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(inputFile);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 
-		TextChunk phraseListList = textStructurer.getOrCreatePhraseListListFromWords();
+		TextChunk phraseListList = textStructurer.getTextChunkList().getLastTextChunk();
 		
 		Real2 xMargins = new Real2(5.0, 5.0);
 		Real2 yMargins = new Real2(2.0, 2.0);
-		List<TextBox> textBoxList = textStructurer.createTextBoxList(phraseListList, xMargins, yMargins);
-		FlowStructurer flowStructurer = textStructurer.createFlowStructurer(phraseListList);
-		List<SVGShape> shapeList = flowStructurer.makeShapes();
-		
-		SVGG g = new SVGG();
-		for (TextBox textBox : textBoxList) {
-			SVGShape rect = textBox.getOrCreateBoundingRect();
-			rect.setFill("black");
-			rect.setOpacity(0.2);
-			rect.setStrokeWidth(1.5);
-			textBox.getStringValue();
-			g.appendChild(new TextBox(textBox));
-		}
-		
-		for (SVGShape shape : shapeList) {
-			if (shape instanceof SVGRect) {
-				shape.setFill("cyan");
-				shape.setOpacity(0.2);
-			} else if (shape instanceof SVGLine) {
-				shape.setStroke("red");
-			} else if (shape instanceof SVGEllipse) {
-				shape.setStroke("green");
-			} else if (shape instanceof SVGPolyline) {
-				SVGPolyline polyline = (SVGPolyline) shape;
-				polyline.setStroke("orange");
-//				polyline.setFill("blue");
-				polyline.setStrokeWidth(1.0);
-			} else if (shape instanceof SVGPolygon) {
-				SVGPolygon polygon = (SVGPolygon) shape;
-				polygon.setStroke("blue");
-				polygon.setFill("orange");
-				polygon.setStrokeWidth(2.0);
-			} 
-			g.appendChild(shape.copy());
-		}
-		SVGSVG.wrapAndWriteAsSVG(g, new File("target/flow/"+outRoot+"/textbox.svg"));
+//		List<TextBox> textBoxList = textStructurer.createTextBoxList(phraseListList, xMargins, yMargins);
+//		FlowStructurer flowStructurer = textStructurer.createFlowStructurer(phraseListList);
+//		List<SVGShape> shapeList = flowStructurer.makeShapes();
+//		
+//		SVGG g = new SVGG();
+//		for (TextBox textBox : textBoxList) {
+//			SVGShape rect = textBox.getOrCreateBoundingRect();
+//			rect.setFill("black");
+//			rect.setOpacity(0.2);
+//			rect.setStrokeWidth(1.5);
+//			textBox.getStringValue();
+//			g.appendChild(new TextBox(textBox));
+//		}
+//		
+//		for (SVGShape shape : shapeList) {
+//			if (shape instanceof SVGRect) {
+//				shape.setFill("cyan");
+//				shape.setOpacity(0.2);
+//			} else if (shape instanceof SVGLine) {
+//				shape.setStroke("red");
+//			} else if (shape instanceof SVGEllipse) {
+//				shape.setStroke("green");
+//			} else if (shape instanceof SVGPolyline) {
+//				SVGPolyline polyline = (SVGPolyline) shape;
+//				polyline.setStroke("orange");
+////				polyline.setFill("blue");
+//				polyline.setStrokeWidth(1.0);
+//			} else if (shape instanceof SVGPolygon) {
+//				SVGPolygon polygon = (SVGPolygon) shape;
+//				polygon.setStroke("blue");
+//				polygon.setFill("orange");
+//				polygon.setStrokeWidth(2.0);
+//			} 
+//			g.appendChild(shape.copy());
+//		}
+//		SVGSVG.wrapAndWriteAsSVG(g, new File("target/flow/"+outRoot+"/textbox.svg"));
 		
 	}
 	

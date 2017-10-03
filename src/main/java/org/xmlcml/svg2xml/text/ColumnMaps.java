@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.graphics.svg.text.line.TextLine;
+import org.xmlcml.graphics.svg.text.structure.RawWords;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.ImmutableSortedMultiset;
@@ -23,11 +26,11 @@ public class ColumnMaps {
 	
 	private static final Double COUNT_CUTOFF = 0.33;
 	
-	private TextStructurerOLD textStructurer;
+	private TextStructurer textStructurer;
 	private Multiset<Integer> startXIntSet;
 	private Multiset<Integer> midXIntSet;
 	private Multiset<Integer> endXIntSet;
-	private List<TextLineOLD> textLineList;
+	private List<TextLine> textLineList;
 
 	private List<Multiset.Entry<Integer>> startXSortedByCount;
 	private List<Multiset.Entry<Integer>> startXSortedByCoordinate;
@@ -51,13 +54,13 @@ public class ColumnMaps {
 		
 	}
 	
-	public ColumnMaps(TextStructurerOLD textStructurer) {
+	public ColumnMaps(TextStructurer textStructurer) {
 		this.textStructurer = textStructurer;
 		textLineList = textStructurer.getTextLineList();
 		generateMaps();
 	}
 
-	public ColumnMaps(List<TextLineOLD> textLineList) {
+	public ColumnMaps(List<TextLine> textLineList) {
 		this.textLineList = textLineList;
 		generateMaps();
 	}
@@ -67,8 +70,8 @@ public class ColumnMaps {
 		startXIntSet = HashMultiset.create();
 		midXIntSet = HashMultiset.create();
 		endXIntSet = HashMultiset.create();
-		for (TextLineOLD textLine : textLineList) {
-			RawWordsOLD rawWords = textLine.getRawWords();
+		for (TextLine textLine : textLineList) {
+			RawWords rawWords = textLine.getRawWords();
 			addToSet(rawWords.getStartXArray(), startXIntSet);
 			addToSet(rawWords.getMidXArray(), midXIntSet);
 			addToSet(rawWords.getEndXArray(), endXIntSet);

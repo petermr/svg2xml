@@ -12,6 +12,8 @@ import org.xmlcml.euclid.Util;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.text.build.WordNew;
+import org.xmlcml.graphics.svg.text.structure.RawWords;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class WordTest {
@@ -70,11 +72,11 @@ public class WordTest {
 	
 	@Test
 	public void testSplitWords() {
-		TextStructurerOLD textStructurer = 
-				TextStructurerOLD.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
-		List<RawWordsOLD> rawWordsList = textStructurer.createRawWordsListFromTextLineList();
+		TextStructurer textStructurer = 
+				TextStructurer.createTextStructurerWithSortedLines(SVG2XMLFixtures.RAWWORDS_SVG);
+		List<RawWords> rawWordsList = textStructurer.createRawWordsListFromTextLineList();
 		Assert.assertEquals("rawWordsList", 1, rawWordsList.size());
-		RawWordsOLD rawWords = rawWordsList.get(0);
+		RawWords rawWords = rawWordsList.get(0);
 		Assert.assertEquals("rawWords", 1, rawWords.size());
 		WordNew word = rawWords.get(0);
 		Assert.assertEquals("unsplit value", "Phenotypic tarsus (mm)", word.toString());

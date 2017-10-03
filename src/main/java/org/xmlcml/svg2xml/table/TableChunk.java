@@ -13,7 +13,7 @@ import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.GraphicsElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.svg2xml.text.TextStructurerOLD;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 
 /** superclass of cells, rows, etc in table
  * 
@@ -222,7 +222,7 @@ public class TableChunk {
 
 	protected HtmlElement createHtmlThroughTextStructurer() {
 		List<SVGText> characters = SVGText.extractTexts((List<SVGElement>) this.getElementList());
-		TextStructurerOLD textStructurer = TextStructurerOLD.createTextStructurerWithSortedLines(characters);
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(characters);
 		HtmlElement htmlElement = textStructurer.createHtmlElement();
 		return htmlElement;
 	}

@@ -9,9 +9,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
-import org.xmlcml.svg2xml.page.WhitespaceChunkerAnalyzerX;
 import org.xmlcml.svg2xml.paths.Chunk;
-import org.xmlcml.svg2xml.table.TableFixtures;
 
 import nu.xom.Builder;
 
@@ -348,18 +346,12 @@ public class SVG2XMLFixtures {
 		return svgPage;
 	}
 
-	public static SVGSVG createChunkedSVGPage(File pdfFile, int pageNum) {
-		SVGSVG svgPage = SVG2XMLFixtures.getSVGPageFromPDF(pdfFile, pageNum);
-		WhitespaceChunkerAnalyzerX whitespaceChunkerAnalyzerX = new WhitespaceChunkerAnalyzerX();
-		whitespaceChunkerAnalyzerX.splitByWhitespaceAndLabelLeafNodes(svgPage);
-		return svgPage;
-	}
 
-	public static List<Chunk> createLeafChunks(File pdfFile, int pageNum) {
-		SVGSVG svgPage = createChunkedSVGPage(pdfFile, pageNum);
-		List<Chunk> chunkList = Chunk.extractChunks(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@LEAF]"));
-		return chunkList;
-	}
+//	public static List<Chunk> createLeafChunks(File pdfFile, int pageNum) {
+//		SVGSVG svgPage = createChunkedSVGPage(pdfFile, pageNum);
+//		List<Chunk> chunkList = Chunk.extractChunks(SVGUtil.getQuerySVGElements(svgPage, ".//svg:g[@LEAF]"));
+//		return chunkList;
+//	}
 
 	/** compacts a filename tracking tables or figures hierarchy
 	 * 

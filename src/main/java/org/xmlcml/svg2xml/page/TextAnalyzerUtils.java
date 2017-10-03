@@ -11,6 +11,7 @@ import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
+import org.xmlcml.graphics.svg.text.structure.TextAnalyzer;
 import org.xmlcml.svg2xml.paths.Chunk;
 
 import com.google.common.collect.ArrayListMultimap;
@@ -72,7 +73,7 @@ public class TextAnalyzerUtils {
 		SVGText svgText = getConcatenatedText(textChunk);
 		if (svgText != null) {
 			LOG.trace("wrapped text "+textChunk.getId());
-			double textWidthFactor = TextAnalyzerOLD.DEFAULT_TEXTWIDTH_FACTOR;
+			double textWidthFactor = TextAnalyzer.DEFAULT_TEXTWIDTH_FACTOR;
 			List<SVGElement> rawTextList = SVGUtil.getQuerySVGElements(textChunk, "./svg:text");
 			Real2Range rawBoundingBox = SVGUtil.createBoundingBox(rawTextList);
 			if (rawBoundingBox == null) {
