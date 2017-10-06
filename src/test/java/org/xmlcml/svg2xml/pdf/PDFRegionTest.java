@@ -11,7 +11,7 @@ import org.eclipse.jetty.util.log.Log;
 import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2Range;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -57,7 +57,7 @@ public class PDFRegionTest {
 		List<SVGElement> svgElements = SVGUtil.findElementsIntersecting(bbox, svgElements1);
 		Assert.assertEquals(nelems,  svgElements.size());
 		SVGG g = new SVGG();
-		for (GraphicsElement svgElement : svgElements) {
+		for (SVGElement svgElement : svgElements) {
 			g.appendChild(svgElement.copy());
 		}
 		SVGSVG.wrapAndWriteAsSVG(g, file);

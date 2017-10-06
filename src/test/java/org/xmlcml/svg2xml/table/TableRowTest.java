@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.graphics.html.HtmlElement;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.xml.XMLUtil;
@@ -32,7 +32,7 @@ public class TableRowTest {
 	public void testTHChunkValue() {
 		TableChunk cellChunk = new TableChunk();
 		Element element = XMLUtil.parseQuietlyToDocument(TableFixtures.HROWFILE).getRootElement();
-		GraphicsElement svgElement = SVGElement.readAndCreateSVG(element);
+		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_OR_PATH_XPATH);
 		Assert.assertEquals("elements", 23, elementList.size());
 		cellChunk.setElementList(elementList);
@@ -44,7 +44,7 @@ public class TableRowTest {
 	public void testRowChunk() {
 		TableChunk cellChunk = new TableChunk();
 		Element element = XMLUtil.parseQuietlyToDocument(TableFixtures.TDBLOCKFILE).getRootElement();
-		GraphicsElement svgElement = SVGElement.readAndCreateSVG(element);
+		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
 //		svgElement.debug("XXX");
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_OR_PATH_XPATH);
 		cellChunk.setElementList(elementList);

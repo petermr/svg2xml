@@ -9,11 +9,11 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.util.MultisetUtil;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.Phrase;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 import com.google.common.collect.HashMultiset;
@@ -58,7 +58,7 @@ public class TableBodySection extends TableSection {
 		boolean inIndent = false;
 		double startRange = 0;
 		double endRange = 0;
-		PhraseNew phrasei = null;
+		Phrase phrasei = null;
 		for (int i = 0; i < indentArray.size(); i++) {
 			phrasei = columnManager0.getPhrase(i);
 			if (phrasei.getStringValue().trim().length() == 0) {
@@ -126,8 +126,8 @@ public class TableBodySection extends TableSection {
 		return yCoordArray;
 	}
 
-	public GraphicsElement createMarkedSections(
-			GraphicsElement svgChunk,
+	public SVGElement createMarkedSections(
+			SVGElement svgChunk,
 			String[] colors,
 			double[] opacity) {
 		// write SVG
@@ -141,7 +141,7 @@ public class TableBodySection extends TableSection {
 		return svgChunk;
 	}
 
-	private SVGG createColumnBoxesAndShiftToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_COLUMN_BOXES);
 		if (boundingBox == null) {
@@ -161,7 +161,7 @@ public class TableBodySection extends TableSection {
 		return g;
 	}
 	
-	private SVGG createCellBoxesAndShiftToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createCellBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_CELL_BOXES);
 		if (boundingBox == null) {
@@ -177,7 +177,7 @@ public class TableBodySection extends TableSection {
 		return g;
 	}
 	
-	private SVGG createSubtableBoxesAndShiftToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createSubtableBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_SUBTABLE_BOXES);
 		if (boundingBox == null) {

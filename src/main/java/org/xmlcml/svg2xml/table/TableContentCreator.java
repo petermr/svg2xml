@@ -24,7 +24,7 @@ import org.xmlcml.graphics.html.HtmlTable;
 import org.xmlcml.graphics.html.HtmlTd;
 import org.xmlcml.graphics.html.HtmlTh;
 import org.xmlcml.graphics.html.HtmlTr;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
@@ -37,9 +37,9 @@ import org.xmlcml.graphics.svg.cache.ComponentCache;
 import org.xmlcml.graphics.svg.cache.ContentBoxCache;
 import org.xmlcml.graphics.svg.cache.LineCache;
 import org.xmlcml.graphics.svg.objects.SVGContentBox;
-import org.xmlcml.graphics.svg.rule.GenericRowNew.RowType;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
+import org.xmlcml.graphics.svg.rule.GenericRow.RowType;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
@@ -94,11 +94,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private TableHeaderSection tableHeaderSection;
 	private TableBodySection tableBodySection;
 	private TableFooterSection tableFooterSection;
-	private GraphicsElement annotatedSvgChunk;
+	private SVGElement annotatedSvgChunk;
 	private double rowDelta = 2.5; //large to manage suscripts
 	private ContentBoxCache contentBoxCache;
 	private int titleSectionIndex;
-	private List<HorizontalRuleNew> firstFullRuleList;
+	private List<HorizontalRule> firstFullRuleList;
 	private SVGG contentBoxGridG;
 	private File contentBoxGridFile;
 //	private ComponentCache ownerComponentCache;
@@ -125,7 +125,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private int search(String title) {
 		int titleIndex = -1;
 		for (int i = 0; i < horizontalList.size(); i++) {
-			HorizontalElementNew horizontalElement = horizontalList.get(i);
+			HorizontalElement horizontalElement = horizontalList.get(i);
 			if (horizontalElement instanceof PhraseChunk) {
 				String value = ((PhraseChunk)horizontalElement).getStringValue().trim();
 				if (value.startsWith(title)) {
@@ -151,15 +151,15 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @param startRow
 	 * @return
 	 */
-	private List<HorizontalRuleNew> getFullRules(int startRow) {
-		HorizontalRuleNew firstRule = null;
+	private List<HorizontalRule> getFullRules(int startRow) {
+		HorizontalRule firstRule = null;
 		IntRange firstRange = null;
-		List<HorizontalRuleNew> followingRuleList = new ArrayList<HorizontalRuleNew>();
+		List<HorizontalRule> followingRuleList = new ArrayList<HorizontalRule>();
 		IntRange previousRange = null;
 		for (int i = startRow; i < horizontalList.size(); i++) {
-			HorizontalElementNew horizontalElement = horizontalList.get(i);
-			if (horizontalElement instanceof HorizontalRuleNew) {
-				HorizontalRuleNew thisRule = (HorizontalRuleNew) horizontalElement;
+			HorizontalElement horizontalElement = horizontalList.get(i);
+			if (horizontalElement instanceof HorizontalRule) {
+				HorizontalRule thisRule = (HorizontalRule) horizontalElement;
 				IntRange thisRange = new IntRange(thisRule.getBoundingBox().getXRange());
 				if (firstRule == null) {
 					firstRule = thisRule;
@@ -194,7 +194,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 //		}
 //	}
 	
-	private void createSectionsAndRangesArrayNew() {
+	private void createSectionsAndRangesArray() {
 		removeBoundingRules(horizontalList, StartEnd.START);
 		removeBoundingRules(horizontalList, StartEnd.END);
 //		makeCaches(svgChunk); // already done
@@ -246,14 +246,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 		IntRange tableSpan = firstFullRuleList.size() == 0 ? null : firstFullRuleList.get(0).getIntRange().getRangeExtendedBy(20, 20);
 		if (tableSpan != null) {
-			this.createSectionsNew(horizontalList, 0, firstFullRuleList, tableSpan);
+			this.createSections(horizontalList, 0, firstFullRuleList, tableSpan);
 			this.createPhraseRangesArray();
 			analyzeRangesAndSections();
 		}
 	}
 
 	private void addPhrases(RowManager rowManager) {
-		for (HorizontalElementNew elem : horizontalList) {
+		for (HorizontalElement elem : horizontalList) {
 			if (elem instanceof PhraseChunk) {
 				PhraseChunk phraseList = (PhraseChunk) elem;
 				rowManager.addPhraseList(phraseList);
@@ -315,11 +315,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 //		ownerComponentCache.addContentBoxCache(contentBoxCache);
 	}
 
-	private void removeBoundingRules(List<HorizontalElementNew> horizontalList, StartEnd startEnd) {
+	private void removeBoundingRules(List<HorizontalElement> horizontalList, StartEnd startEnd) {
 		while (horizontalList.size() > 0) {
 			int ielem = StartEnd.START.equals(startEnd) ? 0 : horizontalList.size() - 1;
-			HorizontalElementNew helem = horizontalList.get(ielem);
-			if (helem instanceof HorizontalRuleNew) {
+			HorizontalElement helem = horizontalList.get(ielem);
+			if (helem instanceof HorizontalRule) {
 				LOG.trace("removed: "+horizontalList.get(ielem));
 				horizontalList.remove(ielem);
 			} else {
@@ -369,14 +369,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	}
 
-	private void createSections(List<HorizontalElementNew> horizontalList, int iRow, List<HorizontalRuleNew> fullRuleList,
+	private void createSectionsOld(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRuleList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
-			HorizontalElementNew element = horizontalList.get(j);
-			HorizontalRuleNew rule = (element instanceof HorizontalRuleNew) ? 
-					(HorizontalRuleNew) element : null;
+			HorizontalElement element = horizontalList.get(j);
+			HorizontalRule rule = (element instanceof HorizontalRule) ? 
+					(HorizontalRule) element : null;
 			if (tableSection == null || fullRuleList.contains(rule)) {
 				tableSection = new TableSection(TableSectionType.OTHER);
 				tableSectionList.add(tableSection);
@@ -387,7 +387,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					tableSection.add(newPhraseList);
 				}
 				
-			} else if (element instanceof HorizontalRuleNew) {
+			} else if (element instanceof HorizontalRule) {
 				// dont add Rule if first element (e.g sectioning rule)
 				if (tableSection.getHorizontalElementList().size() > 0) {
 					tableSection.add(element);
@@ -398,14 +398,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	/** used in transition between refactors */
-	private void createSectionsNew(List<HorizontalElementNew> horizontalList, int iRow, List<HorizontalRuleNew> fullRulerList,
+	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRulerList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
 		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
 		for (int j = iRow; j < horizontalList.size(); j++) {
-			HorizontalElementNew element = horizontalList.get(j);
-			HorizontalRuleNew ruler = (element instanceof HorizontalRuleNew) ? 
-					(HorizontalRuleNew) element : null;
+			HorizontalElement element = horizontalList.get(j);
+			HorizontalRule ruler = (element instanceof HorizontalRule) ? 
+					(HorizontalRule) element : null;
 			if (tableSection == null || fullRulerList.contains(ruler)) {
 				tableSection = new TableSection(TableSectionType.OTHER);
 				tableSectionList.add(tableSection);
@@ -416,7 +416,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					tableSection.add(newPhraseList);
 				}
 				
-			} else if (element instanceof HorizontalRuleNew) {
+			} else if (element instanceof HorizontalRule) {
 				// dont add Ruler if first element (e.g sectioning ruler)
 				if (tableSection.getHorizontalElementList().size() > 0) {
 					tableSection.add(element);
@@ -438,8 +438,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
-		createSectionsAndRangesArrayNew();
-		analyzeSectionsNew();
+		createSectionsAndRangesArray();
+		analyzeSections();
 		if (contentBoxGridFile != null) {
 			SVGSVG.wrapAndWriteAsSVG(contentBoxGridG, contentBoxGridFile);
 		}
@@ -451,7 +451,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return html;
 	}
 
-	private void analyzeSectionsNew() {
+	private void analyzeSections() {
 		LOG.debug("ANALYZE SECTIONS NEW: "+tableSectionList.size());
 		findTitleSections();
 		LOG.debug("Other sects: ");
@@ -512,11 +512,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @param opacity
 	 * @return
 	 */
-	public GraphicsElement createMarkedSections(/*SVGElement markedChunk,*/
+	public SVGElement createMarkedSections(/*SVGElement markedChunk,*/
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		GraphicsElement markedChunk = getOrCreateTextStructurer().getSVGChunk();
+		SVGElement markedChunk = getOrCreateTextStructurer().getSVGChunk();
 		SVGG g = new SVGG();
 		g.setClassName("sections");
 		markedChunk.appendChild(g);
@@ -542,9 +542,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return markedChunk;
 	}
 
-	public static void shiftToOrigin(GraphicsElement markedChunk, SVGG g) {
+	public static void shiftToOrigin(SVGElement markedChunk, SVGG g) {
 		SVGG gg = null;
-		GraphicsElement svgElement =  (GraphicsElement) markedChunk.getChildElements().get(0);
+		SVGElement svgElement =  (SVGElement) markedChunk.getChildElements().get(0);
 		if (svgElement instanceof SVGG) {
 			SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
 			Transform2 t2 = firstG.getTransform();
@@ -597,14 +597,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return textStructurer.getSVGChunk();
 	}
 
-	public GraphicsElement annotateAreas(File inputFile) {
+	public SVGElement annotateAreas(File inputFile) {
 		createHTMLFromSVG(inputFile);
 		return annotateAreasInSVGChunk();
 	}
 
 	
-	public GraphicsElement annotateAreasInSVGChunk() {
-		GraphicsElement svgChunk = createMarkedSections(
+	public SVGElement annotateAreasInSVGChunk() {
+		SVGElement svgChunk = createMarkedSections(
 				new String[] {TITLE_SECT_FILL,
 						HEADER_SECT_FILL,
 						BODY_SECT_FILL,
@@ -618,11 +618,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return svgChunk;
 	}
 
-	private GraphicsElement annotateAreasInFooterSection(GraphicsElement svgChunk) {
+	private SVGElement annotateAreasInFooterSection(SVGElement svgChunk) {
 		TableFooterSection tableFooter = getOrCreateTableFooterSection();
 		if (tableFooter != null) {
 			svgChunk = tableFooter.createMarkedContent(
-					(GraphicsElement) svgChunk.copy(),
+					(SVGElement) svgChunk.copy(),
 					new String[] {"blue", "blue"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -630,14 +630,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return svgChunk;
 	}
 
-	private GraphicsElement annotateAreasInBodySection(GraphicsElement svgChunk) {
+	private SVGElement annotateAreasInBodySection(SVGElement svgChunk) {
 		TableBodySection tableBody = getOrCreateTableBodySection();
 		if (tableBody == null) {
 			LOG.trace("no table body");
 		} else {
 			tableBody.createHeaderRowsAndColumnGroups();
 			svgChunk = tableBody.createMarkedSections(
-					(GraphicsElement) svgChunk.copy(),
+					(SVGElement) svgChunk.copy(),
 					new String[] {"yellow", "red"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -645,14 +645,14 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return svgChunk;
 	}
 
-	private GraphicsElement annotateAreasInHeaderSection(GraphicsElement svgChunk) {
+	private SVGElement annotateAreasInHeaderSection(SVGElement svgChunk) {
 		TableHeaderSection tableHeader = getOrCreateTableHeaderSection();
 		if (tableHeader == null) {
 			LOG.warn("no table header");
 		} else {
 			tableHeader.createHeaderRowsAndColumnGroups();
 			svgChunk = tableHeader.createMarkedSections(
-					(GraphicsElement) svgChunk.copy(),
+					(SVGElement) svgChunk.copy(),
 					new String[] {"blue", "green"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -660,13 +660,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return svgChunk;
 	}
 
-	private GraphicsElement annotateAreasInTitleSection(GraphicsElement svgChunk) {
+	private SVGElement annotateAreasInTitleSection(SVGElement svgChunk) {
 		TableTitleSection tableTitle = getOrCreateTableTitleSection();
 		if (tableTitle == null) {
 			LOG.warn("no table title");
 		} else {
 			svgChunk = tableTitle.createMarkedContent(
-					(GraphicsElement) svgChunk.copy(),
+					(SVGElement) svgChunk.copy(),
 					new String[] {"yellow", "yellow"}, 
 					new double[] {0.2, 0.2}
 					);
@@ -713,18 +713,18 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return html;
 	}
 
-	private void addHeader(GraphicsElement svgElement, HtmlTable table, int bodyCols) {
+	private void addHeader(SVGElement svgElement, HtmlTable table, int bodyCols) {
 		int cols = 0;
 		HtmlTr tr = new HtmlTr();
 		table.appendChild(tr);
-		GraphicsElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
 			cols = addHeaderBoxes(tr, g, bodyCols);
 		}
 	}
 
-	private int addHeaderBoxes(HtmlTr tr, GraphicsElement g, int bodyCols) {
+	private int addHeaderBoxes(HtmlTr tr, SVGElement g, int bodyCols) {
 		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
 		int headerCols = rects.size();
 		int bodyDelta = bodyCols - headerCols;
@@ -746,7 +746,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return headerCols;
 	}
 
-	private void addBody(GraphicsElement svgElement, HtmlTable table) {
+	private void addBody(SVGElement svgElement, HtmlTable table) {
 		List<SVGG> gs = getGElements(svgElement);
 		if (gs.size() == 0) {
 			LOG.warn("No annotated body");
@@ -774,8 +774,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 	}
 
-	private List<SVGG> getGElements(GraphicsElement svgElement) {
-		GraphicsElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+	private List<SVGG> getGElements(SVGElement svgElement) {
+		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
 		List<SVGG> gs = (g == null) ? new ArrayList<SVGG>() : SVGG.extractSelfAndDescendantGs(g);
 		return gs;
@@ -879,7 +879,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	// FIXME empty caption
-	private void addCaption(GraphicsElement svgElement, HtmlTable table) {
+	private void addCaption(SVGElement svgElement, HtmlTable table) {
 		HtmlCaption caption = new HtmlCaption();
 		String captionS = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
 		if (captionS !=null) {
@@ -890,7 +890,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		}
 	}
 
-	public GraphicsElement getAnnotatedSvgChunk() {
+	public SVGElement getAnnotatedSvgChunk() {
 		return annotatedSvgChunk;
 	}
 

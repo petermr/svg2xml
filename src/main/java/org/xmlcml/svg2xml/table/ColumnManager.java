@@ -14,8 +14,8 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
-import org.xmlcml.graphics.svg.text.build.WordNew;
+import org.xmlcml.graphics.svg.text.build.Phrase;
+import org.xmlcml.graphics.svg.text.build.Word;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 import com.google.common.collect.HashMultiset;
@@ -43,7 +43,7 @@ public class ColumnManager {
 	private IntRange enclosingRange;
 	private Multiset<Integer> startXMultiset;
 	private Multiset<Integer> endXMultiset;
-	private List<PhraseNew> columnPhrases;
+	private List<Phrase> columnPhrases;
 	private int yPointer = -1;
 	private double epsilon = 0.3; // compares y values
 	private RealArray xMinArray;
@@ -105,7 +105,7 @@ public class ColumnManager {
 		ensureEndXMultiset();
 	}
 
-	public void addPhrase(PhraseNew phrase) {
+	public void addPhrase(Phrase phrase) {
 		if (phrase != null && phrase.getStringValue().trim().length() != 0) {
 			getOrCreateColumnPhrases();
 			columnPhrases.add(phrase);
@@ -123,14 +123,14 @@ public class ColumnManager {
 		}
 	}
 
-	List<PhraseNew> getOrCreateColumnPhrases() {
+	List<Phrase> getOrCreateColumnPhrases() {
 		if (columnPhrases == null) {
-			columnPhrases = new ArrayList<PhraseNew>();
+			columnPhrases = new ArrayList<Phrase>();
 		}
 		return columnPhrases;
 	}
 
-	public PhraseNew getPhrase(int iRow) {
+	public Phrase getPhrase(int iRow) {
 		getOrCreateColumnPhrases();
 		return (iRow < 0 || iRow >= columnPhrases.size()) ? null : columnPhrases.get(iRow);
 	}
@@ -150,7 +150,7 @@ public class ColumnManager {
 
 	public String getStringValue() {
 		StringBuilder sb = new StringBuilder();
-		for (PhraseNew phrase : columnPhrases) {
+		for (Phrase phrase : columnPhrases) {
 			sb.append(phrase.getStringValue()+" // ");
 		}
 		return sb.toString();
@@ -167,7 +167,7 @@ public class ColumnManager {
 	public double getPointerYCoord() {
 		double y = -1;
 		if (yPointer < columnPhrases.size()) {
-			PhraseNew phrase = columnPhrases.get(yPointer);
+			Phrase phrase = columnPhrases.get(yPointer);
 			if (phrase != null) {
 				Double yy = phrase.getY();
 				if (yy != null) {
@@ -184,8 +184,8 @@ public class ColumnManager {
 
 	private void addEmptyCell(Real2Range bbox, double fontSize) {
 		Real2 xy = bbox.getLLURCorners()[0];
-		WordNew emptyWord = WordNew.createEmptyWord(xy, fontSize);
-		PhraseNew emptyPhrase = new PhraseNew(emptyWord);
+		Word emptyWord = Word.createEmptyWord(xy, fontSize);
+		Phrase emptyPhrase = new Phrase(emptyWord);
 		SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(bbox, "green", 0.1);
 		emptyPhrase.appendChild(plotBox);
 		columnPhrases.add(yPointer, emptyPhrase);
@@ -201,7 +201,7 @@ public class ColumnManager {
 		if (yPointer >= columnPhrases.size()) {
 			addEmptyCell(bbox, fontSize);
 		} else {
-			PhraseNew phrase = columnPhrases.get(yPointer);
+			Phrase phrase = columnPhrases.get(yPointer);
 			Double ycell = phrase.getY();
 			if (ycell == null) {
 				LOG.trace("Null cell: "+phrase.getStringValue()+phrase.toXML());
@@ -251,7 +251,7 @@ public class ColumnManager {
 			xMinArray = new RealArray();
 			xMaxArray = new RealArray();
 			for (int i = 0; i < columnPhrases.size(); i++) {
-				PhraseNew phrase = columnPhrases.get(i);
+				Phrase phrase = columnPhrases.get(i);
 				double x = phrase.getX();
 				xMinArray.addElement(x);
 				double xMax = phrase.getEndX();
@@ -269,7 +269,7 @@ public class ColumnManager {
 
 	private void correctForMissingValues() {
 		for (int i = 0; i < columnPhrases.size(); i++) {
-			PhraseNew phrase = columnPhrases.get(i);
+			Phrase phrase = columnPhrases.get(i);
 			String value = phrase.getStringValue();
 			if (value == null || value.trim().length() == 0) {
 				xMinArray.setElementAt(i, xMax);

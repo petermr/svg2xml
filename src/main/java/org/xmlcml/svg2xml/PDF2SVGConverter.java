@@ -11,19 +11,19 @@ import org.xmlcml.graphics.svg.SVGSVG;
  * @author pm286
  *
  */
-public class PDF2SVGConverterNew {
-	private static final Logger LOG = Logger.getLogger(PDF2SVGConverterNew.class);
+public class PDF2SVGConverter {
+	private static final Logger LOG = Logger.getLogger(PDF2SVGConverter.class);
 	
 	static {
 		LOG.setLevel(Level.DEBUG);
 	}
 
-	public PDF2SVGConverterNew() {
-		LOG.warn("PDFConverterNew shorted out");
+	public PDF2SVGConverter() {
+		LOG.warn("PDFConverter shorted out");
 	}
 
 	public void run(String ...string) {
-		LOG.warn("PDFConverterNew.run() shorted out");
+		LOG.warn("PDFConverter.run() shorted out");
 	}
 
 	public List<SVGSVG> getPageList() {

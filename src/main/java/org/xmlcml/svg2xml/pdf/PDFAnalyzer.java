@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.graphics.html.HtmlDiv;
 import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svg2xml.PDF2SVGConverterNew;
+import org.xmlcml.svg2xml.PDF2SVGConverter;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 
@@ -263,7 +263,7 @@ public class PDFAnalyzer {
 
 	public void createSVGFilesfromPDF() {
 		LOG.trace("createSVG");
-		PDF2SVGConverterNew converter = new PDF2SVGConverterNew();
+		PDF2SVGConverter converter = new PDF2SVGConverter();
 		File inFile = pdfIo.getInFile();
 		String inputName = pdfIo.getInputName();
 		if (inFile != null && inFile.exists()) {
@@ -276,7 +276,7 @@ public class PDFAnalyzer {
 		}
 	}
 
-	public void createSVGFilesfromPDF(PDF2SVGConverterNew converter, String inputName) {
+	public void createSVGFilesfromPDF(PDF2SVGConverter converter, String inputName) {
 		if (true) LOG.debug("PDF2SVGConverter skipped");
 		File svgDocumentDir = pdfIo.getRawSVGDirectory();
 		File[] files = (svgDocumentDir == null ? null : svgDocumentDir.listFiles());

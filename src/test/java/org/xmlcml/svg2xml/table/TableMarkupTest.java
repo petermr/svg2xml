@@ -10,7 +10,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.graphics.html.HtmlHtml;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
@@ -84,9 +85,9 @@ public class TableMarkupTest {
 		tableContentCreator.createHTMLFromSVG(inputFile);
 		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
 		tableHeader.createHeaderRowsAndColumnGroups();
-		GraphicsElement svgChunk = (GraphicsElement)tableContentCreator.getSVGChunk().copy();
+		SVGElement svgChunk = (SVGElement)tableContentCreator.getSVGChunk().copy();
 		svgChunk = tableHeader.createMarkedSections(
-				(GraphicsElement)tableContentCreator.getSVGChunk().copy(),
+				(SVGElement)tableContentCreator.getSVGChunk().copy(),
 				new String[] {"blue", "green"}, 
 				new double[] {0.2, 0.2}
 				);
@@ -102,7 +103,7 @@ public class TableMarkupTest {
 		String inputFilename = root+".g.2.3.svg";
 		File inputFile = new File(SVG2XMLFixtures.TABLE_DIR, inputFilename);
 		File outputFile = new File("target/table/"+root+"/table.g.2.3.svg");
-		GraphicsElement svgChunk = new TableContentCreator().annotateAreas(inputFile);
+		SVGElement svgChunk = new TableContentCreator().annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 	}
 	
@@ -242,7 +243,7 @@ public class TableMarkupTest {
 		File outputFile = new File("target/table/marked/"+root+"/table"+filename);
 		TableContentCreator tableContentCreator = new TableContentCreator(); 
 		LOG.trace("reading "+inputFilename);
-		GraphicsElement svgChunk = tableContentCreator.annotateAreas(inputFile);
+		SVGElement svgChunk = tableContentCreator.annotateAreas(inputFile);
 		SVGSVG.wrapAndWriteAsSVG(svgChunk, outputFile);
 		TableHeaderSection tableHeader = tableContentCreator.getOrCreateTableHeaderSection();
 		int headerCols = tableHeader == null ? -1 :

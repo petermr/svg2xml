@@ -94,7 +94,7 @@ public class FilledTableAnalyzer {
 		for (IntRange rowYRange : rowYRangeList) {
 			List<SVGRect> rectsInYRow = new ArrayList<SVGRect>(rectByIntYRange.get(rowYRange));
 			CellRow cellRow = new CellRow(rectsInYRow, colXTickMarkList);
-			LOG.debug(cellRow.getColSpanCounts());
+			LOG.trace("Counts "+cellRow.getColSpanCounts());
 			cellRowList.add(cellRow);
 		}
 		return cellRowList;

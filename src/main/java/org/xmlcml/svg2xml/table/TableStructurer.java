@@ -34,7 +34,7 @@ import org.xmlcml.graphics.html.HtmlTh;
 import org.xmlcml.graphics.html.HtmlThead;
 import org.xmlcml.graphics.html.HtmlTr;
 import org.xmlcml.graphics.html.HtmlUl;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
@@ -44,12 +44,12 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.BoundingBoxManager;
-import org.xmlcml.graphics.svg.rule.RuleNew;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
-import org.xmlcml.graphics.svg.rule.vertical.VerticalRuleNew;
+import org.xmlcml.graphics.svg.rule.Rule;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
+import org.xmlcml.graphics.svg.rule.vertical.VerticalRule;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.Phrase;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.graphics.svg.text.build.TextChunkList;
 import org.xmlcml.graphics.svg.text.line.ScriptLine;
@@ -85,9 +85,9 @@ public class TableStructurer {
 	private HtmlHtml html;
 	private HtmlTbody tableBody;
 	private TextStructurer textStructurer;
-	private List<HorizontalRuleNew> horizontalRulerList;
+	private List<HorizontalRule> horizontalRulerList;
 	private List<SVGElement> horizontalElementList;
-	private List<VerticalRuleNew> verticalRulerList;
+	private List<VerticalRule> verticalRulerList;
 	private Real2Range bboxRuler;
 	private Map<String, SVGElement> horizontalElementByCode;
 	private String rowCodes;
@@ -133,7 +133,7 @@ public class TableStructurer {
 				// 
 			}
 			
-			List<HorizontalElementNew> horizontalList = titleSection.getHorizontalElementList();
+			List<HorizontalElement> horizontalList = titleSection.getHorizontalElementList();
 			if (tableTitle != null) {
 				titleSB.append(tableTitle.getTitle());
 			}
@@ -227,7 +227,7 @@ public class TableStructurer {
 			return;
 		}
 		TableSection bodySection = tableSectionList.get(2);
-		GraphicsElement bodyPhraseListList= bodySection.getOrCreatePhraseListList();
+		SVGElement bodyPhraseListList= bodySection.getOrCreatePhraseListList();
 	}
 
 	private void createBody() {
@@ -243,7 +243,7 @@ public class TableStructurer {
 			LOG.error("ERROR: no Body section");
 		} else {
 			TableSection bodySection = tableSectionList.get(2);
-			for (HorizontalElementNew element : bodySection.getHorizontalElementList()) {
+			for (HorizontalElement element : bodySection.getHorizontalElementList()) {
 				bodyBBoxManager.add(((SVGElement)element).getBoundingBox());
 				if (element instanceof PhraseChunk) {
 					bodyPhraseListList.add(new PhraseChunk((PhraseChunk) element));
@@ -288,10 +288,10 @@ public class TableStructurer {
 		TableSection tableHeaderSection = null;
 		if (tableSectionList != null && tableSectionList.size() > 1) {
 			tableHeaderSection =tableSectionList.get(1);
-			for (HorizontalElementNew element : tableHeaderSection.getHorizontalElementList()) {
+			for (HorizontalElement element : tableHeaderSection.getHorizontalElementList()) {
 				headerBBoxManager.add(((SVGElement)element).getBoundingBox());
-				if (element instanceof HorizontalRuleNew) {
-					addRulerToHead((HorizontalRuleNew) element);
+				if (element instanceof HorizontalRule) {
+					addRulerToHead((HorizontalRule) element);
 				} else {
 					addPhraseList((PhraseChunk) element);
 				}
@@ -305,7 +305,7 @@ public class TableStructurer {
 		List<HtmlTr> rows = new ArrayList<HtmlTr>();
 		if (tableHeaderSection == null) return rows;
 		TextChunk headerPhraseListList = new TextChunk();
-		for (HorizontalElementNew element : tableHeaderSection.getHorizontalElementList()) {
+		for (HorizontalElement element : tableHeaderSection.getHorizontalElementList()) {
 			if (element instanceof PhraseChunk) {
 				PhraseChunk phraseList = (PhraseChunk) element;
 				headerPhraseListList.add(phraseList);
@@ -341,7 +341,7 @@ public class TableStructurer {
 		LOG.trace(">TH>"+phraseList.getStringValue());
 	}
 
-	private void addRulerToHead(HorizontalRuleNew ruler) {
+	private void addRulerToHead(HorizontalRule ruler) {
 		Real2 xy = ruler.getXY();
 		HtmlTr tr = new HtmlTr();
 		HtmlTh th = new HtmlTh();
@@ -367,9 +367,9 @@ public class TableStructurer {
 		footerBBoxManager = new BoundingBoxManager();
 		if (tableSectionList != null && tableSectionList.size() > 3) {
 			TableSection footerSection =tableSectionList.get(3);
-			for (HorizontalElementNew element : footerSection.getHorizontalElementList()) {
+			for (HorizontalElement element : footerSection.getHorizontalElementList()) {
 				footerBBoxManager.add(((SVGElement)element).getBoundingBox());
-				if (element instanceof HorizontalRuleNew) {
+				if (element instanceof HorizontalRule) {
 					LOG.trace("HRULE in footer");
 				} else {
 					PhraseChunk phraseList = (PhraseChunk) element;
@@ -457,31 +457,31 @@ public class TableStructurer {
 		
 	}
 
-	public List<VerticalRuleNew> getOrCreateVerticalRulerList() {
+	public List<VerticalRule> getOrCreateVerticalRulerList() {
 		if (verticalRulerList == null) {
 			getOrCreateShapeList();
 			List<SVGLine> lineList = extractLines(shapeList, Line2.YAXIS);
 			lineList = removeShortLines(lineList, 1.0);
-			verticalRulerList = VerticalRuleNew.createSortedRulersFromSVGList(lineList);
-			RuleNew.formatStrokeWidth(verticalRulerList, 1);
+			verticalRulerList = VerticalRule.createSortedRulersFromSVGList(lineList);
+			Rule.formatStrokeWidth(verticalRulerList, 1);
 		}
 		return verticalRulerList;
 	}
 
-	public List<HorizontalRuleNew> getOrCreateHorizontalRulerList() {
+	public List<HorizontalRule> getOrCreateHorizontalRulerList() {
 		if (horizontalRulerList == null) {
 			shapeList = getOrCreateShapeList();
 			List<SVGLine> lineList = extractLines(shapeList, Line2.XAXIS);
 			lineList = removeShortLines(lineList, 1.0);
-			horizontalRulerList = HorizontalRuleNew.createSortedRulersFromSVGList(lineList);
-			RuleNew.formatStrokeWidth(horizontalRulerList, 1);
+			horizontalRulerList = HorizontalRule.createSortedRulersFromSVGList(lineList);
+			Rule.formatStrokeWidth(horizontalRulerList, 1);
 		}
 		return horizontalRulerList;
 	}
 
 	public List<SVGShape> getOrCreateShapeList() {
 		if (shapeList == null) {
-			GraphicsElement svgChunk = textStructurer.getSVGChunk();
+			SVGElement svgChunk = textStructurer.getSVGChunk();
 			shapeList = SVGUtil.makeShapes(svgChunk);
 			SVGElement.format(shapeList, 3);
 			addMarkersToZeroDimensionalShapes();
@@ -566,7 +566,7 @@ public class TableStructurer {
 		this.textStructurer = textStructurer;
 	}
 
-	public List<HorizontalRuleNew> getHorizontalRulerList() {
+	public List<HorizontalRule> getHorizontalRulerList() {
 		return getHorizontalRulerList(false, 0.0);
 	}
 
@@ -578,7 +578,7 @@ public class TableStructurer {
 	 * 
 	 * @return
 	 */
-	public List<HorizontalRuleNew> getHorizontalRulerList(boolean merge, double eps) {
+	public List<HorizontalRule> getHorizontalRulerList(boolean merge, double eps) {
 		LOG.trace("====HRuler===");
 		if (horizontalRulerList != null && merge) {
 			horizontalRulerList = addRulerOrCombineVerticalOverlaps();
@@ -587,10 +587,10 @@ public class TableStructurer {
 		return horizontalRulerList;
 	}
 
-	private List<HorizontalRuleNew> addRulerOrCombineVerticalOverlaps() {
-		List<HorizontalRuleNew> newRulerList = new ArrayList<HorizontalRuleNew>();
+	private List<HorizontalRule> addRulerOrCombineVerticalOverlaps() {
+		List<HorizontalRule> newRulerList = new ArrayList<HorizontalRule>();
 		for (int i = 0; i < horizontalRulerList.size(); i++) {
-			HorizontalRuleNew horizontalRuler = horizontalRulerList.get(i);
+			HorizontalRule horizontalRuler = horizontalRulerList.get(i);
 			if (horizontalRuler.getSVGLine() != null) {
 				addRulerOrCombineVerticalOverlaps(newRulerList, horizontalRuler);
 			}
@@ -604,10 +604,10 @@ public class TableStructurer {
 	 * @param horizontalRuler
 	 * @return
 	 */
-	private void addRulerOrCombineVerticalOverlaps(List<HorizontalRuleNew> newRulerList, HorizontalRuleNew horizontalRuler) {
+	private void addRulerOrCombineVerticalOverlaps(List<HorizontalRule> newRulerList, HorizontalRule horizontalRuler) {
 		boolean multipleRuler = true;
 		if (newRulerList.size() > 0) {
-			HorizontalRuleNew lastRuler = newRulerList.get(newRulerList.size() -1);
+			HorizontalRule lastRuler = newRulerList.get(newRulerList.size() -1);
 			IntRange thisXRange = new IntRange(horizontalRuler.getBoundingBox().getXRange());
 			IntRange lastXRange = new IntRange(lastRuler.getBoundingBox().getXRange());
 			double deltaY = horizontalRuler.getY() - lastRuler.getY();
@@ -630,13 +630,13 @@ public class TableStructurer {
 	 * @param startRow
 	 * @return
 	 */
-	private List<HorizontalRuleNew> joinHorizontallyTouchingRulers1() {
-		List<HorizontalRuleNew> rulerList = new ArrayList<HorizontalRuleNew>();
+	private List<HorizontalRule> joinHorizontallyTouchingRulers1() {
+		List<HorizontalRule> rulerList = new ArrayList<HorizontalRule>();
 		IntRange previousRange = null;
 		double previousY = Double.NaN;
 		SVGLine line = null;
 		for (int i = 0; i < horizontalRulerList.size(); i++) {
-			HorizontalRuleNew thisRuler = (HorizontalRuleNew) horizontalRulerList.get(i);
+			HorizontalRule thisRuler = (HorizontalRule) horizontalRulerList.get(i);
 			line = thisRuler.getSVGLine();
 			double thisY = line.getXY(0).getY();
 			IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange().getRangeExtendedBy(PIXEL_GAP, PIXEL_GAP));
@@ -645,7 +645,7 @@ public class TableStructurer {
 					previousRange = previousRange.plus(thisRange);
 					LOG.trace("Joint touching horizontal rulers");
 			} else if (previousRange != null) {
-				HorizontalRuleNew newRuler = createRuler(previousRange, line, previousY);
+				HorizontalRule newRuler = createRuler(previousRange, line, previousY);
 				rulerList.add(newRuler);
 				previousRange = thisRange;
 			} else {
@@ -654,7 +654,7 @@ public class TableStructurer {
 			previousY = thisY;
 		}
 		if (previousRange != null) {
-			HorizontalRuleNew newRuler = createRuler(previousRange, line, previousY);
+			HorizontalRule newRuler = createRuler(previousRange, line, previousY);
 			rulerList.add(newRuler);
 		}
 //		for (HorizontalElementNew ruler : rulerList) {
@@ -664,11 +664,11 @@ public class TableStructurer {
 		return horizontalRulerList;
 	}
 	
-	private HorizontalRuleNew createRuler(IntRange previousRange, SVGLine line, double y) {
+	private HorizontalRule createRuler(IntRange previousRange, SVGLine line, double y) {
 		SVGLine newLine = new SVGLine(line);
 		newLine.setXY(new Real2(previousRange.getMin(), y), 0);
 		newLine.setXY(new Real2(previousRange.getMax(), y), 1);
-		HorizontalRuleNew ruler = new HorizontalRuleNew(newLine);
+		HorizontalRule ruler = new HorizontalRule(newLine);
 		return ruler;
 	}
 
@@ -682,7 +682,7 @@ public class TableStructurer {
 		while (true) {
 			if (iPhrase < totalTextChunkList.size() && iRuler < horizontalRulerList.size()) {
 				PhraseChunk phraseList = totalTextChunkList.get(iPhrase).getLastPhraseChunk();
-				RuleNew ruler = horizontalRulerList.get(iRuler);
+				Rule ruler = horizontalRulerList.get(iRuler);
 				double yPhrase = phraseList.getBoundingBox().getYMin();
 				double yRuler = ruler.getBoundingBox().getYMin();
 				if (yPhrase <= yRuler) {
@@ -728,7 +728,7 @@ public class TableStructurer {
 		rowCodes = total.toString().trim();
 	}
 
-	private String indexSVGLine(Integer maxLength, int iRuler, GraphicsElement horizontalElement) {
+	private String indexSVGLine(Integer maxLength, int iRuler, SVGElement horizontalElement) {
 		String index;
 		index = " L"+iRuler+"";
 		SVGLine line = (SVGLine) horizontalElement;
@@ -767,7 +767,7 @@ public class TableStructurer {
 		return index;
 	}
 
-	private String indexLineChunk(Double maxFont, int iPhrase, GraphicsElement horizontalElement) {
+	private String indexLineChunk(Double maxFont, int iPhrase, SVGElement horizontalElement) {
 		String index;
 		index = " P"+iPhrase;
 		PhraseChunk lineChunk = (PhraseChunk) horizontalElement;
@@ -789,7 +789,7 @@ public class TableStructurer {
 		return index;
 	}
 
-	private Double getMaxFont(GraphicsElement phraseListList2) {
+	private Double getMaxFont(SVGElement phraseListList2) {
 		Double maxFont = null;
 		if (totalTextChunkList.size() > 0) {
 			maxFont = totalTextChunkList.get(0).getFontSize();
@@ -907,7 +907,7 @@ public class TableStructurer {
 		int iPhrase = 0;
 		LOG.trace("-----------------------");
 		for (int icol = 0; icol < maxColumns; icol++) {
-			PhraseNew phrase = phraseList.get(iPhrase);
+			Phrase phrase = phraseList.get(iPhrase);
 			IntRange enclosingRange = bestWhitespaces.get(icol);
 			IntRange phraseRange = phrase.getIntRange();
 			ColumnManager columnManager = getColumnManager(icol);
@@ -933,7 +933,7 @@ public class TableStructurer {
 		for (int icol = 0; icol < maxColumns; icol++) {
 			HtmlElement cell = (clazz.equals(HtmlTh.class)) ? new HtmlTh() : new HtmlTd();
 			row.appendChild(cell);
-			PhraseNew phrase = columnManagerList.get(icol).getPhrase(iRow);
+			Phrase phrase = columnManagerList.get(icol).getPhrase(iRow);
 			HtmlElement span = phrase == null ? new HtmlBr() : phrase.getSpanValue();
 			cell.appendChild(span);
 		}
@@ -972,7 +972,7 @@ public class TableStructurer {
 
 	private HtmlTr createTableRow(PhraseChunk phraseList) {
 		HtmlTr tr = new HtmlTr();
-		for (PhraseNew phrase : phraseList) {
+		for (Phrase phrase : phraseList) {
 			HtmlTd td = new HtmlTd();
 			tr.appendChild(td);
 			HtmlElement htmlElement = phrase.toHtml();

@@ -7,8 +7,8 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
+import org.xmlcml.graphics.svg.text.build.Phrase;
 
 /** supports a column group within the TableHeader.
  * Usually denoted by a horizontal ruler with text above
@@ -24,42 +24,42 @@ public class ColumnGroup {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
-	private List<PhraseNew> phrases;
-	private HorizontalRuleNew ruler;
+	private List<Phrase> phrases;
+	private HorizontalRule ruler;
 	private Real2Range boundingBox;
 	
-	public void add(PhraseNew phrase) {
+	public void add(Phrase phrase) {
 		getOrCreatePhrases();
 		phrases.add(phrase);
 		Real2Range bbox = phrase.getBoundingBox();
 		boundingBox = boundingBox == null ? bbox : boundingBox.plus(bbox);
 	}
 
-	private List<PhraseNew> getOrCreatePhrases() {
+	private List<Phrase> getOrCreatePhrases() {
 		if (phrases == null) {
-			phrases = new ArrayList<PhraseNew>();
+			phrases = new ArrayList<Phrase>();
 		}
 		return phrases;
 	}
 	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (PhraseNew phrase : phrases) {
+		for (Phrase phrase : phrases) {
 			sb.append(">p> "+String.valueOf(phrase)+"\n");
 		}
 		sb.append("==="+String.valueOf(ruler)+"===");
 		return sb.toString();
 	}
 
-	public List<PhraseNew> getPhrases() {
+	public List<Phrase> getPhrases() {
 		return phrases;
 	}
 
-	public HorizontalRuleNew getRuler() {
+	public HorizontalRule getRuler() {
 		return ruler;
 	}
 
-	public void add(HorizontalRuleNew ruler) {
+	public void add(HorizontalRule ruler) {
 		if (this.ruler != null) {
 //			LOG.warn("Existing ruler will be overwritten");
 		}

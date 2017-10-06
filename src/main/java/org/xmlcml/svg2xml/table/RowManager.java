@@ -15,8 +15,8 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGLineList;
 import org.xmlcml.graphics.svg.SVGLineList.SiblingType;
 import org.xmlcml.graphics.svg.objects.SVGContentBox;
-import org.xmlcml.graphics.svg.rule.GenericRowNew;
-import org.xmlcml.graphics.svg.rule.GenericRowNew.RowType;
+import org.xmlcml.graphics.svg.rule.GenericRow;
+import org.xmlcml.graphics.svg.rule.GenericRow.RowType;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 
 /** manages the addition and sorting of the row-like objects in a table.
@@ -41,7 +41,7 @@ public class RowManager {
 	/** at some stage the objects need interfaces.
 	 * 
 	 */
-	private Map<RealRange, GenericRowNew> rowByYRange = new HashMap<RealRange, GenericRowNew>();
+	private Map<RealRange, GenericRow> rowByYRange = new HashMap<RealRange, GenericRow>();
 	private RealRangeArray yRangeArray;
 	private List<SVGContentBox> contentBoxList;
 
@@ -50,14 +50,14 @@ public class RowManager {
 	}
 	// obsolete this for ContentBox
 	public void addContentGridPanelBox(Real2Range contentGridPanelBox) {
-		GenericRowNew row = new GenericRowNew(contentGridPanelBox, RowType.CONTENT_GRID_PANEL);
+		GenericRow row = new GenericRow(contentGridPanelBox, RowType.CONTENT_GRID_PANEL);
 		RealRange yRange = contentGridPanelBox.getYRange();
 		addRowAndRange(row, yRange);
 	}
 	
 	public void addContentBox(SVGContentBox contentBox) {
 		RealRange yRange = contentBox.getRealRange(Direction.VERTICAL);
-		GenericRowNew row = new GenericRowNew(contentBox);
+		GenericRow row = new GenericRow(contentBox);
 		addRowAndRange(row, yRange);
 	}
 	
@@ -68,7 +68,7 @@ public class RowManager {
 	}
 
 	public void addHorizontalRule(SVGLine horizontalLine, RowType type) {
-		GenericRowNew row = new GenericRowNew(horizontalLine, type);
+		GenericRow row = new GenericRow(horizontalLine, type);
 		RealRange yRange = row.getOrCreateBoundingBox().getYRange();
 		addRowAndRange(row, yRange);
 	}
@@ -80,12 +80,12 @@ public class RowManager {
 	 */
 	public void addSiblingHorizontalRules(SVGLineList horizontalLineList) {
 		if (horizontalLineList.checkLines(SiblingType.HORIZONTAL_SIBLINGS)) {
-			GenericRowNew row = new GenericRowNew(horizontalLineList, RowType.SIBLING_RULES);
+			GenericRow row = new GenericRow(horizontalLineList, RowType.SIBLING_RULES);
 			RealRange yRange = row.getOrCreateBoundingBox().getYRange();
 			addRowAndRange(row, yRange);
 		}
 	}
-	private void addRowAndRange(GenericRowNew row, RealRange yRange) {
+	private void addRowAndRange(GenericRow row, RealRange yRange) {
 //		LOG.debug("add "+yRange+"; "+row);
 		yRangeArray.add(yRange);
 		rowByYRange.put(yRange, row);
@@ -93,7 +93,7 @@ public class RowManager {
 
 	public void addPhraseList(PhraseChunk phraseList) {
 //		if (phraseList.getCommonY() != null) {
-			GenericRowNew row = new GenericRowNew(phraseList, RowType.PHRASE_LIST);
+			GenericRow row = new GenericRow(phraseList, RowType.PHRASE_LIST);
 			
 			RealRange yRange = row.getOrCreateBoundingBox().getYRange();
 			addRowAndRange(row, yRange);
@@ -102,7 +102,7 @@ public class RowManager {
 	public String getSignature() {
 		StringBuilder sb = new StringBuilder();
 		for (RealRange yRange : yRangeArray) {
-			GenericRowNew row = rowByYRange.get(yRange);
+			GenericRow row = rowByYRange.get(yRange);
 			if (row == null) {
 				LOG.debug("keys: "+yRange+"; "+rowByYRange.keySet());
 				LOG.debug("array: "+yRangeArray.size()+"; "+yRangeArray);
@@ -133,7 +133,7 @@ public class RowManager {
 			LOG.trace("CONTENT BOX "+contentBox);
 			RealRange contentBoxYRange = contentBox.getRealRange(Direction.VERTICAL);
 			for (RealRange yRange : rowByYRange.keySet()) {
-				GenericRowNew row = rowByYRange.get(yRange);
+				GenericRow row = rowByYRange.get(yRange);
 				if (!RowType.CONTENT_BOX.equals(row.getRowType())) {
 					if (row.intersectsBoxRange(contentBoxYRange)) {
 						contentBox.add(row);
@@ -154,7 +154,7 @@ public class RowManager {
 	
 	public List<SVGContentBox> getOrCreateContentBoxList() {
 		contentBoxList = new ArrayList<SVGContentBox>();
-		for (GenericRowNew row : rowByYRange.values()) {
+		for (GenericRow row : rowByYRange.values()) {
 			if (row.getSignature().equals("B")) {
 				SVGContentBox contentBox = row.getContentBox();
 				LOG.trace("ContentBox:" +contentBox);
@@ -175,7 +175,7 @@ public class RowManager {
 		checkArraySizes();
 		sb.append("rows: "+yRangeArray.size()+"; sig: "+getSignature()+"\n");
 		for (RealRange yRange : yRangeArray) {
-			GenericRowNew row = rowByYRange.get(yRange);
+			GenericRow row = rowByYRange.get(yRange);
 //			sb.append("<ROW> "+yRange+": "+row+"</ROW>\n");
 			sb.append(row.getSignature()+"/");
 		}

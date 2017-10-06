@@ -22,7 +22,7 @@ import org.xmlcml.graphics.html.HtmlHtml;
 import org.xmlcml.graphics.html.HtmlP;
 import org.xmlcml.graphics.html.HtmlStyle;
 import org.xmlcml.graphics.html.HtmlTitle;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGImage;
@@ -112,29 +112,29 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	}
 
 //	private void tidySVGPage() {
-//		GraphicsElement svgPage = pageIo.getRawSVGPage();
+//		SVGElement svgPage = pageIo.getRawSVGPage();
 //		removeClipPathsDefs(svgPage);
 //		removeClipPathAttributes(svgPage);
 //		numberElements();
 //	}
 
 //	private void numberElements() {
-//		GraphicsElement svgPage = pageIo.getRawSVGPage();
+//		SVGElement svgPage = pageIo.getRawSVGPage();
 //		if (svgPage != null) {
 //			for (int i = 0; i < svgPage.getChildElements().size(); i++) {
-//				SVGUtil.setSVGXAttribute((GraphicsElement) svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
+//				SVGUtil.setSVGXAttribute((SVGElement) svgPage.getChildElements().get(i), SVG2XMLConstantsX.Z, String.valueOf(i));
 //			}
 //		}
 //	}
 
-	private void removeClipPathsDefs(GraphicsElement svgPage) {
+	private void removeClipPathsDefs(SVGElement svgPage) {
 		List<SVGElement> defs = SVGUtil.getQuerySVGElements(svgPage, "./svg:defs");
-		for (GraphicsElement def : defs) {
+		for (SVGElement def : defs) {
 			removeClipPathChildrenAndEmptyDef(def);
 		}
 	}
 
-	private void removeClipPathAttributes(GraphicsElement svgPage) {
+	private void removeClipPathAttributes(SVGElement svgPage) {
 		if (svgPage != null) {
 			Nodes clipPathAttributes = svgPage.query("./*/@clip-path");
 			for (int i = 0; i < clipPathAttributes.size(); i++) {
@@ -143,9 +143,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		}
 	}
 
-	private void removeClipPathChildrenAndEmptyDef(GraphicsElement def) {
+	private void removeClipPathChildrenAndEmptyDef(SVGElement def) {
 		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(def, "./svg:clipPath");
-		for (GraphicsElement clipPath : clipPaths) {
+		for (SVGElement clipPath : clipPaths) {
 			clipPath.detach();
 		}
 		if (def.getChildElements().size() == 0) {
@@ -219,7 +219,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
 	private void detachChildrenAndReplaceInZOrder(SVGG gChunk, Map<Double, SVGElement> elementByZMap,
 			List<SVGElement> childElements, List<Double> rawList) {
-		for (GraphicsElement childElement : childElements) {
+		for (SVGElement childElement : childElements) {
 			childElement.detach();
 		}
 		Collections.sort(rawList);
@@ -375,7 +375,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 */
 	private void processNonUnicodeCharactersInTitles() {
 //		List<SVGElement> textTitles = SVGUtil.getQuerySVGElements(pageIo.getRawSVGPage(), ".//svg:title");
-//		for (GraphicsElement t : textTitles) {
+//		for (SVGElement t : textTitles) {
 //			SVGTitle title = (SVGTitle) t;
 //			String s = title.getValue();
 //			String[] chunks =s.split(";");
@@ -391,7 +391,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 //					break;
 //				}
 //			}
-//			GraphicsElement text = ((GraphicsElement)title.getParent());
+//			SVGElement text = ((SVGElement)title.getParent());
 //			int cc =text.getChildCount();
 //			for (int i = 0; i < cc; i++) {
 //				text.getChild(0).detach();

@@ -11,7 +11,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Int2Range;
 import org.xmlcml.euclid.IntRange;
@@ -33,8 +32,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multiset;
-
-import junit.framework.Assert;
 
 public class FilledTableAnalyzerTest {
 	private static final Logger LOG = Logger.getLogger(FilledTableAnalyzerTest.class);

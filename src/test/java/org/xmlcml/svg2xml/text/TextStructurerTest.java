@@ -13,15 +13,15 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.text.TextCoordinate;
+import org.xmlcml.graphics.svg.text.build.Phrase;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
-import org.xmlcml.graphics.svg.text.build.WordNew;
+import org.xmlcml.graphics.svg.text.build.Word;
 import org.xmlcml.graphics.svg.text.line.TabbedTextLine;
 import org.xmlcml.graphics.svg.text.line.TextLine;
 import org.xmlcml.graphics.svg.text.structure.RawWords;
@@ -213,7 +213,7 @@ public class TextStructurerTest {
 	 * WORKS
 	 */
 	public void testRotatePhrasesAndExtractPhraseList() throws Exception {
-		TextChunk phraseListList; PhraseChunk phraseList; PhraseNew phrase; WordNew word0, word1;
+		TextChunk phraseListList; PhraseChunk phraseList; Phrase phrase; Word word0, word1;
 		File graphTextFile = new File(SVG2XMLFixtures.PLOT_DIR, "BLK_SAM.g.4.0.svg");
 		TextStructurer textStructurer;
 		phraseListList = getUnrotatedPhrases(graphTextFile, 36, "HD-73//1//antibiotic free diet//0.9//0.8//y//t//i//l//0.7//a//t//r//o//0.6//m//e//0.5//v//i//t//a//0.4//l//u//m//0.3//u//rifampicin//c//0.2//diet//0.1//0//1 2 3 4 5//days//");
@@ -840,7 +840,7 @@ public class TextStructurerTest {
 		List<TextLine> textLineList = textStructurer.getTextLineList();
 		SVGG g = new SVGG();
 		for (TextLine textLine : textLineList) {
-			for (GraphicsElement character : textLine.getSVGTextCharacters()) {
+			for (SVGElement character : textLine.getSVGTextCharacters()) {
 				g.appendChild(character.copy());
 			}
 		}
@@ -859,7 +859,7 @@ public class TextStructurerTest {
 		textLineList = textStructurer.getTextLineList();
 		g = new SVGG();
 		for (TextLine textLine : textLineList) {
-			for (GraphicsElement character : textLine.getSVGTextCharacters()) {
+			for (SVGElement character : textLine.getSVGTextCharacters()) {
 				g.appendChild(character.copy());
 			}
 		}
@@ -871,7 +871,7 @@ public class TextStructurerTest {
 	
 	private void assertLadder(TextChunk phraseListList, int[] phraseIndexes, String[] phraseValues, double xValue,
 			double deltaY, double yEps) {
-		PhraseNew phrase;
+		Phrase phrase;
 		if (phraseIndexes != null) {
 			for (int i = 0; i < phraseIndexes.length; i++) {
 				phrase = phraseListList.get(phraseIndexes[i]).get(0);

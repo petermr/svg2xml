@@ -9,9 +9,9 @@ import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Util;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.text.build.WordNew;
+import org.xmlcml.graphics.svg.text.build.Word;
 import org.xmlcml.graphics.svg.text.structure.RawWords;
 import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
@@ -23,11 +23,11 @@ public class WordTest {
 		LOG.setLevel(Level.DEBUG);
 	}
 
-	public static WordNew WORD0 = RawWordsTest.RAW_WORDS.get(0);
-	public static WordNew WORD1 = RawWordsTest.RAW_WORDS.get(1);
-	public static WordNew WORD2 = RawWordsTest.RAW_WORDS.get(2);
+	public static Word WORD0 = RawWordsTest.RAW_WORDS.get(0);
+	public static Word WORD1 = RawWordsTest.RAW_WORDS.get(1);
+	public static Word WORD2 = RawWordsTest.RAW_WORDS.get(2);
 	
-	GraphicsElement word1 = TextLineTest.PAGE_TEXT_LINE.getRawWords().get(1);
+	SVGElement word1 = TextLineTest.PAGE_TEXT_LINE.getRawWords().get(1);
 
 	@Test
 	public void testGetWordAndSpaces() {
@@ -65,7 +65,7 @@ public class WordTest {
 	
 	@Test
 	public void testTranslateToDouble() {
-		WordNew word = WordNew.createTestWord(new SVGText(new Real2(1., 2.), "1.23"));
+		Word word = Word.createTestWord(new SVGText(new Real2(1., 2.), "1.23"));
 		Double d = word.translateToDouble();
 		Assert.assertEquals("double", 1.23, d, 0.001);
 	}
@@ -78,9 +78,9 @@ public class WordTest {
 		Assert.assertEquals("rawWordsList", 1, rawWordsList.size());
 		RawWords rawWords = rawWordsList.get(0);
 		Assert.assertEquals("rawWords", 1, rawWords.size());
-		WordNew word = rawWords.get(0);
+		Word word = rawWords.get(0);
 		Assert.assertEquals("unsplit value", "Phenotypic tarsus (mm)", word.toString());
-		List<WordNew> splitWords = word.splitAtSpaces();
+		List<Word> splitWords = word.splitAtSpaces();
 		Assert.assertEquals("rawWords", 3, splitWords.size());
 		Assert.assertEquals("word0", "Phenotypic", splitWords.get(0).toString());
 		Assert.assertEquals("word1", "tarsus", splitWords.get(1).toString());
@@ -92,7 +92,7 @@ public class WordTest {
 		SVGText t1 = new SVGText(new Real2(10., 20.), "H");
 		t1.setFontSize(8.0);
 		t1.setSVGXFontWidth(456.);
-		WordNew w1 = new WordNew(t1);
+		Word w1 = new Word(t1);
 		Real2Range bbox = w1.getBoundingBox();
 		bbox = bbox.format(3);
 		Assert.assertEquals("((10.0,13.648),(12.0,20.0))",  bbox.toString());

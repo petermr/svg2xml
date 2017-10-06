@@ -8,7 +8,7 @@ import nu.xom.Element;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
@@ -50,7 +50,7 @@ public class TableFixtures {
 
 	public static List<SVGElement> readFileAndXPathFilterToElementList(File file, String xpath) {
 		Element element = XMLUtil.parseQuietlyToDocument(file).getRootElement();
-		GraphicsElement svgElement = SVGElement.readAndCreateSVG(element);
+		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, xpath);
 		return elementList;
 	}

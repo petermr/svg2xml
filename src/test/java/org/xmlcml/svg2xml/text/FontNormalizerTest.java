@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.text.structure.FontNormalizer;
@@ -31,7 +31,7 @@ public class FontNormalizerTest {
 	public void setup() {
 		File file = new File(SVG2XMLFixtures.FONT_DIR, "fontweights.svg");
 		try {
-			GraphicsElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(file));
+			SVGElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(file));
 			textList = SVGText.extractSelfAndDescendantTexts(svgElement);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("cannot parse "+file, e);
@@ -64,7 +64,7 @@ public class FontNormalizerTest {
 		FontNormalizer fontNormalizer = new FontNormalizer();
 		fontNormalizer.setBoldThreshold(0x60);
 		for (int i = 0; i < textList.size(); i++) {
-			GraphicsElement text = textList.get(i);
+			SVGElement text = textList.get(i);
 			isBoldList.add(fontNormalizer.isBoldColor(text.getFill()));
 			fillList.add(text.getFill());
 		}
@@ -74,7 +74,7 @@ public class FontNormalizerTest {
 		isBoldList = new ArrayList<Boolean>();
 		fontNormalizer.setBoldThreshold(0x61);
 		for (int i = 0; i < textList.size(); i++) {
-			GraphicsElement text = textList.get(i);
+			SVGElement text = textList.get(i);
 			isBoldList.add(fontNormalizer.isBoldColor(text.getFill()));
 		}
 		Assert.assertEquals("isBold", "[true, true, true, true]", isBoldList.toString());
@@ -82,7 +82,7 @@ public class FontNormalizerTest {
 		isBoldList = new ArrayList<Boolean>();
 		fontNormalizer.setBoldThreshold(0x20);
 		for (int i = 0; i < textList.size(); i++) {
-			GraphicsElement text = textList.get(i);
+			SVGElement text = textList.get(i);
 			isBoldList.add(fontNormalizer.isBoldColor(text.getFill()));
 		}
 		Assert.assertEquals("isBold", "[false, false, false, false]", isBoldList.toString());
@@ -90,7 +90,7 @@ public class FontNormalizerTest {
 		isBoldList = new ArrayList<Boolean>();
 		fontNormalizer.setBoldThreshold(0x23);
 		for (int i = 0; i < textList.size(); i++) {
-			GraphicsElement text = textList.get(i);
+			SVGElement text = textList.get(i);
 			isBoldList.add(fontNormalizer.isBoldColor(text.getFill()));
 		}
 		Assert.assertEquals("isBold", "[false, false, false, false]", isBoldList.toString());
@@ -98,7 +98,7 @@ public class FontNormalizerTest {
 		isBoldList = new ArrayList<Boolean>();
 		fontNormalizer.setBoldThreshold(0x24);
 		for (int i = 0; i < textList.size(); i++) {
-			GraphicsElement text = textList.get(i);
+			SVGElement text = textList.get(i);
 			isBoldList.add(fontNormalizer.isBoldColor(text.getFill()));
 		}
 		Assert.assertEquals("isBold", "[true, true, true, false]", isBoldList.toString());

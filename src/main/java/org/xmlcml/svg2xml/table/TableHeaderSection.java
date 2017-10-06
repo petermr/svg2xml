@@ -8,14 +8,14 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.Phrase;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
 /** manages the table header, including trying to sort out the column spanning
@@ -46,22 +46,22 @@ public class TableHeaderSection extends TableSection {
 		createSortedColumnManagerListFromUnassignedPhrases(allPhrasesInSection);
 	}
 
-	private List<PhraseNew> createHeaderRowListAndUnassignedPhrases() {
+	private List<Phrase> createHeaderRowListAndUnassignedPhrases() {
 		allPhrasesInSection = null;
 		headerRowList = new ArrayList<HeaderRow>();
 		Double lastY = null;
 		HeaderRow headerRow = null;
-		for (HorizontalElementNew element : getHorizontalElementList()) {
+		for (HorizontalElement element : getHorizontalElementList()) {
 			if (element instanceof PhraseChunk) {
 				if (allPhrasesInSection == null) {
-					allPhrasesInSection = new ArrayList<PhraseNew>();
+					allPhrasesInSection = new ArrayList<Phrase>();
 				}
 				PhraseChunk phraseList = (PhraseChunk) element;
 				allPhrasesInSection.addAll(phraseList.getOrCreateChildPhraseList());
-			} else if (element instanceof HorizontalRuleNew) {
-				HorizontalRuleNew ruler = (HorizontalRuleNew) element;
+			} else if (element instanceof HorizontalRule) {
+				HorizontalRule ruler = (HorizontalRule) element;
 				Double y = ruler.getY();
-				if (lastY == null || (y - lastY) > HorizontalRuleNew.Y_TOLERANCE) {
+				if (lastY == null || (y - lastY) > HorizontalRule.Y_TOLERANCE) {
 					headerRow = new HeaderRow();
 					headerRowList.add(headerRow);
 					lastY = y;
@@ -69,7 +69,7 @@ public class TableHeaderSection extends TableSection {
 				ColumnGroup columnGroup = new ColumnGroup();
 				IntRange rulerRange = ruler.getIntRange();
 				for (int i = allPhrasesInSection.size() - 1; i >= 0; i--) {
-					PhraseNew phrase = allPhrasesInSection.get(i);
+					Phrase phrase = allPhrasesInSection.get(i);
 					// somewhere above the ruler (ignore stacked rulers at this stage
 					if (rulerRange.includes(phrase.getIntRange()) && phrase.getY() < ruler.getY()) {
 						allPhrasesInSection.remove(i);
@@ -90,8 +90,8 @@ public class TableHeaderSection extends TableSection {
 		return headerRowList;
 	}
 	
-	public GraphicsElement createMarkedSections(
-			GraphicsElement svgChunk,
+	public SVGElement createMarkedSections(
+			SVGElement svgChunk,
 			String[] colors,
 			double[] opacity) {
 		// write SVG
@@ -102,7 +102,7 @@ public class TableHeaderSection extends TableSection {
 		return svgChunk;
 	}
 
-	private SVGG createColumnBoxesAndTransformToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_COLUMN_BOXES);
 		if (boundingBox == null) {
@@ -148,7 +148,7 @@ public class TableHeaderSection extends TableSection {
 		return columnGroup;
 	}
 
-	private SVGG createHeaderBoxesAndTransformToOrigin(GraphicsElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_BOXES);
 		for (int i = 0; i < headerRowList.size(); i++) {

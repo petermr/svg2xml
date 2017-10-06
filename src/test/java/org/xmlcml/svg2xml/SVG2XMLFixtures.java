@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
@@ -311,8 +311,8 @@ public class SVG2XMLFixtures {
 		}
 	}
 	
-	public final static GraphicsElement createSVGElement(File file) {
-		GraphicsElement svgElement =  null;
+	public final static SVGElement createSVGElement(File file) {
+		SVGElement svgElement =  null;
 		try {
 			svgElement = SVGElement.readAndCreateSVG(new Builder().build(file).getRootElement());
 		} catch (Exception e) {
@@ -329,7 +329,7 @@ public class SVG2XMLFixtures {
 	 * @return
 	 */
 	public static SVGSVG getSVGPageFromPDF(File file, int page) {
-		PDF2SVGConverterNew converter = new PDF2SVGConverterNew();
+		PDF2SVGConverter converter = new PDF2SVGConverter();
 		converter.run("-outdir target "+file);
 		LOG.warn("PDF2SVGConverter shorted out");
 		SVGSVG svgPage = (page < 1 || page > converter.getPageList().size() ? null : converter.getPageList().get(page - 1));

@@ -43,7 +43,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
-import org.xmlcml.svg2xml.PDF2SVGConverterNew;
+import org.xmlcml.svg2xml.PDF2SVGConverter;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.table.TableContentCreator;
 import org.xmlcml.xml.XMLUtil;
@@ -303,7 +303,7 @@ public class CMUCLTest {
 			File pdfFile = new File(pdfDir, "fulltext.pdf");
 			File svgDir = new File(pmrPdfDir, "svg/");
 			svgDir.mkdirs();
-			new PDF2SVGConverterNew().run(
+			new PDF2SVGConverter().run(
 					"-logger", "-infofiles", "-logglyphs", "-outdir", svgDir.toString(), pdfFile.toString());
 			File pngDir = new File(pmrPdfDir, "png/");
 			List<File> pngs = new ArrayList<File>(FileUtils.listFiles(svgDir, new String[] {"png"}, false));

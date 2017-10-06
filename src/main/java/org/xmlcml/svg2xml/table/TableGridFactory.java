@@ -5,8 +5,8 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
-import org.xmlcml.graphics.svg.rule.vertical.VerticalRuleNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
+import org.xmlcml.graphics.svg.rule.vertical.VerticalRule;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
@@ -22,8 +22,8 @@ public class TableGridFactory {
 		LOG.setLevel(Level.DEBUG);
 	}
 
-	private List<VerticalRuleNew> verticalRulerList;
-	private List<HorizontalRuleNew> horizontalRulerList;
+	private List<VerticalRule> verticalRulerList;
+	private List<HorizontalRule> horizontalRulerList;
 	private IntRange horizontalTotalRange;
 	private IntRange verticalTotalRange;
 	private TableGrid tableGrid;
@@ -34,7 +34,7 @@ public class TableGridFactory {
 	private int columnCount;
 	private int rowCount;
 	
-	public TableGridFactory(List<HorizontalRuleNew> horizontalRulerList, List<VerticalRuleNew> verticalRulerList) {
+	public TableGridFactory(List<HorizontalRule> horizontalRulerList, List<VerticalRule> verticalRulerList) {
 		this.verticalRulerList = verticalRulerList;
 		this.horizontalRulerList = horizontalRulerList;
 	}
@@ -72,7 +72,7 @@ public class TableGridFactory {
 		if (horizontalTotalRange == null) {
 			horizontalIntRangeSet = HashMultiset.create();
 			for (int i = 0; i < horizontalRulerList.size(); i++) {
-				HorizontalRuleNew horizontalRuler = horizontalRulerList.get(i);
+				HorizontalRule horizontalRuler = horizontalRulerList.get(i);
 				IntRange horizontalRange = horizontalRuler.getIntRange();
 				horizontalTotalRange = horizontalTotalRange == null ? horizontalRange : horizontalTotalRange.plus(horizontalRange);			
 				horizontalIntRangeSet.add(horizontalRange);
@@ -85,7 +85,7 @@ public class TableGridFactory {
 		if (verticalTotalRange == null) {
 			verticalIntRangeSet = HashMultiset.create();
 			for (int i = 0; i < verticalRulerList.size(); i++) {
-				VerticalRuleNew verticalRuler = verticalRulerList.get(i);
+				VerticalRule verticalRuler = verticalRulerList.get(i);
 				IntRange verticalRange = verticalRuler.getIntRange();
 				verticalTotalRange = verticalTotalRange == null ? verticalRange : verticalTotalRange.plus(verticalRange);			
 				verticalIntRangeSet.add(verticalRange);

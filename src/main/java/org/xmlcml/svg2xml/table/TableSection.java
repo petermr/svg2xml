@@ -14,10 +14,10 @@ import org.xmlcml.euclid.util.MultisetUtil;
 import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.html.HtmlP;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElementNew;
-import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRuleNew;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
+import org.xmlcml.graphics.svg.text.build.Phrase;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 
@@ -64,11 +64,11 @@ public class TableSection {
 
 	protected TableSectionTypeOld typeOld;
 	protected TableSectionType type;
-	protected List<HorizontalElementNew> horizontalElementList;
+	protected List<HorizontalElement> horizontalElementList;
 	protected Real2Range boundingBox;
 	protected List<ColumnManager> columnManagerList;
 	// what is the difference between these two?
-	protected List<PhraseNew> allPhrasesInSection;
+	protected List<Phrase> allPhrasesInSection;
 	protected TextChunk sectionPhraseListList;
 	protected List<TextChunk> sectionChunks; // structure within the text (e.g. whitespace)
 	protected double epsilon = 0.3;
@@ -94,26 +94,26 @@ public class TableSection {
 
 
 	public TableSection() {
-		this.horizontalElementList = new ArrayList<HorizontalElementNew>();
+		this.horizontalElementList = new ArrayList<HorizontalElement>();
 	}
 
-	public void add(HorizontalElementNew horizontalElement) {
+	public void add(HorizontalElement horizontalElement) {
 		this.horizontalElementList.add(horizontalElement);
 		Real2Range bbox = ((SVGElement)horizontalElement).getBoundingBox();
 		boundingBox = (boundingBox == null) ? bbox : boundingBox.plus(bbox);
 	}
 
-	public List<HorizontalElementNew> getHorizontalElementList() {
+	public List<HorizontalElement> getHorizontalElementList() {
 		return horizontalElementList;
 	}
 
 	public String getStringValue() {
 		StringBuilder sb = new StringBuilder();
-		for (HorizontalElementNew horizontalElement : horizontalElementList) {
+		for (HorizontalElement horizontalElement : horizontalElementList) {
 			if (horizontalElement instanceof PhraseChunk) {
 				sb.append(((PhraseChunk) horizontalElement).getStringValue()+"\n");
 			} else {
-				sb.append("=>=>=>"+((HorizontalRuleNew) horizontalElement).toString()+"<=<=<=\n");
+				sb.append("=>=>=>"+((HorizontalRule) horizontalElement).toString()+"<=<=<=\n");
 			}
 		}
 		return sb.toString();
@@ -121,7 +121,7 @@ public class TableSection {
 	
 	public int getPhraseListCount() {
 		int i = 0;
-		for (HorizontalElementNew horizontalElement : horizontalElementList) {
+		for (HorizontalElement horizontalElement : horizontalElementList) {
 			if (horizontalElement instanceof PhraseChunk) {
 				i++;
 			}
@@ -137,7 +137,7 @@ public class TableSection {
 //			sb.append(String.valueOf("..."+horizontalElementList.get(horizontalElementList.size()-1))+"\n");
 //		}
 		for (int i = 0; i < horizontalElementList.size(); i++) {
-			HorizontalElementNew horizontalElement = horizontalElementList.get(i);
+			HorizontalElement horizontalElement = horizontalElementList.get(i);
 			String s = String.valueOf(horizontalElement+"\n");
 			sb.append(s);
 		}
@@ -148,15 +148,15 @@ public class TableSection {
 	 * 
 	 * @return
 	 */
-	public List<PhraseNew> getOrCreateAllPhrasesInSection() {
+	public List<Phrase> getOrCreateAllPhrasesInSection() {
 		if (allPhrasesInSection == null) {
-			allPhrasesInSection = new ArrayList<PhraseNew>();
-			for (HorizontalElementNew element : this.getHorizontalElementList()) {
+			allPhrasesInSection = new ArrayList<Phrase>();
+			for (HorizontalElement element : this.getHorizontalElementList()) {
 				if (element instanceof PhraseChunk) {
 					PhraseChunk phraseList = (PhraseChunk) element;
 					LOG.trace("PL "+ phraseList+" / "+phraseList.size());
 					for (int i = 0; i < phraseList.size(); i++) {
-						PhraseNew phrase = phraseList.get(i);
+						Phrase phrase = phraseList.get(i);
 						if (phrase.getStringValue().trim().length() == 0) {
 							continue;
 						}
@@ -171,7 +171,7 @@ public class TableSection {
 	public TextChunk getOrCreatePhraseListList() {
 		if (sectionPhraseListList == null) {
 			sectionPhraseListList = new TextChunk();
-			for (HorizontalElementNew element : this.getHorizontalElementList()) {
+			for (HorizontalElement element : this.getHorizontalElementList()) {
 				if (element instanceof PhraseChunk) {
 					PhraseChunk phraseList = (PhraseChunk) element;
 					sectionPhraseListList.add(phraseList);
@@ -185,13 +185,13 @@ public class TableSection {
 		return boundingBox;
 	}
 
-	protected void createSortedColumnManagerListFromUnassignedPhrases(List<PhraseNew> currentPhrases) {
+	protected void createSortedColumnManagerListFromUnassignedPhrases(List<Phrase> currentPhrases) {
 		if (currentPhrases == null) {
 			LOG.trace("no current phrases");
 			return;
 		}
 		columnManagerList = new ArrayList<ColumnManager>();
-		for (PhraseNew phrase : currentPhrases) {
+		for (Phrase phrase : currentPhrases) {
 			IntRange phraseRange = phrase.getIntRange();
 			ColumnManager existingColumnManager = null;
 			for (int i = 0; i < columnManagerList.size(); i++) {
@@ -220,12 +220,12 @@ public class TableSection {
 	}
 
 	protected String getFontInfo() {
-		List<PhraseNew> phrases = this.getOrCreateAllPhrasesInSection();
+		List<Phrase> phrases = this.getOrCreateAllPhrasesInSection();
 		Multiset<Double> fontSizeSet = HashMultiset.create();
 		Multiset<String> fontFamilySet = HashMultiset.create();
 		Multiset<String> fontWeightSet = HashMultiset.create();
 		Multiset<String> fontStyleSet = HashMultiset.create();
-		for (PhraseNew phrase : phrases) {
+		for (Phrase phrase : phrases) {
 			fontSizeSet.add(phrase.getFontSize());
 			fontFamilySet.add(String.valueOf(phrase.getFontFamily()));
 			fontWeightSet.add(String.valueOf(phrase.getFontWeight()));
@@ -266,7 +266,7 @@ public class TableSection {
 		sb.append("pll: "+pll.size()+"\n");
 		for (PhraseChunk pl : pll) {
 			sb.append(">>pl: " + pl.size()+"\n");
-			for (PhraseNew p : pl) {
+			for (Phrase p : pl) {
 				sb.append(">>>>>p: " + p.getY()+": "+p.getStringValue()+"\n");
 			}
 		}

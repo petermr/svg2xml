@@ -6,13 +6,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
-import org.xmlcml.graphics.svg.GraphicsElement;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.text.build.Phrase;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
-import org.xmlcml.graphics.svg.text.build.PhraseNew;
 import org.xmlcml.graphics.svg.text.build.SusType;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
-import org.xmlcml.graphics.svg.text.build.WordNew;
+import org.xmlcml.graphics.svg.text.build.Word;
 import org.xmlcml.graphics.svg.text.line.SuscriptEditor;
 
 public class SuscriptEditorTest {
@@ -37,23 +37,23 @@ public class SuscriptEditorTest {
 	private TextChunk createH3OPlus() {
 		SVGText t1 = new SVGText(new Real2(10., 20.), "H");
 		t1.setFontSize(8.0);
-		WordNew w1 = new WordNew(t1);
-		PhraseNew p1 = new PhraseNew(w1);
+		Word w1 = new Word(t1);
+		Phrase p1 = new Phrase(w1);
 
 		SVGText t2 = new SVGText(new Real2(15., 23.), "3");
 		t2.setFontSize(6.0);
-		WordNew w2 = new WordNew(t2);
-		PhraseNew p2 = new PhraseNew(w2);
+		Word w2 = new Word(t2);
+		Phrase p2 = new Phrase(w2);
 		
 		SVGText t3 = new SVGText(new Real2(20., 20.), "O");
 		t3.setFontSize(8.0);
-		WordNew w3 = new WordNew(t3);
-		PhraseNew p3 = new PhraseNew(w3);
+		Word w3 = new Word(t3);
+		Phrase p3 = new Phrase(w3);
 		
 		SVGText t11 = new SVGText(new Real2(25., 16.), "+");
 		t11.setFontSize(6.0);
-		WordNew w11 = new WordNew(t11);
-		PhraseNew p11 = new PhraseNew(w11);
+		Word w11 = new Word(t11);
+		Phrase p11 = new Phrase(w11);
 		
 		H3OPLUS = new TextChunk();
 		PLUS = new PhraseChunk();
@@ -81,19 +81,19 @@ public class SuscriptEditorTest {
 		
 		SVGText t1 = new SVGText(new Real2(10., 40.), "S");
 		t1.setFontSize(8.0);
-		mainx.add(new PhraseNew(new WordNew(t1)));
+		mainx.add(new Phrase(new Word(t1)));
 
 		SVGText t2 = new SVGText(new Real2(15., 40.), "O");
 		t2.setFontSize(6.0);
-		mainx.add(new PhraseNew(new WordNew(t2)));		
+		mainx.add(new Phrase(new Word(t2)));		
 		
 		SVGText tSub = new SVGText(new Real2(20., 43.), "4");
 		tSub.setFontSize(6.0);
-		sub.add(new PhraseNew(new WordNew(tSub)));		
+		sub.add(new Phrase(new Word(tSub)));		
 		
 		SVGText tSup = new SVGText(new Real2(25., 36.), "2-");
 		tSup.setFontSize(6.0);
-		sup.add(new PhraseNew(new WordNew(tSup)));		
+		sup.add(new Phrase(new Word(tSup)));		
 		
 		return phraseListList;
 				
@@ -128,7 +128,7 @@ public class SuscriptEditorTest {
 	public void testSuscriptAll() {
 		
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS);
-		GraphicsElement phraseListList = suscriptEditor.mergeAll();
+		SVGElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);
 		
@@ -138,7 +138,7 @@ public class SuscriptEditorTest {
 	public void testSuscriptAll1() {
 		
 		SuscriptEditor suscriptEditor = new SuscriptEditor(H3OPLUS_SO4);
-		GraphicsElement phraseListList = suscriptEditor.mergeAll();
+		SVGElement phraseListList = suscriptEditor.mergeAll();
 		suscriptEditor.mergeAll();
 		LOG.trace(">pp>"+phraseListList);
 		
