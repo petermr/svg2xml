@@ -17,6 +17,7 @@ import org.xmlcml.graphics.svg.SVGLineList.SiblingType;
 import org.xmlcml.graphics.svg.objects.SVGContentBox;
 import org.xmlcml.graphics.svg.rule.GenericRow;
 import org.xmlcml.graphics.svg.rule.GenericRow.RowType;
+import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 
 /** manages the addition and sorting of the row-like objects in a table.
@@ -113,12 +114,6 @@ public class RowManager {
 		return sb.toString();
 	}
 
-//	public String toString() {
-//		StringBuilder sb = new StringBuilder();
-//		sb.append(yRangeArray.size()+": "+yRangeArray.toString()+"\n");
-//		sb.append(getSignature()+"\n");
-//		return sb.toString();
-//	}
 	public void sortAndAddBoxContent() {
 //		yRangeArray.sortAndRemoveOverlapping(); // dont necessarily want to remove
 		yRangeArray.sort();
@@ -171,12 +166,15 @@ public class RowManager {
 	}
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
 		checkArraySizes();
+		return createSignatureStack();
+	}
+	
+	public String createSignatureStack() {
+		StringBuilder sb = new StringBuilder();
 		sb.append("rows: "+yRangeArray.size()+"; sig: "+getSignature()+"\n");
 		for (RealRange yRange : yRangeArray) {
 			GenericRow row = rowByYRange.get(yRange);
-//			sb.append("<ROW> "+yRange+": "+row+"</ROW>\n");
 			sb.append(row.getSignature()+"/");
 		}
 		return sb.toString();
@@ -185,6 +183,14 @@ public class RowManager {
 	private void checkArraySizes() {
 		if (yRangeArray.size() != rowByYRange.size()) {
 			LOG.error("Range array ("+yRangeArray.size()+") != map ("+rowByYRange.size()+")");
+		}
+	}
+	void addPhrases(TableContentCreator tableContentCreator) {
+		for (HorizontalElement elem : tableContentCreator.horizontalList) {
+			if (elem instanceof PhraseChunk) {
+				PhraseChunk phraseList = (PhraseChunk) elem;
+				addPhraseList(phraseList);
+			}
 		}
 	}
 }

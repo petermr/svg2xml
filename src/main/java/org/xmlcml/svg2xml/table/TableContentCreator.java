@@ -102,6 +102,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private SVGG contentBoxGridG;
 	private File contentBoxGridFile;
 //	private ComponentCache ownerComponentCache;
+	private RowManager rowManager;
 	
 	public TableContentCreator() {
 	}
@@ -207,11 +208,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		tableSectionList = new ArrayList<TableSection>();
 		TableSection tableSection = new TableSection();
 		
-		// sections are always bounded by long horizontal lines or panels,
-		// and never by phraselists, phraselistlists or short horizontal lines
-		// forget HorizontalElements at this stage
-		// this will be fairly crude.
-		RowManager rowManager = new RowManager();
+		rowManager = new RowManager();
 		
 		List<SVGContentBox> contentBoxes = contentBoxCache.getOrCreateContentBoxList();
 		LOG.debug("contentBox: "+contentBoxes.size());
@@ -232,7 +229,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		List<SVGLineList> horizontalSiblingsList = lineCache.getHorizontalSiblingsList();
 		rowManager.addHorizontalSiblingsList(horizontalSiblingsList);
 // phrases		
-		addPhrases(rowManager);
+		rowManager.addPhrases(this);
 		rowManager.sortAndAddBoxContent();
 		LOG.debug("RowManager "+rowManager.toString());
 		
@@ -249,15 +246,6 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			this.createSections(horizontalList, 0, firstFullRuleList, tableSpan);
 			this.createPhraseRangesArray();
 			analyzeRangesAndSections();
-		}
-	}
-
-	private void addPhrases(RowManager rowManager) {
-		for (HorizontalElement elem : horizontalList) {
-			if (elem instanceof PhraseChunk) {
-				PhraseChunk phraseList = (PhraseChunk) elem;
-				rowManager.addPhraseList(phraseList);
-			}
 		}
 	}
 
@@ -436,9 +424,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return tableSectionList;
 	}
 
+	@Override
+	public void createContent(File inputFile) {
+		super.createContent(inputFile);
+		createSectionsAndRangesArray();
+	}
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
-		createSectionsAndRangesArray();
 		analyzeSections();
 		if (contentBoxGridFile != null) {
 			SVGSVG.wrapAndWriteAsSVG(contentBoxGridG, contentBoxGridFile);

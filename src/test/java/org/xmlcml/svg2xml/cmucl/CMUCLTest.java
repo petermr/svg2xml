@@ -136,6 +136,7 @@ public class CMUCLTest {
 	
 	public static void createHTML(String root) {
 		File inDir = new File(CMUCL0, root+"/");
+		LOG.debug("in dir: "+inDir);
 		File outDir = new File(CMUCL_OUT_DIR, root+"/");
 		List<File> tableFiles = new ArrayList<File>
 			(FileUtils.listFiles(inDir, new WildcardFileFilter("table*.svg") , TrueFileFilter.INSTANCE));

@@ -61,7 +61,7 @@ public class PageLayoutAnalyzer {
 	protected TextChunk textChunk;
 	protected TableStructurer tableStructurer;
 	protected List<HorizontalRule> horizontalRuleList;
-	protected List<HorizontalElement> horizontalList;
+	public List<HorizontalElement> horizontalList;
 	
 	private Multiset<IntRange> xRangeSet = HashMultiset.create();
 	private Multiset<Integer> xRangeStartSet;

@@ -5,7 +5,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-       <svg2xml.version>2.3.0-SNAPSHOT</svg2xml.version>
        <!--  upstream -->
        <svghtml.version>1.0.0-SNAPSHOT</svghtml.version>
 
@@ -25,29 +24,15 @@
 
     <groupId>org.contentmine</groupId>
     <artifactId>svg2xml</artifactId>
-    <version>${svg2xml.version}</version>
+    <version>2.4.0-SNAPSHOT</version>
     <description>Takes SVG from PDF2SVG and analyzes the domain-independent semantics</description>
 
     <dependencies>
-    <!-- 
-        <dependency>
-            <groupId>org.contentmine</groupId>
-            <artifactId>pdf2svg</artifactId>
-            <version>${pdf2svg.version}</version>
-        </dependency>
-        -->
-<!--
-        <dependency>
-            <groupId>org.contentmine</groupId>
-            <artifactId>html</artifactId>
-            <version>${html.version}</version>
-        </dependency>
--->
 		<!-- uses new combined library -->
         <dependency>
             <groupId>org.contentmine</groupId>
             <artifactId>svghtml</artifactId>
-            <version>${svghtml.version}</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
@@ -61,11 +46,12 @@
         </resources>
 
         <plugins>
+        <!-- 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
-        
+        -->
         			<!-- giant jar -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
