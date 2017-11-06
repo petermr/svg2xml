@@ -26,6 +26,7 @@ public class SVG2XMLFixtures {
 	public static final File FUNNEL_DIR = new File(SVG2XML_DIR, "funnel");
 	public static final File SVG_DIR = new File(SVG2XML_DIR, "svg");
 	public static final File BMC_DIR = new File(SVG_DIR, "bmc");
+	public static final File MDPI_DIR = new File(SVG_DIR, "mdpi");
 	public static final File SVG1_DIR = new File(TEST_RESOURCES_DIR, "svg");
 	public static final File ACTION_SVG_DIR = new File(ACTION_DIR, "svg");
 	public static final File ACTION_PDF_DIR = new File(ACTION_DIR, "pdf");
