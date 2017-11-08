@@ -1,5 +1,7 @@
 package org.xmlcml.svg2xml.page;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.apache.log4j.Level;
@@ -8,6 +10,8 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGRect;
+import org.xmlcml.graphics.svg.SVGSVG;
 
 /** extracts parts of page through user-supplied crop boxes
  * 
@@ -28,9 +32,29 @@ public class PageCropper {
 	private Real2Range localCropBox;
 	private Real2Range localMediaBox;
 	private Transform2 crop2LocalTransform;
+	private SVGElement svgElement;
+	private Real2 userCropxy0;
+	private Real2 userCropxy1;
 
 	public PageCropper() {
 		setDefaults();
+	}
+	
+	public static void main(String[] args) throws Exception {
+		if (args.length != 5) {
+			usage();
+			return;
+		}
+		PageCropper pageCropper = new PageCropper();
+		pageCropper.readSVG(args[0]);
+		pageCropper.setTLBRUserMediaBox(new Real2(0,850), new Real2(600,0));
+		pageCropper.setTLBRUserCropBox(args[1],args[2],args[3],args[4]);
+	}
+
+	private static void usage() {
+		System.out.println("pageCropper <infile> x0 y0 x1 y1)");
+		System.out.println("    x0 ... y1 is user crop box");
+		System.out.println("user media box defaults to (0,800)(600,0)");
 	}
 
 	private void setDefaults() {
@@ -41,7 +65,7 @@ public class PageCropper {
 	 * 
 	 * @param mediaBox
 	 */
-	public void setMediaBox(Real2Range mediaBox) {
+	public void setLocalMediaBox(Real2Range mediaBox) {
 		this.localMediaBox = mediaBox;
 	}
 
@@ -55,7 +79,7 @@ public class PageCropper {
 	 * @param xy0 one corner
 	 * @param xy1 opposite corner
 	 */
-	public void setCropMediaBox(Real2 xy0, Real2 xy1) {
+	public void setTLBRUserMediaBox(Real2 xy0, Real2 xy1) {
 		if (this.localMediaBox == null) {
 			throw new RuntimeException("Must have local mediaBox");
 		}
@@ -73,18 +97,29 @@ public class PageCropper {
 		crop2LocalTransform.setTranslation(new Real2(xConstant, yConstant));
 		
 	}
+	/** box as 4 numbers
+	 * x0,y0,x1,y1
+	 * 
+	 * @param xy0xy1
+	 */
+	private void setTLBRUserCropBox(String x0, String y0, String x1, String y1) {
+		Real2 xy0 = new Real2(x0, y0);
+		Real2 xy1 = new Real2(x1, y1);
+		this.setTLBRUserCropBox(xy0, xy1);
+	}
+
 
 	/** crop box in cropping coordinates.
 	 * 
 	 * @param cropBox
 	 */
-	public void setCropBox(Real2 xy0, Real2 xy1) {
-		Real2 xy0new = new Real2(xy0);
-		xy0new.transformBy(crop2LocalTransform);
-		Real2 xy1new = new Real2(xy1);
-		xy1new.transformBy(crop2LocalTransform);
+	public void setTLBRUserCropBox(Real2 xy0, Real2 xy1) {
+		this.userCropxy0 = new Real2(xy0);
+		this.userCropxy0.transformBy(crop2LocalTransform);
+		this.userCropxy1 = new Real2(xy1);
+		this.userCropxy1.transformBy(crop2LocalTransform);
 		
-		this.localCropBox = new Real2Range(xy0new, xy1new);
+		this.localCropBox = new Real2Range(userCropxy0, userCropxy1);
 	}
 
 	public Real2Range getLocalCropBox() {
@@ -105,8 +140,43 @@ public class PageCropper {
 		return descendants;
 	}
 
-	public void detachElementsOutsideBox(SVGElement element) {
-		element.detachDescendantElementsOutsideBox(localCropBox);
+	public void detachElementsOutsideBox() {
+		svgElement.detachDescendantElementsOutsideBox(localCropBox);
 	}
-	
+
+	public void readSVG(String filename) throws FileNotFoundException {
+		File file = new File(filename);
+		readSVG(file);
+	}
+
+	public void readSVG(File file) throws FileNotFoundException {
+		if (!file.exists()) {
+			throw new FileNotFoundException(file.toString());
+		}
+		svgElement = SVGElement.readAndCreateSVG(file);
+	}
+
+	public SVGElement getSVGElement() {
+		return svgElement;
+	}
+
+	public void displayCropBox(File svgFile) {
+		SVGRect box = SVGRect.createFromReal2Range(getLocalCropBox());
+		box.setCSSStyle("stroke:blue;stroke-width:1.0;fill:none;");
+		getSVGElement().appendChild(box);
+		SVGSVG.wrapAndWriteAsSVG(getSVGElement(), svgFile);
+		box.detach();
+	}
+
+	public SVGElement cropFile(String fileroot, File inputFile, Real2 tl, Real2 br)
+			throws FileNotFoundException {
+		readSVG(inputFile);
+		setTLBRUserMediaBox(new Real2(0, 800), new Real2(600, 0));
+		setTLBRUserCropBox(tl, br);
+		// just for display
+		displayCropBox(new File(new File("target/crop/"), fileroot + ".raw.box.svg"));
+		detachElementsOutsideBox();
+		return svgElement;
+	}
+
 }

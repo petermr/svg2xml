@@ -90,6 +90,10 @@
 							<mainClass>org.xmlcml.svg2xml.pdf.PDFAnalayzer</mainClass>
 							<id>svg2xml</id>
 						</program>
+						<program>
+							<mainClass>org.xmlcml.svg2xml.page.PageCropper</mainClass>
+							<id>cropper</id>
+						</program>
 					</programs>
 				</configuration>
 			</plugin>

@@ -21,10 +21,12 @@ public class SVG2XMLFixtures {
 	public static final File SVG2XML_DIR = new File(TEST_RESOURCES_DIR, "org/xmlcml/svg2xml/");
 	public static final File PDFS_DIR = new File(TEST_RESOURCES_DIR, "pdfs");
 	public static final File ACTION_DIR = new File(SVG2XML_DIR, "action");
+	public static final File BAR_DIR = new File(SVG2XML_DIR, "bar");
 	public static final File COMMAND_DIR= new File(SVG2XML_DIR, "command");
 	public static final File CORE_DIR = new File(SVG2XML_DIR, "core");
 	public static final File FUNNEL_DIR = new File(SVG2XML_DIR, "funnel");
 	public static final File SVG_DIR = new File(SVG2XML_DIR, "svg");
+	public static final File BIO_DIR = new File(SVG_DIR, "bio");
 	public static final File BMC_DIR = new File(SVG_DIR, "bmc");
 	public static final File MDPI_DIR = new File(SVG_DIR, "mdpi");
 	public static final File SVG1_DIR = new File(TEST_RESOURCES_DIR, "svg");
