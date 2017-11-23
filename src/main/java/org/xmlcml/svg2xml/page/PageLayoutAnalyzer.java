@@ -15,7 +15,6 @@ import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
@@ -144,7 +143,7 @@ public class PageLayoutAnalyzer {
 	 * @return
 	 */
 	public static SVGElement rotateClockwise(TextStructurer textStructurer) {
-		SVGG rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
+		SVGElement rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
 		TableStructurer tableStructurer = TableStructurer.createTableStructurer(textStructurer);
 		SVGElement chunk = textStructurer.getSVGChunk();
 		Angle angle = new Angle(-1.0 * Math.PI / 2);

@@ -32,12 +32,12 @@ public class TableFooterSection extends TableSection {
 			SVGElement svgChunk,
 			String[] colors,
 			double[] opacity) {
-			SVGG g = createColumnBoxesAndShiftToOrigin(svgChunk, colors, opacity);
+			SVGElement g = createColumnBoxesAndShiftToOrigin(svgChunk, colors, opacity);
 			svgChunk.appendChild(g);
 			return svgChunk;
 	}
 	
-	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGElement createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(FOOTER_TITLE);
 		if (boundingBox == null) {

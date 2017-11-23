@@ -12,7 +12,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.objects.ArrowFactory;
@@ -212,7 +211,7 @@ public class FlowStructurerTest {
 	
 	private void createArrows(String outRoot, int arrowCount) throws FileNotFoundException {
 		File outfile = new File("target/flow/"+outRoot+"/textbox.svg");
-		SVGG g = (SVGG) SVGElement.readAndCreateSVG(outfile).getChildElements().get(0);
+		SVGElement g = (SVGElement) SVGElement.readAndCreateSVG(outfile).getChildElements().get(0);
 		ArrowFactory arrowFactory = new ArrowFactory();
 		arrowFactory.setMarkerEnd(SVGArrow.ARROWHEAD);
 		arrowFactory.setStroke("orange");

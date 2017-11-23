@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Test;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
@@ -18,8 +19,6 @@ import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-
-import junit.framework.Assert;
 
 public class RotatedTest {
 	private static final Logger LOG = Logger.getLogger(RotatedTest.class);
@@ -82,7 +81,7 @@ public class RotatedTest {
 			Assert.assertTrue("table3 exists", svgFile.exists());
 			SVGElement tableElement = SVGElement.readAndCreateSVG(svgFile);
 			Real2Range bbox = tableElement.getBoundingBox();
-			SVGG g = new SVGG();
+			SVGElement g = new SVGG();
 			
 			List<SVGText> textLists = SVGText.extractSelfAndDescendantTexts(tableElement);
 			

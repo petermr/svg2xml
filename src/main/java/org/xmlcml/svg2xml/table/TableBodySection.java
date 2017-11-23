@@ -131,7 +131,7 @@ public class TableBodySection extends TableSection {
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		SVGG g;
+		SVGElement g;
 		g = createSubtableBoxesAndShiftToOrigin(svgChunk, colors, opacity);
 		svgChunk.appendChild(g);
 		g = createColumnBoxesAndShiftToOrigin(svgChunk, colors, opacity);
@@ -141,7 +141,7 @@ public class TableBodySection extends TableSection {
 		return svgChunk;
 	}
 
-	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGElement createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_COLUMN_BOXES);
 		if (boundingBox == null) {
@@ -161,7 +161,7 @@ public class TableBodySection extends TableSection {
 		return g;
 	}
 	
-	private SVGG createCellBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGElement createCellBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_CELL_BOXES);
 		if (boundingBox == null) {
@@ -169,7 +169,7 @@ public class TableBodySection extends TableSection {
 		} else {
 			for (int icol = 0; icol < columnManagerList.size(); icol++) {
 				ColumnManager columnManager = columnManagerList.get(icol);
-				SVGG gg = columnManager.createCellBoxes(icol, colors, opacity);
+				SVGElement gg = columnManager.createCellBoxes(icol, colors, opacity);
 				g.appendChild(gg);
 			}
 			TableContentCreator.shiftToOrigin(svgChunk, g);
@@ -177,7 +177,7 @@ public class TableBodySection extends TableSection {
 		return g;
 	}
 	
-	private SVGG createSubtableBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGElement createSubtableBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(BODY_SUBTABLE_BOXES);
 		if (boundingBox == null) {

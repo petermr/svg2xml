@@ -10,6 +10,7 @@ import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
+import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGShape;
@@ -215,7 +216,7 @@ public class ColumnManager {
 		yPointer++;
 	}
 
-	public SVGG createCellBoxes(int colno, String[] colors, double[] opacity) {
+	public SVGElement createCellBoxes(int colno, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName("col"+"."+colno);
 		for (int iPhrase = 0; iPhrase < columnPhrases.size(); iPhrase++) {

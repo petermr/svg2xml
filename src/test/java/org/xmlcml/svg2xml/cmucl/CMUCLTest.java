@@ -43,7 +43,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
-import org.xmlcml.svg2xml.PDF2SVGConverter;
+import org.xmlcml.svg2xml.PDF2SVGXXConverter;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import org.xmlcml.svg2xml.table.TableContentCreator;
 import org.xmlcml.xml.XMLUtil;
@@ -53,7 +53,7 @@ import com.google.common.collect.Multiset;
 
 import nu.xom.Attribute;
 
-@Ignore // LONG TEST
+//@Ignore // LONG TEST
 public class CMUCLTest {
 
 	public static final Logger LOG = Logger.getLogger(CMUCLTest.class);
@@ -292,34 +292,12 @@ public class CMUCLTest {
 	 * 
 	 */
 	@Test
-	@Ignore // LONG
+//	@Ignore // LONG
 	public void testCreateSVGFromPDF() throws IOException {
 		File pdfOrigDir = new File(CM_UCL_DIR, "corpus-oa");
 		File pmrDir = new File(CM_UCL_DIR, "corpus-oa-pmr");
-		pmrDir.mkdirs();
-		File[] pdfDirs = pdfOrigDir.listFiles();
-		for (File pdfDir : pdfDirs) {
-			File pmrPdfDir = new File(pmrDir, pdfDir.getName());
-			pmrPdfDir.mkdirs();
-			File pdfFile = new File(pdfDir, "fulltext.pdf");
-			File svgDir = new File(pmrPdfDir, "svg/");
-			svgDir.mkdirs();
-			new PDF2SVGConverter().run(
-					"-logger", "-infofiles", "-logglyphs", "-outdir", svgDir.toString(), pdfFile.toString());
-			File pngDir = new File(pmrPdfDir, "png/");
-			List<File> pngs = new ArrayList<File>(FileUtils.listFiles(svgDir, new String[] {"png"}, false));
-			for (File png : pngs) {
-				if (FileUtils.sizeOf(png) == 0) {
-					png.delete();
-				} else {
-					try {
-						FileUtils.moveToDirectory(png, pngDir, true);
-					} catch (Exception e) {
-						LOG.error("cannot move file: "+e);
-					}
-				}
-			}
-		}
+		PDF2SVGXXConverter pdf2svgConverter = new PDF2SVGXXConverter();
+		pdf2svgConverter.createSVGFromPDF(pdfOrigDir, pmrDir);
 	}
 
 	@Test

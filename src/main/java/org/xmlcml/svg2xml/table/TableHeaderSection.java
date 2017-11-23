@@ -95,14 +95,14 @@ public class TableHeaderSection extends TableSection {
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		SVGG g = createColumnBoxesAndTransformToOrigin(svgChunk, colors, opacity);
+		SVGElement g = createColumnBoxesAndTransformToOrigin(svgChunk, colors, opacity);
 		svgChunk.appendChild(g);
 		g = createHeaderBoxesAndTransformToOrigin(svgChunk, colors, opacity);
 		svgChunk.appendChild(g);
 		return svgChunk;
 	}
 
-	private SVGG createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGElement createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_COLUMN_BOXES);
 		if (boundingBox == null) {
@@ -148,7 +148,7 @@ public class TableHeaderSection extends TableSection {
 		return columnGroup;
 	}
 
-	private SVGG createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGElement createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_BOXES);
 		for (int i = 0; i < headerRowList.size(); i++) {

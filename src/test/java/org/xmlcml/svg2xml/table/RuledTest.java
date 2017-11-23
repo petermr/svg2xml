@@ -27,7 +27,7 @@ import org.xmlcml.svg2xml.SVG2XMLFixtures;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 
 public class RuledTest {
 	private static final Logger LOG = Logger.getLogger(RuledTest.class);

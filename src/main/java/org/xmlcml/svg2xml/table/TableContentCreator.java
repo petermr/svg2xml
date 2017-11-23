@@ -535,7 +535,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	public static void shiftToOrigin(SVGElement markedChunk, SVGG g) {
-		SVGG gg = null;
+		SVGElement gg = null;
 		SVGElement svgElement =  (SVGElement) markedChunk.getChildElements().get(0);
 		if (svgElement instanceof SVGG) {
 			SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);

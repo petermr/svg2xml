@@ -32,12 +32,12 @@ public class TableTitleSection extends TableSection {
 			SVGElement svgChunk,
 			String[] colors,
 			double[] opacity) {
-			SVGG g = createBoxAndShiftToOrigin(svgChunk, colors, opacity);
+			SVGElement g = createBoxAndShiftToOrigin(svgChunk, colors, opacity);
 			svgChunk.appendChild(g);
 			return svgChunk;
 	}
 	
-	private SVGG createBoxAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGElement createBoxAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(TITLE_TITLE);
 		if (boundingBox == null) {

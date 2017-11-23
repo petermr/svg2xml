@@ -12,7 +12,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
@@ -228,7 +227,7 @@ public class PlotStructurerTest {
 	// I don't think this does anything yet
 	public static File createCSV(File svgFile, String fileRoot) throws IOException {
 		String blackDot = "\u25CF";
-		SVGG g = (SVGG) SVGElement.readAndCreateSVG(svgFile).getChildElements().get(0);
+		SVGElement g = (SVGElement) SVGElement.readAndCreateSVG(svgFile).getChildElements().get(0);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(g);
 		StringBuilder sb = new StringBuilder();
 		for (SVGText text : textList) {

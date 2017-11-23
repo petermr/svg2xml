@@ -158,11 +158,14 @@ public class SVG2XMLFontTest {
 	}
 	
 	@Test
+	/** lists system fonts.
+	 * 
+	 */
 	public void testDisplayFonts() {
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		String[] fontFamilyNames = graphicsEnvironment.getAvailableFontFamilyNames();
 		for (String fontFamilyName : fontFamilyNames) {
-//			LOG.trace(fontFamilyName);
+			LOG.trace(fontFamilyName);
 		}
 	}
 

@@ -198,7 +198,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 //		pageIo.createFinalSVGPageFromChunks();
 	}
 
-	private void sortByZ(SVGG gChunk) {
+	private void sortByZ(SVGElement gChunk) {
 		Map<Double, SVGElement> elementByZMap = new HashMap<Double, SVGElement>();
 		List<SVGElement> childElements = SVGUtil.getQuerySVGElements(gChunk, "./*");
 		LOG.trace("child: "+childElements.size());
@@ -217,7 +217,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		//}
 	}
 
-	private void detachChildrenAndReplaceInZOrder(SVGG gChunk, Map<Double, SVGElement> elementByZMap,
+	private void detachChildrenAndReplaceInZOrder(SVGElement gChunk, Map<Double, SVGElement> elementByZMap,
 			List<SVGElement> childElements, List<Double> rawList) {
 		for (SVGElement childElement : childElements) {
 			childElement.detach();
@@ -357,7 +357,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return TITLE;
 	}
 
-	private SVGG createChunksAndAddIdAndAttributes(SVGG gOrig, ChunkId chunkId, ChunkAnalyzer analyzerX, int decimalPlaces) {
+	private SVGElement createChunksAndAddIdAndAttributes(SVGElement gOrig, ChunkId chunkId, ChunkAnalyzer analyzerX, int decimalPlaces) {
 		if (analyzerX == null) {
 			throw new RuntimeException("Null analyzer");
 		}

@@ -73,7 +73,7 @@ public class FilledTableAnalyzer {
 		SVGG gg = new SVGG();
 		
 		createBoundaryTickMarkLists();
-		SVGG g = drawHorizontalTicksForRows();
+		SVGElement g = drawHorizontalTicksForRows();
 		gg.appendChild(g);
 		g = drawVerticalTicksForColumns();
 		gg.appendChild(g);
@@ -117,8 +117,8 @@ public class FilledTableAnalyzer {
 	 * 
 	 * @return
 	 */
-	private SVGG createAndOutputColspanCountForSpanningCells() {
-		SVGG g = new SVGG();
+	private SVGElement createAndOutputColspanCountForSpanningCells() {
+		SVGElement g = new SVGG();
 		// iterate over rows
 		for (IntRange rowRange : rowYRangeList) {
 			List<SVGRect> rectsInRowList = new ArrayList<SVGRect>(rectByIntYRange.get(rowRange));
@@ -126,7 +126,7 @@ public class FilledTableAnalyzer {
 				SVGRect rectCopy = new SVGRect(rectInRow);
 				g.appendChild(rectCopy);
 				Real2Range cellBbox = rectCopy.getBoundingBox();
-				SVGG gg = createAndOutputColspanCountForSpannningCell(cellBbox);
+				SVGElement gg = createAndOutputColspanCountForSpannningCell(cellBbox);
 				g.appendChild(gg);
 				gg = createAndOutputRowspanCountForSpanningRow(cellBbox);
 				g.appendChild(gg);
@@ -141,8 +141,8 @@ public class FilledTableAnalyzer {
 	 * @param cellBbox
 	 * @return
 	 */
-	private SVGG createAndOutputRowspanCountForSpanningRow(Real2Range cellBbox) {
-		SVGG g = new SVGG();
+	private SVGElement createAndOutputRowspanCountForSpanningRow(Real2Range cellBbox) {
+		SVGElement g = new SVGG();
 		IntRange yrange = new IntRange(cellBbox.getYRange());
 		int rowspans = createSpanCounts(yrange, rowYTickMarkList);
 		if (rowspans > 1) {
@@ -159,8 +159,8 @@ public class FilledTableAnalyzer {
 	 * @return
 	 */
 
-	private SVGG createAndOutputColspanCountForSpannningCell(Real2Range cellBbox) {
-		SVGG g = new SVGG();
+	private SVGElement createAndOutputColspanCountForSpannningCell(Real2Range cellBbox) {
+		SVGElement g = new SVGG();
 		IntRange xrange = new IntRange(cellBbox.getXRange());
 		int colspans = createSpanCounts(xrange, colXTickMarkList);
 		if (colspans > 1) {
@@ -172,8 +172,8 @@ public class FilledTableAnalyzer {
 	}
 
 
-	private SVGG drawVerticalTicksForColumns() {
-		SVGG g = new SVGG();
+	private SVGElement drawVerticalTicksForColumns() {
+		SVGElement g = new SVGG();
 		for (Integer jcol : colXTickMarkList) {
 			SVGLine line = new SVGLine(new Real2(jcol, YLINE_MIN), new Real2(jcol, YLINE_MAX));
 			line.setCSSStyle(colTickMarkCss);
@@ -182,8 +182,8 @@ public class FilledTableAnalyzer {
 		return g;
 	}
 
-	private SVGG drawHorizontalTicksForRows() {
-		SVGG g = new SVGG();
+	private SVGElement drawHorizontalTicksForRows() {
+		SVGElement g = new SVGG();
 		for (Integer irow : rowYTickMarkList) {
 			SVGLine line = new SVGLine(new Real2(XLINE_MIN, irow), new Real2(XLINE_MAX, irow));
 			line.setCSSStyle(rowTickMarkCss);

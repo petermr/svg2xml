@@ -3,7 +3,7 @@ package org.xmlcml.svg2xml.pdf;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.xmlcml.graphics.svg.SVGG;
+import org.xmlcml.graphics.svg.SVGElement;
 
 public class ChunkId implements Comparable<ChunkId> {
 
@@ -102,7 +102,7 @@ public class ChunkId implements Comparable<ChunkId> {
 		return G+"."+pageNumber+"."+chunkNumber+(subChunkNumber == null ? "" : "."+subChunkNumber);
 	}
 
-	public static ChunkId createChunkId(SVGG gChunk) {
+	public static ChunkId createChunkId(SVGElement gChunk) {
 		return null;
 	}
 }

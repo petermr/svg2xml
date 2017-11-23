@@ -55,7 +55,7 @@ public class RotateTest {
 	public void testRotatedTableText() {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/page4Clipped.svg");
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
-		SVGG rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
+		SVGElement rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
 		// This is text only
 		SVGSVG.wrapAndWriteAsSVG(rotatedVerticalText, new File(SVG2XMLFixtures.TARGET, "rotate/page4Clipped.svg"), 900, 800);
 		

@@ -332,7 +332,7 @@ public class SVG2XMLFixtures {
 	 * @return
 	 */
 	public static SVGSVG getSVGPageFromPDF(File file, int page) {
-		PDF2SVGConverter converter = new PDF2SVGConverter();
+		PDF2SVGXXConverter converter = new PDF2SVGXXConverter();
 		converter.run("-outdir target "+file);
 		LOG.warn("PDF2SVGConverter shorted out");
 		SVGSVG svgPage = (page < 1 || page > converter.getPageList().size() ? null : converter.getPageList().get(page - 1));
