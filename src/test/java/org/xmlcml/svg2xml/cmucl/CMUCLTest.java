@@ -119,7 +119,11 @@ public class CMUCLTest {
 	public void testAllTables() {
 		File[] dirs = CMUCL0.listFiles();
 		for (File dir : dirs) {
-			extractTables(dir.getName());
+			try {
+				extractTables(dir.getName());
+			} catch (NullPointerException e) {
+				LOG.error(dir+" NPE: "+e.getMessage());
+			}
 		}
 	}
 

@@ -1,6 +1,7 @@
 package org.xmlcml.svg2xml;
 
 import java.io.File;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.svg2xml.cmucl.CMUCLTest;
 
 /** dummy class to enable new PDF2SVG to be slotted in.
  * 
@@ -57,7 +57,7 @@ public class PDF2SVGXXConverter {
 					try {
 						FileUtils.moveToDirectory(png, pngDir, true);
 					} catch (Exception e) {
-						CMUCLTest.LOG.error("cannot move file: "+e);
+						LOG.error("cannot move file: "+e);
 					}
 				}
 			}
