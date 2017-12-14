@@ -24,7 +24,7 @@ import org.xmlcml.svg2xml.util.GraphPlot;
  *
  */
 public class TableHeaderSection extends TableSection {
-	private static final String HEADER_BOXES = "header.boxes";
+	static final String HEADER_BOXES = "header.boxes";
 	static final String HEADER_COLUMN_BOXES = "header.columnBoxes";
 	static final Logger LOG = Logger.getLogger(TableHeaderSection.class);
 	static {
@@ -95,14 +95,14 @@ public class TableHeaderSection extends TableSection {
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		SVGElement g = createColumnBoxesAndTransformToOrigin(svgChunk, colors, opacity);
+		SVGG g = createColumnBoxesAndTransformToOrigin(svgChunk, colors, opacity);
 		svgChunk.appendChild(g);
 		g = createHeaderBoxesAndTransformToOrigin(svgChunk, colors, opacity);
 		svgChunk.appendChild(g);
 		return svgChunk;
 	}
 
-	private SVGElement createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_COLUMN_BOXES);
 		if (boundingBox == null) {
@@ -148,7 +148,7 @@ public class TableHeaderSection extends TableSection {
 		return columnGroup;
 	}
 
-	private SVGElement createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(HEADER_BOXES);
 		for (int i = 0; i < headerRowList.size(); i++) {
@@ -156,7 +156,14 @@ public class TableHeaderSection extends TableSection {
 			for (ColumnGroup columnGroup : headerRow.getOrCreateColumnGroupList()) {
 				Real2Range bbox = columnGroup.getBoundingBox();
 				SVGShape plotBox = GraphPlot.createBoxWithFillOpacity(bbox, colors[1], opacity[1]);
-				String title = "HEADERBOX: "+i;
+                                List<Phrase> colGroupPhrases = columnGroup.getPhrases();
+                                String colGroupPhraseString = "";
+                                for (Phrase phrase : colGroupPhrases) {
+                                    colGroupPhraseString += phrase.getPrintableString();
+                                }
+                                
+				String title = "HEADERBOX: "+i+"/"+colGroupPhraseString;
+                                
 				SVGTitle svgTitle = new SVGTitle(title);
 				plotBox.appendChild(svgTitle);
 				g.appendChild(plotBox);

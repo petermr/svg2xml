@@ -8,13 +8,13 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.svg2xml.util.GraphPlot;
 
-/** manages the table header, including trying to sort out the column spanning
+/** manages the table footer
  * 
  * @author pm286
  *
  */
 public class TableFooterSection extends TableSection {
-	private static final String FOOTER_TITLE = "footer.title";
+	static final String FOOTER_TITLE = "footer.title";
 	static final Logger LOG = Logger.getLogger(TableFooterSection.class);
 	static {
 		LOG.setLevel(Level.DEBUG);
@@ -32,12 +32,12 @@ public class TableFooterSection extends TableSection {
 			SVGElement svgChunk,
 			String[] colors,
 			double[] opacity) {
-			SVGElement g = createColumnBoxesAndShiftToOrigin(svgChunk, colors, opacity);
+			SVGG g = createColumnBoxesAndShiftToOrigin(svgChunk, colors, opacity);
 			svgChunk.appendChild(g);
 			return svgChunk;
 	}
 	
-	private SVGElement createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
+	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName(FOOTER_TITLE);
 		if (boundingBox == null) {

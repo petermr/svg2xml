@@ -216,7 +216,7 @@ public class ColumnManager {
 		yPointer++;
 	}
 
-	public SVGElement createCellBoxes(int colno, String[] colors, double[] opacity) {
+	public SVGG createCellBoxes(int colno, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
 		g.setClassName("col"+"."+colno);
 		for (int iPhrase = 0; iPhrase < columnPhrases.size(); iPhrase++) {

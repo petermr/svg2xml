@@ -1,6 +1,8 @@
 package org.xmlcml.svg2xml.table;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.html.HtmlB;
@@ -19,6 +21,9 @@ import nu.xom.Nodes;
 public class TableCaption extends TableChunk {
 
 	private final static Logger LOG = Logger.getLogger(TableCaption.class);
+	
+	public static final Pattern PATTERN = Pattern.compile("^[Tt][Aa][Bb][Ll]?[Ee]?\\s*\\.?\\s*(\\d+).*", Pattern.DOTALL);
+
 	private HtmlCaption caption;
 	
 	public TableCaption(List<? extends SVGElement> elementList) {
@@ -47,14 +52,14 @@ public class TableCaption extends TableChunk {
 
 	public static Integer getNumber(HtmlCaption caption) {
 		Integer number = null;
-//		if (caption != null) {
-//			String value = caption.getValue();
-//			Matcher matcher = TableAnalyzer.PATTERN.matcher(value);
-//			if (matcher.matches()) {
-//				String tableId = matcher.group(1);
-//				number = new Integer(tableId);
-//			}
-//		}
+		if (caption != null) {
+			String value = caption.getValue();
+			Matcher matcher = PATTERN.matcher(value);
+			if (matcher.matches()) {
+				String tableId = matcher.group(1);
+				number = new Integer(tableId);
+			}
+		}
 		return number;
 	}
 

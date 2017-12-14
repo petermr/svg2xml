@@ -2,7 +2,11 @@ package org.xmlcml.svg2xml.table;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,42 +15,38 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
-import org.xmlcml.euclid.Real2;
-import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
-import org.xmlcml.euclid.RealRangeArray;
 import org.xmlcml.euclid.Transform2;
 import org.xmlcml.graphics.html.HtmlBody;
 import org.xmlcml.graphics.html.HtmlCaption;
+import org.xmlcml.graphics.html.HtmlElement;
+import org.xmlcml.graphics.html.HtmlHead;
 import org.xmlcml.graphics.html.HtmlHtml;
 import org.xmlcml.graphics.html.HtmlTable;
+import org.xmlcml.graphics.html.HtmlTbody;
 import org.xmlcml.graphics.html.HtmlTd;
+import org.xmlcml.graphics.html.HtmlTfoot;
 import org.xmlcml.graphics.html.HtmlTh;
+import org.xmlcml.graphics.html.HtmlThead;
 import org.xmlcml.graphics.html.HtmlTr;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGLine;
-import org.xmlcml.graphics.svg.SVGLineList;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGTitle;
-import org.xmlcml.graphics.svg.cache.ComponentCache;
-import org.xmlcml.graphics.svg.cache.ContentBoxCache;
-import org.xmlcml.graphics.svg.cache.LineCache;
-import org.xmlcml.graphics.svg.objects.SVGContentBox;
-import org.xmlcml.graphics.svg.rule.GenericRow.RowType;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
 import org.xmlcml.graphics.svg.text.build.PhraseChunk;
-import org.xmlcml.graphics.svg.text.build.TextChunk;
+import org.xmlcml.graphics.svg.text.build.TextChunkList;
+import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
-import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 import org.xmlcml.svg2xml.util.GraphPlot;
 import org.xmlcml.xml.XMLUtil;
+
+import nu.xom.Attribute;
 
 /** IMPORTANT2017 creates structured content from SVGElement
  * uses caches to extract high level obecjts and then create tables
@@ -71,12 +71,18 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		LOG.setLevel(Level.DEBUG);
 	}
 	
-	public final static Pattern TABLE_PATTERN_CONTINUED = Pattern.compile("(.*\\(?[Cc]ont(inued)?\\.?\\)?)");
+	public final static Pattern TABLE_N = Pattern.compile("(T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(?:\\(cont(inued)?\\.?\\))?\\s*)");
+	private static final Pattern HEADERBOX = Pattern.compile("HEADERBOX: (\\d+)");
+        /// TEST
+    private static final String MINUS_EQUIVALENTS_STRING = "\u2212\\-";
+    private static final Pattern COMPOUND_COL_NUMS = Pattern.compile("(["+MINUS_EQUIVALENTS_STRING+"\\+]?\\d*\\.?\\d+"+"|"+
+                                                                          "["+MINUS_EQUIVALENTS_STRING+"\\+]?\\d+)");
+    public final static Pattern TABLE_PATTERN_CONTINUED = Pattern.compile("(.*\\(?[Cc]ont(inued)?\\.?\\)?)");
 	public final static Pattern TABLE_TITLE_PATTERN_SIMPLE = Pattern.compile("(T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+\\s*)");
 	public final static Pattern TABLE_TITLE_PATTERN_CONTINUED = Pattern.compile("(T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(\\(?[Cc]ont(inued)?\\.?\\)?)\\s*)");
-	public final static Pattern TABLE_TITLE_PATTERN_ANY = Pattern.compile("(.*T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(?:\\([Cc]ont(inued)?\\.?\\))?\\s*.*)");
-	
-	private static final String TABLE_FOOTER = "table.footer";
+	public final static Pattern TABLE_TITLE_PATTERN_ANY = Pattern.compile("(.*T[Aa][Bb][Ll][Ee]\\s+\\d+\\.?\\s+(?:\\([Cc]ont(inued)?\\.?\\))?\\s*.*)");        
+
+    private static final String TABLE_FOOTER = "table.footer";
 	private static final String TABLE_BODY = "table.body";
 	private static final String TABLE_HEADER = "table.header";
 	private static final String TABLE_TITLE = "table.title";
@@ -84,31 +90,76 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	private static final String DOT_PNG = ".png";
 	private static final String CELL_FULL = "cell";
 	private static final String CELL_EMPTY = "empty";
-	private static final double LINE_BOX_WIDTH = 0.5;
-
+    private static final String DATA_CELL_MIN_X = "data-cellminx";
+    private static final String DATA_CELL_MAX_X = "data-cellmaxx";
+    private static final String DATA_CELL_MIN_Y = "data-cellminy";
+    private static final String DATA_CELL_MAX_Y = "data-cellmaxy";
+    private static final String DATA_ROW_MIN_X = "data-rowminx";
+    private static final String DATA_ROW_MIN_Y = "data-rowminy";
+    
+    private static final String DATA_ATTR_ROLE = "data-role";
+    private static final String ROLE_OBSERVATION_LABEL = "obslabel";
+    private static final String ROLE_OBSERVATION = "obs";
+    private static final String DATA_ATTR_TBL_SEG = "data-tblseg";
+    private static final String TBL_SEG_SUBTABLE_TITLE = "subtabletitle";
+    private static final String COLSPAN = "colspan";
+    private static final String SUBTABLE = "subtable";
+    private static final String START_HDR_COL = "data-startheadercol";
+    private static final String END_HDR_COL = "data-endheadercol";
+    private static final String SUPPLEMENTARY_OBS = "supp-obs";
+    private static final String SUPPLEMENTARY_HEADER = "supp-header";
+                 
+	private List<HorizontalRule> rulerList;
 	private List<TableSection> tableSectionList;
 	private IntRangeArray rangesArray;
 	private TableTitle tableTitle;
-	private boolean continued = false;
+	private boolean addIndents;
+    private boolean treatIndentsAsSubtables = true;
 	private TableTitleSection tableTitleSection;
 	private TableHeaderSection tableHeaderSection;
 	private TableBodySection tableBodySection;
 	private TableFooterSection tableFooterSection;
+    private HtmlThead tableHtmlThead;
+    private HtmlTfoot tableHtmlTfoot;
 	private SVGElement annotatedSvgChunk;
+    private boolean tableHasCompoundColumns = false;
 	private double rowDelta = 2.5; //large to manage suscripts
-	private ContentBoxCache contentBoxCache;
-	private int titleSectionIndex;
-	private List<HorizontalRule> firstFullRuleList;
-	private SVGG contentBoxGridG;
-	private File contentBoxGridFile;
-//	private ComponentCache ownerComponentCache;
-	private RowManager rowManager;
+    private final double xEpsilon = 0.1;
+    private final double colHeaderGroupXEpsilon = 10; // No smaller value works, especially for finding the end of the spanning header
+    private final DecimalFormat decFormat = new DecimalFormat("0.000"); 
+    private int headerOffset = 0; // Number of empty cells at start of header rows
+
 	
 	public TableContentCreator() {
 	}
 
-	private static List<String> findTitles(Pattern titlePattern, String value) {
-		Matcher matcher = titlePattern.matcher(value);
+	/** scans whole file for all tableTitles.
+	 * 
+	 * @param svgChunkFiles
+	 * @return list of titles;
+	 */
+	public List<TableTitle> findTableTitles(List<File> svgChunkFiles) {
+		List<TableTitle> tableTitleList = new ArrayList<TableTitle>();
+		for (File svgChunkFile : svgChunkFiles) {
+			findTableTitle(tableTitleList, svgChunkFile);
+		}
+		return tableTitleList;
+	}
+
+	private void findTableTitle(List<TableTitle> tableTitleList, File svgChunkFile) {
+		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(svgChunkFile);
+		TextChunkList phraseListList = textStructurer.getTextChunkList();
+		phraseListList.format(3);
+		String value = phraseListList.getStringValue();
+		List<String> titleList = findTitlesWithPattern(value);
+		for (int i = 0; i < titleList.size(); i++) {
+			TableTitle tableTitle = new TableTitle(titleList.get(i), svgChunkFile.getName());
+			tableTitleList.add(tableTitle);
+		}
+	}
+
+	private List<String> findTitlesWithPattern(String value) {
+		Matcher matcher = TABLE_N.matcher(value);
 		List<String> titleList = new ArrayList<String>();
 		int start = 0;
 		while (matcher.find(start)) {
@@ -123,7 +174,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return titleList;
 	}
 
-	private int search(String title) {
+	public int search(String title) {
 		int titleIndex = -1;
 		for (int i = 0; i < horizontalList.size(); i++) {
 			HorizontalElement horizontalElement = horizontalList.get(i);
@@ -140,183 +191,60 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return titleIndex;
 	}
 
-//	// FIXME not used
-//	private HorizontalRule getNextRuler(int irow) {
-//		HorizontalRule nextRuler = null;
-//		getFullRulers(irow);
-//		return nextRuler;
-//	}
+	public HorizontalRule getNextRuler(int irow) {
+		HorizontalRule nextRuler = null;
+		getFullRulers(irow);
+		return nextRuler;
+	}
 
 	/** assume following ruler is representative of this table and find all subsequent full rulers.
 	 * 
 	 * @param startRow
 	 * @return
 	 */
-	private List<HorizontalRule> getFullRules(int startRow) {
-		HorizontalRule firstRule = null;
+	public List<HorizontalRule> getFullRulers(int startRow) {
+		HorizontalRule firstRuler = null;
 		IntRange firstRange = null;
-		List<HorizontalRule> followingRuleList = new ArrayList<HorizontalRule>();
+		List<HorizontalRule> followingRulerList = new ArrayList<HorizontalRule>();
 		IntRange previousRange = null;
 		for (int i = startRow; i < horizontalList.size(); i++) {
 			HorizontalElement horizontalElement = horizontalList.get(i);
 			if (horizontalElement instanceof HorizontalRule) {
-				HorizontalRule thisRule = (HorizontalRule) horizontalElement;
-				IntRange thisRange = new IntRange(thisRule.getBoundingBox().getXRange());
-				if (firstRule == null) {
-					firstRule = thisRule;
+				HorizontalRule thisRuler = (HorizontalRule) horizontalElement;
+				IntRange thisRange = new IntRange(thisRuler.getBoundingBox().getXRange());
+				if (firstRuler == null) {
+					firstRuler = thisRuler;
 					firstRange = thisRange;
 				} else if (!thisRange.isEqualTo(firstRange)) {
 					LOG.trace("skipped range: "+thisRange+" vs "+firstRange);
 					continue;
 				}
-				followingRuleList.add(thisRule);
+				followingRulerList.add(thisRuler);
 			}
 		}
-		return followingRuleList;
+		return followingRulerList;
 	}
 
-//	private void createSectionsAndRangesArray() {
-//		List<HorizontalElement> horizontalList = getHorizontalList();
-//		int iRow = tableTitle == null ? 0 : search(tableTitle.getTitle());
-////		mergeOverlappingRulersWithSameYInHorizontalElements(iRow);
-//		if (iRow == -1) {
-//			LOG.error("Cannot find title: "+tableTitle +"; MAYBE CHANGE LOGIC");
-//			// CHANGE LOGIC
-//		} else {
-//			List<HorizontalRule> fullRulerList = getFullRules(iRow);
-//			tableSectionList = new ArrayList<TableSection>();
-//			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
-//			if (tableSpan != null) {
-//				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
-//				this.createPhraseRangesArray();
-//				analyzeRangesAndSections();
-//
-//			}
-//		}
-//	}
-	
-	private void createSectionsAndRangesArray() {
-		removeBoundingRules(horizontalList, StartEnd.START);
-		removeBoundingRules(horizontalList, StartEnd.END);
-//		makeCaches(svgChunk); // already done
-		LineCache lineCache = componentCache.getOrCreateLineCache();
-		ContentBoxCache contentBoxCache = componentCache.getOrCreateContentBoxCache();
-		contentBoxGridG = new SVGG();
-		contentBoxGridG.appendChild(contentBoxCache.getOrCreateConvertedSVGElement());
-		contentBoxGridG.appendChild(contentBoxCache.getOrCreateContentBoxGrid().getOrCreateSVGElement());
-		String sig = PageLayoutAnalyzer.createSig(horizontalList);
-		tableSectionList = new ArrayList<TableSection>();
-		TableSection tableSection = new TableSection();
-		
-		rowManager = new RowManager();
-		
-		List<SVGContentBox> contentBoxes = contentBoxCache.getOrCreateContentBoxList();
-		LOG.debug("contentBox: "+contentBoxes.size());
-		for (SVGContentBox contentBox : contentBoxes) {
-			rowManager.addContentBox(contentBox);
-		}
-		List<Real2Range> contentGridPanelBoxes = contentBoxCache.getOrCreateContentBoxGrid().getBboxList();
-		LOG.debug("contentGrid: "+contentGridPanelBoxes.size());
-		for (Real2Range contentGridPanelBox : contentGridPanelBoxes) {
-			RealRange yRange1 = contentGridPanelBox.getRealRange(Direction.VERTICAL);
-			rowManager.addContentGridPanelBox(contentGridPanelBox);
-		}
-		SVGLineList longHorizontalRuleList = lineCache.getOrCreateLongHorizontalLineList();
-		rowManager.addHorizontalRules(longHorizontalRuleList, RowType.LONG_HORIZONTAL);
-		// I think the short Horizontal all get turned into siblings
-		SVGLineList shortHorizontalRuleList = lineCache.getOrCreateShortHorizontalLineList();
-		rowManager.addHorizontalRules(shortHorizontalRuleList, RowType.SHORT_HORIZONTAL);
-		List<SVGLineList> horizontalSiblingsList = lineCache.getHorizontalSiblingsList();
-		rowManager.addHorizontalSiblingsList(horizontalSiblingsList);
-// phrases		
-		rowManager.addPhrases(this);
-		rowManager.sortAndAddBoxContent();
-		LOG.debug("RowManager "+rowManager.toString());
-		
-		getTitleSectionIndex();
-		// the L refers to lines (now H) // FIXME
-		
-		String fullRules = sig.replaceAll("[^L]", "");
-		LOG.debug("sections "+tableSectionList.size()+"; title => "+titleSectionIndex+"; sig: " + sig +"; fullRules: "+ fullRules.length());
-		firstFullRuleList = getFullRules(0);
-		LOG.debug("fullRule "+firstFullRuleList.size()+"; ");
-
-		IntRange tableSpan = firstFullRuleList.size() == 0 ? null : firstFullRuleList.get(0).getIntRange().getRangeExtendedBy(20, 20);
-		if (tableSpan != null) {
-			this.createSections(horizontalList, 0, firstFullRuleList, tableSpan);
-			this.createPhraseRangesArray();
-			analyzeRangesAndSections();
-		}
-	}
-
-	private void addToRangeArray(RealRangeArray yRangeArray, SVGLineList ruleList, String type) {
-		for (SVGLine line : ruleList) {
-			Real2Range lineBox = line.getBoundingBox().
-					getReal2RangeExtendedInY(LINE_BOX_WIDTH, LINE_BOX_WIDTH);
-			RealRange yRange = lineBox.getYRange();
-			addRange(yRangeArray, type, yRange, "");
-		}
-	}
-
-	private void addRange(RealRangeArray yRangeArray, String type, RealRange yRange, String msg) {
-		if (yRangeArray.includes(yRange)) {
-			LOG.debug("OMITTED " + type+": "+msg);
+	public void createSectionsAndRangesArray() {
+		List<HorizontalElement> horizontalList = getHorizontalList();
+		int iRow = tableTitle == null ? 0 : search(tableTitle.getTitle());
+//		FIXME
+//		mergeOverlappingRulersWithSameYInHorizontalElements(iRow);
+		if (iRow == -1) {
+			LOG.error("Cannot find title: "+tableTitle);
 		} else {
-			yRangeArray.add(yRange);
-		}
-	}
+			List<HorizontalRule> fullRulerList = getFullRulers(iRow);
+			tableSectionList = new ArrayList<TableSection>();
+			IntRange tableSpan = fullRulerList.size() == 0 ? null : fullRulerList.get(0).getIntRange().getRangeExtendedBy(20, 20);
+			if (tableSpan != null) {
+				this.createSections(horizontalList, iRow, fullRulerList, tableSpan);
+				this.createPhraseRangesArray();
+				analyzeRangesAndSections();
 
-	private void addContentBoxGridPanels(RealRangeArray yRangeArray) {
-		contentBoxCache = componentCache.getOrCreateContentBoxCache();
-		List<Real2Range> contentGridPanels = contentBoxCache.getOrCreateContentBoxGrid().getBboxList();
-		LOG.debug("contentGrid: "+contentGridPanels.size());
-		for (Real2Range contentGridPanel : contentGridPanels) {
-			RealRange yRange = contentGridPanel.getRealRange(Direction.VERTICAL);
-			yRangeArray.add(yRange);
-		}
-	}
-
-	/** finds section containing the string matching TABLE_PATTERN regex
-	 * 
-	 * @return index of section -1 if not found (THBF => 0, HBTF => 2, etc.) 
-	 */
-	private int getTitleSectionIndex() {
-		titleSectionIndex = -1;
-		for (int i = 0; i < tableSectionList.size(); i++) {
-			TableSection tableSection1 = tableSectionList.get(i);
-			if (tableSection1.contains(TABLE_PATTERN)) {
-				titleSectionIndex = i;
-			}
-			LOG.trace(tableSection1.debugPhrases()+"\n===========================\n");
-		}
-		return titleSectionIndex;
-	}
-
-	private void makeCaches(SVGElement svgElement) {
-		componentCache = new ComponentCache();
-		componentCache.readGraphicsComponentsAndMakeCaches(svgElement);
-//		RectCache rectCache = ownerComponentCache.getOrCreateRectCache();
-//		ownerComponentCache.removeBorderingRects();
-//		contentBoxCache = ContentBoxCache.createCache(rectCache, textChunkCache);
-//		contentBoxCache.getOrCreateConvertedSVGElement();
-//		contentBoxCache.getOrCreateContentBoxGrid();
-//		ownerComponentCache.addContentBoxCache(contentBoxCache);
-	}
-
-	private void removeBoundingRules(List<HorizontalElement> horizontalList, StartEnd startEnd) {
-		while (horizontalList.size() > 0) {
-			int ielem = StartEnd.START.equals(startEnd) ? 0 : horizontalList.size() - 1;
-			HorizontalElement helem = horizontalList.get(ielem);
-			if (helem instanceof HorizontalRule) {
-				LOG.trace("removed: "+horizontalList.get(ielem));
-				horizontalList.remove(ielem);
-			} else {
-				LOG.trace("FINISH");
-				break;
 			}
 		}
 	}
-
+	
 	private IntRangeArray createPhraseRangesArray() {
 		rangesArray = new IntRangeArray();
 		int length = 0;
@@ -340,7 +268,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		} else if (lastSectionString.startsWith("Table")) {
 			LOG.trace("title last "+lastSectionString);
 		} else {
-			LOG.info("***** NO TITLE SECTION ****\n"+firstSectionString+"\n"+lastSectionString);
+			LOG.debug("***** NO TITLE SECTION ****");//\n"+firstSectionString+"\n"+lastSectionString);
 		}
 		if (rangesArray.size() == 4) {
 			// the commonest
@@ -352,40 +280,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				LOG.trace("small body: "+rangesArray);
 			}
 		} else {
-			LOG.trace("Ranges: "+rangesArray.size()+"; "+rangesArray);
+			LOG.debug("Ranges: "+rangesArray.size()+"; "+rangesArray);
 		}
 
 	}
 
-	private void createSectionsOld(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRuleList,
-			IntRange tableSpan) {
-		TableSection tableSection = null;
-		LOG.trace("start at row: "+iRow+"; "+horizontalList.get(0));
-		for (int j = iRow; j < horizontalList.size(); j++) {
-			HorizontalElement element = horizontalList.get(j);
-			HorizontalRule rule = (element instanceof HorizontalRule) ? 
-					(HorizontalRule) element : null;
-			if (tableSection == null || fullRuleList.contains(rule)) {
-				tableSection = new TableSection(TableSectionType.OTHER);
-				tableSectionList.add(tableSection);
-			}
-			if (element instanceof PhraseChunk) {
-				PhraseChunk newPhraseList = (PhraseChunk) element;
-				if (newPhraseList.size() > 0) {
-					tableSection.add(newPhraseList);
-				}
-				
-			} else if (element instanceof HorizontalRule) {
-				// dont add Rule if first element (e.g sectioning rule)
-				if (tableSection.getHorizontalElementList().size() > 0) {
-					tableSection.add(element);
-				}
-			}
-		}
-		LOG.debug("Created but not analyzed table sections : "+tableSectionList.size());
-	}
-
-	/** used in transition between refactors */
 	private void createSections(List<HorizontalElement> horizontalList, int iRow, List<HorizontalRule> fullRulerList,
 			IntRange tableSpan) {
 		TableSection tableSection = null;
@@ -399,9 +298,9 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				tableSectionList.add(tableSection);
 			}
 			if (element instanceof PhraseChunk) {
-				PhraseChunk newPhraseList = (PhraseChunk) element;
-				if (newPhraseList.size() > 0) {
-					tableSection.add(newPhraseList);
+				PhraseChunk newPhraseChunk = (PhraseChunk) element;
+				if (newPhraseChunk.size() > 0) {
+					tableSection.add(newPhraseChunk);
 				}
 				
 			} else if (element instanceof HorizontalRule) {
@@ -411,30 +310,19 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				}
 			}
 		}
-		LOG.debug("Created but not analyzed table sections NEW: "+tableSectionList.size());
 	}
 
-	// GETTER
 	public IntRangeArray getRangesArray() {
 		return rangesArray;
 	}
 
-	// GETTER
 	public List<TableSection> getTableSectionList() {
 		return tableSectionList;
 	}
 
-	@Override
-	public void createContent(File inputFile) {
-		super.createContent(inputFile);
-		createSectionsAndRangesArray();
-	}
 	public HtmlHtml createHTMLFromSVG(File inputFile) {
 		createContent(inputFile);
-		analyzeSections();
-		if (contentBoxGridFile != null) {
-			SVGSVG.wrapAndWriteAsSVG(contentBoxGridG, contentBoxGridFile);
-		}
+		createSectionsAndRangesArray();
 		HtmlHtml html = tableStructurer.createHtmlWithTable(tableSectionList, tableTitle);
 		try {
 			XMLUtil.debug(html, new File("target/table/debug/sections.html"), 1);
@@ -443,56 +331,12 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return html;
 	}
 
-	private void analyzeSections() {
-		LOG.debug("ANALYZE SECTIONS NEW: "+tableSectionList.size());
-		findTitleSections();
-		LOG.debug("Other sects: ");
-		for (int isect = 0; isect < tableSectionList.size(); isect++) {
-			TableSection tableSection = tableSectionList.get(isect);
-			if (!tableSection.isTitleOrContinued()) {
-				TextChunk phraseListList = tableSection.getOrCreatePhraseListList();
-				LOG.debug("PHRASES: "+phraseListList.size()+"; font "+phraseListList.getFontFamily()+"; "+phraseListList.getFontSize());
-				
-			}
-		}
-		
-	}
-
-	private void findTitleSections() {
-		tableTitle = null;
-		continued = false;
-		for (int isect = 0; isect < tableSectionList.size(); isect++) {
-			TableSection tableSection = tableSectionList.get(isect);
-//			LOG.debug("Table section: "+tableSection);
-			String title = tableSection.matchAgainstIndividualPhrases(TABLE_TITLE_PATTERN_ANY);
-			if (title != null) {
-				tableSection.setType(TableSectionType.TITLE);
-				tableTitle = new TableTitle(title);
-				LOG.debug("**TITLE: "+title);
-			}
-			// this allows for it to be on separate line
-			continued = tableSection.matchAgainstIndividualPhrases(TABLE_PATTERN_CONTINUED) != null;
-			if (continued) {
-				tableSection.setType(TableSectionType.TITLE_CONT);
-				LOG.debug("**CONT: "+title);
-			}
-			if (title != null || continued) {
-				if (isect == 0) {
-					// ok
-				} else if (isect == tableSectionList.size() - 1) {
-					LOG.debug("Table at foot");
-				} else {
-					LOG.warn("Table in strange place: section "+isect);
-				}
-				continue;
-			} else {
-				// skip non titles
-			}
-		}
-	}
-
-	private void setTableTitle(TableTitle tableTitle) {
+	public void setTableTitle(TableTitle tableTitle) {
 		this.tableTitle = tableTitle;
+	}
+
+	public void setAddIndents(boolean add) {
+		this.addIndents = add;
 	}
 
 	/** FIXME.
@@ -508,7 +352,13 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		SVGElement markedChunk = getOrCreateTextStructurer().getSVGChunk();
+//		SVGElement markedChunk = this.getTextStructurer().getSVGChunk();
+		
+		LOG.warn("Check SVGChunk after refactor");
+		SVGElement markedChunk = this.annotatedSvgChunk;
+		if (markedChunk == null) {
+			throw new RuntimeException("Missing markedChunk - change logic");
+		}
 		SVGG g = new SVGG();
 		g.setClassName("sections");
 		markedChunk.appendChild(g);
@@ -535,7 +385,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 	public static void shiftToOrigin(SVGElement markedChunk, SVGG g) {
-		SVGElement gg = null;
+		SVGG gg = null;
 		SVGElement svgElement =  (SVGElement) markedChunk.getChildElements().get(0);
 		if (svgElement instanceof SVGG) {
 			SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
@@ -594,50 +444,21 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return annotateAreasInSVGChunk();
 	}
 
-	
 	public SVGElement annotateAreasInSVGChunk() {
 		SVGElement svgChunk = createMarkedSections(
-				new String[] {TITLE_SECT_FILL,
-						HEADER_SECT_FILL,
-						BODY_SECT_FILL,
-						FOOTER_SECT_FILL},
+				new String[] {"yellow", "red", "cyan", "blue"},
 				new double[] {0.2, 0.2, 0.2, 0.2}
 			);
-		svgChunk = annotateAreasInTitleSection(svgChunk);
-		svgChunk = annotateAreasInHeaderSection(svgChunk);
-		svgChunk = annotateAreasInBodySection(svgChunk);
-		svgChunk = annotateAreasInFooterSection(svgChunk);
-		return svgChunk;
-	}
-
-	private SVGElement annotateAreasInFooterSection(SVGElement svgChunk) {
-		TableFooterSection tableFooter = getOrCreateTableFooterSection();
-		if (tableFooter != null) {
-			svgChunk = tableFooter.createMarkedContent(
-					(SVGElement) svgChunk.copy(),
-					new String[] {"blue", "blue"}, 
-					new double[] {0.2, 0.2}
-					);
-		}
-		return svgChunk;
-	}
-
-	private SVGElement annotateAreasInBodySection(SVGElement svgChunk) {
-		TableBodySection tableBody = getOrCreateTableBodySection();
-		if (tableBody == null) {
-			LOG.trace("no table body");
+		TableTitleSection tableTitle = getOrCreateTableTitleSection();
+		if (tableTitle == null) {
+			LOG.warn("no table title");
 		} else {
-			tableBody.createHeaderRowsAndColumnGroups();
-			svgChunk = tableBody.createMarkedSections(
+			svgChunk = tableTitle.createMarkedContent(
 					(SVGElement) svgChunk.copy(),
-					new String[] {"yellow", "red"}, 
+					new String[] {"yellow", "yellow"}, 
 					new double[] {0.2, 0.2}
 					);
 		}
-		return svgChunk;
-	}
-
-	private SVGElement annotateAreasInHeaderSection(SVGElement svgChunk) {
 		TableHeaderSection tableHeader = getOrCreateTableHeaderSection();
 		if (tableHeader == null) {
 			LOG.warn("no table header");
@@ -649,17 +470,22 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 					new double[] {0.2, 0.2}
 					);
 		}
-		return svgChunk;
-	}
-
-	private SVGElement annotateAreasInTitleSection(SVGElement svgChunk) {
-		TableTitleSection tableTitle = getOrCreateTableTitleSection();
-		if (tableTitle == null) {
-			LOG.warn("no table title");
+		TableBodySection tableBody = getOrCreateTableBodySection();
+		if (tableBody == null) {
+			LOG.trace("no table body");
 		} else {
-			svgChunk = tableTitle.createMarkedContent(
+			tableBody.createHeaderRowsAndColumnGroups();
+			svgChunk = tableBody.createMarkedSections(
 					(SVGElement) svgChunk.copy(),
-					new String[] {"yellow", "yellow"}, 
+					new String[] {"yellow", "red"}, 
+					new double[] {0.2, 0.2}
+					);
+		}
+		TableFooterSection tableFooter = getOrCreateTableFooterSection();
+		if (tableFooter != null) {
+			svgChunk = tableFooter.createMarkedContent(
+					(SVGElement) svgChunk.copy(),
+					new String[] {"blue", "blue"}, 
 					new double[] {0.2, 0.2}
 					);
 		}
@@ -669,7 +495,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	public void markupAndOutputTable(File inputFile, File outDir) {
 		String outRoot = inputFile.getName();
 		outRoot = outRoot.substring(0, outRoot.length() - DOT_PNG.length());
-		LOG.debug("reading SVG "+inputFile);
+		LOG.trace("reading SVG "+inputFile);
 		annotatedSvgChunk = annotateAreas(inputFile);
 		File outputFile = new File(outDir, outRoot+DOT_ANNOT_SVG);
 		LOG.trace("writing annotated SVG "+outputFile);
@@ -683,8 +509,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	 * @throws IOException 
 	 */
 	public void createHTML(File annotSvgFile, File outDir) throws IOException {
+		LOG.debug("reading SVG from "+annotSvgFile);
 		HtmlHtml html = createHtmlFromSVG();
 		File outfile = new File(outDir, annotSvgFile.getName()+".html");
+		LOG.debug("writing HTML to : "+outfile);
 		XMLUtil.debug(html, outfile, 1);
 		
 		
@@ -692,46 +520,252 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	public HtmlHtml createHtmlFromSVG() {
 		HtmlHtml html = new HtmlHtml();
-		HtmlBody body = new HtmlBody();
-		html.appendChild(body);
+                // Use this API to ensure top-level structures are added
+                // to the output XML tree / HTML DOM
+		HtmlBody body = html.getOrCreateBody();      
+                HtmlHead htmlHead = html.getOrCreateHead();
+                htmlHead.addUTF8Charset();  
 		HtmlTable table = new HtmlTable();
 		table.setClassAttribute("table");
 		body.appendChild(table);
 		
-		addCaption(annotatedSvgChunk, table);
+		
 		int bodyCols = getGElements(annotatedSvgChunk).size();
-		addHeader(annotatedSvgChunk, table, bodyCols);
-		addBody(annotatedSvgChunk, table);
+                
+                if (bodyCols > 0) {
+                    addCaption(annotatedSvgChunk, table);
+                    addHeader(annotatedSvgChunk, table, bodyCols);
+                    addBody(annotatedSvgChunk, table);
+                    addFooter(annotatedSvgChunk, table, bodyCols);
+                }
+               
 		return html;
 	}
 
 	private void addHeader(SVGElement svgElement, HtmlTable table, int bodyCols) {
-		int cols = 0;
+                int cols = 0;
 		HtmlTr tr = new HtmlTr();
-		table.appendChild(tr);
+                tr.addAttribute(new Attribute("data-tblrole", "columnheaderrow"));
+
 		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
 			cols = addHeaderBoxes(tr, g, bodyCols);
 		}
+                
+                HtmlThead htmlThead = new HtmlThead();
+                SVGElement gColGroups = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_BOXES+"']");
+		if (gColGroups != null) {
+                    addColumnGroups(htmlThead, gColGroups, g, bodyCols - cols);
+		}
+               
+                htmlThead.appendChild(tr);
+                
+                this.tableHtmlThead = htmlThead;
+                table.appendChild(htmlThead);
 	}
+        
+        /**
+         * Take a flat list of column group headers and use the annotated index to 
+         * separate them into the correct set of rows.
+         * @param rects
+         * @return 
+         */
+        private List<List<SVGRect>> createColumnGroupRows(List<SVGRect> headerBoxRects) {
+            List<List<SVGRect>> colGroupHeaderRows = new ArrayList<List<SVGRect>>();
+            
+            if (headerBoxRects != null && headerBoxRects.size() > 0) {
+                for (SVGRect rect : headerBoxRects) {
+                    // Allocate rects to rows according to the numbering in the annot
+                    String title = rect.getValue();
+                    Matcher matcher = HEADERBOX.matcher(title);
+                    if (matcher.find())
+                    {
+                        String find = matcher.group(1);
+                        Integer colGroupRow = Integer.parseInt(find);
+                        // Add to the array of rects
+                        if (colGroupRow > colGroupHeaderRows.size() - 1) {
+                            List<SVGRect> colGroupHeaderRow = new ArrayList<SVGRect>();
+                            colGroupHeaderRows.add(colGroupHeaderRow);
+                        }
+                        
+                        colGroupHeaderRows.get(colGroupRow).add(rect);
+                    }
+                }
+            }   
+            
+            return colGroupHeaderRows;
+        } 
+        
+        private void addColumnGroups(HtmlThead htmlHead, SVGElement g, SVGElement hdrG, int bodyDelta) { 
+            List<SVGRect> columnGroupRects = SVGRect.extractSelfAndDescendantRects(g);
+            List<List<SVGRect>> cgRows = createColumnGroupRows(columnGroupRects);
+            HtmlTr tr;
+            
+            List<SVGRect> hdrRects = SVGRect.extractSelfAndDescendantRects(hdrG);
 
+            // Iterate over header columns
+            // and match left-hand of colgroup to underlying
+            // grid, filling with empty th as needed
+            HtmlTh th = new HtmlTh();
+            
+            for (int cgr = 0; cgr < cgRows.size(); cgr++) {
+                List<SVGRect> rects = cgRows.get(cgr);
+                tr = new HtmlTr();
+                int cgIndex = 0;
+                int colspan = 0;
+                int colSpanStartCol = 0;
+                int colSpanEndCol = 0;
+                boolean getNextColGroupDetails = false;
+                
+                SVGRect rect = rects.get(cgIndex);
+                String title = rect.getValue();   // messy but has to be rewritten
+                title = title.replace(" //", "");
+                double colGroupMinX = rect.getBoundingBox().getXMin();
+                double colGroupMaxX = rect.getBoundingBox().getXMax();
+                RealRange colGroupRange = rect.getRealRange(Direction.HORIZONTAL);
+                 
+                for (int i = 0; i < bodyDelta; i++) {
+                    th.setClassAttribute(CELL_EMPTY);
+                    HtmlTh thDeepCopy = (HtmlTh) (HtmlTh.create(th));
+                    tr.appendChild(thDeepCopy);
+                }
+                
+                int i = 0;
+                while (i < hdrRects.size()) {
+                    if (cgIndex > rects.size() - 1) {
+                        // No more col groups -- fill with empty cells
+                        th.setClassAttribute(CELL_EMPTY);
+                        HtmlTh thDeepCopy = (HtmlTh) (HtmlTh.create(th));
+                        tr.appendChild(thDeepCopy);
+                        th = new HtmlTh();
+                        i++;
+                        continue;
+                    }
+                                             
+                    // Get details of next spanning column group
+                    if (getNextColGroupDetails) {
+                        rect = rects.get(cgIndex);
+                        title = rect.getValue();   // messy but has to be rewritten
+                        title.replace(" //", "");
+                        colGroupMinX = rect.getBoundingBox().getXMin();
+                        colGroupMaxX = rect.getBoundingBox().getXMax();
+                        colGroupRange = rect.getRealRange(Direction.HORIZONTAL);
+                        getNextColGroupDetails = false;
+                    }
+                    
+                    SVGRect headerCol = hdrRects.get(i);
+                    double headerColMinX = headerCol.getBoundingBox().getXMin();
+                    double headerColMaxX = headerCol.getBoundingBox().getXMax();
+                    RealRange headerColRange = headerCol.getRealRange(Direction.HORIZONTAL);
+
+                    if (colGroupRange.intersects(headerColRange)) {
+                        th.setClassAttribute(CELL_FULL);
+                        if (isEqualTo(colGroupMinX, headerColMinX, colHeaderGroupXEpsilon)) {
+                            // This is the start of the span
+                            th.appendChild(title.substring(title.indexOf("/") + 1));
+                            colSpanStartCol = i + this.headerOffset;
+                            colspan++;
+                        } else if (isEqualTo(colGroupMaxX, headerColMaxX, colHeaderGroupXEpsilon)) {
+                            // This is the final part of the span
+                            if (++colspan > 1) {
+                                th.setAttribute(COLSPAN, Integer.toString(colspan));
+                            }
+                            cgIndex++;
+                            getNextColGroupDetails = true;
+                            colSpanEndCol = i + this.headerOffset;
+                            LOG.trace("SPAN complete:"+title);
+                            LOG.trace("START_HDR_COL:"+colSpanStartCol);
+                            LOG.trace("END_HDR_COL:"+colSpanEndCol);
+                            LOG.trace("colspan:"+colspan);
+                            colspan = 0;
+                            
+                            // Record start and end header columns spanned
+                            th.addAttribute(new Attribute(START_HDR_COL, Integer.toString(colSpanStartCol)));
+                            th.addAttribute(new Attribute(END_HDR_COL, Integer.toString(colSpanEndCol)));
+
+                            HtmlTh thDeepCopy = (HtmlTh) (HtmlTh.create(th));
+                            tr.appendChild(thDeepCopy);
+                            th = new HtmlTh();
+                        } else if (isGreaterThan(colGroupMaxX, headerColMaxX, colHeaderGroupXEpsilon)) {
+                            // span continues beyond this header col
+                            colspan++;
+                        } 
+                        
+                        // Column header / column superheader has been found
+                        i++;
+                    } else if (colspan > 0) {
+                        // There is a span which must be closed
+                        // Close it but do not advance index as
+                        // current header has not been matched to an intersecting heading
+                        if (colspan > 1) {
+                            th.setAttribute(COLSPAN, Integer.toString(colspan));
+                        }
+                        cgIndex++;
+                        getNextColGroupDetails = true;
+                        colSpanEndCol = i;
+                        LOG.trace("SPAN complete:" + title);
+                        LOG.trace("START_HDR_COL:" + colSpanStartCol);
+                        LOG.trace("END_HDR_COL:" + colSpanEndCol);
+                        LOG.trace("colspan:" + colspan);
+                        colspan = 0;
+                            
+                        // Record start and end header columns spanned
+                        th.addAttribute(new Attribute(START_HDR_COL, Integer.toString(colSpanStartCol)));
+                        th.addAttribute(new Attribute(END_HDR_COL, Integer.toString(colSpanEndCol)));
+
+                        HtmlTh thDeepCopy = (HtmlTh) (HtmlTh.create(th));
+                        tr.appendChild(thDeepCopy);
+                        th = new HtmlTh();
+                    } else {
+                        th.setClassAttribute(CELL_EMPTY);
+                        HtmlTh thDeepCopy = (HtmlTh) (HtmlTh.create(th));
+                        tr.appendChild(thDeepCopy);
+                        th = new HtmlTh();
+                        i++;
+                    }
+                }
+                
+                // Allocate any colspan which is unrecorded at the end of the headers
+                // This is the final part of the span
+                if (colspan > 1) {
+                    colSpanEndCol = hdrRects.size() - 1;
+                    colSpanStartCol = colSpanEndCol - colspan + 1;
+                    th.setAttribute(COLSPAN, Integer.toString(colspan));
+                    // Record start and end header columns spanned
+                    th.addAttribute(new Attribute(START_HDR_COL, Integer.toString(colSpanStartCol)));
+                    th.addAttribute(new Attribute(END_HDR_COL, Integer.toString(colSpanEndCol)));
+                    
+                    HtmlTh thDeepCopy = (HtmlTh) (HtmlTh.create(th));
+                    tr.appendChild(thDeepCopy);
+                }
+                
+                HtmlTr trDeepCopy = (HtmlTr)HtmlTr.create(tr);
+                htmlHead.appendChild(trDeepCopy);
+            }
+        }
+        
 	private int addHeaderBoxes(HtmlTr tr, SVGElement g, int bodyCols) {
 		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
 		int headerCols = rects.size();
-		int bodyDelta = bodyCols - headerCols;
-		LOG.trace("Header boxes: "+headerCols+"; delta: "+bodyDelta);
-		for (int i = 0; i < bodyDelta; i++) {
+                this.headerOffset = bodyCols - headerCols;
+		LOG.trace("Header boxes: "+headerCols+"; delta: "+this.headerOffset);
+		for (int i = 0; i < this.headerOffset; i++) {
 			HtmlTh th = new HtmlTh();
 			tr.appendChild(th);
 		}
 		for (int i = 0; i < headerCols; i++) {
 			SVGRect rect = rects.get(i);   // messy but has to be rewritten
-			Real2 xy = rect.getXY();
 			String title = rect.getValue();   // messy but has to be rewritten
 			title = title.replace(" //", "");
+                        title = ValueNormaliser.removeUnusualCharacterTooltip(title);
 			HtmlTh th = new HtmlTh();
 			th.setClassAttribute(CELL_FULL);
+                        double cellMinX = rect.getBoundingBox().getXMin();
+                        double cellMaxX = rect.getBoundingBox().getXMax();
+                        th.setAttribute(DATA_CELL_MIN_X, decFormat.format(cellMinX));
+                        th.setAttribute(DATA_CELL_MAX_X, decFormat.format(cellMaxX));
 			th.appendChild(title.substring(title.indexOf("/")+1));
 			tr.appendChild(th);
 		}
@@ -760,10 +794,36 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			List<SVGRect> column = columnList.get(jcol);
 			padColumn(column, allRanges);
 		}
-		
-		for (int irow = 0; irow < allRanges.size(); irow++) {
-			createRowsAndAddToTable(table, columnList, irow);
-		}
+                
+                HtmlTbody mainTableTbody = new HtmlTbody();
+                
+                // FIXME No need to add the cells to a DOM at this stage
+                // as we immediately restructure -- just need a List<List<HtmlElement>>
+                for (int irow = 0; irow < allRanges.size(); irow++) {
+                    createRowsAndAddToTbody(mainTableTbody, columnList, irow);
+                }
+                
+                if (this.headerOffset >= 0) {
+                    // Split columns with compound content
+                    splitCompoundColumnContent(mainTableTbody, columnList.size());
+                }
+                 
+                // Content enhancements applied after grid-resolution -- factor out?
+                // Re-structure into subtables
+                HtmlTbody restructuredTbody = mainTableTbody;
+                
+                
+                if (treatIndentsAsSubtables) {
+                    restructuredTbody = createSubtablesFromIndents(mainTableTbody, columnList.size());
+                }
+                
+                mergeUnwrappedObservationLabels(restructuredTbody);
+                
+                // If transformed table exists and is basically well formed
+                // then add it as the top-level tbody of the table
+                if (restructuredTbody != null && restructuredTbody.getChildCount() > 0) {
+                    table.appendChild(restructuredTbody);
+                }
 	}
 
 	private List<SVGG> getGElements(SVGElement svgElement) {
@@ -773,9 +833,11 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return gs;
 	}
 
-	private void createRowsAndAddToTable(HtmlTable table, List<List<SVGRect>> columnList, int irow) {
+	private void createRowsAndAddToTbody(HtmlTbody tbody, List<List<SVGRect>> columnList, int irow) {
 		HtmlTr tr = new HtmlTr();
-		table.appendChild(tr);
+               
+		tbody.appendChild(tr);
+               
 		for (int jcol = 0; jcol < columnList.size(); jcol++) {
 			List<SVGRect> rectjList = columnList.get(jcol);
 			if (irow >= rectjList.size()) {
@@ -786,8 +848,12 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 				tr.appendChild(td);
 				String value = rectij == null ? "/" : rectij.getValue();
 				String value1 = value.substring(value.indexOf("/")+1);
-				td.appendChild(value1);
-				td.setClassAttribute((value1.trim().length() == 0) ? CELL_EMPTY : CELL_FULL);
+                                // Normalise number prefixes which are semanticly minus signs
+                                String normalisedValue = ValueNormaliser.normaliseNumericalValueString(value1);
+                                normalisedValue = ValueNormaliser.removeUnusualCharacterTooltip(normalisedValue);
+				td.appendChild(normalisedValue);
+				td.setClassAttribute((normalisedValue.trim().length() == 0) ? CELL_EMPTY : CELL_FULL);
+                                addLayoutDataAttributes(tr, td, rectij, rectjList, irow);
 			}
 		}
 	}
@@ -869,40 +935,619 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			}
 		}
 	}
+        
+        /**
+         * Record page layout data as HTML data attributes
+         */
+        private void addLayoutDataAttributes(HtmlTr tr, HtmlTd td, SVGShape rectij, List<SVGRect> rectjList, int irow) {
+            DecimalFormat decFormat = new DecimalFormat("0.000");
+     
+            // Record position data in each cell
+            if (rectij != null) {
+                double cellMinX = rectij.getBoundingBox().getXMin();
+                double cellMinY = rectjList.get(irow).getBoundingBox().getYMin();
+                td.setAttribute(DATA_CELL_MIN_X, decFormat.format(cellMinX));
+                td.setAttribute(DATA_CELL_MIN_Y, decFormat.format(cellMinY));
 
-	// FIXME empty caption
+                // As soon as we get a non-empty cell set the row minimum x, y once  
+                if (tr.getAttributeValue(DATA_ROW_MIN_Y) == null) {
+                    tr.setAttribute(DATA_ROW_MIN_X, decFormat.format(cellMinX));
+                    tr.setAttribute(DATA_ROW_MIN_Y, decFormat.format(cellMinY));
+                }                
+            }
+        }
+        
+        private boolean rowIsRightClear(HtmlTr tr) {
+            boolean isRightClear = false;
+            
+            List<HtmlTd> tds = tr.getTdChildren();
+            
+            if (!tds.isEmpty()) {
+                // First cell has content
+                isRightClear = (tds.get(0).getClassAttribute().equals("cell"));
+                
+                if (isRightClear) {
+                    // All other cells are empty
+                    int jcol = 1;
+                    
+                    while (isRightClear && jcol < tds.size()) {
+                        isRightClear = (isRightClear && tds.get(jcol).getClassAttribute().equals("empty"));
+                        jcol++;
+                    }
+                }
+            }
+            
+            return isRightClear;
+        }
+        
+        private boolean obsRowIsRightClear(HtmlTr tr) {
+            boolean isRightClear = false;
+            
+            List<HtmlTd> tds = tr.getTdChildren();
+           
+            if (!tds.isEmpty()) {
+                int columnCount = tr.getChildCount();
+                if (tds.size() == columnCount - 1) {
+                    // All value cells (tds) are empty
+                    int jcol = 1;
+                    isRightClear = true;
+                    
+                    while (isRightClear && jcol < tds.size()) {
+                        isRightClear = (isRightClear && tds.get(jcol).getClassAttribute().equals("empty"));
+                        jcol++;
+                    }
+                }
+            }
+            
+            return isRightClear;
+        }
+        
+        /**
+         * Use layout information in HTML to find subtables using relative x positions
+         * across rows.
+         * @param table The table as a flat list of rows with cells marked up with raw x,y layout values 
+         * @return A transformed copy of the table with subtables as nested tables
+         */
+        private HtmlTbody createSubtablesFromIndents(HtmlTbody table, int columnCount) {
+            HtmlTbody restructTable = null;
+            
+            if (table != null) {
+                double curMinX = 0.0;
+                double prevMinX = 0.0;
+                
+                double curRowMinX;
+                HtmlTr prevRow = null;           
+                           
+                List<HtmlTr> rows = table.getChildTrs();
+                
+                HtmlTbody currentSubtable = null;
+                restructTable = new HtmlTbody();
+                
+                LOG.trace("---");
+                                    
+                for (int irow = 0; irow < rows.size(); irow++) {
+                    HtmlTr tr = rows.get(irow);
+                    
+                    // Set prevRow every time.
+                    // Defer processing until next line when indent relationship is known
+                    // Logic from indents determines where prevRow is put into restruct table
+                    
+                    // Skip the header row
+                    ArrayList<HtmlTh> ths = (ArrayList<HtmlTh>)tr.getThChildren();
+                    
+                    if (ths != null && ths.size() > 0) {
+                        // A header row cannot be part of a subtable
+                        tr.addAttribute(new Attribute("data-tblrole","columnheaderrow"));
+                        continue;
+                    }
+                    
+                    // Get the min X of the current row
+                    Attribute attr = tr.getAttribute("data-rowminx");
+                    curRowMinX = Double.parseDouble(attr == null ? "0.0" : attr.getValue());
+                    
+                    // Find left edge of current table or subtable
+                    if (curRowMinX > 0.0) {
+                        curMinX = curRowMinX;
+                    }
+                    
+                    LOG.trace("R:"+irow+"\t"+extractRowLabel(tr));
+                    
+                    if (curMinX != 0.0) {
+                        boolean isOutDent = isGreaterThan(prevMinX, curMinX, xEpsilon);
+                        LOG.trace("R:"+irow+"\t"+prevMinX+"->"+curMinX+":"+(isOutDent ? "OUTDENT" : "NOT OUTDENT"));
+                        if (isGreaterThan(curMinX, prevMinX, xEpsilon)) {
+                            // INDENT or FIRST
+                            if (prevMinX > 0.0) {
+                                // This is an indent -- a new subtable has started
+                                LOG.trace("ST:Indent: ("+prevMinX+"->"+curMinX+")");
+                                LOG.trace("R:"+irow+"\t"+"[IN]\t\t\t"+"ST?:"+(currentSubtable != null ? "Y" : "N"));
+                                
+                                currentSubtable = new HtmlTbody();
+                                currentSubtable.addAttribute(new Attribute("class", SUBTABLE));
+
+                                // The previous line was subtable heading line
+                                if (irow > 0) {      
+                                    LOG.trace("Add ST header:"+irow+"\t"+extractRowLabel(prevRow));
+                                    this.addSubtableRow(currentSubtable, prevRow, true);
+                                }
+                            } 
+                        } else if (isEqualTo(curMinX, prevMinX, xEpsilon)) {
+                            // ALIGNED
+                            LOG.trace("Obs row: (" + prevMinX + "==" + curMinX + ")");
+                            LOG.trace("R:"+irow+"\t"+"[ALIGN]\t\t\t"+"ST?:"+(currentSubtable != null ? "Y" : "N"));
+                            if (curMinX != 0.0) {  
+                                if (currentSubtable != null) {
+                                    addSubtableRow(currentSubtable, prevRow, false);
+                                } else {
+                                    addTopLevelRow(restructTable, prevRow);
+                                }
+                            } 
+                        } else { 
+                            // curMinX < prevMinX, within tolerance
+                            // OUTDENT
+                            LOG.trace("R:"+irow+"\t"+"[OUT]\t\t\t"+"ST?:"+(currentSubtable != null ? "Y" : "N"));
+                            
+                            // Handle case where grid is not well formed upstream and 
+                            // currentSubtable is null  
+                            if (currentSubtable != null) {
+                                // This is the start of a new section
+                                // The previous line is the end of the subtable
+                                this.addSubtableRow(currentSubtable, prevRow, false);
+                                List<HtmlTr> stRows = currentSubtable.getChildTrs();
+                                LOG.trace("ST:Complete: (" + prevMinX + "->" + curMinX + "):total rows:" + (stRows != null ? stRows.size() : 0));
+
+                                // Add the completed subtable to the restructured table
+                                HtmlTbody subtableDeepCopy = (HtmlTbody) (HtmlTbody.create(currentSubtable));
+                                restructTable.appendChild(subtableDeepCopy);
+                            }
+                            
+                            currentSubtable = null; 
+                            LOG.trace("------");
+                        }
+                        
+                        // Make a copy of the current row reference and 
+                        // store it until its role is determined at the next row
+                        prevRow = tr;
+                    
+                        prevMinX = curRowMinX;
+                    }
+                }
+                
+                // At the end of main table processing: 
+                // allocate final row and
+                // close any final incomplete subtable
+                if (currentSubtable != null) {
+                    addSubtableRow(currentSubtable, prevRow, false);
+                    
+                    LOG.trace("ST:Complete At Table end: (" + prevMinX + "->" + curMinX + "):total rows:" + currentSubtable.getChildCount());
+                    HtmlTbody subtableDeepCopy = (HtmlTbody)(HtmlTbody.create(currentSubtable));
+                    restructTable.appendChild(subtableDeepCopy);
+                } else {
+                    addTopLevelRow(restructTable, prevRow);
+                }
+            }
+            
+            return restructTable;
+        }
+        
+        /**
+         * Helper method.
+         * Add row to tbody (for observation rows at top-level or within subtable) 
+         */
+        private void addObservationRow(HtmlTbody tbody, HtmlTr observationRow) {
+            if (observationRow == null || tbody == null) {
+                return;
+            }
+   
+            HtmlTd td = observationRow.getTd(0);
+            
+            if (td != null) {
+                HtmlTh th = new HtmlTh();
+                th.setValue(td.getValue());
+            
+                if (!rowIsRightClear(observationRow)) {
+                        th.setAttribute(DATA_ATTR_ROLE, ROLE_OBSERVATION_LABEL);  
+                }         
+                observationRow.replaceChild(td, th);
+            }
+
+            // Add a deep-copy of the row to mainTable
+            HtmlTr trDeepCopy = (HtmlTr) (HtmlTr.create(observationRow));
+            tbody.addRow(trDeepCopy);
+        }
+        
+        private void addSubtableRow(HtmlTbody tbody, HtmlTr subtableRow, boolean isSubtableHeaderRow) {
+            String rowLabel = extractRowLabel(subtableRow);
+            LOG.trace("addSubtableRow: Add ST "+(isSubtableHeaderRow ? "header" : "row" )+":"+rowLabel);
+            
+            if (isSubtableHeaderRow) {
+                subtableRow.setAttribute(DATA_ATTR_TBL_SEG, TBL_SEG_SUBTABLE_TITLE);   
+            } else {
+                subtableRow.setAttribute(DATA_ATTR_ROLE, ROLE_OBSERVATION);
+            }
+            
+            addObservationRow(tbody, subtableRow);
+        }
+
+        /**
+         * Helper method.  
+         * Add top-level row to table.
+         * Top-level rows are observation labels and observation data.
+         */
+        private void addTopLevelRow(HtmlTbody mainTableTbody, HtmlTr topLevelRow) {
+            this.addObservationRow(mainTableTbody, topLevelRow);
+        }
+
+        /**
+         * Helper method.
+         * @return Label 
+         */
+        String extractRowLabel(HtmlTr row) {
+            String rowLabel = "";
+            
+            if (row != null) {
+                if (row.getTd(0) != null) {
+                    rowLabel = row.getTd(0).getValue();
+                }
+            } 
+            
+            return rowLabel;
+        }
+              
+        /**
+         * Compare coordinates with explicit tolerance
+         * 
+         */
+        private boolean isEqualTo(double d1, double d2, double tolerance) {
+            return (Math.abs(d1 - d2) <= tolerance);
+        }
+        
+        /**
+         * Compare coordinates with explicit tolerance
+         * 
+         */
+        private boolean isGreaterThan(double d1, double d2, double tolerance) {
+            return (d1 > d2 && (Math.abs(d1 - d2) > tolerance));
+        }
+        
+        /**
+         * Compare coordinates with explicit tolerance
+         * 
+         */
+        private boolean isLessThan(double d1, double d2, double tolerance) {
+            return (d2 > d1 && (Math.abs(d2 - d1) > tolerance));
+        }
+        
+        /**
+         * Merge unallocated right clears (after subtable identification).
+         *
+         * @param tbody The top-level tbody for the table
+         */
+        private void mergeUnwrappedObservationLabels(HtmlTbody tbody) {
+            if (tbody == null) {
+                return;
+            }
+            
+            // Conceptually a table consists of a list of rowgroups.
+            // These may be true rowgroups (i.e., subtables) (HTML tbody)
+            // or the degenerate case of an individual top-level observation row (HTML tr) 
+            List<HtmlElement> tbodyElts = tbody.getChildElementsList();
+            
+            HtmlElement prevRowGroup = null;
+            double prevRowMinX = 0.0;
+            double curRowMinX = 0.0;
+           
+            for (int i = tbodyElts.size() - 1; i >= 0; i--) {
+                // tr: If n is unlabelled right clear then merge th with n+1 and discard line
+                // tbody: recurse into subtable 
+                HtmlElement curRowGroup = tbodyElts.get(i);
+                
+                if (curRowGroup instanceof HtmlTbody) {
+                    // Handle subtable case
+                    mergeUnwrappedObservationLabels((HtmlTbody)curRowGroup);
+                } else if (curRowGroup instanceof HtmlTr) {
+                    if (i < tbodyElts.size() - 1) {
+                        if (prevRowGroup instanceof HtmlTr) {
+                            if (obsRowIsRightClear((HtmlTr) prevRowGroup)) {
+                                // Only merge lines with the same level of indent
+                                Attribute attr = curRowGroup.getAttribute("data-rowminx");
+                                curRowMinX = Double.parseDouble(attr == null ? "-1.0" : attr.getValue());
+                                if (isEqualTo(curRowMinX, prevRowMinX, xEpsilon)) {
+                                    // Append the text from this row's header onto the 
+                                    // header from the previous row and delete this row
+                                    HtmlTh prevRowHeader = (HtmlTh) prevRowGroup.getChild(0);
+                                    HtmlTh curRowHeader = (HtmlTh) curRowGroup.getChild(0);
+                                    String currentHeaderText = curRowHeader.getValue();
+                                    String mergedHeaderText = currentHeaderText + " " + prevRowHeader.getValue();
+                                    curRowHeader.setValue(mergedHeaderText);
+                                    tbody.removeChild(i + 1);
+                                    LOG.trace("Merge dangling row-header text:row:" + i + "-" + (i + 1) + ":" + mergedHeaderText);
+                                }
+                            }
+                        }
+                    }
+                } 
+                
+                prevRowGroup = curRowGroup;
+                prevRowMinX = curRowMinX;
+            }
+        }
+        
+        /**
+         * Determine the number of derived columns for each raw column
+         * resulting from splitting columns to separate all floating point values.
+         * @param tbody The body of the table
+         * @param columnCount The number of columns in the original table grid by layout
+         * @return 
+         */
+        private int[] determineSplitColumnDimensions(HtmlTbody tbody, int columnCount) {
+            // FIXME Record whether table has any compound columns -- avoid unnecessary generation of the supplemental table
+            int[] compoundDimensions = new int[columnCount];
+            Arrays.fill(compoundDimensions, 1);
+            
+            if (tbody != null) {
+                List<HtmlTr> rows = tbody.getChildTrs();
+
+                if (rows != null) {
+                    for (int i = 0; i < rows.size(); i++) {
+                        List<String> cellValues = rows.get(i).getTdCellValues();
+
+                        for (int j = 1; j < cellValues.size(); j++) {
+                            String cellValue = cellValues.get(j);
+                                                                
+                            Matcher m = COMPOUND_COL_NUMS.matcher(cellValue);
+                            List<String> tokens = new LinkedList<String>();
+                            
+                            while (m.find()) {
+                                String token = m.group(1);
+                                tokens.add(token);
+                            }
+                                
+                            // Find the maximum dimension of the new column set
+                            if (tokens.size() > compoundDimensions[j]) {
+                                tableHasCompoundColumns = true;
+                                compoundDimensions[j] = tokens.size();
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return compoundDimensions;
+        }
+        
+        /**
+         * Find columns containing semantically distinct numerical values combined with standard punctuation.
+         */
+        private void splitCompoundColumnContent(HtmlTbody tbody, int columnCount) {
+            // Search table for columns with multiple numerical content values
+            if (tbody != null) {
+                List<HtmlTr> rows = tbody.getChildTrs();
+
+                if (rows != null) {
+                    int[] compoundDimensions = determineSplitColumnDimensions(tbody, columnCount);
+                    
+                    if (tableHasCompoundColumns) {
+                        // For each cell in the original grid, there is a list of separate values
+                        List<String>[][] newStructure = new ArrayList[columnCount][rows.size()];
+
+                        for (int i = 0; i < rows.size(); i++) {
+                            HtmlTr tr = rows.get(i);
+                            List<String> cellValues = tr.getTdCellValues();
+
+                            for (int j = 1; j < cellValues.size(); j++) {
+                                String cellValue = cellValues.get(j);
+
+                                Matcher m = COMPOUND_COL_NUMS.matcher(cellValue);
+                                List<String> tokens = new ArrayList<String>(compoundDimensions[j]);
+
+                                while (m.find()) {
+                                    String token = m.group(1);
+                                    tokens.add(token);
+                                }
+
+                                if (tokens.size() > 0) {
+                                    newStructure[j][i] = tokens;
+                                } else {
+                                    newStructure[j][i] = new ArrayList<String>(
+                                            Collections.nCopies(compoundDimensions[j], cellValue));
+                                }
+
+                                // If original column is split, add multiple cells to end of row
+                                if (compoundDimensions[j] > 1) {
+                                   for (int k = 0; k < compoundDimensions[j]; k++) {
+                                        String token = "";
+                                        
+                                        // Handle case where there are fewer values in this column row 
+                                        // than the maximum detected in the column (due to use of column
+                                        // to hold values in different formats, or publisher error/inconsistency)
+                                        if (k > newStructure[j][i].size() - 1) {
+                                            // If there are no more extracted values for this row
+                                            // duplicate first/only value
+                                            token = newStructure[j][i].get(0);
+                                        } else {
+                                            token = newStructure[j][i].get(k);
+                                        }
+                                    
+                                        HtmlElement td = HtmlTd.createAndWrapText(token);
+                                        td.addAttribute(new Attribute("data-role", SUPPLEMENTARY_OBS));
+                                        if (token == null || token.equals("")) {
+                                            td.setClassAttribute("empty");
+                                        } else {
+                                            td.setClassAttribute("cell");
+                                        }
+                                        tr.appendChild(td);
+                                    }
+                                }
+                            }
+                        }
+
+                        // Create new header structures
+                        createSupplementalSplitHeaders(compoundDimensions);
+                    }
+                }
+            }
+        }
+        
+        /**
+         * Create header structure for supplemental split-column table
+         */
+        private void createSupplementalSplitHeaders(int[] compoundDimensions) {
+            HtmlTr directColumnHeaders = (HtmlTr)this.tableHtmlThead.getChild(this.tableHtmlThead.getChildCount() - 1);
+            List<HtmlTh> ths = directColumnHeaders.getThChildren();
+            for (int j = 1; j < compoundDimensions.length; j++) {
+                if (compoundDimensions[j] > 1) {
+                    String headerName = ths.get(j).getValue();
+                    for (int k = 0; k < compoundDimensions[j]; k++) {
+                        // Append additional header cells corresponding to split columns
+                        HtmlTh suppTh = HtmlTh.createAndWrapText(headerName+":"+k);
+                        suppTh.addAttribute(new Attribute("data-role", SUPPLEMENTARY_HEADER));
+                        directColumnHeaders.appendChild(suppTh);
+                    }
+                }
+            }
+            
+            createSupplementalColumnTreeHeaders(compoundDimensions);
+        }
+        
+        private void createSupplementalColumnTreeHeaders(int[] compoundDimensions) {
+            List<HtmlTr> allColumnHeaderRows = this.tableHtmlThead.getChildTrs();
+            
+            if (allColumnHeaderRows == null || allColumnHeaderRows.size() < 2) {
+                return;
+            }
+            
+            int totalCellsSpanned = 0;
+            
+            for (int i = 0; i < allColumnHeaderRows.size() - 1; i++) {
+                HtmlTr tr = allColumnHeaderRows.get(i);
+                List<HtmlTh> ths = tr.getThChildren();
+                Integer startSpanCol = 0;
+                Integer endSpanCol= 0;
+                Integer endSpanColPrev = 0;
+                
+                for (int hj = this.headerOffset; hj < ths.size(); hj++) {
+                    HtmlTh th = ths.get(hj);
+                    String superHeaderName = th.getValue();
+                    int splitColSpan = 0;
+                    
+                    // Get range of grid columns spanned by this super-header
+                    Attribute startSpanColAttr = th.getAttribute(START_HDR_COL);
+                    Attribute endSpanColAttr = th.getAttribute(END_HDR_COL);
+                    
+                    if (startSpanColAttr != null && endSpanColAttr != null) {
+                        endSpanColPrev = endSpanCol;
+                        startSpanCol = Integer.parseUnsignedInt(startSpanColAttr.getValue());
+                        endSpanCol = Integer.parseUnsignedInt(endSpanColAttr.getValue());
+                
+                        LOG.trace("Super header col:"+hj+":"+"start:"+startSpanCol+":end:"+endSpanCol);
+                        
+                        // New colspan
+                        boolean spansCompoundColumns = false;
+                        for (int s = startSpanCol; s < endSpanCol + 1; s++) {
+                            LOG.trace("compDim:col:"+s+"="+compoundDimensions[s]);
+                            splitColSpan += (compoundDimensions[s] > 1 ? compoundDimensions[s] : 0);
+                            spansCompoundColumns = spansCompoundColumns || compoundDimensions[s] > 1; 
+                        }
+                        
+                        LOG.trace("New colspan:"+splitColSpan);
+                        if (spansCompoundColumns) {
+                            // Append additional header cells corresponding to split columns
+                            HtmlTh suppTh = HtmlTh.createAndWrapText(superHeaderName);
+                            suppTh.setAttribute(COLSPAN, Integer.toString(splitColSpan));
+                            suppTh.addAttribute(new Attribute("data-role", SUPPLEMENTARY_HEADER));
+                            tr.appendChild(suppTh);
+                            totalCellsSpanned += splitColSpan;
+                        } 
+                    } else {
+                        LOG.trace("Super-column:"+hj+":grid-col range:["+endSpanColPrev+","+startSpanCol+"]");
+                        // Interpolate any empty superheaders needed 
+                        int startPadColHeader = this.headerOffset;
+                        int endPadColHeader = startPadColHeader + 1;
+                        if (endSpanColPrev > this.headerOffset && startSpanCol > endSpanColPrev) {
+                            // This is a gap between supercolumn header spans
+                            startPadColHeader = endSpanColPrev;
+                            endPadColHeader = startSpanCol - 1;
+                        }
+                        for (int e = startPadColHeader; e < endPadColHeader; e++) {
+                            if (compoundDimensions[e] > 1) {
+                                for (int e1 = 0; e1 < compoundDimensions[e]; e1++) {
+                                    HtmlTh thDeepCopy = (HtmlTh) (HtmlTh.create(th));
+                                    tr.appendChild(thDeepCopy);
+                                    totalCellsSpanned++;
+                                }
+                            } 
+                        }
+                    }
+                }
+                           
+                // Pad the superheader row if necessary
+                if (totalCellsSpanned < compoundDimensions.length) {
+                    int c = endSpanColPrev + 1;
+                    
+                    // Find all remaining compound columns not under superheaders
+                    while (c < compoundDimensions.length) {
+                        if (compoundDimensions[c] > 1) {
+                           for (int pp = 0; pp < compoundDimensions[c]; pp++) {
+                                HtmlTh thEmpty = new HtmlTh();
+                                thEmpty.setClassAttribute(CELL_EMPTY);
+                                thEmpty.addAttribute(new Attribute("data-role", SUPPLEMENTARY_HEADER));
+                                tr.appendChild(thEmpty);
+                           }
+                        } 
+                        c++;
+                    }
+                }
+            }
+        }
+
+	/**
+         * Add the table title as the HTML caption element
+         * @param svgElement
+         * @param table 
+         */
 	private void addCaption(SVGElement svgElement, HtmlTable table) {
 		HtmlCaption caption = new HtmlCaption();
-		String captionS = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
-		if (captionS !=null) {
-			int idx = captionS.indexOf("//");
-			captionS = idx == -1 ? captionS : captionS.substring(idx + 2);
-	//		caption.appendChild(captionS.substring(captionS.indexOf("//")+2));
-			table.appendChild(caption);
-		}
+		String captionString = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
+                if (captionString != null) {
+                       int idx = captionString.indexOf("//");
+                       captionString = idx == -1 ? captionString : captionString.substring(idx + 2);
+                       caption.appendChild(captionString);
+                       table.appendChild(caption);
+                }
+	}
+        
+        /**
+         * Add the table footer as the HTML tfoot element
+         * @param svgElement
+         * @param table 
+         */
+	private void addFooter(SVGElement svgElement, HtmlTable table, int bodyCols) {
+		HtmlTfoot htmlTfoot = new HtmlTfoot();
+		String tableFooterString = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableFooterSection.FOOTER_TITLE +"']");
+                if (tableFooterString != null) {
+                       int idx = tableFooterString.indexOf("//");
+                       tableFooterString = idx == -1 ? tableFooterString : tableFooterString.substring(idx + 2);
+                       tableFooterString = ValueNormaliser.removeUnusualCharacterTooltip(tableFooterString);                       
+                       // tfoot is a row group so the content must be wrapped
+                       // as at least one row
+                       HtmlTr tr = new HtmlTr();
+                       HtmlTd td = new HtmlTd();
+                       td.setAttribute(COLSPAN, Integer.toString(bodyCols));
+                       tr.appendChild(td);
+		       td.appendChild(tableFooterString);
+                       htmlTfoot.appendChild(tr);
+                       
+                       this.tableHtmlTfoot = htmlTfoot;
+                       if (this.tableHtmlTfoot != null) {
+                          table.appendChild(this.tableHtmlTfoot);
+                       }
+                       LOG.debug("Adding footer:"+tableFooterString);
+                }
 	}
 
 	public SVGElement getAnnotatedSvgChunk() {
 		return annotatedSvgChunk;
 	}
 
-	public static TableContentCreator createHTMLFrom(File tableFile) {
-		TableContentCreator tableContentCreator = null;
-		if (tableFile != null) {
-			tableContentCreator = new TableContentCreator();
-			tableContentCreator.createHTMLFromSVG(tableFile);
-		}
-		return tableContentCreator;
-	}
-	
-	public void setContentBoxGridFile(File file) {
-		this.contentBoxGridFile = file;
-	}
-
-	public ContentBoxCache getContentBoxCache() {
-		if (contentBoxCache == null) {
-			contentBoxCache = componentCache.getOrCreateContentBoxCache();
-		}
-		return contentBoxCache;
-	}
 }
