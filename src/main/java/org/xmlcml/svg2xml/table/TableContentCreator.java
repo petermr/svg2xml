@@ -352,10 +352,10 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-//		SVGElement markedChunk = this.getTextStructurer().getSVGChunk();
+		SVGElement markedChunk = tableTextStructurer.getSVGChunk();
 		
 		LOG.warn("Check SVGChunk after refactor");
-		SVGElement markedChunk = this.annotatedSvgChunk;
+//		SVGElement markedChunk = this.annotatedSvgChunk;
 		if (markedChunk == null) {
 			throw new RuntimeException("Missing markedChunk - change logic");
 		}
@@ -436,7 +436,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 
 	public SVGElement getSVGChunk() {
-		return textStructurer.getSVGChunk();
+		return tableTextStructurer.getSVGChunk();
 	}
 
 	public SVGElement annotateAreas(File inputFile) {

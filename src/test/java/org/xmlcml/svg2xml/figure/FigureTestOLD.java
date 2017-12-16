@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.graphics.svg.SVGElement;
@@ -30,6 +31,7 @@ public class FigureTestOLD {
 	}
 
 	@Test
+	@Ignore // input files missing
 	public void testFigure() {
 		String fileroot = "page";
 		String dirRoot = "nature/p2";
@@ -69,6 +71,7 @@ public class FigureTestOLD {
 	}
 
 	@Test
+	@Ignore // input files missing
 	public void testFigureErrorBars() {
 		String fileroot = "figure";
 		String dirRoot = "nature/p3.a";

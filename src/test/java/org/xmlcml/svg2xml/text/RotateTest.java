@@ -19,7 +19,7 @@ import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
-import org.xmlcml.svg2xml.page.PageLayoutAnalyzer;
+import org.xmlcml.svg2xml.page.PageLayoutAnalyzerNEW;
 import org.xmlcml.svg2xml.table.TableStructurer;
 
 
@@ -78,7 +78,7 @@ public class RotateTest {
 	public void testRotatedTableChunk() throws FileNotFoundException {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/page4Clipped.svg");
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
-		SVGElement chunk = PageLayoutAnalyzer.rotateClockwise(textStructurer);
+		SVGElement chunk = PageLayoutAnalyzerNEW.rotateClockwise(textStructurer);
 		SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/rotate/chunk.svg"), 900, 800);
 	}
 
