@@ -67,7 +67,7 @@ public class RuledTest {
 		File svgFile = RULED2001_1MICRO;
 		ComponentCache svgStore = new ComponentCache();
 		svgStore.setSplitAtMove(true);
-		svgStore.readGraphicsComponents(svgFile);
+		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 		Assert.assertEquals("lines", 19, lineList.size());
@@ -105,7 +105,7 @@ public class RuledTest {
 	public void testMergeLines() throws FileNotFoundException {
 		File svgFile = RULED1007_1;
 		ComponentCache svgStore = new ComponentCache();
-		svgStore.readGraphicsComponents(svgFile);
+		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 		Assert.assertEquals("lines", 59, lineList.size());
@@ -123,7 +123,7 @@ public class RuledTest {
 	public void testLinesByWidthAndLength() throws FileNotFoundException {
 		File svgFile = RULED1007_1;
 		ComponentCache svgStore = new ComponentCache();
-		svgStore.readGraphicsComponents(svgFile);
+		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 		List<SVGLine> mergedLines = LineMerger.mergeLines(lineList, 1.0, MergeMethod.OVERLAP);
@@ -162,7 +162,7 @@ public class RuledTest {
 		int i = 0;
 		for (File svgFile : RULED_FILES) {
 			ComponentCache svgStore = new ComponentCache();
-			svgStore.readGraphicsComponents(svgFile);
+			svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
 			SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 			List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 			List<SVGLine> mergedLines = LineMerger.mergeLines(lineList, 1.0, MergeMethod.OVERLAP);

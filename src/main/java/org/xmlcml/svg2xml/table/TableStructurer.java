@@ -706,7 +706,7 @@ public class TableStructurer {
 		bboxRuler = SVGUtil.createBoundingBox(horizontalRulerList);
 		horizontalElementByCode = new HashMap<String, SVGElement>();
 		// there may be no lines
-		Integer maxLength = (bboxRuler == null) ? null : (int) bboxRuler.getXRange().getRange();
+		Integer maxLength = (bboxRuler == null) ? null : (int) (double) bboxRuler.getXRange().getRange();
 		Double maxFont = getMaxFont(totalTextChunkList);
 		int iPhrase = 0;
 		int iRuler = 0;

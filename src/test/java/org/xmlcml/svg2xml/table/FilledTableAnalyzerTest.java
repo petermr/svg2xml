@@ -85,7 +85,7 @@ public class FilledTableAnalyzerTest {
 	public void testStyles() throws FileNotFoundException {
 		File svgFile = FILLED1016_2MICRO;
 		ComponentCache svgStore = new ComponentCache();
-		svgStore.readGraphicsComponents(svgFile);
+		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
 		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 		File svgOutFile = SVGFilenameUtils.getCompactSVGFilename(new File("target/"+FILLED), new File("target/"+FILLED+"/"+svgFile.getPath()+"micro"));
 		SVGSVG.wrapAndWriteAsSVG(svgElement, svgOutFile, 1000., 1000.);
@@ -110,7 +110,7 @@ public class FilledTableAnalyzerTest {
 	public void testReadGraphicsComponents() throws FileNotFoundException {
 		for (File svgFile : FILLED_FILES) {
 			ComponentCache svgStore = new ComponentCache();
-			svgStore.readGraphicsComponents(svgFile);
+			svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
 			SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
 			// this is inefficient but OK for now
 			List<SVGElement> descendants = SVGElement.extractSelfAndDescendantElements(svgElement);

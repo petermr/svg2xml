@@ -16,11 +16,11 @@ import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
+import org.xmlcml.graphics.svg.SVGTextComparator;
+import org.xmlcml.graphics.svg.SVGTextComparator.TextComparatorType;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
 import org.xmlcml.graphics.svg.plot.YPlotBox;
-import org.xmlcml.svg.SVGTextComparator;
-import org.xmlcml.svg.SVGTextComparator.TextComparatorType;
 import org.xmlcml.svg2xml.SVG2XMLFixtures;
 
 public class FigureTestOLD {
