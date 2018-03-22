@@ -10,6 +10,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Real2;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
@@ -39,7 +40,7 @@ public class FigureTestOLD {
 		File inputDir = new File(SVG2XMLFixtures.FIGURE_DIR, dirRoot);
 		File inputFile = new File(inputDir, fileroot + ".svg");
 		Assert.assertTrue(""+inputFile, inputFile.exists());
-		SVGElement svgElement = SVGElement.readAndCreateSVG(inputFile);
+		AbstractCMElement svgElement = SVGElement.readAndCreateSVG(inputFile);
 	//	List<SVGElement> largeCharsElements = SVGUtil.getQuerySVGElements(svgElement, ".//*[local-name()='text' and @font-size[.='12.0']]");
 		List<SVGText> largeCharsText = SVGText.getQuerySVGTexts(svgElement, ".//*[local-name()='text' and @font-size[.='12.0']]");
 		SVGSVG.wrapAndWriteAsSVG(largeCharsText, new File(outputDir, "largeChars.svg"));
@@ -79,7 +80,7 @@ public class FigureTestOLD {
 		File inputDir = new File(SVG2XMLFixtures.BAR_DIR, dirRoot);
 		File inputFile = new File(inputDir, fileroot + ".svg");
 		Assert.assertTrue("exists: "+inputFile, inputFile.exists());
-		SVGElement svgElement = SVGElement.readAndCreateSVG(inputFile);
+		AbstractCMElement svgElement = SVGElement.readAndCreateSVG(inputFile);
 		YPlotBox yPlotBox = new YPlotBox();
 		ComponentCache componentCache = new ComponentCache(yPlotBox);
 		componentCache.readGraphicsComponentsAndMakeCaches(svgElement);
@@ -99,7 +100,7 @@ public class FigureTestOLD {
 			SVGLine horizontal0 = getTJunction(horizontalLines, verticalLine, 0);
 			SVGLine horizontal1 = getTJunction(horizontalLines, verticalLine, 1);
 			if (horizontal0 != null && horizontal1 != null) {
-				SVGElement gt = new SVGG();
+				AbstractCMElement gt = new SVGG();
 				gt.appendChild(verticalLine.copy());
 				gt.appendChild(horizontal0.copy());
 				gt.appendChild(horizontal1.copy());

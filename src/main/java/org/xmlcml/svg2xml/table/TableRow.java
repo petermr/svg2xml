@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.html.HtmlElement;
 import org.xmlcml.graphics.html.HtmlTh;
 import org.xmlcml.graphics.html.HtmlTr;
@@ -73,7 +74,7 @@ public class TableRow extends TableChunk {
 		return sb.toString();
 	}
 
-	public static HtmlElement convertBodyHeader(HtmlElement bodyOneTr) {
+	public static HtmlElement convertBodyHeader(AbstractCMElement bodyOneTr) {
 		Nodes nodes = bodyOneTr.query(".//*[local-name()='td']");
 		HtmlElement tr = new HtmlTr();
 		for (int i = 0; i < nodes.size();i++) {

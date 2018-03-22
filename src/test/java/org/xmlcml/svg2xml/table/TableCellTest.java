@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -57,7 +58,7 @@ public class TableCellTest {
 	public void testTH0ChunkValue() {
 		TableChunk cellChunk = new TableChunk();
 		Element element = XMLUtil.parseQuietlyToDocument(TableFixtures.HROW0FILE).getRootElement();
-		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
+		AbstractCMElement svgElement = SVGElement.readAndCreateSVG(element);
 		List<SVGElement> elementList = SVGUtil.getQuerySVGElements(svgElement, TableFixtures.TEXT_OR_PATH_XPATH);
 		cellChunk.setElementList(elementList);
 		String value = cellChunk.getValue();

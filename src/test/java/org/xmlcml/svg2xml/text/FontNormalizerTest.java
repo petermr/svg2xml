@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.SVGUtil;
@@ -31,7 +32,7 @@ public class FontNormalizerTest {
 	public void setup() {
 		File file = new File(SVG2XMLFixtures.FONT_DIR, "fontweights.svg");
 		try {
-			SVGElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(file));
+			AbstractCMElement svgElement = SVGUtil.parseToSVGElement(new FileInputStream(file));
 			textList = SVGText.extractSelfAndDescendantTexts(svgElement);
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("cannot parse "+file, e);

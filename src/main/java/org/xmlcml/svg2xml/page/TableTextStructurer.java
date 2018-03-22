@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.xmlcml.euclid.Angle;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;

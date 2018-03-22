@@ -13,6 +13,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Real2Range.BoxDirection;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGCircle;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -60,7 +61,7 @@ public class RotatedTest {
 	@Test
 	public void testRotateCharactersOnly() {
 		Assert.assertTrue("table3 exists", ROTATED1111_3.exists());
-		SVGElement tableElement = SVGElement.readAndCreateSVG(ROTATED1111_3);
+		AbstractCMElement tableElement = SVGElement.readAndCreateSVG(ROTATED1111_3);
 		List<SVGText> textLists = SVGText.extractSelfAndDescendantTexts(tableElement);
 		SVGG g = new SVGG();
 		for (SVGText text : textLists) {
@@ -82,7 +83,7 @@ public class RotatedTest {
 			Assert.assertTrue("table3 exists", svgFile.exists());
 			SVGElement tableElement = SVGElement.readAndCreateSVG(svgFile);
 			Real2Range bbox = tableElement.getBoundingBox();
-			SVGElement g = new SVGG();
+			AbstractCMElement g = new SVGG();
 			
 			List<SVGText> textLists = SVGText.extractSelfAndDescendantTexts(tableElement);
 			
@@ -110,7 +111,7 @@ public class RotatedTest {
 		for (File svgFile : ROT_FILES) {
 			File svgOutFile = new File("target/rotate"+"/"+svgFile.getPath());
 			SVGElement svgElementIn = SVGElement.readAndCreateSVG(svgFile);
-			SVGElement g = svgElementIn.createElementWithRotatedDescendants(new Angle(-Math.PI/2.));
+			AbstractCMElement g = svgElementIn.createElementWithRotatedDescendants(new Angle(-Math.PI/2.));
 			SVGSVG.wrapAndWriteAsSVG(g, svgOutFile, 1200., 1000.);
 		}
 		

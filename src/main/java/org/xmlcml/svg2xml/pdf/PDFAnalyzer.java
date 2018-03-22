@@ -24,6 +24,7 @@ import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.svg2xml.PDF2SVGConverterWrapper;
 import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
+import org.xmlcml.xml.XMLConstants;
 
 import com.google.common.collect.Multimap;
 

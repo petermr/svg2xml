@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -320,7 +321,7 @@ public class PageCropper {
 	 * 
 	 * @param svgElement
 	 */
-	public void setSVGElementCopy(SVGElement svgElement) {
+	public void setSVGElementCopy(AbstractCMElement svgElement) {
 		this.svgElement = (SVGElement) svgElement.copy();
 		LOG.debug(this.svgElement);
 	}

@@ -18,6 +18,7 @@ import org.xmlcml.euclid.IntRangeArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.Transform2;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.html.HtmlBody;
 import org.xmlcml.graphics.html.HtmlCaption;
 import org.xmlcml.graphics.html.HtmlElement;
@@ -386,7 +387,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 
 	public static void shiftToOrigin(SVGElement markedChunk, SVGG g) {
 		SVGG gg = null;
-		SVGElement svgElement =  (SVGElement) markedChunk.getChildElements().get(0);
+		AbstractCMElement svgElement =  (AbstractCMElement) markedChunk.getChildElements().get(0);
 		if (svgElement instanceof SVGG) {
 			SVGG firstG = (SVGG) markedChunk.getChildElements().get(0);
 			Transform2 t2 = firstG.getTransform();
@@ -435,7 +436,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 	}
 
 
-	public SVGElement getSVGChunk() {
+	public AbstractCMElement getSVGChunk() {
 		return tableTextStructurer.getSVGChunk();
 	}
 
@@ -542,19 +543,19 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return html;
 	}
 
-	private void addHeader(SVGElement svgElement, HtmlTable table, int bodyCols) {
+	private void addHeader(AbstractCMElement svgElement, HtmlTable table, int bodyCols) {
                 int cols = 0;
 		HtmlTr tr = new HtmlTr();
                 tr.addAttribute(new Attribute("data-tblrole", "columnheaderrow"));
 
-		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+		AbstractCMElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_COLUMN_BOXES+"']");
 		if (g != null) {
 			cols = addHeaderBoxes(tr, g, bodyCols);
 		}
                 
                 HtmlThead htmlThead = new HtmlThead();
-                SVGElement gColGroups = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+                AbstractCMElement gColGroups = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableHeaderSection.HEADER_BOXES+"']");
 		if (gColGroups != null) {
                     addColumnGroups(htmlThead, gColGroups, g, bodyCols - cols);
@@ -598,7 +599,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
             return colGroupHeaderRows;
         } 
         
-        private void addColumnGroups(HtmlThead htmlHead, SVGElement g, SVGElement hdrG, int bodyDelta) { 
+        private void addColumnGroups(HtmlThead htmlHead, AbstractCMElement g, AbstractCMElement hdrG, int bodyDelta) { 
             List<SVGRect> columnGroupRects = SVGRect.extractSelfAndDescendantRects(g);
             List<List<SVGRect>> cgRows = createColumnGroupRows(columnGroupRects);
             HtmlTr tr;
@@ -746,7 +747,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
             }
         }
         
-	private int addHeaderBoxes(HtmlTr tr, SVGElement g, int bodyCols) {
+	private int addHeaderBoxes(HtmlTr tr, AbstractCMElement g, int bodyCols) {
 		List<SVGRect> rects = SVGRect.extractSelfAndDescendantRects(g);
 		int headerCols = rects.size();
                 this.headerOffset = bodyCols - headerCols;
@@ -772,7 +773,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
 		return headerCols;
 	}
 
-	private void addBody(SVGElement svgElement, HtmlTable table) {
+	private void addBody(AbstractCMElement svgElement, HtmlTable table) {
 		List<SVGG> gs = getGElements(svgElement);
 		if (gs.size() == 0) {
 			LOG.warn("No annotated body");
@@ -826,8 +827,8 @@ public class TableContentCreator extends PageLayoutAnalyzer {
                 }
 	}
 
-	private List<SVGG> getGElements(SVGElement svgElement) {
-		SVGElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
+	private List<SVGG> getGElements(AbstractCMElement svgElement) {
+		AbstractCMElement g = svgElement == null ? null : (SVGElement) XMLUtil.getSingleElement(svgElement, 
 				".//*[local-name()='g' and @class='"+TableBodySection.BODY_CELL_BOXES+"']");
 		List<SVGG> gs = (g == null) ? new ArrayList<SVGG>() : SVGG.extractSelfAndDescendantGs(g);
 		return gs;
@@ -1240,7 +1241,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
             for (int i = tbodyElts.size() - 1; i >= 0; i--) {
                 // tr: If n is unlabelled right clear then merge th with n+1 and discard line
                 // tbody: recurse into subtable 
-                HtmlElement curRowGroup = tbodyElts.get(i);
+            	HtmlElement curRowGroup = tbodyElts.get(i);
                 
                 if (curRowGroup instanceof HtmlTbody) {
                     // Handle subtable case
@@ -1506,7 +1507,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
          * @param svgElement
          * @param table 
          */
-	private void addCaption(SVGElement svgElement, HtmlTable table) {
+	private void addCaption(AbstractCMElement svgElement, HtmlTable table) {
 		HtmlCaption caption = new HtmlCaption();
 		String captionString = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableTitleSection.TITLE_TITLE+"']");
                 if (captionString != null) {
@@ -1522,7 +1523,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
          * @param svgElement
          * @param table 
          */
-	private void addFooter(SVGElement svgElement, HtmlTable table, int bodyCols) {
+	private void addFooter(AbstractCMElement svgElement, HtmlTable table, int bodyCols) {
 		HtmlTfoot htmlTfoot = new HtmlTfoot();
 		String tableFooterString = svgElement == null ? null : XMLUtil.getSingleValue(svgElement, ".//*[local-name()='g' and @class='"+TableFooterSection.FOOTER_TITLE +"']");
                 if (tableFooterString != null) {
@@ -1546,7 +1547,7 @@ public class TableContentCreator extends PageLayoutAnalyzer {
                 }
 	}
 
-	public SVGElement getAnnotatedSvgChunk() {
+	public AbstractCMElement getAnnotatedSvgChunk() {
 		return annotatedSvgChunk;
 	}
 

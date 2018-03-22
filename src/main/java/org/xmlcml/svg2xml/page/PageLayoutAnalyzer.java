@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
@@ -80,7 +81,7 @@ public class PageLayoutAnalyzer {
 		this.inputFile = inputFile;
 //		textStructurer = TextStructurer.createTextStructurerWithSortedLines(inputFile);
 		tableTextStructurer = TableTextStructurer.createTableTextStructurerWithSortedLines(inputFile);
-		SVGElement inputSVGChunk = tableTextStructurer.getSVGChunk();
+		AbstractCMElement inputSVGChunk = tableTextStructurer.getSVGChunk();
 		cleanChunk(inputSVGChunk);
 		if (rotatable  && tableTextStructurer.hasAntiClockwiseCharacters()) {
 			throw new RuntimeException("rotated tabkes NYI");
@@ -105,13 +106,13 @@ public class PageLayoutAnalyzer {
 		}
 	}
 
-	private void cleanChunk(SVGElement chunk) {
+	private void cleanChunk(AbstractCMElement chunk) {
 		if (omitWhitespace) {
 			detachWhitespaceTexts(chunk);
 		}
 	}
 
-	private void detachWhitespaceTexts(SVGElement chunk) {
+	private void detachWhitespaceTexts(AbstractCMElement chunk) {
 		List<SVGText> spaceList = SVGText.extractSelfAndDescendantTexts(chunk);
 		for (SVGText text : spaceList) {
 			String textS = text.getText();

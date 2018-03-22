@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -55,7 +56,7 @@ public class RotateTest {
 	public void testRotatedTableText() {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/page4Clipped.svg");
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
-		SVGElement rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
+		AbstractCMElement rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
 		// This is text only
 		SVGSVG.wrapAndWriteAsSVG(rotatedVerticalText, new File(SVG2XMLFixtures.TARGET, "rotate/page4Clipped.svg"), 900, 800);
 		
@@ -78,7 +79,7 @@ public class RotateTest {
 	public void testRotatedTableChunk() throws FileNotFoundException {
 		File file = new File(SVG2XMLFixtures.TABLE_DIR, "rotate/page4Clipped.svg");
 		TextStructurer textStructurer = TextStructurer.createTextStructurerWithSortedLines(file);
-		SVGElement chunk = PageLayoutAnalyzerNEW.rotateClockwise(textStructurer);
+		AbstractCMElement chunk = PageLayoutAnalyzerNEW.rotateClockwise(textStructurer);
 		SVGSVG.wrapAndWriteAsSVG(chunk, new File("target/rotate/chunk.svg"), 900, 800);
 	}
 

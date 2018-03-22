@@ -16,6 +16,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.IntRangeArray;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.html.HtmlHtml;
 import org.xmlcml.graphics.html.HtmlTable;
 import org.xmlcml.graphics.html.HtmlTd;
@@ -581,7 +582,7 @@ public class TableStructurerTest {
 		tableStructurer.mergeRulersAndTextIntoShapeList();
 		List<SVGElement> horizontalElementList = tableStructurer.getHorizontalElementList();
 		SVGG g = new SVGG();
-		for (SVGElement horizontalElement : horizontalElementList) {
+		for (AbstractCMElement horizontalElement : horizontalElementList) {
 //			Element element = ((HorizontalElement)horizontalElement).copyElement();
 			Element element = (Element)horizontalElement.copy();
 			g.appendChild(element);
@@ -602,7 +603,7 @@ public class TableStructurerTest {
 		File outputDir = new File("target/table/"+"new/"+outRoot+"/");
 		outputDir.mkdirs();
 		XMLUtil.debug(html, new FileOutputStream(new File(outputDir, "table.html")), 1);
-		SVGElement svg = createSVGPanel(inputFile, scale);
+		AbstractCMElement svg = createSVGPanel(inputFile, scale);
 		HtmlTable twinTable = new HtmlTable();
 		HtmlTr tr = new HtmlTr();
 		twinTable.appendChild(tr);
@@ -615,8 +616,8 @@ public class TableStructurerTest {
 		XMLUtil.debug(twinTable, new FileOutputStream(new File(outputDir, "totalTable.html")), 1);
 	}
 
-	private SVGElement createSVGPanel(File inputFile, double scale) {
-		SVGElement svg = SVGElement.readAndCreateSVG(inputFile);		
+	private AbstractCMElement createSVGPanel(File inputFile, double scale) {
+		AbstractCMElement svg = SVGElement.readAndCreateSVG(inputFile);		
 		SVGG g = new SVGG();
 		g.addAttribute(new Attribute("transform", "matrix("+scale+",0.0,0.0,"+scale+",0.0,0.0)"));
 		int nchild = svg.getChildCount();

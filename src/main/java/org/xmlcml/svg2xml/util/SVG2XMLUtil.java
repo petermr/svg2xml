@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.html.HtmlElement;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGConstants;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -166,13 +166,13 @@ public class SVG2XMLUtil {
 	 *  fairly empirical 
 	 * @param graphic
 	 */
-	public static void tidy(SVGElement graphic) {
+	public static void tidy(AbstractCMElement graphic) {
 		removeAttributes("clip-path", graphic);
 		removeSVGXAttributes(graphic);
 		removeAnnotationBoxes(graphic);
 	}
 
-	public static void removeAnnotationBoxes(SVGElement graphic) {
+	public static void removeAnnotationBoxes(AbstractCMElement graphic) {
 		Nodes nodes = graphic.query(".//*[local-name()='rect' and @fill='yellow' and @opacity='0.5']");
 		detachNodes(nodes);
 	}
@@ -183,12 +183,12 @@ public class SVG2XMLUtil {
 		}
 	}
 
-	public static void removeAttributes(String attname, SVGElement element) {
+	public static void removeAttributes(String attname, AbstractCMElement element) {
 		Nodes nodes = element.query(".//@"+attname);
 		detachNodes(nodes);
 	}
 
-	private static void removeSVGXAttributes(SVGElement element) {
+	private static void removeSVGXAttributes(AbstractCMElement element) {
 		Nodes nodes = element.query(".//@*[namespace-uri()='"+SVGConstants.SVGX_NS+"']");
 		detachNodes(nodes);
 	}

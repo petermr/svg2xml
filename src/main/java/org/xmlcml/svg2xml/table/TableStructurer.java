@@ -17,6 +17,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.html.HtmlBr;
 import org.xmlcml.graphics.html.HtmlCaption;
 import org.xmlcml.graphics.html.HtmlDiv;
@@ -35,7 +36,6 @@ import org.xmlcml.graphics.html.HtmlThead;
 import org.xmlcml.graphics.html.HtmlTr;
 import org.xmlcml.graphics.html.HtmlUl;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGPolyline;
@@ -48,8 +48,8 @@ import org.xmlcml.graphics.svg.rule.Rule;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
 import org.xmlcml.graphics.svg.rule.vertical.VerticalRule;
-import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 import org.xmlcml.graphics.svg.text.build.Phrase;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.graphics.svg.text.build.TextChunkList;
 import org.xmlcml.graphics.svg.text.line.ScriptLine;
@@ -227,7 +227,7 @@ public class TableStructurer {
 			return;
 		}
 		TableSection bodySection = tableSectionList.get(2);
-		SVGElement bodyPhraseListList= bodySection.getOrCreatePhraseListList();
+		AbstractCMElement bodyPhraseListList= bodySection.getOrCreatePhraseListList();
 	}
 
 	private void createBody() {
@@ -545,8 +545,8 @@ public class TableStructurer {
 
 	private static void addAxiallyAlignedLineToList(Line2 axis, List<SVGLine> lineList, SVGLine line) {
 		if (axis == null || 
-				(line.isHorizontal(SVGShape.EPS) && axis.equals(Line2.XAXIS)) ||
-				(line.isVertical(SVGShape.EPS) && axis.equals(Line2.YAXIS))) {
+				(line.isHorizontal(SVGLine.EPS) && axis.equals(Line2.XAXIS)) ||
+				(line.isVertical(SVGLine.EPS) && axis.equals(Line2.YAXIS))) {
 			lineList.add(line);
 		}
 	}
@@ -728,7 +728,7 @@ public class TableStructurer {
 		rowCodes = total.toString().trim();
 	}
 
-	private String indexSVGLine(Integer maxLength, int iRuler, SVGElement horizontalElement) {
+	private String indexSVGLine(Integer maxLength, int iRuler, AbstractCMElement horizontalElement) {
 		String index;
 		index = " L"+iRuler+"";
 		SVGLine line = (SVGLine) horizontalElement;
@@ -767,7 +767,7 @@ public class TableStructurer {
 		return index;
 	}
 
-	private String indexLineChunk(Double maxFont, int iPhrase, SVGElement horizontalElement) {
+	private String indexLineChunk(Double maxFont, int iPhrase, AbstractCMElement horizontalElement) {
 		String index;
 		index = " P"+iPhrase;
 		PhraseChunk lineChunk = (PhraseChunk) horizontalElement;
@@ -789,7 +789,7 @@ public class TableStructurer {
 		return index;
 	}
 
-	private Double getMaxFont(SVGElement phraseListList2) {
+	private Double getMaxFont(AbstractCMElement phraseListList2) {
 		Double maxFont = null;
 		if (totalTextChunkList.size() > 0) {
 			maxFont = totalTextChunkList.get(0).getFontSize();
@@ -975,7 +975,7 @@ public class TableStructurer {
 		for (Phrase phrase : phraseList) {
 			HtmlTd td = new HtmlTd();
 			tr.appendChild(td);
-			HtmlElement htmlElement = phrase.toHtml();
+			AbstractCMElement htmlElement = phrase.toHtml();
 			td.appendChild(htmlElement.copy());
 		}
 		return tr;

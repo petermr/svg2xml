@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGText;
@@ -79,7 +80,7 @@ public class TextAnalyzerUtils {
 				throw new RuntimeException("null BB "+textChunk.getId());
 			}
 			Real2Range scaledBox = TextAnalyzerUtils.scaleBoxX(textWidthFactor, rawBoundingBox);
-			for (SVGElement element : rawTextList) {
+			for (AbstractCMElement element : rawTextList) {
 				element.detach();
 			}
 			String title = svgText.getText();
@@ -106,7 +107,7 @@ public class TextAnalyzerUtils {
 
 	private static SVGText findSingleSVGText(List<SVGElement> gList) {
 		SVGText svgText = null;
-		SVGElement gName = (SVGElement) gList.get(0);
+		AbstractCMElement gName = (AbstractCMElement) gList.get(0);
 		List<SVGElement> texts = SVGUtil.getQuerySVGElements(gName, "./svg:text");
 		if (texts.size() == 1) {
 			svgText = (SVGText) texts.get(0);

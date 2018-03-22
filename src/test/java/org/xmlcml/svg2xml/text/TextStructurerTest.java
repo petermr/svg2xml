@@ -13,7 +13,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.Real2;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGSVG;
 import org.xmlcml.graphics.svg.SVGText;
@@ -840,7 +840,7 @@ public class TextStructurerTest {
 		List<TextLine> textLineList = textStructurer.getTextLineList();
 		SVGG g = new SVGG();
 		for (TextLine textLine : textLineList) {
-			for (SVGElement character : textLine.getSVGTextCharacters()) {
+			for (AbstractCMElement character : textLine.getSVGTextCharacters()) {
 				g.appendChild(character.copy());
 			}
 		}
@@ -859,7 +859,7 @@ public class TextStructurerTest {
 		textLineList = textStructurer.getTextLineList();
 		g = new SVGG();
 		for (TextLine textLine : textLineList) {
-			for (SVGElement character : textLine.getSVGTextCharacters()) {
+			for (AbstractCMElement character : textLine.getSVGTextCharacters()) {
 				g.appendChild(character.copy());
 			}
 		}

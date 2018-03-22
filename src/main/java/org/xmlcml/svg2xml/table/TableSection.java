@@ -16,10 +16,9 @@ import org.xmlcml.graphics.html.HtmlP;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalRule;
-import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 import org.xmlcml.graphics.svg.text.build.Phrase;
+import org.xmlcml.graphics.svg.text.build.PhraseChunk;
 import org.xmlcml.graphics.svg.text.build.TextChunk;
-import org.xmlcml.svg2xml.table.TableSection.TableSectionType;
 
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;

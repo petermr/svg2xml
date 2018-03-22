@@ -6,7 +6,6 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,27 +13,17 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.html.HtmlBody;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.html.HtmlDiv;
 import org.xmlcml.graphics.html.HtmlElement;
-import org.xmlcml.graphics.html.HtmlH1;
 import org.xmlcml.graphics.html.HtmlHtml;
-import org.xmlcml.graphics.html.HtmlP;
 import org.xmlcml.graphics.html.HtmlStyle;
-import org.xmlcml.graphics.html.HtmlTitle;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
-import org.xmlcml.graphics.svg.SVGImage;
 import org.xmlcml.graphics.svg.SVGSVG;
-import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.graphics.svg.SVGText;
-import org.xmlcml.graphics.svg.SVGTitle;
 import org.xmlcml.graphics.svg.SVGUtil;
 import org.xmlcml.graphics.svg.image.ImageConverter;
 import org.xmlcml.graphics.svg.text.structure.AbstractContainer;
-import org.xmlcml.graphics.svg.text.structure.AbstractContainer.ContainerType;
-import org.xmlcml.svg2xml.paths.Chunk;
 import org.xmlcml.svg2xml.pdf.ChunkId;
 import org.xmlcml.svg2xml.pdf.PDFAnalyzer;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
@@ -82,7 +71,6 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	private static final long BIG_SVG_FILE = 1000000;
 	
 	private int aggregatedContainerCount;
-//	private PageIO pageIo;
 	private HtmlElement runningTextHtmlElement;
 
 	private PDFAnalyzer pdfAnalyzer;
@@ -127,14 +115,14 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 //		}
 //	}
 
-	private void removeClipPathsDefs(SVGElement svgPage) {
+	private void removeClipPathsDefs(AbstractCMElement svgPage) {
 		List<SVGElement> defs = SVGUtil.getQuerySVGElements(svgPage, "./svg:defs");
 		for (SVGElement def : defs) {
 			removeClipPathChildrenAndEmptyDef(def);
 		}
 	}
 
-	private void removeClipPathAttributes(SVGElement svgPage) {
+	private void removeClipPathAttributes(AbstractCMElement svgPage) {
 		if (svgPage != null) {
 			Nodes clipPathAttributes = svgPage.query("./*/@clip-path");
 			for (int i = 0; i < clipPathAttributes.size(); i++) {
@@ -145,7 +133,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 
 	private void removeClipPathChildrenAndEmptyDef(SVGElement def) {
 		List<SVGElement> clipPaths = SVGUtil.getQuerySVGElements(def, "./svg:clipPath");
-		for (SVGElement clipPath : clipPaths) {
+		for (AbstractCMElement clipPath : clipPaths) {
 			clipPath.detach();
 		}
 		if (def.getChildElements().size() == 0) {
@@ -198,7 +186,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 //		pageIo.createFinalSVGPageFromChunks();
 	}
 
-	private void sortByZ(SVGElement gChunk) {
+	private void sortByZ(AbstractCMElement gChunk) {
 		Map<Double, SVGElement> elementByZMap = new HashMap<Double, SVGElement>();
 		List<SVGElement> childElements = SVGUtil.getQuerySVGElements(gChunk, "./*");
 		LOG.trace("child: "+childElements.size());
@@ -217,9 +205,9 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		//}
 	}
 
-	private void detachChildrenAndReplaceInZOrder(SVGElement gChunk, Map<Double, SVGElement> elementByZMap,
+	private void detachChildrenAndReplaceInZOrder(AbstractCMElement gChunk, Map<Double, SVGElement> elementByZMap,
 			List<SVGElement> childElements, List<Double> rawList) {
-		for (SVGElement childElement : childElements) {
+		for (AbstractCMElement childElement : childElements) {
 			childElement.detach();
 		}
 		Collections.sort(rawList);
@@ -249,7 +237,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 * @param gChunk
 	 * @return analyzer suited to type (e.g. TextAnalyzer)
 	 */
-	public ChunkAnalyzer createSpecificAnalyzer(SVGElement gChunk) {
+	public ChunkAnalyzer createSpecificAnalyzer(AbstractCMElement gChunk) {
 		// path ytransformations have already been done
 		ChunkAnalyzer analyzer = null;
 //		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(gChunk);
@@ -357,7 +345,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		return TITLE;
 	}
 
-	private SVGElement createChunksAndAddIdAndAttributes(SVGElement gOrig, ChunkId chunkId, ChunkAnalyzer analyzerX, int decimalPlaces) {
+	private SVGElement createChunksAndAddIdAndAttributes(AbstractCMElement gOrig, ChunkId chunkId, ChunkAnalyzer analyzerX, int decimalPlaces) {
 		if (analyzerX == null) {
 			throw new RuntimeException("Null analyzer");
 		}
@@ -475,20 +463,20 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 *  
 	 * @param div
 	 */
-	public static void cleanHtml(HtmlElement div) {
+	public static void cleanHtml(HtmlDiv div) {
 		removeWhitespaceSpan(div);
 		removeSpanSubSupBI(div);
 		replaceSpansByTextChildren(div);
 	}
 
-	private static void replaceSpansByTextChildren(HtmlElement div) {
+	private static void replaceSpansByTextChildren(HtmlDiv div) {
 		//String xpath = "//*[local-name()='span' and count(text()) = 1  and count(*) = 0]";
 		//replaceNodesWithChildren(div, xpath);
 		String xpath = ".//*[local-name()='span' and count(text()) = 1  and count(*) = 0]/text()";
 		replaceParentsWithNodes(div, xpath);
 	}
 
-	private static void replaceNodesWithChildren(HtmlElement div, String xpath) {
+	private static void replaceNodesWithChildren(HtmlDiv div, String xpath) {
 		Nodes nodes = div.query(xpath);
 		for (int i = 0; i < nodes.size(); i++) {
 			Node spanNode = nodes.get(i);
@@ -504,18 +492,18 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 		}
 	}
 
-	private static void removeWhitespaceSpan(HtmlElement div) {
+	private static void removeWhitespaceSpan(AbstractCMElement div) {
 		removeNodes(div, ".//*[local-name()='span' and normalize-space(.)='']");
 	}
 
-	private static void removeNodes(HtmlElement div, String xpath) {
+	private static void removeNodes(AbstractCMElement div, String xpath) {
 		Nodes nodes = div.query(xpath);
 		for (int i = 0; i < nodes.size(); i++) {
 			nodes.get(i).detach();
 		}
 	}
 
-	private static void removeSpanSubSupBI(HtmlElement div) {
+	private static void removeSpanSubSupBI(AbstractCMElement div) {
 		replaceParentsWithNodes(div, ".//*[local-name()='span']/*[local-name()='sub' or local-name()='sup' or local-name()='b' or local-name()='i']");
 	}
 
@@ -524,7 +512,7 @@ public class PageAnalyzer /*extends PageChunkAnalyzer*/ {
 	 * @param div
 	 * @param xpath
 	 */
-	private static void replaceParentsWithNodes(HtmlElement div, String xpath) {
+	private static void replaceParentsWithNodes(AbstractCMElement div, String xpath) {
 		Nodes nodes = div.query(xpath);
 		for (int i = 0; i < nodes.size(); i++) {
 			Node node = nodes.get(i);

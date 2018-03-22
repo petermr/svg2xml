@@ -13,10 +13,10 @@ import org.xmlcml.euclid.Angle;
 import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.Univariate;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
-import org.xmlcml.graphics.svg.SVGText;
 import org.xmlcml.graphics.svg.cache.ComponentCache;
 import org.xmlcml.graphics.svg.cache.TextChunkCache;
 import org.xmlcml.graphics.svg.rule.horizontal.HorizontalElement;
@@ -100,7 +100,7 @@ public class PageLayoutAnalyzerNEW {
 	 * 
 	 * @param svgElement
 	 */
-	public void createContent(SVGElement svgElement) {
+	public void createContent(AbstractCMElement svgElement) {
 		componentCache = new ComponentCache();
 		componentCache.readGraphicsComponentsAndMakeCaches(svgElement);
 //		TextChunkCache textChunkCache = componentCache.getOrCreateTextChunkCache();
@@ -143,7 +143,7 @@ public class PageLayoutAnalyzerNEW {
 	 * @return
 	 */
 	public static SVGElement rotateClockwise(TextStructurer textStructurer) {
-		SVGElement rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
+		SVGG rotatedVerticalText = textStructurer.createChunkFromVerticalText(new Angle(-1.0 * Math.PI / 2));
 		TableStructurer tableStructurer = TableStructurer.createTableStructurer(textStructurer);
 		SVGElement chunk = textStructurer.getSVGChunk();
 		Angle angle = new Angle(-1.0 * Math.PI / 2);

@@ -9,6 +9,7 @@ import nu.xom.Element;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGShape;
@@ -27,7 +28,7 @@ public class TableTableTest {
 	@Test
 	public void testTable0() {
 		Element element = XMLUtil.parseQuietlyToDocument(TableFixtures.TABLEFILE).getRootElement();
-		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
+		AbstractCMElement svgElement = SVGElement.readAndCreateSVG(element);
 		//svgElement.debug("TAB");
 		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgElement);
 		Assert.assertEquals("shapes", 8, shapeList.size());

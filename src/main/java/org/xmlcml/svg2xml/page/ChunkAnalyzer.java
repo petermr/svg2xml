@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -68,7 +69,7 @@ public abstract class ChunkAnalyzer {
 	public SVGG createChunkFromList(List<? extends SVGElement> svgElements) {
 		SVGG g = new SVGG();
 		for (int i = 0; i < svgElements.size(); i++) {
-			SVGElement element = svgElements.get(i);
+			AbstractCMElement element = svgElements.get(i);
 			g.appendChild(element.copy());
 		}
 		String title = this.getClass().getName()+svgElements.size();

@@ -9,6 +9,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.util.MultisetUtil;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGShape;
@@ -131,7 +132,7 @@ public class TableBodySection extends TableSection {
 			String[] colors,
 			double[] opacity) {
 		// write SVG
-		SVGElement g;
+		AbstractCMElement g;
 		g = createSubtableBoxesAndShiftToOrigin(svgChunk, colors, opacity);
 		svgChunk.appendChild(g);
 		g = createColumnBoxesAndShiftToOrigin(svgChunk, colors, opacity);

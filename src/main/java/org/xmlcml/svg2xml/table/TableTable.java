@@ -1,7 +1,6 @@
 package org.xmlcml.svg2xml.table;
 
 import java.io.File;
-
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.RealRangeArray;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.html.HtmlBody;
 import org.xmlcml.graphics.html.HtmlCaption;
 import org.xmlcml.graphics.html.HtmlElement;
@@ -64,11 +64,11 @@ public class TableTable extends TableChunk {
 	}
 
 	public static TableTable createTableTable(Element element) {
-		SVGElement svgElement = SVGElement.readAndCreateSVG(element);
+		AbstractCMElement svgElement = SVGElement.readAndCreateSVG(element);
 		return createTableTable(svgElement);
 	}
 
-	private static TableTable createTableTable(SVGElement svgElement) {
+	private static TableTable createTableTable(AbstractCMElement svgElement) {
 		List<SVGShape> shapeList = SVGShape.extractSelfAndDescendantShapes(svgElement);
 		List<SVGText> textList = SVGText.extractSelfAndDescendantTexts(svgElement);
 		TableTable table = new TableTable(shapeList, textList);
@@ -326,7 +326,7 @@ public class TableTable extends TableChunk {
 		return table;
 	}
 
-	private boolean hasOnlyOneRow(HtmlElement htmlElement) {
+	private boolean hasOnlyOneRow(AbstractCMElement htmlElement) {
 		return htmlElement.query("*[local-name()='tr']").size() == 1;
 	}
 

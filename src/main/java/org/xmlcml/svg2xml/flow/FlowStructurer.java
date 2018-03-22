@@ -3,19 +3,20 @@ package org.xmlcml.svg2xml.flow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGPath;
 import org.xmlcml.graphics.svg.SVGRect;
 import org.xmlcml.graphics.svg.SVGShape;
 import org.xmlcml.graphics.svg.linestuff.Path2ShapeConverter;
+import org.xmlcml.graphics.svg.text.build.TextChunk;
 import org.xmlcml.graphics.svg.text.structure.TextStructurer;
 
 public class FlowStructurer {
 
 	private TextStructurer textStructurer;
-	private SVGElement phraseListList;
+	private TextChunk phraseListList;
 
-	public FlowStructurer(SVGElement phraseListList) {
+	public FlowStructurer(TextChunk phraseListList) {
 		this.phraseListList = phraseListList;
 	}
 
@@ -24,7 +25,7 @@ public class FlowStructurer {
 	}
 
 	public List<SVGShape> makeShapes() {
-		SVGElement svgChunk = textStructurer.getSVGChunk();
+		AbstractCMElement svgChunk = textStructurer.getSVGChunk();
 		List<SVGPath> pathList = SVGPath.extractSelfAndDescendantPaths(svgChunk);
 		Path2ShapeConverter converter = new Path2ShapeConverter(pathList);
 		converter.setSplitPolyLines(true);

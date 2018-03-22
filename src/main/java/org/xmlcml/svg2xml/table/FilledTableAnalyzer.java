@@ -15,6 +15,7 @@ import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.Real2RangeComparator;
 import org.xmlcml.euclid.RealRange.Direction;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
@@ -73,7 +74,7 @@ public class FilledTableAnalyzer {
 		SVGG gg = new SVGG();
 		
 		createBoundaryTickMarkLists();
-		SVGElement g = drawHorizontalTicksForRows();
+		AbstractCMElement g = drawHorizontalTicksForRows();
 		gg.appendChild(g);
 		g = drawVerticalTicksForColumns();
 		gg.appendChild(g);
@@ -126,7 +127,7 @@ public class FilledTableAnalyzer {
 				SVGRect rectCopy = new SVGRect(rectInRow);
 				g.appendChild(rectCopy);
 				Real2Range cellBbox = rectCopy.getBoundingBox();
-				SVGElement gg = createAndOutputColspanCountForSpannningCell(cellBbox);
+				AbstractCMElement gg = createAndOutputColspanCountForSpannningCell(cellBbox);
 				g.appendChild(gg);
 				gg = createAndOutputRowspanCountForSpanningRow(cellBbox);
 				g.appendChild(gg);

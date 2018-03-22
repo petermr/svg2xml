@@ -17,6 +17,7 @@ import org.xmlcml.euclid.IntRange;
 import org.xmlcml.euclid.Real2;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange.Direction;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGGBox;
@@ -86,7 +87,7 @@ public class FilledTableAnalyzerTest {
 		File svgFile = FILLED1016_2MICRO;
 		ComponentCache svgStore = new ComponentCache();
 		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
-		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
+		AbstractCMElement svgElement = (AbstractCMElement) svgStore.getExtractedSVGElement();
 		File svgOutFile = SVGFilenameUtils.getCompactSVGFilename(new File("target/"+FILLED), new File("target/"+FILLED+"/"+svgFile.getPath()+"micro"));
 		SVGSVG.wrapAndWriteAsSVG(svgElement, svgOutFile, 1000., 1000.);
 	}
@@ -175,7 +176,7 @@ public class FilledTableAnalyzerTest {
 	
 	@Test
 	public void testCreateRow() {
-		SVGElement svgElement = SVGElement.readAndCreateSVG(FILLED1007_2_ELEM);
+		AbstractCMElement svgElement = SVGElement.readAndCreateSVG(FILLED1007_2_ELEM);
 		List<SVGRect> rectList = SVGRect.extractSelfAndDescendantRects(svgElement);
 		Multimap<IntRange, SVGRect> rectByIntYRange = ArrayListMultimap.create();
 		for (SVGRect rect : rectList) {

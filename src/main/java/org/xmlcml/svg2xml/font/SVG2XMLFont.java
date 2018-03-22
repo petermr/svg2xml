@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.xmlcml.graphics.svg.SVGElement;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGText;
 
 public class SVG2XMLFont {
@@ -67,7 +67,7 @@ public class SVG2XMLFont {
 		}
 	}
 
-	public SVG2XMLCharacter getSVG2XMLCharacter(SVGElement svgText) {
+	public SVG2XMLCharacter getSVG2XMLCharacter(AbstractCMElement svgText) {
 		String value = (svgText == null) ? null : svgText.getValue();
 		Long unicodePoint = value == null || value.length() != 1 ? null : (long) value.charAt(0); 
 		SVG2XMLCharacter character = characterMap.get(unicodePoint);

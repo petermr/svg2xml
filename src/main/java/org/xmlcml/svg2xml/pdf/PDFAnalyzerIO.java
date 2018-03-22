@@ -12,8 +12,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.xmlcml.graphics.html.HtmlMenuSystem;
-import org.xmlcml.graphics.svg.text.structure.AbstractContainer.ContainerType;
-import org.xmlcml.svg2xml.page.PageAnalyzer;
 import org.xmlcml.svg2xml.util.NameComparator;
 import org.xmlcml.svg2xml.util.SVG2XMLConstantsX;
 

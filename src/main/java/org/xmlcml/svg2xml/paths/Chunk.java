@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.xmlcml.euclid.Real2Range;
 import org.xmlcml.euclid.RealRange;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
@@ -69,12 +70,12 @@ public class Chunk extends SVGG {
 		boundingBox = null;
 	}
 
-	void createElementListAndCalculateBoundingBoxes(SVGElement element) {
+	void createElementListAndCalculateBoundingBoxes(AbstractCMElement element) {
 		descendantSVGElementList = getDescendantsWithoutGroupingElementsOrDefs(element);
 		calculateBoundingBoxes();
 	}
 
-	private static List<SVGElement> getDescendantsWithoutGroupingElementsOrDefs(SVGElement element) {
+	private static List<SVGElement> getDescendantsWithoutGroupingElementsOrDefs(AbstractCMElement element) {
 		List<SVGElement> descendantSVGElementList = SVGUtil.getQuerySVGElements(element, 
 				".//svg:*[not(self::svg:svg or self::svg:g or self::*[ancestor-or-self::svg:defs])]");
 		return descendantSVGElementList;
@@ -168,7 +169,7 @@ public class Chunk extends SVGG {
 	private void removeEmptyTexts() {
 		Iterator<SVGElement> it = descendantSVGElementList.iterator();
 		while (it.hasNext()) {
-			SVGElement i = it.next();
+			AbstractCMElement i = it.next();
 			if (i instanceof SVGText) {
 				if (((SVGText) i).getText() == null || ((SVGText) i).getText().equals("") || ((SVGText) i).getText().equals(" ")) {
 					i.detach();
@@ -325,14 +326,14 @@ public class Chunk extends SVGG {
 
 	private void ensureDescendantSVGClassSet() {
 		descendantSVGClassSet = new HashSet<Class<?>>();
-		for (SVGElement element : descendantSVGElementList) {
+		for (AbstractCMElement element : descendantSVGElementList) {
 			descendantSVGClassSet.add(element.getClass());
 		}
 	}
 
 	public String getStringValue() {
 		StringBuilder sb = new StringBuilder();
-		for (SVGElement line : descendantSVGElementList) {
+		for (AbstractCMElement line : descendantSVGElementList) {
 			sb.append(line.getValue()+"\n");
 		}
 		return sb.toString();
@@ -357,7 +358,7 @@ public class Chunk extends SVGG {
 	 */
 	public static List<Chunk> extractChunks(List<SVGElement> elements) {
 		List<Chunk> chunkList = new ArrayList<Chunk>();
-		for (SVGElement element : elements) {
+		for (AbstractCMElement element : elements) {
 			if (element instanceof Chunk) {
 				chunkList.add((Chunk) element);
 			}

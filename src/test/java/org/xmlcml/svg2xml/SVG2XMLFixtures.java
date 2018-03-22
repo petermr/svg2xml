@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGSVG;
@@ -314,8 +315,8 @@ public class SVG2XMLFixtures {
 		}
 	}
 	
-	public final static SVGElement createSVGElement(File file) {
-		SVGElement svgElement =  null;
+	public final static AbstractCMElement createSVGElement(File file) {
+		AbstractCMElement svgElement =  null;
 		try {
 			svgElement = SVGElement.readAndCreateSVG(new Builder().build(file).getRootElement());
 		} catch (Exception e) {

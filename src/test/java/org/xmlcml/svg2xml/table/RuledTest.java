@@ -14,8 +14,8 @@ import org.xmlcml.euclid.RealArray;
 import org.xmlcml.euclid.RealRange.Direction;
 import org.xmlcml.euclid.Util;
 import org.xmlcml.euclid.util.MultisetUtil;
+import org.xmlcml.graphics.AbstractCMElement;
 import org.xmlcml.graphics.svg.SVGCircle;
-import org.xmlcml.graphics.svg.SVGElement;
 import org.xmlcml.graphics.svg.SVGG;
 import org.xmlcml.graphics.svg.SVGLine;
 import org.xmlcml.graphics.svg.SVGRect;
@@ -68,7 +68,7 @@ public class RuledTest {
 		ComponentCache svgStore = new ComponentCache();
 		svgStore.setSplitAtMove(true);
 		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
-		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
+		AbstractCMElement svgElement = (AbstractCMElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 		Assert.assertEquals("lines", 19, lineList.size());
 		SVGLine svgLine0 = lineList.get(0);
@@ -106,7 +106,7 @@ public class RuledTest {
 		File svgFile = RULED1007_1;
 		ComponentCache svgStore = new ComponentCache();
 		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
-		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
+		AbstractCMElement svgElement = (AbstractCMElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 		Assert.assertEquals("lines", 59, lineList.size());
 		debugLines(lineList, new File("target/ruled/lineSet.svg"));
@@ -124,7 +124,7 @@ public class RuledTest {
 		File svgFile = RULED1007_1;
 		ComponentCache svgStore = new ComponentCache();
 		svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
-		SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
+		AbstractCMElement svgElement = (AbstractCMElement) svgStore.getExtractedSVGElement();
 		List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 		List<SVGLine> mergedLines = LineMerger.mergeLines(lineList, 1.0, MergeMethod.OVERLAP);
 		Multiset<Double> widthSet = HashMultiset.create();
@@ -163,7 +163,7 @@ public class RuledTest {
 		for (File svgFile : RULED_FILES) {
 			ComponentCache svgStore = new ComponentCache();
 			svgStore.readGraphicsComponentsAndMakeCaches(svgFile);
-			SVGElement svgElement = (SVGElement) svgStore.getExtractedSVGElement();
+			AbstractCMElement svgElement = (AbstractCMElement) svgStore.getExtractedSVGElement();
 			List<SVGLine> lineList = SVGLine.extractSelfAndDescendantLines(svgElement);
 			List<SVGLine> mergedLines = LineMerger.mergeLines(lineList, 1.0, MergeMethod.OVERLAP);
 			Multiset<Double> widthSet = HashMultiset.create();
