@@ -104,7 +104,7 @@ public class TableHeaderSection extends TableSection {
 
 	private SVGG createColumnBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName(HEADER_COLUMN_BOXES);
+		g.setSVGClassName(HEADER_COLUMN_BOXES);
 		if (boundingBox == null) {
 			LOG.trace("no bounding box");
 		} else {
@@ -150,7 +150,7 @@ public class TableHeaderSection extends TableSection {
 
 	private SVGG createHeaderBoxesAndTransformToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName(HEADER_BOXES);
+		g.setSVGClassName(HEADER_BOXES);
 		for (int i = 0; i < headerRowList.size(); i++) {
 			HeaderRow headerRow = headerRowList.get(i);
 			for (ColumnGroup columnGroup : headerRow.getOrCreateColumnGroupList()) {

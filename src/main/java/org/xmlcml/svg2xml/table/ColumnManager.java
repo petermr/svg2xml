@@ -218,7 +218,7 @@ public class ColumnManager {
 
 	public SVGG createCellBoxes(int colno, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName("col"+"."+colno);
+		g.setSVGClassName("col"+"."+colno);
 		for (int iPhrase = 0; iPhrase < columnPhrases.size(); iPhrase++) {
 			Real2Range contentBox = columnPhrases.get(iPhrase).getBoundingBox();
 			if (contentBox.getYMin() < 0) {
@@ -231,7 +231,7 @@ public class ColumnManager {
 				String title = colno+"."+iPhrase+"/"+columnPhrases.get(iPhrase).getStringValue();
 				SVGTitle svgTitle = new SVGTitle(title);
 				SVGRect plotBox = GraphPlot.createBoxWithFillOpacity(contentBox, colors[1], opacity[1]);
-				plotBox.setClassName("cell"+"."+colno+"."+iPhrase);
+				plotBox.setSVGClassName("cell"+"."+colno+"."+iPhrase);
 				plotBox.appendChild(svgTitle);
 				g.appendChild(plotBox);
 			}

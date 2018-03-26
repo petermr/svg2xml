@@ -39,7 +39,7 @@ public class TableTitleSection extends TableSection {
 	
 	private SVGG createBoxAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName(TITLE_TITLE);
+		g.setSVGClassName(TITLE_TITLE);
 		if (boundingBox == null) {
 			LOG.trace("no bounding box");
 		} else {

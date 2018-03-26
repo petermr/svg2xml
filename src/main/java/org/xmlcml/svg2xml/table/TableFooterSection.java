@@ -39,7 +39,7 @@ public class TableFooterSection extends TableSection {
 	
 	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName(FOOTER_TITLE);
+		g.setSVGClassName(FOOTER_TITLE);
 		if (boundingBox == null) {
 			LOG.trace("no bounding box");
 		} else {

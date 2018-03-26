@@ -73,7 +73,7 @@ public class RuledTest {
 		Assert.assertEquals("lines", 19, lineList.size());
 		SVGLine svgLine0 = lineList.get(0);
 		Assert.assertEquals("line0", "none", svgLine0.getFill());
-		Assert.assertEquals("line0", "line.0", svgLine0.getId());
+		Assert.assertEquals("line0", "line1", svgLine0.getId());
 		Assert.assertEquals("line0", 0.469, svgLine0.getStrokeWidth(), 0.001);
 		Assert.assertEquals("line0", 66.332, svgLine0.getXY(0).getX(), 0.001);
 		Assert.assertEquals("line0", 59.319, svgLine0.getXY(0).getY(), 0.001);

@@ -144,7 +144,7 @@ public class TableBodySection extends TableSection {
 
 	private SVGG createColumnBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName(BODY_COLUMN_BOXES);
+		g.setSVGClassName(BODY_COLUMN_BOXES);
 		if (boundingBox == null) {
 			LOG.trace("no bounding box");
 		} else {
@@ -164,7 +164,7 @@ public class TableBodySection extends TableSection {
 	
 	private SVGG createCellBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName(BODY_CELL_BOXES);
+		g.setSVGClassName(BODY_CELL_BOXES);
 		if (boundingBox == null) {
 			LOG.trace("no bounding box");
 		} else {
@@ -180,7 +180,7 @@ public class TableBodySection extends TableSection {
 	
 	private SVGG createSubtableBoxesAndShiftToOrigin(SVGElement svgChunk, String[] colors, double[] opacity) {
 		SVGG g = new SVGG();
-		g.setClassName(BODY_SUBTABLE_BOXES);
+		g.setSVGClassName(BODY_SUBTABLE_BOXES);
 		if (boundingBox == null) {
 			LOG.trace("no bounding box");
 		} else {
